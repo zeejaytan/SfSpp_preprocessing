@@ -29,10 +29,8 @@
 
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
-#if 0
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/vtk_lib_io.h>
-#endif
 #include <pcl/io/ply_io.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/convex_hull.h>
@@ -44,9 +42,7 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/console/time.h>
 
-#if 0
 #include <pcl/visualization/cloud_viewer.h>
-#endif
 #include <pcl/segmentation/region_growing.h>
 #include <pcl/segmentation/conditional_euclidean_clustering.h>
 
@@ -72,9 +68,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-#if 0
 #include <pcl/visualization/pcl_visualizer.h>
-#endif
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Alpha_shape_2.h>
@@ -161,9 +155,7 @@ typedef std::array<std::size_t, 3> Facet;
 
 
 typedef pcl::PointXYZ Point;
-#if 0
 typedef pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> ColorHandlerXYZ;
-#endif
 typedef search::KdTree<PointXYZ>::Ptr KdTreePtr;
 
 
@@ -271,15 +263,25 @@ bool next_step = false;
 
 
 #include <pcl/io/obj_io.h>
-#if 0
 pcl::visualization::PCLVisualizer viewer_FinalResult("PCL Reg Visualizer");
 pcl::visualization::PCLVisualizer::Ptr viewer_New(new pcl::visualization::PCLVisualizer("Check breakline smoothing"));
-#endif
 
 
-#if 0
-boost::shared_ptr<pcl::visualization::PCLVisualizer> rgbVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud) { return {}; }
-#endif
+boost::shared_ptr<pcl::visualization::PCLVisualizer> rgbVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud)
+{
+	// --------------------------------------------
+	// -----Open 3D viewer and add point cloud-----
+	// --------------------------------------------
+	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	viewer->setBackgroundColor(0, 0, 0);
+	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
+	viewer->addPointCloud<pcl::PointXYZRGB>(cloud, rgb, "sample cloud");
+	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
+	viewer->addCoordinateSystem(1.0);
+	viewer->initCameraParameters();
+
+	return (viewer);
+}
 
 
 
@@ -542,9 +544,7 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 
 void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
-	cloud_sequenced->points.clear();
-	if (!cloud || cloud->points.empty()) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
-	if (cloud->points.size() == 1) { cloud_sequenced->points.push_back(cloud->points[0]); cloud_sequenced->width = 1; cloud_sequenced->height = 1; return; }
+
 	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
 
 	kdtree.setInputCloud(cloud);
@@ -565,24 +565,22 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 		int K = 50;
 		std::vector<int> pointIdxNKNSearch(K);
 		std::vector<float> pointNKNSquaredDistance(K);
-    int foundK = kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
-    if (foundK > 0)
-    {
+		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+		{
 
-        if (t == 1)
-        {
-            PointXYZ p;
-            int pick = (foundK >= 2) ? pointIdxNKNSearch[1] : pointIdxNKNSearch[0];
-            p.x = (*cloud)[pick].x; p.y = (*cloud)[pick].y; p.z = (*cloud)[pick].z;
-            cloud_sequenced->points.push_back(p);
-            previousPoint = currentPoint;
-            currentPoint = p;
-        }
+			if (t == 1)
+			{
+				PointXYZ p;
+				p.x = (*cloud)[pointIdxNKNSearch[1]].x; p.y = (*cloud)[pointIdxNKNSearch[1]].y; p.z = (*cloud)[pointIdxNKNSearch[1]].z;
+				cloud_sequenced->points.push_back(p);
+				previousPoint = currentPoint;
+				currentPoint = p;
+			}
 			else
 			{
 				if (pointIdxNKNSearch.size() > 0)
 				{
-					for (std::size_t x = 0; x < (std::size_t)foundK; ++x)
+					for (std::size_t x = 0; x < pointIdxNKNSearch.size(); ++x)
 					{
 						PointXYZ p1;
 						p1.x = (*cloud)[pointIdxNKNSearch[x]].x; p1.y = (*cloud)[pointIdxNKNSearch[x]].y; p1.z = (*cloud)[pointIdxNKNSearch[x]].z;
@@ -656,20 +654,18 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	pcl::BoundaryEstimation<pcl::PointXYZ, pcl::Normal, pcl::Boundary> boundary_est;
 	boundary_est.setInputCloud(cloudWithoutNormals);
 	boundary_est.setInputNormals(normals);
-    // Original boundary search radius
-    boundary_est.setRadiusSearch(4);
+	boundary_est.setRadiusSearch(4); //6 , 3 SFS
 	//boundary_est.setAngleThreshold(0.6 * M_PI);//M_PI
 	boundary_est.setAngleThreshold(M_PI * 0.6);//M_PI
 	boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
 	boundary_est.compute(boundary);
 
 
-	//get points which on the boundary form point cloud; guard against size mismatch
+	//get points which on the boundary form point cloud;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud(new pcl::PointCloud<pcl::PointXYZ>);
-	std::size_t N = std::min<std::size_t>(boundary.points.size(), cloudWithoutNormals->points.size());
-	for (std::size_t i = 0; i < N; i++)
+	for (int i = 0; i < cloud->points.size(); i++)
 	{
-		if (boundary.points[i].boundary_point == 1)
+		if (boundary[i].boundary_point == 1)
 		{
 			boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
 		}
@@ -677,14 +673,6 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	boundaryCloud->width = boundaryCloud->points.size();
 	boundaryCloud->height = 1;
 	boundaryCloud->is_dense = true;
-	std::cout << "[EDGELINE DBG] boundaryCloud size=" << boundaryCloud->points.size() << std::endl;
-
-	// Fallback: if boundary is empty, seed with a small subset of the surface points to avoid empty sequences
-	if (boundaryCloud->points.empty() && !cloudWithoutNormals->points.empty()) {
-		std::size_t take = std::min<std::size_t>(cloudWithoutNormals->points.size(), 64);
-		for (std::size_t i = 0; i < take; ++i) boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
-		boundaryCloud->width = boundaryCloud->points.size();
-	}
 
 	pcl::io::savePCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
@@ -696,38 +684,28 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// string outPathNew = filePathNew.parent_path().string() + "\\";
 	string outPathNew = tempDataPath(potID);
 	
-	int ply_ok = -1; // disabled due to PLYReader instability on files with camera properties
-	std::cout << "[EDGELINE DBG] unclustered size=" << 0 << " ply_ok=" << ply_ok << std::endl;
+	pcl::io::loadPLYFile(outPathNew + fileNameOnly + "_unclustered.ply", *unclusteredPoints);
 	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
-	if (ply_ok == 0 && !unclusteredPoints->empty()) {
-		kdtree.setInputCloud(unclusteredPoints);
-	} else {
-		// If unclustered PLY missing or empty, skip KD mapping; will use boundary as-is
-		unclusteredPoints->points.clear();
-	}
+	kdtree.setInputCloud(unclusteredPoints);
 
 	pcl::PointXYZ searchPoint;
 	// K nearest neighbor search
 	int K = 1;
 	std::vector<int> pointIdxNKNSearch(K);
 	std::vector<float> pointNKNSquaredDistance(K);
-	if (!unclusteredPoints->empty()) {
-		for (size_t i = 0; i < boundaryCloud->points.size(); i++)
+	for (size_t i = 0; i < boundaryCloud->points.size(); i++)
+	{
+		searchPoint = boundaryCloud->points[i];
+		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
 		{
-			searchPoint = boundaryCloud->points[i];
-			int found = kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
-			for (int j = 0; j < found; j++)
+			for (std::size_t j = 0; j < pointIdxNKNSearch.size(); j++)
 			{
 				boundaryCloud_Improved->points.push_back(unclusteredPoints->points[pointIdxNKNSearch[j]]);
 			}
 		}
-	} else {
-		// No improvement available; carry forward the boundary as improved
-		*boundaryCloud_Improved = *boundaryCloud;
 	}
 	boundaryCloud_Improved->width = static_cast<int>(boundaryCloud_Improved->points.size());
 	boundaryCloud_Improved->height = 1;
-	std::cout << "[EDGELINE DBG] boundaryCloud_Improved size=" << boundaryCloud_Improved->points.size() << std::endl;
 	pcl::io::savePCDFile(tempEdgeFolder + "boundaryImproved.pcd", *boundaryCloud_Improved);
 	//-----------------------------------------------------------------------------
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
@@ -739,14 +717,11 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	outrem.setKeepOrganized(true);
 	// apply filter
 	outrem.filter(*cloud_filtered);
-	std::cout << "[EDGELINE DBG] cloud_filtered size=" << cloud_filtered->points.size() << std::endl;
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Filtered.pcd", *cloud_filtered);
 
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud_Improved);
-	std::cout << "[EDGELINE DBG] boundary reload size=" << boundaryCloud_Improved->points.size() << std::endl;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
 	getPointsInSequence(boundaryCloud_Improved, cloud_sequenced);
-	std::cout << "[EDGELINE DBG] cloud_sequenced size=" << cloud_sequenced->points.size() << std::endl;
 
 	pcl::io::savePLYFile(tempEdgeFolder + "_breakLineFromConcaveHull.ply", *cloud_sequenced);
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "_breakLineFromConcaveHull.pcd", *cloud_sequenced);
@@ -826,11 +801,8 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 	string pcd_file = tempEdgeFolder + "cloudForSpline.pcd";
 	string file_3dm = tempEdgeFolder + "splineSurfaceOutput.3dm";
 
-    // Headless: visualization disabled
-#if 0
-    pcl::visualization::PCLVisualizer viewer("B-spline surface fitting");
-    viewer.setSize(800, 600);
-#endif
+	pcl::visualization::PCLVisualizer viewer("B-spline surface fitting");
+	viewer.setSize(800, 600);
 
 
 
@@ -847,7 +819,8 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 
 	fromPCLPointCloud2(cloud2, *cloud);
 	PointCloud2Vector3d(cloud, data.interior);
-    // Headless: no viewer
+	pcl::visualization::PointCloudColorHandlerCustom<Point> handler(cloud, 0, 255, 0);
+	viewer.addPointCloud<Point>(cloud, handler, "cloud_cylinder");
 	printf("  %lu points in data set\n", cloud->size());
 
 	// ############################################################################
@@ -874,7 +847,7 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 	std::vector<pcl::Vertices> mesh_vertices;
 	std::string mesh_id = "mesh_nurbs";
 	pcl::on_nurbs::Triangulation::convertSurface2PolygonMesh(fit.m_nurbs, mesh, mesh_resolution);
-    // Headless: no viewer
+	viewer.addPolygonMesh(mesh, mesh_id);
 
 	// surface refinement
 	std::cout << "Surface refinement" << std::endl;
@@ -885,7 +858,8 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		fit.assemble(params);
 		fit.solve();
 		pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
-            // Headless: no viewer
+		viewer.updatePolygonMesh<pcl::PointXYZ>(mesh_cloud, mesh_vertices, mesh_id);
+		viewer.spinOnce();
 	}
 
 	// surface fitting with final refinement level
@@ -895,9 +869,10 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		fit.assemble(params);
 		fit.solve();
 		pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
-            // Headless: no viewer
+		viewer.updatePolygonMesh<pcl::PointXYZ>(mesh_cloud, mesh_vertices, mesh_id);
+		viewer.spinOnce();
 	}
-    // Headless: no viewer
+	viewer.close();
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_EvaluatedPointsOnSurface(new pcl::PointCloud<pcl::PointNormal>);
 	std::cout << "Evaluating points on surface" << std::endl;
@@ -923,12 +898,6 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		ptTmp.normal_x = -normalEst.x;
 		ptTmp.normal_y = -normalEst.y;
 		ptTmp.normal_z = -normalEst.z;
-		
-		// Headless build: skip NURBS curvature differential evaluation to avoid OpenNURBS type dependencies
-		ptTmp.curvature = 0.0f;
-		
-		// Debug output disabled in headless skip-mode
-		
 		projectedPointCloudWithNormals->points.push_back(ptTmp);
 	}
 
@@ -1035,79 +1004,6 @@ void writeMatrix_to_XYZ_withNormals(MatrixXd& src, string fileName)
 	{
 		cout << "Error opening file" << endl;
 	}
-}
-
-// Custom PCD writer with segment headers for SFS compatibility
-//-----------------------------------------------------------------------------
-void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::PointCloud<pcl::PointNormal>& cloud)
-{
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file " << filename << " for writing" << std::endl;
-        return;
-    }
-
-    // Read segment files to get segment information
-    std::vector<std::pair<int, int>> segments; // start_index, end_index pairs
-    int totalPoints = 0;
-    
-    // Read segment files from Segments/ directory
-    boost::filesystem::path segDir("Segments/");
-    if (boost::filesystem::exists(segDir)) {
-        std::vector<boost::filesystem::path> segFiles;
-        copy(boost::filesystem::directory_iterator(segDir), 
-             boost::filesystem::directory_iterator(), 
-             back_inserter(segFiles));
-        sort(segFiles.begin(), segFiles.end());
-        
-        for (const auto& segFile : segFiles) {
-            if (segFile.extension() == ".xyz") {
-                MatrixXd segMatrix = readFile(segFile.string(), 6);
-                int segSize = segMatrix.rows();
-                int startIdx = totalPoints + 1; // 1-indexed
-                int endIdx = totalPoints + segSize;
-                segments.push_back({startIdx, endIdx});
-                totalPoints += segSize;
-            }
-        }
-    }
-    
-    // If no segments found, create single segment
-    if (segments.empty()) {
-        segments.push_back({1, (int)cloud.points.size()});
-        totalPoints = cloud.points.size();
-    }
-
-    // Write PCD header with segment information
-    file << "# .PCD v0.7 - Point Cloud Data file format" << std::endl;
-    file << "# " << segments.size() << " " << totalPoints << " 0" << std::endl;
-    
-    // Write segment ranges
-    for (const auto& seg : segments) {
-        file << "# " << seg.first << " " << seg.second << " 0" << std::endl;
-    }
-    
-    // Standard PCD header
-    file << "VERSION 0.7" << std::endl;
-    file << "FIELDS x y z normal_x normal_y normal_z curvature" << std::endl;
-    file << "SIZE 4 4 4 4 4 4 4" << std::endl;
-    file << "TYPE F F F F F F F" << std::endl;
-    file << "COUNT 1 1 1 1 1 1 1" << std::endl;
-    file << "WIDTH " << cloud.points.size() << std::endl;
-    file << "HEIGHT 1" << std::endl;
-    file << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl;
-    file << "POINTS " << cloud.points.size() << std::endl;
-    file << "DATA ascii" << std::endl;
-    
-    // Write point data
-    for (const auto& point : cloud.points) {
-        file << point.x << " " << point.y << " " << point.z << " "
-             << point.normal_x << " " << point.normal_y << " " << point.normal_z << " "
-             << point.curvature << std::endl;
-    }
-    
-    file.close();
-    std::cout << "Saved PCD with " << segments.size() << " segments to: " << filename << std::endl;
 }
 
 // peak detection code//
@@ -1308,7 +1204,7 @@ void findPeaks(vector<float> x0, vector<int>& peakInds)
 }
 //----------------------------------------------------------------------------
 #include <pcl/surface/on_nurbs/fitting_curve_pdm.h>
-// Headless: no viewerT
+pcl::visualization::PCLVisualizer viewerT("Curve Fitting 3D");
 
 void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 {
@@ -1363,14 +1259,9 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 
 
 
-    MatrixXd b1, b1_withN;
-    b1 = readFile(b1_FilePath, 3);// 
-    b1_withN = readFile(b1_FilePath, 6);
-    // Guard: if too few points, emit a single segment and return (avoids OOB on small inputs)
-    if (b1.rows() < std::max(30, 3*len)) {
-        writeMatrix_to_XYZ_withNormals(b1_withN, outPath + "1.xyz");
-        return;
-    }
+	MatrixXd b1, b1_withN;
+	b1 = readFile(b1_FilePath, 3);// 
+	b1_withN = readFile(b1_FilePath, 6);
 	//int len = 60;
 	int k = 0;
 	int noOfPossiblePoints = b1.rows() - (2 * len);
@@ -1652,17 +1543,18 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 		smoothedSegment->width = smoothedSegment->points.size();
 		smoothedSegment->height = 1;
 
-            for (size_t i = 1; i + 1 < smoothedSegment->points.size(); i++)
-            {
-                // Loosen search to capture more neighbors at Tray scale
-                const int K_NEIGH = 20;
-                int found = tree_->nearestKSearch(smoothedSegment->points[i], K_NEIGH, nn_indices, nn_dists);
-                for (int j = 0; j < found; ++j) {
-                    if (j < static_cast<int>(nn_dists.size()) && nn_dists[j] <= 1.8) {
-                        nn_indicesAll.push_back(nn_indices[j]);
-                    }
-                }
-            }
+		for (size_t i = 1; i < smoothedSegment->points.size() - 1; i++)
+		{
+			tree_->nearestKSearch(smoothedSegment->points[i], 20, nn_indices, nn_dists);
+			for (size_t i = 0; i < 20; i++)
+			{
+				if (nn_dists[i] <= 1.8)
+				{
+					nn_indicesAll.push_back(nn_indices[i]);
+				}
+				//rawBreaklinePtsInSegment->points.push_back(rawBreaklinePts->points[nn_indices[i]]);
+			}
+		}
 
 		// Sort and remove duplicate indices
 		std::sort(nn_indicesAll.begin(), nn_indicesAll.end());
@@ -1681,20 +1573,12 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 
 	}
 
-	// Headless: disable visualization spinner for breakline preview
-}
-
-// Compute bounding box diagonal of a simple XYZ file
-static double compute_diag_from_xyz_file(const std::string& path) {
-    std::ifstream in(path);
-    if (!in.is_open()) return 1.0;
-    double x,y,z; bool any=false;
-    double minx=1e30,miny=1e30,minz=1e30,maxx=-1e30,maxy=-1e30,maxz=-1e30;
-    while (in >> x >> y >> z) { any=true; minx=std::min(minx,x); miny=std::min(miny,y); minz=std::min(minz,z); maxx=std::max(maxx,x); maxy=std::max(maxy,y); maxz=std::max(maxz,z); }
-    if (!any) return 1.0;
-    double dx=maxx-minx, dy=maxy-miny, dz=maxz-minz;
-    double d = std::sqrt(dx*dx+dy*dy+dz*dz);
-    return (d>1e-6)? d : 1.0;
+	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+	viewer = rgbVis(pointCloud_b1_ptr);
+	viewer->resetCamera();
+	viewer->spinOnce(100);
+	boost::this_thread::sleep(boost::posix_time::seconds(3));
+	viewer->close();
 }
 
 void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileName, bool outerSurface, double distThreshold = 2, double distThresholdForMatchingEndpoints = 20)
@@ -1711,15 +1595,8 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 	string outPath = "";
 	string origFilePath = fileName;
 
-    MatrixXd originalPointCloudMatrix;
-    originalPointCloudMatrix = readFile(origFilePath, 3);
-    // Canonicalize scale so fixed thresholds behave consistently across datasets
-    double diag = compute_diag_from_xyz_file(origFilePath);
-    const double targetDiag = 100.0; // arbitrary canonical diagonal length
-    double scale_s = (diag > 1e-6) ? (targetDiag / diag) : 1.0;
-    if (std::isfinite(scale_s) && scale_s > 0.0 && std::fabs(scale_s - 1.0) > 1e-6) {
-        originalPointCloudMatrix *= scale_s;
-    }
+	MatrixXd originalPointCloudMatrix;
+	originalPointCloudMatrix = readFile(origFilePath, 3);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_OriginalSurface(new pcl::PointCloud<pcl::PointXYZ>);
 	for (size_t i = 0; i < originalPointCloudMatrix.rows(); i++)
 	{
@@ -1779,16 +1656,12 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 		cloud->points[i].z = matrixPointCloud(i, 2);
 	}
 
-    pcl::io::savePCDFile(tempEdgeFolder + "smoothed.pcd", *cloud);
+	pcl::io::savePCDFile(tempEdgeFolder + "smoothed.pcd", *cloud);
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr projectedCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	fitBSplineSurfaceAndGetNormalsOnProjectedPoints(fileName, cloud, projectedCloudWithNormals);
 
-    numberOfPoints = projectedCloudWithNormals->points.size();
-    // De-normalize back to original scale for downstream consumers
-    if (std::isfinite(scale_s) && scale_s > 0.0 && std::fabs(scale_s - 1.0) > 1e-6) {
-        for (auto &p : projectedCloudWithNormals->points) { p.x /= scale_s; p.y /= scale_s; p.z /= scale_s; }
-    }
+	numberOfPoints = projectedCloudWithNormals->points.size();
 	MatrixXd MatrixXYZ;// (3, numberOfPoints);
 	MatrixXd MatrixNormals;// (3, numberOfPoints);
 
@@ -1877,18 +1750,7 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 		cloud_New->points[i].normal_z = ProjectedMatrix(i, 5);
 	}
 
-        // Save raw breakline points (XYZ only) for downstream segmentation
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ProjectedXYZ(new pcl::PointCloud<pcl::PointXYZ>);
-        cloud_ProjectedXYZ->width = ProjectedMatrix.rows();
-        cloud_ProjectedXYZ->height = 1;
-        cloud_ProjectedXYZ->is_dense = false;
-        cloud_ProjectedXYZ->points.resize(cloud_ProjectedXYZ->width * cloud_ProjectedXYZ->height);
-        for (size_t i = 0; i < ProjectedMatrix.rows(); i++) {
-            cloud_ProjectedXYZ->points[i].x = ProjectedMatrix(i, 0);
-            cloud_ProjectedXYZ->points[i].y = ProjectedMatrix(i, 1);
-            cloud_ProjectedXYZ->points[i].z = ProjectedMatrix(i, 2);
-        }
-        pcl::io::savePCDFile(tempEdgeFolder + "CompleteBreakline.pcd", *cloud_ProjectedXYZ);
+	pcl::io::savePCDFile(tempEdgeFolder + "CompleteBreakline.pcd", *cloud);
 }
 
 void cleanSamples(string pointCloudDataFile)
@@ -1941,17 +1803,15 @@ void cleanSamples(string pointCloudDataFile)
 
 		ss.str(std::string());
 	}
-    cloud_OriginalSurface->height = 1;
-    cloud_OriginalSurface->width = cloud_OriginalSurface->points.size();
-    std::cout << "[DEBUG] cleanSamples: input pts=" << cloud_OriginalSurface->points.size() << std::endl;
+	cloud_OriginalSurface->height = 1;
+	cloud_OriginalSurface->width = cloud_OriginalSurface->points.size();
 
 	
 	pcl::StatisticalOutlierRemoval<pcl::PointNormal> sor;
 	sor.setInputCloud(cloud_OriginalSurface);
-    sor.setMeanK(50);
-    sor.setStddevMulThresh(50); // relax to preserve more points for Tray scale
-    sor.filter(*cloud_filteredB);
-    std::cout << "[DEBUG] cleanSamples: after SOR pts=" << cloud_filteredB->points.size() << std::endl;
+	sor.setMeanK(50);
+	sor.setStddevMulThresh(9);
+	sor.filter(*cloud_filteredB);
 	// pcl::io::savePCDFileASCII("cloud_Surface_AllSamples_Cleaned.pcd", *cloud_filteredB);
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Surface_AllSamples_Cleaned.pcd", *cloud_filteredB);
 
@@ -2794,48 +2654,15 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
     currentFileName = fileName;
     currentMeshFile = meshFileName;
 
-    cout << "[DEBUG] processFragmentData: surface=" << surfacePointCloudFilePath
-         << " mesh=" << fragmentMeshFilePath << endl;
     cout << "Fragment: " + fragmentMeshFilePath << endl << endl;
 
     // -------------------- 전처리: 표면 포인트 클라우드 클린업 및 breakline 추출 --------------------
 	cout << "Cleaning surface point cloud..." << endl;
     cleanSamples(surfacePointCloudFilePath); // (표면 포인트 클라우드 클린업 함수)
-    {
-        // Inspect cleaned surface-with-normals cloud
-        pcl::PointCloud<pcl::PointNormal>::Ptr surf_norm(new pcl::PointCloud<pcl::PointNormal>);
-        std::string cleaned = tempEdgeFolder + std::string("cloud_Surface_AllSamples_Cleaned.pcd");
-        if (pcl::io::loadPCDFile(cleaned, *surf_norm) == 0) {
-            cout << "[DEBUG] cleaned surface normals pts=" << surf_norm->points.size() << " (" << cleaned << ")" << endl;
-        } else {
-            cout << "[DEBUG] cleaned surface normals missing: " << cleaned << endl;
-        }
-    }
     cout << "Estimating patch normals and breaklines..." << endl;
-    estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(tempEdgeFolder + std::string("pointCloudFromMesh.xyz"), false);
-    {
-        // Inspect CompleteBreakline artifacts
-        pcl::PointCloud<pcl::PointXYZ>::Ptr br_xyz(new pcl::PointCloud<pcl::PointXYZ>);
-        if (pcl::io::loadPCDFile(tempEdgeFolder + std::string("CompleteBreakline.pcd"), *br_xyz) == 0) {
-            cout << "[DEBUG] CompleteBreakline.pcd pts=" << br_xyz->points.size() << endl;
-        } else {
-            cout << "[DEBUG] CompleteBreakline.pcd missing" << endl;
-        }
-    }
+    estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(tempEdgeFolder + "pointCloudFromMesh.xyz", false);
     cout << "Detecting separate line segments..." << endl;
-    detectSeparateLineSegments(tempEdgeFolder + std::string("CompleteBreakline.xyz"));
-    {
-        // Count segment files produced
-        using boost::filesystem::directory_iterator;
-        size_t segCount = 0;
-        boost::filesystem::path segDir("Segments/");
-        if (boost::filesystem::exists(segDir)) {
-            for (auto it = directory_iterator(segDir); it != directory_iterator(); ++it) {
-                if (boost::filesystem::is_regular_file(*it) && it->path().extension() == ".xyz") segCount++;
-            }
-        }
-        cout << "[DEBUG] Segments/*.xyz files=" << segCount << endl;
-    }
+    detectSeparateLineSegments(tempEdgeFolder + "CompleteBreakline.xyz");
 
     MatrixXd matrix_breakLineSeg;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_breakLineSeg(new pcl::PointCloud<pcl::PointXYZ>);
@@ -2949,51 +2776,13 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
     std::filesystem::create_directories(breaklinesDir);
 	string completeBreaklinePath = tempEdgeFolder + "CompleteBreakline.xyz";
 	// 최종 결과는 OUTPUT_BREAKLINES_FOLDER에 저장
-        string pcdFilePath = datasetBreaklinesFolder + breaklineFileName + ".pcd";
-        string plyFilePath = datasetBreaklinesFolder + breaklineFileName + ".ply";
-        string xyzFilePath = datasetBreaklinesFolder + breaklineFileName + ".xyz";
+	string pcdFilePath = datasetBreaklinesFolder + breaklineFileName + ".pcd";
+	string plyFilePath = datasetBreaklinesFolder + breaklineFileName + ".ply";
+	string xyzFilePath = datasetBreaklinesFolder + breaklineFileName + ".xyz";
 
-        // Fallback: if breakline cloud is empty, synthesize from boundary points with normals from surface
-        if (cloud_CompleteBreakline->points.empty()) {
-            std::cerr << "[EDGELINE] Breakline cloud empty; synthesizing from boundary points" << std::endl;
-            // Load cleaned surface with normals
-            pcl::PointCloud<pcl::PointNormal>::Ptr cloud_OrigWithNormals(new pcl::PointCloud<pcl::PointNormal>);
-            pcl::io::loadPCDFile(tempEdgeFolder + "cloud_Surface_AllSamples_Cleaned.pcd", *cloud_OrigWithNormals);
-            pcl::KdTreeFLANN<pcl::PointNormal> kdtreePN;
-            if (!cloud_OrigWithNormals->empty()) {
-                kdtreePN.setInputCloud(cloud_OrigWithNormals);
-            }
-            // Load boundary points
-            pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryLoad(new pcl::PointCloud<pcl::PointXYZ>);
-            if (pcl::io::loadPCDFile(tempEdgeFolder + "boundaryImproved.pcd", *boundaryLoad) != 0) {
-                pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryLoad);
-            }
-            for (const auto &bp : boundaryLoad->points) {
-                pcl::PointNormal pn; pn.x = bp.x; pn.y = bp.y; pn.z = bp.z;
-                if (!cloud_OrigWithNormals->empty()) {
-                    std::vector<int> idx(1); std::vector<float> dist2(1);
-                    pcl::PointNormal query; query.x = bp.x; query.y = bp.y; query.z = bp.z;
-                    if (kdtreePN.nearestKSearch(query, 1, idx, dist2) > 0) {
-                        const auto &sn = cloud_OrigWithNormals->points[idx[0]];
-                        pn.normal_x = sn.normal_x; pn.normal_y = sn.normal_y; pn.normal_z = sn.normal_z;
-                    } else {
-                        pn.normal_x = 0.0f; pn.normal_y = 0.0f; pn.normal_z = 1.0f;
-                    }
-                } else {
-                    pn.normal_x = 0.0f; pn.normal_y = 0.0f; pn.normal_z = 1.0f;
-                }
-                cloud_CompleteBreakline->points.push_back(pn);
-            }
-            cloud_CompleteBreakline->width = cloud_CompleteBreakline->points.size();
-            cloud_CompleteBreakline->height = 1;
-        }
-
-        // Write with custom PCD writer to include segment header + normals
-        writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline);
-        pcl::io::savePLYFile(plyFilePath, *cloud_CompleteBreakline);
-        if (fs::exists(completeBreaklinePath)) {
-            fs::rename(completeBreaklinePath, xyzFilePath);
-        }
+	pcl::io::savePCDFile(pcdFilePath, *cloud_CompleteBreakline);
+	pcl::io::savePLYFile(plyFilePath, *cloud_CompleteBreakline);
+	fs::rename(completeBreaklinePath, xyzFilePath);
 
     
     // -------------------- (추가) Fractured surface 관련 처리 --------------------
@@ -3103,10 +2892,27 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 
 void loadOBJ(string objFilePath, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLine, Eigen::Matrix4f& transform)
 {
-    // Headless: avoid VTK/texture mesh and visualization. Only transform the breakline points.
-    if (cloud_BreakLine && !cloud_BreakLine->empty()) {
-        pcl::transformPointCloud(*cloud_BreakLine, *cloud_BreakLine, transform);
-    }
+
+	pcl::TextureMesh mesh1;
+	pcl::io::loadPolygonFileOBJ(objFilePath, mesh1);
+	pcl::TextureMesh mesh2;
+	pcl::io::loadOBJFile(objFilePath, mesh2);
+	mesh1.tex_materials = mesh2.tex_materials;
+
+	pcl::PointCloud<pcl::PointXYZ> cloud;
+	pcl::fromPCLPointCloud2(mesh1.cloud, cloud);
+	pcl::transformPointCloud(cloud, cloud, transform);
+	pcl::toPCLPointCloud2(cloud, mesh1.cloud);
+
+
+	viewer_FinalResult.addTextureMesh(mesh1, "mesh_" + objFilePath, 0);
+
+	pcl::transformPointCloud(*cloud_BreakLine, *cloud_BreakLine, transform);
+	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> rgb_1(cloud_BreakLine, 255, 5, 5);
+	viewer_FinalResult.addPointCloud(cloud_BreakLine, rgb_1, "breakline_" + objFilePath, 0);
+
+	viewer_FinalResult.setBackgroundColor(0, 0, 0, 0);
+	viewer_FinalResult.spinOnce();
 }
 
 namespace fs = std::experimental::filesystem;

@@ -7,8 +7,9 @@ function vt = run_potsac(C1, C2)
 if nargin < 2
     num_points = size(C1, 2);
     C = C1;
-    C1 = C(:,1:(0.5*num_points));
-    C2 = C(:,(0.5*num_points):1:num_points);
+    half_point = floor(0.5*num_points);  % Fix: Use floor to ensure integer
+    C1 = C(:,1:half_point);
+    C2 = C(:,(half_point+1):1:num_points);  % Fix: Start from half_point+1 to avoid overlap
 else
     C = [C1, C2];
     num_points = size(C, 2);
