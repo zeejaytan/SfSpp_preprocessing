@@ -1810,26 +1810,16 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 	vector<int> out;
 
-	// ADAPTIVE PEAK DETECTION: Scale sensitivity with breakline density
-	// Sparse breaklines need LESS sensitive detection (fewer false peaks from noise)
-	// Dense breaklines can afford MORE sensitive detection (real geometric features)
-	double sensitivity_divisor;
-	if (num_points < 40) {
-		// Very sparse: Use 8.0 (half sensitivity = much fewer peaks detected)
-		sensitivity_divisor = 8.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Sparse breakline (" << num_points
-		          << " points) using low sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else if (num_points < 80) {
-		// Medium sparse: Use 6.0 (reduced sensitivity)
-		sensitivity_divisor = 6.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Medium breakline (" << num_points
-		          << " points) using medium sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else {
-		// Dense: Use original 4.0 (standard sensitivity)
-		sensitivity_divisor = 4.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Dense breakline (" << num_points
-		          << " points) using standard sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	}
+	// FIXED PEAK DETECTION SENSITIVITY (Issue #1 fix)
+	// Previously: Adaptive sensitivity (4.0-8.0) caused segment count mismatches
+	// Problem: Fragments from same pot had different segment counts → LCS matching failed
+	// Solution: Fixed sensitivity ensures consistent segmentation across all fragments
+	// This is critical for downstream Structure-from-Sherds assembly system
+	// Value 5.0 is middle ground: balances noise rejection with feature detection
+	double sensitivity_divisor = 5.0;
+	std::cout << "[FIXED PEAK DETECTION] Breakline (" << num_points
+	          << " points) using fixed sensitivity (divisor=" << sensitivity_divisor
+	          << ") for assembly consistency" << std::endl;
 
 	findPeaks(in, out, sensitivity_divisor);
 
