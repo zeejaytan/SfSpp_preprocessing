@@ -930,13 +930,28 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	boundary_est.setInputNormals(normals);
 
 	// ADAPTIVE: Compute boundary radius based on point cloud density
+	// For N points distributed over a surface, estimate spacing = sqrt(area/N)
+	// Pottery fragment surfaces typically span 100-1000 mm² (10-30mm characteristic length)
+	// Use 400mm² as representative area (20mm × 20mm surface patch)
 	int num_pts = cloudWithoutNormals->points.size();
-	double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));
-	double boundary_radius_m = std::max(0.001, std::min(0.015, estimated_spacing_m * 6.0));
-	boundary_est.setRadiusSearch(boundary_radius_m);
+	double estimated_area_mm2 = 400.0;  // Typical surface area for pottery fragment patches
+	double estimated_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_pts));
+
+	// Boundary radius should be 6x the point spacing to capture local neighborhood
+	double boundary_radius_mm = estimated_spacing_mm * 6.0;
+
+	// Clamp to reasonable range: 3-50mm for pottery fragments
+	// Dense clouds (>2000 pts) → ~3mm radius (fine detail)
+	// Medium clouds (100-500 pts) → 8-12mm radius (standard)
+	// Sparse clouds (<100 pts) → up to 17mm radius (robust to gaps)
+	boundary_radius_mm = std::max(3.0, std::min(50.0, boundary_radius_mm));
+
+	// IMPORTANT: Point cloud coordinates are in MILLIMETERS after coordinate fix (PREPROCESSING_FIXES.md)
+	// PCL BoundaryEstimation expects radius in same units as point coordinates
+	boundary_est.setRadiusSearch(boundary_radius_mm);
 	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"
-	          << (estimated_spacing_m*1000) << "mm, boundary_r="
-	          << (boundary_radius_m*1000) << "mm" << std::endl;
+	          << estimated_spacing_mm << "mm, boundary_r="
+	          << boundary_radius_mm << "mm" << std::endl;
 	//boundary_est.setAngleThreshold(0.6 * M_PI);//M_PI
 	boundary_est.setAngleThreshold(M_PI * 0.6);//M_PI
 	boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
@@ -995,17 +1010,27 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// build the filter
 	outrem.setInputCloud(boundaryCloud_Improved);
 
-	// ADAPTIVE: Match outlier removal radius to boundary detection radius
+	// ADAPTIVE: Outlier removal radius based on boundary point density
+	// Use same area-based estimation as boundary detection
 	int num_boundary = boundaryCloud_Improved->points.size();
-	double outlier_spacing_m = std::sqrt(1.0 / std::max(100, num_boundary));
-	double outlier_radius_m = std::max(0.002, std::min(0.020, outlier_spacing_m * 8.0));
-	outrem.setRadiusSearch(outlier_radius_m);
+	double estimated_area_mm2 = 400.0;  // Same assumption as boundary detection
+	double outlier_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_boundary));
+
+	// Outlier removal needs slightly larger radius (8x spacing vs 6x for boundary)
+	// This prevents removing valid isolated points near fragment edges
+	double outlier_radius_mm = outlier_spacing_mm * 8.0;
+
+	// Clamp to reasonable range: 4-50mm
+	// Wider range than boundary detection to be more conservative about removing points
+	outlier_radius_mm = std::max(4.0, std::min(50.0, outlier_radius_mm));
+	outrem.setRadiusSearch(outlier_radius_mm);
 
 	// COMBINATION APPROACH PART 1: Relax outlier removal for small boundaries
 	int min_neighbors = (num_boundary < 100) ? 3 : 6;  // Less strict for small boundaries
 	outrem.setMinNeighborsInRadius(min_neighbors);
-	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, outlier_r="
-	          << (outlier_radius_m*1000) << "mm, min_neighbors=" << min_neighbors << std::endl;
+	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, spacing≈"
+	          << outlier_spacing_mm << "mm, outlier_r="
+	          << outlier_radius_mm << "mm, min_neighbors=" << min_neighbors << std::endl;
 	outrem.setKeepOrganized(true);
 	// apply filter
 	outrem.filter(*cloud_filtered);
