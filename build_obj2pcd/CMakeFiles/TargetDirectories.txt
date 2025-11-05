@@ -1,0 +1,8 @@
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/MeshPreprocessing.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/EdgeLineExtraction.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/MeshPreprocessingHeadless.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/EdgeLineExtractionHeadless.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/all_targets.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/ObjToPcd.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/edit_cache.dir
+/workspace/original_nurbs_preprocessing/build_obj2pcd/CMakeFiles/rebuild_cache.dir

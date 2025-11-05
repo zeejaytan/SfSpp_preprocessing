@@ -89,7 +89,7 @@
 #include <CGAL/algorithm.h>
 #include <CGAL/assertions.h>
 
-#include <CGAL/IO/File_writer_wavefront.h>
+#include <CGAL/IO/OBJ/File_writer_wavefront.h>
 #include <CGAL/IO/generic_copy_OFF.h>
 #include <CGAL/Surface_mesh/IO.h>
 
