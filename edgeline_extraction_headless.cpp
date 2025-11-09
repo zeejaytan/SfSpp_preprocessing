@@ -3463,6 +3463,15 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         string outPathTemp = tempDataPath(potID);
         bool isRim = isBreaklineSegARim(cloud_breakLineSeg, outPathTemp + fileNameOnly + "_SampledWithNormals.ply", segCount);
         index.push_back(to_string(segStartIndex) + " " + to_string(totalPtsCounter) + " " + (isRim ? "1" : "0"));
+
+        // BUG FIX #1: Call getPointsOnFracturedSurface to actually populate fracture surface data
+        // This function was defined but never called, leaving cloud_PointsOnFracturedSurface empty
+        std::cout << "[FRACTURE SURFACE] Extracting fracture surface points for segment " << segCount << std::endl;
+        getPointsOnFracturedSurface(cloud_breakLineSeg, fragmentMeshFilePath,
+                                     outPathTemp + fileNameOnly + "_SampledWithNormals.ply",
+                                     segCount, cloud_PointsOnFracturedSurface,
+                                     cloud_PointsOnIntExtSurfaceNearBreakline);
+
         segStartIndex = totalPtsCounter + 1;
         segCount++;
     }
@@ -3498,7 +3507,28 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         }
         cloud_PointsOnFracturedSurfaceNoDuplicates->width = cloud_PointsOnFracturedSurfaceNoDuplicates->points.size();
         cloud_PointsOnFracturedSurfaceNoDuplicates->height = 1;
-        pcl::io::savePCDFile(currentFileName + "_FracturedSurfacePts.pcd", *cloud_PointsOnFracturedSurfaceNoDuplicates);
+
+        // BUG FIX #2, #3: Fix output path and filename format
+        // Old: saves to "build/Pot_A_Piece_01_Surface_0_FracturedSurfacePts.pcd"
+        // New: saves to "Dataset/Surfaces/Pot_A/Pot_A_Piece_01_Surface_F.pcd"
+        string fractureSurfaceFileName = currentFileName;
+        size_t posSurface = fractureSurfaceFileName.find("Surface_0");
+        if (posSurface != string::npos) {
+            fractureSurfaceFileName.replace(posSurface, string("Surface_0").length(), "Surface_F");
+        } else {
+            posSurface = fractureSurfaceFileName.find("Surface_1");
+            if (posSurface != string::npos) {
+                fractureSurfaceFileName.replace(posSurface, string("Surface_1").length(), "Surface_F");
+            }
+        }
+
+        // Use same directory structure as surfaces (Dataset/Surfaces/Pot_X/)
+        string surfacesDir = getSurfaceDatasetPath(potID);
+        string fractureSurfaceFilePath = surfacesDir + fractureSurfaceFileName + ".pcd";
+
+        std::cout << "[FRACTURE SURFACE] Saving " << cloud_PointsOnFracturedSurfaceNoDuplicates->points.size()
+                  << " fracture surface points to: " << fractureSurfaceFilePath << std::endl;
+        pcl::io::savePCDFile(fractureSurfaceFilePath, *cloud_PointsOnFracturedSurfaceNoDuplicates);
         
         pcl::PointCloud<PointNormal>::Ptr cloud_PointsOnIntExtSurfaceNoDuplicates(new pcl::PointCloud<PointNormal>);
         vector<PointNormal> vectorPointNormal2;
