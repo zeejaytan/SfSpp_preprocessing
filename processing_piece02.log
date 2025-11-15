@@ -1,0 +1,104 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Starting background processing...
+Processing specific file: Dataset/Mesh/Pot_A/Pot_A_Piece_02_Mesh.obj
+Pot ID: A, Piece ID: 2
+Point cloud already exists: "./Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd"
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+
+Selected file: ./Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting processing on: ./Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+
+Total points: 28057
+Number of clusters is equal to 7
+Points in 
+Cluster 1 : 12093
+Cluster 2 : 10664
+Cluster 3 : 797
+Cluster 4 : 144
+Cluster 5 : 64
+Cluster 6 : 52
+Cluster 7 : 50
+Points in two clusters / Total Points in Pointcloud: 81.11%
+Points in two clusters / Total Points in all clusters: 95.36%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 2
+Condition 2 (normal vector similarity) passed for clusters 0 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 2
+Verification failed (innerPoint selection) for clusters 0 and 2
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Condition 1 (closest point pairs) passed for clusters 1 and 3
+Condition 2 (normal vector similarity) passed for clusters 1 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 3
+Verification failed (innerPoint selection) for clusters 1 and 3
+Condition 1 (closest point pairs) passed for clusters 1 and 5
+Condition 2 (normal vector similarity) failed for clusters 1 and 5
+Condition 1 (closest point pairs) passed for clusters 4 and 5
+Condition 2 (normal vector similarity) passed for clusters 4 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 4 and 5
+Verification failed (innerPoint selection) for clusters 4 and 5
+Condition 1 (closest point pairs) passed for clusters 4 and 6
+Condition 2 (normal vector similarity) passed for clusters 4 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 4 and 6
+Verification failed (innerPoint selection) for clusters 4 and 6
+Sampled indices: 6640 10462 8435 5527 11045 10173 10593 9886 11096 10823 1190 1924 291 11102 5248 889 1027 9662 406 1875 4560 7453 729 5908 10586 2962 6677 8197 10133 11178 
+Normals flipped: false
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+  loading cloudForSpline.pcd
+  10000 points in data set
+  mathematical surface fitting ...
+  TPS surface fitting through 10000 points...
+  Building TPS surface from 10000 points...
+  Subsampled to 1000 points for TPS fitting
+  TPS surface fitted with 1000 control points
+  TPS surface fitting completed with C2 continuity
+  loading cloudForSpline.pcd
+  10000 points in data set
+  mathematical surface fitting ...
+  TPS surface fitting through 10000 points...
+  Building TPS surface from 10000 points...
+  Subsampled to 1000 points for TPS fitting
+  TPS surface fitted with 1000 control points
+  TPS surface fitting completed with C2 continuity
+PointCloud representing the Cluster: 4108 data points.
+Ply to XYZ start
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:34: property 'float32 k2' of element 'camera' is not handled
+
+Time after processing: 121.5 seconds
+Total time elapsed: 121.9 seconds
+Background processing completed

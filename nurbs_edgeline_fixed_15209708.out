@@ -1,0 +1,60 @@
+=== NURBS EdgeLine Extraction with Curvature Fix ===
+Job ID: 15209708
+Start time: Thu 04 Sep 2025 10:55:54 AEST
+Using newly built EdgeLineExtractionHeadless with curvature fix
+
+Running EdgeLine extraction with PCL NURBS container...
+
+EdgeLine extraction completed at: Thu 04 Sep 2025 10:55:55 AEST
+=== Generated NURBS Breakline Files with Curvature Fix ===
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_1.pcd
+
+=== Verifying Curvature Fix (should show ~1.9e-42, not 2e+26) ===
+=== Job Finished ===

@@ -1,0 +1,103 @@
+Bootstrap: localimage
+From: sfs_prep_base.sif
+
+%help
+  SfS Preprocessing Tools Container
+  – optimized mesh processing and edge extraction
+  – built on pre-configured base dependencies
+  – production-ready for HPC workflows
+
+%labels
+  Author    SfS Preprocessing Team
+  Version   1.0.0
+  Stage     preprocessing-tools
+
+%files
+  # Copy source files to container
+  mesh_processing.cpp /opt/sfs_prep/src/mesh_processing.cpp
+  edgeline_extraction.cpp /opt/sfs_prep/src/edgeline_extraction.cpp
+  CMakeLists.txt /opt/sfs_prep/src/CMakeLists.txt
+  data_path.h /opt/sfs_prep/src/data_path.h
+  alglib /opt/sfs_prep/src/alglib
+
+%post
+  echo "[PREPROCESSING BUILD] Building optimized tools..."
+  
+  # Set build environment
+  export NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo 4)
+  export CMAKE_PREFIX_PATH="/opt/sfs_prep:/usr"
+  
+  # Build from local source
+  echo "Building from local source..."
+  cd /opt/sfs_prep/src
+  mkdir -p build && cd build
+  
+  # Use optimized CMake configuration
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/opt/sfs_prep \
+    -DCMAKE_CXX_FLAGS="-O2 -DNDEBUG" \
+    -DBUILD_SHARED_LIBS=OFF
+  
+  # Build with monitoring
+  echo "Starting optimized compilation..."
+  timeout 1800 make -j${NPROC} VERBOSE=1 || {
+    echo "Build timeout - trying single-threaded..."
+    make -j1
+  }
+  
+  # Install binaries
+  cp MeshPreprocessing /opt/sfs_prep/bin/
+  cp EdgeLineExtraction /opt/sfs_prep/bin/
+  
+  # Clean up build artifacts to reduce image size
+  cd /opt/sfs_prep && rm -rf src/build
+  
+  # Verify installation
+  echo "[VERIFICATION] Testing built tools..."
+  ls -la /opt/sfs_prep/bin/
+  
+  # Create convenience scripts
+  cat > /opt/sfs_prep/bin/preprocess-mesh << 'EOF'
+#!/bin/bash
+exec /opt/sfs_prep/bin/MeshPreprocessing "$@"
+EOF
+  
+  cat > /opt/sfs_prep/bin/extract-edges << 'EOF'
+#!/bin/bash
+exec /opt/sfs_prep/bin/EdgeLineExtraction "$@"
+EOF
+  
+  chmod +x /opt/sfs_prep/bin/preprocess-mesh
+  chmod +x /opt/sfs_prep/bin/extract-edges
+  
+  echo "Preprocessing tools installation complete ✓"
+
+%environment
+  export PATH="/opt/sfs_prep/bin:${PATH}"
+  export LD_LIBRARY_PATH="/opt/sfs_prep/lib:${LD_LIBRARY_PATH}"
+  export CMAKE_PREFIX_PATH="/opt/sfs_prep:${CMAKE_PREFIX_PATH}"
+
+%runscript
+  # Default usage examples
+  if [ $# -eq 0 ]; then
+    echo "SfS Preprocessing Tools Container"
+    echo "Usage examples:"
+    echo "  $(basename $0) MeshPreprocessing"
+    echo "  $(basename $0) EdgeLineExtraction"
+    echo "  $(basename $0) preprocess-mesh"
+    echo "  $(basename $0) extract-edges"
+    exit 0
+  fi
+  
+  # Execute the specified tool
+  exec "$@"
+
+%test
+  echo "Testing preprocessing tools..."
+  
+  # Test that binaries exist and are executable
+  test -x /opt/sfs_prep/bin/MeshPreprocessing && echo "✓ MeshPreprocessing binary found"
+  test -x /opt/sfs_prep/bin/EdgeLineExtraction && echo "✓ EdgeLineExtraction binary found"
+  
+  echo "Preprocessing tools container ready ✓"

@@ -1,0 +1,132 @@
+=== Building Preprocessing Tools in Working SFS Container ===
+Container found: /data/gpfs/projects/punim2657/sfs_main/sfspreproc.sif
+Container size: 815M
+Starting build inside container...
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Container environment check:
+OS: 
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+CMake: 
+cmake version 3.22.1
+G++: 
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+
+Library paths:
+	libvtkverdict-9.1.so.1 (libc6,x86-64) => /lib/x86_64-linux-gnu/libvtkverdict-9.1.so.1
+	libvtkverdict-9.1.so (libc6,x86-64) => /lib/x86_64-linux-gnu/libvtkverdict-9.1.so
+	libvtksys-9.1.so.1 (libc6,x86-64) => /lib/x86_64-linux-gnu/libvtksys-9.1.so.1
+	libvtksys-9.1.so (libc6,x86-64) => /lib/x86_64-linux-gnu/libvtksys-9.1.so
+	libvtkpugixml-9.1.so.1 (libc6,x86-64) => /lib/x86_64-linux-gnu/libvtkpugixml-9.1.so.1
+
+PCL headers:
+
+VTK headers:
+
+Starting compilation...
+Configuring with CMake...
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+CMake Deprecation Warning at /usr/lib/x86_64-linux-gnu/cmake/vtk-9.1/vtk-use-file-deprecated.cmake:1 (message):
+  The `VTK_USE_FILE` is no longer used starting with 8.90.
+Call Stack (most recent call first):
+  CMakeLists.txt:19 (include)
+
+
+-- Using header-only CGAL
+-- Targetting Unix Makefiles
+-- Using /usr/bin/c++ compiler.
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.48")  
+-- Boost include dirs: /usr/include
+-- Boost libraries:    
+-- Using gcc version 4 or later. Adding -frounding-math
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem thread 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspace/container_build/build
+Building preprocessing tools...
+/usr/bin/cmake -S/workspace/container_build -B/workspace/container_build/build --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start /workspace/container_build/build/CMakeFiles /workspace/container_build/build//CMakeFiles/progress.marks
+make  -f CMakeFiles/Makefile2 all
+make[1]: Entering directory '/workspace/container_build/build'
+make  -f CMakeFiles/EdgeLineExtraction.dir/build.make CMakeFiles/EdgeLineExtraction.dir/depend
+make[2]: Entering directory '/workspace/container_build/build'
+cd /workspace/container_build/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /workspace/container_build /workspace/container_build /workspace/container_build/build /workspace/container_build/build /workspace/container_build/build/CMakeFiles/EdgeLineExtraction.dir/DependInfo.cmake --color=
+Dependencies file "CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o.d" is newer than depends file "/workspace/container_build/build/CMakeFiles/EdgeLineExtraction.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o.d" is newer than depends file "/workspace/container_build/build/CMakeFiles/EdgeLineExtraction.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target EdgeLineExtraction
+make[2]: Leaving directory '/workspace/container_build/build'
+make  -f CMakeFiles/EdgeLineExtraction.dir/build.make CMakeFiles/EdgeLineExtraction.dir/build
+make[2]: Entering directory '/workspace/container_build/build'
+[  6%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o -c /workspace/container_build/edgeline_extraction.cpp
+[ 13%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o -c /workspace/container_build/alglib/src/alglibinternal.cpp
+[ 20%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o -c /workspace/container_build/alglib/src/alglibmisc.cpp
+/workspace/container_build/edgeline_extraction.cpp:122:10: fatal error: pcl/surface/on_nurbs/fitting_surface_tdm.h: No such file or directory
+  122 | #include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [CMakeFiles/EdgeLineExtraction.dir/build.make:76: CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: Leaving directory '/workspace/container_build/build'
+make[1]: *** [CMakeFiles/Makefile2:85: CMakeFiles/EdgeLineExtraction.dir/all] Error 2
+make[1]: Leaving directory '/workspace/container_build/build'
+make: *** [Makefile:91: all] Error 2
+✗ Container build failed!
+Last 20 lines of build log:
+Consolidate compiler generated dependencies of target EdgeLineExtraction
+make[2]: Leaving directory '/workspace/container_build/build'
+make  -f CMakeFiles/EdgeLineExtraction.dir/build.make CMakeFiles/EdgeLineExtraction.dir/build
+make[2]: Entering directory '/workspace/container_build/build'
+[  6%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o -c /workspace/container_build/edgeline_extraction.cpp
+[ 13%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibinternal.cpp.o -c /workspace/container_build/alglib/src/alglibinternal.cpp
+[ 20%] Building CXX object CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o
+/usr/bin/c++ -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_DATE_TIME_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_IOSTREAMS_DYN_LINK -DBOOST_SERIALIZATION_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DCGAL_USE_GMPXX=1 -DDISABLE_PCAP -DDIY_NO_THREADS -DFMT_SHARED -DH5_BUILT_AS_DYNAMIC_LIB -DMPICH_SKIP_MPICXX -DMPI_NO_CPPBIND -DOMPI_SKIP_MPICXX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DVTK_HAS_OGGTHEORA_SUPPORT -D_MPICC_H -Dkiss_fft_scalar=double -I/workspace/container_build -isystem /usr/include/pcl-1.12 -isystem /usr/include/eigen3 -isystem /usr/include/ni -isystem /usr/include/openni2 -isystem /usr/include/vtk-9.1 -isystem /usr/include/jsoncpp -isystem /usr/include/freetype2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem /usr/lib/jvm/default-java/include -isystem /usr/lib/jvm/default-java/include/linux -isystem /usr/include/python3.10 -isystem /usr/lib/x86_64-linux-gnu/openmpi/include -isystem /usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -isystem /usr/include/hdf5/serial -isystem /usr/include/libxml2 -isystem /usr/include/double-conversion -isystem /usr/include/utf8cpp -O2 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -O3 -DNDEBUG -Wno-old-style-cast -Wno-deprecated-declarations -fPIC -frounding-math -std=gnu++17 -MD -MT CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o -MF CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o.d -o CMakeFiles/EdgeLineExtraction.dir/alglib/src/alglibmisc.cpp.o -c /workspace/container_build/alglib/src/alglibmisc.cpp
+/workspace/container_build/edgeline_extraction.cpp:122:10: fatal error: pcl/surface/on_nurbs/fitting_surface_tdm.h: No such file or directory
+  122 | #include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [CMakeFiles/EdgeLineExtraction.dir/build.make:76: CMakeFiles/EdgeLineExtraction.dir/edgeline_extraction.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: Leaving directory '/workspace/container_build/build'
+make[1]: *** [CMakeFiles/Makefile2:85: CMakeFiles/EdgeLineExtraction.dir/all] Error 2
+make[1]: Leaving directory '/workspace/container_build/build'
+make: *** [Makefile:91: all] Error 2
+=== Container build completed ===

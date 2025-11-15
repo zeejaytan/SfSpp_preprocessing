@@ -1,0 +1,2605 @@
+=== NURBS Preprocessing Pipeline for Tray-000 (40 pieces) ===
+Started: Wed 22 Oct 2025 01:44:34 AEDT
+Job ID: 16959771
+=== Step 0: Verify Input Data ===
+CloudCompare PCD files:
+Found 40 PCD files in Pot_A/
+Verification passed: 40 PCD files ready for NURBS processing
+Cleaning previous NURBS outputs for Pot_A...
+Removing old surface files (.xyz)...
+Removing old intermediate PLY files...
+Removing old breakline and surface files...
+Removing old axis files...
+=== Step 1: NURBS Surface Generation (40 pieces) ===
+This will take approximately 2-3 hours for 40 pieces...
+Running NURBS MeshPreprocessingHeadless...
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8045
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8045
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8045
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8045
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8045
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8045
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8045
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8045
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8045
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8045
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8045
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 2675
+Cluster 2 : 2409
+Cluster 3 : 80
+Points in two clusters / Total Points in Pointcloud: 63.19%
+Points in two clusters / Total Points in all clusters: 98.45%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 967 303 2628 1157 2354 821 1255 2383 836 2388 1916 1716 1411 193 1804 1523 1110 1315 156 2369 1659 1324 180 603 2477 2023 2620 2210 1658 976 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2675 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2409 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2881 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.137 seconds
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10240
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10240
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10240
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10240
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10240
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10240
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10240
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10240
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10240
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10240
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10240
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 3045
+Cluster 2 : 2856
+Cluster 3 : 525
+Cluster 4 : 149
+Cluster 5 : 65
+Cluster 6 : 59
+Points in two clusters / Total Points in Pointcloud: 57.63%
+Points in two clusters / Total Points in all clusters: 88.09%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 3
+Condition 2 (normal vector similarity) passed for clusters 0 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 3
+Verification failed (innerPoint selection) for clusters 0 and 3
+Condition 1 (closest point pairs) passed for clusters 1 and 5
+Condition 2 (normal vector similarity) passed for clusters 1 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 5
+Verification failed (innerPoint selection) for clusters 1 and 5
+Sampled indices: 769 1879 871 428 103 881 1313 346 2041 785 2338 2196 1561 2302 2380 1552 1028 286 2130 162 442 1270 2121 128 919 365 250 2970 1820 2836 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3045 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2856 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3541 data points.
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.133 seconds
+Copied Point file: Pot_A_Piece_03_Point.pcd
+Copied Mesh file: Pot_A_Piece_03_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9237
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9237
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9237
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9237
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9237
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9237
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9237
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9237
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9237
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9237
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9237
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 3122
+Cluster 2 : 1901
+Cluster 3 : 1540
+Cluster 4 : 59
+Points in two clusters / Total Points in Pointcloud: 54.38%
+Points in two clusters / Total Points in all clusters: 75.85%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2490 1481 1599 2555 366 2518 2437 2478 471 2714 821 1606 826 2044 2458 1086 768 2927 510 458 2789 757 1189 2070 1131 2510 1605 1909 2403 2499 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3122 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1901 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2615 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.086 seconds
+Copied Point file: Pot_A_Piece_04_Point.pcd
+Copied Mesh file: Pot_A_Piece_04_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10794
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10794
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10794
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10794
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10794
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10794
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10794
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10794
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10794
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10794
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10794
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 3409
+Cluster 2 : 3014
+Cluster 3 : 931
+Cluster 4 : 113
+Points in two clusters / Total Points in Pointcloud: 59.51%
+Points in two clusters / Total Points in all clusters: 86.02%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 2
+Condition 2 (normal vector similarity) passed for clusters 0 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 2
+Verification failed (innerPoint selection) for clusters 0 and 2
+Sampled indices: 2123 2372 58 2243 3210 3085 976 1888 2252 1047 792 2436 1008 232 2219 1404 1696 1460 461 2907 2427 2720 937 2966 1333 728 3003 79 1283 562 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3409 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3014 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3327 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.874 seconds
+Copied Point file: Pot_A_Piece_05_Point.pcd
+Copied Mesh file: Pot_A_Piece_05_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8491
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8491
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8490
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8490
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8490
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8490
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8490
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8490
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8490
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8490
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8490
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 3002
+Cluster 2 : 2941
+Points in two clusters / Total Points in Pointcloud: 70%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1809 2061 1507 2393 37 1115 1185 2630 1368 835 455 2553 2579 1322 1110 2759 1116 2471 408 2786 2904 1593 169 1779 1332 568 1230 817 2491 1094 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3002 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2941 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2547 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.892 seconds
+Copied Point file: Pot_A_Piece_06_Point.pcd
+Copied Mesh file: Pot_A_Piece_06_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 7916
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 7916
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 7916
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 7916
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 7916
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 7916
+[DEBUG getNormalsOnSurface] Starting function. Input points: 7916
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 7916
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 7916
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 7916
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 7916
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 2325
+Cluster 2 : 1639
+Cluster 3 : 728
+Cluster 4 : 53
+Points in two clusters / Total Points in Pointcloud: 50.08%
+Points in two clusters / Total Points in all clusters: 83.54%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 2 and 3
+Condition 2 (normal vector similarity) passed for clusters 2 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 3
+Verification failed (innerPoint selection) for clusters 2 and 3
+Sampled indices: 2299 410 991 2138 612 202 992 1867 107 1463 957 1562 402 645 873 2173 1222 328 1081 457 1703 227 2014 1112 513 717 1058 1331 460 1772 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2325 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1639 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3171 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.536 seconds
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11312
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11312
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11312
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11312
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11312
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11312
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11312
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11312
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11312
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11312
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11312
+Number of clusters is equal to 8
+Points in 
+Cluster 1 : 3398
+Cluster 2 : 2945
+Cluster 3 : 374
+Cluster 4 : 153
+Cluster 5 : 108
+Cluster 6 : 79
+Cluster 7 : 67
+Cluster 8 : 57
+Points in two clusters / Total Points in Pointcloud: 56.07%
+Points in two clusters / Total Points in all clusters: 88.33%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 6
+Condition 2 (normal vector similarity) passed for clusters 0 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 6
+Verification failed (innerPoint selection) for clusters 0 and 6
+Condition 1 (closest point pairs) passed for clusters 2 and 5
+Condition 2 (normal vector similarity) passed for clusters 2 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 5
+Verification failed (innerPoint selection) for clusters 2 and 5
+Condition 1 (closest point pairs) passed for clusters 3 and 4
+Condition 2 (normal vector similarity) passed for clusters 3 and 4
+Condition 3 (boundary curvature similarity) passed for clusters 3 and 4
+Verification failed (innerPoint selection) for clusters 3 and 4
+Condition 1 (closest point pairs) passed for clusters 3 and 5
+Condition 2 (normal vector similarity) passed for clusters 3 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 3 and 5
+Verification failed (innerPoint selection) for clusters 3 and 5
+Sampled indices: 1597 3293 1829 2768 3008 2104 2037 2463 787 64 2708 3390 3153 3026 132 2055 398 3349 2389 1878 2738 3345 2002 282 3152 3183 2196 2537 3211 2218 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3398 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2945 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 4131 data points.
+Successfully found 8 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.312 seconds
+Copied Point file: Pot_A_Piece_08_Point.pcd
+Copied Mesh file: Pot_A_Piece_08_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9077
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9077
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9077
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9077
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9077
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9077
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9077
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9077
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9077
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9077
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9077
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 2342
+Cluster 2 : 2071
+Cluster 3 : 895
+Cluster 4 : 120
+Points in two clusters / Total Points in Pointcloud: 48.62%
+Points in two clusters / Total Points in all clusters: 81.3%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 634 1609 174 491 541 1998 1459 2027 1724 2313 2178 1407 516 409 224 1894 174 1858 1938 210 454 865 2315 355 1021 797 1214 1565 80 2187 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2342 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2071 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3649 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.191 seconds
+Copied Point file: Pot_A_Piece_09_Point.pcd
+Copied Mesh file: Pot_A_Piece_09_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8055
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8055
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8055
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8055
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8055
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8055
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8055
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8055
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8055
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8055
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8055
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2661
+Cluster 2 : 2411
+Points in two clusters / Total Points in Pointcloud: 62.97%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1582 696 2097 1242 919 2111 450 2460 2439 1557 2454 1946 1368 677 2307 760 1358 494 1599 144 2630 2137 874 1225 1113 1339 1843 1679 2472 674 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2661 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2411 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2983 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.273 seconds
+Copied Point file: Pot_A_Piece_10_Point.pcd
+Copied Mesh file: Pot_A_Piece_10_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8007
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8007
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8007
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8007
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8007
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8007
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8007
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8007
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8007
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8007
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8007
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2620
+Cluster 2 : 2417
+Points in two clusters / Total Points in Pointcloud: 62.91%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1604 1475 2100 1657 847 448 1927 1975 503 1591 1119 2020 1760 1741 2531 2579 789 1507 1586 1411 1067 2177 833 1756 375 1874 1350 344 826 369 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2620 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2417 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2970 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.233 seconds
+Copied Point file: Pot_A_Piece_11_Point.pcd
+Copied Mesh file: Pot_A_Piece_11_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6381
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6381
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6381
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6381
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6381
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6381
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6381
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6381
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6381
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6381
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6381
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 1801
+Cluster 2 : 1473
+Cluster 3 : 65
+Points in two clusters / Total Points in Pointcloud: 51.31%
+Points in two clusters / Total Points in all clusters: 98.05%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 112 194 1032 14 587 1003 1510 1043 705 85 319 647 83 1333 1257 1178 638 1294 1260 1374 1325 531 1028 97 843 1151 682 1549 1422 1001 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1801 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1473 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3042 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.176 seconds
+Copied Point file: Pot_A_Piece_12_Point.pcd
+Copied Mesh file: Pot_A_Piece_12_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8068
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8068
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8067
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8067
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8067
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8067
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8067
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8067
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8067
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8067
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8067
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2886
+Cluster 2 : 2677
+Points in two clusters / Total Points in Pointcloud: 68.96%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 899 2165 2061 2709 2336 2663 2102 2651 1971 1434 1270 634 1360 2595 379 2641 636 1222 2637 1944 111 508 1686 1042 2564 1403 776 744 1280 2775 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2886 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2677 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2504 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.782 seconds
+Copied Point file: Pot_A_Piece_13_Point.pcd
+Copied Mesh file: Pot_A_Piece_13_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11216
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11216
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11215
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11215
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11215
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11215
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11215
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11215
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11215
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11215
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11215
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 4325
+Cluster 2 : 4113
+Cluster 3 : 55
+Points in two clusters / Total Points in Pointcloud: 75.24%
+Points in two clusters / Total Points in all clusters: 99.35%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1436 2532 1900 1359 1428 1837 620 1249 2571 2853 427 3637 146 901 2663 474 3926 3752 2723 211 837 2449 1147 3207 1364 3137 390 1195 3578 2842 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4325 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4113 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2722 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.233 seconds
+Copied Point file: Pot_A_Piece_14_Point.pcd
+Copied Mesh file: Pot_A_Piece_14_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1615
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1615
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1615
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1615
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1615
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1615
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1615
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1615
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1615
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1615
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1615
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 326
+Cluster 2 : 296
+Points in two clusters / Total Points in Pointcloud: 38.51%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 185 280 135 111 303 319 30 325 257 93 221 276 36 76 136 29 71 190 314 174 216 137 133 20 297 224 137 283 244 127 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  326 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  296 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 993 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.4204 seconds
+Copied Point file: Pot_A_Piece_15_Point.pcd
+Copied Mesh file: Pot_A_Piece_15_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9568
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9568
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9568
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9568
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9568
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9568
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9568
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9568
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9568
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9568
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9568
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3405
+Cluster 2 : 3098
+Cluster 3 : 154
+Points in two clusters / Total Points in Pointcloud: 67.97%
+Points in two clusters / Total Points in all clusters: 97.69%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 457 1109 2306 918 697 3194 2881 599 503 204 3246 108 1705 2405 1662 2215 2208 380 2814 810 2756 1446 1671 3356 2116 1074 2910 2838 2889 2783 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3405 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3098 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2911 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.249 seconds
+Copied Point file: Pot_A_Piece_16_Point.pcd
+Copied Mesh file: Pot_A_Piece_16_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 4713
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 4713
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 4712
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 4712
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 4712
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 4712
+[DEBUG getNormalsOnSurface] Starting function. Input points: 4712
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 4712
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 4712
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 4712
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 4712
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 1358
+Cluster 2 : 1228
+Points in two clusters / Total Points in Pointcloud: 54.88%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1056 76 275 564 1005 1197 535 1207 970 218 383 1276 865 36 606 258 91 630 6 208 388 1024 48 692 1110 604 916 1062 521 1315 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1358 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1228 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2126 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.224 seconds
+Copied Point file: Pot_A_Piece_17_Point.pcd
+Copied Mesh file: Pot_A_Piece_17_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6431
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6431
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6431
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6431
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6431
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6431
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6431
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6431
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6431
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6431
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6431
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2283
+Cluster 2 : 2204
+Points in two clusters / Total Points in Pointcloud: 69.77%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1707 1721 943 442 1378 592 1983 319 117 2124 41 462 422 894 2000 1465 1273 1873 1623 2122 424 291 2032 247 446 617 608 275 171 1604 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2283 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2204 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1944 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.2 seconds
+Copied Point file: Pot_A_Piece_18_Point.pcd
+Copied Mesh file: Pot_A_Piece_18_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11830
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11830
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11830
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11830
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11830
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11830
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11830
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11830
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11830
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11830
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11830
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 4048
+Cluster 2 : 3261
+Cluster 3 : 1812
+Points in two clusters / Total Points in Pointcloud: 61.78%
+Points in two clusters / Total Points in all clusters: 80.13%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1681 1010 2293 1955 1687 2507 984 441 1303 2765 3770 1745 3071 3555 3959 932 1163 2447 335 1449 4018 3751 2377 3835 2974 1218 2938 354 4016 792 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4048 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3261 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2709 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.407 seconds
+Copied Point file: Pot_A_Piece_19_Point.pcd
+Copied Mesh file: Pot_A_Piece_19_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8429
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8429
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8429
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8429
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8429
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8429
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8429
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8429
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8429
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8429
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8429
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 3030
+Cluster 2 : 2812
+Points in two clusters / Total Points in Pointcloud: 69.31%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1313 291 2508 948 2728 602 2295 30 2849 1603 1734 2341 1326 3026 1386 2457 1957 80 1833 2280 2917 961 1424 2819 844 1701 1615 706 2947 2986 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3030 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2812 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2587 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.931 seconds
+Copied Point file: Pot_A_Piece_20_Point.pcd
+Copied Mesh file: Pot_A_Piece_20_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8262
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8262
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8261
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8261
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8261
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8261
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8261
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8261
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8261
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8261
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8261
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 2842
+Cluster 2 : 2570
+Cluster 3 : 130
+Cluster 4 : 52
+Cluster 5 : 50
+Points in two clusters / Total Points in Pointcloud: 65.51%
+Points in two clusters / Total Points in all clusters: 95.89%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 357 2242 1210 1384 2010 587 1629 2644 1587 2184 1604 192 2013 1155 549 2371 2396 2271 2785 1722 1421 611 2237 2719 273 163 2793 1868 543 1627 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2842 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2570 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2617 data points.
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.063 seconds
+Copied Point file: Pot_A_Piece_21_Point.pcd
+Copied Mesh file: Pot_A_Piece_21_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1453
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1453
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1453
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1453
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1453
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1453
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1453
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1453
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1453
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1453
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1453
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 322
+Cluster 2 : 163
+Cluster 3 : 84
+Points in two clusters / Total Points in Pointcloud: 33.38%
+Points in two clusters / Total Points in all clusters: 85.24%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 223 303 161 50 11 255 284 160 167 228 314 297 108 65 172 99 123 173 288 209 165 70 41 210 235 45 282 267 207 308 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  322 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  163 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 884 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.3939 seconds
+Copied Point file: Pot_A_Piece_22_Point.pcd
+Copied Mesh file: Pot_A_Piece_22_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6441
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6441
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6441
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6441
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6441
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6441
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6441
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6441
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6441
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6441
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6441
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 1771
+Cluster 2 : 708
+Cluster 3 : 613
+Cluster 4 : 181
+Cluster 5 : 66
+Points in two clusters / Total Points in Pointcloud: 38.49%
+Points in two clusters / Total Points in all clusters: 74.24%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 2 and 3
+Condition 2 (normal vector similarity) passed for clusters 2 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 3
+Verification failed (innerPoint selection) for clusters 2 and 3
+Sampled indices: 904 109 833 114 336 109 1419 968 432 1662 776 588 1179 807 1333 542 1303 175 379 853 1536 985 1034 1156 198 166 1510 1307 227 98 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1771 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  708 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3102 data points.
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.307 seconds
+Copied Point file: Pot_A_Piece_23_Point.pcd
+Copied Mesh file: Pot_A_Piece_23_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6671
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6671
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6671
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6671
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6671
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6671
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6671
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6671
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6671
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6671
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6671
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 2220
+Cluster 2 : 2135
+Cluster 3 : 64
+Points in two clusters / Total Points in Pointcloud: 65.28%
+Points in two clusters / Total Points in all clusters: 98.55%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1150 1793 422 1212 21 244 66 1265 712 854 2067 1660 1205 1694 495 1404 669 719 334 397 137 2183 1471 1381 1163 433 862 599 1246 517 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2220 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2135 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2252 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.44 seconds
+Copied Point file: Pot_A_Piece_24_Point.pcd
+Copied Mesh file: Pot_A_Piece_24_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2198
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2198
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2198
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 2198
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 2198
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 2198
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2198
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2198
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2198
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 2198
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 2198
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 598
+Cluster 2 : 528
+Points in two clusters / Total Points in Pointcloud: 51.23%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 235 101 509 347 355 361 276 240 260 396 375 339 0 213 229 10 34 334 24 545 349 368 406 333 182 215 395 548 164 104 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  598 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  528 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1072 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.4775 seconds
+Copied Point file: Pot_A_Piece_25_Point.pcd
+Copied Mesh file: Pot_A_Piece_25_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3578
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3578
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3577
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3577
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3577
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3577
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3577
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3577
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3577
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3577
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3577
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 1043
+Cluster 2 : 575
+Cluster 3 : 247
+Points in two clusters / Total Points in Pointcloud: 45.23%
+Points in two clusters / Total Points in all clusters: 86.76%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 517 369 866 646 887 294 16 737 483 468 822 33 570 334 684 22 740 785 517 627 123 347 893 355 863 460 1027 857 334 568 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1043 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  575 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1712 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.9212 seconds
+Copied Point file: Pot_A_Piece_26_Point.pcd
+Copied Mesh file: Pot_A_Piece_26_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3498
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3498
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3498
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3498
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3498
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3498
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3498
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3498
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3498
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3498
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3498
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 948
+Cluster 2 : 853
+Points in two clusters / Total Points in Pointcloud: 51.49%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 369 706 494 761 664 38 572 647 297 884 394 58 910 373 833 739 491 574 732 178 747 853 788 913 202 49 710 653 536 45 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  948 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  853 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1697 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.8203 seconds
+Copied Point file: Pot_A_Piece_27_Point.pcd
+Copied Mesh file: Pot_A_Piece_27_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1769
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1769
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1763
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1763
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1763
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1763
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1763
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1763
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1763
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1763
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1763
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 439
+Cluster 2 : 316
+Points in two clusters / Total Points in Pointcloud: 42.82%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 280 273 287 90 153 276 200 39 145 198 309 177 418 105 113 336 385 326 401 155 42 163 299 299 203 136 113 175 393 117 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  439 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  316 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1008 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.4279 seconds
+Copied Point file: Pot_A_Piece_28_Point.pcd
+Copied Mesh file: Pot_A_Piece_28_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8918
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8918
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8917
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8917
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8917
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8917
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8917
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8917
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8917
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8917
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8917
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3041
+Cluster 2 : 3021
+Cluster 3 : 52
+Points in two clusters / Total Points in Pointcloud: 67.98%
+Points in two clusters / Total Points in all clusters: 99.15%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 2
+Condition 2 (normal vector similarity) passed for clusters 0 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 2
+Verification failed (innerPoint selection) for clusters 0 and 2
+Sampled indices: 350 2873 2997 1411 104 2956 571 2312 907 2524 2280 1873 196 433 605 995 262 2299 2358 2644 2275 290 953 1537 2598 2210 162 897 2497 1726 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3041 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3021 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2803 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.093 seconds
+Copied Point file: Pot_A_Piece_29_Point.pcd
+Copied Mesh file: Pot_A_Piece_29_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3098
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3098
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3098
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3098
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3098
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3098
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3098
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3098
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3098
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3098
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3098
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 813
+Cluster 2 : 631
+Cluster 3 : 65
+Points in two clusters / Total Points in Pointcloud: 46.61%
+Points in two clusters / Total Points in all clusters: 95.69%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 447 40 489 294 245 608 77 244 156 263 253 332 337 710 721 254 77 401 442 273 575 385 603 739 580 664 26 650 84 128 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  813 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  631 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1589 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.7595 seconds
+Copied Point file: Pot_A_Piece_30_Point.pcd
+Copied Mesh file: Pot_A_Piece_30_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2149
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2149
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2149
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 2149
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 2149
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 2149
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2149
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2149
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2149
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 2149
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 2149
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 354
+Cluster 2 : 334
+Points in two clusters / Total Points in Pointcloud: 32.01%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 27 105 345 217 74 154 160 169 202 42 219 270 207 264 259 46 343 97 63 306 116 314 82 166 327 263 223 195 328 272 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  354 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  334 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 1461 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.6501 seconds
+Copied Point file: Pot_A_Piece_31_Point.pcd
+Copied Mesh file: Pot_A_Piece_31_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8228
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8228
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8227
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8227
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8227
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8227
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8227
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8227
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8227
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8227
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8227
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2619
+Cluster 2 : 2544
+Points in two clusters / Total Points in Pointcloud: 62.76%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1255 2343 495 195 2569 3 441 525 1241 2226 651 887 1156 1934 2084 1139 627 2358 2284 430 1572 1938 1615 2556 2074 1911 1696 2336 39 566 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2619 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2544 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3064 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.29 seconds
+Copied Point file: Pot_A_Piece_32_Point.pcd
+Copied Mesh file: Pot_A_Piece_32_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11566
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11566
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11566
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11566
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11566
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11566
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11566
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11566
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11566
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11566
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11566
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 4287
+Cluster 2 : 4160
+Cluster 3 : 58
+Cluster 4 : 51
+Points in two clusters / Total Points in Pointcloud: 73.03%
+Points in two clusters / Total Points in all clusters: 98.73%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 305 1729 2809 2755 1439 3098 2015 152 2538 1200 2082 258 2433 3571 319 2037 2616 3057 3321 335 3098 2954 1621 993 3606 1721 4035 4013 3311 1417 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4287 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4160 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3010 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.533 seconds
+Copied Point file: Pot_A_Piece_33_Point.pcd
+Copied Mesh file: Pot_A_Piece_33_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9318
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9318
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9318
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9318
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9318
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9318
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9318
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9318
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9318
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9318
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9318
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3072
+Cluster 2 : 3049
+Cluster 3 : 71
+Points in two clusters / Total Points in Pointcloud: 65.69%
+Points in two clusters / Total Points in all clusters: 98.85%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 2
+Condition 2 (normal vector similarity) passed for clusters 0 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 2
+Verification failed (innerPoint selection) for clusters 0 and 2
+Sampled indices: 2449 1153 181 1443 2781 3062 2985 685 1099 1447 214 186 1850 774 229 476 432 1817 2860 609 1771 1623 226 1837 189 3060 2974 2775 511 850 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3072 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3049 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3126 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.482 seconds
+Copied Point file: Pot_A_Piece_34_Point.pcd
+Copied Mesh file: Pot_A_Piece_34_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11596
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11596
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11596
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11596
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11596
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11596
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11596
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11596
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11596
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11596
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11596
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 4693
+Cluster 2 : 4247
+Cluster 3 : 304
+Cluster 4 : 64
+Points in two clusters / Total Points in Pointcloud: 77.1%
+Points in two clusters / Total Points in all clusters: 96.05%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1617 1390 170 1166 123 3951 766 3875 1905 3967 1119 1242 3656 3936 802 1596 509 1715 3670 459 46 2437 1052 2356 1201 2193 4071 1066 2096 2410 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4693 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4247 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2288 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.013 seconds
+Copied Point file: Pot_A_Piece_35_Point.pcd
+Copied Mesh file: Pot_A_Piece_35_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11784
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11784
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11784
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11784
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11784
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11784
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11784
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11784
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11784
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11784
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11784
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 4749
+Cluster 2 : 4720
+Points in two clusters / Total Points in Pointcloud: 80.35%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3025 1639 3467 2813 2679 4007 989 1775 1470 1210 930 190 4341 3249 2610 3334 4170 2459 2784 3528 2200 653 2805 2725 3759 1647 316 4104 586 2590 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4749 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4720 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2315 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.125 seconds
+Copied Point file: Pot_A_Piece_36_Point.pcd
+Copied Mesh file: Pot_A_Piece_36_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11967
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11967
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11959
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11959
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11959
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11959
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11959
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11959
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11959
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11959
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11959
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 4471
+Cluster 2 : 3821
+Cluster 3 : 59
+Cluster 4 : 58
+Cluster 5 : 51
+Points in two clusters / Total Points in Pointcloud: 69.34%
+Points in two clusters / Total Points in all clusters: 98.01%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 516 3741 4337 1133 1364 704 1728 3652 1895 3499 4249 968 76 1476 542 439 126 788 1963 2434 1215 2514 1273 2383 71 2795 1419 1395 2786 1553 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4471 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3821 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3499 data points.
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.385 seconds
+Copied Point file: Pot_A_Piece_37_Point.pcd
+Copied Mesh file: Pot_A_Piece_37_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10537
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10537
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10537
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10537
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10537
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10537
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10537
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10537
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10537
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10537
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10537
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3607
+Cluster 2 : 3415
+Cluster 3 : 50
+Points in two clusters / Total Points in Pointcloud: 66.64%
+Points in two clusters / Total Points in all clusters: 99.29%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 2
+Condition 2 (normal vector similarity) failed for clusters 0 and 2
+Sampled indices: 3574 2195 2012 2347 2298 2264 1597 2336 2698 2169 218 2535 1003 2966 451 2801 2610 2143 2611 1952 516 2180 3373 1866 166 115 2686 2700 2744 1670 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3607 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3415 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3465 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.027 seconds
+Copied Point file: Pot_A_Piece_38_Point.pcd
+Copied Mesh file: Pot_A_Piece_38_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11817
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11817
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11817
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11817
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11817
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11817
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11817
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11817
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11817
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11817
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11817
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 3827
+Cluster 2 : 2712
+Cluster 3 : 1749
+Cluster 4 : 52
+Cluster 5 : 52
+Points in two clusters / Total Points in Pointcloud: 55.34%
+Points in two clusters / Total Points in all clusters: 77.92%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 3
+Condition 2 (normal vector similarity) passed for clusters 0 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 3
+Verification failed (innerPoint selection) for clusters 0 and 3
+Sampled indices: 2797 333 3334 2976 1987 97 3206 3169 1162 3118 583 2041 2947 458 2353 2777 1518 3611 2277 3210 1648 791 822 355 3130 951 1612 3658 381 1688 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3827 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2712 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 3425 data points.
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.235 seconds
+Copied Point file: Pot_A_Piece_39_Point.pcd
+Copied Mesh file: Pot_A_Piece_39_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9571
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9571
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9571
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9571
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9571
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9571
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9571
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9571
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9571
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9571
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9571
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 2247
+Cluster 2 : 935
+Cluster 3 : 824
+Cluster 4 : 478
+Cluster 5 : 73
+Points in two clusters / Total Points in Pointcloud: 33.25%
+Points in two clusters / Total Points in all clusters: 69.83%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 4
+Condition 2 (normal vector similarity) passed for clusters 0 and 4
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 4
+Verification failed (innerPoint selection) for clusters 0 and 4
+Sampled indices: 1074 1552 1671 2158 881 469 643 457 362 665 117 1568 1406 1015 874 444 524 449 2109 199 2054 1660 2095 1755 1516 1242 2027 652 2114 576 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2247 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  935 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 5014 data points.
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.463 seconds
+Copied Point file: Pot_A_Piece_40_Point.pcd
+Copied Mesh file: Pot_A_Piece_40_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11485
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11485
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11484
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11484
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11484
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11484
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11484
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11484
+[DEBUG getNormalsOnSurface] Estimating normals with PCA (neighbors=5)...
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11484
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11484
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11484
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 4520
+Cluster 2 : 4350
+Points in two clusters / Total Points in Pointcloud: 77.24%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1715 1671 3530 1670 4460 1455 4371 1257 2597 1794 224 597 3050 2862 1325 139 4085 2408 1881 289 4359 991 2364 4347 1397 3111 892 1710 4505 3516 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4520 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4350 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+PointCloud representing the Cluster: 2614 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.278 seconds
+Total time elapsed: 90.77 seconds
+NURBS surface generation completed at: Wed 22 Oct 2025 01:46:05 AEDT
+Surface files generated:
+Found 80 surface files (expected 80 for 40 pieces)
+=== Step 2: NURBS Edge Line Extraction ===
+This will take approximately 1-2 hours for 40 pieces...
+Running NURBS EdgeLineExtractionHeadless...
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  5750 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-1
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ERROR: Edge line extraction failed

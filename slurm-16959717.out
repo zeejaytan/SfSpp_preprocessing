@@ -1,0 +1,63 @@
+=== Rebuilding EdgeLineExtractionHeadless with PLY fixes ===
+Started: Wed 22 Oct 2025 01:42:51 AEDT
+Rebuilding EdgeLineExtractionHeadless...
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[  6%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/edgeline_extraction_headless.cpp.o
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:139:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/local/include/pcl-1.9/pcl/pcl_base.h:48,
+                 from /usr/local/include/pcl-1.9/pcl/filters/filter.h:43,
+                 from /usr/local/include/pcl-1.9/pcl/filters/uniform_sampling.h:43,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:22:
+/usr/include/boost/bind.hpp:36:1: note: '#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.'
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+/usr/include/boost/detail/iterator.hpp:13:1: note: '#pragma message: This header is deprecated. Use <iterator> instead.'
+   13 | BOOST_HEADER_DEPRECATED("<iterator>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:139:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: '#pragma message: Warning: The header `<CGAL/Polygon_mesh_processing/smooth_mesh.h>` is deprecated. Please use `<CGAL/Polygon_mesh_processing/angle_and_area_smoothing.h>` instead. '
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp: In function 'std::vector<int> detectSeparateLineSegments(std::string, int)':
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1414:67: warning: use of old-style cast to 'int' [-Wold-style-cast]
+ 1414 |             int i0 = std::max(0, i-1), i1 = std::min((int)b1.rows()-1, i+1);
+      |                                                                   ^
+      |                                                      --------------
+      |                                                      static_cast<int> (b1.rows())
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1447:44: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1447 |         if (i >= (size_t)dist_scoreB1.rows()) { std::cerr << "[EDGELINE DEBUG] OOB write dist_scoreB1 i=" << i << std::endl; break; }
+      |                                            ^
+      |                  --------
+      |                  static_cast<size_t> (      )
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1499:65: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1499 |     for (size_t i = 0; i < (size_t)distScoreOriginalLength.rows(); i++)
+      |                                                                 ^
+      |                            --------
+      |                            static_cast<size_t> (                 )
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1501:34: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1501 |         size_t src = i + (size_t)len;
+      |                                  ^~~
+      |                          -----------
+      |                          static_cast<size_t> (len)
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1502:46: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1502 |         if (src >= (size_t)dist_scoreB1.rows()) src = dist_scoreB1.rows() - 1;
+      |                                              ^
+      |                    --------
+      |                    static_cast<size_t> (      )
+[ 13%] Linking CXX executable EdgeLineExtractionHeadless
+[100%] Built target EdgeLineExtractionHeadless
+Rebuild successful!
+-rwxrwxr-x 1 zhuojiat punim2657 5.1M Oct 22 01:43 original_nurbs_preprocessing/build/EdgeLineExtractionHeadless
+Completed: Wed 22 Oct 2025 01:43:45 AEDT

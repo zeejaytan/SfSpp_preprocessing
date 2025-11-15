@@ -1,0 +1,108 @@
+=== NURBS EdgeLine Extraction with Proper Geometric Curvature ===
+Job ID: 15233820
+Start time: Fri 05 Sep 2025 01:22:31 AEST
+Using EdgeLineExtractionHeadless with NURBS surface derivative computation
+
+Running NURBS EdgeLine extraction with proper curvature computation...
+
+EdgeLine extraction completed at: Fri 05 Sep 2025 01:22:32 AEST
+=== Generated NURBS Breakline Files with Proper Curvature ===
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Temp/Temp_edge/Pot_A/cloudBreaklinePointsOnBSplineSurface.pcd
+NURBS Breakline: ./Temp/Temp_edge/Pot_A/CompleteBreakline.pcd
+
+=== Verifying Proper Curvature Values (should show geometric values, not 2e+26) ===
+
+=== Organizing Results into Dataset Structure ===
+Original NURBS surfaces copied to dataset
+
+=== Running Axis Extraction ===
+Extracting pottery axes using existing SLURM parallel approach...
+Submitting parallel axis extraction jobs...
+=== SUBMITTING PARALLEL AXIS EXTRACTION JOBS ===
+Cleaning up existing axis files...
+Submitting SLURM job array for pieces 1-8...
+✅ Jobs submitted successfully with Job ID: 15233828
+Jobs will run in parallel for pieces 1-8
+
+Monitor progress with:
+  squeue -u zhuojiat
+  squeue -j 15233828
+
+Check individual job logs in: logs/
+  logs/axis_extract_15233828_*.out
+  logs/axis_extract_15233828_*.err
+
+Wait for completion and check results with:
+  ./check_axis_results.sh
+=== CHECKING PARALLEL AXIS EXTRACTION RESULTS ===
+Generated axis files: 3/8
+⚠️  Only 3/8 pieces completed
+
+Missing pieces:
+  ❌ Missing: Piece 01
+  ❌ Missing: Piece 02
+  ❌ Missing: Piece 03
+  ❌ Missing: Piece 04
+  ❌ Missing: Piece 05
+  ✅ Complete: Piece 06
+  ✅ Complete: Piece 07
+  ✅ Complete: Piece 08
+
+Check job logs for errors:
+  ls -la logs/
+✓ Axis extraction completed - copied 3 axis files
+=== Dataset Organization Complete ===
+Complete NURBS dataset with proper curvature available at: /data/gpfs/projects/punim2657/sfs_preprocessing/NURBS_Dataset_20250905_ProperCurvature
+Dataset includes:
+  - Surfaces: 0 files
+  - Breaklines: 0 files
+  - Axes: 0 files
+=== Job Finished ===

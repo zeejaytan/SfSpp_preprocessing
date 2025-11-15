@@ -1,0 +1,19 @@
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    The %post section will be run under fakeroot
+INFO:    Starting build...
+Copying blob sha256:13b7e930469f6d3575a320709035c6acf6f5485a76abcf03d1b92a64c09c2476
+Copying config sha256:b7bab04fd9aa0c771e5720bf0cc7cbf993fd6946645983d9096126e5af45d713
+Writing manifest to image destination
+2025/08/18 21:47:01  info unpack layer: sha256:13b7e930469f6d3575a320709035c6acf6f5485a76abcf03d1b92a64c09c2476
+INFO:    Copying mesh_processing.cpp to /opt/sfs_prep/src/
+INFO:    Copying edgeline_extraction.cpp to /opt/sfs_prep/src/
+INFO:    Copying CMakeLists.txt to /opt/sfs_prep/src/
+INFO:    Copying alglib/ to /opt/sfs_prep/src/alglib/
+INFO:    Copying data_path.h to /opt/sfs_prep/src/
+INFO:    Running post scriptlet
+/.singularity.d/libs/faked: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by /.singularity.d/libs/faked)
+/.singularity.d/libs/faked: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /.singularity.d/libs/faked)
+fakeroot: error while starting the `faked' daemon.
+/.singularity.d/libs/fakeroot: 1: kill: Usage: kill [-s sigspec | -signum | -sigspec] [pid | job]... or
+kill -l [exitstatus]
+FATAL:   While performing build: while running engine: exit status 1

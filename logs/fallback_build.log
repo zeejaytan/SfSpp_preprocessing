@@ -1,0 +1,3 @@
+Configuring fallback preprocessing tools...
+CMake Error: Unknown argument -f
+CMake Error: Run 'cmake --help' for all supported options.

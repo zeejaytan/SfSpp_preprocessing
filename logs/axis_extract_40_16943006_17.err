@@ -1,0 +1,2 @@
+./matlab_axis_wrapper.sh: line 70: syntax error near unexpected token `('
+./matlab_axis_wrapper.sh: line 70: `  -r "try, run('${SCRIPT_NAME}'); catch ME, disp(getReport(ME)); exit(1); end; exit(0);"'

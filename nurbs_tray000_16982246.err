@@ -1,0 +1,2 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+/bin/bash: line 1: ./MeshPreprocessingHeadless: No such file or directory

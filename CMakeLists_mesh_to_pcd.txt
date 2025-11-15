@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+project(mesh_to_pcd_with_normals)
+
+# Find PCL 1.9 (matches container version)
+find_package(PCL 1.9 REQUIRED)
+
+# Include directories
+include_directories(${PCL_INCLUDE_DIRS})
+
+# Link directories
+link_directories(${PCL_LIBRARY_DIRS})
+
+# Add definitions
+add_definitions(${PCL_DEFINITIONS})
+
+# Create executable
+add_executable(mesh_to_pcd_with_normals mesh_to_pcd_with_normals.cpp)
+
+# Link PCL libraries
+target_link_libraries(mesh_to_pcd_with_normals ${PCL_LIBRARIES})
+
+# Set C++17 standard
+set_property(TARGET mesh_to_pcd_with_normals PROPERTY CXX_STANDARD 17)

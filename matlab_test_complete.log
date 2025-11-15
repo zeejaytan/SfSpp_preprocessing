@@ -1,0 +1,20 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2024 The MathWorks, Inc.
+             R2024b Update 3 (24.2.0.2806996) 64-bit (glnxa64)
+                             November 26, 2024
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+🎯 Starting MATLAB axis extraction test
+📁 Reading surface files:
+   /data/gpfs/projects/punim2657/sfs_preprocessing/Surfaces/Pot_A_Piece_01_Surface_0.xyz
+   /data/gpfs/projects/punim2657/sfs_preprocessing/Surfaces/Pot_A_Piece_01_Surface_1.xyz
+✅ Loaded surfaces: 31610 + 28960 points
+🔄 Computing axis of symmetry...
+✅ Axis extraction completed successfully
+📁 Results saved to: /data/gpfs/projects/punim2657/sfs_preprocessing/axis_output/Pot_A_Piece_01_Axis.txt
+🎯 Axis direction: [0.116074, 0.910114, -0.397767]
+🎯 Axis position:  [28.607679, -4.345709, 399.111512]

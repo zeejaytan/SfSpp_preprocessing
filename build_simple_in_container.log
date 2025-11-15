@@ -1,0 +1,50 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+=== Simple Build SFS Preprocessing Tools ===
+Installing required system packages...
+build_simple.sh: line 17: sudo: command not found
+Failed to install system packages. Continuing with available libraries...
+build_simple.sh: line 22: sudo: command not found
+CGAL not available via yum. Trying alternative approach...
+Configuring simple build...
+CMake Error: Unknown argument -f
+CMake Error: Run 'cmake --help' for all supported options.
+✗ Configuration failed, but let's try manual compilation...
+Attempting manual compilation...
+Searching for available headers...
+Found CGAL headers in: /usr/include
+Compiling with manual flags...
+cc1plus: fatal error: mesh_processing.cpp: No such file or directory
+compilation terminated.
+✗ MeshPreprocessing compilation failed
+cc1plus: fatal error: mesh_processing.cpp: No such file or directory
+compilation terminated.
+edgeline_extraction.cpp:14:10: fatal error: Eigen/Dense: No such file or directory
+   14 | #include <Eigen/Dense>
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+alglib/src/ap.cpp: In function ‘std::string alglib::arraytostring(const double*, alglib::ae_int_t, int)’:
+alglib/src/ap.cpp:8285:16: warning: ‘__builtin___sprintf_chk’ may write a terminating nul past the end of the destination [-Wformat-overflow=]
+ 8285 |     if( sprintf(mask2, ",%s", mask1)>=(int)sizeof(mask2) )
+      |         ~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from alglib/src/ap.h:23,
+                 from alglib/src/ap.cpp:21:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:38:34: note: ‘__builtin___sprintf_chk’ output between 2 and 65 bytes into a destination of size 64
+   38 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   39 |                                   __glibc_objsize (__s), __fmt,
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   40 |                                   __va_arg_pack ());
+      |                                   ~~~~~~~~~~~~~~~~~
+✗ EdgeLineExtraction compilation failed
+In file included from /usr/include/stdio.h:894,
+                 from alglib/src/ap.h:23,
+                 from alglib/src/ap.cpp:21:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:38:34: note: ‘__builtin___sprintf_chk’ output between 2 and 65 bytes into a destination of size 64
+   38 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   39 |                                   __glibc_objsize (__s), __fmt,
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   40 |                                   __va_arg_pack ());
+      |                                   ~~~~~~~~~~~~~~~~~
+=== Simple build attempt completed ===

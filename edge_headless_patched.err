@@ -1,0 +1,11 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[EDGELINE DEBUG] processFragmentData surface=Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz mesh=Temp/Pot_A_Piece_01_Mesh.obj
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/pointCloudFromMesh.xyz rows=2092
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:21: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:22: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:23: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:24: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:25: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 k2' of element 'camera' is not handled
+[0;m

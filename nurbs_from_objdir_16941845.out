@@ -1,0 +1,89 @@
+=== NURBS Preprocessing From OBJ Directory ===
+Started: Mon 20 Oct 2025 21:39:21 AEDT
+Job ID: 16941845
+Dataset name: Tray-000
+Input OBJ directory: /data/gpfs/projects/punim2657/GARF/input/Tray-000
+Preparing project directories...
+=== Step 1: Sampling OBJ -> PCD and staging meshes ===
+Processing sherd01.obj -> piece 01
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Processing sherd02.obj -> piece 02
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Processing sherd03.obj -> piece 03
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Processing sherd04.obj -> piece 04
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Processing sherd05.obj -> piece 05
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Processing sherd06.obj -> piece 06
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Processing sherd07.obj -> piece 07
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Processing sherd08.obj -> piece 08
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Processing sherd09.obj -> piece 09
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Processing sherd10.obj -> piece 10
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Processing sherd11.obj -> piece 11
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Processing sherd12.obj -> piece 12
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Processing sherd13.obj -> piece 13
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Processing sherd14.obj -> piece 14
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Processing sherd15.obj -> piece 15
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Processing sherd16.obj -> piece 16
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Processing sherd17.obj -> piece 17
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Processing sherd18.obj -> piece 18
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Processing sherd19.obj -> piece 19
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Processing sherd20.obj -> piece 20
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Processing sherd21.obj -> piece 21
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Processing sherd22.obj -> piece 22
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Processing sherd23.obj -> piece 23
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Processing sherd24.obj -> piece 24
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Processing sherd25.obj -> piece 25
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Processing sherd26.obj -> piece 26
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Processing sherd27.obj -> piece 27
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Processing sherd28.obj -> piece 28
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Processing sherd29.obj -> piece 29
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Processing sherd30.obj -> piece 30
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Processing sherd31.obj -> piece 31
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Processing sherd32.obj -> piece 32
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Processing sherd33.obj -> piece 33
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Processing sherd34.obj -> piece 34
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Processing sherd35.obj -> piece 35
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Processing sherd36.obj -> piece 36
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Processing sherd37.obj -> piece 37
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Processing sherd38.obj -> piece 38
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Processing sherd39.obj -> piece 39
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Processing sherd40.obj -> piece 40
+  Found PCD: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Sampling complete at: Mon 20 Oct 2025 21:39:23 AEDT
+=== Step 2: NURBS Surface Generation ===

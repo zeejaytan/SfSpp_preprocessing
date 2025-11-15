@@ -1,0 +1,33 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:34: property 'float32 k2' of element 'camera' is not handled

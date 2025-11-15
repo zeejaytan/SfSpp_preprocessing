@@ -1,0 +1,16 @@
+=== EdgeLine Extraction for YOUR Generated NURBS Dataset ===
+Job ID: 15197395
+Start time: Wed 03 Sep 2025 22:22:00 AEST
+Processing NURBS Dataset: NURBS_Dataset_20250903
+
+Copying your NURBS surface files to processing location...
+Verifying NURBS surface files are in place:
+-rw-rw-r-- 1 zhuojiat punim2657 1745371 Sep  3 22:22 Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+-rw-rw-r-- 1 zhuojiat punim2657 1523380 Sep  3 22:22 Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+-rw-rw-r-- 1 zhuojiat punim2657 1354134 Sep  3 22:22 Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.xyz
+-rw-rw-r-- 1 zhuojiat punim2657 1214194 Sep  3 22:22 Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.xyz
+Running EdgeLine extraction on your NURBS surfaces...
+
+EdgeLine extraction completed at: Wed 03 Sep 2025 22:22:00 AEST
+=== Newly Generated NURBS Breakline Files ===
+=== Job Finished ===

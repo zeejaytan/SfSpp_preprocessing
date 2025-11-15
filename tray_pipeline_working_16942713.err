@@ -1,0 +1,2 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+FATAL:   stat /workspace/build/mesh_processing_complete: no such file or directory

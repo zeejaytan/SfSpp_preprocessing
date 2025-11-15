@@ -1,0 +1,162 @@
+Found 16 NURBS reference counts
+[DENSIFY] piece=01 surf=0 cur=31616 target=31616 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Input=31616 Output=31616 Target=31616
+[DENSIFY] piece=01 surf=1 cur=28812 target=28812 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Input=28812 Output=28812 Target=28812
+[DENSIFY] piece=02 surf=0 cur=25118 target=25118 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.xyz
+Input=25118 Output=25118 Target=25118
+[DENSIFY] piece=02 surf=1 cur=22059 target=22059 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.xyz
+Input=22059 Output=22059 Target=22059
+[DENSIFY] piece=03 surf=0 cur=18106 target=18106 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.xyz
+Input=18106 Output=18106 Target=18106
+[DENSIFY] piece=03 surf=1 cur=16161 target=16161 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.xyz
+Input=16161 Output=16161 Target=16161
+[DENSIFY] piece=04 surf=0 cur=12917 target=12917 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.xyz
+Input=12917 Output=12917 Target=12917
+[DENSIFY] piece=04 surf=1 cur=13072 target=13072 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.xyz
+Input=13072 Output=13072 Target=13072
+[DENSIFY] piece=05 surf=0 cur=13724 target=13724 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.xyz
+Input=13724 Output=13724 Target=13724
+[DENSIFY] piece=05 surf=1 cur=13225 target=13225 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.xyz
+Input=13225 Output=13225 Target=13225
+[DENSIFY] piece=06 surf=0 cur=10669 target=10669 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.xyz
+Input=10669 Output=10669 Target=10669
+[DENSIFY] piece=06 surf=1 cur=10392 target=10392 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.xyz
+Input=10392 Output=10392 Target=10392
+[DENSIFY] piece=07 surf=0 cur=2088 target=2088 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.xyz
+Input=2088 Output=2088 Target=2088
+[DENSIFY] piece=07 surf=1 cur=1828 target=1828 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.xyz
+Input=1828 Output=1828 Target=1828
+[DENSIFY] piece=08 surf=0 cur=2578 target=2578 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.xyz
+Input=2578 Output=2578 Target=2578
+[DENSIFY] piece=08 surf=1 cur=2550 target=2550 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.xyz
+Input=2550 Output=2550 Target=2550
+[DENSIFY] piece=09 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=09 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=10 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=10 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=11 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=11 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=12 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=12 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=13 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=13 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=14 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=14 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=15 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=15 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=16 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=16 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=17 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=17 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=18 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=18 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=19 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=19 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=20 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=20 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=21 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=21 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=22 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=22 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=23 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=23 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=24 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=24 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=25 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=25 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=26 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=26 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=27 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=27 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=28 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=28 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=29 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=29 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=30 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=30 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=31 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=31 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=32 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=32 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=33 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=33 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=34 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=34 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=35 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=35 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=36 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=36 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=37 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=37 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=38 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=38 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=39 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=39 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=40 surf=0 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.xyz
+Input=300000 Output=20000 Target=20000
+[DENSIFY] piece=40 surf=1 cur=300000 target=20000 -> /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.xyz
+Input=300000 Output=20000 Target=20000
+Densification complete. Backups kept alongside as __orig_backup__.

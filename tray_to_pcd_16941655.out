@@ -1,0 +1,164 @@
+=== Sampling Tray OBJ -> PCD with normals (Open3D in container) ===
+Started: Mon 20 Oct 2025 21:11:38 AEDT
+Job ID: 16941655
+Input: /data/gpfs/projects/punim2657/GARF/input/Tray-000
+Dataset name: Tray-000
+-- The C compiler identification is GNU 11.5.0
+-- The CXX compiler identification is GNU 11.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Checking for module 'eigen3'
+--   Found eigen3, version 3.4.0
+-- Found Eigen: /usr/include/eigen3  
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.40.0") found components: system filesystem thread date_time iostreams chrono atomic regex 
+-- Checking for module 'flann'
+--   Found flann, version 1.9.1
+-- FLANN found (include: , lib: flann;flann_cpp)
+-- FLANN found (include: , lib: flann;flann_cpp)
+-- Found libusb-1.0: /usr/include  
+-- Found Qhull: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so  
+-- QHULL found (include: /usr/include, lib: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so)
+-- looking for PCL_COMMON
+-- Found PCL_COMMON: /usr/local/lib/libpcl_common.so  
+-- looking for PCL_KDTREE
+-- Found PCL_KDTREE: /usr/local/lib/libpcl_kdtree.so  
+-- looking for PCL_OCTREE
+-- Found PCL_OCTREE: /usr/local/lib/libpcl_octree.so  
+-- looking for PCL_SEARCH
+-- Found PCL_SEARCH: /usr/local/lib/libpcl_search.so  
+-- looking for PCL_SAMPLE_CONSENSUS
+-- Found PCL_SAMPLE_CONSENSUS: /usr/local/lib/libpcl_sample_consensus.so  
+-- looking for PCL_FILTERS
+-- Found PCL_FILTERS: /usr/local/lib/libpcl_filters.so  
+-- looking for PCL_2D
+-- Found PCL_2D: /usr/local/include/pcl-1.9  
+-- looking for PCL_GEOMETRY
+-- Found PCL_GEOMETRY: /usr/local/include/pcl-1.9  
+-- looking for PCL_IO
+-- Found PCL_IO: /usr/local/lib/libpcl_io.so  
+-- looking for PCL_FEATURES
+-- Found PCL_FEATURES: /usr/local/lib/libpcl_features.so  
+-- looking for PCL_ML
+-- Found PCL_ML: /usr/local/lib/libpcl_ml.so  
+-- looking for PCL_SEGMENTATION
+-- Found PCL_SEGMENTATION: /usr/local/lib/libpcl_segmentation.so  
+-- looking for PCL_SURFACE
+-- Found PCL_SURFACE: /usr/local/lib/libpcl_surface.so  
+-- looking for PCL_REGISTRATION
+-- Found PCL_REGISTRATION: /usr/local/lib/libpcl_registration.so  
+-- looking for PCL_KEYPOINTS
+-- Found PCL_KEYPOINTS: /usr/local/lib/libpcl_keypoints.so  
+-- looking for PCL_TRACKING
+-- Found PCL_TRACKING: /usr/local/lib/libpcl_tracking.so  
+-- looking for PCL_STEREO
+-- Found PCL_STEREO: /usr/local/lib/libpcl_stereo.so  
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_stereo;/usr/lib64/libboost_system.so;/usr/lib64/libboost_filesystem.so;/usr/lib64/libboost_thread.so;/usr/lib64/libboost_date_time.so;/usr/lib64/libboost_iostreams.so;/usr/lib64/libboost_chrono.so;/usr/lib64/libboost_atomic.so;/usr/lib64/libboost_regex.so;optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so;flann;flann_cpp (Required is at least version "1.9.1") 
+-- Using header-only CGAL
+-- Targeting Unix Makefiles
+-- Using /usr/bin/c++ compiler.
+-- Found GMP: /lib64/libgmp.so  
+-- Found MPFR: /lib64/libmpfr.so  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.66")  
+-- Boost include dirs: /usr/include
+-- Boost libraries:    
+-- Using gcc version 4 or later. Adding -frounding-math
+-- Configuring done (1.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/original_nurbs_preprocessing/build_obj2pcd
+[ 50%] Building CXX object CMakeFiles/ObjToPcd.dir/tools/obj_to_pcd.cpp.o
+[100%] Linking CXX executable ObjToPcd
+[100%] Built target ObjToPcd
+Sampling sherd01.obj -> Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd (6323 points)
+Sampling sherd02.obj -> Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd (7631 points)
+Sampling sherd03.obj -> Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd (12695 points)
+Sampling sherd04.obj -> Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd (10495 points)
+Sampling sherd05.obj -> Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd (6121 points)
+Sampling sherd06.obj -> Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd (7635 points)
+Sampling sherd07.obj -> Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd (11082 points)
+Sampling sherd08.obj -> Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd (11869 points)
+Sampling sherd09.obj -> Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd (6323 points)
+Sampling sherd10.obj -> Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd (6323 points)
+Sampling sherd11.obj -> Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd (21282 points)
+Sampling sherd12.obj -> Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd (14845 points)
+Sampling sherd13.obj -> Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd (18691 points)
+Sampling sherd14.obj -> Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd (5191 points)
+Sampling sherd15.obj -> Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd (23639 points)
+Sampling sherd16.obj -> Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd (12456 points)
+Sampling sherd17.obj -> Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd (9898 points)
+Sampling sherd18.obj -> Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd (25771 points)
+Sampling sherd19.obj -> Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd (14981 points)
+Sampling sherd20.obj -> Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd (17427 points)
+Sampling sherd21.obj -> Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd (3578 points)
+Sampling sherd22.obj -> Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd (14414 points)
+Sampling sherd23.obj -> Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd (11915 points)
+Sampling sherd24.obj -> Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd (4237 points)
+Sampling sherd25.obj -> Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd (8118 points)
+Sampling sherd26.obj -> Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd (9453 points)
+Sampling sherd27.obj -> Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd (5112 points)
+Sampling sherd28.obj -> Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd (17871 points)
+Sampling sherd29.obj -> Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd (9103 points)
+Sampling sherd30.obj -> Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd (6848 points)
+Sampling sherd31.obj -> Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd (21642 points)
+Sampling sherd32.obj -> Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd (24713 points)
+Sampling sherd33.obj -> Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd (16071 points)
+Sampling sherd34.obj -> Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd (20519 points)
+Sampling sherd35.obj -> Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd (22959 points)
+Sampling sherd36.obj -> Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd (28242 points)
+Sampling sherd37.obj -> Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd (27326 points)
+Sampling sherd38.obj -> Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd (18978 points)
+Sampling sherd39.obj -> Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd (16422 points)
+Sampling sherd40.obj -> Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Wrote PCD: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd (25274 points)
+Completed: Mon 20 Oct 2025 21:11:55 AEDT
+=== Sampling DONE ===

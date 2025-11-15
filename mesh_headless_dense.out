@@ -1,0 +1,778 @@
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+
+Total points: 407
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 212
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.0453228 seconds
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+
+Total points: 538
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 215
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.0438421 seconds
+Copied Point file: Pot_A_Piece_03_Point.pcd
+Copied Mesh file: Pot_A_Piece_03_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+
+Total points: 1093
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 430
+Cluster 2 : 131
+Points in two clusters / Total Points in Pointcloud: 51.33%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 150 398 335 182 141 339 384 192 342 76 133 215 8 155 108 204 59 4 253 306 332 129 419 343 39 280 9 378 170 204 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  430 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  131 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 532 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.2641 seconds
+Copied Point file: Pot_A_Piece_04_Point.pcd
+Copied Mesh file: Pot_A_Piece_04_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+
+Total points: 592
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 135
+Cluster 2 : 130
+Points in two clusters / Total Points in Pointcloud: 44.76%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 103 115 5 15 129 47 107 87 120 64 110 16 40 38 68 76 89 59 16 6 11 88 23 133 111 73 21 8 132 54 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  135 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  130 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 327 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.1752 seconds
+Copied Point file: Pot_A_Piece_05_Point.pcd
+Copied Mesh file: Pot_A_Piece_05_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+
+Total points: 421
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 163
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01987 seconds
+Copied Point file: Pot_A_Piece_06_Point.pcd
+Copied Mesh file: Pot_A_Piece_06_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+
+Total points: 419
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 102
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02033 seconds
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+
+Total points: 656
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 303
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02403 seconds
+Copied Point file: Pot_A_Piece_08_Point.pcd
+Copied Mesh file: Pot_A_Piece_08_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+
+Total points: 527
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 91
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02155 seconds
+Copied Point file: Pot_A_Piece_09_Point.pcd
+Copied Mesh file: Pot_A_Piece_09_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+
+Total points: 407
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 212
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02025 seconds
+Copied Point file: Pot_A_Piece_10_Point.pcd
+Copied Mesh file: Pot_A_Piece_10_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+
+Total points: 407
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 212
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01999 seconds
+Copied Point file: Pot_A_Piece_11_Point.pcd
+Copied Mesh file: Pot_A_Piece_11_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+
+Total points: 299
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 119
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01864 seconds
+Copied Point file: Pot_A_Piece_12_Point.pcd
+Copied Mesh file: Pot_A_Piece_12_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+
+Total points: 449
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 258
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01893 seconds
+Copied Point file: Pot_A_Piece_13_Point.pcd
+Copied Mesh file: Pot_A_Piece_13_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+
+Total points: 651
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 377
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02435 seconds
+Copied Point file: Pot_A_Piece_14_Point.pcd
+Copied Mesh file: Pot_A_Piece_14_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+
+Total points: 341
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 58
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01742 seconds
+Copied Point file: Pot_A_Piece_15_Point.pcd
+Copied Mesh file: Pot_A_Piece_15_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+
+Total points: 531
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 279
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01981 seconds
+Copied Point file: Pot_A_Piece_16_Point.pcd
+Copied Mesh file: Pot_A_Piece_16_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+
+Total points: 241
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 105
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01737 seconds
+Copied Point file: Pot_A_Piece_17_Point.pcd
+Copied Mesh file: Pot_A_Piece_17_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+
+Total points: 308
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 157
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01849 seconds
+Copied Point file: Pot_A_Piece_18_Point.pcd
+Copied Mesh file: Pot_A_Piece_18_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+
+Total points: 1080
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 313
+Cluster 2 : 174
+Points in two clusters / Total Points in Pointcloud: 45.09%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 57 246 10 22 6 234 19 253 16 169 115 268 118 226 214 84 210 207 48 302 222 33 82 167 187 37 298 167 38 119 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  313 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  174 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 593 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.2499 seconds
+Copied Point file: Pot_A_Piece_19_Point.pcd
+Copied Mesh file: Pot_A_Piece_19_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+
+Total points: 468
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 281
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02381 seconds
+Copied Point file: Pot_A_Piece_20_Point.pcd
+Copied Mesh file: Pot_A_Piece_20_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+
+Total points: 465
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 177
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02417 seconds
+Copied Point file: Pot_A_Piece_21_Point.pcd
+Copied Mesh file: Pot_A_Piece_21_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+
+Total points: 284
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 56
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02144 seconds
+Copied Point file: Pot_A_Piece_22_Point.pcd
+Copied Mesh file: Pot_A_Piece_22_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+
+Total points: 346
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 64
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.04475 seconds
+Copied Point file: Pot_A_Piece_23_Point.pcd
+Copied Mesh file: Pot_A_Piece_23_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+
+Total points: 373
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 151
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02076 seconds
+Copied Point file: Pot_A_Piece_24_Point.pcd
+Copied Mesh file: Pot_A_Piece_24_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+
+Total points: 458
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 85
+Cluster 2 : 75
+Points in two clusters / Total Points in Pointcloud: 34.93%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 0 0 42 5 13 25 2 18 67 70 77 33 48 45 37 58 17 12 2 15 78 24 42 22 7 28 72 23 71 74 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  85 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  75 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 298 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.1661 seconds
+Copied Point file: Pot_A_Piece_25_Point.pcd
+Copied Mesh file: Pot_A_Piece_25_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+
+Total points: 748
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 177
+Cluster 2 : 162
+Points in two clusters / Total Points in Pointcloud: 45.32%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 161 108 90 78 101 66 119 139 130 47 54 78 16 162 98 168 99 112 126 80 77 40 68 56 105 61 28 136 70 154 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  177 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  162 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 409 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.1882 seconds
+Copied Point file: Pot_A_Piece_26_Point.pcd
+Copied Mesh file: Pot_A_Piece_26_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+
+Total points: 695
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 180
+Cluster 2 : 141
+Points in two clusters / Total Points in Pointcloud: 46.19%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 136 151 45 58 130 113 67 114 164 27 5 161 119 38 25 111 76 53 97 109 16 64 112 174 136 129 20 0 57 66 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  180 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  141 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 374 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.1819 seconds
+Copied Point file: Pot_A_Piece_27_Point.pcd
+Copied Mesh file: Pot_A_Piece_27_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+
+Total points: 342
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 67
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02052 seconds
+Copied Point file: Pot_A_Piece_28_Point.pcd
+Copied Mesh file: Pot_A_Piece_28_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+
+Total points: 493
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 276
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.0225 seconds
+Copied Point file: Pot_A_Piece_29_Point.pcd
+Copied Mesh file: Pot_A_Piece_29_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+
+Total points: 635
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 115
+Cluster 2 : 86
+Points in two clusters / Total Points in Pointcloud: 31.65%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 100 10 106 109 45 69 0 85 65 70 64 19 100 7 65 96 57 47 104 70 112 52 92 7 29 51 66 52 46 55 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  115 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  86 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 434 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.1874 seconds
+Copied Point file: Pot_A_Piece_30_Point.pcd
+Copied Mesh file: Pot_A_Piece_30_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+
+Total points: 465
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 51
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01995 seconds
+Copied Point file: Pot_A_Piece_31_Point.pcd
+Copied Mesh file: Pot_A_Piece_31_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+
+Total points: 449
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 248
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.01993 seconds
+Copied Point file: Pot_A_Piece_32_Point.pcd
+Copied Mesh file: Pot_A_Piece_32_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+
+Total points: 755
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 457
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02566 seconds
+Copied Point file: Pot_A_Piece_33_Point.pcd
+Copied Mesh file: Pot_A_Piece_33_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+
+Total points: 527
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 266
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02245 seconds
+Copied Point file: Pot_A_Piece_34_Point.pcd
+Copied Mesh file: Pot_A_Piece_34_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+
+Total points: 812
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 503
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02584 seconds
+Copied Point file: Pot_A_Piece_35_Point.pcd
+Copied Mesh file: Pot_A_Piece_35_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+
+Total points: 1089
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 762
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02952 seconds
+Copied Point file: Pot_A_Piece_36_Point.pcd
+Copied Mesh file: Pot_A_Piece_36_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+
+Total points: 609
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 354
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02336 seconds
+Copied Point file: Pot_A_Piece_37_Point.pcd
+Copied Mesh file: Pot_A_Piece_37_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+
+Total points: 555
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 293
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02291 seconds
+Copied Point file: Pot_A_Piece_38_Point.pcd
+Copied Mesh file: Pot_A_Piece_38_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+
+Total points: 778
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 182
+Cluster 2 : 105
+Cluster 3 : 90
+Points in two clusters / Total Points in Pointcloud: 36.89%
+Points in two clusters / Total Points in all clusters: 76.13%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 8 53 25 9 94 138 102 65 113 17 21 39 173 170 111 32 37 62 19 81 68 120 86 75 111 164 170 50 54 61 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  182 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  105 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 401 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 0.2004 seconds
+Copied Point file: Pot_A_Piece_39_Point.pcd
+Copied Mesh file: Pot_A_Piece_39_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+
+Total points: 554
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 66
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.02375 seconds
+Copied Point file: Pot_A_Piece_40_Point.pcd
+Copied Mesh file: Pot_A_Piece_40_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+
+Total points: 1033
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 691
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+
+Time after processing: 0.03034 seconds
+Total time elapsed: 4.934 seconds

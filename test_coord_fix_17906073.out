@@ -1,0 +1,172 @@
+=========================================================================
+   COORDINATE SCALING FIX TEST - Single Piece Verification
+=========================================================================
+Job ID: 17906073
+Start time: Tue 04 Nov 2025 16:44:05 AEDT
+
+=== FIX APPLIED ===
+Fixed 4 locations in mesh_processing_headless.cpp:
+  Line 399: writeMatrix_to_XYZ(..., false)
+  Line 1511: writeMatrix_to_XYZ(..., false)
+  Line 2025: convertPLYtoXYZ(..., false)
+  Line 2032: convertPLYtoXYZ(..., false)
+
+=== TEST CONFIGURATION ===
+Test piece: Pot_A_Piece_01
+Output directory: /data/gpfs/projects/punim2657/sfs_preprocessing/TEST_CoordinateFix_20251104_164405
+
+=== COPYING TEST DATA ===
+Input files copied
+
+=== RUNNING MESH PREPROCESSING (WITH FIX) ===
+Executable: original_nurbs_preprocessing/build/MeshPreprocessingHeadless
+
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8854
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8854
+[ADAPTIVE CGAL] Using 8 neighbors for 8854 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8854
+[DEBUG getNormalsOnSurface] Computing curvature for 8854 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8854 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: /data/gpfs/projects/punim2657/sfs_preprocessing/TEST_CoordinateFix_20251104_164405/SfS_pp/Surfaces/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] Loading PLY file: /data/gpfs/projects/punim2657/sfs_preprocessing/TEST_CoordinateFix_20251104_164405/SfS_pp/Surfaces/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8854
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8854
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8854
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8854
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8854
+[ADAPTIVE CGAL] Using 8 neighbors for 8854 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8854
+[DEBUG getNormalsOnSurface] Computing curvature for 8854 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8854 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8854
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8854
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 3367
+Cluster 2 : 2634
+Cluster 3 : 179
+Cluster 4 : 85
+Cluster 5 : 73
+Cluster 6 : 60
+Points in two clusters / Total Points in Pointcloud: 67.78%
+Points in two clusters / Total Points in all clusters: 93.79%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2181 1640 2968 238 1534 1651 369 2625 611 996 1374 2559 1853 2552 1058 3162 2267 705 2326 1898 1695 209 2176 2839 1779 483 2538 266 1763 59 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  3367 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2634 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2456, min=10, max=7368
+PointCloud representing the Cluster: 406 data points.
+PointCloud representing the Cluster: 285 data points.
+PointCloud representing the Cluster: 143 data points.
+PointCloud representing the Cluster: 135 data points.
+PointCloud representing the Cluster: 120 data points.
+PointCloud representing the Cluster: 112 data points.
+PointCloud representing the Cluster: 101 data points.
+PointCloud representing the Cluster: 96 data points.
+PointCloud representing the Cluster: 92 data points.
+PointCloud representing the Cluster: 72 data points.
+PointCloud representing the Cluster: 68 data points.
+PointCloud representing the Cluster: 67 data points.
+PointCloud representing the Cluster: 64 data points.
+PointCloud representing the Cluster: 49 data points.
+PointCloud representing the Cluster: 49 data points.
+PointCloud representing the Cluster: 44 data points.
+PointCloud representing the Cluster: 33 data points.
+PointCloud representing the Cluster: 30 data points.
+PointCloud representing the Cluster: 25 data points.
+PointCloud representing the Cluster: 22 data points.
+PointCloud representing the Cluster: 19 data points.
+PointCloud representing the Cluster: 18 data points.
+PointCloud representing the Cluster: 17 data points.
+PointCloud representing the Cluster: 17 data points.
+PointCloud representing the Cluster: 16 data points.
+PointCloud representing the Cluster: 16 data points.
+PointCloud representing the Cluster: 15 data points.
+PointCloud representing the Cluster: 15 data points.
+PointCloud representing the Cluster: 11 data points.
+PointCloud representing the Cluster: 10 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 406 points, spacing≈49.63mm, boundary_r=15mm
+
+=== VERIFICATION ===
+❌ Surface_0 file NOT created
+   Expected: /data/gpfs/projects/punim2657/sfs_preprocessing/TEST_CoordinateFix_20251104_164405/SfS_pp/Surfaces/Pot_A_Piece_01_Surface_0.xyz
+
+⚠️  Processing may have failed
+❌ Surface_1 file NOT created
+
+=== TEST SUMMARY ===
+Output directory: /data/gpfs/projects/punim2657/sfs_preprocessing/TEST_CoordinateFix_20251104_164405
+Test completed: Tue 04 Nov 2025 16:44:27 AEDT
+
+total 57M
+-rw-rw-r-- 1 zhuojiat punim2657  30M Nov  4 16:44 Pot_A_Piece_01_Mesh.obj
+-rw-rw-r-- 1 zhuojiat punim2657  27M Nov  4 16:44 Pot_A_Piece_01_Point.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 629K Nov  4 16:44 Pot_A_Piece_01_SampledWithNormals.ply
+-rw-rw-r-- 1 zhuojiat punim2657 179K Nov  4 16:44 Pot_A_Piece_01_unclustered.ply
+-rw-rw-r-- 1 zhuojiat punim2657  30K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_0.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 5.3K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_10.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 5.2K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_11.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 5.0K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_12.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 3.8K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_13.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 3.8K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_14.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 3.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_15.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 2.7K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_16.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 2.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_17.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 2.1K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_18.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.9K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_19.pcd
+-rw-rw-r-- 1 zhuojiat punim2657  21K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_1.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.6K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_20.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.6K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_21.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.5K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_22.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.5K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_23.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_24.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_25.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_26.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.4K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_27.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 1.1K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_28.pcd
+-rw-rw-r-- 1 zhuojiat punim2657  950 Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_29.pcd
+-rw-rw-r-- 1 zhuojiat punim2657  11K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_2.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 9.9K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_3.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 9.1K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_4.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 8.3K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_5.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 7.5K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_6.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 7.2K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_7.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 7.0K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_8.pcd
+-rw-rw-r-- 1 zhuojiat punim2657 5.5K Nov  4 16:44 Pot_A_Piece_01_unclustered.plyCluster_9.pcd
+
+=========================================================================
+END OF COORDINATE FIX TEST
+=========================================================================

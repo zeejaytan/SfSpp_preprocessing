@@ -1,0 +1,43 @@
+=== SfS Preprocessing Robust Build ===
+Job started at: Sun 17 Aug 2025 21:46:33 AEST
+Using proven multi-stage approach from main SfS system
+Launching robust build pipeline...
+[0;34m[INFO][0m Starting SfS Preprocessing build pipeline...
+[0;34m[INFO][0m Setting up build directories...
+[0;34m[INFO][0m Building base dependencies container...
+[0;34m[INFO][0m This includes: PCL, CGAL, VTK from Ubuntu 22.04 repos
+[0;32m[SUCCESS][0m Base container built successfully
+[0;32m[SUCCESS][0m Stage 1: Base container ready
+[0;34m[INFO][0m Building preprocessing tools container...
+[0;31m[ERROR][0m Preprocessing container build failed. Check log: /data/gpfs/projects/punim2657/sfs_preprocessing/logs/preprocessing-build.log
+make[2]: *** [CMakeFiles/MeshPreprocessing.dir/build.make:76: CMakeFiles/MeshPreprocessing.dir/mesh_processing.cpp.o] Error 1
+make[2]: Leaving directory '/opt/sfs_prep/src/build'
+make[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/MeshPreprocessing.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make[2]: Leaving directory '/opt/sfs_prep/src/build'
+make[1]: *** [CMakeFiles/Makefile2:113: CMakeFiles/EdgeLineExtraction.dir/all] Error 2
+make[1]: Leaving directory '/opt/sfs_prep/src/build'
+make: *** [Makefile:91: all] Error 2
++ echo Build timeout - trying single-threaded...
+Build timeout - trying single-threaded...
++ make -j1
+[  5%] Building CXX object CMakeFiles/MeshPreprocessing.dir/mesh_processing.cpp.o
+/opt/sfs_prep/src/mesh_processing.cpp:92:10: fatal error: CGAL/IO/File_writer_wavefront.h: No such file or directory
+   92 | #include <CGAL/IO/File_writer_wavefront.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [CMakeFiles/MeshPreprocessing.dir/build.make:76: CMakeFiles/MeshPreprocessing.dir/mesh_processing.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/MeshPreprocessing.dir/all] Error 2
+make: *** [Makefile:91: all] Error 2
+FATAL:   While performing build: while running engine: exit status 2
+[0;31m[ERROR][0m Stage 2: Preprocessing container build failed
+[0;34m[INFO][0m Cleaning up temporary files...
+❌ Robust build failed with exit code: 1
+Check logs in: logs/
+total 16721
+drwxrwsr-x 2 zhuojiat punim2657   4096 Aug 17 21:50 .
+drwxrwsr-x 8 zhuojiat punim2657   4096 Aug 17 21:47 ..
+-rw-rw-r-- 1 zhuojiat punim2657 337674 Aug 17 21:50 base-build.log
+-rw-rw-r-- 1 zhuojiat punim2657  33135 Aug 17 21:50 preprocessing-build.log
+
+=== Robust build completed at: Sun 17 Aug 2025 21:50:31 AEST ===

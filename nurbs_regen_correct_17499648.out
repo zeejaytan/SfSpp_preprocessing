@@ -1,0 +1,36 @@
+=========================================================================
+     NURBS Dataset Regeneration - With CORRECT Normal Computation
+=========================================================================
+Job ID: 17499648
+Start time: Mon 03 Nov 2025 20:33:22 AEDT
+
+=== ROOT CAUSE FIX ===
+Problem: Previous NURBS dataset used TPS-computed normals
+Solution: Use original_nurbs_preprocessing/MeshPreprocessingHeadless
+Method: fit.m_nurbs.EvNormal() - compute normals from NURBS surface
+
+=== Verification ===
+Checking correct executable exists...
+✓ Executable found: /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing/build/MeshPreprocessingHeadless 5.5M
+  Built: 2025-10-24 10:03:20
+
+Verifying executable uses correct NURBS normal computation...
+✓ Executable contains EvNormal (NURBS normal computation)
+
+Checking input data exists...
+✓ Input PCD files: 8/8
+✓ Input OBJ files: 8/8
+
+=== Step 1: Clean Previous Outputs ===
+✓ Cleaned previous temporary files
+
+=== Step 2: NURBS Surface Generation (WITH CORRECT NORMALS) ===
+Running: MeshPreprocessingHeadless
+Method: fit.m_nurbs.EvNormal() at line 902
+Start: Mon 03 Nov 2025 20:33:22 AEDT
+
+
+MeshPreprocessingHeadless exit code: 127
+End: Mon 03 Nov 2025 20:33:23 AEDT
+
+ERROR: NURBS surface generation failed!

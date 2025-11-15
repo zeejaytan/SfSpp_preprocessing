@@ -1,0 +1,39 @@
+=== Setting up Conda Environment for NURBS ===
+PREFIX=/opt/miniconda3
+Unpacking payload ...
+entry_point.py:256: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+entry_point.py:256: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+
+Installing base environment...
+
+Preparing transaction: ...working... done
+Executing transaction: ...working... done
+entry_point.py:256: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+installation finished.
+no change     /opt/miniconda3/condabin/conda
+no change     /opt/miniconda3/bin/conda
+no change     /opt/miniconda3/bin/conda-env
+no change     /opt/miniconda3/bin/activate
+no change     /opt/miniconda3/bin/deactivate
+no change     /opt/miniconda3/etc/profile.d/conda.sh
+no change     /opt/miniconda3/etc/fish/conf.d/conda.fish
+no change     /opt/miniconda3/shell/condabin/Conda.psm1
+no change     /opt/miniconda3/shell/condabin/conda-hook.ps1
+no change     /opt/miniconda3/lib/python3.13/site-packages/xontrib/conda.xsh
+no change     /opt/miniconda3/etc/profile.d/conda.csh
+modified      /home/zhuojiat/.bashrc
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+Creating conda environment with compatible versions...
+
+CondaToSNonInteractiveError: Terms of Service have not been accepted for the following channels. Please accept or remove them before proceeding:
+    • https://repo.anaconda.com/pkgs/main
+    • https://repo.anaconda.com/pkgs/r
+
+To accept a channel's Terms of Service, run the following and replace `CHANNEL` with the channel name/URL:
+    ‣ conda tos accept --override-channels --channel CHANNEL
+
+To remove channels with rejected Terms of Service, run the following and replace `CHANNEL` with the channel name/URL:
+    ‣ conda config --remove channels CHANNEL
+

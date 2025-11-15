@@ -1,0 +1,13 @@
+=== Regenerating NURBS EdgeLine with Proper Curvature Computation ===
+Job ID: 15210124
+Start time: Thu 04 Sep 2025 11:10:24 AEST
+
+Removed existing breakline files to force regeneration
+Running NURBS EdgeLine extraction with proper curvature computation...
+
+EdgeLine extraction completed at: Thu 04 Sep 2025 11:10:25 AEST
+=== Checking for Generated Files ===
+
+=== Verifying Proper Curvature Values ===
+No new breakline files found - check if generation succeeded
+=== Job Finished ===

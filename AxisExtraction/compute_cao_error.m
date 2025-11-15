@@ -18,8 +18,19 @@ end
 
 vt = reshape(vt, 6, 1, []);
 T1 = bsxfun(@minus, X(1:3,:), vt(4:6,:,:));
-T2 = cross(T1, vt(1:3,:,:), 1);
-T3 = cross(reshape(X(4:6,:), 3, [], 1), vt(1:3,:,:), 1);
+% Fix cross product dimension mismatch by replicating vt to match X
+vt_direction = squeeze(vt(1:3,:,:));
+if size(vt_direction, 2) == 1
+    vt_direction = repmat(vt_direction, 1, size(X, 2));
+end
+T2 = cross(T1, vt_direction, 1);
+% Fix second cross product dimension mismatch as well
+X_normals = reshape(X(4:6,:), 3, [], 1);
+vt_direction_for_T3 = squeeze(vt(1:3,:,:));
+if size(vt_direction_for_T3, 2) == 1
+    vt_direction_for_T3 = repmat(vt_direction_for_T3, 1, size(X, 2));
+end
+T3 = cross(X_normals, vt_direction_for_T3, 1);
 
 % Pottmann's error
 % R = cross(cross(R, vt(1:3)), cross(X(4:6,:), vt(1:3)));

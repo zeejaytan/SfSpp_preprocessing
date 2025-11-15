@@ -1,0 +1,95 @@
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(Pre-processing)
+
+# C++17 Standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Ignore old-style cast warnings
+add_compile_options(-Wno-old-style-cast)
+
+# More flexible PCL finding - accept any version
+find_package(PCL REQUIRED COMPONENTS common io)
+if(PCL_FOUND)
+    message(STATUS "Found PCL version: ${PCL_VERSION}")
+    include_directories(${PCL_INCLUDE_DIRS})
+    link_directories(${PCL_LIBRARY_DIRS})
+    add_definitions(${PCL_DEFINITIONS})
+else()
+    message(WARNING "PCL not found - using manual includes")
+    # Try to find PCL headers manually
+    find_path(PCL_INCLUDE_DIR pcl/point_cloud.h
+        PATHS /usr/include /usr/local/include /opt/pcl/include
+        PATH_SUFFIXES pcl-1.12 pcl-1.11 pcl-1.10 pcl-1.9)
+    if(PCL_INCLUDE_DIR)
+        include_directories(${PCL_INCLUDE_DIR})
+        message(STATUS "Found PCL headers at: ${PCL_INCLUDE_DIR}")
+    endif()
+endif()
+
+# More flexible CGAL finding
+find_package(CGAL QUIET)
+if(CGAL_FOUND)
+    message(STATUS "Found CGAL version: ${CGAL_VERSION}")
+    include_directories(${CGAL_INCLUDE_DIRS})
+    link_directories(${CGAL_LIBRARY_DIRS})
+    add_definitions(${CGAL_DEFINITIONS})
+else()
+    message(WARNING "CGAL not found - using manual includes")
+    # Try to find CGAL headers manually
+    find_path(CGAL_INCLUDE_DIR CGAL/Polygon_2.h
+        PATHS /usr/include /usr/local/include /opt/cgal/include)
+    if(CGAL_INCLUDE_DIR)
+        include_directories(${CGAL_INCLUDE_DIR})
+        message(STATUS "Found CGAL headers at: ${CGAL_INCLUDE_DIR}")
+    endif()
+endif()
+
+# Include alglib source files
+file(GLOB PROJ_DEP "alglib/src/*.cpp" "alglib/src/*.h")
+
+# Add current source directory to include path for relative includes
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+# Try to build executables with error handling
+try_compile(MESH_COMPILE_SUCCESS
+    ${CMAKE_BINARY_DIR}/test_compile
+    ${CMAKE_CURRENT_SOURCE_DIR}/mesh_processing.cpp
+    CMAKE_FLAGS "-DCMAKE_CXX_STANDARD=17"
+    OUTPUT_VARIABLE MESH_COMPILE_OUTPUT)
+
+if(NOT MESH_COMPILE_SUCCESS)
+    message(STATUS "Mesh processing compilation test failed:")
+    message(STATUS "${MESH_COMPILE_OUTPUT}")
+    message(STATUS "Will attempt to build with available libraries...")
+endif()
+
+# Build executables
+add_executable(MeshPreprocessing mesh_processing.cpp)
+add_executable(EdgeLineExtraction edgeline_extraction.cpp ${PROJ_DEP})
+
+# Link available libraries
+if(PCL_FOUND)
+    target_link_libraries(MeshPreprocessing ${PCL_LIBRARIES})
+    target_link_libraries(EdgeLineExtraction ${PCL_LIBRARIES})
+else()
+    # Try to link standard PCL library names
+    target_link_libraries(MeshPreprocessing pcl_common pcl_io pcl_surface pcl_on_nurbs)
+    target_link_libraries(EdgeLineExtraction pcl_common pcl_io pcl_surface pcl_on_nurbs)
+endif()
+
+if(CGAL_FOUND)
+    target_link_libraries(MeshPreprocessing ${CGAL_LIBRARIES})
+    target_link_libraries(EdgeLineExtraction ${CGAL_LIBRARIES})
+else()
+    # Try to link standard CGAL library names
+    target_link_libraries(MeshPreprocessing CGAL)
+    target_link_libraries(EdgeLineExtraction CGAL)
+endif()
+
+# Standard system libraries
+target_link_libraries(MeshPreprocessing stdc++fs)
+target_link_libraries(EdgeLineExtraction stdc++fs)
+
+# Build target
+add_custom_target(all_targets ALL DEPENDS MeshPreprocessing EdgeLineExtraction)

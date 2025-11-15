@@ -1,0 +1,18 @@
+=== NURBS Preprocessing Pipeline for Tray-000 (40 pieces) ===
+Started: Tue 21 Oct 2025 14:30:33 AEDT
+Job ID: 16952089
+=== Step 0: Verify Input Data ===
+CloudCompare PCD files:
+Found 40 PCD files in Pot_A/
+Verification passed: 40 PCD files ready for NURBS processing
+Cleaning previous NURBS outputs for Pot_A...
+=== Step 1: NURBS Surface Generation (40 pieces) ===
+This will take approximately 2-3 hours for 40 pieces...
+Running NURBS MeshPreprocessingHeadless...
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Warning: Mesh file not found: Dataset/Mesh/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+ERROR: NURBS surface generation failed

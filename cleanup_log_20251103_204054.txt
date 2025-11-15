@@ -1,0 +1,18 @@
+Started: Mon 03 Nov 2025 20:40:54 AEDT
+Creating archive directory: /data/gpfs/projects/punim2657/sfs_preprocessing/archive_incorrect_tps_20251103
+
+=== Phase 1: Archive Incorrect TPS-Modified Code ===
+Archiving: mesh_processing_complete.cpp (INCORRECT - uses TPS normals)
+  → Reason: Uses TPS computeSurfaceNormal() instead of NURBS fit.m_nurbs.EvNormal()
+Archiving: edgeline_extraction.cpp.backup_with_tps
+Checking TPS_Output directory: 0 files
+Archiving: TPS_Output/ directory
+
+=== Phase 2: Archive Redundant/Old Scripts ===
+Keeping essential scripts:
+  ✓ run_nurbs_preprocessing.sbatch
+  ✓ regenerate_nurbs_correct.sbatch
+  ✓ build_pcl191_container.sbatch
+
+Archiving redundant sbatch scripts...
+  Archiving: build_native.sbatch

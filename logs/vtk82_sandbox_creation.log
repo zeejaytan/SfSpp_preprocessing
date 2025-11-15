@@ -1,0 +1,6 @@
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    The %post section will be run under fakeroot
+INFO:    Starting build...
+INFO:    Verifying bootstrap image ../sfs_main/cache/sfspreproc-base.sif
+INFO:    Creating sandbox directory...
+INFO:    Build complete: sandbox_vtk82_nurbs

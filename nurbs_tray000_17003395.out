@@ -1,0 +1,2950 @@
+=== NURBS Preprocessing Pipeline for Tray-000 (40 pieces) ===
+Started: Fri 24 Oct 2025 01:05:29 AEDT
+Job ID: 17003395
+=== Step 0: Verify Input Data ===
+CloudCompare PCD files:
+Found 40 PCD files in Pot_A/
+Verification passed: 40 PCD files ready for NURBS processing
+Cleaning previous NURBS outputs for Pot_A...
+Removing old surface files (.xyz)...
+Removing old intermediate PLY files...
+Removing old breakline and surface files...
+Removing old segment files...
+Removing old axis files...
+=== Step 1: NURBS Surface Generation (40 pieces) ===
+This will take approximately 2-3 hours for 40 pieces...
+Running NURBS MeshPreprocessingHeadless...
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8045
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8045
+[ADAPTIVE CGAL] Using 8 neighbors for 8045 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8045
+[DEBUG getNormalsOnSurface] Computing curvature for 8045 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8045 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8045
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8045
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8045
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8045
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8045
+[ADAPTIVE CGAL] Using 8 neighbors for 8045 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8045
+[DEBUG getNormalsOnSurface] Computing curvature for 8045 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8045 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8045
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8045
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 2651
+Cluster 2 : 2534
+Cluster 3 : 59
+Points in two clusters / Total Points in Pointcloud: 64.45%
+Points in two clusters / Total Points in all clusters: 98.87%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1727 405 1961 1856 2049 1600 473 1059 805 1383 992 2082 1363 785 1468 590 2466 1426 660 562 2474 2187 1424 1339 2218 838 1101 135 786 2588 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2651 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2534 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2801, min=10, max=8403
+PointCloud representing the Cluster: 2801 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2801 points, spacing≈18.89mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.635 seconds
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10240
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10240
+[ADAPTIVE CGAL] Using 10 neighbors for 10240 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10240
+[DEBUG getNormalsOnSurface] Computing curvature for 10240 points...
+[ADAPTIVE CURVATURE] Using K=34 for 10240 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10240
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10240
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10240
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10240
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10240
+[ADAPTIVE CGAL] Using 10 neighbors for 10240 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10240
+[DEBUG getNormalsOnSurface] Computing curvature for 10240 points...
+[ADAPTIVE CURVATURE] Using K=34 for 10240 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10240
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10240
+Number of clusters is equal to 9
+Points in 
+Cluster 1 : 3139
+Cluster 2 : 2972
+Cluster 3 : 521
+Cluster 4 : 207
+Cluster 5 : 80
+Cluster 6 : 73
+Cluster 7 : 61
+Cluster 8 : 59
+Cluster 9 : 56
+Points in two clusters / Total Points in Pointcloud: 59.68%
+Points in two clusters / Total Points in all clusters: 85.25%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 5
+Condition 2 (normal vector similarity) passed for clusters 0 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 5
+Verification failed (innerPoint selection) for clusters 0 and 5
+Sampled indices: 1661 698 1254 1241 1655 2919 1919 797 676 3104 1157 1117 2750 906 2269 296 537 1632 3089 3086 2407 1863 2441 1613 2236 885 2800 1335 1043 2948 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3139 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2972 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3072, min=10, max=9216
+PointCloud representing the Cluster: 3072 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3072 points, spacing≈18.04mm, boundary_r=15mm
+Successfully found 9 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 6.409 seconds
+Copied Point file: Pot_A_Piece_03_Point.pcd
+Copied Mesh file: Pot_A_Piece_03_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9237
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9237
+[ADAPTIVE CGAL] Using 9 neighbors for 9237 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9237
+[DEBUG getNormalsOnSurface] Computing curvature for 9237 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9237 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9237
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9237
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9237
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9237
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9237
+[ADAPTIVE CGAL] Using 9 neighbors for 9237 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9237
+[DEBUG getNormalsOnSurface] Computing curvature for 9237 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9237 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9237
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9237
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 3083
+Cluster 2 : 1992
+Cluster 3 : 1546
+Cluster 4 : 76
+Points in two clusters / Total Points in Pointcloud: 54.94%
+Points in two clusters / Total Points in all clusters: 75.78%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 555 222 2616 89 2989 768 1864 2952 184 855 80 1166 1126 173 947 439 1611 2772 1342 2337 1890 5 739 1056 430 779 163 10 356 1840 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3083 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1992 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2540, min=10, max=7620
+PointCloud representing the Cluster: 2540 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2540 points, spacing≈19.84mm, boundary_r=15mm
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.366 seconds
+Copied Point file: Pot_A_Piece_04_Point.pcd
+Copied Mesh file: Pot_A_Piece_04_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10794
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10794
+[ADAPTIVE CGAL] Using 10 neighbors for 10794 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10794
+[DEBUG getNormalsOnSurface] Computing curvature for 10794 points...
+[ADAPTIVE CURVATURE] Using K=35 for 10794 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10794
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10794
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10794
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10794
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10794
+[ADAPTIVE CGAL] Using 10 neighbors for 10794 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10794
+[DEBUG getNormalsOnSurface] Computing curvature for 10794 points...
+[ADAPTIVE CURVATURE] Using K=35 for 10794 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10794
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10794
+Number of clusters is equal to 8
+Points in 
+Cluster 1 : 3491
+Cluster 2 : 3202
+Cluster 3 : 949
+Cluster 4 : 255
+Cluster 5 : 63
+Cluster 6 : 62
+Cluster 7 : 51
+Cluster 8 : 51
+Points in two clusters / Total Points in Pointcloud: 62.01%
+Points in two clusters / Total Points in all clusters: 82.39%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2449 5 811 569 532 2091 1782 2132 1067 1324 3478 883 268 49 3214 1534 790 1083 1171 1339 593 2051 1310 2279 1973 576 2147 1776 1995 803 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3491 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3202 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2670, min=10, max=8010
+PointCloud representing the Cluster: 2670 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2670 points, spacing≈19.35mm, boundary_r=15mm
+Successfully found 8 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.673 seconds
+Copied Point file: Pot_A_Piece_05_Point.pcd
+Copied Mesh file: Pot_A_Piece_05_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8491
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8491
+[ADAPTIVE CGAL] Using 8 neighbors for 8491 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8491
+[DEBUG getNormalsOnSurface] Computing curvature for 8491 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8491 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8491
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8491
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8491
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8491
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8491
+[ADAPTIVE CGAL] Using 8 neighbors for 8491 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8491
+[DEBUG getNormalsOnSurface] Computing curvature for 8491 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8491 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8491
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8491
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3054
+Cluster 2 : 2904
+Cluster 3 : 53
+Points in two clusters / Total Points in Pointcloud: 70.17%
+Points in two clusters / Total Points in all clusters: 99.12%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1105 2734 2249 1630 100 1755 1886 997 2619 2886 2035 593 898 2859 2422 416 2376 2264 126 2765 2731 1067 956 2373 2451 502 2805 2477 1804 1944 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3054 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2904 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2480, min=10, max=7440
+PointCloud representing the Cluster: 2480 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2480 points, spacing≈20.08mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.264 seconds
+Copied Point file: Pot_A_Piece_06_Point.pcd
+Copied Mesh file: Pot_A_Piece_06_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 7916
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 7916
+[ADAPTIVE CGAL] Using 7 neighbors for 7916 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 7916
+[DEBUG getNormalsOnSurface] Computing curvature for 7916 points...
+[ADAPTIVE CURVATURE] Using K=26 for 7916 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 7916
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 7916
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 7916
+[DEBUG getNormalsOnSurface] Starting function. Input points: 7916
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 7916
+[ADAPTIVE CGAL] Using 7 neighbors for 7916 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 7916
+[DEBUG getNormalsOnSurface] Computing curvature for 7916 points...
+[ADAPTIVE CURVATURE] Using K=26 for 7916 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 7916
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 7916
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 2347
+Cluster 2 : 1668
+Cluster 3 : 725
+Cluster 4 : 61
+Cluster 5 : 61
+Cluster 6 : 53
+Points in two clusters / Total Points in Pointcloud: 50.72%
+Points in two clusters / Total Points in all clusters: 81.69%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 2 and 3
+Condition 2 (normal vector similarity) passed for clusters 2 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 3
+Verification failed (innerPoint selection) for clusters 2 and 3
+Condition 1 (closest point pairs) passed for clusters 2 and 4
+Condition 2 (normal vector similarity) passed for clusters 2 and 4
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 4
+Verification failed (innerPoint selection) for clusters 2 and 4
+Sampled indices: 1142 1226 1750 1861 1852 2227 825 2188 1360 783 1032 947 7 2319 255 2100 1334 739 624 1591 1239 835 1690 2341 2225 114 1627 421 407 203 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2347 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1668 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3001, min=10, max=9003
+PointCloud representing the Cluster: 3001 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3001 points, spacing≈18.25mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.218 seconds
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11312
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11312
+[ADAPTIVE CGAL] Using 11 neighbors for 11312 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11312
+[DEBUG getNormalsOnSurface] Computing curvature for 11312 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11312 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11312
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11312
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11312
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11312
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11312
+[ADAPTIVE CGAL] Using 11 neighbors for 11312 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11312
+[DEBUG getNormalsOnSurface] Computing curvature for 11312 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11312 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11312
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11312
+Number of clusters is equal to 7
+Points in 
+Cluster 1 : 3405
+Cluster 2 : 3055
+Cluster 3 : 655
+Cluster 4 : 113
+Cluster 5 : 70
+Cluster 6 : 60
+Cluster 7 : 58
+Points in two clusters / Total Points in Pointcloud: 57.11%
+Points in two clusters / Total Points in all clusters: 87.11%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 2 and 3
+Condition 2 (normal vector similarity) passed for clusters 2 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 3
+Verification failed (innerPoint selection) for clusters 2 and 3
+Sampled indices: 2616 813 3332 2122 2419 2930 2131 1862 1883 3268 2594 1137 1075 1373 487 1140 1091 145 599 3053 232 457 2562 726 795 3226 917 2442 12 395 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3405 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3055 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3896, min=10, max=11688
+PointCloud representing the Cluster: 3896 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3896 points, spacing≈16.02mm, boundary_r=15mm
+Successfully found 7 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 8.179 seconds
+Copied Point file: Pot_A_Piece_08_Point.pcd
+Copied Mesh file: Pot_A_Piece_08_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9077
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9077
+[ADAPTIVE CGAL] Using 9 neighbors for 9077 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9077
+[DEBUG getNormalsOnSurface] Computing curvature for 9077 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9077 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9077
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9077
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9077
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9077
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9077
+[ADAPTIVE CGAL] Using 9 neighbors for 9077 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9077
+[DEBUG getNormalsOnSurface] Computing curvature for 9077 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9077 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9077
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9077
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 2338
+Cluster 2 : 2152
+Cluster 3 : 920
+Cluster 4 : 113
+Cluster 5 : 83
+Points in two clusters / Total Points in Pointcloud: 49.47%
+Points in two clusters / Total Points in all clusters: 80.09%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 955 2120 2019 531 1239 1099 1147 419 203 701 1381 91 2140 661 1546 592 161 2239 1238 2122 1442 614 1742 156 2231 1805 1576 353 1050 867 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2338 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2152 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3471, min=10, max=10413
+PointCloud representing the Cluster: 3471 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3471 points, spacing≈16.97mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 6.231 seconds
+Copied Point file: Pot_A_Piece_09_Point.pcd
+Copied Mesh file: Pot_A_Piece_09_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8055
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8055
+[ADAPTIVE CGAL] Using 8 neighbors for 8055 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8055
+[DEBUG getNormalsOnSurface] Computing curvature for 8055 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8055 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8055
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8055
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8055
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8055
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8055
+[ADAPTIVE CGAL] Using 8 neighbors for 8055 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8055
+[DEBUG getNormalsOnSurface] Computing curvature for 8055 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8055 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8055
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8055
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 2622
+Cluster 2 : 2513
+Cluster 3 : 73
+Cluster 4 : 54
+Cluster 5 : 50
+Cluster 6 : 50
+Points in two clusters / Total Points in Pointcloud: 63.75%
+Points in two clusters / Total Points in all clusters: 95.77%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 4
+Condition 2 (normal vector similarity) passed for clusters 1 and 4
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 4
+Verification failed (innerPoint selection) for clusters 1 and 4
+Sampled indices: 104 2550 2154 2571 69 99 2136 2441 1709 735 1807 2559 2211 233 597 251 576 2104 1293 2172 1945 1628 1069 129 951 2490 1139 354 1449 1975 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2622 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2513 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2693, min=10, max=8079
+PointCloud representing the Cluster: 2693 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2693 points, spacing≈19.27mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.541 seconds
+Copied Point file: Pot_A_Piece_10_Point.pcd
+Copied Mesh file: Pot_A_Piece_10_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8007
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8007
+[ADAPTIVE CGAL] Using 8 neighbors for 8007 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8007
+[DEBUG getNormalsOnSurface] Computing curvature for 8007 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8007 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8007
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8007
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8007
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8007
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8007
+[ADAPTIVE CGAL] Using 8 neighbors for 8007 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8007
+[DEBUG getNormalsOnSurface] Computing curvature for 8007 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8007 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8007
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8007
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 2591
+Cluster 2 : 2459
+Cluster 3 : 90
+Cluster 4 : 66
+Cluster 5 : 52
+Cluster 6 : 51
+Points in two clusters / Total Points in Pointcloud: 63.07%
+Points in two clusters / Total Points in all clusters: 95.12%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 623 136 1054 1199 2065 750 1332 238 2505 883 277 1609 2367 2346 2305 1263 1525 1447 555 931 86 1297 2026 2010 2011 2247 2188 1489 2442 514 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2591 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2459 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2698, min=10, max=8094
+PointCloud representing the Cluster: 2698 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2698 points, spacing≈19.25mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.534 seconds
+Copied Point file: Pot_A_Piece_11_Point.pcd
+Copied Mesh file: Pot_A_Piece_11_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6381
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6381
+[ADAPTIVE CGAL] Using 6 neighbors for 6381 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6381
+[DEBUG getNormalsOnSurface] Computing curvature for 6381 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6381 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6381
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6381
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6381
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6381
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6381
+[ADAPTIVE CGAL] Using 6 neighbors for 6381 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6381
+[DEBUG getNormalsOnSurface] Computing curvature for 6381 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6381 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6381
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6381
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 1791
+Cluster 2 : 1546
+Cluster 3 : 80
+Points in two clusters / Total Points in Pointcloud: 52.3%
+Points in two clusters / Total Points in all clusters: 97.66%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1241 1578 1215 1727 940 177 39 1653 1734 1523 1038 182 400 1324 1168 1661 404 1206 1108 174 69 561 1209 1548 1122 1439 1375 326 1632 1726 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1791 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1546 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2964, min=10, max=8892
+PointCloud representing the Cluster: 2964 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2964 points, spacing≈18.37mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.747 seconds
+Copied Point file: Pot_A_Piece_12_Point.pcd
+Copied Mesh file: Pot_A_Piece_12_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8068
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8068
+[ADAPTIVE CGAL] Using 8 neighbors for 8068 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8068
+[DEBUG getNormalsOnSurface] Computing curvature for 8068 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8068 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8068
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8068
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8068
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8068
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8068
+[ADAPTIVE CGAL] Using 8 neighbors for 8068 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8068
+[DEBUG getNormalsOnSurface] Computing curvature for 8068 points...
+[ADAPTIVE CURVATURE] Using K=26 for 8068 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8068
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8068
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 2904
+Cluster 2 : 2745
+Cluster 3 : 53
+Cluster 4 : 51
+Points in two clusters / Total Points in Pointcloud: 70.02%
+Points in two clusters / Total Points in all clusters: 98.19%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2355 2215 1609 1485 1264 1026 1780 1310 104 2512 1773 326 1260 2388 2108 897 1947 1323 1345 2027 2359 1570 1247 875 1107 2449 1301 147 881 2622 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2904 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2745 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2315, min=10, max=6945
+PointCloud representing the Cluster: 2315 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2315 points, spacing≈20.78mm, boundary_r=15mm
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.849 seconds
+Copied Point file: Pot_A_Piece_13_Point.pcd
+Copied Mesh file: Pot_A_Piece_13_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11216
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11216
+[ADAPTIVE CGAL] Using 11 neighbors for 11216 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11216
+[DEBUG getNormalsOnSurface] Computing curvature for 11216 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11216 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11216
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11216
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11216
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11216
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11216
+[ADAPTIVE CGAL] Using 11 neighbors for 11216 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11216
+[DEBUG getNormalsOnSurface] Computing curvature for 11216 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11216 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11216
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11216
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 4273
+Cluster 2 : 4163
+Cluster 3 : 88
+Cluster 4 : 60
+Cluster 5 : 60
+Cluster 6 : 50
+Points in two clusters / Total Points in Pointcloud: 75.21%
+Points in two clusters / Total Points in all clusters: 97.03%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2905 835 2283 405 2781 3678 2059 3792 3683 2912 3690 2371 2055 3746 1284 312 3858 2879 3561 466 335 4024 2719 3573 2982 885 3390 2613 1909 83 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4273 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4163 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2522, min=10, max=7566
+PointCloud representing the Cluster: 2522 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2522 points, spacing≈19.91mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.477 seconds
+Copied Point file: Pot_A_Piece_14_Point.pcd
+Copied Mesh file: Pot_A_Piece_14_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1615
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1615
+[ADAPTIVE CGAL] Using 5 neighbors for 1615 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1615
+[DEBUG getNormalsOnSurface] Computing curvature for 1615 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1615 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1615
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1615
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1615
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1615
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1615
+[ADAPTIVE CGAL] Using 5 neighbors for 1615 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1615
+[DEBUG getNormalsOnSurface] Computing curvature for 1615 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1615 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1615
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1615
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 326
+Cluster 2 : 296
+Points in two clusters / Total Points in Pointcloud: 38.51%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 0 325 322 263 188 173 206 323 298 103 44 224 171 82 22 324 96 58 308 197 247 284 139 150 293 0 12 104 311 62 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  326 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  296 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=993, min=10, max=2979
+PointCloud representing the Cluster: 993 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 993 points, spacing≈31.73mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.072 seconds
+Copied Point file: Pot_A_Piece_15_Point.pcd
+Copied Mesh file: Pot_A_Piece_15_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9568
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9568
+[ADAPTIVE CGAL] Using 9 neighbors for 9568 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9568
+[DEBUG getNormalsOnSurface] Computing curvature for 9568 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9568 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9568
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9568
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9568
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9568
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9568
+[ADAPTIVE CGAL] Using 9 neighbors for 9568 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9568
+[DEBUG getNormalsOnSurface] Computing curvature for 9568 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9568 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9568
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9568
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 3743
+Cluster 2 : 3068
+Cluster 3 : 158
+Cluster 4 : 57
+Cluster 5 : 50
+Points in two clusters / Total Points in Pointcloud: 71.19%
+Points in two clusters / Total Points in all clusters: 96.25%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2474 256 1618 1432 2446 1968 1607 1939 2673 901 2947 1214 2110 1466 2724 460 3029 187 1571 2451 3638 563 2587 3340 2252 2795 1410 1184 1965 1420 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3743 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3068 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2492, min=10, max=7476
+PointCloud representing the Cluster: 2492 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2492 points, spacing≈20.03mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.74 seconds
+Copied Point file: Pot_A_Piece_16_Point.pcd
+Copied Mesh file: Pot_A_Piece_16_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 4713
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 4713
+[ADAPTIVE CGAL] Using 5 neighbors for 4713 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 4712
+[DEBUG getNormalsOnSurface] Computing curvature for 4712 points...
+[ADAPTIVE CURVATURE] Using K=15 for 4712 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 4712
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 4712
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 4712
+[DEBUG getNormalsOnSurface] Starting function. Input points: 4712
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 4712
+[ADAPTIVE CGAL] Using 5 neighbors for 4712 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 4712
+[DEBUG getNormalsOnSurface] Computing curvature for 4712 points...
+[ADAPTIVE CURVATURE] Using K=15 for 4712 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 4712
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 4712
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 1358
+Cluster 2 : 1228
+Points in two clusters / Total Points in Pointcloud: 54.88%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 423 1146 609 1236 205 80 602 667 587 858 122 238 1042 302 1111 516 224 68 13 1219 362 584 1036 934 485 1302 656 656 242 1038 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1358 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1228 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2126, min=10, max=6378
+PointCloud representing the Cluster: 2126 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2126 points, spacing≈21.69mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.854 seconds
+Copied Point file: Pot_A_Piece_17_Point.pcd
+Copied Mesh file: Pot_A_Piece_17_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6431
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6431
+[ADAPTIVE CGAL] Using 6 neighbors for 6431 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6431
+[DEBUG getNormalsOnSurface] Computing curvature for 6431 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6431 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6431
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6431
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6431
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6431
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6431
+[ADAPTIVE CGAL] Using 6 neighbors for 6431 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6431
+[DEBUG getNormalsOnSurface] Computing curvature for 6431 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6431 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6431
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6431
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 2289
+Cluster 2 : 2152
+Points in two clusters / Total Points in Pointcloud: 69.06%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2055 2254 238 964 1971 1598 124 590 1577 755 1603 1251 491 1363 2263 412 2230 2245 1625 1278 1505 1445 1472 1841 498 1853 2269 624 130 905 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2289 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2152 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1990, min=10, max=5970
+PointCloud representing the Cluster: 1990 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1990 points, spacing≈22.42mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.859 seconds
+Copied Point file: Pot_A_Piece_18_Point.pcd
+Copied Mesh file: Pot_A_Piece_18_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11830
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11830
+[ADAPTIVE CGAL] Using 11 neighbors for 11830 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11830
+[DEBUG getNormalsOnSurface] Computing curvature for 11830 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11830 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11830
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11830
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11830
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11830
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11830
+[ADAPTIVE CGAL] Using 11 neighbors for 11830 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11830
+[DEBUG getNormalsOnSurface] Computing curvature for 11830 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11830 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11830
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11830
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 4043
+Cluster 2 : 3215
+Cluster 3 : 1934
+Points in two clusters / Total Points in Pointcloud: 61.35%
+Points in two clusters / Total Points in all clusters: 78.96%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3634 2113 1140 128 3680 955 1125 2771 43 1690 560 653 127 3257 32 327 2317 3637 1542 2190 2856 1988 1655 1757 2953 3001 704 3736 1515 3305 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4043 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3215 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2638, min=10, max=7914
+PointCloud representing the Cluster: 2638 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2638 points, spacing≈19.47mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.7 seconds
+Copied Point file: Pot_A_Piece_19_Point.pcd
+Copied Mesh file: Pot_A_Piece_19_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8429
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8429
+[ADAPTIVE CGAL] Using 8 neighbors for 8429 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8429
+[DEBUG getNormalsOnSurface] Computing curvature for 8429 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8429 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8429
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8429
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8429
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8429
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8429
+[ADAPTIVE CGAL] Using 8 neighbors for 8429 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8429
+[DEBUG getNormalsOnSurface] Computing curvature for 8429 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8429 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8429
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8429
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 3002
+Cluster 2 : 2912
+Points in two clusters / Total Points in Pointcloud: 70.16%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2764 2728 2865 2560 630 1566 1628 2745 1857 373 2227 2857 1950 1813 2935 2441 2164 66 290 1964 1772 1228 674 478 2281 646 1386 1129 399 328 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3002 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2912 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2515, min=10, max=7545
+PointCloud representing the Cluster: 2515 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2515 points, spacing≈19.94mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.152 seconds
+Copied Point file: Pot_A_Piece_20_Point.pcd
+Copied Mesh file: Pot_A_Piece_20_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8262
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8262
+[ADAPTIVE CGAL] Using 8 neighbors for 8262 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8262
+[DEBUG getNormalsOnSurface] Computing curvature for 8262 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8262 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8262
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8262
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8262
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8262
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8262
+[ADAPTIVE CGAL] Using 8 neighbors for 8262 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8262
+[DEBUG getNormalsOnSurface] Computing curvature for 8262 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8262 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8262
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8262
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 2896
+Cluster 2 : 2693
+Cluster 3 : 53
+Points in two clusters / Total Points in Pointcloud: 67.65%
+Points in two clusters / Total Points in all clusters: 99.06%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 884 322 607 268 1289 1062 370 560 2636 525 2469 2558 225 576 2636 2171 2633 1329 1100 24 2120 2672 919 2572 1908 1271 1753 840 2728 1299 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2896 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2693 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2620, min=10, max=7860
+PointCloud representing the Cluster: 2620 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2620 points, spacing≈19.54mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.302 seconds
+Copied Point file: Pot_A_Piece_21_Point.pcd
+Copied Mesh file: Pot_A_Piece_21_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1453
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1453
+[ADAPTIVE CGAL] Using 5 neighbors for 1453 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1453
+[DEBUG getNormalsOnSurface] Computing curvature for 1453 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1453 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1453
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1453
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1453
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1453
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1453
+[ADAPTIVE CGAL] Using 5 neighbors for 1453 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1453
+[DEBUG getNormalsOnSurface] Computing curvature for 1453 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1453 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1453
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1453
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 313
+Cluster 2 : 163
+Cluster 3 : 84
+Points in two clusters / Total Points in Pointcloud: 32.76%
+Points in two clusters / Total Points in all clusters: 85%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 271 117 106 96 179 113 192 50 127 80 13 288 254 121 112 251 75 250 16 151 34 310 213 155 125 51 31 253 8 259 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  313 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  163 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=893, min=10, max=2679
+PointCloud representing the Cluster: 893 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 893 points, spacing≈33.46mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.017 seconds
+Copied Point file: Pot_A_Piece_22_Point.pcd
+Copied Mesh file: Pot_A_Piece_22_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6441
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6441
+[ADAPTIVE CGAL] Using 6 neighbors for 6441 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6441
+[DEBUG getNormalsOnSurface] Computing curvature for 6441 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6441 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6441
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6441
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6441
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6441
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6441
+[ADAPTIVE CGAL] Using 6 neighbors for 6441 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6441
+[DEBUG getNormalsOnSurface] Computing curvature for 6441 points...
+[ADAPTIVE CURVATURE] Using K=21 for 6441 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6441
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6441
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 1773
+Cluster 2 : 742
+Cluster 3 : 669
+Cluster 4 : 185
+Cluster 5 : 88
+Points in two clusters / Total Points in Pointcloud: 39.05%
+Points in two clusters / Total Points in all clusters: 72.75%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 2 and 3
+Condition 2 (normal vector similarity) passed for clusters 2 and 3
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 3
+Verification failed (innerPoint selection) for clusters 2 and 3
+Sampled indices: 1101 1133 825 1315 152 1511 1571 1060 529 1311 1396 1592 527 151 49 1124 457 1656 102 1760 1765 985 1644 1088 1695 1556 168 1344 215 763 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1773 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  742 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2984, min=10, max=8952
+PointCloud representing the Cluster: 2984 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2984 points, spacing≈18.31mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.878 seconds
+Copied Point file: Pot_A_Piece_23_Point.pcd
+Copied Mesh file: Pot_A_Piece_23_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6671
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6671
+[ADAPTIVE CGAL] Using 6 neighbors for 6671 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6671
+[DEBUG getNormalsOnSurface] Computing curvature for 6671 points...
+[ADAPTIVE CURVATURE] Using K=22 for 6671 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 6671
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6671
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6671
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6671
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6671
+[ADAPTIVE CGAL] Using 6 neighbors for 6671 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6671
+[DEBUG getNormalsOnSurface] Computing curvature for 6671 points...
+[ADAPTIVE CURVATURE] Using K=22 for 6671 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6671
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 6671
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 2132
+Cluster 2 : 2128
+Cluster 3 : 74
+Cluster 4 : 54
+Points in two clusters / Total Points in Pointcloud: 63.86%
+Points in two clusters / Total Points in all clusters: 97.08%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 1819 222 896 1582 2114 1311 94 1484 1796 1585 2047 638 590 1139 596 18 480 445 1241 1167 1742 118 1034 968 846 615 1247 1423 471 902 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2132 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2128 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2283, min=10, max=6849
+PointCloud representing the Cluster: 2283 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2283 points, spacing≈20.93mm, boundary_r=15mm
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 3.559 seconds
+Copied Point file: Pot_A_Piece_24_Point.pcd
+Copied Mesh file: Pot_A_Piece_24_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2198
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2198
+[ADAPTIVE CGAL] Using 5 neighbors for 2198 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2198
+[DEBUG getNormalsOnSurface] Computing curvature for 2198 points...
+[ADAPTIVE CURVATURE] Using K=10 for 2198 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 2198
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 2198
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 2198
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2198
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2198
+[ADAPTIVE CGAL] Using 5 neighbors for 2198 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2198
+[DEBUG getNormalsOnSurface] Computing curvature for 2198 points...
+[ADAPTIVE CURVATURE] Using K=10 for 2198 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 2198
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 2198
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 598
+Cluster 2 : 528
+Points in two clusters / Total Points in Pointcloud: 51.23%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 446 116 71 315 22 333 98 450 294 57 484 86 573 201 347 427 230 15 343 121 319 116 300 131 315 438 595 290 208 174 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  598 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  528 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1072, min=10, max=3216
+PointCloud representing the Cluster: 1072 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1072 points, spacing≈30.54mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.147 seconds
+Copied Point file: Pot_A_Piece_25_Point.pcd
+Copied Mesh file: Pot_A_Piece_25_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3578
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3578
+[ADAPTIVE CGAL] Using 5 neighbors for 3578 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3577
+[DEBUG getNormalsOnSurface] Computing curvature for 3577 points...
+[ADAPTIVE CURVATURE] Using K=11 for 3577 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3577
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3577
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3577
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3577
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3577
+[ADAPTIVE CGAL] Using 5 neighbors for 3577 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3577
+[DEBUG getNormalsOnSurface] Computing curvature for 3577 points...
+[ADAPTIVE CURVATURE] Using K=11 for 3577 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3577
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3577
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 1043
+Cluster 2 : 572
+Cluster 3 : 247
+Points in two clusters / Total Points in Pointcloud: 45.15%
+Points in two clusters / Total Points in all clusters: 86.73%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 91 256 334 440 629 93 282 311 117 674 775 880 125 1003 1013 19 724 692 819 171 118 168 307 754 296 725 890 746 170 448 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  1043 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  572 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1715, min=10, max=5145
+PointCloud representing the Cluster: 1715 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1715 points, spacing≈24.15mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 2.176 seconds
+Copied Point file: Pot_A_Piece_26_Point.pcd
+Copied Mesh file: Pot_A_Piece_26_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3498
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3498
+[ADAPTIVE CGAL] Using 5 neighbors for 3498 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3498
+[DEBUG getNormalsOnSurface] Computing curvature for 3498 points...
+[ADAPTIVE CURVATURE] Using K=11 for 3498 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3498
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3498
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3498
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3498
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3498
+[ADAPTIVE CGAL] Using 5 neighbors for 3498 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3498
+[DEBUG getNormalsOnSurface] Computing curvature for 3498 points...
+[ADAPTIVE CURVATURE] Using K=11 for 3498 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3498
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3498
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 948
+Cluster 2 : 853
+Points in two clusters / Total Points in Pointcloud: 51.49%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 874 79 764 560 870 174 673 853 14 305 742 125 735 580 415 483 399 920 503 297 367 16 882 602 913 651 87 947 291 652 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  948 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  853 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1697, min=10, max=5091
+PointCloud representing the Cluster: 1697 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1697 points, spacing≈24.27mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.952 seconds
+Copied Point file: Pot_A_Piece_27_Point.pcd
+Copied Mesh file: Pot_A_Piece_27_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1769
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1769
+[ADAPTIVE CGAL] Using 5 neighbors for 1769 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1763
+[DEBUG getNormalsOnSurface] Computing curvature for 1763 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1763 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 1763
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 1763
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 1763
+[DEBUG getNormalsOnSurface] Starting function. Input points: 1763
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 1763
+[ADAPTIVE CGAL] Using 5 neighbors for 1763 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 1763
+[DEBUG getNormalsOnSurface] Computing curvature for 1763 points...
+[ADAPTIVE CURVATURE] Using K=10 for 1763 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 1763
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 1763
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 440
+Cluster 2 : 316
+Points in two clusters / Total Points in Pointcloud: 42.88%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 36 381 407 74 26 50 303 308 348 5 381 374 112 304 247 403 55 414 392 92 60 141 104 409 207 266 109 54 152 26 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  440 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  316 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1007, min=10, max=3021
+PointCloud representing the Cluster: 1007 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1007 points, spacing≈31.51mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.071 seconds
+Copied Point file: Pot_A_Piece_28_Point.pcd
+Copied Mesh file: Pot_A_Piece_28_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8918
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8918
+[ADAPTIVE CGAL] Using 8 neighbors for 8918 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8918
+[DEBUG getNormalsOnSurface] Computing curvature for 8918 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8918 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8918
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8918
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8918
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8918
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8918
+[ADAPTIVE CGAL] Using 8 neighbors for 8918 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8918
+[DEBUG getNormalsOnSurface] Computing curvature for 8918 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8918 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8918
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8918
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 3090
+Cluster 2 : 2992
+Cluster 3 : 56
+Cluster 4 : 55
+Points in two clusters / Total Points in Pointcloud: 68.2%
+Points in two clusters / Total Points in all clusters: 98.21%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1840 3012 329 2284 203 3077 2994 2242 2882 2174 400 2848 2440 125 1896 2514 1200 2811 2947 2841 1651 481 1354 2165 740 2485 1013 2607 2467 1388 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3090 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2992 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2725, min=10, max=8175
+PointCloud representing the Cluster: 2725 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2725 points, spacing≈19.16mm, boundary_r=15mm
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.746 seconds
+Copied Point file: Pot_A_Piece_29_Point.pcd
+Copied Mesh file: Pot_A_Piece_29_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3098
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3098
+[ADAPTIVE CGAL] Using 5 neighbors for 3098 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3098
+[DEBUG getNormalsOnSurface] Computing curvature for 3098 points...
+[ADAPTIVE CURVATURE] Using K=10 for 3098 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 3098
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 3098
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 3098
+[DEBUG getNormalsOnSurface] Starting function. Input points: 3098
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 3098
+[ADAPTIVE CGAL] Using 5 neighbors for 3098 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 3098
+[DEBUG getNormalsOnSurface] Computing curvature for 3098 points...
+[ADAPTIVE CURVATURE] Using K=10 for 3098 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 3098
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 3098
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 813
+Cluster 2 : 631
+Cluster 3 : 65
+Points in two clusters / Total Points in Pointcloud: 46.61%
+Points in two clusters / Total Points in all clusters: 95.69%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 503 497 293 665 606 239 567 574 798 114 466 176 176 561 392 513 155 398 172 421 570 494 679 686 351 570 376 403 644 213 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  813 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  631 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1589, min=10, max=4767
+PointCloud representing the Cluster: 1589 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1589 points, spacing≈25.09mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.865 seconds
+Copied Point file: Pot_A_Piece_30_Point.pcd
+Copied Mesh file: Pot_A_Piece_30_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2149
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2149
+[ADAPTIVE CGAL] Using 5 neighbors for 2149 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2149
+[DEBUG getNormalsOnSurface] Computing curvature for 2149 points...
+[ADAPTIVE CURVATURE] Using K=10 for 2149 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 2149
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 2149
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 2149
+[DEBUG getNormalsOnSurface] Starting function. Input points: 2149
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 2149
+[ADAPTIVE CGAL] Using 5 neighbors for 2149 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 2149
+[DEBUG getNormalsOnSurface] Computing curvature for 2149 points...
+[ADAPTIVE CURVATURE] Using K=10 for 2149 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 2149
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 2149
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 354
+Cluster 2 : 271
+Cluster 3 : 63
+Points in two clusters / Total Points in Pointcloud: 29.08%
+Points in two clusters / Total Points in all clusters: 90.84%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 91 156 226 153 337 35 116 329 35 75 254 178 309 157 93 114 332 282 3 317 247 145 23 163 77 52 144 336 65 215 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  354 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  271 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=1461, min=10, max=4383
+PointCloud representing the Cluster: 1461 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1461 points, spacing≈26.16mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 1.789 seconds
+Copied Point file: Pot_A_Piece_31_Point.pcd
+Copied Mesh file: Pot_A_Piece_31_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8228
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8228
+[ADAPTIVE CGAL] Using 8 neighbors for 8228 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8228
+[DEBUG getNormalsOnSurface] Computing curvature for 8228 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8228 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 8228
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8228
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8228
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8228
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8228
+[ADAPTIVE CGAL] Using 8 neighbors for 8228 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8228
+[DEBUG getNormalsOnSurface] Computing curvature for 8228 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8228 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8228
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8228
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 2711
+Cluster 2 : 2589
+Cluster 3 : 54
+Points in two clusters / Total Points in Pointcloud: 64.41%
+Points in two clusters / Total Points in all clusters: 98.99%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 296 26 562 1985 2567 1715 2573 51 202 641 1502 955 411 1530 1159 1350 2213 2264 1469 551 1109 1196 2231 1147 294 2205 220 2346 2023 1903 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2711 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2589 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2874, min=10, max=8622
+PointCloud representing the Cluster: 2874 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2874 points, spacing≈18.65mm, boundary_r=15mm
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 4.839 seconds
+Copied Point file: Pot_A_Piece_32_Point.pcd
+Copied Mesh file: Pot_A_Piece_32_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11566
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11566
+[ADAPTIVE CGAL] Using 11 neighbors for 11566 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11566
+[DEBUG getNormalsOnSurface] Computing curvature for 11566 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11566 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11566
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11566
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11566
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11566
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11566
+[ADAPTIVE CGAL] Using 11 neighbors for 11566 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11566
+[DEBUG getNormalsOnSurface] Computing curvature for 11566 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11566 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11566
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11566
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 4291
+Cluster 2 : 4194
+Cluster 3 : 69
+Cluster 4 : 62
+Cluster 5 : 56
+Cluster 6 : 54
+Points in two clusters / Total Points in Pointcloud: 73.36%
+Points in two clusters / Total Points in all clusters: 97.24%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2707 1545 1991 1340 86 2921 796 823 613 553 3202 1271 1134 108 3785 2192 2726 1168 3286 2308 599 4107 1585 827 2501 2144 1467 2745 2237 457 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4291 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4194 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2840, min=10, max=8520
+PointCloud representing the Cluster: 2840 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2840 points, spacing≈18.76mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 6.015 seconds
+Copied Point file: Pot_A_Piece_33_Point.pcd
+Copied Mesh file: Pot_A_Piece_33_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9318
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9318
+[ADAPTIVE CGAL] Using 9 neighbors for 9318 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9318
+[DEBUG getNormalsOnSurface] Computing curvature for 9318 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9318 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9318
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9318
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9318
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9318
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9318
+[ADAPTIVE CGAL] Using 9 neighbors for 9318 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9318
+[DEBUG getNormalsOnSurface] Computing curvature for 9318 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9318 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9318
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9318
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 3065
+Cluster 2 : 3028
+Cluster 3 : 78
+Cluster 4 : 58
+Cluster 5 : 51
+Points in two clusters / Total Points in Pointcloud: 65.39%
+Points in two clusters / Total Points in all clusters: 97.02%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 1575 2494 1241 1479 2633 2027 695 1013 1067 2816 795 539 132 1574 852 2580 2786 1750 821 1225 2032 1260 994 2799 4 456 2381 2046 1722 2019 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3065 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3028 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3038, min=10, max=9114
+PointCloud representing the Cluster: 3038 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3038 points, spacing≈18.14mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.321 seconds
+Copied Point file: Pot_A_Piece_34_Point.pcd
+Copied Mesh file: Pot_A_Piece_34_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11596
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11596
+[ADAPTIVE CGAL] Using 11 neighbors for 11596 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11596
+[DEBUG getNormalsOnSurface] Computing curvature for 11596 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11596 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11596
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11596
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11596
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11596
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11596
+[ADAPTIVE CGAL] Using 11 neighbors for 11596 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11596
+[DEBUG getNormalsOnSurface] Computing curvature for 11596 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11596 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11596
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11596
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 4660
+Cluster 2 : 4272
+Cluster 3 : 272
+Cluster 4 : 61
+Points in two clusters / Total Points in Pointcloud: 77.03%
+Points in two clusters / Total Points in all clusters: 96.41%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 48 693 4010 2446 3412 3837 4022 902 1097 138 3520 2136 3628 2526 2660 3912 4014 863 3202 3518 3527 3100 92 2942 720 2670 3389 1685 1766 308 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4660 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4272 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2331, min=10, max=6993
+PointCloud representing the Cluster: 2331 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2331 points, spacing≈20.71mm, boundary_r=15mm
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.192 seconds
+Copied Point file: Pot_A_Piece_35_Point.pcd
+Copied Mesh file: Pot_A_Piece_35_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11784
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11784
+[ADAPTIVE CGAL] Using 11 neighbors for 11784 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11784
+[DEBUG getNormalsOnSurface] Computing curvature for 11784 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11784 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11784
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11784
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11784
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11784
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11784
+[ADAPTIVE CGAL] Using 11 neighbors for 11784 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11784
+[DEBUG getNormalsOnSurface] Computing curvature for 11784 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11784 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11784
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11784
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 4720
+Cluster 2 : 4683
+Points in two clusters / Total Points in Pointcloud: 79.79%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3043 2860 4239 3181 2686 3423 937 541 304 448 1451 2319 4530 320 2968 3440 3084 299 1765 2555 3988 3833 2490 3169 2405 2654 43 1160 2963 1860 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4720 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4683 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2381, min=10, max=7143
+PointCloud representing the Cluster: 2381 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2381 points, spacing≈20.49mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.189 seconds
+Copied Point file: Pot_A_Piece_36_Point.pcd
+Copied Mesh file: Pot_A_Piece_36_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11967
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11967
+[ADAPTIVE CGAL] Using 11 neighbors for 11967 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11967
+[DEBUG getNormalsOnSurface] Computing curvature for 11967 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11967 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11967
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11967
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11967
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11967
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11967
+[ADAPTIVE CGAL] Using 11 neighbors for 11967 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11967
+[DEBUG getNormalsOnSurface] Computing curvature for 11967 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11967 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11967
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11967
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 4404
+Cluster 2 : 4071
+Cluster 3 : 86
+Cluster 4 : 71
+Cluster 5 : 68
+Cluster 6 : 66
+Points in two clusters / Total Points in Pointcloud: 70.82%
+Points in two clusters / Total Points in all clusters: 96.68%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 2
+Condition 2 (normal vector similarity) passed for clusters 1 and 2
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 2
+Verification failed (innerPoint selection) for clusters 1 and 2
+Sampled indices: 1329 1716 1010 2359 1416 4098 2615 2156 2899 3890 696 2046 261 2221 1792 185 866 2427 3800 1664 829 2339 5 174 2679 2106 483 29 529 2365 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4404 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4071 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3201, min=10, max=9603
+PointCloud representing the Cluster: 3201 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3201 points, spacing≈17.67mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 7.392 seconds
+Copied Point file: Pot_A_Piece_37_Point.pcd
+Copied Mesh file: Pot_A_Piece_37_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10537
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10537
+[ADAPTIVE CGAL] Using 10 neighbors for 10537 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10537
+[DEBUG getNormalsOnSurface] Computing curvature for 10537 points...
+[ADAPTIVE CURVATURE] Using K=35 for 10537 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 10537
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 10537
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 10537
+[DEBUG getNormalsOnSurface] Starting function. Input points: 10537
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 10537
+[ADAPTIVE CGAL] Using 10 neighbors for 10537 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 10537
+[DEBUG getNormalsOnSurface] Computing curvature for 10537 points...
+[ADAPTIVE CURVATURE] Using K=35 for 10537 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 10537
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 10537
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 3631
+Cluster 2 : 3576
+Cluster 3 : 115
+Cluster 4 : 83
+Cluster 5 : 54
+Points in two clusters / Total Points in Pointcloud: 68.4%
+Points in two clusters / Total Points in all clusters: 96.62%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3559 352 1136 3260 1710 2815 1572 336 177 2239 868 2368 955 2292 3386 2197 2098 2977 264 2495 2210 2550 956 2681 258 1324 762 442 667 1148 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3631 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3576 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3078, min=10, max=9234
+PointCloud representing the Cluster: 3078 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3078 points, spacing≈18.02mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 6.017 seconds
+Copied Point file: Pot_A_Piece_38_Point.pcd
+Copied Mesh file: Pot_A_Piece_38_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11817
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11817
+[ADAPTIVE CGAL] Using 11 neighbors for 11817 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11817
+[DEBUG getNormalsOnSurface] Computing curvature for 11817 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11817 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11817
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11817
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11817
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11817
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11817
+[ADAPTIVE CGAL] Using 11 neighbors for 11817 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11817
+[DEBUG getNormalsOnSurface] Computing curvature for 11817 points...
+[ADAPTIVE CURVATURE] Using K=39 for 11817 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11817
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11817
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 3769
+Cluster 2 : 2709
+Cluster 3 : 1873
+Cluster 4 : 96
+Cluster 5 : 68
+Cluster 6 : 58
+Points in two clusters / Total Points in Pointcloud: 54.82%
+Points in two clusters / Total Points in all clusters: 75.56%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2849 1714 284 487 2186 3501 837 2417 1389 1623 2698 2252 1962 2923 168 2533 887 854 637 3470 538 789 173 1840 2566 3213 3459 3397 1792 2160 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  3769 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2709 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3244, min=10, max=9732
+PointCloud representing the Cluster: 3244 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3244 points, spacing≈17.56mm, boundary_r=15mm
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 6.899 seconds
+Copied Point file: Pot_A_Piece_39_Point.pcd
+Copied Mesh file: Pot_A_Piece_39_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9571
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9571
+[ADAPTIVE CGAL] Using 9 neighbors for 9571 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9571
+[DEBUG getNormalsOnSurface] Computing curvature for 9571 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9571 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 9571
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9571
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9571
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9571
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9571
+[ADAPTIVE CGAL] Using 9 neighbors for 9571 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9571
+[DEBUG getNormalsOnSurface] Computing curvature for 9571 points...
+[ADAPTIVE CURVATURE] Using K=31 for 9571 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9571
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9571
+Number of clusters is equal to 5
+Points in 
+Cluster 1 : 2706
+Cluster 2 : 1424
+Cluster 3 : 980
+Cluster 4 : 501
+Cluster 5 : 85
+Points in two clusters / Total Points in Pointcloud: 43.15%
+Points in two clusters / Total Points in all clusters: 72.51%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2419 1342 777 2580 1500 1939 1466 1058 1275 506 2224 920 197 2031 1372 144 9 1018 1746 2140 2198 1760 914 964 389 144 385 964 1755 1720 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  2706 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  1424 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=3875, min=10, max=11625
+PointCloud representing the Cluster: 3875 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 3875 points, spacing≈16.06mm, boundary_r=15mm
+Successfully found 5 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 7.126 seconds
+Copied Point file: Pot_A_Piece_40_Point.pcd
+Copied Mesh file: Pot_A_Piece_40_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11485
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11485
+[ADAPTIVE CGAL] Using 11 neighbors for 11485 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11485
+[DEBUG getNormalsOnSurface] Computing curvature for 11485 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11485 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+[DEBUG] PLY file loaded successfully. Points: 11485
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11485
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11485
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11485
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11485
+[ADAPTIVE CGAL] Using 11 neighbors for 11485 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11485
+[DEBUG getNormalsOnSurface] Computing curvature for 11485 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11485 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11485
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11485
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 4498
+Cluster 2 : 4260
+Points in two clusters / Total Points in Pointcloud: 76.26%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 752 1354 3982 182 3824 3921 766 3788 3897 1641 859 1459 1102 3099 681 2340 476 4484 1826 3566 855 4097 1139 496 780 4205 3051 2441 696 2056 
+Normals flipped: true
+  loading cloudForSpline.pcd
+  4498 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4260 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[ADAPTIVE CLUSTER 1] N=2727, min=10, max=8181
+PointCloud representing the Cluster: 2727 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2727 points, spacing≈19.15mm, boundary_r=15mm
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+
+Time after processing: 5.523 seconds
+Total time elapsed: 206.4 seconds
+NURBS surface generation completed at: Fri 24 Oct 2025 01:08:56 AEDT
+Surface files generated:
+Found 80 surface files (expected 80 for 40 pieces)
+=== Step 2: NURBS Edge Line Extraction ===
+This will take approximately 1-2 hours for 40 pieces...
+Running NURBS EdgeLineExtractionHeadless...
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[ADAPTIVE BOUNDARY EDGE] 5740 points, spacing≈13.1991mm, boundary_r=15mm
+[ADAPTIVE OUTLIER] 86 boundary points, outlier_r=20mm, min_neighbors=3
+[ADAPTIVE SEQUENCING] Boundary has 86 points, using K=8 for point sequencing
+[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode...
+Initiating uniform sampling and smoothing of breakline segments...
+[ADAPTIVE SPHERE-MARCHING] Input points: 26, avgSpacing: 0.00565891m (5.65891mm), max_radius: 15mm, adaptiveRadius: 0.00848836m (8.48836mm)
+[BREAKLINE DEBUG] Smoothed breakline output points: 15
+[INTEGRATION POINT #1] Pre-densification: 15 points
+[DENSIFY] Perimeter=118.837mm, current=15 points, target=59 points (spacing=2mm)
+[DENSIFY] Successfully densified from 15 to 59 points
+[INTEGRATION POINT #1] Post-densification: 59 points
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  5740 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-13
+Clock Wise - Changing sequence
+Applying adaptive densification to CompleteBreakline...
+[INTEGRATION POINT #2] Pre-densification: 59 points
+[DENSIFY] Breakline already dense (59 points >= 46 target), skipping densification
+[INTEGRATION POINT #2] Post-densification: 59 points
+Detecting separate line segments...
+[ADAPTIVE WINDOW] Medium breakline (59 points) using window len=5
+[ADAPTIVE PEAK DETECTION] Medium breakline (59 points) using medium sensitivity (divisor=6)
+ected segments = 
+Detecting rim...
+C1 0.00180121 C2 0.00152628
+Mean = 0.00166374
+ERROR: Edge line extraction failed

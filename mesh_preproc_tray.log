@@ -1,0 +1,1846 @@
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 438
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 250
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.0237407 seconds
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 614
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 249
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.0269284 seconds
+Copied Point file: Pot_A_Piece_03_Point.pcd
+Copied Mesh file: Pot_A_Piece_03_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 1253
+Number of clusters is equal to 4
+Points in 
+Cluster 1 : 276
+Cluster 2 : 234
+Cluster 3 : 141
+Cluster 4 : 56
+Points in two clusters / Total Points in Pointcloud: 40.7%
+Points in two clusters / Total Points in all clusters: 72.14%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 9 247 73 60 133 260 43 162 35 131 2 148 245 88 141 53 130 71 33 60 227 259 260 114 269 64 253 163 143 250 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  276 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  234 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 546 data points.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.2585 seconds
+Copied Point file: Pot_A_Piece_04_Point.pcd
+Copied Mesh file: Pot_A_Piece_04_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 651
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 161
+Cluster 2 : 150
+Points in two clusters / Total Points in Pointcloud: 47.77%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 74 118 132 159 18 52 114 50 21 67 92 126 131 44 35 34 119 44 75 147 10 97 111 15 124 139 157 103 68 40 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  161 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  150 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 340 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1796 seconds
+Copied Point file: Pot_A_Piece_05_Point.pcd
+Copied Mesh file: Pot_A_Piece_05_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 476
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 248
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02313 seconds
+Copied Point file: Pot_A_Piece_06_Point.pcd
+Copied Mesh file: Pot_A_Piece_06_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 461
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 112
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02071 seconds
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 723
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 199
+Cluster 2 : 147
+Points in two clusters / Total Points in Pointcloud: 47.86%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 181 13 23 124 80 150 189 69 184 64 172 187 104 190 175 164 156 41 193 26 123 57 195 153 104 116 193 197 87 102 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  199 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  147 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 377 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1856 seconds
+Copied Point file: Pot_A_Piece_08_Point.pcd
+Copied Mesh file: Pot_A_Piece_08_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 582
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 91
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02506 seconds
+Copied Point file: Pot_A_Piece_09_Point.pcd
+Copied Mesh file: Pot_A_Piece_09_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_09_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 439
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 253
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_09_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02303 seconds
+Copied Point file: Pot_A_Piece_10_Point.pcd
+Copied Mesh file: Pot_A_Piece_10_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_10_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 438
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 249
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_10_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02343 seconds
+Copied Point file: Pot_A_Piece_11_Point.pcd
+Copied Mesh file: Pot_A_Piece_11_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_11_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 310
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 135
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_11_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02136 seconds
+Copied Point file: Pot_A_Piece_12_Point.pcd
+Copied Mesh file: Pot_A_Piece_12_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_12_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 473
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 274
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_12_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02296 seconds
+Copied Point file: Pot_A_Piece_13_Point.pcd
+Copied Mesh file: Pot_A_Piece_13_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_13_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 674
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 389
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_13_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02769 seconds
+Copied Point file: Pot_A_Piece_14_Point.pcd
+Copied Mesh file: Pot_A_Piece_14_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_14_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 382
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 66
+Cluster 2 : 63
+Points in two clusters / Total Points in Pointcloud: 33.77%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 26 24 25 0 64 25 39 49 50 27 47 65 43 60 7 35 2 64 23 54 49 20 50 55 17 56 1 22 16 59 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  66 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  63 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 253 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_14_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.158 seconds
+Copied Point file: Pot_A_Piece_15_Point.pcd
+Copied Mesh file: Pot_A_Piece_15_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_15_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 567
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 281
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_15_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02168 seconds
+Copied Point file: Pot_A_Piece_16_Point.pcd
+Copied Mesh file: Pot_A_Piece_16_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_16_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 249
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 60
+Cluster 2 : 54
+Points in two clusters / Total Points in Pointcloud: 45.78%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 1
+Condition 2 (normal vector similarity) failed for clusters 0 and 1
+Sampled indices: 31 23 13 49 13 33 10 40 2 31 16 20 35 15 23 14 10 22 50 58 36 29 35 9 59 14 57 24 55 28 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  60 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  54 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 135 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_16_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1466 seconds
+Copied Point file: Pot_A_Piece_17_Point.pcd
+Copied Mesh file: Pot_A_Piece_17_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_17_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 317
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 168
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_17_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.0184 seconds
+Copied Point file: Pot_A_Piece_18_Point.pcd
+Copied Mesh file: Pot_A_Piece_18_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_18_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 1163
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 320
+Cluster 2 : 111
+Cluster 3 : 108
+Points in two clusters / Total Points in Pointcloud: 37.06%
+Points in two clusters / Total Points in all clusters: 79.96%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 80 238 101 175 169 270 97 138 113 11 78 83 189 82 154 122 270 285 213 75 273 78 299 50 186 189 285 111 96 94 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  320 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  111 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 624 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_18_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.2541 seconds
+Copied Point file: Pot_A_Piece_19_Point.pcd
+Copied Mesh file: Pot_A_Piece_19_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_19_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 502
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 304
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_19_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02286 seconds
+Copied Point file: Pot_A_Piece_20_Point.pcd
+Copied Mesh file: Pot_A_Piece_20_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_20_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 492
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 256
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_20_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02413 seconds
+Copied Point file: Pot_A_Piece_21_Point.pcd
+Copied Mesh file: Pot_A_Piece_21_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_21_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 307
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 59
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_21_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02187 seconds
+Copied Point file: Pot_A_Piece_22_Point.pcd
+Copied Mesh file: Pot_A_Piece_22_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_22_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 0
+Points in 
+Calling mergeClusters function.
+mergeClusters function called.
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;mPointCloud representing the Cluster: 374 data points.
+Single cluster found (iteration 2/30)...Increasing angle threshold (+2) and trying again...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 0
+Points in 
+Calling mergeClusters function.
+mergeClusters function called.
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;mPointCloud representing the Cluster: 374 data points.
+Single cluster found (iteration 3/30)...Increasing angle threshold (+2) and trying again...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 0
+Points in 
+Calling mergeClusters function.
+mergeClusters function called.
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;mPointCloud representing the Cluster: 374 data points.
+Single cluster found (iteration 4/30)...Increasing angle threshold (+2) and trying again...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 0
+Points in 
+Calling mergeClusters function.
+mergeClusters function called.
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;mPointCloud representing the Cluster: 374 data points.
+Single cluster found (iteration 5/30)...Increasing angle threshold (+2) and trying again...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 0
+Points in 
+Calling mergeClusters function.
+mergeClusters function called.
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;mPointCloud representing the Cluster: 374 data points.
+Single cluster found (iteration 6/30)...Increasing angle threshold (+2) and trying again...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 374
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 60
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 6 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_22_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.2008 seconds
+Copied Point file: Pot_A_Piece_23_Point.pcd
+Copied Mesh file: Pot_A_Piece_23_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_23_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 392
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 146
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_23_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02191 seconds
+Copied Point file: Pot_A_Piece_24_Point.pcd
+Copied Mesh file: Pot_A_Piece_24_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_24_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 516
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 87
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_24_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02393 seconds
+Copied Point file: Pot_A_Piece_25_Point.pcd
+Copied Mesh file: Pot_A_Piece_25_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_25_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 200
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 80
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_25_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.01977 seconds
+Copied Point file: Pot_A_Piece_26_Point.pcd
+Copied Mesh file: Pot_A_Piece_26_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_26_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 757
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 190
+Cluster 2 : 164
+Points in two clusters / Total Points in Pointcloud: 46.76%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 95 175 69 116 113 126 182 52 167 112 164 173 155 102 22 181 129 85 137 112 16 59 187 95 174 70 173 63 132 106 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  190 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  164 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 403 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_26_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1836 seconds
+Copied Point file: Pot_A_Piece_27_Point.pcd
+Copied Mesh file: Pot_A_Piece_27_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_27_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 375
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 78
+Cluster 2 : 53
+Points in two clusters / Total Points in Pointcloud: 34.93%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 0 38 13 35 57 45 27 28 77 38 60 45 77 59 63 23 64 50 77 41 77 61 30 12 41 42 17 67 37 47 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  78 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  53 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 244 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_27_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.157 seconds
+Copied Point file: Pot_A_Piece_28_Point.pcd
+Copied Mesh file: Pot_A_Piece_28_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_28_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 515
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 274
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_28_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02104 seconds
+Copied Point file: Pot_A_Piece_29_Point.pcd
+Copied Mesh file: Pot_A_Piece_29_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_29_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 674
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 127
+Cluster 2 : 91
+Points in two clusters / Total Points in Pointcloud: 32.34%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 37 25 119 122 45 64 108 122 115 78 60 98 122 103 0 101 106 92 10 104 82 21 28 99 117 35 7 43 17 102 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  127 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  91 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 456 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_29_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1933 seconds
+Copied Point file: Pot_A_Piece_30_Point.pcd
+Copied Mesh file: Pot_A_Piece_30_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_30_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 522
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 65
+Cluster 2 : 51
+Points in two clusters / Total Points in Pointcloud: 22.22%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 53 12 56 32 49 18 34 2 18 34 9 5 38 38 57 12 3 40 64 23 47 13 26 45 52 7 54 12 10 39 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  65 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  51 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 406 data points.
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_30_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.1789 seconds
+Copied Point file: Pot_A_Piece_31_Point.pcd
+Copied Mesh file: Pot_A_Piece_31_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_31_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 469
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 233
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_31_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02054 seconds
+Copied Point file: Pot_A_Piece_32_Point.pcd
+Copied Mesh file: Pot_A_Piece_32_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_32_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 796
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 504
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_32_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02659 seconds
+Copied Point file: Pot_A_Piece_33_Point.pcd
+Copied Mesh file: Pot_A_Piece_33_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_33_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 556
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 297
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_33_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02146 seconds
+Copied Point file: Pot_A_Piece_34_Point.pcd
+Copied Mesh file: Pot_A_Piece_34_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_34_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 836
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 510
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_34_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.0263 seconds
+Copied Point file: Pot_A_Piece_35_Point.pcd
+Copied Mesh file: Pot_A_Piece_35_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_35_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 1177
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 847
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_35_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02904 seconds
+Copied Point file: Pot_A_Piece_36_Point.pcd
+Copied Mesh file: Pot_A_Piece_36_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_36_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 608
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 365
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_36_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02298 seconds
+Copied Point file: Pot_A_Piece_37_Point.pcd
+Copied Mesh file: Pot_A_Piece_37_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_37_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 577
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 294
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_37_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.01863 seconds
+Copied Point file: Pot_A_Piece_38_Point.pcd
+Copied Mesh file: Pot_A_Piece_38_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_38_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 832
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 141
+Cluster 2 : 112
+Cluster 3 : 90
+Points in two clusters / Total Points in Pointcloud: 30.41%
+Points in two clusters / Total Points in all clusters: 73.76%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 120 90 1 79 12 125 45 87 4 96 69 53 126 99 74 26 69 4 61 18 51 129 49 72 43 59 81 78 77 60 
+Normals flipped: true
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m  loading cloudForSpline.pcd
+  141 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  112 points in data set
+  surface fitting ...
+PointCloud representing the Cluster: 489 data points.
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_38_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.2155 seconds
+Copied Point file: Pot_A_Piece_39_Point.pcd
+Copied Mesh file: Pot_A_Piece_39_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_39_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 589
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 85
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_39_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.02457 seconds
+Copied Point file: Pot_A_Piece_40_Point.pcd
+Copied Mesh file: Pot_A_Piece_40_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_40_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Total points: 1078
+Number of clusters is equal to 1
+Points in 
+Cluster 1 : 719
+Calling mergeClusters function.
+mergeClusters function called.
+Warning: Could not achieve 2 clusters after 1 iterations. Final cluster count: 1. Proceeding with available clusters.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_40_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.03376 seconds
+Total time elapsed: 18.67 seconds

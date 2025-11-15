@@ -1,0 +1,50 @@
+cmake_minimum_required(VERSION 3.10)
+project(EdgelineExtraction)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find required packages
+find_package(PkgConfig REQUIRED)
+find_package(PCL 1.12 REQUIRED)
+find_package(CGAL REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(VTK REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system filesystem thread)
+
+# Include directories
+include_directories(${PCL_INCLUDE_DIRS})
+include_directories(${CGAL_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})
+include_directories(${VTK_INCLUDE_DIRS})
+
+# Link directories
+link_directories(${PCL_LIBRARY_DIRS})
+
+# Definitions
+add_definitions(${PCL_DEFINITIONS})
+
+# Create executable
+add_executable(edgeline_extraction edgeline_extraction.cpp)
+
+# Link libraries
+target_link_libraries(edgeline_extraction 
+    ${PCL_LIBRARIES}
+    ${CGAL_LIBRARIES}
+    ${VTK_LIBRARIES}
+    ${Boost_LIBRARIES}
+    stdc++fs
+    pthread
+)
+
+# CGAL setup
+target_link_libraries(edgeline_extraction CGAL::CGAL)
+
+# Compiler-specific options
+if(CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(edgeline_extraction PRIVATE -Wall -Wextra -O3)
+endif()
+
+message(STATUS "PCL version: ${PCL_VERSION}")
+message(STATUS "CGAL version: ${CGAL_VERSION}")
+message(STATUS "VTK version: ${VTK_VERSION}")

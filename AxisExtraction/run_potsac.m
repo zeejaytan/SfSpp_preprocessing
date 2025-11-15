@@ -7,14 +7,27 @@ function vt = run_potsac(C1, C2)
 if nargin < 2
     num_points = size(C1, 2);
     C = C1;
-    C1 = C(:,1:(0.5*num_points));
-    C2 = C(:,(0.5*num_points):1:num_points);
+    half_point = floor(0.5*num_points);  % Fix: Use floor to ensure integer
+    C1 = C(:,1:half_point);
+    C2 = C(:,(half_point+1):1:num_points);  % Fix: Start from half_point+1 to avoid overlap
 else
     C = [C1, C2];
     num_points = size(C, 2);
 end
+
+% ADAPTIVE: Compute downsampling step based on point cloud density
+if num_points < 5000
+    step = 1;  % Use all points for sparse data
+elseif num_points > 50000
+    step = ceil(num_points / 10000);  % Downsample very dense data
+else
+    step = max(1, round(num_points / 10000));  % Medium density
+end
+fprintf('[ADAPTIVE POTSAC] num_points=%d, step=%d (downsampled to %d points)\n', ...
+        num_points, step, floor(num_points/step));
+
 % [vt, ~, costs] = compute_axis_of_symmetry_v2(C1(:,1:10:end), C2(:,1:10:end));
-[vt, ~, costs] = compute_axis_of_symmetry(C(:,1:10:num_points));
+[vt, ~, costs] = compute_axis_of_symmetry(C(:,1:step:num_points));
 
 % Compute PotSAC 2 cost for each 20 vt.
 % max_poly_order = 4;
@@ -31,14 +44,14 @@ num_candidates =10; %원래는 10
 % Refine axis
 
 for i = 1 : num_candidates
-    vt(:,i) = refine_axis(vt(:,i), C(:,1:10:end), 2, [], [], 300, 1e-3);
+    vt(:,i) = refine_axis(vt(:,i), C(:,1:step:end), 2, [], [], 300, 1e-3);
 end
 vt = vt(:,1:num_candidates);
 
 robustifier = @robustifier_huber;
 cost = nan(num_candidates, 1);
 for i = 1 : num_candidates
-    residual = compute_biaxial_cao_error(vt(:,i), C(:,1:10:end));
+    residual = compute_biaxial_cao_error(vt(:,i), C(:,1:step:end));
     cost(i) = sum(apply_robustifier(robustifier, residual));
     % cost(i) = sqrt( sum(residual .^2) / numel(residual) );
 end

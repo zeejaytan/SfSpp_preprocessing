@@ -1,0 +1,50 @@
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+[DEBUG] processFragmentData: surface=Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz mesh=Temp/Pot_A_Piece_01_Mesh.obj
+Fragment: Temp/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+[DEBUG] cleanSamples: input pts=525
+[DEBUG] cleanSamples: after SOR pts=525
+[DEBUG] cleaned surface normals pts=525 (Temp/Temp_edge/Pot_A/cloud_Surface_AllSamples_Cleaned.pcd)
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[EDGELINE DBG] boundaryCloud size=46
+[EDGELINE DBG] unclustered size=0 ply_ok=-1
+[EDGELINE DBG] boundaryCloud_Improved size=46
+[EDGELINE DBG] cloud_filtered size=46
+[EDGELINE DBG] boundary reload size=46
+[EDGELINE DBG] cloud_sequenced size=44
+[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:21: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:28: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k2' of element 'camera' is not handled
+[0;mInitiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  525 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+[1;33mFailed to find match for field 'normal_x'.
+[0;m[1;33mFailed to find match for field 'normal_y'.
+[0;m[1;33mFailed to find match for field 'normal_z'.
+[0;m[1;33mFailed to find match for field 'curvature'.
+[0;m-1
+Clock Wise - Changing sequence
+[DEBUG] CompleteBreakline.pcd pts=2
+Detecting separate line segments...
+[DEBUG] Segments/*.xyz files=1
+Detecting rim...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m

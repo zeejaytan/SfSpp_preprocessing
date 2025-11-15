@@ -1,0 +1,78 @@
+=== Rebuilding NURBS MeshPreprocessingHeadless with Debug Logging ===
+Started: Wed 22 Oct 2025 01:09:34 AEDT
+Rebuilding MeshPreprocessingHeadless...
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[ 50%] Building CXX object CMakeFiles/MeshPreprocessingHeadless.dir/mesh_processing_headless.cpp.o
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:156:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h:18,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:212:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/thread/thread_time.hpp:9,
+                 from /usr/include/boost/thread/lock_types.hpp:18,
+                 from /usr/include/boost/thread/pthread/thread_data.hpp:12,
+                 from /usr/include/boost/thread/thread_only.hpp:17,
+                 from /usr/include/boost/thread/thread.hpp:12,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:12:
+/usr/include/boost/bind.hpp:36:1: note: '#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.'
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+/usr/include/boost/detail/iterator.hpp:13:1: note: '#pragma message: This header is deprecated. Use <iterator> instead.'
+   13 | BOOST_HEADER_DEPRECATED("<iterator>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:156:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: '#pragma message: Warning: The header `<CGAL/Polygon_mesh_processing/smooth_mesh.h>` is deprecated. Please use `<CGAL/Polygon_mesh_processing/angle_and_area_smoothing.h>` instead. '
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/thread/thread_time.hpp:9,
+                 from /usr/include/boost/thread/lock_types.hpp:18,
+                 from /usr/include/boost/thread/pthread/thread_data.hpp:12,
+                 from /usr/include/boost/thread/thread_only.hpp:17,
+                 from /usr/include/boost/thread/thread.hpp:12,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:12:
+/usr/include/boost/function_output_iterator.hpp:14:1: note: '#pragma message: This header is deprecated. Use <boost/iterator/function_output_iterator.hpp> instead.'
+   14 | BOOST_HEADER_DEPRECATED("<boost/iterator/function_output_iterator.hpp>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h:18,
+                 from /workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:212:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: '#pragma message: Warning: The header `<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h>` is deprecated. Please use `<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>` instead. '
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+/workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp: In function 'std::string downsamplePointCloud(std::string, float)':
+/workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:537:48: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+  537 |         if (downsampledCloud->size() > (size_t)upperBound) {
+      |                                                ^~~~~~~~~~
+      |                                        ------------------
+      |                                        static_cast<size_t> (upperBound)
+/workspace/original_nurbs_preprocessing/mesh_processing_headless.cpp:540:55: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+  540 |         } else if (downsampledCloud->size() < (size_t)lowerBound) {
+      |                                                       ^~~~~~~~~~
+      |                                               ------------------
+      |                                               static_cast<size_t> (lowerBound)
+[100%] Linking CXX executable MeshPreprocessingHeadless
+[100%] Built target MeshPreprocessingHeadless
+Rebuild successful!
+-rwxrwxr-x 1 zhuojiat punim2657 1.4M Oct 22 01:10 original_nurbs_preprocessing/build/MeshPreprocessingHeadless
+Completed: Wed 22 Oct 2025 01:10:11 AEDT

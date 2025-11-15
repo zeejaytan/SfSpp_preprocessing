@@ -1,0 +1,11 @@
+Environment check:
+OS: 
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+VTK: 
+0
+PCL: 
+0
+CMake: 
+cmake version 3.22.1
+G++: 
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0

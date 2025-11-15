@@ -1,0 +1,1246 @@
+=== NURBS EdgeLine Extraction with Proper Geometric Curvature ===
+Job ID: 15290984
+Start time: Sun 07 Sep 2025 01:18:29 AEST
+Using EdgeLineExtractionHeadless with NURBS surface derivative computation
+
+Running NURBS EdgeLine extraction with proper curvature computation...
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+102
+CountClock Wise - Right
+Detecting separate line segments...
+ted segments = 
+Detecting rim...
+C1 0.0850143 C2 0.0688547
+Mean = 0.0769345
+C1 0.0831182 C2 0.0668896
+Mean = 0.0750039
+C1 0.0749519 C2 0.0509304
+Mean = 0.0629412
+C1 0.0718787 C2 0.0673048
+Mean = 0.0695918
+C1 0.072992 C2 0.0538697
+Mean = 0.0634308
+Axis information is not available.
+Saved PCD with 6 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0850551 C2 0.067977
+Mean = 0.076516
+C1 0.0831186 C2 0.0667486
+Mean = 0.0749336
+C1 0.0717525 C2 0.0482555
+Mean = 0.060004
+C1 0.0724094 C2 0.065587
+Mean = 0.0689982
+C1 0.0731464 C2 0.0531829
+Mean = 0.0631647
+Fragment: Temp/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-46
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ted segments = 
+Detecting rim...
+C1 0.0633053 C2 0.0607336
+Mean = 0.0620195
+C1 0.0712398 C2 0.0691662
+Mean = 0.070203
+C1 0.0642064 C2 0.0730119
+Mean = 0.0686092
+C1 0.0602928 C2 0.0563348
+Mean = 0.0583138
+C1 0.0547329 C2 0.0504287
+Mean = 0.0525808
+Axis information is not available.
+Saved PCD with 6 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0630908 C2 0.0611547
+Mean = 0.0621228
+C1 0.0686744 C2 0.0721376
+Mean = 0.070406
+C1 0.0649419 C2 0.0722358
+Mean = 0.0685888
+C1 0.0588726 C2 0.0565442
+Mean = 0.0577084
+C1 0.0539622 C2 0.0514979
+Mean = 0.05273
+
+Processing time for Pot_A_Piece_01: 7.02325 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+102
+CountClock Wise - Right
+Detecting separate line segments...
+ted segments = 
+Detecting rim...
+C1 0.0850143 C2 0.0688547
+Mean = 0.0769345
+C1 0.0831182 C2 0.0668896
+Mean = 0.0750039
+C1 0.0749519 C2 0.0509304
+Mean = 0.0629412
+C1 0.0718787 C2 0.0673048
+Mean = 0.0695918
+C1 0.072992 C2 0.0538697
+Mean = 0.0634308
+Axis information is not available.
+Saved PCD with 6 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0850551 C2 0.067977
+Mean = 0.076516
+C1 0.0831186 C2 0.0667486
+Mean = 0.0749336
+C1 0.0717525 C2 0.0482555
+Mean = 0.060004
+C1 0.0724094 C2 0.065587
+Mean = 0.0689982
+C1 0.0731464 C2 0.0531829
+Mean = 0.0631647
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-46
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ted segments = 
+Detecting rim...
+C1 0.0633053 C2 0.0607336
+Mean = 0.0620195
+C1 0.0712398 C2 0.0691662
+Mean = 0.070203
+C1 0.0642064 C2 0.0730119
+Mean = 0.0686092
+C1 0.0602928 C2 0.0563348
+Mean = 0.0583138
+C1 0.0547329 C2 0.0504287
+Mean = 0.0525808
+Axis information is not available.
+Saved PCD with 6 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0630908 C2 0.0611547
+Mean = 0.0621228
+C1 0.0686744 C2 0.0721376
+Mean = 0.070406
+C1 0.0649419 C2 0.0722358
+Mean = 0.0685888
+C1 0.0588726 C2 0.0565442
+Mean = 0.0577084
+C1 0.0539622 C2 0.0514979
+Mean = 0.05273
+
+Processing time for Pot_A_Piece_01: 6.89413 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+84
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.137578 C2 0.129658
+Mean = 0.133618
+C1 0.102233 C2 0.093422
+Mean = 0.0978274
+C1 0.0659265 C2 0.0572179
+Mean = 0.0615722
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.137688 C2 0.129509
+Mean = 0.133598
+C1 0.101952 C2 0.0946138
+Mean = 0.0982829
+C1 0.0658423 C2 0.0575717
+Mean = 0.061707
+Fragment: Temp/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+83
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.17933 C2 0.169535
+Mean = 0.174433
+C1 0.0669202 C2 0.0587092
+Mean = 0.0628147
+C1 0.0715644 C2 0.0695067
+Mean = 0.0705355
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.178024 C2 0.168604
+Mean = 0.173314
+C1 0.0667746 C2 0.0582377
+Mean = 0.0625062
+C1 0.0757596 C2 0.0704248
+Mean = 0.0730922
+
+Processing time for Pot_A_Piece_02: 4.42893 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+84
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.137578 C2 0.129658
+Mean = 0.133618
+C1 0.102233 C2 0.093422
+Mean = 0.0978274
+C1 0.0659265 C2 0.0572179
+Mean = 0.0615722
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.137688 C2 0.129509
+Mean = 0.133598
+C1 0.101952 C2 0.0946138
+Mean = 0.0982829
+C1 0.0658423 C2 0.0575717
+Mean = 0.061707
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+83
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.17933 C2 0.169535
+Mean = 0.174433
+C1 0.0669202 C2 0.0587092
+Mean = 0.0628147
+C1 0.0715644 C2 0.0695067
+Mean = 0.0705355
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.178024 C2 0.168604
+Mean = 0.173314
+C1 0.0667746 C2 0.0582377
+Mean = 0.0625062
+C1 0.0757596 C2 0.0704248
+Mean = 0.0730922
+
+Processing time for Pot_A_Piece_02: 4.38229 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+78
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.143566 C2 0.144992
+Mean = 0.144279
+C1 0.065067 C2 0.0570659
+Mean = 0.0610665
+C1 0.0660179 C2 0.0626641
+Mean = 0.064341
+C1 0.103633 C2 0.106246
+Mean = 0.104939
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.14378 C2 0.145521
+Mean = 0.14465
+C1 0.0661686 C2 0.0577385
+Mean = 0.0619536
+C1 0.0669856 C2 0.062
+Mean = 0.0644928
+C1 0.0993849 C2 0.105908
+Mean = 0.102646
+Fragment: Temp/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+74
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.155269 C2 0.152885
+Mean = 0.154077
+C1 0.0786574 C2 0.0843899
+Mean = 0.0815236
+C1 0.0692816 C2 0.062592
+Mean = 0.0659368
+C1 0.0588392 C2 0.0576653
+Mean = 0.0582522
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.156239 C2 0.153102
+Mean = 0.154671
+C1 0.0803028 C2 0.0942113
+Mean = 0.0872571
+C1 0.0696751 C2 0.0622422
+Mean = 0.0659587
+C1 0.0583641 C2 0.0597238
+Mean = 0.059044
+
+Processing time for Pot_A_Piece_03: 3.71584 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+78
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.143566 C2 0.144992
+Mean = 0.144279
+C1 0.065067 C2 0.0570659
+Mean = 0.0610665
+C1 0.0660179 C2 0.0626641
+Mean = 0.064341
+C1 0.103633 C2 0.106246
+Mean = 0.104939
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.14378 C2 0.145521
+Mean = 0.14465
+C1 0.0661686 C2 0.0577385
+Mean = 0.0619536
+C1 0.0669856 C2 0.062
+Mean = 0.0644928
+C1 0.0993849 C2 0.105908
+Mean = 0.102646
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+74
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.155269 C2 0.152885
+Mean = 0.154077
+C1 0.0786574 C2 0.0843899
+Mean = 0.0815236
+C1 0.0692816 C2 0.062592
+Mean = 0.0659368
+C1 0.0588392 C2 0.0576653
+Mean = 0.0582522
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.156239 C2 0.153102
+Mean = 0.154671
+C1 0.0803028 C2 0.0942113
+Mean = 0.0872571
+C1 0.0696751 C2 0.0622422
+Mean = 0.0659587
+C1 0.0583641 C2 0.0597238
+Mean = 0.059044
+
+Processing time for Pot_A_Piece_03: 3.72251 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_04_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-73
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.0738484 C2 0.0578391
+Mean = 0.0658437
+C1 0.0413661 C2 0.043497
+Mean = 0.0424316
+C1 0.147996 C2 0.154633
+Mean = 0.151314
+C1 0.0646377 C2 0.0593313
+Mean = 0.0619845
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0733863 C2 0.0575263
+Mean = 0.0654563
+C1 0.0426054 C2 0.0448655
+Mean = 0.0437355
+C1 0.150285 C2 0.155953
+Mean = 0.153119
+C1 0.0662415 C2 0.0608705
+Mean = 0.063556
+Fragment: Temp/Pot_A_Piece_04_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-78
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.0684913 C2 0.0628713
+Mean = 0.0656813
+C1 0.120292 C2 0.119954
+Mean = 0.120123
+C1 0.0637496 C2 0.0557111
+Mean = 0.0597303
+C1 0.0704957 C2 0.0596702
+Mean = 0.065083
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0699225 C2 0.0623094
+Mean = 0.0661159
+C1 0.119883 C2 0.120514
+Mean = 0.120199
+C1 0.0661146 C2 0.0544025
+Mean = 0.0602585
+C1 0.0702776 C2 0.059361
+Mean = 0.0648193
+
+Processing time for Pot_A_Piece_04: 3.18505 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_04_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-73
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.0738484 C2 0.0578391
+Mean = 0.0658437
+C1 0.0413661 C2 0.043497
+Mean = 0.0424316
+C1 0.147996 C2 0.154633
+Mean = 0.151314
+C1 0.0646377 C2 0.0593313
+Mean = 0.0619845
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0733863 C2 0.0575263
+Mean = 0.0654563
+C1 0.0426054 C2 0.0448655
+Mean = 0.0437355
+C1 0.150285 C2 0.155953
+Mean = 0.153119
+C1 0.0662415 C2 0.0608705
+Mean = 0.063556
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_04_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-78
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.0684913 C2 0.0628713
+Mean = 0.0656813
+C1 0.120292 C2 0.119954
+Mean = 0.120123
+C1 0.0637496 C2 0.0557111
+Mean = 0.0597303
+C1 0.0704957 C2 0.0596702
+Mean = 0.065083
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0699225 C2 0.0623094
+Mean = 0.0661159
+C1 0.119883 C2 0.120514
+Mean = 0.120199
+C1 0.0661146 C2 0.0544025
+Mean = 0.0602585
+C1 0.0702776 C2 0.059361
+Mean = 0.0648193
+
+Processing time for Pot_A_Piece_04: 3.13977 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_05_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+74
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.147219 C2 0.131271
+Mean = 0.139245
+C1 0.0685142 C2 0.0688096
+Mean = 0.0686619
+C1 0.0847262 C2 0.0773957
+Mean = 0.0810609
+C1 0.0602429 C2 0.0591613
+Mean = 0.0597021
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.147116 C2 0.131004
+Mean = 0.13906
+C1 0.0694226 C2 0.0713401
+Mean = 0.0703814
+C1 0.0851555 C2 0.0763233
+Mean = 0.0807394
+C1 0.0608927 C2 0.0592506
+Mean = 0.0600717
+Fragment: Temp/Pot_A_Piece_05_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-74
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.050654 C2 0.0548942
+Mean = 0.0527741
+C1 0.136441 C2 0.125895
+Mean = 0.131168
+C1 0.0694437 C2 0.0524966
+Mean = 0.0609701
+C1 0.066789 C2 0.0520148
+Mean = 0.0594019
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.051905 C2 0.0550272
+Mean = 0.0534661
+C1 0.134889 C2 0.124731
+Mean = 0.12981
+C1 0.0694863 C2 0.0524718
+Mean = 0.060979
+C1 0.0687678 C2 0.0521135
+Mean = 0.0604407
+
+Processing time for Pot_A_Piece_05: 3.21409 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_05_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+74
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.147219 C2 0.131271
+Mean = 0.139245
+C1 0.0685142 C2 0.0688096
+Mean = 0.0686619
+C1 0.0847262 C2 0.0773957
+Mean = 0.0810609
+C1 0.0602429 C2 0.0591613
+Mean = 0.0597021
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.147116 C2 0.131004
+Mean = 0.13906
+C1 0.0694226 C2 0.0713401
+Mean = 0.0703814
+C1 0.0851555 C2 0.0763233
+Mean = 0.0807394
+C1 0.0608927 C2 0.0592506
+Mean = 0.0600717
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_05_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-74
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+C1 0.050654 C2 0.0548942
+Mean = 0.0527741
+C1 0.136441 C2 0.125895
+Mean = 0.131168
+C1 0.0694437 C2 0.0524966
+Mean = 0.0609701
+C1 0.066789 C2 0.0520148
+Mean = 0.0594019
+Axis information is not available.
+Saved PCD with 5 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.051905 C2 0.0550272
+Mean = 0.0534661
+C1 0.134889 C2 0.124731
+Mean = 0.12981
+C1 0.0694863 C2 0.0524718
+Mean = 0.060979
+C1 0.0687678 C2 0.0521135
+Mean = 0.0604407
+
+Processing time for Pot_A_Piece_05: 3.1957 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_06_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+73
+CountClock Wise - Right
+Detecting separate line segments...
+tected segments = 
+Detecting rim...
+C1 0.182423 C2 0.184387
+Mean = 0.183405
+C1 0.0747355 C2 0.0703529
+Mean = 0.0725442
+Axis information is not available.
+Saved PCD with 3 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.183445 C2 0.183883
+Mean = 0.183664
+C1 0.0746199 C2 0.0701929
+Mean = 0.0724064
+Fragment: Temp/Pot_A_Piece_06_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-75
+Clock Wise - Changing sequence
+Detecting separate line segments...
+tected segments = 
+Detecting rim...
+C1 0.0764219 C2 0.0750105
+Mean = 0.0757162
+C1 0.128899 C2 0.134466
+Mean = 0.131683
+Axis information is not available.
+Saved PCD with 3 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0762125 C2 0.0744813
+Mean = 0.0753469
+C1 0.128535 C2 0.135158
+Mean = 0.131846
+
+Processing time for Pot_A_Piece_06: 2.46958 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_06_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+73
+CountClock Wise - Right
+Detecting separate line segments...
+tected segments = 
+Detecting rim...
+C1 0.182423 C2 0.184387
+Mean = 0.183405
+C1 0.0747355 C2 0.0703529
+Mean = 0.0725442
+Axis information is not available.
+Saved PCD with 3 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.183445 C2 0.183883
+Mean = 0.183664
+C1 0.0746199 C2 0.0701929
+Mean = 0.0724064
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_06_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-75
+Clock Wise - Changing sequence
+Detecting separate line segments...
+tected segments = 
+Detecting rim...
+C1 0.0764219 C2 0.0750105
+Mean = 0.0757162
+C1 0.128899 C2 0.134466
+Mean = 0.131683
+Axis information is not available.
+Saved PCD with 3 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0762125 C2 0.0744813
+Mean = 0.0753469
+C1 0.128535 C2 0.135158
+Mean = 0.131846
+
+Processing time for Pot_A_Piece_06: 2.47585 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_07_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2092 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+25
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.061436 C2 0.0647954
+Mean = 0.0631157
+C1 0.0604678 C2 0.0777234
+Mean = 0.0690956
+C1 0.0721648 C2 0.0615648
+Mean = 0.0668648
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0677377 C2 0.0655746
+Mean = 0.0666562
+C1 0.0606394 C2 0.0785746
+Mean = 0.069607
+C1 0.0720994 C2 0.0605923
+Mean = 0.0663458
+Fragment: Temp/Pot_A_Piece_07_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  1828 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+33
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.0624305 C2 0.0605989
+Mean = 0.0615147
+C1 0.0826509 C2 0.0957986
+Mean = 0.0892247
+C1 0.0498664 C2 0.0489208
+Mean = 0.0493936
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0664813 C2 0.0596786
+Mean = 0.0630799
+C1 0.082406 C2 0.0941146
+Mean = 0.0882603
+C1 0.0496316 C2 0.0481101
+Mean = 0.0488708
+
+Processing time for Pot_A_Piece_07: 1.03594 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_07_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2092 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+25
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.061436 C2 0.0647954
+Mean = 0.0631157
+C1 0.0604678 C2 0.0777234
+Mean = 0.0690956
+C1 0.0721648 C2 0.0615648
+Mean = 0.0668648
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.0677377 C2 0.0655746
+Mean = 0.0666562
+C1 0.0606394 C2 0.0785746
+Mean = 0.069607
+C1 0.0720994 C2 0.0605923
+Mean = 0.0663458
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_07_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  1828 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+33
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.0624305 C2 0.0605989
+Mean = 0.0615147
+C1 0.0826509 C2 0.0957986
+Mean = 0.0892247
+C1 0.0498664 C2 0.0489208
+Mean = 0.0493936
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0664813 C2 0.0596786
+Mean = 0.0630799
+C1 0.082406 C2 0.0941146
+Mean = 0.0882603
+C1 0.0496316 C2 0.0481101
+Mean = 0.0488708
+
+Processing time for Pot_A_Piece_07: 1.01716 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.xyz
+Fragment: Temp/Pot_A_Piece_08_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2578 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+28
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.169091 C2 0.138104
+Mean = 0.153597
+C1 0.0531462 C2 0.0548897
+Mean = 0.0540179
+C1 0.0753493 C2 0.0599627
+Mean = 0.067656
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.173745 C2 0.139295
+Mean = 0.15652
+C1 0.0517087 C2 0.0557539
+Mean = 0.0537313
+C1 0.0746769 C2 0.0618956
+Mean = 0.0682862
+Fragment: Temp/Pot_A_Piece_08_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2550 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-32
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.0590357 C2 0.0589695
+Mean = 0.0590026
+C1 0.0599743 C2 0.0603891
+Mean = 0.0601817
+C1 0.135998 C2 0.132984
+Mean = 0.134491
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0604725 C2 0.0584921
+Mean = 0.0594823
+C1 0.0624468 C2 0.0617759
+Mean = 0.0621114
+C1 0.137291 C2 0.131067
+Mean = 0.134179
+
+Processing time for Pot_A_Piece_08: 1.14824 seconds
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.xyz
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_08_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2578 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+28
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.169091 C2 0.138104
+Mean = 0.153597
+C1 0.0531462 C2 0.0548897
+Mean = 0.0540179
+C1 0.0753493 C2 0.0599627
+Mean = 0.067656
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_0.pcd
+Getting points on fractured surface...
+C1 0.173745 C2 0.139295
+Mean = 0.15652
+C1 0.0517087 C2 0.0557539
+Mean = 0.0537313
+C1 0.0746769 C2 0.0618956
+Mean = 0.0682862
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_08_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+Initiating uniform sampling and smoothing of breakline segments...
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  2550 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+-32
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+C1 0.0590357 C2 0.0589695
+Mean = 0.0590026
+C1 0.0599743 C2 0.0603891
+Mean = 0.0601817
+C1 0.135998 C2 0.132984
+Mean = 0.134491
+Axis information is not available.
+Saved PCD with 4 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_1.pcd
+Getting points on fractured surface...
+C1 0.0604725 C2 0.0584921
+Mean = 0.0594823
+C1 0.0624468 C2 0.0617759
+Mean = 0.0621114
+C1 0.137291 C2 0.131067
+Mean = 0.134179
+
+Processing time for Pot_A_Piece_08: 1.12285 seconds
+Total processing time: 52.1735 seconds
+
+EdgeLine extraction completed at: Sun 07 Sep 2025 01:19:22 AEST
+=== Generated NURBS Breakline Files with Proper Curvature ===
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/SfS_pp/Breaklines_backup_artificial/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_04_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_03_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_02_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_07_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_05_Breakline_1.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_08_Breakline_0.pcd
+NURBS Breakline: ./Dataset/Breaklines/Pot_A/Pot_A_Piece_06_Breakline_1.pcd
+NURBS Breakline: ./Temp/Temp_edge/Pot_A/cloudBreaklinePointsOnBSplineSurface.pcd
+NURBS Breakline: ./Temp/Temp_edge/Pot_A/CompleteBreakline.pcd
+
+=== Verifying Proper Curvature Values (should show geometric values, not 2e+26) ===
+
+=== Organizing Results into Dataset Structure ===
+Original NURBS surfaces copied to dataset
+
+=== Running Axis Extraction ===
+Extracting pottery axes using existing SLURM parallel approach...
+Submitting parallel axis extraction jobs...
+=== SUBMITTING PARALLEL AXIS EXTRACTION JOBS ===
+Cleaning up existing axis files...
+Submitting SLURM job array for pieces 1-8...
+✅ Jobs submitted successfully with Job ID: 15290993
+Jobs will run in parallel for pieces 1-8
+
+Monitor progress with:
+  squeue -u zhuojiat
+  squeue -j 15290993
+
+Check individual job logs in: logs/
+  logs/axis_extract_15290993_*.out
+  logs/axis_extract_15290993_*.err
+
+Wait for completion and check results with:
+  ./check_axis_results.sh
+=== CHECKING PARALLEL AXIS EXTRACTION RESULTS ===
+Generated axis files: 0/8
+⚠️  Only 0/8 pieces completed
+
+Missing pieces:
+  ❌ Missing: Piece 01
+  ❌ Missing: Piece 02
+  ❌ Missing: Piece 03
+  ❌ Missing: Piece 04
+  ❌ Missing: Piece 05
+  ❌ Missing: Piece 06
+  ❌ Missing: Piece 07
+  ❌ Missing: Piece 08
+
+Check job logs for errors:
+  ls -la logs/
+✓ Axis extraction completed - copied 0 axis files
+=== Dataset Organization Complete ===
+Complete NURBS dataset with proper curvature available at: /data/gpfs/projects/punim2657/sfs_preprocessing/NURBS_Dataset_20250907_ProperCurvature
+Dataset includes:
+  - Surfaces: 0 files
+  - Breaklines: 0 files
+  - Axes: 0 files
+=== Job Finished ===

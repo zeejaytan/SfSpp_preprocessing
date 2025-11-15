@@ -1,0 +1,327 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+CMake Warning (dev) at CMakeLists.txt:12 (find_package):
+  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.
+  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  Environment variable PCL_ROOT is set to:
+
+    /usr/local
+
+  For compatibility, CMake is ignoring the variable.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at /usr/local/share/pcl-1.9/PCLConfig.cmake:38 (cmake_policy):
+  The OLD behavior for policy CMP0074 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:12 (find_package)
+
+
+** WARNING ** io features related to pcap will be disabled
+** WARNING ** io features related to png will be disabled
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (libusb-1.0)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:281 (find_package_handle_standard_args)
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:326 (find_libusb)
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:526 (find_external_library)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+** WARNING ** io features related to libusb-1.0 will be disabled
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_COMMON)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_KDTREE)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_OCTREE)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_SEARCH)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SAMPLE_CONSENSUS) does not match the name of the calling package
+  (PCL).  This can lead to problems in calling code that expects
+  `find_package` result variables (e.g., `_FOUND`) to follow a certain
+  pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_FILTERS) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_2D)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:597 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_GEOMETRY) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:597 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_IO)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_FEATURES) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_ML)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SEGMENTATION) does not match the name of the calling package (PCL).
+  This can lead to problems in calling code that expects `find_package`
+  result variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SURFACE) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_REGISTRATION) does not match the name of the calling package (PCL).
+  This can lead to problems in calling code that expects `find_package`
+  result variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_KEYPOINTS) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_TRACKING) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_STEREO)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at /usr/local/share/pcl-1.9/PCLConfig.cmake:38 (cmake_policy):
+  The OLD behavior for policy CMP0074 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:13 (find_package)
+
+
+CMake Warning at /usr/share/cmake/CGAL/CGAL_enable_end_of_configuration_hook.cmake:93 (message):
+  =======================================================================
+
+  CGAL performance notice:
+
+  The variable CMAKE_BUILD_TYPE is set to "".  For performance reasons, you
+  should set CMAKE_BUILD_TYPE to "Release".
+
+  Set CGAL_DO_NOT_WARN_ABOUT_CMAKE_BUILD_TYPE to TRUE if you want to disable
+  this warning.
+
+  =======================================================================
+Call Stack (most recent call first):
+  /usr/share/cmake/CGAL/CGAL_enable_end_of_configuration_hook.cmake:163 (CGAL_hook_check_CMAKE_BUILD_TYPE)
+  CMakeLists.txt:DEFERRED
+
+
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:139:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/local/include/pcl-1.9/pcl/pcl_base.h:48,
+                 from /usr/local/include/pcl-1.9/pcl/filters/filter.h:43,
+                 from /usr/local/include/pcl-1.9/pcl/filters/uniform_sampling.h:43,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:22:
+/usr/include/boost/bind.hpp:36:1: note: ‘#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.’
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+/usr/include/boost/detail/iterator.hpp:13:1: note: ‘#pragma message: This header is deprecated. Use <iterator> instead.’
+   13 | BOOST_HEADER_DEPRECATED("<iterator>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:139:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: ‘#pragma message: Warning: The header `<CGAL/Polygon_mesh_processing/smooth_mesh.h>` is deprecated. Please use `<CGAL/Polygon_mesh_processing/angle_and_area_smoothing.h>` instead. ’
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp: In function ‘std::vector<int> detectSeparateLineSegments(std::string, int)’:
+/workspace/original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1430:44: warning: use of old-style cast to ‘size_t’ {aka ‘long unsigned int’} [-Wold-style-cast]
+ 1430 |         if (i >= (size_t)dist_scoreB1.rows()) { std::cerr << "[EDGELINE DEBUG] OOB write dist_scoreB1 i=" << i << std::endl; break; }
+      |                                            ^
+      |                  --------
+      |                  static_cast<size_t> (      )
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[EDGELINE DEBUG] processFragmentData surface=Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz mesh=Temp/Pot_A_Piece_01_Mesh.obj
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/pointCloudFromMesh.xyz rows=2092
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:21: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:28: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33mFailed to find match for field 'normal_x'.
+[0;m[1;33mFailed to find match for field 'normal_y'.
+[0;m[1;33mFailed to find match for field 'normal_z'.
+[0;m[1;33mFailed to find match for field 'curvature'.
+[0;m[EDGELINE DEBUG] detectSeparateLineSegments: file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz len=10
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=67
+[EDGELINE DEBUG] readFile cols=6 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=67
+[EDGELINE DEBUG] b1 rows=67 cols=3 b1_withN rows=67 cols=6
+[EDGELINE DEBUG] dist_scoreB1 size=87x1 distScoreOriginalLength size=67x1
+[EDGELINE DEBUG] bCombined size=87x3
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=25
+[EDGELINE DEBUG] readFile cols=6 file=Segments/2.xyz rows=16
+[EDGELINE DEBUG] readFile cols=6 file=Segments/3.xyz rows=29
+[EDGELINE DEBUG] detectedPeakIndices size=3
+[EDGELINE DEBUG] Segments files count=3
+[EDGELINE DEBUG] axisInfoAvailable=1 path=Dataset/Axes/Pot_A_Piece_01_Axis.xyz
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=25
+[EDGELINE DEBUG] Load PLY normals: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[EDGELINE DEBUG] Loaded XYZ PLY, estimating normals. size=1
+[EDGELINE DEBUG] Estimated normals size=1
+[EDGELINE DEBUG] Normals cloud too small (1) for rim detection; defaulting to not-rim.
+EdgeLineExtractionHeadless: /usr/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h:366: Eigen::DenseCoeffsBase<Derived, 1>::Scalar& Eigen::DenseCoeffsBase<Derived, 1>::operator()(Eigen::Index, Eigen::Index) [with Derived = Eigen::Matrix<double, -1, -1>; Eigen::DenseCoeffsBase<Derived, 1>::Scalar = double; Eigen::Index = long int]: Assertion `row >= 0 && row < rows() && col >= 0 && col < cols()' failed.
+/var/spool/slurm/job16942632/slurm_script: line 59: 98299 Aborted                 (core dumped) $APPTAINER exec --bind "$BASE_DIR:/workspace" --pwd /workspace/original_nurbs_preprocessing "$IMAGE" ./build/EdgeLineExtractionHeadless

@@ -1,0 +1,6 @@
+=== Sampling Tray OBJ -> PCD with normals (Open3D in container) ===
+Started: Mon 20 Oct 2025 21:01:02 AEDT
+Job ID: 16941571
+Input: /data/gpfs/projects/punim2657/GARF/input/Tray-000
+Dataset name: Tray-000
+Sampling sherd01.obj -> Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd

@@ -1,0 +1,214 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%help
+  SFS Preprocessing Tools Container (Working Version)
+  – mirrors the exact setup from successful main SFS system
+  – Ubuntu 20.04 + VTK 8.2 + PCL 1.9.1
+  – provides MeshPreprocessing and EdgeLineExtraction executables
+
+%labels
+  Author    SFS Preprocessing Team
+  Version   1.3.0
+  Stage     preprocessing-tools-working
+
+%environment
+  export DEBIAN_FRONTEND=noninteractive
+  export TZ=UTC
+  export NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo 4)
+  export MAKEFLAGS="-j${NPROC} -l${NPROC}"
+  export CMAKE_BUILD_PARALLEL_LEVEL=${NPROC}
+  export PATH="/opt/sfs_prep/bin:${PATH}"
+  export PCL_VERSION="1.9.1"
+
+%post
+  # Stage 1: System packages (exact mirror of main SFS Dockerfile)
+  echo "[STAGE 1] Installing system packages..."
+  export DEBIAN_FRONTEND=noninteractive
+  
+  apt-get update && apt-get install -y \
+    g++ \
+    cmake \
+    git-core \
+    build-essential \
+    apt-utils \
+    wget \
+    unzip \
+    sudo \
+    vim \
+    terminator \
+    dbus \
+    dbus-x11 \
+    gdb \
+    curl \
+    rsync \
+    zsh \
+    openssh-server \
+    clang \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    mesa-common-dev \
+    libboost-all-dev \
+    libomp-dev \
+    libxt-dev \
+    libflann-dev \
+    libeigen3-dev \
+    libsuitesparse-dev \
+    freeglut3-dev \
+    libusb-1.0-0-dev \
+    libusb-dev \
+    libopenni-dev \
+    libopenni2-dev \
+    libpcap-dev \
+    libpng-dev \
+    mpi-default-dev \
+    openmpi-bin \
+    openmpi-common \
+    libqhull-dev \
+    libgtest-dev \
+    libpthread-stubs0-dev \
+    libpthread-workqueue-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+  # Stage 2: Install VTK 8.2 (exact mirror of main SFS build)
+  echo "[STAGE 2] Installing VTK 8.2..."
+  cd /tmp
+  wget https://www.vtk.org/files/release/8.2/VTK-8.2.0.tar.gz
+  tar -xf VTK-8.2.0.tar.gz
+  mkdir -p VTK-8.2.0/build
+  cd VTK-8.2.0/build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES
+  make -j${NPROC}
+  make install
+  ldconfig
+  cd /tmp
+  rm -rf VTK-8.2.0*
+
+  # Stage 3: Install PCL 1.9.1 (exact mirror of main SFS build)  
+  echo "[STAGE 3] Installing PCL 1.9.1..."
+  cd /tmp
+  wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-${PCL_VERSION}.tar.gz
+  tar -xf pcl-${PCL_VERSION}.tar.gz
+  mkdir -p pcl-pcl-${PCL_VERSION}/build
+  cd pcl-pcl-${PCL_VERSION}/build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DVTK_RENDERING_BACKEND=OpenGL2
+  make -j${NPROC}
+  make install
+  ldconfig
+  cd /tmp
+  rm -rf pcl-pcl-*
+
+  # Stage 4: Install CGAL (Ubuntu 20.04 version)
+  echo "[STAGE 4] Installing CGAL..."
+  apt-get update && apt-get install -y --no-install-recommends \
+    libcgal-dev \
+    libcgal-qt5-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+  # Stage 5: Install missing headers
+  echo "[STAGE 5] Installing missing headers..."
+  
+  # Install tiny_obj_loader.h
+  cd /tmp
+  wget -q https://raw.githubusercontent.com/tinyobjloader/tinyobjloader/release/tiny_obj_loader.h
+  mv tiny_obj_loader.h /usr/local/include/
+  
+  # Verify CGAL I/O headers (Ubuntu 20.04 should have correct paths)
+  if [ -f "/usr/include/CGAL/IO/File_writer_wavefront.h" ]; then
+    echo "✓ CGAL wavefront writer found in correct location"
+  elif [ -f "/usr/include/CGAL/IO/OBJ/File_writer_wavefront.h" ]; then
+    echo "✓ CGAL wavefront writer found in OBJ subdirectory"
+  else
+    echo "Warning: CGAL I/O headers not found, searching..."
+    find /usr -name "*wavefront*" -type f 2>/dev/null | head -5
+  fi
+
+  # Stage 6: Prepare build environment
+  echo "[STAGE 6] Preparing build environment..."
+  mkdir -p /opt/sfs_prep/bin /opt/sfs_prep/lib /opt/sfs_prep/include /opt/sfs_prep/share
+  mkdir -p /opt/sfs_prep/src
+  
+%files
+  mesh_processing.cpp /opt/sfs_prep/src/
+  edgeline_extraction.cpp /opt/sfs_prep/src/
+  CMakeLists.txt /opt/sfs_prep/src/
+  alglib/ /opt/sfs_prep/src/alglib/
+  data_path.h /opt/sfs_prep/src/
+
+%post
+  # Continue building after files are copied
+  cd /opt/sfs_prep/src
+  
+  # Create build directory
+  mkdir -p build
+  cd build
+  
+  # Configure with CMake
+  echo "Configuring build with CMake..."
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/opt/sfs_prep \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_CXX_FLAGS="-O2 -DNDEBUG -Wno-old-style-cast" \
+    || (echo "CMake configuration failed" && exit 1)
+  
+  # Build with timeout and error handling
+  echo "Building preprocessing tools..."
+  timeout 3600 make -j${NPROC} || {
+    echo "Parallel build failed or timed out, trying single-threaded..."
+    make -j1 || (echo "Build failed completely" && exit 1)
+  }
+  
+  # Install executables
+  echo "Installing executables..."
+  make install || (echo "Installation failed" && exit 1)
+  
+  # Verify build products
+  echo "Build verification:"
+  ls -la /opt/sfs_prep/bin/
+  
+  # Test executables
+  if [ -f "/opt/sfs_prep/bin/MeshPreprocessing" ]; then
+    echo "✓ MeshPreprocessing built successfully"
+  else
+    echo "✗ MeshPreprocessing not found"
+    exit 1
+  fi
+  
+  if [ -f "/opt/sfs_prep/bin/EdgeLineExtraction" ]; then
+    echo "✓ EdgeLineExtraction built successfully"
+  else
+    echo "✗ EdgeLineExtraction not found"
+    exit 1
+  fi
+  
+  # Clean up build files to save space
+  cd /opt/sfs_prep
+  rm -rf src/build
+
+%test
+  # Verify all dependencies and tools
+  echo "Testing preprocessing tools..."
+  echo "Available headers:"
+  ls -la /usr/local/include/tiny_obj_loader.h || echo "tiny_obj_loader.h not found"
+  find /usr -name "*wavefront*" -type f 2>/dev/null | head -3
+  
+  echo "Available executables:"
+  ls -la /opt/sfs_prep/bin/ || echo "No executables found"
+  
+  echo "PCL and VTK versions:"
+  find /usr/local -name "*pcl*" -type d 2>/dev/null | head -3
+  find /usr/local -name "*vtk*" -type d 2>/dev/null | head -3
+  
+  echo "Preprocessing container ready ✓"
+
+%runscript
+  echo "SfS Preprocessing Tools Container (Working Version)"
+  echo "Available tools:"
+  ls -la /opt/sfs_prep/bin/
+  exec "$@"

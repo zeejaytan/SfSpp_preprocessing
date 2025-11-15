@@ -1,0 +1,187 @@
+=== ADVANCED NURBS SOLUTION: VTK 8.2 + PCL 1.9.1 ===
+Step 1: Removing VTK 9.1 packages...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Package 'libvtk9' is not installed, so not removed
+Package 'vtk9-doc' is not installed, so not removed
+Package 'vtk9-examples' is not installed, so not removed
+The following packages were automatically installed and are no longer required:
+  ca-certificates-java default-jdk default-jdk-headless default-jre
+  default-jre-headless default-libmysqlclient-dev fontconfig fontconfig-config
+  fonts-dejavu-core gdal-data hdf5-helpers java-common libaom-dev libaom3
+  libarmadillo-dev libarmadillo10 libarpack2 libarpack2-dev libasound2
+  libasound2-data libavahi-client3 libavahi-common-data libavahi-common3
+  libavcodec-dev libavcodec58 libavformat-dev libavformat58 libavutil-dev
+  libavutil56 libblosc-dev libblosc1 libbluray2 libbrotli-dev
+  libcairo-gobject2 libcairo2 libcfitsio-dev libcfitsio9 libcharls-dev
+  libcharls2 libchromaprint1 libclang1-14 libcodec2-1.0 libcups2 libdatrie1
+  libdav1d-dev libdav1d5 libde265-0 libde265-dev libdeflate-dev libdeflate0
+  libdouble-conversion-dev libdouble-conversion3 libevdev2 libfontconfig-dev
+  libfontconfig1 libfontconfig1-dev libfreetype-dev libfreetype6
+  libfreetype6-dev libfreexl-dev libfreexl1 libfribidi0 libfyba-dev libfyba0
+  libgdal-dev libgdal30 libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common
+  libgeos-c1v5 libgeos-dev libgeos3.10.2 libgeotiff-dev libgeotiff5 libgif-dev
+  libgif7 libgl2ps-dev libgl2ps1.4 libgme0 libgraphite2-3 libgsm1
+  libgstreamer-plugins-base1.0-0 libgudev-1.0-0 libharfbuzz0b libhdf4-0-alt
+  libhdf4-alt-dev libhdf5-103-1 libhdf5-cpp-103-1 libhdf5-dev
+  libhdf5-fortran-102 libhdf5-hl-100 libhdf5-hl-cpp-100 libhdf5-hl-fortran-100
+  libheif-dev libheif1 libhyphen0 libinput-bin libinput10 libjbig-dev libjbig0
+  libjson-c-dev libjsoncpp-dev libkml-dev libkmlbase1 libkmlconvenience1
+  libkmldom1 libkmlengine1 libkmlregionator1 libkmlxsd1 liblcms2-2 libllvm14
+  libmd4c0 libmfx1 libminizip-dev libminizip1 libmp3lame0 libmpg123-0
+  libmtdev1 libmysqlclient-dev libmysqlclient21 libnetcdf-c++4
+  libnetcdf-cxx-legacy-dev libnetcdf-dev libnetcdf19 libnorm1 libnspr4 libnss3
+  libodbc2 libodbccr2 libodbcinst2 libogdi-dev libogdi4.1 libogg-dev libogg0
+  libopenjp2-7 libopenjp2-7-dev libopenmpt0 libopenni-dev libopenni0
+  libopenni2-0 libopenni2-dev libopus0 liborc-0.4-0 libpango-1.0-0
+  libpangocairo-1.0-0 libpangoft2-1.0-0 libpcap0.8 libpcl-common1.12
+  libpcl-features1.12 libpcl-filters1.12 libpcl-kdtree1.12
+  libpcl-keypoints1.12 libpcl-ml1.12 libpcl-octree1.12 libpcl-outofcore1.12
+  libpcl-people1.12 libpcl-registration1.12 libpcl-sample-consensus1.12
+  libpcl-search1.12 libpcl-segmentation1.12 libpcl-stereo1.12
+  libpcl-tracking1.12 libpcre2-16-0 libpcre2-32-0 libpcre2-dev libpcre2-posix3
+  libpcsclite1 libpgm-5.3-0 libpixman-1-0 libpng-dev libpng16-16
+  libpoppler-dev libpoppler-private-dev libpoppler118 libpq-dev libpq5
+  libproj-dev libproj22 libqt5concurrent5 libqt5core5a libqt5dbus5
+  libqt5designer5 libqt5designercomponents5 libqt5gui5 libqt5help5
+  libqt5network5 libqt5opengl5 libqt5opengl5-dev libqt5positioning5
+  libqt5printsupport5 libqt5qml5 libqt5qmlmodels5 libqt5qmlworkerscript5
+  libqt5quick5 libqt5quickparticles5 libqt5quickshapes5 libqt5quicktest5
+  libqt5quickwidgets5 libqt5sensors5 libqt5sql5 libqt5sql5-sqlite libqt5test5
+  libqt5webchannel5 libqt5webkit5 libqt5webkit5-dev libqt5widgets5 libqt5xml5
+  librabbitmq4 librsvg2-2 librttopo-dev librttopo1 libshine3 libsnappy1v5
+  libsodium23 libsoxr0 libspatialite-dev libspatialite7 libspeex1
+  libsqlite3-dev libsrt1.4-gnutls libssh-gcrypt-4 libsuperlu-dev libsuperlu5
+  libswresample-dev libswresample3 libswscale-dev libswscale5 libtbb-dev
+  libtbb12 libtbbmalloc2 libtcl8.6 libthai-data libthai0 libtheora-dev
+  libtheora0 libtiff-dev libtiff5 libtiffxx5 libtinyxml2.6.2v5 libtk8.6
+  libtwolame0 libudfread0 liburiparser-dev liburiparser1 libutfcpp-dev
+  libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbis0a libvorbisenc2
+  libvorbisfile3 libvpx7 libvulkan-dev libvulkan1 libwacom-common libwacom9
+  libwebp-dev libwebp7 libwebpdemux2 libwebpmux3 libwoff1 libx264-163
+  libx265-199 libx265-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1
+  libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-util1
+  libxcb-xinerama0 libxcb-xinput0 libxcb-xkb1 libxerces-c-dev libxerces-c3.2
+  libxft-dev libxft2 libxkbcommon-x11-0 libxkbcommon0 libxml2-dev
+  libxrender-dev libxrender1 libxslt1.1 libxss-dev libxss1 libxtst6
+  libxvidcore4 libzmq5 libzstd-dev libzvbi-common libzvbi0 mysql-common
+  openjdk-11-jdk openjdk-11-jdk-headless openjdk-11-jre
+  openjdk-11-jre-headless proj-data python3-mpi4py qdoc-qt5 qhelpgenerator-qt5
+  qt5-assistant qt5-qmake qt5-qmake-bin qt5-qmltooling-plugins
+  qtattributionsscanner-qt5 qtbase5-dev qtbase5-dev-tools qtchooser
+  qtdeclarative5-dev qtdeclarative5-dev-tools qttools5-dev qttools5-dev-tools
+  qttools5-private-dev tcl tcl-dev tcl8.6 tcl8.6-dev tk tk-dev tk8.6 tk8.6-dev
+  ucf unixodbc-common unixodbc-dev uuid-dev xkb-data
+Use 'apt autoremove' to remove them.
+The following packages will be REMOVED:
+  libpcl-apps1.12* libpcl-dev* libpcl-io1.12* libpcl-recognition1.12*
+  libpcl-surface1.12* libpcl-visualization1.12* libvtk9-dev* libvtk9-java*
+  libvtk9-qt-dev* libvtk9.1* libvtk9.1-qt* python3-vtk9* vtk9*
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "en_AU.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+0 upgraded, 0 newly installed, 13 to remove and 0 not upgraded.
+After this operation, 238 MB disk space will be freed.
+dpkg: error: requested operation requires superuser privilege
+E: Sub-process /usr/bin/dpkg returned an error code (2)
+Some VTK packages not found
+Reading package lists...
+Building dependency tree...
+Reading state information...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Step 2: Installing VTK 8.2 build dependencies...
+Get:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:3 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5182 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3557 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1575 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [75.9 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [5404 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.2 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.2 kB]
+Get:16 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3235 kB]
+Get:17 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [48.5 kB]
+Get:18 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1271 kB]
+Fetched 40.8 MB in 44s (928 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.9ubuntu3).
+libglu1-mesa-dev is already the newest version (9.0.2-1).
+libglu1-mesa-dev set to manually installed.
+libjpeg-dev is already the newest version (8c-2ubuntu10).
+libjpeg-dev set to manually installed.
+libpng-dev is already the newest version (1.6.37-3build5).
+libpng-dev set to manually installed.
+libxext-dev is already the newest version (2:1.3.4-1build1).
+libxext-dev set to manually installed.
+libxt-dev is already the newest version (1:1.2.1-1).
+libxt-dev set to manually installed.
+libhdf5-dev is already the newest version (1.10.7+repack-4ubuntu2).
+libhdf5-dev set to manually installed.
+libnetcdf-dev is already the newest version (1:4.8.1-1).
+libnetcdf-dev set to manually installed.
+qttools5-dev is already the newest version (5.15.3-1).
+qttools5-dev set to manually installed.
+cmake is already the newest version (3.22.1-1ubuntu1.22.04.2).
+git is already the newest version (1:2.34.1-1ubuntu1.15).
+libexpat1-dev is already the newest version (2.4.7-1ubuntu0.6).
+libexpat1-dev set to manually installed.
+libfreetype6-dev is already the newest version (2.11.1+dfsg-1ubuntu0.3).
+libfreetype6-dev set to manually installed.
+libgl1-mesa-dev is already the newest version (23.2.1-1ubuntu3.1~22.04.3).
+libgl1-mesa-dev set to manually installed.
+libpython3-dev is already the newest version (3.10.6-1~22.04.1).
+libpython3-dev set to manually installed.
+libtiff-dev is already the newest version (4.3.0-6ubuntu0.10).
+libtiff-dev set to manually installed.
+libx11-dev is already the newest version (2:1.7.5-1ubuntu0.3).
+libx11-dev set to manually installed.
+python3-dev is already the newest version (3.10.6-1~22.04.1).
+zlib1g-dev is already the newest version (1:1.2.11.dfsg-2ubuntu9.2).
+zlib1g-dev set to manually installed.
+libqt5opengl5-dev is already the newest version (5.15.3+dfsg-2ubuntu0.2).
+libqt5opengl5-dev set to manually installed.
+qtbase5-dev is already the newest version (5.15.3+dfsg-2ubuntu0.2).
+qtbase5-dev set to manually installed.
+The following additional packages will be installed:
+  libxml2 libxmlrpc-epi0
+Suggested packages:
+  python-numpy-doc python3-pytest
+The following NEW packages will be installed:
+  libxmlrpc-epi-dev libxmlrpc-epi0 ninja-build python3-numpy
+The following packages will be upgraded:
+  libxml2 libxml2-dev
+2 upgraded, 4 newly installed, 0 to remove and 37 not upgraded.
+Need to get 5217 kB of archives.
+After this operation, 19.6 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxml2-dev amd64 2.9.13+dfsg-1ubuntu0.8 [804 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxml2 amd64 2.9.13+dfsg-1ubuntu0.8 [763 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/universe amd64 ninja-build amd64 1.10.1-1 [111 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-numpy amd64 1:1.21.5-1ubuntu22.04.1 [3467 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libxmlrpc-epi0 amd64 0.54.2-1.2 [30.5 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/universe amd64 libxmlrpc-epi-dev amd64 0.54.2-1.2 [40.5 kB]
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "en_AU.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 5217 kB in 4s (1484 kB/s)
+dpkg: error: requested operation requires superuser privilege
+E: Sub-process /usr/bin/dpkg returned an error code (2)
+✓ tiny_obj_loader.h installed

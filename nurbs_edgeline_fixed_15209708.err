@@ -1,0 +1,4 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+terminate called after throwing an instance of 'std::experimental::filesystem::v1::__cxx11::filesystem_error'
+  what():  filesystem error: cannot create directories: Read-only file system [../Temp//Axes]
+/var/spool/slurm/job15209708/slurm_script: line 29: 95853 Aborted                 (core dumped) $CONTAINER_PATH exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing:/workspace --pwd /workspace /data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif ./build/EdgeLineExtractionHeadless A 8

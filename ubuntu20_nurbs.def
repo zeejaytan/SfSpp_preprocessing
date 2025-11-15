@@ -1,0 +1,117 @@
+Bootstrap: library
+From: ubuntu:20.04
+
+%post
+    # Set timezone and disable interactive prompts
+    export DEBIAN_FRONTEND=noninteractive
+    export TZ=Etc/UTC
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+    
+    # Update packages
+    apt-get update
+    
+    # Install essential build tools
+    apt-get install -y \
+        build-essential \
+        cmake \
+        git \
+        wget \
+        pkg-config \
+        software-properties-common
+    
+    # Install VTK 7/8 compatible with PCL 1.9.1 (Ubuntu 20.04 has VTK 7.1)
+    apt-get install -y \
+        libvtk7-dev \
+        libvtk7-qt-dev
+    
+    # Install PCL build dependencies
+    apt-get install -y \
+        libboost-all-dev \
+        libeigen3-dev \
+        libflann-dev \
+        libqhull-dev \
+        libusb-1.0-0-dev \
+        libopenni-dev \
+        libopenni2-dev \
+        libpcap-dev \
+        libpng-dev \
+        libgtest-dev \
+        freeglut3-dev \
+        libxml2-dev \
+        libsuitesparse-dev
+    
+    # Install CGAL
+    apt-get install -y \
+        libcgal-dev \
+        libcgal-qt5-dev
+    
+    # Install OpenNURBS development packages (if available)
+    apt-get install -y libopenturns-dev || echo "OpenNURBS packages not available, will build PCL without external NURBS"
+    
+    # Download and build PCL 1.9.1 from source with NURBS support
+    cd /tmp
+    wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.9.1.tar.gz
+    tar -xf pcl-1.9.1.tar.gz
+    cd pcl-pcl-1.9.1
+    
+    mkdir build
+    cd build
+    
+    # Configure PCL 1.9.1 with NURBS and VTK 7
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr/local/pcl191 \
+        -DBUILD_NURBS=ON \
+        -DBUILD_ON_NURBS=ON \
+        -DBUILD_surface_on_nurbs=ON \
+        -DWITH_VTK=ON \
+        -DVTK_DIR=/usr/lib/cmake/vtk-7.1 \
+        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_examples=OFF \
+        -DBUILD_tools=OFF \
+        -DBUILD_apps=OFF \
+        -DBUILD_visualization=ON \
+        -DBUILD_common=ON \
+        -DBUILD_io=ON \
+        -DBUILD_filters=ON \
+        -DBUILD_features=ON \
+        -DBUILD_surface=ON
+    
+    # Build PCL 1.9.1
+    make -j2
+    
+    # Install PCL 1.9.1
+    make install
+    
+    # Set up library paths
+    echo '/usr/local/pcl191/lib' > /etc/ld.so.conf.d/pcl191.conf
+    ldconfig
+    
+    # Create environment setup script
+    cat > /usr/local/pcl191/setup_env.sh << 'SETUPEOF'
+#!/bin/bash
+export PKG_CONFIG_PATH=/usr/local/pcl191/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/usr/local/pcl191/lib:$LD_LIBRARY_PATH
+export CMAKE_PREFIX_PATH=/usr/local/pcl191:$CMAKE_PREFIX_PATH
+export PCL_ROOT=/usr/local/pcl191
+SETUPEOF
+    chmod +x /usr/local/pcl191/setup_env.sh
+    
+    # Clean up
+    cd /tmp
+    rm -rf pcl-pcl-1.9.1*
+    
+    # Clean up packages
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export PKG_CONFIG_PATH=/usr/local/pcl191/lib/pkgconfig:$PKG_CONFIG_PATH
+    export LD_LIBRARY_PATH=/usr/local/pcl191/lib:$LD_LIBRARY_PATH
+    export CMAKE_PREFIX_PATH=/usr/local/pcl191:$CMAKE_PREFIX_PATH
+    export PCL_ROOT=/usr/local/pcl191
+
+%runscript
+    echo "Ubuntu 20.04 container with PCL 1.9.1 + NURBS support"
+    echo "PCL installation: /usr/local/pcl191"
+    echo "Setup environment: source /usr/local/pcl191/setup_env.sh"

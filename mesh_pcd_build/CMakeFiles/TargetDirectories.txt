@@ -1,0 +1,3 @@
+/workspace/mesh_pcd_build/CMakeFiles/mesh_to_pcd_with_normals.dir
+/workspace/mesh_pcd_build/CMakeFiles/edit_cache.dir
+/workspace/mesh_pcd_build/CMakeFiles/rebuild_cache.dir

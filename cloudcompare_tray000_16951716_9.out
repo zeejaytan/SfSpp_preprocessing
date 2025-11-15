@@ -1,0 +1,141 @@
+=== CloudCompare Mesh Sampling with Normals (Tray-000) ===
+Started: Tue 21 Oct 2025 13:53:19 AEDT
+Job ID: 16951726
+Array Task ID: 9
+=== Sampling Tray-000_Piece_09 with Normals ===
+[Global Shift] Max abs. coord = 1e+04 / max abs. diag = 1e+06
+[ccColorScalesManager] Found 0 custom scale(s) in persistent settings
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/CloudCompare/2.12.4/lib/cloudcompare/plugins
+	Plugin found: Additional I/O (libQADDITIONAL_IO_PLUGIN.so)
+	Plugin found: CEA Virtual Broom (libQBROOM_PLUGIN.so)
+	Plugin found: Compass (libQCOMPASS_PLUGIN.so)
+	Plugin found: Core I/O (libQCORE_IO_PLUGIN.so)
+	Plugin found: CSF Filter (libQCSF_PLUGIN.so)
+	Plugin found: CSV Matrix I/O (libQCSV_MATRIX_IO_PLUGIN.so)
+	Plugin found: EDL Shader (libQEDL_GL_PLUGIN.so)
+	Plugin found: Facet/fracture detection (libQFACETS_PLUGIN.so)
+	Plugin found: Hough Normals Computation (libQHOUGH_NORMALS_PLUGIN.so)
+	Plugin found: Hidden Point Removal (libQHPR_PLUGIN.so)
+	Plugin found: M3C2 Distance (libQM3C2_PLUGIN.so)
+	Plugin found: PCV / ShadeVis (libQPCV_PLUGIN.so)
+	Plugin found: Photoscan I/O (libQPHOTOSCAN_IO_PLUGIN.so)
+	Plugin found: RANSAC Shape Detection (libQRANSAC_SD_PLUGIN.so)
+	Plugin found: Surface of Revolution Analysis (libQSRA_PLUGIN.so)
+	Plugin found: SSAO Shader (libQSSAO_GL_PLUGIN.so)
+[Plugin] Searching: /home/zhuojiat/.local/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/CloudCompare/2.12.4/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Eigen/3.4.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/GDAL/3.5.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/HDF/4.2.15/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libtirpc/1.3.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/pybind11/2.9.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libgeotiff/1.7.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/PROJ/9.0.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/LibTIFF/4.3.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/netCDF/4.9.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/cURL/7.83.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/HDF5/1.12.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Python/3.10.4/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/GMP/6.2.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/SQLite/3.38.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Tcl/8.6.12/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libreadline/8.1.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/nodejs/16.15.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Core/OpenSSL/1.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/JasPer/2.0.33/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/NSPR/4.34/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libjpeg-turbo/2.1.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/NASM/2.15.05/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Mesa/22.0.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/LLVM/14.0.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libdrm/2.4.110/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/zstd/1.5.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/lz4/1.9.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/gzip/1.12/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/DBus/1.14.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/graphite2/1.3.14/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/HarfBuzz/4.2.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/cairo/1.17.4/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/X11/20220504/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/xorg-macros/1.19.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/fontconfig/2.14.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/expat/2.4.8/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/freetype/2.12.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libpng/1.6.37/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/PCRE2/10.40/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/GLib/2.72.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/util-linux/2.38/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/PCRE/8.45/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/gettext/0.21/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/ncurses/6.3/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libffi/3.4.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/ICU/71.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCC/11.3.0/FFTW/3.3.10/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCC/11.3.0/FlexiBLAS/3.2.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCC/11.3.0/OpenMPI/4.1.4/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Core/PMIx/4.2.2/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libfabric/1.15.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/UCX/1.13.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/hwloc/2.7.1/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/libxml2/2.9.13/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/XZ/5.2.5/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/numactl/2.0.14/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/binutils/2.38/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/zlib/1.2.12/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /apps/easybuild-2022/easybuild/software/Core/GCCcore/11.3.0/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /home/zhuojiat/.local/share/flatpak/exports/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /var/lib/flatpak/exports/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /usr/local/share/CCCorp/CloudCompare/plugins
+[Plugin] Searching: /usr/share/CCCorp/CloudCompare/plugins
+[Plugin][Additional I/O] New file extensions registered: ICM OUT PN POLY POV PV SOI SX
+[Plugin][Core I/O] New file extensions registered:  GEOREF MA OBJ OFF PDMS PTX SBF STL VTK
+[Plugin][CSV Matrix I/O] New file extensions registered: CSV
+[Plugin][Photoscan I/O] New file extensions registered: PSZ
+Auto-save is disabled
+Output export format (clouds) set to: ASC
+[LOADING]
+Opening file: 'Tray-000_Dataset_20251021/SfS_pp/Mesh/Tray-000_Piece_09_Mesh.obj'
+[OBJ] Tray-000_Dataset_20251021/SfS_pp/Mesh/Tray-000_Piece_09_Mesh.obj
+[OBJ] Material file: sherd09.mtl
+[OBJ] Failed to load material file! (should be in '/data/gpfs/projects/punim2657/sfs_preprocessing/Tray-000_Dataset_20251021/SfS_pp/Mesh/sherd09.mtl')
+[OBJ::Load::MTL parser] Error reading file: sherd09.mtl
+[OBJ] 6323 points, 12644 faces
+[OBJ] 6634 tex. coords, 0 normals
+[OBJ] Texture coordinates were defined but no material could be loaded!
+[OBJ] Mesh has no normals! You can manually compute them (select it then call "Edit > Normals > Compute")
+[OBJ] 1 mesh loaded - 0 group(s)
+[I/O] File 'Tray-000_Dataset_20251021/SfS_pp/Mesh/Tray-000_Piece_09_Mesh.obj' loaded successfully
+Found one mesh with 12644 faces and 6323 vertices: 'Tray-000_Piece_09_Mesh'
+[SAMPLE POINTS ON MESH]
+Sampled cloud created: 8150 points
+[OCTREE NORMALS CALCULATION]
+	Radius: 0.5
+computeNormalsWithOctree started...
+[ComputeCloudNormals] Timing: 0.95 s.
+computeNormalsWithOctree success
+[ORIENT NORMALS (MST)]
+[ResolveNormalsWithMST] Patches = 3 / Inversions: 0
+[SAVING]
+[I/O] File 'temp_tray000_piece_09_with_normals.asc' saved successfully
+Processed finished in 1.41 s.
+Converting ASC with normals to PCD for piece 09...
+Successfully converted ASC to PCD for piece 09 with 8150 points and normals
+✅ CloudCompare sampling with normals successful for piece 09
+✅ Normals detected in PCD file for piece 09
+# .PCD v0.7 - Point Cloud Data file format
+VERSION 0.7
+FIELDS x y z normal_x normal_y normal_z
+SIZE 4 4 4 4 4 4
+TYPE F F F F F F
+COUNT 1 1 1 1 1 1
+WIDTH 8150
+HEIGHT 1
+VIEWPOINT 0 0 0 1 0 0 0
+POINTS 8150
+DATA ascii
+-0.201655 -0.087489 -1.628215 -0.909687 0.414691 0.022380
+-0.200499 -0.086439 -1.628287 -0.909630 0.414665 0.025012
+-0.201710 -0.086057 -1.628143 -0.909174 0.415660 0.025072
+-0.202099 -0.087605 -1.628219 -0.909687 0.414691 0.022380
+-rw-rw-r-- 1 zhuojiat punim2657 479753 Oct 21 13:53 Tray-000_Dataset_20251021/SfS_pp/Point/Tray-000_Piece_09_Point.pcd
+=== CloudCompare sampling completed for piece 09 at: Tue 21 Oct 2025 13:53:25 AEDT ===

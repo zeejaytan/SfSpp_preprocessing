@@ -1,0 +1,2 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+FATAL:   stat /workspace/original_nurbs_preprocessing/build/MeshPreprocessingHeadless: no such file or directory

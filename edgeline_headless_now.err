@@ -1,0 +1,53 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[EDGELINE DEBUG] processFragmentData surface=Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz mesh=Temp/Pot_A_Piece_01_Mesh.obj
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/pointCloudFromMesh.xyz rows=2092
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:21: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:28: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33mFailed to find match for field 'normal_x'.
+[0;m[1;33mFailed to find match for field 'normal_y'.
+[0;m[1;33mFailed to find match for field 'normal_z'.
+[0;m[1;33mFailed to find match for field 'curvature'.
+[0;m[EDGELINE DEBUG] detectSeparateLineSegments: file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz len=10
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=67
+[EDGELINE DEBUG] readFile cols=6 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=67
+[EDGELINE DEBUG] b1 rows=67 cols=3 b1_withN rows=67 cols=6
+[EDGELINE DEBUG] dist_scoreB1 size=87x1 distScoreOriginalLength size=67x1
+[EDGELINE DEBUG] bCombined size=87x3
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=25
+[EDGELINE DEBUG] readFile cols=6 file=Segments/2.xyz rows=16
+[EDGELINE DEBUG] readFile cols=6 file=Segments/3.xyz rows=29
+[EDGELINE DEBUG] detectedPeakIndices size=3
+[EDGELINE DEBUG] Segments files count=3
+[EDGELINE DEBUG] axisInfoAvailable=1 path=Dataset/Axes/Pot_A_Piece_01_Axis.xyz
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=25
+[EDGELINE DEBUG] Load PLY normals: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[EDGELINE DEBUG] Loaded XYZ PLY, estimating normals. size=1
+[EDGELINE DEBUG] Estimated normals size=1
+[EDGELINE DEBUG] Normals cloud too small (1) for rim detection; defaulting to not-rim.
+EdgeLineExtractionHeadless: /usr/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h:366: Eigen::DenseCoeffsBase<Derived, 1>::Scalar& Eigen::DenseCoeffsBase<Derived, 1>::operator()(Eigen::Index, Eigen::Index) [with Derived = Eigen::Matrix<double, -1, -1>; Eigen::DenseCoeffsBase<Derived, 1>::Scalar = double; Eigen::Index = long int]: Assertion `row >= 0 && row < rows() && col >= 0 && col < cols()' failed.

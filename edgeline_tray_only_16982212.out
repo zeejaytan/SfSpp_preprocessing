@@ -1,0 +1,98 @@
+=== EdgeLine Extraction Only (TRAY) ===
+Started: Thu 23 Oct 2025 01:32:40 AEDT
+Job ID: 16982212
+Building EdgeLineExtractionHeadless...
+-- The C compiler identification is GNU 11.5.0
+-- The CXX compiler identification is GNU 11.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Checking for module 'eigen3'
+--   Found eigen3, version 3.4.0
+-- Found Eigen: /usr/include/eigen3  
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.40.0") found components: system filesystem thread date_time iostreams chrono atomic regex 
+-- Checking for module 'flann'
+--   Found flann, version 1.9.1
+-- FLANN found (include: , lib: flann;flann_cpp)
+-- FLANN found (include: , lib: flann;flann_cpp)
+-- Found libusb-1.0: /usr/include  
+-- Found Qhull: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so  
+-- QHULL found (include: /usr/include, lib: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so)
+-- looking for PCL_COMMON
+-- Found PCL_COMMON: /usr/local/lib/libpcl_common.so  
+-- looking for PCL_KDTREE
+-- Found PCL_KDTREE: /usr/local/lib/libpcl_kdtree.so  
+-- looking for PCL_OCTREE
+-- Found PCL_OCTREE: /usr/local/lib/libpcl_octree.so  
+-- looking for PCL_SEARCH
+-- Found PCL_SEARCH: /usr/local/lib/libpcl_search.so  
+-- looking for PCL_SAMPLE_CONSENSUS
+-- Found PCL_SAMPLE_CONSENSUS: /usr/local/lib/libpcl_sample_consensus.so  
+-- looking for PCL_FILTERS
+-- Found PCL_FILTERS: /usr/local/lib/libpcl_filters.so  
+-- looking for PCL_2D
+-- Found PCL_2D: /usr/local/include/pcl-1.9  
+-- looking for PCL_GEOMETRY
+-- Found PCL_GEOMETRY: /usr/local/include/pcl-1.9  
+-- looking for PCL_IO
+-- Found PCL_IO: /usr/local/lib/libpcl_io.so  
+-- looking for PCL_FEATURES
+-- Found PCL_FEATURES: /usr/local/lib/libpcl_features.so  
+-- looking for PCL_ML
+-- Found PCL_ML: /usr/local/lib/libpcl_ml.so  
+-- looking for PCL_SEGMENTATION
+-- Found PCL_SEGMENTATION: /usr/local/lib/libpcl_segmentation.so  
+-- looking for PCL_SURFACE
+-- Found PCL_SURFACE: /usr/local/lib/libpcl_surface.so  
+-- looking for PCL_REGISTRATION
+-- Found PCL_REGISTRATION: /usr/local/lib/libpcl_registration.so  
+-- looking for PCL_KEYPOINTS
+-- Found PCL_KEYPOINTS: /usr/local/lib/libpcl_keypoints.so  
+-- looking for PCL_TRACKING
+-- Found PCL_TRACKING: /usr/local/lib/libpcl_tracking.so  
+-- looking for PCL_STEREO
+-- Found PCL_STEREO: /usr/local/lib/libpcl_stereo.so  
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_stereo;/usr/lib64/libboost_system.so;/usr/lib64/libboost_filesystem.so;/usr/lib64/libboost_thread.so;/usr/lib64/libboost_date_time.so;/usr/lib64/libboost_iostreams.so;/usr/lib64/libboost_chrono.so;/usr/lib64/libboost_atomic.so;/usr/lib64/libboost_regex.so;optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so;flann;flann_cpp (Required is at least version "1.9.1") 
+-- Using header-only CGAL
+-- Targeting Unix Makefiles
+-- Using /usr/bin/c++ compiler.
+-- Found GMP: /lib64/libgmp.so  
+-- Found MPFR: /lib64/libmpfr.so  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.66")  
+-- Boost include dirs: /usr/include
+-- Boost libraries:    
+-- Using gcc version 4 or later. Adding -frounding-math
+-- Configuring done (1.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/original_nurbs_preprocessing/build
+[  6%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/edgeline_extraction_headless.cpp.o
+[ 20%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/alglibinternal.cpp.o
+[ 20%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/alglibmisc.cpp.o
+[ 26%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/ap.cpp.o
+[ 33%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/dataanalysis.cpp.o
+[ 40%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/diffequations.cpp.o
+[ 46%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/fasttransforms.cpp.o
+[ 53%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/integration.cpp.o
+[ 60%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/interpolation.cpp.o
+[ 66%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/linalg.cpp.o
+[ 73%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/optimization.cpp.o
+[ 80%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/solvers.cpp.o
+[ 86%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/specialfunctions.cpp.o
+[ 93%] Building CXX object CMakeFiles/EdgeLineExtractionHeadless.dir/alglib/src/statistics.cpp.o
+[100%] Linking CXX executable EdgeLineExtractionHeadless
+[100%] Built target EdgeLineExtractionHeadless
+Running edgeline (headless)...
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz

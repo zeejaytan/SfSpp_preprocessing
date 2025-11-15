@@ -1,0 +1,142 @@
+Bootstrap: docker
+From: almalinux:9
+
+%post
+    # Update system
+    dnf update -y
+    
+    # Enable EPEL and CRB repositories for additional packages
+    dnf install -y epel-release
+    dnf config-manager --set-enabled crb
+    
+    # Install essential build tools
+    dnf install -y \
+        gcc-c++ \
+        cmake \
+        git \
+        wget \
+        pkgconfig \
+        libtool \
+        autoconf \
+        automake \
+        make \
+        patch
+    
+    # Install PCL 1.9.1 dependencies (Rocky Linux 8 has older compatible libraries)
+    dnf install -y \
+        eigen3-devel \
+        flann-devel \
+        boost-devel \
+        qhull-devel \
+        libusb1-devel \
+        gtest-devel \
+        libpng-devel \
+        python3-devel \
+        python3-numpy \
+        python3-pip
+    
+    # Install SuiteSparse for NURBS performance 
+    dnf install -y suitesparse-devel
+    
+    # Install CGAL (needed for mesh processing)
+    dnf install -y CGAL-devel
+    
+    # Create build directory
+    cd /opt
+    
+    # Download PCL 1.9.1 source code
+    wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz
+    tar -xzf pcl-1.9.1.tar.gz
+    cd pcl-pcl-1.9.1
+    
+    # Fix Boost endian compatibility issues with direct modifications
+    # First, fix the header include in all files
+    find . -type f -name "*.h" -o -name "*.hpp" -o -name "*.cpp" | xargs sed -i 's|boost/detail/endian\.hpp|boost/endian.hpp|g'
+    
+    # Add compatibility definitions to PCLPointCloud2.h
+    sed -i '/^#include <boost\/endian\.hpp>/a\\n// Boost endian compatibility definitions\n#ifndef BOOST_LITTLE_ENDIAN\n#define BOOST_LITTLE_ENDIAN 1234\n#define BOOST_BIG_ENDIAN 4321\n#define BOOST_BYTE_ORDER BOOST_LITTLE_ENDIAN\n#endif' common/include/pcl/PCLPointCloud2.h
+    
+    # Directly fix the specific files that use these constants by replacing the usage
+    # Replace the problematic namespace references with direct values in both .cpp and .h files
+    find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs sed -i 's|pcl::io::ply::little_endian_byte_order|1234|g'
+    find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs sed -i 's|pcl::io::ply::big_endian_byte_order|4321|g'  
+    find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs sed -i 's|pcl::io::ply::host_byte_order|1234|g'
+    
+    # Also fix direct references without the full namespace
+    find . -name "*.h" -o -name "*.hpp" | xargs sed -i 's|host_byte_order == little_endian_byte_order|1234 == 1234|g'
+    find . -name "*.h" -o -name "*.hpp" | xargs sed -i 's|host_byte_order == big_endian_byte_order|1234 == 4321|g'
+    
+    # Also fix the BOOST_ENDIAN constants in preprocessor checks
+    find . -type f -name "*.h" -o -name "*.hpp" | xargs sed -i 's|defined(BOOST_LITTLE_ENDIAN)|BOOST_LITTLE_ENDIAN|g'
+    find . -type f -name "*.h" -o -name "*.hpp" | xargs sed -i 's|defined(BOOST_BIG_ENDIAN)|BOOST_BIG_ENDIAN|g'
+    
+    # Fix the specific endian detection error in byte_order.h
+    # Replace the #error with a proper endian definition
+    sed -i 's|#error "unable to determine system endianness"|// System endianness determined as little endian\n#ifndef BOOST_BYTE_ORDER\n#define BOOST_BYTE_ORDER 1234\n#endif|g' io/include/pcl/io/ply/byte_order.h
+    
+    # Fix Eigen compatibility issue in frustum_culling.hpp (the actual error location)
+    # The error is with .matrix() method on Eigen::Vector4f block operations
+    # Replace all .block(0,0,3,1).matrix() calls with .head<3>() for Vector3f compatibility
+    sed -i 's|\.block (0, 0, 3, 1)\.matrix ()|.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    
+    # Also fix any remaining .block() calls that might cause similar issues
+    sed -i 's|pl_f\.block (0, 0, 3, 1)|pl_f.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    sed -i 's|pl_n\.block (0, 0, 3, 1)|pl_n.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    sed -i 's|pl_r\.block (0, 0, 3, 1)|pl_r.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    sed -i 's|pl_l\.block (0, 0, 3, 1)|pl_l.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    sed -i 's|pl_t\.block (0, 0, 3, 1)|pl_t.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    sed -i 's|pl_b\.block (0, 0, 3, 1)|pl_b.head<3>()|g' filters/include/pcl/filters/impl/frustum_culling.hpp
+    
+    # Create build directory
+    mkdir build && cd build
+    
+    # Configure PCL with NURBS support enabled (headless build, disable problematic modules)
+    cmake -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_surface_on_nurbs=ON \
+          -DUSE_UMFPACK=ON \
+          -DBUILD_examples=OFF \
+          -DBUILD_apps=OFF \
+          -DWITH_VTK=OFF \
+          -DWITH_QT=OFF \
+          -DBUILD_visualization=OFF \
+          -DWITH_OPENGL=OFF \
+          -DBUILD_recognition=OFF \
+          -DBUILD_tools=OFF \
+          ..
+    
+    # Build PCL (using multiple cores)
+    make -j$(nproc)
+    
+    # Install PCL
+    make install
+    
+    # Update library paths
+    ldconfig
+    
+    # Clean up to reduce image size
+    cd /opt
+    rm -rf pcl-pcl-1.9.1 pcl-1.9.1.tar.gz
+    dnf autoremove -y
+    dnf clean all
+
+%environment
+    export PCL_ROOT=/usr/local
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+    export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+%labels
+    Author "PCL 1.9.1 with NURBS support"
+    Version "1.9.1"
+    Description "Point Cloud Library 1.9.1 with on_nurbs module enabled for NURBS surface fitting"
+
+%help
+    This container provides PCL 1.9.1 with NURBS support enabled.
+    
+    Key features:
+    - PCL 1.9.1 with BUILD_surface_on_nurbs=ON
+    - SuiteSparse support for faster sparse linear solving
+    - CGAL for mesh processing
+    - All necessary dependencies for structure-from-sherds preprocessing
+    
+    Usage:
+    apptainer exec pcl_191_nurbs.sif <command>

@@ -1,0 +1,11 @@
+=== NURBS Pipeline Test - Single Piece Validation ===
+Started: Fri 24 Oct 2025 10:07:10 AEDT
+Job ID: 17007668
+=== Test Configuration ===
+POT_NAME: Tray-000-TEST
+OUTPUT_BASE: /data/gpfs/projects/punim2657/sfs_preprocessing/Tray-000_Test_SinglePiece
+Testing with: Tray-000_Piece_01 only
+
+Creating test output directories...
+=== Verifying Input Data ===
+ERROR: Input PCD not found: original_nurbs_preprocessing/Dataset/Point/Tray-000/Tray-000_Piece_01_Point.pcd

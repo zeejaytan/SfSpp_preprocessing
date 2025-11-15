@@ -1,0 +1,8 @@
+
+The following have been reloaded with a version change:
+  1) OpenSSL/3 => OpenSSL/1.1     2) nodejs/20.13.1 => nodejs/16.15.1
+
+QSocketNotifier: Can only be used with threads started with QThread
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-zhuojiat'
+/var/spool/slurm/job15099470/slurm_script: line 32: 276809 Killed                  timeout 120 /apps/easybuild-2022/easybuild/software/MPI/GCC/11.3.0/OpenMPI/4.1.4/CloudCompare/2.12.4/bin/CloudCompare -SILENT -AUTO_SAVE OFF -O NURBS_Dataset_20250831/SfS_pp/Mesh/Pot_A_Piece_${piece}_Mesh.obj -SAMPLE_MESH DENSITY 1000000 -C_EXPORT_FMT ASC -SAVE_CLOUDS FILE "Pot_A_Piece_${piece}_Mesh_SAMPLED_POINTS.asc"
+slurmstepd: error: Detected 1 oom_kill event in StepId=15099470.batch. Some of the step tasks have been OOM Killed.

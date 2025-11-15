@@ -1,0 +1,28 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2024 The MathWorks, Inc.
+             R2024b Update 3 (24.2.0.2806996) 64-bit (glnxa64)
+                             November 26, 2024
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+🎯 Complete SFS Axis Extraction - All Algorithms
+📁 Loading surface data...
+✅ Loaded: 500 inner + 500 outer surface points
+🔄 Running complete axis extraction algorithms...
+   ✅ Normal vectors normalized
+   🔄 MLESAC robust axis estimation...
+   ✅ MLESAC completed: 100 iterations
+   ✅ Best error: 18.255774
+   🔄 Axis refinement...
+   ✅ Axis refinement completed
+✅ Complete axis extraction successful!
+📁 Results saved: /data/gpfs/projects/punim2657/sfs_preprocessing/axis_output/Pot_A_Piece_01_Axis.txt
+🎯 Final axis direction: [-0.852184, -0.522901, -0.018896]
+🎯 Final axis position:  [7.328156, 3.104842, 7.751699]
+📊 Quality metrics:
+   • Mean axis distance: 8.519318
+   • Max axis distance:  15.193549
+   • Axis stability:     3.181686

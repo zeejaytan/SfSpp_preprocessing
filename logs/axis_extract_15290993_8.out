@@ -1,0 +1,16 @@
+=== SLURM Job 15290993 Array Task 8 ===
+Processing Pot A Piece 8
+Start time: Sun 07 Sep 2025 01:19:38 AEST
+Running on node: spartan-bm177
+Working directory: /data/gpfs/projects/punim2657/sfs_preprocessing
+Opening log file:  /home/zhuojiat/java.log.20618
+=== EXTRACTING AXIS FOR PIECE 08 ===
+[Warning: Name is nonexistent or not a directory:
+/data/gpfs/projects/punim2657/sfs_preprocessing/TPS_Processing_Workspace/Surfaces] 
+[> In path (line 109)
+In addpath>doPathAddition (line 126)
+In addpath (line 90)
+In extract_single_axis (line 13)] 
+  ❌ Surface files not found for piece 08
+End time: Sun 07 Sep 2025 01:20:36 AEST
+=== SLURM Job Complete ===

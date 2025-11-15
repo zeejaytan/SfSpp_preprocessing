@@ -1,0 +1,2 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+CMake Error: The source "/workspace/original_nurbs_preprocessing/CMakeLists.txt" does not match the source "/workspace/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.

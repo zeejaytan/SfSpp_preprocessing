@@ -1,0 +1,10 @@
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    The %post section will be run under fakeroot
+INFO:    Starting build...
+Copying blob sha256:7c457f213c7634afb95a0fb2410a74b7b5bc0ba527033362c240c7a11bef4331
+Copying config sha256:f9a80a55f492e823bf5d51f1bd5f87ea3eed1cb31788686aa99a2fb61a27af6a
+Writing manifest to image destination
+2025/08/30 15:18:20  info unpack layer: sha256:7c457f213c7634afb95a0fb2410a74b7b5bc0ba527033362c240c7a11bef4331
+INFO:    Running post scriptlet
+FATAL:   exec /.singularity.d/libs/fakeroot failed: a shared library is likely missing in the image
+FATAL:   While performing build: while running engine: exit status 255

@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(Pre-processing)
+
+# C++17 Standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Use warnings but ignore old-style cast warnings (common in PCL 1.9.1)
+add_compile_options(-Wno-old-style-cast -Wno-deprecated-declarations)
+
+# Find PCL (should be 1.9.1 in container)
+find_package(PCL 1.9 REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+# Find VTK (should be 8.2 in container)
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
+
+# Find CGAL
+find_package(CGAL REQUIRED)
+include_directories(${CGAL_INCLUDE_DIRS})
+link_directories(${CGAL_LIBRARY_DIRS})
+add_definitions(${CGAL_DEFINITIONS})
+
+# Find Boost (required by PCL)
+find_package(Boost REQUIRED COMPONENTS system filesystem thread)
+
+# Include alglib source files
+file(GLOB PROJ_DEP "alglib/src/*.cpp" "alglib/src/*.h")
+
+# Add current source directory for relative includes
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+# Build only EdgeLineExtraction (no MeshPreprocessing needed here)
+add_executable(EdgeLineExtraction edgeline_extraction.cpp ${PROJ_DEP})
+
+# Link libraries
+target_link_libraries(EdgeLineExtraction ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CGAL_LIBRARIES} ${Boost_LIBRARIES} stdc++fs)
+
+# Ensure executables are built
+add_custom_target(all_targets ALL DEPENDS EdgeLineExtraction)

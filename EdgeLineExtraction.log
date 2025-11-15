@@ -1,0 +1,663 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Processing directory: ./Temp/
+Surface 0 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+95
+CountClock Wise - Right
+Detecting separate line segments...
+ted segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0792582 C2 0.0635144
+Mean = 0.0713863
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0726185 C2 0.0627194
+Mean = 0.067669
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0744729 C2 0.0546435
+Mean = 0.0645582
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0869496 C2 0.0660117
+Mean = 0.0764806
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0856783 C2 0.069456
+Mean = 0.0775672
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0761883 C2 0.0603532
+Mean = 0.0682708
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0727433 C2 0.0609808
+Mean = 0.066862
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0745883 C2 0.0539498
+Mean = 0.0642691
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0855846 C2 0.066573
+Mean = 0.0760788
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0856896 C2 0.0694744
+Mean = 0.077582
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+-46
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.067296 C2 0.0660469
+Mean = 0.0666715
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0589575 C2 0.0584286
+Mean = 0.058693
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0493837 C2 0.0491942
+Mean = 0.049289
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0544409 C2 0.0554852
+Mean = 0.054963
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0671055 C2 0.0662854
+Mean = 0.0666955
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.058287 C2 0.0590217
+Mean = 0.0586543
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0487081 C2 0.0483289
+Mean = 0.0485185
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0585591 C2 0.0570133
+Mean = 0.0577862
+
+Processing time for Pot_A_Piece_01: 84.0734 seconds
+Surface 0 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.xyz
+Surface 1 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.xyz
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+-86
+Clock Wise - Changing sequence
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.139798 C2 0.124586
+Mean = 0.132192
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0913166 C2 0.0986016
+Mean = 0.0949591
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0607634 C2 0.0628584
+Mean = 0.0618109
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.139511 C2 0.125269
+Mean = 0.13239
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0912101 C2 0.09706
+Mean = 0.094135
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0606834 C2 0.0627997
+Mean = 0.0617415
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+81
+CountClock Wise - Right
+Detecting separate line segments...
+ected segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.165084 C2 0.166612
+Mean = 0.165848
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0675692 C2 0.0588802
+Mean = 0.0632247
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0838981 C2 0.0646169
+Mean = 0.0742575
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.164117 C2 0.165477
+Mean = 0.164797
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0674335 C2 0.0584079
+Mean = 0.0629207
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0863409 C2 0.0647474
+Mean = 0.0755441
+
+Processing time for Pot_A_Piece_02: 82.2991 seconds
+Surface 0 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.xyz
+Surface 1 point cloud file: ./Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.xyz
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+78
+CountClock Wise - Right
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.151472 C2 0.135083
+Mean = 0.143278
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0619701 C2 0.0594857
+Mean = 0.0607279
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0643607 C2 0.0666474
+Mean = 0.0655041
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.100122 C2 0.10861
+Mean = 0.104366
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.151539 C2 0.135796
+Mean = 0.143667
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0625325 C2 0.0607842
+Mean = 0.0616583
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0649254 C2 0.0674754
+Mean = 0.0662004
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0968578 C2 0.108031
+Mean = 0.102444
+Fragment: ./Temp/Data/Pot_A/Pot_A_Piece_03_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+Getting the inital boundary...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:34: property 'float32 k2' of element 'camera' is not handled
+[pcl::FilterIndices<PointT>::applyFilter] extract_removed_indices_ was set to 'true' to keep the point cloud organized.
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:26: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ../Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:30: property 'float32 k2' of element 'camera' is not handled
+Initiating uniform sampling and smoothing of breakline segments...
+  loading ../Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  10000 points in data set
+  TPS surface fitting ...
+  TPS surface building...
+  Building TPS surface from 10000 points...\n  Subsampled to 1000 points for TPS fitting\n  TPS surface fitted with 1000 control points\nTPS surface fitted with C2 continuity
+TPS surface fitting completed
+Evaluating points on surface
+Failed to find match for field 'normal_x'.
+Failed to find match for field 'normal_y'.
+Failed to find match for field 'normal_z'.
+Failed to find match for field 'curvature'.
+-78
+Clock Wise - Changing sequence
+Detecting separate line segments...
+cted segments = 
+Detecting rim...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0701437 C2 0.0651815
+Mean = 0.0676626
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0574112 C2 0.0591494
+Mean = 0.0582803
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.156961 C2 0.152506
+Mean = 0.154734
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0855394 C2 0.0796858
+Mean = 0.0826126
+Axis information is not available.
+Getting points on fractured surface...
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0695663 C2 0.0654584
+Mean = 0.0675123
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0592417 C2 0.0587057
+Mean = 0.0589737
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.158288 C2 0.151453
+Mean = 0.154871
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 focal' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scalex' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 scaley' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centerx' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:30: property 'float32 centery' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k1' of element 'camera' is not handled
+[pcl::PLYReader] ./Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:34: property 'float32 k2' of element 'camera' is not handled
+C1 0.0832983 C2 0.0818538
+Mean = 0.082576
+
+Processing time for Pot_A_Piece_03: 80.8052 seconds
+Total processing time: 247.178 seconds

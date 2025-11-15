@@ -1,0 +1,2 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+FATAL:   stat /opt/sfs_prep/bin/EdgeLineExtraction: no such file or directory

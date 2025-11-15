@@ -1,0 +1,13 @@
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    The %post section will be run under fakeroot
+INFO:    Starting build...
+Copying blob sha256:9088cdb84e397c480d4c5f1675d1aa6928c3e8b5b30c57b68a756d5d1fda4d80
+Copying config sha256:c79048e50f5fce116723442952adf4f5258455a1665bbc64aa65469abe9ead90
+Writing manifest to image destination
+2025/08/30 15:21:07  info unpack layer: sha256:9088cdb84e397c480d4c5f1675d1aa6928c3e8b5b30c57b68a756d5d1fda4d80
+INFO:    Running post scriptlet
+/.singularity.d/libs/faked: /lib64/libc.so.6: version `GLIBC_2.33' not found (required by /.singularity.d/libs/faked)
+/.singularity.d/libs/faked: /lib64/libc.so.6: version `GLIBC_2.34' not found (required by /.singularity.d/libs/faked)
+fakeroot: error while starting the `faked' daemon.
+kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
+FATAL:   While performing build: while running engine: exit status 1

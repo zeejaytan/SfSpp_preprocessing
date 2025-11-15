@@ -1,0 +1,76 @@
+cmake_minimum_required(VERSION 3.10)
+project(Enhanced2024Test)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Find PCL without pkg-config - use direct path approach
+find_path(PCL_INCLUDE_DIR pcl/point_cloud.h 
+    PATHS /usr/include /usr/local/include)
+    
+find_library(PCL_COMMON_LIBRARY pcl_common
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_IO_LIBRARY pcl_io
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_SURFACE_LIBRARY pcl_surface
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_FEATURES_LIBRARY pcl_features  
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_FILTERS_LIBRARY pcl_filters
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_KDTREE_LIBRARY pcl_kdtree
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+find_library(PCL_SEARCH_LIBRARY pcl_search
+    PATHS /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu)
+
+# Find Eigen
+find_package(Eigen3 QUIET)
+if(NOT Eigen3_FOUND)
+    find_path(EIGEN_INCLUDE_DIR Eigen/Dense
+        PATHS /usr/include/eigen3 /usr/local/include/eigen3)
+endif()
+
+# Set includes
+if(PCL_INCLUDE_DIR)
+    include_directories(${PCL_INCLUDE_DIR})
+    message(STATUS "PCL include: ${PCL_INCLUDE_DIR}")
+endif()
+
+if(Eigen3_FOUND)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+    message(STATUS "Eigen3 include: ${EIGEN3_INCLUDE_DIR}")
+elseif(EIGEN_INCLUDE_DIR)
+    include_directories(${EIGEN_INCLUDE_DIR})
+    message(STATUS "Eigen include: ${EIGEN_INCLUDE_DIR}")
+endif()
+
+# Create executable
+add_executable(test_enhanced_2024 test_enhanced_2024.cpp)
+
+# Link libraries
+set(PCL_LIBS)
+if(PCL_COMMON_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_COMMON_LIBRARY})
+endif()
+if(PCL_IO_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_IO_LIBRARY})
+endif()
+if(PCL_SURFACE_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_SURFACE_LIBRARY})
+endif()
+if(PCL_FEATURES_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_FEATURES_LIBRARY})
+endif()
+if(PCL_FILTERS_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_FILTERS_LIBRARY})
+endif()
+if(PCL_KDTREE_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_KDTREE_LIBRARY})
+endif()
+if(PCL_SEARCH_LIBRARY)
+    list(APPEND PCL_LIBS ${PCL_SEARCH_LIBRARY})
+endif()
+
+target_link_libraries(test_enhanced_2024 ${PCL_LIBS})
+
+message(STATUS "Linking PCL libraries: ${PCL_LIBS}")
+

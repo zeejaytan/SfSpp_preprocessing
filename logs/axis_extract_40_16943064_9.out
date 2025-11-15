@@ -1,0 +1,18 @@
+=== Axis extraction: Pot A Piece 09 ===
+🎯 Running MATLAB axis extraction for Pot A, Fragment 9
+🔄 Starting MATLAB axis extraction...
+Opening log file:  /home/zhuojiat/java.log.23576
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2024 The MathWorks, Inc.
+             R2024b Update 3 (24.2.0.2806996) 64-bit (glnxa64)
+                             November 26, 2024
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+Starting axis extraction for Pot A, Fragment 9
+❌ Error in axis extraction: Unable to find or open '/data/gpfs/projects/punim2657/sfs_preprocessing/Surfaces/Pot_A_Piece_09_Surface_0.xyz'. Check the path and filename or file permissions.
+❌ MATLAB axis extraction failed (exit code: 1)
+📋 Check log: matlab_axis_A_9.log
