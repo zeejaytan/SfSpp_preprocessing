@@ -930,13 +930,28 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	boundary_est.setInputNormals(normals);
 
 	// ADAPTIVE: Compute boundary radius based on point cloud density
+	// For N points distributed over a surface, estimate spacing = sqrt(area/N)
+	// Pottery fragment surfaces typically span 100-1000 mm² (10-30mm characteristic length)
+	// Use 400mm² as representative area (20mm × 20mm surface patch)
 	int num_pts = cloudWithoutNormals->points.size();
-	double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));
-	double boundary_radius_m = std::max(0.001, std::min(0.015, estimated_spacing_m * 6.0));
-	boundary_est.setRadiusSearch(boundary_radius_m);
+	double estimated_area_mm2 = 400.0;  // Typical surface area for pottery fragment patches
+	double estimated_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_pts));
+
+	// Boundary radius should be 6x the point spacing to capture local neighborhood
+	double boundary_radius_mm = estimated_spacing_mm * 6.0;
+
+	// Clamp to reasonable range: 3-50mm for pottery fragments
+	// Dense clouds (>2000 pts) → ~3mm radius (fine detail)
+	// Medium clouds (100-500 pts) → 8-12mm radius (standard)
+	// Sparse clouds (<100 pts) → up to 17mm radius (robust to gaps)
+	boundary_radius_mm = std::max(3.0, std::min(50.0, boundary_radius_mm));
+
+	// IMPORTANT: Point cloud coordinates are in MILLIMETERS after coordinate fix (PREPROCESSING_FIXES.md)
+	// PCL BoundaryEstimation expects radius in same units as point coordinates
+	boundary_est.setRadiusSearch(boundary_radius_mm);
 	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"
-	          << (estimated_spacing_m*1000) << "mm, boundary_r="
-	          << (boundary_radius_m*1000) << "mm" << std::endl;
+	          << estimated_spacing_mm << "mm, boundary_r="
+	          << boundary_radius_mm << "mm" << std::endl;
 	//boundary_est.setAngleThreshold(0.6 * M_PI);//M_PI
 	boundary_est.setAngleThreshold(M_PI * 0.6);//M_PI
 	boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
@@ -995,17 +1010,27 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// build the filter
 	outrem.setInputCloud(boundaryCloud_Improved);
 
-	// ADAPTIVE: Match outlier removal radius to boundary detection radius
+	// ADAPTIVE: Outlier removal radius based on boundary point density
+	// Use same area-based estimation as boundary detection
 	int num_boundary = boundaryCloud_Improved->points.size();
-	double outlier_spacing_m = std::sqrt(1.0 / std::max(100, num_boundary));
-	double outlier_radius_m = std::max(0.002, std::min(0.020, outlier_spacing_m * 8.0));
-	outrem.setRadiusSearch(outlier_radius_m);
+	double estimated_area_mm2 = 400.0;  // Same assumption as boundary detection
+	double outlier_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_boundary));
+
+	// Outlier removal needs slightly larger radius (8x spacing vs 6x for boundary)
+	// This prevents removing valid isolated points near fragment edges
+	double outlier_radius_mm = outlier_spacing_mm * 8.0;
+
+	// Clamp to reasonable range: 4-50mm
+	// Wider range than boundary detection to be more conservative about removing points
+	outlier_radius_mm = std::max(4.0, std::min(50.0, outlier_radius_mm));
+	outrem.setRadiusSearch(outlier_radius_mm);
 
 	// COMBINATION APPROACH PART 1: Relax outlier removal for small boundaries
 	int min_neighbors = (num_boundary < 100) ? 3 : 6;  // Less strict for small boundaries
 	outrem.setMinNeighborsInRadius(min_neighbors);
-	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, outlier_r="
-	          << (outlier_radius_m*1000) << "mm, min_neighbors=" << min_neighbors << std::endl;
+	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, spacing≈"
+	          << outlier_spacing_mm << "mm, outlier_r="
+	          << outlier_radius_mm << "mm, min_neighbors=" << min_neighbors << std::endl;
 	outrem.setKeepOrganized(true);
 	// apply filter
 	outrem.filter(*cloud_filtered);
@@ -1785,26 +1810,16 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 	vector<int> out;
 
-	// ADAPTIVE PEAK DETECTION: Scale sensitivity with breakline density
-	// Sparse breaklines need LESS sensitive detection (fewer false peaks from noise)
-	// Dense breaklines can afford MORE sensitive detection (real geometric features)
-	double sensitivity_divisor;
-	if (num_points < 40) {
-		// Very sparse: Use 8.0 (half sensitivity = much fewer peaks detected)
-		sensitivity_divisor = 8.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Sparse breakline (" << num_points
-		          << " points) using low sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else if (num_points < 80) {
-		// Medium sparse: Use 6.0 (reduced sensitivity)
-		sensitivity_divisor = 6.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Medium breakline (" << num_points
-		          << " points) using medium sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else {
-		// Dense: Use original 4.0 (standard sensitivity)
-		sensitivity_divisor = 4.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Dense breakline (" << num_points
-		          << " points) using standard sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	}
+	// FIXED PEAK DETECTION SENSITIVITY (Issue #1 fix)
+	// Previously: Adaptive sensitivity (4.0-8.0) caused segment count mismatches
+	// Problem: Fragments from same pot had different segment counts → LCS matching failed
+	// Solution: Fixed sensitivity ensures consistent segmentation across all fragments
+	// This is critical for downstream Structure-from-Sherds assembly system
+	// Value 5.0 is middle ground: balances noise rejection with feature detection
+	double sensitivity_divisor = 5.0;
+	std::cout << "[FIXED PEAK DETECTION] Breakline (" << num_points
+	          << " points) using fixed sensitivity (divisor=" << sensitivity_divisor
+	          << ") for assembly consistency" << std::endl;
 
 	findPeaks(in, out, sensitivity_divisor);
 
@@ -3448,6 +3463,15 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         string outPathTemp = tempDataPath(potID);
         bool isRim = isBreaklineSegARim(cloud_breakLineSeg, outPathTemp + fileNameOnly + "_SampledWithNormals.ply", segCount);
         index.push_back(to_string(segStartIndex) + " " + to_string(totalPtsCounter) + " " + (isRim ? "1" : "0"));
+
+        // BUG FIX #1: Call getPointsOnFracturedSurface to actually populate fracture surface data
+        // This function was defined but never called, leaving cloud_PointsOnFracturedSurface empty
+        std::cout << "[FRACTURE SURFACE] Extracting fracture surface points for segment " << segCount << std::endl;
+        getPointsOnFracturedSurface(cloud_breakLineSeg, fragmentMeshFilePath,
+                                     outPathTemp + fileNameOnly + "_SampledWithNormals.ply",
+                                     segCount, cloud_PointsOnFracturedSurface,
+                                     cloud_PointsOnIntExtSurfaceNearBreakline);
+
         segStartIndex = totalPtsCounter + 1;
         segCount++;
     }
@@ -3483,7 +3507,28 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         }
         cloud_PointsOnFracturedSurfaceNoDuplicates->width = cloud_PointsOnFracturedSurfaceNoDuplicates->points.size();
         cloud_PointsOnFracturedSurfaceNoDuplicates->height = 1;
-        pcl::io::savePCDFile(currentFileName + "_FracturedSurfacePts.pcd", *cloud_PointsOnFracturedSurfaceNoDuplicates);
+
+        // BUG FIX #2, #3: Fix output path and filename format
+        // Old: saves to "build/Pot_A_Piece_01_Surface_0_FracturedSurfacePts.pcd"
+        // New: saves to "Dataset/Surfaces/Pot_A/Pot_A_Piece_01_Surface_F.pcd"
+        string fractureSurfaceFileName = currentFileName;
+        size_t posSurface = fractureSurfaceFileName.find("Surface_0");
+        if (posSurface != string::npos) {
+            fractureSurfaceFileName.replace(posSurface, string("Surface_0").length(), "Surface_F");
+        } else {
+            posSurface = fractureSurfaceFileName.find("Surface_1");
+            if (posSurface != string::npos) {
+                fractureSurfaceFileName.replace(posSurface, string("Surface_1").length(), "Surface_F");
+            }
+        }
+
+        // Use same directory structure as surfaces (Dataset/Surfaces/Pot_X/)
+        string surfacesDir = getSurfaceDatasetPath(potID);
+        string fractureSurfaceFilePath = surfacesDir + fractureSurfaceFileName + ".pcd";
+
+        std::cout << "[FRACTURE SURFACE] Saving " << cloud_PointsOnFracturedSurfaceNoDuplicates->points.size()
+                  << " fracture surface points to: " << fractureSurfaceFilePath << std::endl;
+        pcl::io::savePCDFile(fractureSurfaceFilePath, *cloud_PointsOnFracturedSurfaceNoDuplicates);
         
         pcl::PointCloud<PointNormal>::Ptr cloud_PointsOnIntExtSurfaceNoDuplicates(new pcl::PointCloud<PointNormal>);
         vector<PointNormal> vectorPointNormal2;
