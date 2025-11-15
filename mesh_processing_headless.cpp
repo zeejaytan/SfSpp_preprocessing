@@ -1,7 +1,7 @@
-#pragma comment(lib,"user32.lib") 
-#pragma comment(lib,"gdi32.lib") 
+// Headless version - removed Windows graphics libraries 
 
 #include <iostream>
+#include <cmath>
 
 #include <time.h>
 #include <vector>
@@ -14,9 +14,10 @@
 #include <pcl/features/normal_3d.h> 
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/obj_io.h>
-#include <pcl/io/vtk_lib_io.h>
-#include <pcl/io/impl/vtk_lib_io.hpp>
-#include <pcl/visualization/pcl_visualizer.h>
+// Removed VTK headers for headless build (PCL built with -DWITH_VTK=OFF)
+// #include <pcl/io/vtk_lib_io.h>
+// #include <pcl/io/impl/vtk_lib_io.hpp>
+// Removed visualization header for headless operation
 #include <pcl/console/parse.h>
 #include <pcl/common/transforms.h>
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
@@ -35,12 +36,13 @@
 #include <thread>
 
 #include <pcl/point_types.h>
-#include <pcl/io/vtk_io.h>
-#include <pcl/surface/vtk_smoothing/vtk.h>
-#include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
-#include <pcl/surface/vtk_smoothing/vtk_utils.h>
-#include <vtkSmartPointer.h>
-#include <vtkSmoothPolyDataFilter.h>
+// Removed all VTK smoothing headers for headless build
+// #include <pcl/io/vtk_io.h>
+// #include <pcl/surface/vtk_smoothing/vtk.h>
+// #include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
+// #include <pcl/surface/vtk_smoothing/vtk_utils.h>
+// #include <vtkSmartPointer.h>
+// #include <vtkSmoothPolyDataFilter.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/surface/convex_hull.h>
 #include <pcl/surface/concave_hull.h>
@@ -50,7 +52,7 @@
 #include <pcl/filters/passthrough.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
-#include <pcl/visualization/cloud_viewer.h>
+// Removed cloud viewer header for headless operation
 #include <pcl/segmentation/region_growing.h>
 #include <pcl/segmentation/conditional_euclidean_clustering.h>
 
@@ -90,11 +92,11 @@
 #include <CGAL/assertions.h>
 
 #include <CGAL/IO/OBJ/File_writer_wavefront.h>
-#include <CGAL/IO/generic_copy_OFF.h>
+#include <CGAL/IO/OFF/generic_copy_OFF.h>
 #include <CGAL/Surface_mesh/IO.h>
 
 #include <CGAL/Heat_method_3/Surface_mesh_geodesic_distances_3.h>
-#include <pcl/visualization/point_picking_event.h>
+// Removed point picking header for headless operation
 
 
 #include <pcl/ModelCoefficients.h>
@@ -181,7 +183,7 @@ typedef boost::graph_traits<Surface_mesh>::halfedge_descriptor          halfedge
 typedef Surface_mesh::Property_map<vertex_descriptor, double> Vertex_distance_map;
 
 typedef pcl::PointXYZ Point;
-typedef pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> ColorHandlerXYZ;
+// Removed ColorHandlerXYZ typedef for headless operation
 typedef search::KdTree<PointXYZ>::Ptr KdTreePtr;
 
 typedef pcl::PointXYZI PointTypeIO;
@@ -200,7 +202,7 @@ typedef CGAL::Sequential_tag Concurrency_tag;
 #include <CGAL/boost/graph/Face_filtered_graph.h>
 #include <CGAL/Polygon_mesh_processing/measure.h>
 #include <CGAL/boost/graph/copy_face_graph.h>
-#include <CGAL/IO/OBJ_reader.h>
+#include <CGAL/IO/OBJ.h>
 #include <CGAL/Polygon_mesh_processing/repair_polygon_soup.h>
 #include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
 #include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
@@ -290,16 +292,37 @@ void uniformSampling(string cloudPath, string cloudOutPath, double cloud_res = 0
 	writer.write<pcl::PointNormal>(cloudOutPath, *cloud_filtered, false);
 }
 
-void writeMatrix_to_XYZ(Eigen::MatrixXd& src, string fileName, int cols = 3)
+void writeMatrix_to_XYZ(Eigen::MatrixXd& src, string fileName, int cols = 3, bool convertToMM = true)
 {
 	ofstream writeStream(fileName, ios::out | ios::trunc);
 	if (writeStream)
 	{
+		// Check if this is for CGAL processing (temporary files)
+		bool isCGALFile = (fileName.find("fileForNormalEst") != string::npos);
+		// Check if this is for EdgeLineExtraction (Surface_ files need clean XYZ without headers)
+		bool isEdgeLineFile = (fileName.find("_Surface_") != string::npos);
+
+		if (!isCGALFile && !isEdgeLineFile) {
+			// Add SFS-compatible header format only for final output files (not Surface_ files)
+			writeStream << "# SFS-compatible surface file" << endl;
+			writeStream << "# 1 " << src.rows() << " 1" << endl;
+			writeStream << "segment 0 0 " << (src.rows() - 1) << endl;
+			// Add padding lines to match expected header structure (total 12 lines)
+			for (int i = 0; i < 9; i++) {
+				writeStream << "#" << endl;
+			}
+		}
+
 		for (size_t i = 0; i < src.rows(); i++)
 		{
 			for (size_t j = 0; j < cols; j++)
 			{
-				writeStream << src(i, j) << " ";
+				double value = src(i, j);
+				// Convert coordinates (x,y,z) to millimeters, keep normals as-is
+				if (convertToMM && j < 3) {
+					value *= 1000.0;  // meters to millimeters
+				}
+				writeStream << value << " ";
 			}
 			writeStream << endl;
 		}
@@ -325,49 +348,100 @@ void setInputFile(std::string inputFile, std::string tempPath = "") {
     }
 }
 
+// Adaptive parameter infrastructure for sparse/dense point clouds
+struct AdaptiveParams {
+    int k_neighbors;        // For KNN searches
+    double radius_mm;       // For radius searches (in millimeters)
+    int min_cluster;        // For clustering
+    int max_cluster;
+    double boundary_radius_m; // For boundary detection (in meters)
+};
+
+AdaptiveParams computeAdaptiveParams(int num_points, double avg_spacing_m) {
+    AdaptiveParams p;
+    double avg_spacing_mm = avg_spacing_m * 1000.0;
+
+    // K neighbors: scale with density, clamp 5-50
+    p.k_neighbors = std::max(5, std::min(50, num_points / 200));
+
+    // Radius searches: 3-5× average point spacing
+    p.radius_mm = std::max(0.5, std::min(10.0, avg_spacing_mm * 4.0));
+
+    // Clustering: 0.2-1% of points
+    p.min_cluster = std::max(10, std::min(100, num_points / 500));
+    p.max_cluster = std::max(1000, num_points * 3);
+
+    // Boundary: 5-7× spacing in meters
+    p.boundary_radius_m = std::max(0.001, std::min(0.015, avg_spacing_m * 6.0));
+
+    std::cout << "[ADAPTIVE PARAMS] N=" << num_points << ", spacing=" << avg_spacing_mm
+              << "mm, K=" << p.k_neighbors << ", boundary_r=" << (p.boundary_radius_m*1000)
+              << "mm, cluster=[" << p.min_cluster << "-" << p.max_cluster << "]" << std::endl;
+
+    return p;
+}
+
+// Forward declarations for curvature computation
+std::vector<int> getKNNPoints(const Eigen::Vector3f& center_point, const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, int K);
+std::pair<float, float> getCurvature(const Eigen::Vector3f& center_point, const Eigen::Vector3f& center_normal, const std::vector<Eigen::Vector3f>& knn_points);
 
 bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::PointCloud<pcl::PointNormal>::Ptr surfaceWithNormals)
 {
+	std::cout << "[DEBUG getNormalsOnSurface] Starting function. Input points: " << sampledPointCloud->points.size() << std::endl;
 	string fragmentMeshFile = "fileForNormalEst";
+	std::cout << "[DEBUG getNormalsOnSurface] Creating Eigen matrix..." << std::endl;
 	Eigen::MatrixXd pointCloudMatrix(sampledPointCloud->points.size(), 3);
 	for (size_t i = 0; i < sampledPointCloud->points.size(); i++)
 	{
 		pointCloudMatrix.row(i) << sampledPointCloud->points[i].x, sampledPointCloud->points[i].y, sampledPointCloud->points[i].z;
 	}
-	writeMatrix_to_XYZ(pointCloudMatrix, fragmentMeshFile + "_Sampled.xyz", 3);
+	std::cout << "[DEBUG getNormalsOnSurface] Writing matrix to XYZ file..." << std::endl;
+	writeMatrix_to_XYZ(pointCloudMatrix, fragmentMeshFile + "_Sampled.xyz", 3, false);
 
 	string fName = fragmentMeshFile + "_Sampled.xyz";
 	const char* fname = fName.c_str();
 	// Reads a .xyz point set file in points[].
+	std::cout << "[DEBUG getNormalsOnSurface] Reading XYZ file: " << fname << std::endl;
 	std::list<PointVectorPair> points;
 	std::ifstream stream(fname);
 	if (!stream ||
-		!CGAL::read_xyz_points(stream,
+		!CGAL::IO::read_XYZ(stream,
 			std::back_inserter(points),
 			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>())))
 	{
 		std::cerr << "Error: cannot read file " << fname << std::endl;
 		return false;
 	}
+	std::cout << "[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: " << points.size() << std::endl;
+
+	// ADAPTIVE: Scale K neighbors with density (5 for dense, 15-20 for sparse)
+	int nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000));
+	std::cout << "[ADAPTIVE CGAL] Using " << nb_neighbors << " neighbors for "
+	          << points.size() << " points (density-aware)" << std::endl;
+
 	// Estimates normals direction.
-	const int nb_neighbors = 5;
 	CGAL::pca_estimate_normals<Concurrency_tag>
 		(points, nb_neighbors,
 			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
 			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+	std::cout << "[DEBUG getNormalsOnSurface] PCA normal estimation complete." << std::endl;
+
 	// Orients normals.
+	std::cout << "[DEBUG getNormalsOnSurface] Orienting normals with MST..." << std::endl;
 	std::list<PointVectorPair>::iterator unoriented_points_begin =
 		CGAL::mst_orient_normals(points, nb_neighbors,
 			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
 			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+	std::cout << "[DEBUG getNormalsOnSurface] MST orientation complete." << std::endl;
 	points.erase(unoriented_points_begin, points.end());
+	std::cout << "[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: " << points.size() << std::endl;
 
 
 	/// Saves point set.
 	std::ofstream out(fragmentMeshFile + "_SampledWithNormals.xyz");
 	out.precision(17);
 	if (!out ||
-		!CGAL::write_xyz_points(
+		!CGAL::IO::write_XYZ(
 			out, points,
 			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
 			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>())))
@@ -418,6 +492,33 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	surfaceWithNormals->width = surfaceWithNormals->points.size();
 	surfaceWithNormals->height = 1;
 
+	// CRITICAL FIX: Compute curvature using PCL's robust PCA-based estimation
+	std::cout << "[DEBUG getNormalsOnSurface] Computing curvature for " << surfaceWithNormals->points.size() << " points..." << std::endl;
+
+	// Use PCL's NormalEstimation which computes curvature from PCA eigenvalues
+	pcl::NormalEstimation<pcl::PointNormal, pcl::PointNormal> ne;
+	pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>());
+	ne.setInputCloud(surfaceWithNormals);
+	ne.setSearchMethod(tree);
+
+	// ADAPTIVE: Scale curvature K with density (10-50 range)
+	int curv_k = std::max(10, std::min(50, (int)surfaceWithNormals->points.size() / 300));
+	ne.setKSearch(curv_k);
+	std::cout << "[ADAPTIVE CURVATURE] Using K=" << curv_k << " for "
+	          << surfaceWithNormals->points.size() << " points" << std::endl;
+
+	// Compute curvature (stored in the curvature field automatically)
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_curvature(new pcl::PointCloud<pcl::PointNormal>());
+	ne.compute(*cloud_with_curvature);
+
+	// Copy curvature values back to original cloud (positions/normals already correct)
+	for (size_t i = 0; i < surfaceWithNormals->points.size(); i++)
+	{
+		surfaceWithNormals->points[i].curvature = cloud_with_curvature->points[i].curvature;
+	}
+
+	std::cout << "[DEBUG getNormalsOnSurface] Curvature computation complete." << std::endl;
+
 
 	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
 	for (size_t i = 0; i < numberOfPoints; i++)
@@ -432,7 +533,26 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	normals->width = numberOfPoints;
 	normals->height = 1;
 
-	// pcl::io::savePLYFile(fragmentMeshFile + "_SampledWithNormals.ply", *surfaceWithNormals);
+	// Validate point cloud before saving
+	if (surfaceWithNormals->points.empty()) {
+		std::cerr << "Warning: Empty surface point cloud, skipping PLY save" << std::endl;
+	} else {
+		// Ensure all points have valid data
+		bool valid = true;
+		for (const auto& point : surfaceWithNormals->points) {
+			if (!std::isfinite(point.x) || !std::isfinite(point.y) || !std::isfinite(point.z) ||
+				!std::isfinite(point.normal_x) || !std::isfinite(point.normal_y) || !std::isfinite(point.normal_z)) {
+				valid = false;
+				break;
+			}
+		}
+		if (valid) {
+			std::cout << "[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode..." << std::endl;
+			pcl::io::savePLYFile(fragmentMeshFile + "_SampledWithNormals.ply", *surfaceWithNormals, false); // ASCII mode
+		} else {
+			std::cerr << "Error: Surface point cloud contains invalid data, skipping PLY save" << std::endl;
+		}
+	}
 	return true;
 }
 
@@ -444,12 +564,18 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr downsampledCloudPoints(new pcl::PointCloud<p
 pcl::PointCloud<pcl::PointNormal>::Ptr downsampledCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 std::string outputFile = "";
 
+// Auto-tunes sampling radius based on scene scale; aims for ~targetSamples (default 10000)
 std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F) {
+	pcl::PointCloud<pcl::PointXYZ>::Ptr originalPointCloudXYZ(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalPointCloud(new pcl::PointCloud<pcl::PointNormal>);
-	if (pcl::io::loadPCDFile<pcl::PointNormal>(inputPcdFile, *originalPointCloud) == -1) {
+	
+	if (pcl::io::loadPCDFile<pcl::PointXYZ>(inputPcdFile, *originalPointCloudXYZ) == -1) {
 		PCL_ERROR("Couldn't read file\n");
 		return ""; 
 	}
+	
+	// Convert XYZ to PointNormal (normals will be computed later)
+	pcl::copyPointCloud(*originalPointCloudXYZ, *originalPointCloud);
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::copyPointCloud(*originalPointCloud, *originalCloudWithNormals);
@@ -457,16 +583,59 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 	pcl::KdTreeFLANN<pcl::PointNormal> kdTree;
 	kdTree.setInputCloud(originalCloudWithNormals);
 
-	uniformSampler.setInputCloud(originalCloudWithNormals);
-	uniformSampler.setRadiusSearch(samplingRadius); //downsample_10
-	uniformSampler.filter(*downsampledCloud);
+    uniformSampler.setInputCloud(originalCloudWithNormals);
+
+    // Estimate bounding box diagonal as proxy for scale
+    float minx=std::numeric_limits<float>::max(), miny=minx, minz=minx;
+    float maxx=-minx, maxy=-minx, maxz=-minx;
+    for (const auto& p : originalPointCloudXYZ->points) {
+        if (!std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.z)) continue;
+        if (p.x < minx) minx = p.x; if (p.x > maxx) maxx = p.x;
+        if (p.y < miny) miny = p.y; if (p.y > maxy) maxy = p.y;
+        if (p.z < minz) minz = p.z; if (p.z > maxz) maxz = p.z;
+    }
+    float dx = maxx - minx, dy = maxy - miny, dz = maxz - minz;
+    float diag = std::sqrt(dx*dx + dy*dy + dz*dz);
+
+    // Target sample size and tolerance
+    const int targetSamples = 10000;
+    const int lowerBound = 8000, upperBound = 12000;
+
+    // Initialize leaf from scale (smaller -> denser). Start moderately dense.
+    float leaf = std::max(0.0005f, 0.0015f * diag);
+    int iter = 0;
+    do {
+        uniformSampler.setRadiusSearch(leaf);
+        uniformSampler.filter(*downsampledCloud);
+        if (downsampledCloud->size() > (size_t)upperBound) {
+            // Too many points -> increase radius modestly
+            leaf *= 1.25f;
+        } else if (downsampledCloud->size() < (size_t)lowerBound) {
+            // Too few -> shrink radius
+            leaf *= 0.75f;
+        } else {
+            break;
+        }
+    } while (++iter < 12);
+
+    // Safety minimum: ensure not extremely sparse
+    if (downsampledCloud->size() < 2000) {
+        int attempts = 0;
+        while (downsampledCloud->size() < 2000 && leaf > 1e-5f && attempts < 8) {
+            leaf *= 0.6f;
+            uniformSampler.setRadiusSearch(leaf);
+            uniformSampler.filter(*downsampledCloud);
+            attempts++;
+        }
+    }
 
 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
-	getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+    getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
 
 	pcl::PLYWriter writer;
 	outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
-	writer.write<pcl::PointNormal>(outputFile, *downsampledCloudWithNormals, false);
+	std::cout << "[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues..." << std::endl;
+	writer.write<pcl::PointNormal>(outputFile, *downsampledCloudWithNormals, false); // Changed to ASCII (false) to avoid camera element
 	return outputFile;
 }
 
@@ -487,8 +656,15 @@ int getClusters_EuclideanDistBased(string fileName)
 	std::vector<pcl::PointIndices> cluster_indices;
 	pcl::EuclideanClusterExtraction<pcl::PointNormal> ec;
 	ec.setClusterTolerance(2); // 2cm
-	ec.setMinClusterSize(50); // 100);
-	ec.setMaxClusterSize(25000);
+
+	// ADAPTIVE: Scale cluster size thresholds with point cloud density
+	int num_pts = missedPoints->points.size();
+	int min_cluster = std::max(10, std::min(100, num_pts / 500));
+	int max_cluster = std::max(1000, num_pts * 3);
+	ec.setMinClusterSize(min_cluster);
+	ec.setMaxClusterSize(max_cluster);
+	std::cout << "[ADAPTIVE CLUSTER 1] N=" << num_pts << ", min=" << min_cluster
+	          << ", max=" << max_cluster << std::endl;
 	ec.setSearchMethod(tree);
 	ec.setInputCloud(missedPoints);
 	ec.extract(cluster_indices);
@@ -891,7 +1067,23 @@ void getBreakLineForDecorativeParts(string fileName)
 		pcl::BoundaryEstimation<pcl::PointXYZ, pcl::Normal, pcl::Boundary> boundary_est;
 		boundary_est.setInputCloud(cloudWithoutNormals);
 		boundary_est.setInputNormals(normals);
-		boundary_est.setRadiusSearch(3);
+
+		// ADAPTIVE: Compute boundary radius based on cluster density
+		// Note: Point cloud coordinates are in MILLIMETERS after coordinate fix
+		// Estimate average spacing from point count (assuming ~1m^2 pottery piece)
+		int num_pts = cloudWithoutNormals->points.size();
+		double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));  // sqrt(area / density)
+		double estimated_spacing_mm = estimated_spacing_m * 1000.0;  // Convert to millimeters
+
+		// Calculate radius in millimeters (6x the estimated spacing)
+		double boundary_radius_mm = estimated_spacing_mm * 6.0;
+		// Cap between 1mm and 50mm (original uses 3mm fixed)
+		boundary_radius_mm = std::max(1.0, std::min(50.0, boundary_radius_mm));
+
+		boundary_est.setRadiusSearch(boundary_radius_mm);  // PCL expects same units as coordinates (mm)
+		std::cout << "[ADAPTIVE BOUNDARY] Cluster " << t << " has " << num_pts
+		          << " points, spacing≈" << estimated_spacing_mm << "mm, boundary_r="
+		          << boundary_radius_mm << "mm" << std::endl;
 		//boundary_est.setAngleThreshold(PI/4);
 		boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
 		boundary_est.compute(boundary);
@@ -899,6 +1091,19 @@ void getBreakLineForDecorativeParts(string fileName)
 
 		//get points which on the boundary form point cloud;
 		pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+		// DEBUG: Check array sizes match expectations
+		std::cout << "[DEBUG BOUNDARY] cloud size: " << cloud->points.size()
+		          << ", cloudWithoutNormals size: " << cloudWithoutNormals->points.size()
+		          << ", boundary size: " << boundary.points.size() << std::endl;
+
+		if (boundary.points.size() != cloud->points.size()) {
+			std::cerr << "[ERROR] Boundary size mismatch! Expected " << cloud->points.size()
+			          << " but got " << boundary.points.size() << std::endl;
+			std::cerr << "[ERROR] Skipping boundary extraction for cluster " << t << std::endl;
+			continue;  // Skip this cluster
+		}
+
 		for (int i = 0; i < cloud->points.size(); i++)
 		{
 			if (boundary[i].boundary_point == 1)
@@ -909,6 +1114,17 @@ void getBreakLineForDecorativeParts(string fileName)
 		boundaryCloud->width = boundaryCloud->points.size();
 		boundaryCloud->height = 1;
 		boundaryCloud->is_dense = true;
+
+		// Check if boundary cloud is empty before processing
+		if (boundaryCloud->points.empty()) {
+			std::cerr << "[WARNING] Cluster " << t << " has no boundary points! Skipping getPointsInSequence." << std::endl;
+			std::cerr << "[WARNING] This may indicate the boundary radius (" << boundary_radius_mm
+			          << "mm) is too small for the point spacing." << std::endl;
+			continue;  // Skip to next cluster
+		}
+
+		std::cout << "[INFO] Cluster " << t << " boundary extraction: "
+		          << boundaryCloud->points.size() << " boundary points found" << std::endl;
 
 		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
 		getPointsInSequence(boundaryCloud, cloud_sequenced);
@@ -1315,7 +1531,7 @@ bool checkNormalsIntersection(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1, pcl::P
 
 void savePLYandXYZ(const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, const std::string& basePath)
 {
-	pcl::io::savePLYFile(basePath + ".ply", *cloud);
+	pcl::io::savePLYFile(basePath + ".ply", *cloud, false); // ASCII mode
 
 	Eigen::MatrixXd pointCloudMatrix(cloud->points.size(), 6);
 	for (size_t i = 0; i < cloud->points.size(); i++)
@@ -1323,10 +1539,10 @@ void savePLYandXYZ(const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, const st
 		pointCloudMatrix.row(i) << cloud->points[i].x, cloud->points[i].y, cloud->points[i].z,
 			cloud->points[i].normal_x, cloud->points[i].normal_y, cloud->points[i].normal_z;
 	}
-	writeMatrix_to_XYZ(pointCloudMatrix, basePath + ".xyz", 6);
+	writeMatrix_to_XYZ(pointCloudMatrix, basePath + ".xyz", 6, false);
 }
 
-void convertPLYtoXYZ(string inputFile, string outFile)
+void convertPLYtoXYZ(string inputFile, string outFile, bool convertToMM = true)
 {
 	pcl::PointCloud<pcl::PointNormal>::Ptr mesh_cloud(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::io::loadPLYFile(inputFile, *mesh_cloud);
@@ -1335,7 +1551,7 @@ void convertPLYtoXYZ(string inputFile, string outFile)
 	{
 		pointCloudMatrix.row(i) << mesh_cloud->points[i].x, mesh_cloud->points[i].y, mesh_cloud->points[i].z, mesh_cloud->points[i].normal_x, mesh_cloud->points[i].normal_y, mesh_cloud->points[i].normal_z;
 	}
-	writeMatrix_to_XYZ(pointCloudMatrix, outFile, 6);
+	writeMatrix_to_XYZ(pointCloudMatrix, outFile, 6, convertToMM);
 }
 
 void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold)
@@ -1346,14 +1562,27 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 		tmp_path += "/";
 	}
     int numberOfClustersCreated = -1;
+    int maxIterations = 30;  // Prevent infinite loops
+    int currentIteration = 0;
+    double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration
     
-    while (numberOfClustersCreated < 2)
+    while (numberOfClustersCreated < 2 && currentIteration < maxIterations)
     {
         if (numberOfClustersCreated != -1 && numberOfClustersCreated < 2)
         {
-            std::cout << "Single cluster found...Increasing angle theshold (+2) and trying again..." << std::endl;
-            smoothnessAngleThreshold -= 2;
+            std::cout << "Single cluster found (iteration " << (currentIteration + 1) 
+                      << "/" << maxIterations << ")...Increasing angle threshold (+2) and trying again..." << std::endl;
+            smoothnessAngleThreshold += 2; // actually increase threshold to loosen smoothness criterion
+            
+            // Safety check: if angle threshold gets too negative, break out
+            if (smoothnessAngleThreshold > 45.0)
+            {
+                std::cout << "Warning: Angle threshold reached maximum (45 deg)"
+                          << "). Using single cluster result." << std::endl;
+                break;
+            }
         }
+        currentIteration++;
         
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
@@ -1362,8 +1591,11 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 
         pcl::PointCloud<pcl::PointNormal>::Ptr cloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 
+        std::cout << "[DEBUG] Loading PLY file: " << filePath << std::endl;
         pcl::io::loadPLYFile(filePath, *cloudWithNormals);
+        std::cout << "[DEBUG] PLY file loaded successfully. Points: " << cloudWithNormals->points.size() << std::endl;
 
+        std::cout << "[DEBUG] Converting PointNormal to PointXYZ..." << std::endl;
         for (size_t i = 0; i < cloudWithNormals->points.size(); i++)
         {
             pcl::PointXYZ basicPoint;
@@ -1374,9 +1606,15 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         }
         cloud->width = cloud->points.size();
         cloud->height = 1;
+        std::cout << "[DEBUG] Conversion complete. Cloud size: " << cloud->points.size() << std::endl;
 
         pcl::PointCloud<pcl::PointNormal>::Ptr sampledPointCloudNormal(new pcl::PointCloud<pcl::PointNormal>);
+        std::cout << "[DEBUG] Calling getNormalsOnSurface..." << std::endl;
+        std::cout << "[DEBUG] Input cloud size: " << cloud->points.size() << std::endl;
         getNormalsOnSurface(cloud, sampledPointCloudNormal);
+        std::cout << "[DEBUG] getNormalsOnSurface completed successfully. Result points: " << sampledPointCloudNormal->points.size() << std::endl;
+
+        std::cout << "[DEBUG] Extracting normals from sampled cloud..." << std::endl;
         for (size_t i = 0; i < sampledPointCloudNormal->points.size(); i++)
         {
             pcl::Normal normTemp;
@@ -1395,11 +1633,16 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         pass.setFilterLimits(0.0, 1.0);
         pass.filter(*indices);
 
+        // Tune parameters based on current cloud size to handle scale differences robustly
+        int Npts = static_cast<int>(cloud->points.size());
+        int dynMinCluster = std::max(minCluster, std::max(30, Npts / 500));          // ~0.2% of points, min 30
+        int dynK          = std::max(noOfNeighbours, std::min(40, std::max(15, Npts / 500))); // 15..40 range
+
         pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;
-        reg.setMinClusterSize(minCluster);
+        reg.setMinClusterSize(dynMinCluster);
         reg.setMaxClusterSize(1000000);
         reg.setSearchMethod(tree);
-        reg.setNumberOfNeighbours(noOfNeighbours);
+        reg.setNumberOfNeighbours(dynK);
         reg.setInputCloud(cloud);
         reg.setInputNormals(normals);
         reg.setSmoothnessThreshold(smoothnessAngleThreshold / 180.0 * M_PI);
@@ -1480,7 +1723,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                     cloudWithNormals->points[i].normal_y = normals->points[i].normal_y;
                     cloudWithNormals->points[i].normal_z = normals->points[i].normal_z;
                 }
-                pcl::io::savePLYFile(tmp_path + "_flipped_normal.ply", *cloudWithNormals);
+                pcl::io::savePLYFile(tmp_path + "_flipped_normal.ply", *cloudWithNormals, false); // ASCII mode
             }
 
             std::cout << std::boolalpha << "Normals flipped: " << flipNormals << std::endl;
@@ -1528,8 +1771,9 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 }
             }
 
-            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_0.ply", *cloudWithNormals_Cluster1);
-            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_1.ply", *cloudWithNormals_Cluster2);
+            std::cout << "[DEBUG] Saving surface cluster PLY files in ASCII mode..." << std::endl;
+            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_0.ply", *cloudWithNormals_Cluster1, false); // ASCII mode
+            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_1.ply", *cloudWithNormals_Cluster2, false); // ASCII mode
 
             // Getting file name without path and extension
             const size_t last_slash_idx = tmp_path.find_last_of("/");
@@ -1604,10 +1848,42 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         }
         points_unclustered->width = points_unclustered->points.size();
         points_unclustered->height = 1;
-		pcl::io::savePLYFile(dataPath_global + fileNameOnly + "_unclustered.ply", *points_unclustered);
+        
+        // Validate point cloud before saving
+        if (points_unclustered->points.empty()) {
+            std::cerr << "Warning: Empty point cloud, skipping PLY save" << std::endl;
+        } else {
+            // Ensure all points have valid data
+            bool valid = true;
+            for (const auto& point : points_unclustered->points) {
+                if (!std::isfinite(point.x) || !std::isfinite(point.y) || !std::isfinite(point.z) ||
+                    !std::isfinite(point.normal_x) || !std::isfinite(point.normal_y) || !std::isfinite(point.normal_z)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) {
+                pcl::io::savePLYFile(dataPath_global + fileNameOnly + "_unclustered.ply", *points_unclustered, false); // ASCII mode
+            } else {
+                std::cerr << "Error: Point cloud contains invalid data, skipping PLY save" << std::endl;
+            }
+        }
 
 		getBreakLineForDecorativeParts(dataPath_global + fileNameOnly + "_unclustered.ply");
         numberOfClustersCreated = clusters.size();
+    }
+    
+    // Safety check: Handle cases where clustering couldn't achieve 2 clusters
+    if (numberOfClustersCreated < 2)
+    {
+        std::cout << "Warning: Could not achieve 2 clusters after " << currentIteration 
+                  << " iterations. Final cluster count: " << numberOfClustersCreated 
+                  << ". Proceeding with available clusters." << std::endl;
+    }
+    else
+    {
+        std::cout << "Successfully found " << numberOfClustersCreated 
+                  << " clusters after " << currentIteration << " iterations." << std::endl;
     }
 }
 
@@ -1635,9 +1911,16 @@ void getClusters(string fileName)
 
 	std::vector<pcl::PointIndices> cluster_indices;
 	pcl::EuclideanClusterExtraction<pcl::PointNormal> ec;
-	ec.setClusterTolerance(3); 
-	ec.setMinClusterSize(100); 
-	ec.setMaxClusterSize(25000);
+	ec.setClusterTolerance(3);
+
+	// ADAPTIVE: Scale cluster size thresholds with point cloud density
+	int num_pts = missedPoints->points.size();
+	int min_cluster = std::max(10, std::min(100, num_pts / 500));
+	int max_cluster = std::max(1000, num_pts * 3);
+	ec.setMinClusterSize(min_cluster);
+	ec.setMaxClusterSize(max_cluster);
+	std::cout << "[ADAPTIVE CLUSTER 2] N=" << num_pts << ", min=" << min_cluster
+	          << ", max=" << max_cluster << std::endl;
 	ec.setSearchMethod(tree);
 	ec.setInputCloud(missedPoints);
 	ec.extract(cluster_indices);
@@ -1663,10 +1946,23 @@ void getClusters(string fileName)
 namespace fs = std::experimental::filesystem;
 
 int main(int argc, char** argv) {
+    // Parse command line arguments: mesh_file pot_id piece_id
+    std::string current_potID = potID;  // Default from header
+    int piece_id = 1;  // Default piece ID
+    std::string specific_mesh_file = "";
+    
+    if (argc >= 4) {
+        specific_mesh_file = argv[1];  // Specific mesh file path
+        current_potID = argv[2];       // Pot ID (A, B, C, etc.)
+        piece_id = std::stoi(argv[3]); // Piece ID (1, 2, 3, etc.)
+        std::cout << "Processing specific file: " << specific_mesh_file << std::endl;
+        std::cout << "Pot ID: " << current_potID << ", Piece ID: " << piece_id << std::endl;
+    }
+    
     std::string baseOutputPath = tempPath();  
-    std::string dataPath = tempDataPath(potID);  
-    std::string intermediatePath = tempIntermediatePath(potID);  
-    std::string meshDatasetPath = getMeshDatasetPath(potID);
+    std::string dataPath = tempDataPath(current_potID);  
+    std::string intermediatePath = tempIntermediatePath(current_potID);  
+    std::string meshDatasetPath = getMeshDatasetPath(current_potID);
     
     namespace fs = std::experimental::filesystem;
     if (!fs::exists(dataPath)) {
@@ -1678,11 +1974,21 @@ int main(int argc, char** argv) {
     
     dataPath_global = dataPath;
     intermediatePath_global = intermediatePath;
+    datasetPath_global = getPointDatasetPath(current_potID);
     
     Timer t;
     Timer t_individual;
     
     std::vector<fs::path> pcd_files;
+    
+    // Handle specific file processing when command line args are provided
+    if (!specific_mesh_file.empty()) {
+        // Process only the specific file
+        std::cout << "Processing single file mode" << std::endl;
+        // Add specific file processing logic here if needed
+        // For now, fall through to standard processing
+    }
+    
     for (const auto& entry : fs::recursive_directory_iterator(datasetPath_global)) {
         if (!fs::is_directory(entry.path()) && entry.path().extension() == ".pcd") {
             pcd_files.push_back(entry.path());
@@ -1747,14 +2053,14 @@ int main(int argc, char** argv) {
         
         if (fs::exists(tempFileName0)) {
             fs::copy_file(tempFileName0, outputFileName0, fs::copy_options::overwrite_existing);
-            convertPLYtoXYZ(outputFileName0, dataPath + fileNameOnly + "_Surface_0.xyz");
+            convertPLYtoXYZ(outputFileName0, dataPath + fileNameOnly + "_Surface_0.xyz", false);
         } else {
             std::cout << "Warning: Source file not found: " << tempFileName0 << std::endl;
         }
-        
+
         if (fs::exists(tempFileName1)) {
             fs::copy_file(tempFileName1, outputFileName1, fs::copy_options::overwrite_existing);
-            convertPLYtoXYZ(outputFileName1, dataPath + fileNameOnly + "_Surface_1.xyz");
+            convertPLYtoXYZ(outputFileName1, dataPath + fileNameOnly + "_Surface_1.xyz", false);
         } else {
             std::cout << "Warning: Source file not found: " << tempFileName1 << std::endl;
         }
