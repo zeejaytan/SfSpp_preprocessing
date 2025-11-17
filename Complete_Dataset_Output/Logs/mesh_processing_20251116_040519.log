@@ -1,0 +1,957 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Copied Point file: Pot_A_Piece_01_Point.pcd
+Copied Mesh file: Pot_A_Piece_01_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8854
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8854
+[ADAPTIVE CGAL] Using 8 neighbors for 8854 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8854
+[DEBUG getNormalsOnSurface] Computing curvature for 8854 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8854 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_01_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 8854
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8854
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8854
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8854
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8854
+[ADAPTIVE CGAL] Using 8 neighbors for 8854 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8854
+[DEBUG getNormalsOnSurface] Computing curvature for 8854 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8854 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8854
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8854
+Number of clusters is equal to 6
+Points in 
+Cluster 1 : 3367
+Cluster 2 : 2634
+Cluster 3 : 179
+Cluster 4 : 85
+Cluster 5 : 73
+Cluster 6 : 60
+Points in two clusters / Total Points in Pointcloud: 67.78%
+Points in two clusters / Total Points in all clusters: 93.79%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2687 530 2925 1585 1150 2651 860 3095 414 2331 1712 2460 1058 1601 1739 28 1606 160 1050 1864 1330 3089 571 2288 1986 3253 1429 1362 1316 1357 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  3367 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  2634 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=2456, min=10, max=7368
+PointCloud representing the Cluster: 406 data points.
+PointCloud representing the Cluster: 285 data points.
+PointCloud representing the Cluster: 143 data points.
+PointCloud representing the Cluster: 135 data points.
+PointCloud representing the Cluster: 120 data points.
+PointCloud representing the Cluster: 112 data points.
+PointCloud representing the Cluster: 101 data points.
+PointCloud representing the Cluster: 96 data points.
+PointCloud representing the Cluster: 92 data points.
+PointCloud representing the Cluster: 72 data points.
+PointCloud representing the Cluster: 68 data points.
+PointCloud representing the Cluster: 67 data points.
+PointCloud representing the Cluster: 64 data points.
+PointCloud representing the Cluster: 49 data points.
+PointCloud representing the Cluster: 49 data points.
+PointCloud representing the Cluster: 44 data points.
+PointCloud representing the Cluster: 33 data points.
+PointCloud representing the Cluster: 30 data points.
+PointCloud representing the Cluster: 25 data points.
+PointCloud representing the Cluster: 22 data points.
+PointCloud representing the Cluster: 19 data points.
+PointCloud representing the Cluster: 18 data points.
+PointCloud representing the Cluster: 17 data points.
+PointCloud representing the Cluster: 17 data points.
+PointCloud representing the Cluster: 16 data points.
+PointCloud representing the Cluster: 16 data points.
+PointCloud representing the Cluster: 15 data points.
+PointCloud representing the Cluster: 15 data points.
+PointCloud representing the Cluster: 11 data points.
+PointCloud representing the Cluster: 10 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 406 points, spacing≈49.63mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 406, cloudWithoutNormals size: 406, boundary size: 406
+[INFO] Cluster 0 boundary extraction: 145 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 1 has 285 points, spacing≈59.23mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 285, cloudWithoutNormals size: 285, boundary size: 285
+[INFO] Cluster 1 boundary extraction: 128 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 2 has 143 points, spacing≈83.62mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 143, cloudWithoutNormals size: 143, boundary size: 143
+[INFO] Cluster 2 boundary extraction: 92 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 3 has 135 points, spacing≈86.07mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 135, cloudWithoutNormals size: 135, boundary size: 135
+[INFO] Cluster 3 boundary extraction: 54 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 4 has 120 points, spacing≈91.29mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 120, cloudWithoutNormals size: 120, boundary size: 120
+[INFO] Cluster 4 boundary extraction: 61 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 5 has 112 points, spacing≈94.49mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 112, cloudWithoutNormals size: 112, boundary size: 112
+[INFO] Cluster 5 boundary extraction: 61 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 6 has 101 points, spacing≈99.5mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 101, cloudWithoutNormals size: 101, boundary size: 101
+[INFO] Cluster 6 boundary extraction: 50 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 7 has 96 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 96, cloudWithoutNormals size: 96, boundary size: 96
+[INFO] Cluster 7 boundary extraction: 49 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 8 has 92 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 92, cloudWithoutNormals size: 92, boundary size: 92
+[INFO] Cluster 8 boundary extraction: 52 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 9 has 72 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 72, cloudWithoutNormals size: 72, boundary size: 72
+[INFO] Cluster 9 boundary extraction: 26 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 10 has 68 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 68, cloudWithoutNormals size: 68, boundary size: 68
+[INFO] Cluster 10 boundary extraction: 41 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 11 has 67 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 67, cloudWithoutNormals size: 67, boundary size: 67
+[INFO] Cluster 11 boundary extraction: 44 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 12 has 64 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 64, cloudWithoutNormals size: 64, boundary size: 64
+[INFO] Cluster 12 boundary extraction: 38 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 13 has 49 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 49, cloudWithoutNormals size: 49, boundary size: 49
+[INFO] Cluster 13 boundary extraction: 30 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 14 has 49 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 49, cloudWithoutNormals size: 49, boundary size: 49
+[INFO] Cluster 14 boundary extraction: 31 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 15 has 44 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 44, cloudWithoutNormals size: 44, boundary size: 44
+[INFO] Cluster 15 boundary extraction: 33 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 16 has 33 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 33, cloudWithoutNormals size: 33, boundary size: 33
+[INFO] Cluster 16 boundary extraction: 25 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 17 has 30 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 30, cloudWithoutNormals size: 30, boundary size: 30
+[INFO] Cluster 17 boundary extraction: 24 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 18 has 25 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 25, cloudWithoutNormals size: 25, boundary size: 25
+[INFO] Cluster 18 boundary extraction: 22 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 19 has 22 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 22, cloudWithoutNormals size: 22, boundary size: 22
+[INFO] Cluster 19 boundary extraction: 17 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 20 has 19 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 19, cloudWithoutNormals size: 19, boundary size: 19
+[INFO] Cluster 20 boundary extraction: 17 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 21 has 18 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 18, cloudWithoutNormals size: 18, boundary size: 18
+[INFO] Cluster 21 boundary extraction: 16 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 22 has 17 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 17, cloudWithoutNormals size: 17, boundary size: 17
+[INFO] Cluster 22 boundary extraction: 14 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 23 has 17 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 17, cloudWithoutNormals size: 17, boundary size: 17
+[INFO] Cluster 23 boundary extraction: 14 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 24 has 16 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 16, cloudWithoutNormals size: 16, boundary size: 16
+[INFO] Cluster 24 boundary extraction: 14 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 25 has 16 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 16, cloudWithoutNormals size: 16, boundary size: 16
+[INFO] Cluster 25 boundary extraction: 14 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 26 has 15 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 15, cloudWithoutNormals size: 15, boundary size: 15
+[INFO] Cluster 26 boundary extraction: 15 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 27 has 15 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 15, cloudWithoutNormals size: 15, boundary size: 15
+[INFO] Cluster 27 boundary extraction: 15 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 28 has 11 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 11, cloudWithoutNormals size: 11, boundary size: 11
+[INFO] Cluster 28 boundary extraction: 11 boundary points found
+[ADAPTIVE BOUNDARY] Cluster 29 has 10 points, spacing≈100mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 10, cloudWithoutNormals size: 10, boundary size: 10
+[INFO] Cluster 29 boundary extraction: 10 boundary points found
+Successfully found 6 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 1.016 seconds
+Copied Point file: Pot_A_Piece_02_Point.pcd
+Copied Mesh file: Pot_A_Piece_02_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9043
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9043
+[ADAPTIVE CGAL] Using 9 neighbors for 9043 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9043
+[DEBUG getNormalsOnSurface] Computing curvature for 9043 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9043 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_02_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 9043
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 9043
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 9043
+[DEBUG getNormalsOnSurface] Starting function. Input points: 9043
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 9043
+[ADAPTIVE CGAL] Using 9 neighbors for 9043 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 9043
+[DEBUG getNormalsOnSurface] Computing curvature for 9043 points...
+[ADAPTIVE CURVATURE] Using K=30 for 9043 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 9043
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 9043
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 7548
+Cluster 2 : 64
+Points in two clusters / Total Points in Pointcloud: 84.18%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 4169 3763 3505 5686 211 5215 6006 7005 2018 2148 81 3681 1960 3341 3782 890 6401 437 6082 1503 3539 6333 2074 3659 1330 2847 6557 527 6185 3066 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  7548 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  64 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1431, min=10, max=4293
+PointCloud representing the Cluster: 1427 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1427 points, spacing≈26.47mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1427, cloudWithoutNormals size: 1427, boundary size: 1427
+[INFO] Cluster 0 boundary extraction: 296 boundary points found
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_02_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 1.25 seconds
+Copied Point file: Pot_A_Piece_03_Point.pcd
+Copied Mesh file: Pot_A_Piece_03_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8180
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8180
+[ADAPTIVE CGAL] Using 8 neighbors for 8180 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8180
+[DEBUG getNormalsOnSurface] Computing curvature for 8180 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8180 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_03_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 8180
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8180
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8180
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8180
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8180
+[ADAPTIVE CGAL] Using 8 neighbors for 8180 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8180
+[DEBUG getNormalsOnSurface] Computing curvature for 8180 points...
+[ADAPTIVE CURVATURE] Using K=27 for 8180 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8180
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8180
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3605
+Cluster 2 : 3296
+Cluster 3 : 66
+Points in two clusters / Total Points in Pointcloud: 84.36%
+Points in two clusters / Total Points in all clusters: 99.05%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 2890 143 476 2106 2694 2823 1484 2116 288 58 649 2326 2121 184 3586 2445 3580 803 39 461 1543 3243 361 1708 2622 887 2218 2440 745 294 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  3605 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3296 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1213, min=10, max=3639
+PointCloud representing the Cluster: 1202 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1202 points, spacing≈28.84mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1202, cloudWithoutNormals size: 1202, boundary size: 1202
+[INFO] Cluster 0 boundary extraction: 278 boundary points found
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_03_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 0.9831 seconds
+Copied Point file: Pot_A_Piece_04_Point.pcd
+Copied Mesh file: Pot_A_Piece_04_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8591
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8591
+[ADAPTIVE CGAL] Using 8 neighbors for 8591 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8591
+[DEBUG getNormalsOnSurface] Computing curvature for 8591 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8591 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_04_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 8591
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8591
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8591
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8591
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8591
+[ADAPTIVE CGAL] Using 8 neighbors for 8591 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8591
+[DEBUG getNormalsOnSurface] Computing curvature for 8591 points...
+[ADAPTIVE CURVATURE] Using K=28 for 8591 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8591
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8591
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 3636
+Cluster 2 : 3438
+Points in two clusters / Total Points in Pointcloud: 82.34%
+Points in two clusters / Total Points in all clusters: 100%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 840 2226 3079 2935 3480 614 2951 1529 1004 2427 1440 2239 3388 293 2775 1379 952 2973 803 285 644 246 1872 2780 3422 2471 170 3346 682 2726 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  3636 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3438 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1517, min=10, max=4551
+PointCloud representing the Cluster: 1513 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1513 points, spacing≈25.71mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1513, cloudWithoutNormals size: 1513, boundary size: 1513
+[INFO] Cluster 0 boundary extraction: 90 boundary points found
+Successfully found 2 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_04_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 1.083 seconds
+Copied Point file: Pot_A_Piece_05_Point.pcd
+Copied Mesh file: Pot_A_Piece_05_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8872
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8872
+[ADAPTIVE CGAL] Using 8 neighbors for 8872 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8872
+[DEBUG getNormalsOnSurface] Computing curvature for 8872 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8872 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_05_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 8872
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 8872
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 8872
+[DEBUG getNormalsOnSurface] Starting function. Input points: 8872
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 8872
+[ADAPTIVE CGAL] Using 8 neighbors for 8872 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 8872
+[DEBUG getNormalsOnSurface] Computing curvature for 8872 points...
+[ADAPTIVE CURVATURE] Using K=29 for 8872 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 8872
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 8872
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 3962
+Cluster 2 : 3565
+Cluster 3 : 74
+Points in two clusters / Total Points in Pointcloud: 84.84%
+Points in two clusters / Total Points in all clusters: 99.03%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3930 3604 3328 1206 2158 1760 1079 3628 2496 2917 924 2856 1138 1524 1701 2968 78 1742 538 3027 3456 3319 1137 3880 1216 206 2491 297 831 2493 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  3962 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3565 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1271, min=10, max=3813
+PointCloud representing the Cluster: 1245 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1245 points, spacing≈28.34mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1245, cloudWithoutNormals size: 1245, boundary size: 1245
+[INFO] Cluster 0 boundary extraction: 225 boundary points found
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_05_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 1.176 seconds
+Copied Point file: Pot_A_Piece_06_Point.pcd
+Copied Mesh file: Pot_A_Piece_06_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11488
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11488
+[ADAPTIVE CGAL] Using 11 neighbors for 11488 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11488
+[DEBUG getNormalsOnSurface] Computing curvature for 11488 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11488 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_06_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 11488
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11488
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11488
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11488
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11488
+[ADAPTIVE CGAL] Using 11 neighbors for 11488 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11488
+[DEBUG getNormalsOnSurface] Computing curvature for 11488 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11488 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11488
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11488
+Number of clusters is equal to 3
+Points in 
+Cluster 1 : 4971
+Cluster 2 : 4360
+Cluster 3 : 59
+Points in two clusters / Total Points in Pointcloud: 81.22%
+Points in two clusters / Total Points in all clusters: 99.37%
+Calling mergeClusters function.
+mergeClusters function called.
+Sampled indices: 3924 3893 1812 3376 2217 3218 3102 788 1576 4585 4216 2484 4009 4027 3949 516 3978 3386 1262 3591 1800 2989 3525 2808 3590 3927 497 477 2789 4790 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  4971 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4360 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=2098, min=10, max=6294
+PointCloud representing the Cluster: 2098 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2098 points, spacing≈21.83mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 2098, cloudWithoutNormals size: 2098, boundary size: 2098
+[INFO] Cluster 0 boundary extraction: 6 boundary points found
+Successfully found 3 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_06_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 1.774 seconds
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11227
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11227
+[ADAPTIVE CGAL] Using 11 neighbors for 11227 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11227
+[DEBUG getNormalsOnSurface] Computing curvature for 11227 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11227 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 11227
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11227
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11227
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11227
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11227
+[ADAPTIVE CGAL] Using 11 neighbors for 11227 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11227
+[DEBUG getNormalsOnSurface] Computing curvature for 11227 points...
+[ADAPTIVE CURVATURE] Using K=37 for 11227 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11227
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11227
+Number of clusters is equal to 8
+Points in 
+Cluster 1 : 4109
+Cluster 2 : 3801
+Cluster 3 : 471
+Cluster 4 : 314
+Cluster 5 : 309
+Cluster 6 : 245
+Cluster 7 : 136
+Cluster 8 : 65
+Points in two clusters / Total Points in Pointcloud: 70.46%
+Points in two clusters / Total Points in all clusters: 83.7%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 0 and 7
+Condition 2 (normal vector similarity) passed for clusters 0 and 7
+Condition 3 (boundary curvature similarity) passed for clusters 0 and 7
+Verification failed (innerPoint selection) for clusters 0 and 7
+Condition 1 (closest point pairs) passed for clusters 2 and 6
+Condition 2 (normal vector similarity) passed for clusters 2 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 2 and 6
+Verification failed (innerPoint selection) for clusters 2 and 6
+Condition 1 (closest point pairs) passed for clusters 5 and 6
+Condition 2 (normal vector similarity) passed for clusters 5 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 5 and 6
+Verification failed (innerPoint selection) for clusters 5 and 6
+Sampled indices: 278 234 2806 3848 3668 2017 2690 3062 761 3595 1421 2851 68 2456 2859 3737 227 1076 3673 3067 484 1066 3834 76 412 1106 1647 3904 3525 2141 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  4109 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  3801 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1777, min=10, max=5331
+PointCloud representing the Cluster: 1777 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1777 points, spacing≈23.72mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1777, cloudWithoutNormals size: 1777, boundary size: 1777
+[INFO] Cluster 0 boundary extraction: 7 boundary points found
+Successfully found 8 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 2.099 seconds
+Copied Point file: Pot_A_Piece_08_Point.pcd
+Copied Mesh file: Pot_A_Piece_08_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11656
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11656
+[ADAPTIVE CGAL] Using 11 neighbors for 11656 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11656
+[DEBUG getNormalsOnSurface] Computing curvature for 11656 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11656 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_08_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 11656
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 11656
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 11656
+[DEBUG getNormalsOnSurface] Starting function. Input points: 11656
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 11656
+[ADAPTIVE CGAL] Using 11 neighbors for 11656 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 11656
+[DEBUG getNormalsOnSurface] Computing curvature for 11656 points...
+[ADAPTIVE CURVATURE] Using K=38 for 11656 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 11656
+[DEBUG] Extracting normals from sampled cloud...
+
+Total points: 11656
+Number of clusters is equal to 7
+Points in 
+Cluster 1 : 4557
+Cluster 2 : 4209
+Cluster 3 : 595
+Cluster 4 : 478
+Cluster 5 : 66
+Cluster 6 : 61
+Cluster 7 : 59
+Points in two clusters / Total Points in Pointcloud: 75.21%
+Points in two clusters / Total Points in all clusters: 87.44%
+Calling mergeClusters function.
+mergeClusters function called.
+Condition 1 (closest point pairs) passed for clusters 1 and 4
+Condition 2 (normal vector similarity) passed for clusters 1 and 4
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 4
+Verification failed (innerPoint selection) for clusters 1 and 4
+Condition 1 (closest point pairs) passed for clusters 1 and 6
+Condition 2 (normal vector similarity) passed for clusters 1 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 1 and 6
+Verification failed (innerPoint selection) for clusters 1 and 6
+Condition 1 (closest point pairs) passed for clusters 4 and 5
+Condition 2 (normal vector similarity) passed for clusters 4 and 5
+Condition 3 (boundary curvature similarity) passed for clusters 4 and 5
+Verification failed (innerPoint selection) for clusters 4 and 5
+Condition 1 (closest point pairs) passed for clusters 5 and 6
+Condition 2 (normal vector similarity) passed for clusters 5 and 6
+Condition 3 (boundary curvature similarity) passed for clusters 5 and 6
+Verification failed (innerPoint selection) for clusters 5 and 6
+Sampled indices: 2512 1688 3787 146 643 4254 2989 1282 4347 4226 1444 1735 3109 3813 1799 386 3229 4175 3896 1557 1018 4452 4344 3253 3655 1514 177 3990 164 424 
+Normals flipped: false
+  loading cloudForSpline.pcd
+  4557 points in data set
+  surface fitting ...
+  loading cloudForSpline.pcd
+  4209 points in data set
+  surface fitting ...
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=1631, min=10, max=4893
+PointCloud representing the Cluster: 1631 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 1631 points, spacing≈24.76mm, boundary_r=50mm
+[DEBUG BOUNDARY] cloud size: 1631, cloudWithoutNormals size: 1631, boundary size: 1631
+[WARNING] Cluster 0 has no boundary points! Skipping getPointsInSequence.
+[WARNING] This may indicate the boundary radius (50mm) is too small for the point spacing.
+Successfully found 7 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_08_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m
+Time after processing: 2.525 seconds
+Total time elapsed: 23.87 seconds

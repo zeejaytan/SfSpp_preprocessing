@@ -1,0 +1,604 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+[EDGELINE DEBUG] processFragmentData surface=Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz mesh=Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+Fragment: Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj
+
+Cleaning surface point cloud...
+Estimating patch normals and breaklines...
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/pointCloudFromMesh.xyz rows=7017
+Getting the inital boundary...
+[ADAPTIVE BOUNDARY EDGE] 7017 points, spacing≈0.238756mm, boundary_r=3mm
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE OUTLIER] 322 boundary points, spacing≈1.11456mm, outlier_r=8.91645mm, min_neighbors=6
+[ADAPTIVE SEQUENCING] Boundary has 322 points, using K=32 for point sequencing
+[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode...
+[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:21: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:22: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:23: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:24: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:25: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:28: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Temp_edge/Pot_A/_breakLineFromConcaveHull.ply:29: property 'float32 k2' of element 'camera' is not handled
+[0;mInitiating uniform sampling and smoothing of breakline segments...
+[ADAPTIVE SPHERE-MARCHING] Input points: 256, avgSpacing: 1.44529m (1445.29mm), max_radius: 5mm, adaptiveRadius: 0.005m (5mm)
+[BREAKLINE DEBUG] Smoothed breakline output points: 254
+[INTEGRATION POINT #1] Pre-densification: 254 points
+[DENSIFY] Breakline already dense (254 points >= 160 target), skipping densification
+[INTEGRATION POINT #1] Post-densification: 254 points
+  loading Temp/Temp_edge/Pot_A/cloudForSpline.pcd
+  7017 points in data set
+  surface fitting ...
+Surface refinement
+Surface fitting with final refinement level
+Evaluating points on surface
+[1;33mFailed to find match for field 'normal_x'.
+[0;m[1;33mFailed to find match for field 'normal_y'.
+[0;m[1;33mFailed to find match for field 'normal_z'.
+[0;m[1;33mFailed to find match for field 'curvature'.
+[0;m-127
+Clock Wise - Changing sequence
+Detecting separate line segments...
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=254
+[EDGELINE DEBUG] detectSeparateLineSegments: file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz len=10
+[EDGELINE DEBUG] readFile cols=3 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=254
+[EDGELINE DEBUG] readFile cols=6 file=Temp/Temp_edge/Pot_A/CompleteBreakline.xyz rows=254
+[EDGELINE DEBUG] b1 rows=254 cols=3 b1_withN rows=254 cols=6
+[EDGELINE DEBUG] dist_scoreB1 size=274x1 distScoreOriginalLength size=254x1
+[EDGELINE DEBUG] bCombined size=274x3
+[ADAPTIVE PEAK DETECTION] Dense breakline (254 points) using standard sensitivity (divisor=4)
+tected segments = 
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=17
+[EDGELINE DEBUG] readFile cols=6 file=Segments/2.xyz rows=239
+[EDGELINE DEBUG] detectedPeakIndices size=2
+Detecting rim...
+[EDGELINE DEBUG] Segments files count=2
+[EDGELINE DEBUG] axisInfoAvailable=0 path=Dataset/Axes/Pot_A_Piece_01_Axis.xyz
+[EDGELINE DEBUG] readFile cols=6 file=Segments/1.xyz rows=17
+[DEBUG MATRIX] Segment file Segments/1.xyz matrix dimensions: 17x6
+[DEBUG LOOP] Starting segment processing loop, rows=17 cols=6
+[DEBUG ACCESS] i=0 accessing row 0 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=0
+[DEBUG ACCESS] i=1 accessing row 1 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=1
+[DEBUG ACCESS] i=2 accessing row 2 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=2
+[DEBUG ACCESS] i=3 accessing row 3 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=3
+[DEBUG ACCESS] i=4 accessing row 4 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=4
+[DEBUG ACCESS] i=5 accessing row 5 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=5
+[DEBUG ACCESS] i=6 accessing row 6 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=6
+[DEBUG ACCESS] i=7 accessing row 7 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=7
+[DEBUG ACCESS] i=8 accessing row 8 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=8
+[DEBUG ACCESS] i=9 accessing row 9 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=9
+[DEBUG ACCESS] i=10 accessing row 10 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=10
+[DEBUG ACCESS] i=11 accessing row 11 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=11
+[DEBUG ACCESS] i=12 accessing row 12 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=12
+[DEBUG ACCESS] i=13 accessing row 13 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=13
+[DEBUG ACCESS] i=14 accessing row 14 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=14
+[DEBUG ACCESS] i=15 accessing row 15 of 17x6 matrix
+[DEBUG ACCESS] Accessing normals at i=15
+[EDGELINE DEBUG] Load PLY normals: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[EDGELINE DEBUG] Loaded PointNormal PLY ok, size=8854
+C1 0.0033121 C2 0.00882636
+Mean = 0.00606923
+[EDGELINE DEBUG] readFile cols=6 file=Segments/2.xyz rows=239
+[DEBUG MATRIX] Segment file Segments/2.xyz matrix dimensions: 239x6
+[DEBUG LOOP] Starting segment processing loop, rows=239 cols=6
+[DEBUG ACCESS] i=0 accessing row 0 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=0
+[DEBUG ACCESS] i=1 accessing row 1 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=1
+[DEBUG ACCESS] i=2 accessing row 2 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=2
+[DEBUG ACCESS] i=3 accessing row 3 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=3
+[DEBUG ACCESS] i=4 accessing row 4 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=4
+[DEBUG ACCESS] i=5 accessing row 5 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=5
+[DEBUG ACCESS] i=6 accessing row 6 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=6
+[DEBUG ACCESS] i=7 accessing row 7 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=7
+[DEBUG ACCESS] i=8 accessing row 8 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=8
+[DEBUG ACCESS] i=9 accessing row 9 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=9
+[DEBUG ACCESS] i=10 accessing row 10 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=10
+[DEBUG ACCESS] i=11 accessing row 11 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=11
+[DEBUG ACCESS] i=12 accessing row 12 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=12
+[DEBUG ACCESS] i=13 accessing row 13 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=13
+[DEBUG ACCESS] i=14 accessing row 14 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=14
+[DEBUG ACCESS] i=15 accessing row 15 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=15
+[DEBUG ACCESS] i=16 accessing row 16 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=16
+[DEBUG ACCESS] i=17 accessing row 17 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=17
+[DEBUG ACCESS] i=18 accessing row 18 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=18
+[DEBUG ACCESS] i=19 accessing row 19 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=19
+[DEBUG ACCESS] i=20 accessing row 20 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=20
+[DEBUG ACCESS] i=21 accessing row 21 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=21
+[DEBUG ACCESS] i=22 accessing row 22 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=22
+[DEBUG ACCESS] i=23 accessing row 23 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=23
+[DEBUG ACCESS] i=24 accessing row 24 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=24
+[DEBUG ACCESS] i=25 accessing row 25 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=25
+[DEBUG ACCESS] i=26 accessing row 26 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=26
+[DEBUG ACCESS] i=27 accessing row 27 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=27
+[DEBUG ACCESS] i=28 accessing row 28 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=28
+[DEBUG ACCESS] i=29 accessing row 29 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=29
+[DEBUG ACCESS] i=30 accessing row 30 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=30
+[DEBUG ACCESS] i=31 accessing row 31 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=31
+[DEBUG ACCESS] i=32 accessing row 32 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=32
+[DEBUG ACCESS] i=33 accessing row 33 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=33
+[DEBUG ACCESS] i=34 accessing row 34 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=34
+[DEBUG ACCESS] i=35 accessing row 35 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=35
+[DEBUG ACCESS] i=36 accessing row 36 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=36
+[DEBUG ACCESS] i=37 accessing row 37 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=37
+[DEBUG ACCESS] i=38 accessing row 38 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=38
+[DEBUG ACCESS] i=39 accessing row 39 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=39
+[DEBUG ACCESS] i=40 accessing row 40 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=40
+[DEBUG ACCESS] i=41 accessing row 41 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=41
+[DEBUG ACCESS] i=42 accessing row 42 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=42
+[DEBUG ACCESS] i=43 accessing row 43 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=43
+[DEBUG ACCESS] i=44 accessing row 44 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=44
+[DEBUG ACCESS] i=45 accessing row 45 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=45
+[DEBUG ACCESS] i=46 accessing row 46 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=46
+[DEBUG ACCESS] i=47 accessing row 47 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=47
+[DEBUG ACCESS] i=48 accessing row 48 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=48
+[DEBUG ACCESS] i=49 accessing row 49 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=49
+[DEBUG ACCESS] i=50 accessing row 50 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=50
+[DEBUG ACCESS] i=51 accessing row 51 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=51
+[DEBUG ACCESS] i=52 accessing row 52 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=52
+[DEBUG ACCESS] i=53 accessing row 53 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=53
+[DEBUG ACCESS] i=54 accessing row 54 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=54
+[DEBUG ACCESS] i=55 accessing row 55 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=55
+[DEBUG ACCESS] i=56 accessing row 56 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=56
+[DEBUG ACCESS] i=57 accessing row 57 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=57
+[DEBUG ACCESS] i=58 accessing row 58 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=58
+[DEBUG ACCESS] i=59 accessing row 59 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=59
+[DEBUG ACCESS] i=60 accessing row 60 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=60
+[DEBUG ACCESS] i=61 accessing row 61 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=61
+[DEBUG ACCESS] i=62 accessing row 62 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=62
+[DEBUG ACCESS] i=63 accessing row 63 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=63
+[DEBUG ACCESS] i=64 accessing row 64 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=64
+[DEBUG ACCESS] i=65 accessing row 65 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=65
+[DEBUG ACCESS] i=66 accessing row 66 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=66
+[DEBUG ACCESS] i=67 accessing row 67 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=67
+[DEBUG ACCESS] i=68 accessing row 68 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=68
+[DEBUG ACCESS] i=69 accessing row 69 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=69
+[DEBUG ACCESS] i=70 accessing row 70 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=70
+[DEBUG ACCESS] i=71 accessing row 71 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=71
+[DEBUG ACCESS] i=72 accessing row 72 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=72
+[DEBUG ACCESS] i=73 accessing row 73 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=73
+[DEBUG ACCESS] i=74 accessing row 74 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=74
+[DEBUG ACCESS] i=75 accessing row 75 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=75
+[DEBUG ACCESS] i=76 accessing row 76 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=76
+[DEBUG ACCESS] i=77 accessing row 77 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=77
+[DEBUG ACCESS] i=78 accessing row 78 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=78
+[DEBUG ACCESS] i=79 accessing row 79 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=79
+[DEBUG ACCESS] i=80 accessing row 80 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=80
+[DEBUG ACCESS] i=81 accessing row 81 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=81
+[DEBUG ACCESS] i=82 accessing row 82 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=82
+[DEBUG ACCESS] i=83 accessing row 83 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=83
+[DEBUG ACCESS] i=84 accessing row 84 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=84
+[DEBUG ACCESS] i=85 accessing row 85 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=85
+[DEBUG ACCESS] i=86 accessing row 86 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=86
+[DEBUG ACCESS] i=87 accessing row 87 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=87
+[DEBUG ACCESS] i=88 accessing row 88 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=88
+[DEBUG ACCESS] i=89 accessing row 89 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=89
+[DEBUG ACCESS] i=90 accessing row 90 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=90
+[DEBUG ACCESS] i=91 accessing row 91 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=91
+[DEBUG ACCESS] i=92 accessing row 92 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=92
+[DEBUG ACCESS] i=93 accessing row 93 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=93
+[DEBUG ACCESS] i=94 accessing row 94 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=94
+[DEBUG ACCESS] i=95 accessing row 95 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=95
+[DEBUG ACCESS] i=96 accessing row 96 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=96
+[DEBUG ACCESS] i=97 accessing row 97 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=97
+[DEBUG ACCESS] i=98 accessing row 98 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=98
+[DEBUG ACCESS] i=99 accessing row 99 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=99
+[DEBUG ACCESS] i=100 accessing row 100 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=100
+[DEBUG ACCESS] i=101 accessing row 101 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=101
+[DEBUG ACCESS] i=102 accessing row 102 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=102
+[DEBUG ACCESS] i=103 accessing row 103 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=103
+[DEBUG ACCESS] i=104 accessing row 104 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=104
+[DEBUG ACCESS] i=105 accessing row 105 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=105
+[DEBUG ACCESS] i=106 accessing row 106 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=106
+[DEBUG ACCESS] i=107 accessing row 107 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=107
+[DEBUG ACCESS] i=108 accessing row 108 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=108
+[DEBUG ACCESS] i=109 accessing row 109 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=109
+[DEBUG ACCESS] i=110 accessing row 110 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=110
+[DEBUG ACCESS] i=111 accessing row 111 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=111
+[DEBUG ACCESS] i=112 accessing row 112 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=112
+[DEBUG ACCESS] i=113 accessing row 113 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=113
+[DEBUG ACCESS] i=114 accessing row 114 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=114
+[DEBUG ACCESS] i=115 accessing row 115 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=115
+[DEBUG ACCESS] i=116 accessing row 116 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=116
+[DEBUG ACCESS] i=117 accessing row 117 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=117
+[DEBUG ACCESS] i=118 accessing row 118 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=118
+[DEBUG ACCESS] i=119 accessing row 119 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=119
+[DEBUG ACCESS] i=120 accessing row 120 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=120
+[DEBUG ACCESS] i=121 accessing row 121 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=121
+[DEBUG ACCESS] i=122 accessing row 122 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=122
+[DEBUG ACCESS] i=123 accessing row 123 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=123
+[DEBUG ACCESS] i=124 accessing row 124 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=124
+[DEBUG ACCESS] i=125 accessing row 125 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=125
+[DEBUG ACCESS] i=126 accessing row 126 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=126
+[DEBUG ACCESS] i=127 accessing row 127 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=127
+[DEBUG ACCESS] i=128 accessing row 128 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=128
+[DEBUG ACCESS] i=129 accessing row 129 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=129
+[DEBUG ACCESS] i=130 accessing row 130 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=130
+[DEBUG ACCESS] i=131 accessing row 131 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=131
+[DEBUG ACCESS] i=132 accessing row 132 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=132
+[DEBUG ACCESS] i=133 accessing row 133 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=133
+[DEBUG ACCESS] i=134 accessing row 134 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=134
+[DEBUG ACCESS] i=135 accessing row 135 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=135
+[DEBUG ACCESS] i=136 accessing row 136 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=136
+[DEBUG ACCESS] i=137 accessing row 137 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=137
+[DEBUG ACCESS] i=138 accessing row 138 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=138
+[DEBUG ACCESS] i=139 accessing row 139 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=139
+[DEBUG ACCESS] i=140 accessing row 140 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=140
+[DEBUG ACCESS] i=141 accessing row 141 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=141
+[DEBUG ACCESS] i=142 accessing row 142 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=142
+[DEBUG ACCESS] i=143 accessing row 143 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=143
+[DEBUG ACCESS] i=144 accessing row 144 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=144
+[DEBUG ACCESS] i=145 accessing row 145 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=145
+[DEBUG ACCESS] i=146 accessing row 146 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=146
+[DEBUG ACCESS] i=147 accessing row 147 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=147
+[DEBUG ACCESS] i=148 accessing row 148 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=148
+[DEBUG ACCESS] i=149 accessing row 149 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=149
+[DEBUG ACCESS] i=150 accessing row 150 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=150
+[DEBUG ACCESS] i=151 accessing row 151 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=151
+[DEBUG ACCESS] i=152 accessing row 152 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=152
+[DEBUG ACCESS] i=153 accessing row 153 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=153
+[DEBUG ACCESS] i=154 accessing row 154 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=154
+[DEBUG ACCESS] i=155 accessing row 155 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=155
+[DEBUG ACCESS] i=156 accessing row 156 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=156
+[DEBUG ACCESS] i=157 accessing row 157 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=157
+[DEBUG ACCESS] i=158 accessing row 158 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=158
+[DEBUG ACCESS] i=159 accessing row 159 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=159
+[DEBUG ACCESS] i=160 accessing row 160 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=160
+[DEBUG ACCESS] i=161 accessing row 161 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=161
+[DEBUG ACCESS] i=162 accessing row 162 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=162
+[DEBUG ACCESS] i=163 accessing row 163 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=163
+[DEBUG ACCESS] i=164 accessing row 164 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=164
+[DEBUG ACCESS] i=165 accessing row 165 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=165
+[DEBUG ACCESS] i=166 accessing row 166 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=166
+[DEBUG ACCESS] i=167 accessing row 167 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=167
+[DEBUG ACCESS] i=168 accessing row 168 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=168
+[DEBUG ACCESS] i=169 accessing row 169 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=169
+[DEBUG ACCESS] i=170 accessing row 170 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=170
+[DEBUG ACCESS] i=171 accessing row 171 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=171
+[DEBUG ACCESS] i=172 accessing row 172 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=172
+[DEBUG ACCESS] i=173 accessing row 173 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=173
+[DEBUG ACCESS] i=174 accessing row 174 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=174
+[DEBUG ACCESS] i=175 accessing row 175 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=175
+[DEBUG ACCESS] i=176 accessing row 176 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=176
+[DEBUG ACCESS] i=177 accessing row 177 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=177
+[DEBUG ACCESS] i=178 accessing row 178 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=178
+[DEBUG ACCESS] i=179 accessing row 179 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=179
+[DEBUG ACCESS] i=180 accessing row 180 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=180
+[DEBUG ACCESS] i=181 accessing row 181 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=181
+[DEBUG ACCESS] i=182 accessing row 182 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=182
+[DEBUG ACCESS] i=183 accessing row 183 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=183
+[DEBUG ACCESS] i=184 accessing row 184 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=184
+[DEBUG ACCESS] i=185 accessing row 185 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=185
+[DEBUG ACCESS] i=186 accessing row 186 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=186
+[DEBUG ACCESS] i=187 accessing row 187 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=187
+[DEBUG ACCESS] i=188 accessing row 188 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=188
+[DEBUG ACCESS] i=189 accessing row 189 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=189
+[DEBUG ACCESS] i=190 accessing row 190 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=190
+[DEBUG ACCESS] i=191 accessing row 191 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=191
+[DEBUG ACCESS] i=192 accessing row 192 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=192
+[DEBUG ACCESS] i=193 accessing row 193 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=193
+[DEBUG ACCESS] i=194 accessing row 194 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=194
+[DEBUG ACCESS] i=195 accessing row 195 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=195
+[DEBUG ACCESS] i=196 accessing row 196 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=196
+[DEBUG ACCESS] i=197 accessing row 197 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=197
+[DEBUG ACCESS] i=198 accessing row 198 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=198
+[DEBUG ACCESS] i=199 accessing row 199 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=199
+[DEBUG ACCESS] i=200 accessing row 200 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=200
+[DEBUG ACCESS] i=201 accessing row 201 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=201
+[DEBUG ACCESS] i=202 accessing row 202 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=202
+[DEBUG ACCESS] i=203 accessing row 203 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=203
+[DEBUG ACCESS] i=204 accessing row 204 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=204
+[DEBUG ACCESS] i=205 accessing row 205 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=205
+[DEBUG ACCESS] i=206 accessing row 206 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=206
+[DEBUG ACCESS] i=207 accessing row 207 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=207
+[DEBUG ACCESS] i=208 accessing row 208 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=208
+[DEBUG ACCESS] i=209 accessing row 209 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=209
+[DEBUG ACCESS] i=210 accessing row 210 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=210
+[DEBUG ACCESS] i=211 accessing row 211 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=211
+[DEBUG ACCESS] i=212 accessing row 212 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=212
+[DEBUG ACCESS] i=213 accessing row 213 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=213
+[DEBUG ACCESS] i=214 accessing row 214 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=214
+[DEBUG ACCESS] i=215 accessing row 215 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=215
+[DEBUG ACCESS] i=216 accessing row 216 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=216
+[DEBUG ACCESS] i=217 accessing row 217 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=217
+[DEBUG ACCESS] i=218 accessing row 218 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=218
+[DEBUG ACCESS] i=219 accessing row 219 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=219
+[DEBUG ACCESS] i=220 accessing row 220 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=220
+[DEBUG ACCESS] i=221 accessing row 221 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=221
+[DEBUG ACCESS] i=222 accessing row 222 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=222
+[DEBUG ACCESS] i=223 accessing row 223 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=223
+[DEBUG ACCESS] i=224 accessing row 224 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=224
+[DEBUG ACCESS] i=225 accessing row 225 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=225
+[DEBUG ACCESS] i=226 accessing row 226 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=226
+[DEBUG ACCESS] i=227 accessing row 227 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=227
+[DEBUG ACCESS] i=228 accessing row 228 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=228
+[DEBUG ACCESS] i=229 accessing row 229 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=229
+[DEBUG ACCESS] i=230 accessing row 230 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=230
+[DEBUG ACCESS] i=231 accessing row 231 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=231
+[DEBUG ACCESS] i=232 accessing row 232 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=232
+[DEBUG ACCESS] i=233 accessing row 233 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=233
+[DEBUG ACCESS] i=234 accessing row 234 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=234
+[DEBUG ACCESS] i=235 accessing row 235 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=235
+[DEBUG ACCESS] i=236 accessing row 236 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=236
+[DEBUG ACCESS] i=237 accessing row 237 of 239x6 matrix
+[DEBUG ACCESS] Accessing normals at i=237
+[EDGELINE DEBUG] Load PLY normals: Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[EDGELINE DEBUG] Loaded PointNormal PLY ok, size=8854
+C1 0.00418853 C2 0.00633537
+Mean = 0.00526195
+Axis information is not available.
+Saved PCD with 3 segments to: Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.pcd
+[EDGELINE DEBUG] Saving CompleteBreakline PLY in ASCII mode...
+Error occurred: filesystem error: cannot rename: Invalid cross-device link [Temp/Temp_edge/Pot_A/CompleteBreakline.xyz] [Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_0.xyz]
+Time until error: 1.09084 seconds

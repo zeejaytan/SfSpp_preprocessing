@@ -1,0 +1,16 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) slurm/default   2) spartan/rhel9
+Lmod has detected the following error: These module(s) or extension(s) exist
+but cannot be loaded as requested: "Apptainer/1.3.3"
+   Try: "module spider Apptainer/1.3.3" to see how to load the module(s).
+
+
+
+/var/spool/slurm/job18670320/slurm_script: line 215: [: 0
+0: integer expression expected
+/var/spool/slurm/job18670320/slurm_script: line 225: [: 0
+0: integer expression expected
+/var/spool/slurm/job18670320/slurm_script: line 235: [: 0
+0: integer expression expected

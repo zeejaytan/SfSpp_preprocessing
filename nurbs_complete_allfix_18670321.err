@@ -1,0 +1,10 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) slurm/default   2) spartan/rhel9
+/var/spool/slurm/job18670321/slurm_script: line 216: [: 0
+0: integer expression expected
+/var/spool/slurm/job18670321/slurm_script: line 226: [: 0
+0: integer expression expected
+/var/spool/slurm/job18670321/slurm_script: line 236: [: 0
+0: integer expression expected

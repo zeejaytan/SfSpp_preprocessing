@@ -1,2 +1,0 @@
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-FATAL:   stat /data/gpfs/projects/punim2657/sfs_preprocessing/build/edgeline_extraction: no such file or directory

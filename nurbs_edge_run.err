@@ -1,3 +1,0 @@
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-[91mERROR  : Installation issue: starter-suid doesn't have setuid bit set
-[0m

@@ -1,3 +1,0 @@
-Time : -221887 Sec
-Sherd accuracy : 0 / 8 (0 %)
-Sherd accuracy : 0 / 0 (-nan %)

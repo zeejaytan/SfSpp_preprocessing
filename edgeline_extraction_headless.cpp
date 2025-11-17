@@ -1013,8 +1013,8 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// ADAPTIVE: Outlier removal radius based on boundary point density
 	// Use same area-based estimation as boundary detection
 	int num_boundary = boundaryCloud_Improved->points.size();
-	double estimated_area_mm2 = 400.0;  // Same assumption as boundary detection
-	double outlier_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_boundary));
+	double outlier_area_mm2 = 400.0;  // Same assumption as boundary detection
+	double outlier_spacing_mm = std::sqrt(outlier_area_mm2 / std::max(50, num_boundary));
 
 	// Outlier removal needs slightly larger radius (8x spacing vs 6x for boundary)
 	// This prevents removing valid isolated points near fragment edges
@@ -1810,16 +1810,27 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 	vector<int> out;
 
-	// FIXED PEAK DETECTION SENSITIVITY (Issue #1 fix)
-	// Previously: Adaptive sensitivity (4.0-8.0) caused segment count mismatches
-	// Problem: Fragments from same pot had different segment counts → LCS matching failed
-	// Solution: Fixed sensitivity ensures consistent segmentation across all fragments
-	// This is critical for downstream Structure-from-Sherds assembly system
-	// Value 5.0 is middle ground: balances noise rejection with feature detection
-	double sensitivity_divisor = 5.0;
-	std::cout << "[FIXED PEAK DETECTION] Breakline (" << num_points
-	          << " points) using fixed sensitivity (divisor=" << sensitivity_divisor
-	          << ") for assembly consistency" << std::endl;
+	// ADAPTIVE PEAK DETECTION SENSITIVITY (restored for sample dataset matching)
+	// This matches the original sample dataset preprocessing parameters
+	// Sparse breaklines need LESS sensitive detection (fewer false peaks from noise)
+	// Dense breaklines can afford MORE sensitive detection (real geometric features)
+	double sensitivity_divisor;
+	if (num_points < 40) {
+		// Very sparse: Use 8.0 (half sensitivity = much fewer peaks detected)
+		sensitivity_divisor = 8.0;
+		std::cout << "[ADAPTIVE PEAK DETECTION] Sparse breakline (" << num_points
+		          << " points) using low sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
+	} else if (num_points < 80) {
+		// Medium sparse: Use 6.0 (reduced sensitivity)
+		sensitivity_divisor = 6.0;
+		std::cout << "[ADAPTIVE PEAK DETECTION] Medium breakline (" << num_points
+		          << " points) using medium sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
+	} else {
+		// Dense: Use original 4.0 (standard sensitivity)
+		sensitivity_divisor = 4.0;
+		std::cout << "[ADAPTIVE PEAK DETECTION] Dense breakline (" << num_points
+		          << " points) using standard sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
+	}
 
 	findPeaks(in, out, sensitivity_divisor);
 
@@ -3274,9 +3285,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
                 break;
             }
 
-            std::cerr << "[DEBUG ACCESS] i=" << i << " accessing row " << i << " of "
-                      << matrix_breakLineSeg.rows() << "x" << matrix_breakLineSeg.cols() << " matrix" << std::endl;
-
             cloud_breakLineSeg->points.push_back(
                 pcl::PointXYZ(matrix_breakLineSeg(i, 0),
                               matrix_breakLineSeg(i, 1),
@@ -3284,8 +3292,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
             tmpPtN.x = matrix_breakLineSeg(i, 0);
             tmpPtN.y = matrix_breakLineSeg(i, 1);
             tmpPtN.z = matrix_breakLineSeg(i, 2);
-
-            std::cerr << "[DEBUG ACCESS] Accessing normals at i=" << i << std::endl;
             tmpPtN.normal_x = matrix_breakLineSeg(i, 3);
             tmpPtN.normal_y = matrix_breakLineSeg(i, 4);
             tmpPtN.normal_z = matrix_breakLineSeg(i, 5);
@@ -3392,7 +3398,9 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 	writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index, detectedPeakIndices);
 	std::cout << "[EDGELINE DEBUG] Saving CompleteBreakline PLY in ASCII mode..." << std::endl;
 	pcl::io::savePLYFile(plyFilePath, *cloud_CompleteBreakline, false); // ASCII mode
-	fs::rename(completeBreaklinePath, xyzFilePath);
+	// Fix cross-device filesystem error: use copy+remove instead of rename
+	fs::copy_file(completeBreaklinePath, xyzFilePath, fs::copy_options::overwrite_existing);
+	fs::remove(completeBreaklinePath);
 
     
     // -------------------- (추가) Fractured surface 관련 처리 --------------------
@@ -3528,7 +3536,12 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 
         std::cout << "[FRACTURE SURFACE] Saving " << cloud_PointsOnFracturedSurfaceNoDuplicates->points.size()
                   << " fracture surface points to: " << fractureSurfaceFilePath << std::endl;
-        pcl::io::savePCDFile(fractureSurfaceFilePath, *cloud_PointsOnFracturedSurfaceNoDuplicates);
+        // Only save if point cloud is not empty (PCL throws error on empty clouds)
+        if (cloud_PointsOnFracturedSurfaceNoDuplicates->points.size() > 0) {
+            pcl::io::savePCDFile(fractureSurfaceFilePath, *cloud_PointsOnFracturedSurfaceNoDuplicates);
+        } else {
+            std::cout << "[FRACTURE SURFACE] Skipping save - empty point cloud" << std::endl;
+        }
         
         pcl::PointCloud<PointNormal>::Ptr cloud_PointsOnIntExtSurfaceNoDuplicates(new pcl::PointCloud<PointNormal>);
         vector<PointNormal> vectorPointNormal2;

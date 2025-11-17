@@ -1,0 +1,6 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Processing directory: Temp/
+Surface 0 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz
+Surface 1 point cloud file: Temp/Data/Pot_A/Pot_A_Piece_01_Surface_1.xyz
+Error occurred: filesystem error: cannot copy file: No such file or directory [Temp/Data/Pot_A/Pot_A_Piece_01_Surface_0.xyz] [Dataset/Surfaces/Pot_A/Pot_A_Piece_01_Surface_0.xyz]
+Time until error: 0.00626596 seconds

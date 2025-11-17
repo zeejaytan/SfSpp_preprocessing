@@ -1,4 +1,0 @@
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-terminate called after throwing an instance of 'std::experimental::filesystem::v1::__cxx11::filesystem_error'
-  what():  filesystem error: recursive directory iterator cannot open directory: No such file or directory [Dataset/Point/Pot_A/]
-/var/spool/slurm/job17003164/slurm_script: line 65: 40413 Aborted                 (core dumped) $CONTAINER_PATH exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing:/workspace pcl_191_nurbs.sif /bin/bash -c "cd /workspace/original_nurbs_preprocessing/build && ./MeshPreprocessingHeadless"

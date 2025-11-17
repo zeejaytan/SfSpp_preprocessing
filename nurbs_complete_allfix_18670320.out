@@ -1,0 +1,100 @@
+==========================================
+  NURBS PREPROCESSING - COMPLETE DATASET
+  WITH ALL FIXES APPLIED
+==========================================
+Job ID: 18670320
+Node: spartan-bm176
+Start time: Sun 16 Nov 2025 03:51:38 AEDT
+
+=== Cleaning old outputs ===
+✓ Cleaned all output directories
+
+=== Verifying input files ===
+❌ ERROR: Input files missing!
+   Surface files: 0 (expected: 8)
+   Mesh files: 8 (expected: 8)
+
+Copying from NURBS_Dataset_20251103...
+✓ Input files copied successfully
+✓ Surface files: 8
+✓ Mesh files: 8
+
+==========================================
+  RUNNING EDGELINE EXTRACTION HEADLESS
+==========================================
+Container: pcl_191_nurbs.sif
+Executable: build_new/EdgeLineExtractionHeadless
+Processing: All Pot_A pieces (01-08)
+
+Applied Fixes:
+  ✅ Fix #1: Fixed peak detection (divisor=5)
+  ✅ Fix #2: Adaptive radius formula (400mm²)
+  ✅ Fix #3: Fracture surface generation
+  ✅ Fix #4: Empty point cloud handling
+  ✅ Fix #5: Cross-filesystem compatibility
+  ✅ Fix #6: Debug logging optimization
+
+/var/spool/slurm/job18670320/slurm_script: line 101: apptainer: command not found
+
+==========================================
+  PROCESSING COMPLETED
+==========================================
+Exit code: 127
+Total processing time: 0 seconds (0 minutes)
+Log file: Complete_Dataset_Output/Logs/preprocessing_20251116_035141.log
+
+==========================================
+          OUTPUT FILE SUMMARY
+==========================================
+
+## Surface Files (Dataset/Surfaces/Pot_A/)
+  Interior surfaces (*_Surface_0.xyz): 8 / 8
+  Exterior surfaces (*_Surface_1.xyz): 8 / 8
+  Fracture surfaces (*_Surface_F.pcd): 0 / 8
+
+## Breakline Files (Dataset/Breaklines/Pot_A/)
+  Interior breaklines (*_Breakline_0.pcd): 0 / 8
+  Exterior breaklines (*_Breakline_1.pcd): 0 / 8
+  XYZ format: 0 files
+  PLY format: 0 files
+
+## Input Files
+  Mesh files (*.obj): 8
+  Surface files (*.xyz): 16
+
+==========================================
+          VALIDATION RESULTS
+==========================================
+
+✅ Interior surfaces: 8/8
+✅ Exterior surfaces: 8/8
+❌ Interior breaklines: 0/8 (MISMATCH)
+❌ Exterior breaklines: 0/8 (MISMATCH)
+⚠️  Fracture surfaces: 0/8 (below 75% threshold)
+    Note: Some pieces may have insufficient point density near breaklines
+
+==========================================
+      FIX VERIFICATION (FROM LOG)
+==========================================
+
+## Fix #1: Fixed Peak Detection
+❌ NOT FOUND in log
+
+## Fix #2: Adaptive Radius Formula
+❌ NOT FOUND in log
+
+## Fix #3: Fracture Surface Generation
+❌ NOT FOUND in log
+
+==========================================
+          FINAL SUMMARY
+==========================================
+
+❌ ISSUES DETECTED
+
+Validation: false
+Exit code: 127
+Check log file for details: Complete_Dataset_Output/Logs/preprocessing_20251116_035141.log
+
+End time: Sun 16 Nov 2025 03:51:41 AEDT
+==========================================

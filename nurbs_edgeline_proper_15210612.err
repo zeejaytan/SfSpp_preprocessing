@@ -1,6 +1,0 @@
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-[1;31m[pcl::PLYReader] ../Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:1: parse error: couldn't read the magic string
-[0;m[1;31m[pcl::PLYReader::read] problem parsing header!
-[0;m[1;31m[pcl::PLYReader::read] problem parsing header!
-[0;m[1;31m[pcl::KdTreeFLANN::setInputCloud] Cannot create a KDTree with an empty input cloud!
-[0;m/var/spool/slurm/job15210612/slurm_script: line 26: 215941 Segmentation fault      (core dumped) $CONTAINER_PATH exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing:/workspace --pwd /workspace/build /data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif ./EdgeLineExtractionHeadless A 8

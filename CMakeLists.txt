@@ -32,14 +32,14 @@ endif()
 file(GLOB PROJ_DEP "alglib/src/*.cpp" "alglib/src/*.h")
 
 # Build both original and headless versions
-add_executable(MeshPreprocessing mesh_processing.cpp)
+# add_executable(MeshPreprocessing mesh_processing.cpp)  # Commented out - file doesn't exist
 add_executable(EdgeLineExtraction edgeline_extraction.cpp ${PROJ_DEP})
 add_executable(MeshPreprocessingHeadless mesh_processing_headless.cpp)
 add_executable(EdgeLineExtractionHeadless edgeline_extraction_headless.cpp ${PROJ_DEP})
 add_executable(EdgeLineExtractionLegacy edgeline_extraction_backup.cpp ${PROJ_DEP})
 
 # Link Libraries
-target_link_libraries(MeshPreprocessing ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
+# target_link_libraries(MeshPreprocessing ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)  # Commented out - target doesn't exist
 target_link_libraries(EdgeLineExtraction ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
 target_link_libraries(MeshPreprocessingHeadless ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
 target_link_libraries(EdgeLineExtractionHeadless ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)

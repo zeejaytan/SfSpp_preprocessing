@@ -1,0 +1,8 @@
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/EdgeLineExtraction.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/MeshPreprocessingHeadless.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/EdgeLineExtractionHeadless.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/EdgeLineExtractionLegacy.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/all_targets.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/ObjToPcd.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/edit_cache.dir
+/data/gpfs/projects/punim2657/sfs_preprocessing/build_new/CMakeFiles/rebuild_cache.dir

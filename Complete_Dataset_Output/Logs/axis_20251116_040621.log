@@ -1,0 +1,40 @@
+Opening log file:  /home/zhuojiat/java.log.59695
+=== NURBS AXIS EXTRACTION FOR ALL POT A PIECES ===
+
+--- Processing Pot A Piece 01 ---
+  ⏭️  Skipping piece 01 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_01_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_01_Surface_1.xyz
+
+--- Processing Pot A Piece 02 ---
+  ⏭️  Skipping piece 02 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_02_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_02_Surface_1.xyz
+
+--- Processing Pot A Piece 03 ---
+  ⏭️  Skipping piece 03 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_03_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_03_Surface_1.xyz
+
+--- Processing Pot A Piece 04 ---
+  ⏭️  Skipping piece 04 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_04_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_04_Surface_1.xyz
+
+--- Processing Pot A Piece 05 ---
+  ⏭️  Skipping piece 05 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_05_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_05_Surface_1.xyz
+
+--- Processing Pot A Piece 06 ---
+  ⏭️  Skipping piece 06 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_06_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_06_Surface_1.xyz
+
+--- Processing Pot A Piece 07 ---
+  ⏭️  Skipping piece 07 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_07_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_07_Surface_1.xyz
+
+--- Processing Pot A Piece 08 ---
+  ⏭️  Skipping piece 08 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_08_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_08_Surface_1.xyz
+
+=== NURBS AXIS EXTRACTION SUMMARY ===
+Successfully processed: 0/8 pieces
+Output directory: NURBS_Output/Axes/
+
+❌ No axes extracted. Check NURBS preprocessing output.

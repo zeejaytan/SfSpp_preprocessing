@@ -1,0 +1,69 @@
+=== Pot A Preprocessing with Adaptive Sensitivity ===
+Started: Sun 16 Nov 2025 20:46:09 AEDT
+
+Cleaning previous Dataset/ output...
+
+=== Step 1: Mesh Processing ===
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+terminate called after throwing an instance of 'std::experimental::filesystem::v1::__cxx11::filesystem_error'
+  what():  filesystem error: recursive directory iterator cannot open directory: No such file or directory [Dataset/Point/Pot_A/]
+/var/spool/slurm/job18698300/slurm_script: line 32: 35146 Aborted                 (core dumped) apptainer exec --bind /data:/data pcl_191_nurbs.sif ./build_new/MeshPreprocessingHeadless
+
+=== Step 2: Edgeline Extraction (Adaptive Sensitivity) ===
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Processing directory: Temp/
+Total processing time: 0.00544536 seconds
+
+=== Step 3: Axis Extraction ===
+cp: cannot stat 'Dataset/Surfaces/Pot_A/*.xyz': No such file or directory
+Opening log file:  /home/zhuojiat/java.log.35251
+Warning: X does not support locale en_AU.UTF-8
+=== NURBS AXIS EXTRACTION FOR ALL POT A PIECES ===
+
+--- Processing Pot A Piece 01 ---
+  ⏭️  Skipping piece 01 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_01_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_01_Surface_1.xyz
+
+--- Processing Pot A Piece 02 ---
+  ⏭️  Skipping piece 02 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_02_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_02_Surface_1.xyz
+
+--- Processing Pot A Piece 03 ---
+  ⏭️  Skipping piece 03 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_03_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_03_Surface_1.xyz
+
+--- Processing Pot A Piece 04 ---
+  ⏭️  Skipping piece 04 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_04_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_04_Surface_1.xyz
+
+--- Processing Pot A Piece 05 ---
+  ⏭️  Skipping piece 05 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_05_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_05_Surface_1.xyz
+
+--- Processing Pot A Piece 06 ---
+  ⏭️  Skipping piece 06 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_06_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_06_Surface_1.xyz
+
+--- Processing Pot A Piece 07 ---
+  ⏭️  Skipping piece 07 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_07_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_07_Surface_1.xyz
+
+--- Processing Pot A Piece 08 ---
+  ⏭️  Skipping piece 08 - NURBS surfaces not found
+      Missing: Dataset/SfS_pp/Surfaces/Pot_A_Piece_08_Surface_0.xyz or Dataset/SfS_pp/Surfaces/Pot_A_Piece_08_Surface_1.xyz
+
+=== NURBS AXIS EXTRACTION SUMMARY ===
+Successfully processed: 0/8 pieces
+Output directory: NURBS_Output/Axes/
+
+❌ No axes extracted. Check NURBS preprocessing output.
+
+=== Preprocessing Complete ===
+Ended: Sun 16 Nov 2025 20:47:31 AEDT
+
+=== Output Summary ===
+Surfaces: 0 files
+Breaklines (PCD): 0 files
+Axes: 0 files
+
+Check for adaptive sensitivity in output:

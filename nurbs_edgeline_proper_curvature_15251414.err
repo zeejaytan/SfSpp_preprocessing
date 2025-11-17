@@ -1,6 +1,0 @@
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-terminate called after throwing an instance of 'std::experimental::filesystem::v1::__cxx11::filesystem_error'
-  what():  filesystem error: cannot create directories: Read-only file system [../Temp//Axes]
-/var/spool/slurm/job15251414/slurm_script: line 27: 132297 Aborted                 (core dumped) $CONTAINER_PATH exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing/original_nurbs_preprocessing:/workspace --pwd /workspace /data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif ./build/EdgeLineExtractionHeadless A 8
-ls: cannot access '../"NURBS_Dataset_20250905_ProperCurvature"/SfS_pp/Surfaces/*.xyz': No such file or directory
-ls: cannot access '../"NURBS_Dataset_20250905_ProperCurvature"/SfS_pp/Breaklines/*.pcd': No such file or directory
