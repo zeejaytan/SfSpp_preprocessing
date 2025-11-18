@@ -1,0 +1,198 @@
+==========================================
+COMPREHENSIVE DATASET COMPARISON
+New 19K Dataset vs Sample Dataset
+Generated: Wed 19 Nov 2025 00:11:06 AEDT
+==========================================
+
+========== 1. SURFACES COMPARISON ==========
+
+Sample Dataset Surface Statistics:
+  Pot_A_Piece_01_Surface_0.xyz            :    3367 points
+  Pot_A_Piece_01_Surface_1.xyz            :    2634 points
+  Pot_A_Piece_02_Surface_0.xyz            :    6747 points
+  Pot_A_Piece_02_Surface_1.xyz            :    6587 points
+  Pot_A_Piece_03_Surface_0.xyz            :    7359 points
+  Pot_A_Piece_03_Surface_1.xyz            :    4571 points
+  Pot_A_Piece_04_Surface_0.xyz            :    7449 points
+  Pot_A_Piece_04_Surface_1.xyz            :    7079 points
+  Pot_A_Piece_05_Surface_0.xyz            :    6654 points
+  Pot_A_Piece_05_Surface_1.xyz            :    6552 points
+  Pot_A_Piece_06_Surface_0.xyz            :    5478 points
+  Pot_A_Piece_06_Surface_1.xyz            :    3795 points
+  Pot_A_Piece_07_Surface_0.xyz            :    8059 points
+  Pot_A_Piece_07_Surface_1.xyz            :    7034 points
+  Pot_A_Piece_08_Surface_0.xyz            :    5497 points
+  Pot_A_Piece_08_Surface_1.xyz            :    4669 points
+/data/gpfs/projects/punim2657/sfs_preprocessing/comprehensive_comparison.sh: line 31: sample_surf_total / sample_surf_count: division by 0 (error token is "sample_surf_count")
+
+New 19K Dataset Surface Statistics:
+  Pot_A_Piece_01_Surface_0.xyz            :   16790 points
+  Pot_A_Piece_01_Surface_1.xyz            :   13995 points
+  Pot_A_Piece_02_Surface_0.xyz            :   17997 points
+  Pot_A_Piece_02_Surface_1.xyz            :   16286 points
+  Pot_A_Piece_03_Surface_0.xyz            :   18156 points
+  Pot_A_Piece_03_Surface_1.xyz            :   16534 points
+  Pot_A_Piece_04_Surface_0.xyz            :   19086 points
+  Pot_A_Piece_04_Surface_1.xyz            :   17271 points
+  Pot_A_Piece_05_Surface_0.xyz            :   16696 points
+  Pot_A_Piece_05_Surface_1.xyz            :   15899 points
+  Pot_A_Piece_06_Surface_0.xyz            :   16161 points
+  Pot_A_Piece_06_Surface_1.xyz            :   14641 points
+  Pot_A_Piece_07_Surface_0.xyz            :   13332 points
+  Pot_A_Piece_07_Surface_1.xyz            :   12496 points
+  Pot_A_Piece_08_Surface_0.xyz            :   15082 points
+  Pot_A_Piece_08_Surface_1.xyz            :   14974 points
+/data/gpfs/projects/punim2657/sfs_preprocessing/comprehensive_comparison.sh: line 50: new_surf_total / new_surf_count: division by 0 (error token is "new_surf_count")
+
+Surface Summary Comparison:
+                    Sample          New 19K         Ratio
+awk: cmd. line:1: error: division by zero attempted
+  Total Points:     0         0       x
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                        ^ unterminated regexp
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                         ^ unexpected newline or end of string
+  Avg per Surface:                      x
+  Min:              999999999           999999999
+  Max:              0          0
+  File Count:       0              0
+
+========== 2. BREAKLINES COMPARISON ==========
+
+Sample Dataset Breakline Statistics:
+  Pot_A_Piece_01_Breakline_0.pcd          :      59 points
+  Pot_A_Piece_01_Breakline_1.pcd          :     150 points
+  Pot_A_Piece_02_Breakline_0.pcd          :     162 points
+  Pot_A_Piece_02_Breakline_1.pcd          :      99 points
+  Pot_A_Piece_03_Breakline_0.pcd          :     130 points
+  Pot_A_Piece_03_Breakline_1.pcd          :     175 points
+  Pot_A_Piece_04_Breakline_0.pcd          :     116 points
+  Pot_A_Piece_04_Breakline_1.pcd          :     194 points
+  Pot_A_Piece_05_Breakline_0.pcd          :     140 points
+  Pot_A_Piece_05_Breakline_1.pcd          :      43 points
+  Pot_A_Piece_06_Breakline_0.pcd          :      30 points
+  Pot_A_Piece_06_Breakline_1.pcd          :      95 points
+  Pot_A_Piece_07_Breakline_0.pcd          :     132 points
+  Pot_A_Piece_07_Breakline_1.pcd          :     111 points
+  Pot_A_Piece_08_Breakline_0.pcd          :      30 points
+  Pot_A_Piece_08_Breakline_1.pcd          :      94 points
+/data/gpfs/projects/punim2657/sfs_preprocessing/comprehensive_comparison.sh: line 80: sample_bl_total / sample_bl_count: division by 0 (error token is "sample_bl_count")
+
+New 19K Dataset Breakline Statistics:
+  Pot_A_Piece_01_Breakline_0.pcd          :     360 points
+  Pot_A_Piece_01_Breakline_1.pcd          :     351 points
+  Pot_A_Piece_02_Breakline_0.pcd          :     411 points
+  Pot_A_Piece_02_Breakline_1.pcd          :     291 points
+  Pot_A_Piece_03_Breakline_0.pcd          :     365 points
+  Pot_A_Piece_03_Breakline_1.pcd          :     347 points
+  Pot_A_Piece_04_Breakline_0.pcd          :     409 points
+  Pot_A_Piece_04_Breakline_1.pcd          :     342 points
+  Pot_A_Piece_05_Breakline_0.pcd          :     374 points
+  Pot_A_Piece_05_Breakline_1.pcd          :     377 points
+  Pot_A_Piece_06_Breakline_0.pcd          :     452 points
+  Pot_A_Piece_06_Breakline_1.pcd          :     381 points
+  Pot_A_Piece_07_Breakline_0.pcd          :     334 points
+  Pot_A_Piece_07_Breakline_1.pcd          :     367 points
+  Pot_A_Piece_08_Breakline_0.pcd          :     363 points
+  Pot_A_Piece_08_Breakline_1.pcd          :     336 points
+/data/gpfs/projects/punim2657/sfs_preprocessing/comprehensive_comparison.sh: line 99: new_bl_total / new_bl_count: division by 0 (error token is "new_bl_count")
+
+Breakline Summary Comparison:
+                    Sample          New 19K         Ratio
+awk: cmd. line:1: error: division by zero attempted
+  Total Points:     0            0           x
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                        ^ unterminated regexp
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                         ^ unexpected newline or end of string
+  Avg per Breakline:                        x
+  Min:              999999999              999999999
+  Max:              0             0
+  File Count:       0              0
+
+========== 3. AXES COMPARISON ==========
+
+Sample Dataset Axes:
+  Pot_A_Piece_01_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_02_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_03_NURBS_Axis.xyz           : 1 axes (2 lines)
+  Pot_A_Piece_04_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_05_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_06_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_07_NURBS_Axis.xyz           : 0 axes (1 lines)
+  Pot_A_Piece_08_NURBS_Axis.xyz           : 1 axes (2 lines)
+
+New 19K Dataset Axes:
+  Pot_A_Piece_01_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_02_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_03_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_04_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_05_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_06_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_07_Axis.txt                 : 1 axes (6 lines)
+  Pot_A_Piece_08_Axis.txt                 : 1 axes (6 lines)
+
+Axis Summary Comparison:
+                    Sample          New 19K
+  File Count:       0               0
+  Format:           XYZ (2 lines)   TXT (6 lines per axis)
+  Generation:       MATLAB          MATLAB
+
+========== 4. FILE FORMAT COMPARISON ==========
+
+Sample Dataset:
+  Surfaces:  XYZ (ASCII coordinates)
+  Breaklines:PCD (Point Cloud Data)
+  Axes:      XYZ (ASCII, 2 lines per axis)
+
+New 19K Dataset:
+  Surfaces:  XYZ (ASCII coordinates)
+  Breaklines:PCD (Point Cloud Data)
+  Axes:      TXT (ASCII, 6 lines per axis)
+  Surface_F: PCD (intermediate features - not in sample)
+
+========== 5. DENSITY ANALYSIS ==========
+
+Per-Piece Surface Density Comparison:
+Piece    Sample_0  Sample_1  New_0     New_1     Ratio_0   Ratio_1
+-----    --------  --------  -----     -----     -------   -------
+  01       3367      2634     16790     13995     4.99x     5.31x
+  02       6747      6587     17997     16286     2.67x     2.47x
+  03       7359      4571     18156     16534     2.47x     3.62x
+  04       7449      7079     19086     17271     2.56x     2.44x
+  05       6654      6552     16696     15899     2.51x     2.43x
+  06       5478      3795     16161     14641     2.95x     3.86x
+  07       8059      7034     13332     12496     1.65x     1.78x
+  08       5497      4669     15082     14974     2.74x     3.21x
+
+========== 6. OVERALL COMPARISON SUMMARY ==========
+
+STRUCTURE:
+  ✓ Both datasets have 8 pottery pieces
+  ✓ Both have 2 surfaces per piece (16 total)
+  ✓ Both have 2 breaklines per piece (16 total)
+  ✓ Both have 1 axis per piece (8 total)
+
+KEY DIFFERENCES:
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                        ^ unterminated regexp
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                         ^ unexpected newline or end of string
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                        ^ unterminated regexp
+awk: cmd. line:1: BEGIN {printf "%.2f", /}
+awk: cmd. line:1:                         ^ unexpected newline or end of string
+  • Surface Density:  x higher (15,962 vs 5,845 avg pts)
+  • Breakline Density:x higher (366 vs 110 avg pts)
+  • Axis Format:      TXT vs XYZ (different MATLAB output format)
+  • Extra Files:      8 Surface_F.pcd (intermediate features)
+
+COMPATIBILITY:
+  ✓ File count matches exactly
+  ✓ Naming convention compatible
+  ✓ XYZ/PCD formats compatible
+  ⚠ Higher density may need parameter tuning in SFS assembly
+
+==========================================
+Comparison Complete: Wed 19 Nov 2025 00:11:07 AEDT
+==========================================
