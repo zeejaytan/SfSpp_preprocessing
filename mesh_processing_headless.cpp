@@ -1,6 +1,7 @@
-// Headless version - removed Windows graphics libraries 
+// Headless version - removed Windows graphics libraries
 
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 
 #include <time.h>
@@ -565,20 +566,36 @@ pcl::PointCloud<pcl::PointNormal>::Ptr downsampledCloudWithNormals(new pcl::Poin
 std::string outputFile = "";
 
 // Auto-tunes sampling radius based on scene scale; aims for ~targetSamples (default 10000)
-std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F) {
+// If targetSamples <= 0, skips downsampling and uses raw point cloud instead
+std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 10000) {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr originalPointCloudXYZ(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalPointCloud(new pcl::PointCloud<pcl::PointNormal>);
-	
+
 	if (pcl::io::loadPCDFile<pcl::PointXYZ>(inputPcdFile, *originalPointCloudXYZ) == -1) {
 		PCL_ERROR("Couldn't read file\n");
-		return ""; 
+		return "";
 	}
-	
+
 	// Convert XYZ to PointNormal (normals will be computed later)
 	pcl::copyPointCloud(*originalPointCloudXYZ, *originalPointCloud);
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::copyPointCloud(*originalPointCloud, *originalCloudWithNormals);
+
+	// SPECIAL CASE: If targetSamples <= 0, skip downsampling and use raw cloud
+	if (targetSamples <= 0) {
+		std::cout << "[NO DOWNSAMPLING] Using raw point cloud with " << originalCloudWithNormals->size() << " points" << std::endl;
+		// Use raw cloud directly - copy to downsampledCloud
+		pcl::copyPointCloud(*originalCloudWithNormals, *downsampledCloud);
+		pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
+		getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+
+		pcl::PLYWriter writer;
+		outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
+		std::cout << "[NO DOWNSAMPLING] Saving PLY with normals..." << std::endl;
+		writer.write<pcl::PointNormal>(outputFile, *downsampledCloudWithNormals, false);
+		return outputFile;
+	}
 
 	pcl::KdTreeFLANN<pcl::PointNormal> kdTree;
 	kdTree.setInputCloud(originalCloudWithNormals);
@@ -597,9 +614,9 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
     float dx = maxx - minx, dy = maxy - miny, dz = maxz - minz;
     float diag = std::sqrt(dx*dx + dy*dy + dz*dz);
 
-    // Target sample size and tolerance
-    const int targetSamples = 10000;
-    const int lowerBound = 8000, upperBound = 12000;
+    // Target sample size and tolerance (with configurable targetSamples)
+    const int lowerBound = targetSamples * 0.8;  // 80% of target
+    const int upperBound = targetSamples * 1.2;  // 120% of target
 
     // Initialize leaf from scale (smaller -> denser). Start moderately dense.
     float leaf = std::max(0.0005f, 0.0015f * diag);
@@ -628,6 +645,12 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
             attempts++;
         }
     }
+
+    // Log downsampling result
+    std::cout << "[DOWNSAMPLING RESULT] Target=" << targetSamples << " points, "
+              << "Bounds=[" << lowerBound << "-" << upperBound << "], "
+              << "Result=" << downsampledCloud->size() << " points, "
+              << "Radius(leaf)=" << std::fixed << std::setprecision(5) << leaf << std::endl;
 
 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
     getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
@@ -2026,8 +2049,9 @@ int main(int argc, char** argv) {
             continue;
         }
         
-        setInputFile(inputFilePath, dataPath); 
-        std::string downsampledFilePath = downsamplePointCloud(inputFilePath);
+        setInputFile(inputFilePath, dataPath);
+        // FINAL: Target 19,000 points - optimized for sample dataset matching (~19K output)
+        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, 19000);
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
         

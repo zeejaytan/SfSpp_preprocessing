@@ -46,7 +46,7 @@ target_link_libraries(EdgeLineExtractionHeadless ${PCL_LIBRARIES} ${CGAL_LIBRARI
 target_link_libraries(EdgeLineExtractionLegacy ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
 
 # Build all targets
-add_custom_target(all_targets ALL DEPENDS MeshPreprocessing EdgeLineExtraction MeshPreprocessingHeadless EdgeLineExtractionHeadless EdgeLineExtractionLegacy)
+add_custom_target(all_targets ALL DEPENDS EdgeLineExtraction MeshPreprocessingHeadless EdgeLineExtractionHeadless EdgeLineExtractionLegacy)
 
 # Lightweight OBJ -> PCD converter (header-only tinyobjloader, ASCII PCD output)
 add_executable(ObjToPcd tools/obj_to_pcd.cpp)
