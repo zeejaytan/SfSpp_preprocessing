@@ -566,24 +566,17 @@ MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 	}
 	avgSpacing /= std::max(spacingCount, 1);
 
-	// ADAPTIVE MAXIMUM RADIUS: Adjust maximum based on point sparsity
-	// Sparse data needs larger sphere radius to avoid over-reduction
-	int num_points = P.rows();
-	double max_radius;
-	if (num_points < 50) {
-		max_radius = 0.015;  // 15mm for very sparse data (pottery rims)
-	} else if (num_points < 100) {
-		max_radius = 0.010;  // 10mm for sparse data
-	} else {
-		max_radius = 0.005;  // 5mm for dense data (original)
-	}
+	// MODIFIED FOR SAMPLE-LIKE VARIATION:
+	// Remove max_radius clamping to allow 5× multiplier to work with large avgSpacing
+	// Previous max_radius (5-15mm) was preventing sphere from growing with sparse input
 
-	// Use 1.5× average spacing, with adaptive maximum and minimum of 0.5mm
+	// Use 5.0× average spacing to produce sample-like variation (30-194 points)
+	// Larger radius = fewer output points, preserves geometry-based variation
 	// NOTE: Point cloud units are in METERS, so convert mm to meters
-	double sphereRadius = std::max(0.0005, std::min(max_radius, avgSpacing * 1.5));
+	double sphereRadius = std::max(0.001, avgSpacing * 5.0);  // No max clamp, let it scale naturally
 	std::cout << "[ADAPTIVE SPHERE-MARCHING] Input points: " << P.rows() << ", avgSpacing: " << avgSpacing << "m ("
-	          << (avgSpacing * 1000) << "mm), max_radius: " << (max_radius * 1000) << "mm, adaptiveRadius: "
-	          << sphereRadius << "m (" << (sphereRadius * 1000) << "mm)" << std::endl;
+	          << (avgSpacing * 1000) << "mm), sphereRadius: "
+	          << sphereRadius << "m (" << (sphereRadius * 1000) << "mm) [5.0× multiplier, no max clamp]" << std::endl;
 
 	// COMBINATION APPROACH PART 2: Retry with smaller radius if we get too few points
 	MatrixXd smoothedBreakLine;
@@ -703,10 +696,10 @@ MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 	}
 
 	// INTEGRATION POINT #1: ADAPTIVE DENSIFICATION after sphere-marching
-	// Ensure breakline has sufficient density for downstream segment detection and rim classification
-	std::cout << "[INTEGRATION POINT #1] Pre-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
-	smoothedBreakLine = adaptiveDensifyBreakline(smoothedBreakLine, 2.0);
-	std::cout << "[INTEGRATION POINT #1] Post-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
+	// DISABLED: Preserve natural geometric variation from 5× sphere-marching
+	std::cout << "[INTEGRATION POINT #1] Natural variation: " << smoothedBreakLine.rows() << " points (densification disabled to match sample)" << std::endl;
+	// smoothedBreakLine = adaptiveDensifyBreakline(smoothedBreakLine, 2.0);
+	// std::cout << "[INTEGRATION POINT #1] Post-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
 
 	return smoothedBreakLine;
 }
