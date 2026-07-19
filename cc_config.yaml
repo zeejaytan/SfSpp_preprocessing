@@ -1,0 +1,62 @@
+# CloudCompare Mesh-to-PCD Configuration
+#
+# Default parameters for automated point cloud generation
+# These can be overridden via command-line flags
+
+defaults:
+  # Maximum points to sample from mesh
+  # 1M is recommended for Rabati-scale pottery objects
+  max_points: 1000000
+
+  # Noise filter preset: low, medium, high
+  noise_filter: medium
+
+  # Radius for octree-based normal computation (in mesh units)
+  # Smaller values capture more detail but may be noisier
+  normal_radius: 0.5
+
+  # Number of neighbors for MST-based normal orientation
+  normal_orient_k: 6
+
+safety:
+  # Maximum percentage of points that can be removed by noise filter
+  # If exceeded, job fails to prevent over-filtering
+  max_removal_percent: 30
+
+  # Minimum points required in output
+  # If below this, job fails as output is too sparse
+  min_output_points: 10000
+
+noise_presets:
+  # Low: Permissive filtering, keeps more points
+  # Use for clean meshes or when edge detail is critical
+  low:
+    sor_neighbors: 6
+    sor_std_multiplier: 2.0
+
+  # Medium: Balanced filtering (default)
+  # Good for typical photogrammetry meshes
+  medium:
+    sor_neighbors: 6
+    sor_std_multiplier: 1.0
+
+  # High: Aggressive filtering
+  # Use for noisy meshes with significant outliers
+  high:
+    sor_neighbors: 6
+    sor_std_multiplier: 0.5
+
+# CloudCompare module on Spartan
+module:
+  gcc: "GCC/11.3.0"
+  mpi: "OpenMPI/4.1.4"
+  cloudcompare: "CloudCompare/2.12.4"
+
+# File naming conventions
+naming:
+  # Input mesh pattern: {pot}_{piece}_Mesh.obj
+  # Output point cloud: {pot}_{piece}_Point.pcd
+  # Log file: {pot}_{piece}_cc.log
+  input_suffix: "_Mesh.obj"
+  output_suffix: "_Point.pcd"
+  log_suffix: "_cc.log"
