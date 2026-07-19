@@ -47,3 +47,8 @@ test_preprocessing/
 .cursor/
 .vscode/
 graphify-out/
+
+# Extensionless per-piece surface outputs and scratch reports (repo root)
+/Pot_A_Piece_*_Surface_*
+/segmentationStats.txt
+/large_files_to_remove.txt
