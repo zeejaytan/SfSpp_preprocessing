@@ -15,3 +15,35 @@ slurm-*.out
 # Temporary download files
 temp_download/
 
+
+# --- laptop <-> GitHub <-> Spartan workspace conventions ---
+# Laptop-side rsync landing zone (see scripts/remote/fetch_artifacts.sh)
+artifacts/
+
+# Regenerated datasets / pipeline outputs (HPC only)
+NURBS_Dataset_*/
+Dataset_backup_*/
+Complete_Dataset_Output/
+latest_nurbs_dataset/
+latest_tray_dataset/
+NURBS_Output/
+axis_output/
+archive_*/
+backup_tray_data/
+build_new/
+mesh_to_pcd_build/
+mesh_pcd_build/
+container_build/
+test_pipeline_output/
+test_preprocessing/
+*.log
+*.pcd
+*.ply
+*.xyz
+*.flag
+
+# Agent / IDE / graph noise
+.claude/
+.cursor/
+.vscode/
+graphify-out/
