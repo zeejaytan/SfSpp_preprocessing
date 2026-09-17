@@ -30,6 +30,7 @@ POT_ID="A"                    # legacy label only; naming comes from POT_NAME
 POT_NAME="Juglet"
 NUM_PIECES=9
 OUTPUT_BASE="/data/gpfs/projects/punim2657/sfs_preprocessing/Juglet_Dataset_20260916"
+REPO_ROOT="/data/gpfs/projects/punim2657/sfs_preprocessing"
 APPTAINER="/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer"
 NURBS_IMG="pcl_191_nurbs.sif"
 
@@ -45,8 +46,8 @@ echo "=== Step 0: OBJ -> PCD ==="
 OBJ2PCD="original_nurbs_preprocessing/build_obj2pcd/ObjToPcd"
 if [ ! -x "${OBJ2PCD}" ]; then
     echo "ObjToPcd missing; building..."
-    ${APPTAINER} exec --bind "$PWD:/workspace" "${NURBS_IMG}" /bin/bash -lc \
-        "cd /workspace/original_nurbs_preprocessing && rm -rf build_obj2pcd && mkdir -p build_obj2pcd && cd build_obj2pcd && cmake .. && make -j2 ObjToPcd"
+    ${APPTAINER} exec --bind /data:/data "${NURBS_IMG}" /bin/bash -lc \
+        "cd ${REPO_ROOT}/original_nurbs_preprocessing && rm -rf build_obj2pcd && mkdir -p build_obj2pcd && cd build_obj2pcd && cmake .. && make -j2 ObjToPcd"
 fi
 mkdir -p Dataset/Point/${POT_NAME}
 for p in $(seq -f "%02g" 1 ${NUM_PIECES}); do
@@ -79,14 +80,17 @@ rm -f ${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_*_Axis.xyz
 
 # ---------- Step 1: surfaces ----------
 echo "=== Step 1: Surface Generation ==="
-# NOTE: binaries run with cwd = repo root (/workspace); their Dataset/...,
+# NOTE: binaries run with cwd = repo root; their Dataset/...,
 # Temp/... paths are root-relative (the Dataset symlink lives at
 # original_nurbs_preprocessing/Dataset -> ../Dataset, NOT under build/).
-${APPTAINER} exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing:/workspace \
+# Bind is /data:/data (NOT ...:/workspace): /workspace is already a GPFS
+# mount inside the container so that bind is shadowed — verified 2026-09-17
+# (Step 1 saw a stale /workspace/Dataset and failed on Dataset/Point/Juglet/).
+${APPTAINER} exec --bind /data:/data \
     --env POT_NAME="${POT_NAME}" \
     --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
     ${NURBS_IMG} /bin/bash -c \
-    "cd /workspace && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless"
+    "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless"
 [ $? -ne 0 ] && { echo "ERROR: surface generation failed"; exit 1; }
 echo "Surfaces: $(ls ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
 echo "Sample coords (mm expected, not e+07):"
@@ -95,11 +99,11 @@ echo ""
 
 # ---------- Step 2: breaklines ----------
 echo "=== Step 2: Breakline Extraction ==="
-${APPTAINER} exec --bind /data/gpfs/projects/punim2657/sfs_preprocessing:/workspace \
+${APPTAINER} exec --bind /data:/data \
     --env POT_NAME="${POT_NAME}" \
     --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
     ${NURBS_IMG} /bin/bash -c \
-    "cd /workspace && ./original_nurbs_preprocessing/build/EdgeLineExtractionHeadless"
+    "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/EdgeLineExtractionHeadless"
 [ $? -ne 0 ] && { echo "ERROR: breakline extraction failed"; exit 1; }
 echo "Breaklines: $(ls ${OUTPUT_BASE}/SfS_pp/Breaklines/${POT_NAME}_Piece_*_Breakline_*.pcd 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
 echo ""
