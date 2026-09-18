@@ -18,6 +18,16 @@
 # Chain: OBJ -> PCD (ObjToPcd) -> Surfaces (MeshPreprocessingHeadless)
 #        -> Breaklines (EdgeLineExtractionHeadless) -> Axes (MATLAB PotSAC)
 # Binaries: original_nurbs_preprocessing/build{,_obj2pcd} (Nov-2025 fixed)
+#
+# NAMING (single digit, Juglet_Piece_1..9 — NOT 01..09): the Nov-2025
+# binaries truncate every stem to its first 14 chars
+# (fileNameOnly = stem.substr(0, 14), tuned for "Pot_A_Piece_01").
+# "Juglet_Piece_01" is 15 chars, so all 9 pieces collapsed to
+# "Juglet_Piece_0" and overwrote each other (job 30694326: Surfaces: 2,
+# then breaklines crashed on stale Pot_A names). "Juglet_Piece_1" is
+# exactly 14 chars, so the truncation is a no-op and mesh/edge/axis
+# stages agree. Proper fix (suffix-strip helper + rebuild) is follow-up
+# work; this keeps the tested Nov-2025 binaries untouched.
 # =====================================================================
 
 echo "=== Juglet Preprocessing Pipeline (9 pieces) ==="
@@ -41,7 +51,7 @@ echo "POT_NAME: ${POT_NAME}, pieces: ${NUM_PIECES}"
 echo "OUTPUT_BASE: ${OUTPUT_BASE}"
 echo ""
 
-# ---------- Step 0: OBJ -> PCD ----------
+# ---------- Step 0: OBJ -> PCD (single-digit names, see header) ----------
 echo "=== Step 0: OBJ -> PCD ==="
 OBJ2PCD="original_nurbs_preprocessing/build_obj2pcd/ObjToPcd"
 if [ ! -x "${OBJ2PCD}" ]; then
@@ -50,13 +60,24 @@ if [ ! -x "${OBJ2PCD}" ]; then
         "cd ${REPO_ROOT}/original_nurbs_preprocessing && rm -rf build_obj2pcd && mkdir -p build_obj2pcd && cd build_obj2pcd && cmake .. && make -j2 ObjToPcd"
 fi
 mkdir -p Dataset/Point/${POT_NAME}
-for p in $(seq -f "%02g" 1 ${NUM_PIECES}); do
+# Single-digit mesh copies: the binaries derive the mesh name from the PCD
+# stem, so both must use Juglet_Piece_N (2-digit originals stay untouched).
+for p in $(seq 1 ${NUM_PIECES}); do
+    src="Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_$(printf '%02d' $p)_Mesh.obj"
+    dst="Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_${p}_Mesh.obj"
+    if [ ! -f "${src}" ]; then echo "ERROR: missing ${src}"; exit 1; fi
+    cp -f "${src}" "${dst}"
+done
+# Move aside 2-digit PCDs from earlier runs: the binaries scan the whole
+# Point dir, and 2-digit stems would re-collide under truncation.
+mkdir -p Dataset/Point/${POT_NAME}/backup_02digit
+mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_0?_Point.pcd Dataset/Point/${POT_NAME}/backup_02digit/ 2>/dev/null || true
+for p in $(seq 1 ${NUM_PIECES}); do
     mesh="Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_${p}_Mesh.obj"
     pcd="Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_${p}_Point.pcd"
-    if [ ! -f "${mesh}" ]; then echo "ERROR: missing ${mesh}"; exit 1; fi
     ./${OBJ2PCD} "${mesh}" "${pcd}" || exit 1
 done
-FOUND=$(ls Dataset/Point/${POT_NAME}/*.pcd 2>/dev/null | wc -l)
+FOUND=$(ls Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Point.pcd 2>/dev/null | wc -l)
 echo "PCD files: ${FOUND} (expected ${NUM_PIECES})"
 [ "${FOUND}" -ne ${NUM_PIECES} ] && { echo "ERROR: PCD count mismatch"; exit 1; }
 echo ""
@@ -74,9 +95,19 @@ mkdir -p original_nurbs_preprocessing/build/Segments/
 rm -f Temp/Data/${POT_NAME}/*.xyz
 rm -f Temp/Temp/${POT_NAME}/*.ply
 rm -f Temp/Temp_edge/${POT_NAME}/*.ply
-rm -f ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz
-rm -f ${OUTPUT_BASE}/SfS_pp/Breaklines/${POT_NAME}_Piece_*_Breakline_*.pcd
-rm -f ${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_*_Axis.xyz
+# Fresh bundle: drop previous-run outputs incl. 30694326's truncated
+# "Juglet_Piece_0_*" files and the binary-copied Mesh/Point duplicates.
+rm -f ${OUTPUT_BASE}/SfS_pp/Surfaces/*
+rm -f ${OUTPUT_BASE}/SfS_pp/Breaklines/*
+rm -f ${OUTPUT_BASE}/SfS_pp/Axes/*
+# Breakline discovery scans Temp/ for *.obj (Pot_A-era mechanism). Stale
+# Pot_A meshes left there would hijack the run (crashed 30694326 on
+# Pot_A_Piece_01 names), and in OUTPUT_BASE mode our meshes never land in
+# Temp/ — so quarantine every pre-existing *.obj, then stage ours.
+mkdir -p Temp/stale_obj_backup
+find Temp -maxdepth 3 -name "*.obj" -not -path "*/stale_obj_backup/*" -exec mv -f {} Temp/stale_obj_backup/ \; 2>/dev/null || true
+cp -f Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Mesh.obj Temp/Data/${POT_NAME}/
+echo "Staged for breakline discovery: $(ls Temp/Data/${POT_NAME}/*.obj 2>/dev/null | wc -l) (expected ${NUM_PIECES})"
 
 # ---------- Step 1: surfaces ----------
 echo "=== Step 1: Surface Generation ==="
@@ -94,7 +125,7 @@ ${APPTAINER} exec --bind /data:/data \
 [ $? -ne 0 ] && { echo "ERROR: surface generation failed"; exit 1; }
 echo "Surfaces: $(ls ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
 echo "Sample coords (mm expected, not e+07):"
-head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_01_Surface_0.xyz
+head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_1_Surface_0.xyz
 echo ""
 
 # ---------- Step 2: breaklines ----------
@@ -114,7 +145,7 @@ module load MATLAB/2024b_Update_3
 matlab -batch "
 addpath('.');
 for piece = 1:${NUM_PIECES}
-    piece_str = sprintf('%02d', piece);
+    piece_str = sprintf('%d', piece);
     surface_file = sprintf('${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_%s_Surface_0.xyz', piece_str);
     output_file = sprintf('${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_%s_Axis.xyz', piece_str);
     fprintf('Processing piece %s/%d...\n', piece_str, ${NUM_PIECES});
@@ -135,8 +166,8 @@ quit;
 echo "Axes: $(ls ${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_*_Axis.xyz 2>/dev/null | wc -l) (expected ${NUM_PIECES})"
 echo ""
 
-# ---------- Stage Mesh + GT into the bundle ----------
-cp -f Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_*_Mesh.obj ${OUTPUT_BASE}/SfS_pp/Mesh/
+# ---------- Stage Mesh + GT into the bundle (single-digit meshes) ----------
+cp -f Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Mesh.obj ${OUTPUT_BASE}/SfS_pp/Mesh/
 cp -f Dataset/Juglet_GT/${POT_NAME}_Piece_*_T.txt "${OUTPUT_BASE}/SfS_pp/Ground Truth/"
 cp -f Dataset/Juglet_GT/${POT_NAME}_simple_graph.txt "${OUTPUT_BASE}/SfS_pp/Ground Truth/"
 
