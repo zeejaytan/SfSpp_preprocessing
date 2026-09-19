@@ -156,7 +156,9 @@ else
 fi
 ${APPTAINER} exec --bind /data:/data \
     ${NURBS_IMG} /bin/bash -c \
-    "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && make EdgeLineExtractionHeadless -j4"
+    "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && rm -rf CMakeCache.txt CMakeFiles && cmake .. && make EdgeLineExtractionHeadless -j4"
+# (reconfigure: the Nov-2025 CMakeCache pins source dir /workspace/...,
+# which is shadowed inside the container now — bit 30761823)
 [ $? -ne 0 ] && { echo "ERROR: rebuild failed"; exit 1; }
 cd ${REPO_ROOT}
 echo ""
