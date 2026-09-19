@@ -1,0 +1,39 @@
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
+@@ -932,7 +932,31 @@
+ 	// ADAPTIVE: Compute boundary radius based on point cloud density
+ 	int num_pts = cloudWithoutNormals->points.size();
+-	double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));
++	// Juglet fix (2026-09): sqrt(1/N) assumes points spread over 1 m^2, which
++	// overestimates spacing ~10x on sherd-scale clouds and pins the radius at
++	// the 15 mm clamp. On the 65 mm thin-walled Juglet that swallows every
++	// fracture edge: empty boundary -> "writeASCII: no data" abort (verified
++	// on Juglet_Piece_1, 11028 clean points, zero NaN/inf). Estimate spacing
++	// from the cloud's own bbox sheet area instead (cloud units are mm).
++	// NOTE: this also lowers the radius on dense Pot_A re-runs (15 mm ->
++	// ~6 mm); that is the formula's evident intent (6x true spacing).
++	double estimated_spacing_m = 0.1;
++	if (num_pts > 0)
++	{
++		double ex_min = cloudWithoutNormals->points[0].x, ex_max = ex_min;
++		double ey_min = cloudWithoutNormals->points[0].y, ey_max = ey_min;
++		double ez_min = cloudWithoutNormals->points[0].z, ez_max = ez_min;
++		for (size_t bi = 1; bi < cloudWithoutNormals->points.size(); bi++)
++		{
++			const PointXYZ& bp = cloudWithoutNormals->points[bi];
++			if (bp.x < ex_min) ex_min = bp.x; if (bp.x > ex_max) ex_max = bp.x;
++			if (bp.y < ey_min) ey_min = bp.y; if (bp.y > ey_max) ey_max = bp.y;
++			if (bp.z < ez_min) ez_min = bp.z; if (bp.z > ez_max) ez_max = bp.z;
++		}
++		double be0 = ex_max - ex_min, be1 = ey_max - ey_min, be2 = ez_max - ez_min;
++		// Two largest extents approximate the sheet area (sherds are thin).
++		double bsorted0 = be0, bsorted1 = be1;
++		if (bsorted1 > bsorted0) { double bt = bsorted0; bsorted0 = bsorted1; bsorted1 = bt; }
++		if (be2 > bsorted0) { bsorted1 = bsorted0; bsorted0 = be2; }
++		else if (be2 > bsorted1) { bsorted1 = be2; }
++		if (bsorted0 > 0 && bsorted1 > 0)
++			estimated_spacing_m = 0.001 * std::sqrt((bsorted0 * bsorted1) / std::max(100, num_pts));
++	}
+ 	double boundary_radius_m = std::max(0.001, std::min(0.015, estimated_spacing_m * 6.0));
+ 	boundary_est.setRadiusSearch(boundary_radius_m);
+ 	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"

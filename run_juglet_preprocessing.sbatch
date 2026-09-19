@@ -69,9 +69,12 @@ for p in $(seq 1 ${NUM_PIECES}); do
     cp -f "${src}" "${dst}"
 done
 # Move aside 2-digit PCDs from earlier runs: the binaries scan the whole
-# Point dir, and 2-digit stems would re-collide under truncation.
-mkdir -p Dataset/Point/${POT_NAME}/backup_02digit
-mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_0?_Point.pcd Dataset/Point/${POT_NAME}/backup_02digit/ 2>/dev/null || true
+# Point dir RECURSIVELY, and 2-digit stems would re-collide under
+# truncation (job 30711534 processed 18 PCDs, Surfaces: 20). Quarantine
+# lives under OUTPUT_BASE: outside every scanned tree, untracked, kept.
+QDIR="${OUTPUT_BASE}/_quarantine"
+mkdir -p ${QDIR}/pcd_02digit ${QDIR}/temp_objs
+mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_0?_Point.pcd ${QDIR}/pcd_02digit/ 2>/dev/null || true
 for p in $(seq 1 ${NUM_PIECES}); do
     mesh="Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_${p}_Mesh.obj"
     pcd="Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_${p}_Point.pcd"
@@ -100,12 +103,14 @@ rm -f Temp/Temp_edge/${POT_NAME}/*.ply
 rm -f ${OUTPUT_BASE}/SfS_pp/Surfaces/*
 rm -f ${OUTPUT_BASE}/SfS_pp/Breaklines/*
 rm -f ${OUTPUT_BASE}/SfS_pp/Axes/*
-# Breakline discovery scans Temp/ for *.obj (Pot_A-era mechanism). Stale
-# Pot_A meshes left there would hijack the run (crashed 30694326 on
-# Pot_A_Piece_01 names), and in OUTPUT_BASE mode our meshes never land in
-# Temp/ — so quarantine every pre-existing *.obj, then stage ours.
-mkdir -p Temp/stale_obj_backup
-find Temp -maxdepth 3 -name "*.obj" -not -path "*/stale_obj_backup/*" -exec mv -f {} Temp/stale_obj_backup/ \; 2>/dev/null || true
+# Breakline discovery scans Temp/ for *.obj RECURSIVELY (Pot_A-era
+# mechanism). Stale Pot_A meshes left there would hijack the run (crashed
+# 30694326 on Pot_A_Piece_01 names), and in OUTPUT_BASE mode our meshes
+# never land in Temp/ — so quarantine every pre-existing *.obj OUTSIDE
+# Temp/ (a Temp-local backup would still be scanned; bit 30711534), then
+# stage ours.
+mkdir -p ${QDIR}/temp_objs
+find Temp -name "*.obj" -exec mv -f {} ${QDIR}/temp_objs/ \; 2>/dev/null || true
 cp -f Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Mesh.obj Temp/Data/${POT_NAME}/
 echo "Staged for breakline discovery: $(ls Temp/Data/${POT_NAME}/*.obj 2>/dev/null | wc -l) (expected ${NUM_PIECES})"
 
@@ -126,6 +131,28 @@ ${APPTAINER} exec --bind /data:/data \
 echo "Surfaces: $(ls ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
 echo "Sample coords (mm expected, not e+07):"
 head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_1_Surface_0.xyz
+echo ""
+
+# ---------- Step 1b: boundary-radius patch + rebuild ----------
+echo "=== Step 1b: Patch + rebuild EdgeLineExtractionHeadless ==="
+# The Nov-2025 binary estimates point spacing as sqrt(1/N) (points over
+# 1 m^2), pinning the boundary radius at the 15 mm clamp. On the 65 mm
+# thin-walled Juglet that swallows every fracture edge: empty boundary
+# cloud -> "[pcl::PCDWriter::writeASCII] Input point cloud has no data!"
+# (job 30711534, piece 1: 11028 clean points). Versioned patch in-repo
+# (the built sources live in a nested upstream clone, so the patch file
+# is the tracked artifact); applied with --forward for rerun safety.
+cd ${REPO_ROOT}/original_nurbs_preprocessing
+if patch -p1 --dry-run --forward --silent < ../patches/juglet_boundary_radius.patch; then
+    patch -p1 --forward < ../patches/juglet_boundary_radius.patch || { echo "ERROR: patch apply failed"; exit 1; }
+else
+    echo "(patch already applied, skipping)"
+fi
+${APPTAINER} exec --bind /data:/data \
+    ${NURBS_IMG} /bin/bash -c \
+    "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && make EdgeLineExtractionHeadless -j4"
+[ $? -ne 0 ] && { echo "ERROR: rebuild failed"; exit 1; }
+cd ${REPO_ROOT}
 echo ""
 
 # ---------- Step 2: breaklines ----------
