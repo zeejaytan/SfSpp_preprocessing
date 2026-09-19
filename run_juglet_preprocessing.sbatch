@@ -42,7 +42,9 @@ NUM_PIECES=9
 OUTPUT_BASE="/data/gpfs/projects/punim2657/sfs_preprocessing/Juglet_Dataset_20260916"
 REPO_ROOT="/data/gpfs/projects/punim2657/sfs_preprocessing"
 APPTAINER="/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer"
-NURBS_IMG="pcl_191_nurbs.sif"
+# Absolute: Step 1b runs apptainer from the nested source dir, where a
+# relative image path would resolve wrong (bit 30752971).
+NURBS_IMG="${REPO_ROOT}/pcl_191_nurbs.sif"
 
 export POT_NAME
 export NURBS_OUTPUT_BASE="${OUTPUT_BASE}"
@@ -74,7 +76,11 @@ done
 # lives under OUTPUT_BASE: outside every scanned tree, untracked, kept.
 QDIR="${OUTPUT_BASE}/_quarantine"
 mkdir -p ${QDIR}/pcd_02digit ${QDIR}/temp_objs
-mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_0?_Point.pcd ${QDIR}/pcd_02digit/ 2>/dev/null || true
+# Catch 2-digit PCDs anywhere under the Point dir, including the
+# backup_02digit/ subdir left by the 30711534 run (the scanner is
+# recursive, so a top-level glob is not enough — bit 30752971).
+find Dataset/Point/${POT_NAME} -name "${POT_NAME}_Piece_0[1-9]_Point.pcd" -exec mv -f {} ${QDIR}/pcd_02digit/ \; 2>/dev/null || true
+rmdir Dataset/Point/${POT_NAME}/backup_02digit 2>/dev/null || true
 for p in $(seq 1 ${NUM_PIECES}); do
     mesh="Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_${p}_Mesh.obj"
     pcd="Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_${p}_Point.pcd"
