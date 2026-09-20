@@ -35,7 +35,8 @@ mkdir -p ${QDIR}/pcd_hold
 # ---- 1b: reset, patch (non-interactive), VERIFY markers, rebuild ----
 cd ${REPO_ROOT}/original_nurbs_preprocessing
 git checkout -- edgeline_extraction_headless.cpp mesh_processing_headless.cpp 2>/dev/null || true
-for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_piece_params.patch; do
+rm -f *.orig
+for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_diag.patch ../patches/juglet_mesh_filter.patch ../patches/juglet_mesh_thresholds.patch; do
     patch -p1 --batch --forward < $p || { echo "ERROR: patch failed ($p)"; exit 1; }
 done
 grep -q "Single-file filter" mesh_processing_headless.cpp || { echo "ERROR: mesh filter marker absent"; exit 1; }
