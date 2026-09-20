@@ -149,12 +149,17 @@ echo "=== Step 1b: Patch + rebuild ==="
 cd ${REPO_ROOT}/original_nurbs_preprocessing
 git checkout -- edgeline_extraction_headless.cpp mesh_processing_headless.cpp 2>/dev/null || true
 for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_piece_params.patch; do
-    if patch -p1 --dry-run --forward --silent < $p; then
-        patch -p1 --forward < $p || { echo "ERROR: patch apply failed ($p)"; exit 1; }
-    else
-        echo "(already applied, skipping: $p)"
-    fi
+    # --batch: never prompt (a prompt would eat patch text as answers and
+    # silently derail the rest of the file -- bit 30824422, where the env
+    # override never compiled in and four jobs of "25/45/60" conclusions
+    # were void). Markers below fail loud if anything is missing.
+    patch -p1 --batch --forward < $p || { echo "ERROR: patch failed ($p)"; exit 1; }
 done
+grep -q "Single-file filter" mesh_processing_headless.cpp || { echo "ERROR: mesh filter marker absent"; exit 1; }
+grep -q "Segmentation thresholds" mesh_processing_headless.cpp || { echo "ERROR: mesh env marker absent"; exit 1; }
+grep -q "GROW-DIAG" mesh_processing_headless.cpp || { echo "ERROR: mesh diag marker absent"; exit 1; }
+grep -q "g_boundary_radius_mm" edgeline_extraction_headless.cpp || { echo "ERROR: edgeline marker absent"; exit 1; }
+echo "patch markers verified"
 ${APPTAINER} exec --bind /data:/data \
     ${NURBS_IMG} /bin/bash -c \
     "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && rm -rf CMakeCache.txt CMakeFiles && cmake .. && make EdgeLineExtractionHeadless MeshPreprocessingHeadless -j4"
