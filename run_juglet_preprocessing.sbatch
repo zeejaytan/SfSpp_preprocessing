@@ -139,31 +139,66 @@ echo "Sample coords (mm expected, not e+07):"
 head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_1_Surface_0.xyz
 echo ""
 
-# ---------- Step 1b: boundary-radius patch + rebuild ----------
-echo "=== Step 1b: Patch + rebuild EdgeLineExtractionHeadless ==="
-# The Nov-2025 binary estimates point spacing as sqrt(1/N) (points over
-# 1 m^2), pinning the boundary radius at the 15 mm clamp. On the 65 mm
-# thin-walled Juglet that swallows every fracture edge: empty boundary
-# cloud -> "[pcl::PCDWriter::writeASCII] Input point cloud has no data!"
-# (job 30711534, piece 1: 11028 clean points). Versioned patch in-repo
-# (the built sources live in a nested upstream clone, so the patch file
-# is the tracked artifact); applied with --forward for rerun safety.
+# ---------- Step 1b: patches + rebuild ----------
+echo "=== Step 1b: Patch + rebuild ==="
+# Edgeline v2 (mm-unit boundary/outlier radii) + mesh (single-file argv
+# mode that actually filters; SFS_SMOOTHNESS_DEG / SFS_CURVATURE_THRESH
+# env overrides, defaults preserve Nov-2025 behaviour). The built sources
+# live in a nested upstream clone, so patch files are the tracked
+# artifact; reset to pristine first (an older version may be applied).
 cd ${REPO_ROOT}/original_nurbs_preprocessing
-# Reset to pristine first: an older patch version may already be applied
-# (v1 is in the tree now); the patch FILE is the source of truth.
-git checkout -- edgeline_extraction_headless.cpp 2>/dev/null || true
-if patch -p1 --dry-run --forward --silent < ../patches/juglet_boundary_radius.patch; then
-    patch -p1 --forward < ../patches/juglet_boundary_radius.patch || { echo "ERROR: patch apply failed"; exit 1; }
-else
-    echo "(patch already applied, skipping)"
-fi
+git checkout -- edgeline_extraction_headless.cpp mesh_processing_headless.cpp 2>/dev/null || true
+for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_piece_params.patch; do
+    if patch -p1 --dry-run --forward --silent < $p; then
+        patch -p1 --forward < $p || { echo "ERROR: patch apply failed ($p)"; exit 1; }
+    else
+        echo "(already applied, skipping: $p)"
+    fi
+done
 ${APPTAINER} exec --bind /data:/data \
     ${NURBS_IMG} /bin/bash -c \
-    "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && rm -rf CMakeCache.txt CMakeFiles && cmake .. && make EdgeLineExtractionHeadless -j4"
+    "cd ${REPO_ROOT}/original_nurbs_preprocessing/build && rm -rf CMakeCache.txt CMakeFiles && cmake .. && make EdgeLineExtractionHeadless MeshPreprocessingHeadless -j4"
 # (reconfigure: the Nov-2025 CMakeCache pins source dir /workspace/...,
 # which is shadowed inside the container now — bit 30761823)
 [ $? -ne 0 ] && { echo "ERROR: rebuild failed"; exit 1; }
 cd ${REPO_ROOT}
+echo ""
+
+# ---------- Step 1c: piece-3-only rerun, relaxed smoothness ----------
+echo "=== Step 1c: Piece 3 rerun (smoothness 25 deg) ==="
+# Piece 3 fragments under the default 4.5 deg gate (1 cluster of 492/3490;
+# neighbour angles average ~20 deg while rim flips are ~180 deg, so 25 deg
+# keeps the inner/outer split). Good pieces must never see relaxed params:
+# only piece 3 is scanned here.
+mkdir -p ${QDIR}/pcd_hold
+mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[12456789]_Point.pcd ${QDIR}/pcd_hold/ 2>/dev/null || true
+rm -f Temp/Temp/${POT_NAME}/tmpSurfaceCluster_Improved_*.ply
+SFS_SMOOTHNESS_DEG=25 ${APPTAINER} exec --bind /data:/data \
+    --env POT_NAME="${POT_NAME}" \
+    --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
+    --env SFS_SMOOTHNESS_DEG=25 \
+    ${NURBS_IMG} /bin/bash -c \
+    "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless Juglet_Piece_3_Point A 3"
+[ $? -ne 0 ] && { echo "ERROR: piece-3 rerun failed"; exit 1; }
+mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_*_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
+echo ""
+
+# ---------- Step 1 gate: every piece genuinely segmented ----------
+echo "=== Step 1 gate ==="
+GATE_OK=1
+for p in $(seq 1 ${NUM_PIECES}); do
+    for f in ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_${p}_Surface_0.xyz \
+             ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_${p}_Surface_1.xyz \
+             ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_${p}_unclustered.ply; do
+        if [ ! -s "$f" ]; then echo "GATE FAIL: missing/empty $f"; GATE_OK=0; fi
+    done
+done
+if cmp -s ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_2_Surface_0.xyz \
+          ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_3_Surface_0.xyz; then
+    echo "GATE FAIL: piece-3 Surface_0 identical to piece-2 (stale copy)"; GATE_OK=0
+fi
+[ "${GATE_OK}" -ne 1 ] && { echo "ERROR: Step-1 gate failed"; exit 1; }
+echo "Step-1 gate: all ${NUM_PIECES} pieces segmented."
 echo ""
 
 # ---------- Step 2: breaklines ----------
