@@ -74,10 +74,9 @@ run_piece_set() {
     mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_*_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
     echo ""
 }
-run_piece_set "V2-P3-alone-defaults" "3" ""
-run_piece_set "V3-P2P3-defaults" "2 3" ""
-run_piece_set "V5-P9-alone-25" "9" 25
-run_piece_set "V6-P9-alone-60" "9" 60
+run_piece_set "V7-P1P3-defaults" "1 3" ""
+run_piece_set "V8-P9-alone-12" "9" 12
+run_piece_set "V9-P9-alone-18" "9" 18
 
 echo "PCDs restored: $(ls Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Point.pcd 2>/dev/null | wc -l) (expected 9)"
 echo "Done: $(date)"
