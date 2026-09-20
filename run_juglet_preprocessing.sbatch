@@ -164,23 +164,26 @@ ${APPTAINER} exec --bind /data:/data \
 cd ${REPO_ROOT}
 echo ""
 
-# ---------- Step 1c: piece-3-only rerun, relaxed smoothness ----------
-echo "=== Step 1c: Piece 3 rerun (smoothness 25 deg) ==="
-# Piece 3 fragments under the default 4.5 deg gate (1 cluster of 492/3490;
+# ---------- Step 1c: finicky-piece reruns, relaxed smoothness ----------
+echo "=== Step 1c: Pieces 3+9 reruns (smoothness 25 deg) ==="
+# Pieces 3 and 9 fragment under the default 4.5 deg gate (1 cluster each;
 # neighbour angles average ~20 deg while rim flips are ~180 deg, so 25 deg
-# keeps the inner/outer split). Good pieces must never see relaxed params:
-# only piece 3 is scanned here.
+# keeps the inner/outer split — proven on piece 3). Good pieces must never
+# see relaxed params: only the named piece is scanned per invocation.
 mkdir -p ${QDIR}/pcd_hold
-mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[12456789]_Point.pcd ${QDIR}/pcd_hold/ 2>/dev/null || true
-rm -f Temp/Temp/${POT_NAME}/tmpSurfaceCluster_Improved_*.ply
-SFS_SMOOTHNESS_DEG=25 ${APPTAINER} exec --bind /data:/data \
-    --env POT_NAME="${POT_NAME}" \
-    --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
-    --env SFS_SMOOTHNESS_DEG=25 \
-    ${NURBS_IMG} /bin/bash -c \
-    "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless Juglet_Piece_3_Point A 3"
-[ $? -ne 0 ] && { echo "ERROR: piece-3 rerun failed"; exit 1; }
-mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_*_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
+for q in 3 9; do
+    mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[123456789]_Point.pcd ${QDIR}/pcd_hold/ 2>/dev/null || true
+    mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_${q}_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
+    rm -f Temp/Temp/${POT_NAME}/tmpSurfaceCluster_Improved_*.ply
+    SFS_SMOOTHNESS_DEG=25 ${APPTAINER} exec --bind /data:/data \
+        --env POT_NAME="${POT_NAME}" \
+        --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
+        --env SFS_SMOOTHNESS_DEG=25 \
+        ${NURBS_IMG} /bin/bash -c \
+        "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless Juglet_Piece_${q}_Point A ${q}"
+    [ $? -ne 0 ] && { echo "ERROR: piece-${q} rerun failed"; exit 1; }
+    mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_*_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
+done
 echo ""
 
 # ---------- Step 1 gate: every piece genuinely segmented ----------
