@@ -12,19 +12,19 @@ addpath('.');
 ok = 0;
 for piece = 1:NUM_PIECES
     piece_str = sprintf('%d', piece);
-    surface_file = sprintf('%s/SfS_pp/Surfaces/%s_Piece_%s_Surface_0.xyz', OUTPUT_BASE, POT_NAME, piece_str);
+    surface_0 = sprintf('%s/SfS_pp/Surfaces/%s_Piece_%s_Surface_0.xyz', OUTPUT_BASE, POT_NAME, piece_str);
+    surface_1 = sprintf('%s/SfS_pp/Surfaces/%s_Piece_%s_Surface_1.xyz', OUTPUT_BASE, POT_NAME, piece_str);
     output_file = sprintf('%s/SfS_pp/Axes/%s_Piece_%s_Axis.xyz', OUTPUT_BASE, POT_NAME, piece_str);
     fprintf('Processing piece %s/%d...\n', piece_str, NUM_PIECES);
-    if exist(surface_file, 'file')
-        try
-            extract_single_axis(POT_ID, piece, surface_file, output_file);
+    try
+        if extract_juglet_axis(surface_0, surface_1, output_file)
             fprintf('ok piece %s\n', piece_str);
             ok = ok + 1;
-        catch ME
-            fprintf('FAILED piece %s: %s\n', piece_str, ME.message);
+        else
+            fprintf('FAILED piece %s (no candidates)\n', piece_str);
         end
-    else
-        fprintf('missing surface: %s\n', surface_file);
+    catch ME
+        fprintf('FAILED piece %s: %s\n', piece_str, ME.message);
     end
 end
 fprintf('axis extraction done: %d/%d\n', ok, NUM_PIECES);
