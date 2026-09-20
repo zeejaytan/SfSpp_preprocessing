@@ -120,24 +120,8 @@ find Temp -name "*.obj" -exec mv -f {} ${QDIR}/temp_objs/ \; 2>/dev/null || true
 cp -f Dataset/Mesh/${POT_NAME}/${POT_NAME}_Piece_[1-9]_Mesh.obj Temp/Data/${POT_NAME}/
 echo "Staged for breakline discovery: $(ls Temp/Data/${POT_NAME}/*.obj 2>/dev/null | wc -l) (expected ${NUM_PIECES})"
 
-# ---------- Step 1: surfaces ----------
-echo "=== Step 1: Surface Generation ==="
-# NOTE: binaries run with cwd = repo root; their Dataset/...,
-# Temp/... paths are root-relative (the Dataset symlink lives at
-# original_nurbs_preprocessing/Dataset -> ../Dataset, NOT under build/).
-# Bind is /data:/data (NOT ...:/workspace): /workspace is already a GPFS
-# mount inside the container so that bind is shadowed — verified 2026-09-17
-# (Step 1 saw a stale /workspace/Dataset and failed on Dataset/Point/Juglet/).
-${APPTAINER} exec --bind /data:/data \
-    --env POT_NAME="${POT_NAME}" \
-    --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
-    ${NURBS_IMG} /bin/bash -c \
-    "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless"
-[ $? -ne 0 ] && { echo "ERROR: surface generation failed"; exit 1; }
-echo "Surfaces: $(ls ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
-echo "Sample coords (mm expected, not e+07):"
-head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_1_Surface_0.xyz
-echo ""
+# ---------- Step 1: surfaces (isolated per piece; runs after 1b) ----------
+# (See below: each piece gets a fresh process with its own threshold.)
 
 # ---------- Step 1b: patches + rebuild ----------
 echo "=== Step 1b: Patch + rebuild ==="
@@ -169,34 +153,34 @@ ${APPTAINER} exec --bind /data:/data \
 cd ${REPO_ROOT}
 echo ""
 
-# ---------- Step 1c: finicky-piece reruns, relaxed smoothness ----------
-echo "=== Step 1c: Pieces 3+9 reruns (relaxed smoothness) ==="
-# Pieces 3 and 9 fragment under the default 4.5 deg gate (1 cluster each).
-# Relaxation is per-piece: neighbour angles average ~20 deg while rim flips
-# are ~180 deg, so the gate stays far below rim stops. Piece 3 proven at
-# 25 deg; piece 9 still fragments at 45 (frac>45 = 0.08) and gets 60 deg
-# (frac>60 = 0.02; rim flips ~180 deg keep it safe). NOTE: the binary's
-# retry loop (+2 deg/iter to 45) never engages on 1-cluster results — an
-# explicit `break` on `clusters.size() == 1` exits after iteration 1
-# (pieces 3/9) while the 0-cluster case (piece 2) retries. The env
-# override achieves the same without touching loop logic. Good pieces
-# never see relaxed params: only the named
-# piece is scanned per invocation.
+# ---------- Step 1: surfaces, one fresh process per piece ----------
+echo "=== Step 1: Surface Generation (isolated per piece) ==="
+# Bisect verdict (probe 30825062/30825336): piece 1's processing pollutes
+# piece 3 in-process (P3 deterministic 1x492 iff P1 ran before it; works
+# alone, with P2, at defaults). Mechanism open; isolation bypasses it.
+# Binaries run with cwd = repo root (Dataset/... paths are root-relative).
+# Bind is /data:/data (NOT ...:/workspace: shadowed GPFS mount -- 30694326).
+# Per-piece smoothness (SFS_SMOOTHNESS_DEG, default 4.5): P9 needs 12
+# (4.5 dusts, 25+ over-merges to 1x2094 -- V8/V9); P3 proven at defaults
+# isolated (V2). Quarantine + argv filter + tmp wipe per invocation.
 mkdir -p ${QDIR}/pcd_hold
-for spec in "3:25" "9:60"; do
+for spec in "1:4.5" "2:4.5" "3:4.5" "4:4.5" "5:4.5" "6:4.5" "7:4.5" "8:4.5" "9:12"; do
     q="${spec%%:*}"; thr="${spec##*:}"
     mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[123456789]_Point.pcd ${QDIR}/pcd_hold/ 2>/dev/null || true
     mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_${q}_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
     rm -f Temp/Temp/${POT_NAME}/tmpSurfaceCluster_Improved_*.ply
-    SFS_SMOOTHNESS_DEG=${thr} ${APPTAINER} exec --bind /data:/data \
+    ${APPTAINER} exec --bind /data:/data \
         --env POT_NAME="${POT_NAME}" \
         --env NURBS_OUTPUT_BASE="${OUTPUT_BASE}" \
         --env SFS_SMOOTHNESS_DEG=${thr} \
         ${NURBS_IMG} /bin/bash -c \
         "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/MeshPreprocessingHeadless Juglet_Piece_${q}_Point A ${q}"
-    [ $? -ne 0 ] && { echo "ERROR: piece-${q} rerun failed"; exit 1; }
+    [ $? -ne 0 ] && { echo "ERROR: piece-${q} surface generation failed"; exit 1; }
     mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_*_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
 done
+echo "Surfaces: $(ls ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_*_Surface_*.xyz 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
+echo "Sample coords (mm expected, not e+07):"
+head -n 1 ${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_1_Surface_0.xyz
 echo ""
 
 # ---------- Step 1 gate: every piece genuinely segmented ----------
