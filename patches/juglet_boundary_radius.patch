@@ -1,18 +1,27 @@
 --- a/edgeline_extraction_headless.cpp
 +++ b/edgeline_extraction_headless.cpp
-@@ -932,6 +932,35 @@
+@@ -899,3 +899,8 @@
+  }
+
++// Juglet fix (2026-09): boundary radius actually used, in cloud units (mm).
++// Set by getInitialBoundary_... below; read by the outlier filter, so both
++// stages share one scale (per the "match outlier radius" comment there).
++static double g_boundary_radius_mm = -1.0;
++
+ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BorderPointsCombined, string outPath)
+@@ -932,8 +932,36 @@
  	// ADAPTIVE: Compute boundary radius based on point cloud density
  	int num_pts = cloudWithoutNormals->points.size();
 -	double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));
-+	// Juglet fix (2026-09): sqrt(1/N) assumes points spread over 1 m^2, which
-+	// overestimates spacing ~10x on sherd-scale clouds and pins the radius at
-+	// the 15 mm clamp. On the 65 mm thin-walled Juglet that swallows every
-+	// fracture edge: empty boundary -> "writeASCII: no data" abort (verified
-+	// on Juglet_Piece_1, 11028 clean points, zero NaN/inf). Estimate spacing
-+	// from the cloud's own bbox sheet area instead (cloud units are mm).
-+	// NOTE: this also lowers the radius on dense Pot_A re-runs (15 mm ->
-+	// ~6 mm); that is the formula's evident intent (6x true spacing).
-+	double estimated_spacing_m = 0.1;
+-	double boundary_radius_m = std::max(0.001, std::min(0.015, estimated_spacing_m * 6.0));
+-	boundary_est.setRadiusSearch(boundary_radius_m);
++	// Juglet fix (2026-09): this cloud is in MILLIMETRES, so the radius must
++	// be too. sqrt(1/N) assumed points over 1 m^2 (pinning r at the 15 mm
++	// clamp); worse, 0.015 then reads as 0.015 mm, below the point spacing,
++	// so no neighbour is ever found: empty boundary -> "writeASCII: no data"
++	// abort (Juglet_Piece_1 and _2). Spacing from the bbox sheet area; keep
++	// the evident intent (6x spacing, [1,15] clamp). Also changes Pot_A.
++	double estimated_spacing_mm = 100.0;
 +	if (num_pts > 0)
 +	{
 +		double ex_min = cloudWithoutNormals->points[0].x, ex_max = ex_min;
@@ -32,8 +41,34 @@
 +		if (be2 > bsorted0) { bsorted1 = bsorted0; bsorted0 = be2; }
 +		else if (be2 > bsorted1) { bsorted1 = be2; }
 +		if (bsorted0 > 0 && bsorted1 > 0)
-+			estimated_spacing_m = 0.001 * std::sqrt((bsorted0 * bsorted1) / std::max(100, num_pts));
++			estimated_spacing_mm = std::sqrt((bsorted0 * bsorted1) / std::max(100, num_pts));
 +	}
- 	double boundary_radius_m = std::max(0.001, std::min(0.015, estimated_spacing_m * 6.0));
- 	boundary_est.setRadiusSearch(boundary_radius_m);
++	double boundary_radius_mm = std::max(1.0, std::min(15.0, estimated_spacing_mm * 6.0));
++	g_boundary_radius_mm = boundary_radius_mm;
++	boundary_est.setRadiusSearch(boundary_radius_mm);
  	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"
+-	          << (estimated_spacing_m*1000) << "mm, boundary_r="
+-	          << (boundary_radius_m*1000) << "mm" << std::endl;
++	          << estimated_spacing_mm << "mm, boundary_r="
++	          << boundary_radius_mm << "mm" << std::endl;
+@@ -1027,11 +1027,16 @@
+ 	// ADAPTIVE: Match outlier removal radius to boundary detection radius
+ 	int num_boundary = boundaryCloud_Improved->points.size();
+-	double outlier_spacing_m = std::sqrt(1.0 / std::max(100, num_boundary));
+-	double outlier_radius_m = std::max(0.002, std::min(0.020, outlier_spacing_m * 8.0));
+-	outrem.setRadiusSearch(outlier_radius_m);
++	// Juglet fix (2026-09): same unit lie (cloud is mm, so 0.002-0.020 read
++	// as sub-micron radii -> every boundary point an "outlier" -> empty
++	// cloud_Filtered -> the same writeASCII abort one step later). Reuse the
++	// boundary radius (8/6), keeping the old [2,20] clamp shape.
++	double outlier_radius_mm = (g_boundary_radius_mm > 0)
++		? std::max(2.0, std::min(20.0, g_boundary_radius_mm * 8.0 / 6.0))
++		: 3.0;  // fallback if the boundary stage never ran (should not happen)
++	outrem.setRadiusSearch(outlier_radius_mm);
+ 
+ 	// COMBINATION APPROACH PART 1: Relax outlier removal for small boundaries
+ 	int min_neighbors = (num_boundary < 100) ? 3 : 6;  // Less strict for small boundaries
+ 	outrem.setMinNeighborsInRadius(min_neighbors);
+ 	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, outlier_r="
+-	          << (outlier_radius_m*1000) << "mm, min_neighbors=" << min_neighbors << std::endl;
++	          << outlier_radius_mm << "mm, min_neighbors=" << min_neighbors << std::endl;

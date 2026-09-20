@@ -149,6 +149,9 @@ echo "=== Step 1b: Patch + rebuild EdgeLineExtractionHeadless ==="
 # (the built sources live in a nested upstream clone, so the patch file
 # is the tracked artifact); applied with --forward for rerun safety.
 cd ${REPO_ROOT}/original_nurbs_preprocessing
+# Reset to pristine first: an older patch version may already be applied
+# (v1 is in the tree now); the patch FILE is the source of truth.
+git checkout -- edgeline_extraction_headless.cpp 2>/dev/null || true
 if patch -p1 --dry-run --forward --silent < ../patches/juglet_boundary_radius.patch; then
     patch -p1 --forward < ../patches/juglet_boundary_radius.patch || { echo "ERROR: patch apply failed"; exit 1; }
 else
