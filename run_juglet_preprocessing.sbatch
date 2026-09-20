@@ -169,11 +169,16 @@ echo "=== Step 1c: Pieces 3+9 reruns (relaxed smoothness) ==="
 # Pieces 3 and 9 fragment under the default 4.5 deg gate (1 cluster each).
 # Relaxation is per-piece: neighbour angles average ~20 deg while rim flips
 # are ~180 deg, so the gate stays far below rim stops. Piece 3 proven at
-# 25 deg; piece 9 still fragments at 25 (frac>25 = 0.33) and needs 45 deg
-# (frac>45 = 0.08). Good pieces never see relaxed params: only the named
+# 25 deg; piece 9 still fragments at 45 (frac>45 = 0.08) and gets 60 deg
+# (frac>60 = 0.02; rim flips ~180 deg keep it safe). NOTE: the binary's
+# retry loop (+2 deg/iter to 45) never engages on 1-cluster results — an
+# explicit `break` on `clusters.size() == 1` exits after iteration 1
+# (pieces 3/9) while the 0-cluster case (piece 2) retries. The env
+# override achieves the same without touching loop logic. Good pieces
+# never see relaxed params: only the named
 # piece is scanned per invocation.
 mkdir -p ${QDIR}/pcd_hold
-for spec in "3:25" "9:45"; do
+for spec in "3:25" "9:60"; do
     q="${spec%%:*}"; thr="${spec##*:}"
     mv -f Dataset/Point/${POT_NAME}/${POT_NAME}_Piece_[123456789]_Point.pcd ${QDIR}/pcd_hold/ 2>/dev/null || true
     mv -f ${QDIR}/pcd_hold/${POT_NAME}_Piece_${q}_Point.pcd Dataset/Point/${POT_NAME}/ 2>/dev/null || true
