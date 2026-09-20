@@ -1,0 +1,14 @@
+--- a/mesh_processing_headless.cpp
++++ b/mesh_processing_headless.cpp
+@@ -2041,3 +2041,11 @@
+         int minCluster = 50, noOfNeighbours = 10;
+         double smoothnessAngleThreshold = 4.5, curvatureThreshold = 1.5;
++        // Juglet fix (2026-09): per-run tuning without rebuilding. Defaults
++        // preserve Nov-2025 behaviour; the Juglet's tight bends put ~30% of
++        // neighbour pairs past 25 deg while rim flips are ~180 deg, so a
++        // looser gate keeps the inner/outer split. Piece 3 needs ~25 deg.
++        if (const char* sfs_s = std::getenv("SFS_SMOOTHNESS_DEG")) { if (*sfs_s) smoothnessAngleThreshold = std::stod(sfs_s); }
++        if (const char* sfs_c = std::getenv("SFS_CURVATURE_THRESH")) { if (*sfs_c) curvatureThreshold = std::stod(sfs_c); }
++        std::cout << "Segmentation thresholds: smoothness=" << smoothnessAngleThreshold
++                  << "deg curvature=" << curvatureThreshold << std::endl;
+         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;

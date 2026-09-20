@@ -148,11 +148,11 @@ echo "=== Step 1b: Patch + rebuild ==="
 # artifact; reset to pristine first (an older version may be applied).
 cd ${REPO_ROOT}/original_nurbs_preprocessing
 git checkout -- edgeline_extraction_headless.cpp mesh_processing_headless.cpp 2>/dev/null || true
-for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_piece_params.patch; do
-    # --batch: never prompt (a prompt would eat patch text as answers and
-    # silently derail the rest of the file -- bit 30824422, where the env
-    # override never compiled in and four jobs of "25/45/60" conclusions
-    # were void). Markers below fail loud if anything is missing.
+rm -f *.orig
+# One hunk per file: multi-hunk mesh patches silently dropped hunks
+# ("trailing garbage", exit 0) -- bit 30824422/30824714. Each file below
+# is verified locally before commit; markers fail loud here regardless.
+for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_diag.patch ../patches/juglet_mesh_filter.patch ../patches/juglet_mesh_thresholds.patch; do
     patch -p1 --batch --forward < $p || { echo "ERROR: patch failed ($p)"; exit 1; }
 done
 grep -q "Single-file filter" mesh_processing_headless.cpp || { echo "ERROR: mesh filter marker absent"; exit 1; }
