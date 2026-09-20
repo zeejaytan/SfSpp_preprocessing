@@ -214,28 +214,14 @@ echo ""
 
 # ---------- Step 3: axes (MATLAB PotSAC) ----------
 echo "=== Step 3: MATLAB Axis Extraction ==="
+# Single-line call into a script file: multi-line -batch strings silently
+# execute only their first line here (bit 30825982) -- and the old code
+# never checked matlab's exit, so Step 3 "succeeded" with 0 axes (30825575).
 module load MATLAB/2024b_Update_3
-matlab -batch "
-addpath('.');
-for piece = 1:${NUM_PIECES}
-    piece_str = sprintf('%d', piece);
-    surface_file = sprintf('${OUTPUT_BASE}/SfS_pp/Surfaces/${POT_NAME}_Piece_%s_Surface_0.xyz', piece_str);
-    output_file = sprintf('${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_%s_Axis.xyz', piece_str);
-    fprintf('Processing piece %s/%d...\n', piece_str, ${NUM_PIECES});
-    if exist(surface_file, 'file')
-        try
-            extract_single_axis('${POT_ID}', piece, surface_file, output_file);
-            fprintf('ok piece %s\n', piece_str);
-        catch ME
-            fprintf('FAILED piece %s: %s\n', piece_str, ME.message);
-        end
-    else
-        fprintf('missing surface: %s\n', surface_file);
-    end
-end
-fprintf('axis extraction done\n');
-quit;
-"
+matlab -batch "run_juglet_axes"
+MEX=$?
+echo "matlab exit: ${MEX}"
+[ "${MEX}" -ne 0 ] && { echo "ERROR: axis extraction failed"; exit 1; }
 echo "Axes: $(ls ${OUTPUT_BASE}/SfS_pp/Axes/${POT_NAME}_Piece_*_Axis.xyz 2>/dev/null | wc -l) (expected ${NUM_PIECES})"
 echo ""
 
