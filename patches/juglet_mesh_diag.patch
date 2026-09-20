@@ -1,41 +1,41 @@
 --- a/mesh_processing_headless.cpp
 +++ b/mesh_processing_headless.cpp
 @@ -1648,4 +1648,38 @@
- 	reg.setSmoothnessThreshold(smoothnessAngleThreshold / 180.0 * M_PI);
- 	reg.setCurvatureThreshold(curvatureThreshold);
+         reg.setSmoothnessThreshold(smoothnessAngleThreshold / 180.0 * M_PI);
+         reg.setCurvatureThreshold(curvatureThreshold);
 
-+	// Juglet diagnostic (2026-09): verify the actual growing inputs.
-+	// Piece 9 fragments at every smoothness gate while first-pass stats
-+	// look healthy; print what region growing really sees (sizes must
-+	// match, angles/curvature from the second-pass normals it uses).
-+	{
-+	    std::cout << "[GROW-DIAG] cloud=" << cloud->points.size()
-+		      << " normals=" << normals->points.size() << std::endl;
-+	    if (!cloud->points.empty() && cloud->points.size() == normals->points.size()) {
-+		pcl::search::KdTree<pcl::PointXYZ> dkt;
-+		dkt.setInputCloud(cloud);
-+		double asum = 0.0, cmax = 0.0;
-+		long acnt = 0;
-+		size_t stride = std::max<size_t>(1, cloud->points.size() / 300);
-+		std::vector<int> kidx(16);
-+		std::vector<float> kdist(16);
-+		for (size_t di = 0; di < cloud->points.size(); di += stride) {
-+		    if (dkt.nearestKSearch(cloud->points[di], 16, kidx, kdist) <= 1) continue;
-+		    const auto& nn0 = normals->points[di];
-+		    Eigen::Vector3f n0(nn0.normal_x, nn0.normal_y, nn0.normal_z);
-+		    for (int k = 1; k < 16 && k < (int)kidx.size(); ++k) {
-+			const auto& nnb = normals->points[kidx[k]];
-+			Eigen::Vector3f n1(nnb.normal_x, nnb.normal_y, nnb.normal_z);
-+			float dd = n0.dot(n1) / (n0.norm() * n1.norm() + 1e-12f);
-+			if (dd > 1.f) dd = 1.f; if (dd < -1.f) dd = -1.f;
-+			asum += std::acos(dd); ++acnt;
-+		    }
-+		    float cc = normals->points[di].curvature;
-+		    if (cc > cmax) cmax = cc;
-+		}
-+		std::cout << "[GROW-DIAG] mean15angle_deg=" << (acnt ? asum / acnt * 180.0 / M_PI : -1)
-+			  << " maxcurv=" << cmax << std::endl;
-+	    }
-+	}
++        // Juglet diagnostic (2026-09): verify the actual growing inputs.
++        // Piece 9 fragments at every smoothness gate while first-pass stats
++        // look healthy; print what region growing really sees (sizes must
++        // match, angles/curvature from the second-pass normals it uses).
++        {
++            std::cout << "[GROW-DIAG] cloud=" << cloud->points.size()
++                      << " normals=" << normals->points.size() << std::endl;
++            if (!cloud->points.empty() && cloud->points.size() == normals->points.size()) {
++                pcl::search::KdTree<pcl::PointXYZ> dkt;
++                dkt.setInputCloud(cloud);
++                double asum = 0.0, cmax = 0.0;
++                long acnt = 0;
++                size_t stride = std::max<size_t>(1, cloud->points.size() / 300);
++                std::vector<int> kidx(16);
++                std::vector<float> kdist(16);
++                for (size_t di = 0; di < cloud->points.size(); di += stride) {
++                    if (dkt.nearestKSearch(cloud->points[di], 16, kidx, kdist) <= 1) continue;
++                    const auto& nn0 = normals->points[di];
++                    Eigen::Vector3f n0(nn0.normal_x, nn0.normal_y, nn0.normal_z);
++                    for (int k = 1; k < 16 && k < (int)kidx.size(); ++k) {
++                        const auto& nnb = normals->points[kidx[k]];
++                        Eigen::Vector3f n1(nnb.normal_x, nnb.normal_y, nnb.normal_z);
++                        float dd = n0.dot(n1) / (n0.norm() * n1.norm() + 1e-12f);
++                        if (dd > 1.f) dd = 1.f; if (dd < -1.f) dd = -1.f;
++                        asum += std::acos(dd); ++acnt;
++                    }
++                    float cc = normals->points[di].curvature;
++                    if (cc > cmax) cmax = cc;
++                }
++                std::cout << "[GROW-DIAG] mean15angle_deg=" << (acnt ? asum / acnt * 180.0 / M_PI : -1)
++                          << " maxcurv=" << cmax << std::endl;
++            }
++        }
 +
- 	std::vector<pcl::PointIndices> clusters;
+         std::vector<pcl::PointIndices> clusters;
