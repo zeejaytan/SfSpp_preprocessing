@@ -1,0 +1,11 @@
+--- a/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
++++ b/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
+@@ -582,5 +582,4 @@
+ 	// NOTE: Point cloud units are in METERS, so convert mm to meters
+-	double sphereRadius = std::max(0.0005, std::min(max_radius, avgSpacing * 1.5));
++	// Juglet ticket 02: clouds are mm; keep everything in mm.
++	double sphereRadius = std::max(0.5, std::min(max_radius, avgSpacing * 1.5));
+-	std::cout << "[ADAPTIVE SPHERE-MARCHING] Input points: " << P.rows() << ", avgSpacing: " << avgSpacing << "m ("
+-	          << (avgSpacing * 1000) << "mm), max_radius: " << (max_radius * 1000) << "mm, adaptiveRadius: "
+-	          << sphereRadius << "m (" << (sphereRadius * 1000) << "mm)" << std::endl;
++	std::cout << "[ADAPTIVE SPHERE-MARCHING] Input points: " << P.rows() << ", avgSpacing_mm=" << avgSpacing << ", max_radius_mm=" << max_radius << ", adaptiveRadius_mm=" << sphereRadius << std::endl;

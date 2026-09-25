@@ -136,7 +136,7 @@ rm -f *.orig
 # One hunk per file: multi-hunk mesh patches silently dropped hunks
 # ("trailing garbage", exit 0) -- bit 30824422/30824714. Each file below
 # is verified locally before commit; markers fail loud here regardless.
-for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_diag.patch ../patches/juglet_mesh_filter.patch ../patches/juglet_mesh_thresholds.patch; do
+for p in ../patches/juglet_boundary_radius.patch ../patches/juglet_mesh_diag.patch ../patches/juglet_mesh_filter.patch ../patches/juglet_mesh_thresholds.patch ../patches/juglet_edgeline_sphereradii.patch ../patches/juglet_edgeline_spheremin.patch ../patches/juglet_edgeline_nowriteconvert.patch; do
     patch -p1 --batch --forward < $p || { echo "ERROR: patch failed ($p)"; exit 1; }
 done
 grep -q "Single-file filter" mesh_processing_headless.cpp || { echo "ERROR: mesh filter marker absent"; exit 1; }
@@ -210,6 +210,24 @@ ${APPTAINER} exec --bind /data:/data \
     "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/EdgeLineExtractionHeadless"
 [ $? -ne 0 ] && { echo "ERROR: breakline extraction failed"; exit 1; }
 echo "Breaklines: $(ls ${OUTPUT_BASE}/SfS_pp/Breaklines/${POT_NAME}_Piece_*_Breakline_*.pcd 2>/dev/null | wc -l) (expected $((NUM_PIECES * 2)))"
+# GATE (ticket 02 reopened, lessons.md "a count is not a shape"): every
+# breakline must span rim scale (extent > 5 mm) at vessel scale
+# (|coord| < 5000 mm). Counts passed while geometry was dots at e5.
+python3 - "${OUTPUT_BASE}" "${POT_NAME}" <<'PYEOF'
+import sys, glob, numpy as np
+base, pot = sys.argv[1], sys.argv[2]
+ok = True
+for f in sorted(glob.glob(f"{base}/SfS_pp/Breaklines/{pot}_Piece_*_Breakline_0.pcd")):
+    L = open(f).read().splitlines()
+    d = np.array([[float(x) for x in l.split()[:3]] for l in L if len(l.split()) >= 6 and not l.startswith(("#", "VERSION", "FIELDS", "SIZE", "TYPE", "COUNT", "WIDTH", "HEIGHT", "VIEWPOINT", "POINTS", "DATA"))])
+    ext = (d.max(0) - d.min(0)).max() if len(d) else 0
+    mx = abs(d).max() if len(d) else 0
+    status = "OK" if (ext > 5.0 and mx < 5000) else "FAIL"
+    if status == "FAIL": ok = False
+    print(f"  {f.split('/')[-1]}: n={len(d)} maxextent={ext:.1f}mm maxabs={mx:.1f} [{status}]")
+sys.exit(0 if ok else 1)
+PYEOF
+[ $? -ne 0 ] && { echo "ERROR: breakline extent gate failed"; exit 1; }
 echo ""
 
 # ---------- Step 3: axes (MATLAB PotSAC) ----------

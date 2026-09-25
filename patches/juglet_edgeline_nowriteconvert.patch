@@ -1,0 +1,8 @@
+--- a/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
++++ b/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
+@@ -3414,3 +3414,4 @@
+ 	// Use custom PCD writer with segment headers for SFS compatibility
+-	writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index, detectedPeakIndices);
++	// Juglet ticket 02: cloud is already mm; do NOT convert (was x1000 bug).
++	writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index, detectedPeakIndices, false);
+ 	std::cout << "[EDGELINE DEBUG] Saving CompleteBreakline PLY in ASCII mode..." << std::endl;
