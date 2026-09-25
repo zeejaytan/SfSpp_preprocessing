@@ -1,5 +1,5 @@
---- a/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
-+++ b/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
 @@ -573,7 +573,7 @@
  	if (num_points < 50) {
 -		max_radius = 0.015;  // 15mm for very sparse data (pottery rims)

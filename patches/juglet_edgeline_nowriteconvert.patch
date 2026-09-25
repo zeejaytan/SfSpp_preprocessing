@@ -1,5 +1,5 @@
---- a/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
-+++ b/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
 @@ -3414,3 +3414,4 @@
  	// Use custom PCD writer with segment headers for SFS compatibility
 -	writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index, detectedPeakIndices);

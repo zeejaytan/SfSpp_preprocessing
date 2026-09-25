@@ -1,5 +1,5 @@
---- a/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
-+++ b/original_nurbs_preprocessing/edgeline_extraction_headless.cpp
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
 @@ -582,5 +582,4 @@
  	// NOTE: Point cloud units are in METERS, so convert mm to meters
 -	double sphereRadius = std::max(0.0005, std::min(max_radius, avgSpacing * 1.5));
