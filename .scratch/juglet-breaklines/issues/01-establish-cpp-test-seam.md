@@ -95,14 +95,59 @@ Kept deliberately — a discarded hypothesis is evidence too.
 
 ## Scope of the fixture — do not over-read it
 
-`tests/data/juglet_boundary_59.txt` is **one sherd of nine**.
-`Temp_edge/` is overwritten per sherd, so the file left on the cluster is
-whichever sherd ran last. It is the smallest available piece of real
-evidence, not a summary of the Juglet, and must never be reported as one.
+`tests/data/juglet_boundary_59.txt` is **one sherd face of eighteen** (9
+sherds × 2 wall faces). `Temp_edge/` is overwritten per sherd, so the file
+left on the cluster is whichever ran last.
 
-The run logs show boundary clouds of **86–524 points** across the Juglet
-run (K = 8–50), with resampler inputs of 75–129 — so the truncation is not
-uniformly 9-of-59 across all nine sherds.
+**It is the WORST case in the whole set, not a typical one.** Ticket 08
+measured all eighteen (see `08-is-the-defect-juglet-specific.md`):
+
+| | coverage |
+|---|---|
+| this fixture | **0.153** — the minimum of the 18 |
+| median Juglet face | **0.866** |
+| faces reaching full coverage | **8 of 18** |
+
+So the walk is **not** uniformly broken on the Juglet: it traverses nearly
+half the sherd faces completely. Quoting 0.153 as "what the method does on
+this pot" would badly overstate it. The fixture is the right thing to
+regress against — small, real, and the most sensitive case available — but
+it is the worst case, and the honest summary is a distribution, not that
+one number.
+
+## THE MECHANISM IS SUFFICIENT BUT UNPROVEN — ticket 03 is blocked
+
+Ticket 01 concluded that density contrast and off-plane scatter *cause* the
+truncation. **Ticket 08 then failed to confirm that on real data**, and the
+conclusion is corrected here rather than left standing:
+
+- The mechanism is **sufficient**. A synthetic ring at 40× contrast
+  reproduces the real failure exactly (9/59, coverage 0.153, 50 stalls).
+- It is **not established as the explanation for the real pattern.** Across
+  all 18 Juglet faces, spacing spread does **not** predict failure:
+
+| face | spacing spread (p90/p10) | coverage |
+|---|---|---|
+| `boundary_18` — this fixture | 2.7× (low) | **0.153** (worst) |
+| `boundary_14` | **8.1× (highest)** | **1.000** (perfect) |
+
+The worst-performing face has *low* spacing variation; the most unevenly
+sampled face succeeded completely. Neither spacing spread, nor exact
+duplicate count, nor K-window saturation separates the failures from the
+successes.
+
+**Consequence: ticket 03 must not be built on this as a known cause.** It
+remains a reasonable thing to try — the paper specifies a normal-vote
+ordering the code never had, and replacing a walk that demonstrably
+truncates is justified whatever provokes the truncation. But it must be
+presented as *speculative with respect to the Juglet's failure*, and
+judged by whether it fixes the measured coverage, not as a confirmed
+repair.
+
+A known limitation of the measurement: the "K-window saturation" fraction
+is degenerate on clouds containing exact duplicates, because its radius is
+K × the *median* spacing and the median is then 0. It is reported for
+information and is not used in the conclusion.
 
 ## Tests
 

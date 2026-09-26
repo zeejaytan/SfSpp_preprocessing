@@ -101,8 +101,26 @@ the pipeline wrote it. Plain text because `*.pcd` is gitignored
 project-wide, so a `.pcd` fixture could never be committed and the test
 could never run on a fresh clone.
 
-**Scope: one sherd of nine.** `Temp_edge/` is overwritten per sherd, so the
-file left on the cluster is whichever sherd ran last. It is the smallest
-available piece of real evidence, not a summary of the Juglet. The run logs
-show boundary clouds of 86–524 points across the run, so the truncation is
-not uniformly 9-of-59 on every sherd.
+**Scope: one sherd face of eighteen, and it is the worst of them.**
+`Temp_edge/` is overwritten per sherd, so the file left on the cluster is
+whichever sherd ran last. Ticket 08 later measured all eighteen Juglet
+faces (9 sherds × 2 wall faces), and this fixture turned out to be the
+**minimum** coverage in the set:
+
+| | coverage |
+|---|---|
+| this fixture | **0.153** (worst of 18) |
+| median Juglet face | **0.866** |
+| faces reaching full coverage | **8 of 18** |
+
+The walk is therefore **not** uniformly broken on the Juglet — it traverses
+nearly half the sherd faces completely. It is the right fixture to regress
+against because it is real, tiny and maximally sensitive, but it is the
+worst case and must not be quoted as typical.
+
+**And the cause is not settled.** The mechanism this test was written
+against — uneven spacing along the rim — reproduces the failure exactly in
+synthetic form, but across the real 18 faces spacing spread does *not*
+predict which ones fail: the face with the *highest* spread (8.1×)
+succeeded completely, while this low-spread face (2.7×) failed worst. The
+mechanism is **sufficient but unproven**. See ticket 08.
