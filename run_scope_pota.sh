@@ -27,9 +27,11 @@ in_container() {
     "${APPTAINER}" exec --bind /data:/data "${SIF}" /bin/bash -c "$1"
 }
 
-echo "### 1. build MeshProcessingHeadless"
+echo "### 1. build the mesh stage"
+# The target is MeshPreprocessingHeadless, built from mesh_processing_headless.cpp.
+# "MeshProcessingHeadless" does not exist and make says so plainly.
 LOG=/tmp/mesh_build.log
-in_container "cd '${BUILD}' && make -j8 MeshProcessingHeadless" > "${LOG}" 2>&1
+in_container "cd '${BUILD}' && make -j8 MeshPreprocessingHeadless" > "${LOG}" 2>&1
 rc=$?
 echo "    build exit ${rc}"
 if [ "${rc}" -ne 0 ]; then
@@ -37,7 +39,7 @@ if [ "${rc}" -ne 0 ]; then
     tail -n 8 "${LOG}"
     exit 1
 fi
-ls -lh "${BUILD}/MeshProcessingHeadless" | awk '{print "    built:", $5, $9}'
+ls -lh "${BUILD}/MeshPreprocessingHeadless" | awk '{print "    built:", $5, $9}'
 
 echo
 echo "### 2. stage Pot_A inputs"
@@ -60,7 +62,7 @@ echo "    ${n} meshes, $(ls "${TREE}/Dataset/Point/${POT}" | wc -l) point clouds
 echo
 echo "### 3. mesh stage"
 ( cd "${TREE}" && "${APPTAINER}" exec --bind /data:/data "${SIF}" \
-    env POT_NAME="${POT}" "${BUILD}/MeshProcessingHeadless" ) \
+    env POT_NAME="${POT}" "${BUILD}/MeshPreprocessingHeadless" ) \
     > "${SNAP}/${POT}_mesh.log" 2>&1
 mrc=$?
 produced=$(ls "${TREE}/Temp/Data/${POT}" 2>/dev/null | wc -l)
