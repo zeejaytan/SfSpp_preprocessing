@@ -25,7 +25,10 @@ rc=$?
 echo "BUILD-EXIT=${rc}"
 if [ "${rc}" -ne 0 ]; then
     echo "--- errors ---"
-    grep -E 'error:|Error [0-9]|No rule to make' "${LOG}" | head -n 20 || true
+    # Must include CMake's own wording ("CMake Error at ...", "Configuring
+    # incomplete") -- an earlier grep for compiler-style errors only reported
+    # a configure failure with no reason attached, which cost a round trip.
+    grep -E 'error:|CMake Error|Error [0-9]|No rule to make|Configuring incomplete' "${LOG}" | head -n 20 || true
     echo "--- last 12 lines ---"
     tail -n 12 "${LOG}"
     exit 1

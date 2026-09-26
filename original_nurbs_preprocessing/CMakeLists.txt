@@ -81,18 +81,16 @@ target_compile_definitions(test_edge_line_ordering
 add_test(NAME edge_line_ordering_clean_rim     COMMAND test_edge_line_ordering clean-rim)
 add_test(NAME edge_line_ordering_no_revisit    COMMAND test_edge_line_ordering no-revisit)
 
-# The DISABLED_ prefix LABELS known-broken behaviour; the DISABLED test
-# property below is what actually stops ctest running it. See the note there.
-add_test(NAME DISABLED_edge_line_ordering_juglet_boundary   COMMAND test_edge_line_ordering juglet-boundary)
-add_test(NAME DISABLED_edge_line_ordering_dense_patch       COMMAND test_edge_line_ordering dense-patch)
-add_test(NAME DISABLED_edge_line_ordering_offplane_scatter  COMMAND test_edge_line_ordering offplane-scatter)
-#
-# NOTE ON MECHANISM -- measured, not assumed. Disabling was first done with
-# the DISABLED_ NAME PREFIX. On this CMake/CTest that did NOT work: ctest ran
-# all three and reported "40% tests passed, 3 tests failed out of 5". So the
-# prefix is kept as a visible label, but the actual disabling is the DISABLED
-# TEST PROPERTY, which ctest honours. Verified by the ctest run in
-# run_ticket01.sh, which must report 2/2 passed with 3 disabled.
+# Known-broken today. Disabled by the DISABLED test PROPERTY, which is the
+# single mechanism -- an earlier attempt used the DISABLED_ name prefix as
+# well, and that did NOT work: ctest ran all three and reported "40% tests
+# passed, 3 tests failed out of 5". Two mechanisms for one job is how they
+# drift apart, so the prefix is gone and the property is authoritative.
+# Each is re-enabled by the ticket that turns THAT test green.
+add_test(NAME edge_line_ordering_juglet_boundary   COMMAND test_edge_line_ordering juglet-boundary)
+add_test(NAME edge_line_ordering_dense_patch       COMMAND test_edge_line_ordering dense-patch)
+add_test(NAME edge_line_ordering_offplane_scatter  COMMAND test_edge_line_ordering offplane-scatter)
+
 set(_edge_line_known_broken
     edge_line_ordering_juglet_boundary
     edge_line_ordering_dense_patch
