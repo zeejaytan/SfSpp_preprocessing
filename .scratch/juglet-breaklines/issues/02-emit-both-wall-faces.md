@@ -116,6 +116,39 @@ eroded surface as "boundary", which fits the traced loop sitting radially
 *inside* its own surface's extent on 5 of 9 sherds. Kept as a separate
 variable so it is not confused with 1–4, which are established.
 
+## THE PAPER vs THE CODE (2026-09-26) — we are not fixing a phantom
+
+Checked the paper (`papers/text/sfspp-2502.13986v1.md`, §IV-B1 "Edge
+line extraction and segmentation", line 164) against the released code.
+**The walk defect is upstream's, not ours** — `int K = 50;` is
+byte-identical in `DominicoRyu/SfSpp_preprocessing`; our only change to
+`getPointsInSequence` was adding empty-input guards. So this is not a
+fork regression.
+
+**But the code does not implement what the paper specifies**, in four
+ways, and each one lands exactly where the Juglet fails:
+
+| Paper says | Code does | Consequence |
+|---|---|---|
+| "The **interior surface** point cloud boundary makes up the edge line" | `Surface_0` = **largest cluster**, `Surface_1` = second largest (`mesh_processing_headless.cpp:1721-1722`). **No interior/exterior test.** Both surfaces get an edge line; the filename is mechanical (`Breakline_0` ← `Surface_0`) | For a thin thrown pot the largest cluster tends to be the same physical face on both sherds, so the gate sees coincident traces. On the Juglet the inner/outer areas are close, so "largest" lands on **different faces for different sherds** — which is exactly the arbitrary face assignment ticket 01 measured, and why 10/18 true mates are inner-vs-outer |
+| edge line points "**reordered counter-clockwise using their normals and a voting algorithm**" | a nearest-neighbour chain, `K = max(5, min(50, n/10))` (headless) / `K = 50` (upstream) | **The paper's ordering step is not implemented at all.** This is the step whose absence produces the duplicate-crawl and disconnected-arc behaviour, and the one my K=2 patch tried and failed to replace |
+| "points near the edge line are identified and **filtered to remove noise and outliers**" | `RadiusOutlierRemoval` computed, written, printed — then **discarded** (dead reload of `boundary.pcd`) | a specified step silently does nothing |
+| "resampled to generate equidistant points with a point-to-point distance of d = 1.9mm" | padded to a fixed 200 points; measured median step 0.12–0.58 mm | the count is not the specified spacing, and padding hid a 3.6 mm fragment |
+
+**This reframes the fix.** We were trying to repair a walk that is a
+substitute for a method step the paper describes and the code never
+had. The correct move is to **implement the paper's ordering** (normals
++ voting) and **its interior-surface selection** (the ray-normal sign
+test of §IV-B1), not to retune `K`.
+
+**Two honest limits.** The paper names the voting algorithm but does not
+specify it; it points to supplementary material, which this paper
+corpus does not contain (no reference lists — see `papers/AGENTS.md`).
+And "largest cluster is the interior surface" may hold reliably on the
+authors' material, in which case their results are unaffected and this is
+a robustness gap rather than an error — that is a claim about their
+data we cannot check from here.
+
 ## PATCH 1 RESULT (job 31337092): **REFUTED — the K hypothesis was wrong**
 
 Run to completion, intervention verified (all 8 markers present, `int

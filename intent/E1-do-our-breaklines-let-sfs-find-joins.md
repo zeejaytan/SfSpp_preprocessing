@@ -1,7 +1,45 @@
 # E1 — Do the breaklines we extract let SfS++ find any join?
 
-**Status:** open · **Blocked by:** none · **Effort:** a measurement on
-existing scans, then a change to `edgeline_extraction.cpp`
+**Status:** open · **Blocked by:** none · **Effort:** a measurement on existing scans, then
+a change to `edgeline_extraction.cpp`
+
+**2026-09-26, checked against the paper and the original code: this is a
+real deviation, not a phantom, and it is upstream's.** `int K = 50` in
+the edge-line ordering is byte-identical in `DominicoRyu/SfSpp_preprocessing`
+— our fork only added empty-input guards — so nothing here was broken by
+us. **But the released code does not implement what the paper specifies**
+(§IV-B1, "Edge line extraction and segmentation"), in four ways:
+
+1. The paper takes the edge line from the **interior** surface. The code
+   takes `Surface_0` = the **largest cluster** with no interior/exterior
+   test, and emits an edge line for both surfaces. On the authors' thin
+   thrown pots "largest" probably lands on the same physical face for
+   every sherd, so their results are unaffected. On the Juglet, where
+   inner and outer areas are nearly equal, it lands on **different faces
+   for different sherds** — which is the arbitrary face assignment, and
+   why 10 of 18 true mates end up inner-vs-outer and invisible to the
+   2 mm gate.
+2. The paper orders edge-line points "**using their normals and a voting
+   algorithm**". The code uses a nearest-neighbour chain. **That step is
+   not implemented at all** — and it is precisely the step whose absence
+   produces the disconnected fragments. My K=2 attempt was trying to
+   repair a substitute for a method step that does not exist in the code.
+3. The paper's noise/outlier filter is specified; in the code it runs and
+   is then **discarded** (dead reload).
+4. The paper's equidistant 1.9 mm resampling is replaced by padding to a
+   fixed 200 points, which is how a 3.6 mm fragment passed as a
+   full-size breakline.
+
+**So the fix is to implement the paper's method, not to retune a
+constant.** That is a better-defined and more defensible target than
+"make the walk local".
+
+**Limits, stated honestly:** the paper names the voting algorithm but
+does not specify it, pointing to supplementary material this corpus does
+not contain. And whether "largest cluster = interior" holds on the
+authors' own 142 fragments cannot be checked from here — if it does,
+this is a robustness gap exposed by the Juglet rather than an error in
+their reported results.
 
 **2026-09-26, ticket 02 patch 1 — the obvious fix was wrong, and the
 wrongness is informative.** Making the rim walk local (K=2) was tested
