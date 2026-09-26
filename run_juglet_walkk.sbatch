@@ -47,8 +47,17 @@ git pull --ff-only || { echo "ERROR: pull failed (diverged?)"; exit 1; }
 echo "skip-worktree flagged files: $(git ls-files -v | grep -c '^S' || true)"
 
 # ---------- apply patches ----------
-echo "=== Applying patches ==="
-git checkout -- edgeline_extraction_headless.cpp mesh_processing_headless.cpp 2>/dev/null || true
+# NOTE: the compiled source is original_nurbs_preprocessing/
+# edgeline_extraction_headless.cpp -- CMakeLists.txt lives in that dir
+# and names bare filenames. It is UNTRACKED in git, so there is nothing
+# to `git checkout`; patches are applied in place from inside that dir,
+# which is why the paths are ../patches (job 31336680 failed on ../patches
+# from the repo root, and an earlier attempt patched the repo-root COPY of
+# the same filename, which is not compiled at all).
+SRC_DIR="${REPO_ROOT}/original_nurbs_preprocessing"
+echo "=== Applying patches (in ${SRC_DIR}) ==="
+cd "${SRC_DIR}" || { echo "ERROR: no ${SRC_DIR}"; exit 1; }
+md5sum edgeline_extraction_headless.cpp
 for p in ../patches/juglet_boundary_radius.patch \
          ../patches/juglet_mesh_diag.patch \
          ../patches/juglet_mesh_filter.patch \

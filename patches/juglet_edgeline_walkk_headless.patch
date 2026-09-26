@@ -1,6 +1,6 @@
 --- a/edgeline_extraction_headless.cpp
 +++ b/edgeline_extraction_headless.cpp
-@@ -821,9 +821,22 @@
+@@ -827,9 +827,22 @@
  	currentPoint = cloud->points[0];
  	cloud_sequenced->points.push_back(currentPoint);
  
