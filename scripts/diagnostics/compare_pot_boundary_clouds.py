@@ -67,13 +67,22 @@ def measure(pts):
     traced = float(steps.sum())
     ref = mst_total(pts)
 
+    # Spacing variation must be measured with percentiles, NOT max/min.
+    # Where a cloud holds exact duplicates nn_min is 0.0, so max/min divides
+    # by ~1e-12 and prints ratios of 1e12 -- which silently poisons any
+    # comparison between pots. p90/p10 is finite unless the cloud is itself
+    # degenerate, and it is the spread the walk actually feels.
+    p10, p90 = np.percentile(nn, 10), np.percentile(nn, 90)
+    dup = int(np.sum(nn <= 0.0))
+
     return {
         "n": n,
         "K": K,
         "nn_min": float(nn.min()),
         "nn_med": med,
         "nn_max": float(nn.max()),
-        "nn_ratio": float(nn.max() / max(nn.min(), 1e-12)),
+        "nn_spread": float(p90 / p10) if p10 > 0 else float("inf"),
+        "n_exact_dup": dup,
         "frac_window_full": float(np.mean(counts >= K)),
         "out": out,
         "coverage": out / n,
@@ -87,7 +96,7 @@ def measure(pts):
 def fmt(m):
     return (f"n={m['n']:4d} K={m['K']:3d} "
             f"nn={m['nn_min']:.3f}/{m['nn_med']:.3f}/{m['nn_max']:.3f} "
-            f"ratio={m['nn_ratio']:6.1f}x "
+            f"spread(p90/p10)={m['nn_spread']:7.1f}x dup={m['n_exact_dup']:3d} "
             f"winfull={m['frac_window_full']:.2f} | "
             f"out={m['out']:4d} cov={m['coverage']:.3f} "
             f"traced/ref={m['traced_over_ref']:.3f} stalls={m['stalls']:3d}")
@@ -98,21 +107,26 @@ def summarise(pot, rows):
         print(f"  {pot}: no snapshots found")
         return None
     cov = np.array([r["coverage"] for r in rows])
-    ratio = np.array([r["nn_ratio"] for r in rows])
+    spread = np.array([r["nn_spread"] for r in rows])
     win = np.array([r["frac_window_full"] for r in rows])
     tr = np.array([r["traced_over_ref"] for r in rows], dtype=float)
     ns = np.array([r["n"] for r in rows])
+    dup = np.array([r["n_exact_dup"] for r in rows])
     print(f"  {pot:8s} sherds={len(rows):2d}  "
           f"coverage  min={cov.min():.3f} med={np.median(cov):.3f} max={cov.max():.3f}  "
           f"full-coverage sherds={int((cov >= 0.9).sum())}/{len(rows)}")
-    print(f"           nn ratio   min={ratio.min():.1f}x med={np.median(ratio):.1f}x "
-          f"max={ratio.max():.1f}x")
-    print(f"           win-full   min={win.min():.2f} med={np.median(win):.2f} "
+    print(f"           nn spread(p90/p10)  min={spread.min():.1f}x "
+          f"med={np.median(spread):.1f}x max={spread.max():.1f}x")
+    print(f"           exact-duplicate points       min={dup.min()} "
+          f"med={int(np.median(dup))} max={dup.max()}")
+    print(f"           win-full frac     min={win.min():.2f} med={np.median(win):.2f} "
           f"max={win.max():.2f}")
-    print(f"           traced/ref min={np.nanmin(tr):.3f} med={np.nanmedian(tr):.3f} "
-          f"max={np.nanmax(tr):.3f}")
-    print(f"           cloud size min={ns.min()} med={int(np.median(ns))} max={ns.max()}")
-    return {"cov": cov, "ratio": ratio, "win": win, "tr": tr, "n": ns}
+    print(f"           traced/ref        min={np.nanmin(tr):.3f} "
+          f"med={np.nanmedian(tr):.3f} max={np.nanmax(tr):.3f}")
+    print(f"           cloud size        min={ns.min()} med={int(np.median(ns))} "
+          f"max={ns.max()}")
+    return {"cov": cov, "spread": spread, "win": win, "tr": tr, "n": ns,
+            "dup": dup}
 
 
 def main():
@@ -153,18 +167,23 @@ def main():
         print()
         j_full = int((j["cov"] >= 0.9).sum())
         a_full = int((a["cov"] >= 0.9).sum())
+        j_sp, a_sp = float(np.median(j["spread"])), float(np.median(a["spread"]))
         print(f"  Juglet: {j_full}/{len(j['cov'])} sherds fully covered, "
-              f"nn ratio {np.median(j['ratio']):.0f}x median")
+              f"spacing spread {j_sp:.0f}x (median)")
         print(f"  Pot_A : {a_full}/{len(a['cov'])} sherds fully covered, "
-              f"nn ratio {np.median(a['ratio']):.0f}x median")
+              f"spacing spread {a_sp:.0f}x (median)")
         print()
-        if a_full == len(a["cov"]) and np.median(a["ratio"]) < 5:
+        # The spread threshold is the Juglet's own measured value, rounded:
+        # the defect was established at ~20x. "Near-uniform" means clearly
+        # below that, not "under some other arbitrary line".
+        UNIFORM = 5.0
+        if a_full == len(a["cov"]) and a_sp < UNIFORM:
             print("  -> DEFECT IS CONDITIONAL ON SAMPLING. Pot_A is near-uniformly")
             print("     sampled and fully covered; the Juglet is not. The mechanism")
             print("     holds. A better ordering step is the right fix, and the")
             print("     Juglet's failure is a property of that material, not of the")
             print("     method in general.")
-        elif a_full == len(a["cov"]) and np.median(a["ratio"]) >= 5:
+        elif a_full == len(a["cov"]) and a_sp >= UNIFORM:
             print("  -> ** MECHANISM SUSPECT. Pot_A is ALSO unevenly sampled but")
             print("     still fully covered, so spacing contrast alone does not")
             print("     explain the truncation. Ticket 03 must NOT be built on the")
@@ -177,6 +196,9 @@ def main():
         else:
             print("  -> INCONCLUSIVE. See the per-sherd tables above; the two pots")
             print("     do not separate cleanly and the diagnosis needs revisiting.")
+        print()
+        print(f"  (uniformity threshold {UNIFORM}x spread, against the ~20x at which")
+        print("   the defect was established on the Juglet)")
     else:
         print()
         print("  Only one pot present, so no comparison is possible. The mechanism")
