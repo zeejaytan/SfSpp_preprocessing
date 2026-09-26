@@ -80,7 +80,11 @@ double dist(const pcl::PointXYZ &a, const pcl::PointXYZ &b)
 pcl::PointCloud<pcl::PointXYZ>::Ptr toCloud(const PtList &pts)
 {
     auto c = pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
-    c->points = pts;
+    // Element-wise, not `c->points = pts`. PCL's container is
+    // std::vector<PointXYZ, Eigen::aligned_allocator<PointXYZ>>, which is a
+    // different type from the plain std::vector used for test inputs.
+    c->points.reserve(pts.size());
+    for (const auto &p : pts) c->points.push_back(p);
     c->width = static_cast<int>(pts.size());
     c->height = 1;
     return c;
