@@ -126,6 +126,44 @@ tracks true rim length to within 1.7% on circles of radius 6.3, 15 and
 40 mm. The 0.3 and 0.9 bounds sit in an ~8× empty gap between the healthy
 and broken populations.
 
+## Observed test output
+
+From the cluster, 2026-09-26. Not predicted:
+
+```
+  [clean-rim         ] in= 400 out= 400 cov=1.000 traced=  94.01mm ref=  94.01mm traced/ref=1.000
+  [juglet-boundary   ] in=  59 out=   9 cov=0.153 traced=   2.14mm ref=  36.84mm traced/ref=0.058
+  [dense-patch       ] in=  59 out=   9 cov=0.153 traced=   2.36mm ref=  92.39mm traced/ref=0.026
+  [offplane-scatter  ] in= 400 out=  52 cov=0.130 traced=  35.54mm ref= 215.03mm traced/ref=0.165
+  [no-revisit        ] in=  59 out=   9 cov=0.153 repeats=0
+```
+
+**The Python transcription is verified against the C++** on the same
+fixture, so the diagnosis rests on the shipped code and not on a
+re-implementation. They agree:
+
+| | C++ (shipped) | Python (transcription) |
+|---|---|---|
+| points out | 9 | 9 |
+| coverage | 0.153 | 0.153 |
+| traced length | 2.14 mm | 2.138 mm |
+| reference (MST) | 36.84 mm | 36.841 mm |
+
+## A MECHANISM THAT DID NOT WORK
+
+Disabling the known-broken tests was first done with the `DISABLED_` **name
+prefix**. `ctest` ran all three anyway and reported `40% tests passed, 3
+tests failed out of 5` — so the prefix never disabled anything, and the
+suite was red despite the design claiming otherwise. Fixed by using the
+`DISABLED` **test property**, which CTest honours, and dropping the prefix
+so there is one mechanism rather than two that can drift apart.
+
+A related near-miss: `build_seam_inner.sh` grepped only for compiler-style
+errors, so a CMake *configure* failure was reported with no reason attached.
+Now matched on CMake's own wording. Both were verification steps that could
+not fail loudly enough — the same class of error as the swallowed exit code
+earlier in this ticket.
+
 ## Acceptance criteria
 
 - [x] A test target is registered with CTest and runs from a single
@@ -138,12 +176,12 @@ and broken populations.
 - [x] The first test pins today's measured behaviour **on real geometry**
       and fails in a way that names the defect — **corrected from the
       original step-ratio wording, which measurement refuted**; see above
+- [x] The Python transcription in `scripts/diagnostics/` is checked against
+      the C++ on the same fixture, so the diagnosis rests on the shipped
+      code and not on a re-implementation
 - [ ] Behaviour-preservation check: the extraction moved production code,
       so the pipeline must be re-run and diffed against the known-good
       bundle to prove the move changed nothing
-- [ ] The Python transcription in `scripts/diagnostics/` is checked against
-      the C++ on the same fixture, so the diagnosis rests on the shipped
-      code and not on a re-implementation
 
 ## Still owed
 

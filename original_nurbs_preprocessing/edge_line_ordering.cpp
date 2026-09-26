@@ -17,12 +17,17 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/point_types.h>
 
-// Note: the original body also declared pcl::PointIndices::Ptr inliers
-// and pcl::ExtractIndices extract. Both were dead -- written, never read,
-// left over from the commented-out alternative walk -- and both were the
-// only reason this file needed <pcl/point_indices.h>, which the 137 KB
-// pipeline file supplied transitively. They are gone, so the include is
-// gone with them. Behaviour is unchanged: nothing read them.
+// Note: the original body also declared three locals that were written and
+// never read -- pcl::PointIndices::Ptr inliers, pcl::ExtractIndices
+// extract, and std::vector<int> indices. All three were leftovers from the
+// commented-out alternative walk, and all three were the only reason this
+// file needed <pcl/point_indices.h>, which the 137 KB pipeline file
+// supplied transitively. They are gone, so the include is gone with them.
+// Behaviour is unchanged: nothing read them.
+//
+// Verified mechanically, not asserted: scripts/diagnostics/verify_extraction.py
+// diffs this file against the code as it was before the move and requires
+// the remainder to be identical, listing the removals above.
 
 #include <algorithm>
 #include <iostream>
