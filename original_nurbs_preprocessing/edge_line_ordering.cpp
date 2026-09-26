@@ -17,6 +17,14 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/point_types.h>
 
+// <pcl/point_indices.h> for pcl::PointIndices. The original relied on a
+// transitive include from the 137 KB pipeline file; the two locals that
+// used it (inliers, extract) are dead -- declared and never read, they
+// left over from the commented-out alternative walk. Removing them keeps
+// the body verbatim in every way that can affect behaviour, and removes
+// the include entirely.
+#include <pcl/point_indices.h>
+
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -44,9 +52,6 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 	kdtree.setInputCloud(cloud);
 
 	pcl::PointXYZ searchPoint;
-	pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
-	pcl::ExtractIndices<pcl::PointXYZ> extract;
-	std::vector<int> indices;
 
 	pcl::PointXYZ currentPoint, nextPoint, previousPoint;
 
