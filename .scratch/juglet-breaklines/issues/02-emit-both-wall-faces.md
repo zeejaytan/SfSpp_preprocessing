@@ -8,7 +8,29 @@ makes Juglet breaklines usable to a 2 mm / agreeing-normal join gate,
 
 **Blocked by:** 01 (resolved — see its results)
 
-**Status:** ready-for-agent — diagnosis complete, fix order below
+**Status:** ready-for-agent — diagnosis complete, patch 1 refuted, source
+now tracked
+
+## Source state is committed and resettable (2026-09-26)
+
+The applied preprocessing source was **untracked** (nested clone with its
+own `.git`, invisible to the parent repo), so it could not be reset or
+reproduced, and patch 1 was one `git checkout` from being
+unrecoverable. Now committed and pushed:
+
+- Branch **`nested-applied-2026-09-26`**, commit **`4c0b90b`**, files
+  `edgeline_extraction_headless.cpp` + `mesh_processing_headless.cpp`,
+  holding the seven 2026-09-25 patches as applied source. Patch 1 is
+  deliberately absent (refuted, reverted).
+- **Not `main`:** the nested clone and the parent repo are two divergent
+  histories pushing at the same GitHub URL, and the remote's `main` is
+  the parent lineage. A `main` push was correctly rejected and would have
+  clobbered the repo everything depends on. Details and reset commands:
+  `patches/SOURCE_ANCHOR.md`.
+- **Still open:** the laptop clone has no `original_nurbs_preprocessing/`
+  at all, so patches still cannot be verified laptop-side without
+  copying the file off Spartan. Worth vendoring or submodule-ing — not
+  actioned here.
 
 **Needs-eye:** a `visual-qa` pair showing the traced rim against the true
 seam, correct-vs-attempt, witnessed, before any claim of improvement is
