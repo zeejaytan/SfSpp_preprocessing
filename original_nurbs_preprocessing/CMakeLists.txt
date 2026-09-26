@@ -58,29 +58,35 @@ add_custom_target(all_targets ALL DEPENDS MeshPreprocessing EdgeLineExtraction M
 # One CTest entry per test, so a failure names the property that broke
 # rather than reporting one aggregate "tests failed".
 #
-# The tests are registered DISABLED_ on purpose. They assert the contract
-# from the paper, and today's implementation does not meet it -- the
-# ordering is a non-local nearest-neighbour chain that stalls on
-# duplicate-heavy boundaries. Keeping them enabled would leave the suite
-# permanently red and train people to ignore it. Disabled, they stay
-# armed and visible: `ctest` lists them, and tests/README.md records the
-# failures that were actually observed. Ticket 02 removes the prefix on
-# the tests it turns green; each prefix is removed by the ticket that
-# earns it, never in a batch.
+# The DISABLED_ prefix marks KNOWN-BROKEN behaviour, and nothing else. A
+# test that passes today is enabled. A test that fails today is disabled
+# so the suite stays green, and its prefix is removed by the ticket that
+# turns it green -- never in a batch, and never by loosening a threshold.
 #
 # The test target compiles edge_line_ordering.cpp -- the SAME file the
 # pipeline compiles. A test that could pass against different code than
-# production runs would be worthless here, which is the whole reason
-# that code was lifted out of the 137 KB pipeline translation unit.
+# production runs would be worthless here, which is the whole reason that
+# code was lifted out of the 137 KB pipeline translation unit.
 # ---------------------------------------------------------------------
 enable_testing()
 
 add_executable(test_edge_line_ordering tests/test_edge_line_ordering.cpp ${EDGE_LINE_ORDERING})
 target_link_libraries(test_edge_line_ordering ${PCL_LIBRARIES} stdc++fs)
+# The fixture path is compiled in so the test finds its data whatever the
+# working directory is. *.pcd is gitignored project-wide, so the fixture is
+# committed as plain text instead -- see tests/data/juglet_boundary_59.txt.
+target_compile_definitions(test_edge_line_ordering
+    PRIVATE JUGLET_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
 
-add_test(NAME DISABLED_edge_line_ordering_clean_rim   COMMAND test_edge_line_ordering clean-rim)
-add_test(NAME DISABLED_edge_line_ordering_eroded_rim COMMAND test_edge_line_ordering eroded-rim)
-add_test(NAME DISABLED_edge_line_ordering_no_revisit COMMAND test_edge_line_ordering no-revisit)
+# passing today -> enabled
+add_test(NAME edge_line_ordering_clean_rim     COMMAND test_edge_line_ordering clean-rim)
+add_test(NAME edge_line_ordering_no_revisit    COMMAND test_edge_line_ordering no-revisit)
+
+# failing today -> disabled. Each is the real defect, on real or measured
+# geometry. See tests/README.md for the observed output.
+add_test(NAME DISABLED_edge_line_ordering_juglet_boundary   COMMAND test_edge_line_ordering juglet-boundary)
+add_test(NAME DISABLED_edge_line_ordering_dense_patch       COMMAND test_edge_line_ordering dense-patch)
+add_test(NAME DISABLED_edge_line_ordering_offplane_scatter  COMMAND test_edge_line_ordering offplane-scatter)
 
 # Lightweight OBJ -> PCD converter (header-only tinyobjloader, ASCII PCD output)
 add_executable(ObjToPcd tools/obj_to_pcd.cpp)

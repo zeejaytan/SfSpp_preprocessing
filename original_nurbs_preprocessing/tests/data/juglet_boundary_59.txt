@@ -1,0 +1,84 @@
+# Juglet boundary cloud -- 59 points, exactly as the pipeline wrote it.
+#
+# PROVENANCE (do not edit the numbers; re-fetch and re-record instead)
+#   source   /data/gpfs/projects/punim2657/sfs_preprocessing/Temp/Temp_edge/Juglet/boundary.pcd
+#   written  2026-09-26 19:46 by EdgeLineExtractionHeadless
+#   why this file is the walk's input: edgeline_extraction_headless.cpp:959
+#   reloads boundary.pcd over boundaryCloud_Improved and :961 sequences it.
+#   The duplicate-heavy boundaryImproved.pcd is written and then discarded,
+#   so it is NOT what the walk sees. Do not "fix" the test by using it.
+#
+# SCOPE -- read before generalising
+#   ONE sherd of nine. Temp_edge/ is overwritten per sherd, so the file left
+#   on disk is whichever sherd ran last. It is not a summary of the Juglet
+#   and must never be reported as one.
+#
+# WHY IT IS HERE
+#   The walk truncates on this cloud: 59 points in, 9 out, 2.1 mm traced
+#   against a 36.8 mm rim (6% of rim length). This is the smallest available
+#   piece of real evidence for the defect, so the seam test asserts against
+#   it rather than against invented geometry.
+#
+# WHY PLAIN TEXT: *.pcd is gitignored project-wide, so a .pcd fixture could
+# never be committed and the test could never run on a fresh clone.
+#
+# format: one sherd-edge point per line, x y z in millimetres
+32.706699 -2.5204 -534.703
+32.567001 -2.6745999 -534.51501
+32.409302 -2.8338001 -534.33301
+32.255501 -2.9582 -534.16602
+33.468201 -1.9636 -535.87201
+33.170898 -2.1626999 -535.27197
+29.8312 -4.3109002 -532.61603
+31.4655 -3.5446 -533.38098
+32.099998 -3.0734 -533.95398
+31.944099 -3.1854 -533.763
+31.6126 -3.3775001 -533.56403
+33.7756 -1.6569999 -536.27698
+29.416 -5.1385999 -531.51898
+33.011398 -2.2521 -535.078
+34.0201 -1.3823 -536.56702
+36.385601 3.6289999 -535.646
+36.4165 3.7964001 -535.44
+36.498299 3.9823999 -535.25897
+36.6493 4.1950002 -535.03802
+36.731998 4.3369999 -534.83899
+36.7976 4.5394001 -534.82599
+36.680901 5.1237998 -534.36401
+36.666901 5.4449 -534.33801
+33.344002 -2.0444 -535.41302
+36.344799 3.4603 -535.85101
+33.602699 -2.4978001 -524.77502
+33.697498 -2.4881999 -524.78601
+33.855499 -2.3891001 -524.59802
+34.030399 -2.2363 -524.41803
+31.5238 -2.3750999 -525.31702
+31.7241 -2.3515 -525.20599
+31.710699 -2.2018001 -524.93701
+31.7675 -3.2593999 -533.75403
+34.550499 0.58020002 -525.25299
+34.544701 0.3662 -525.08899
+34.545399 0.7924 -525.41602
+34.192699 -2.0687001 -524.40601
+34.497898 -1.5272 -524.36401
+34.5499 -1.2611001 -524.34198
+34.555401 -0.65460002 -524.479
+33.937 -1.4747 -536.40997
+34.545399 -0.25909999 -524.61902
+34.773701 1.7023 -526.26501
+34.3993 -1.7457 -524.39099
+34.6441 1.2732 -525.93799
+34.696499 1.4827 -526.10303
+33.482899 -1.9786 -535.71002
+34.562 0.1541 -525.11298
+36.277802 3.286 -536.05499
+36.6679 5.9639001 -534.25598
+34.5662 -0.092 -524.90302
+36.696899 6.4956999 -534.005
+33.624199 -1.8286999 -536.03198
+34.558498 -1.0154999 -524.315
+36.785099 4.7314 -534.61499
+34.566502 0.99379998 -525.55103
+33.4519 1.2628 -538.14099
+35.665298 8.1122999 -534.40002
+32.9636 0.52319998 -537.76202

@@ -17,14 +17,37 @@
 //
 // WHAT IT ACTUALLY DOES: a nearest-neighbour chain that, at each step,
 // appends the first unused point among K nearest neighbours, with
-// K = max(5, min(50, boundary_size/10)). That rule is non-local. On a
-// boundary cloud containing near-duplicate points it consumes a tight
-// cluster and then stalls, because every one of its K candidates is
-// already used. Measured on the Juglet: traced length 0.27-2.15x the rim
-// it should cover, internal jumps of 10-24 mm against a 0.3 mm median
-// step, one sherd reduced to a 3.6 mm stub.
+// K = max(5, min(50, boundary_size/10)).
 //
-// This ordering step is the paper's, and the released code never had it.
+// THE DEFECT, AS MEASURED (ticket 01)
+// The chain truncates. It stops as soon as every one of its K candidates is
+// already visited, and the outer loop then spins without appending
+// anything. Two properties of the input decide whether that happens:
+//
+//   1. DENSITY CONTRAST. Where part of the rim is sampled at least K times
+//      denser than the rim's median spacing, the K-nearest window reaches
+//      only ground already covered. The real Juglet cloud varies 20x in
+//      local spacing (0.096-1.96 mm) and 85% of its points sit in that
+//      regime. Result: 59 points in, 9 out, 2.1 mm traced of a 36.8 mm
+//      rim -- 6% of the rim.
+//   2. OFF-PLANE SCATTER. Where points scatter further off the rim than
+//      the local spacing, the neighbourhood stops being a 1-D curve and
+//      the same saturation occurs. Reproduced independently of (1).
+//
+// A walk that stops early takes SMALL steps; it does not take large ones.
+// So this defect is invisible to any check on step size, and was invisible
+// for exactly that reason.
+//
+// A NOTE ON A NUMBER THAT DOES NOT BELONG HERE: the "10-24 mm internal
+// jumps, 0.27-2.15x traced length" figures quoted in the old ticket 02
+// were measured on the EMITTED breakline files, after B-spline resampling
+// and 200-point padding. They describe a later stage and say nothing about
+// this function. They were previously quoted in this header as if they
+// did; that was wrong, and no test here asserts on them.
+//
+// The ordering step IS the paper's: "the resulting edge line points are
+// reordered counter-clockwise using their normals and a voting algorithm"
+// (arXiv 2502.13986 section IV-B1). The released code never had it.
 // Tickets 02 and 03 replace the body; this ticket only makes it visible.
 
 #pragma once
