@@ -17,13 +17,12 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/point_types.h>
 
-// <pcl/point_indices.h> for pcl::PointIndices. The original relied on a
-// transitive include from the 137 KB pipeline file; the two locals that
-// used it (inliers, extract) are dead -- declared and never read, they
-// left over from the commented-out alternative walk. Removing them keeps
-// the body verbatim in every way that can affect behaviour, and removes
-// the include entirely.
-#include <pcl/point_indices.h>
+// Note: the original body also declared pcl::PointIndices::Ptr inliers
+// and pcl::ExtractIndices extract. Both were dead -- written, never read,
+// left over from the commented-out alternative walk -- and both were the
+// only reason this file needed <pcl/point_indices.h>, which the 137 KB
+// pipeline file supplied transitively. They are gone, so the include is
+// gone with them. Behaviour is unchanged: nothing read them.
 
 #include <algorithm>
 #include <iostream>
