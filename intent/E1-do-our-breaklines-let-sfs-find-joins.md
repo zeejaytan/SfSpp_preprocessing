@@ -58,6 +58,15 @@ replace the chain with a minimum spanning tree / principal curve — which
 is what the function name `_breakLineFromConcaveHull` suggests it was
 meant to be), not to retune K.
 
+> **2026-09-26 — the duplicate-domination claim above is NOT SUPPORTED and is
+> withdrawn as an explanation.** Ticket 08 measured the boundary clouds of
+> both pots. Every Pot_A cloud contains exact duplicates (26–124 points,
+> median 54 per cloud); most Juglet clouds contain **none**. Pot_A is the pot
+> that assembles 15/15 correctly. Duplicates are therefore *more* abundant in
+> the working pot and cannot be what distinguishes the failing one. The
+> "dedupe then order" plan (ticket 02) has lost its justification; dedupe
+> remains defensible as hygiene, not as the fix.
+
 This also confirms the trace is the binding constraint: a *worse* trace
 measurably pushed the nearest true contact from 0.17 mm to 11.74 mm, so
 the gate is sensitive to precisely this quantity.
@@ -130,6 +139,57 @@ verdict to draw**. It could be the extractor's fault, or the assembler's
 assumptions, or something about the object. The difference is decided
 here, by what we hand over: a breakline that a 2 mm / agreeing-normal
 test cannot fail is a breakline nobody can assemble from.
+
+## 2026-09-26, ticket 08 — the walk is NOT the Juglet's problem
+
+Measured every sherd face of both pots, not one sherd: **18 Juglet faces**
+(9 sherds × 2 walls) and **16 Pot_A faces** (8 × 2), by running the
+pipeline in isolated trees and snapshotting `boundary.pcd` per face before
+it is overwritten. Metric: **coverage** — what fraction of the boundary
+points the ordering walk actually emits.
+
+| | Juglet | Pot_A (the 15/15 control) |
+|---|---|---|
+| fully covered (≥0.9) | **8 / 18** | **7 / 16** |
+| median coverage | 0.866 | 0.883 |
+| worst coverage | 0.143 | 0.252 |
+
+**The two pots are indistinguishable, and Pot_A assembles perfectly
+anyway.** So the walk's truncation is real, general, and **not the cause of
+the Juglet's zero joins** — a defect present in the pot that works cannot
+explain the pot that doesn't.
+
+This is a fourth thing, distinct from the three failure classes: **a real
+defect that is not the cause of the observed failure.** The defect is real
+— it discards 15–75% of an edge on half of all faces, and the paper's
+ordering step genuinely is missing from the code — but the causal story
+attached to it was wrong.
+
+**What this rules out as the discriminator:** spacing variation (the
+highest-spread Juglet face, 8.1×, was covered *perfectly*; the worst face
+has low spread, 2.7×) and exact duplicates (more abundant in Pot_A, which
+works). **We do not currently know which input property decides which faces
+truncate.**
+
+**Consequence for the plan.** Implementing the paper's ordering step
+(ticket 03) stays worth doing, as an independent quality improvement, but
+must **not** be credited in advance with fixing the Juglet, and must be
+judged on the coverage *distribution* over all 34 faces rather than on the
+Juglet's gate score.
+
+**Where that leaves the question.** The candidates that remain for the
+Juglet's zero joins are the ones already recorded here and *not* in the
+ordering chain:
+
+- **face selection** — `Surface_0` is the largest cluster with no
+  interior/exterior test, and 10 of 18 true mates are inner-vs-outer
+  (item 1 at the top of this file, and ticket 04);
+- **the trace missing the seam** — 22 of 36 directed true contacts sit
+  2.8–29.5 mm from the nearest breakline point, so the loops are
+  well-formed but do not pass through the join.
+
+The ordering work was a real defect worth fixing, and it was also a red
+herring for this question. Both are true, and only one of them was assumed.
 
 ## The two candidate causes, separated
 
