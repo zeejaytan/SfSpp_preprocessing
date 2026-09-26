@@ -47,45 +47,67 @@ git pull --ff-only || { echo "ERROR: pull failed (diverged?)"; exit 1; }
 echo "skip-worktree flagged files: $(git ls-files -v | grep -c '^S' || true)"
 
 # ---------- apply patches ----------
-# NOTE: the compiled source is original_nurbs_preprocessing/
-# edgeline_extraction_headless.cpp -- CMakeLists.txt lives in that dir
-# and names bare filenames. It is UNTRACKED in git, so there is nothing
-# to `git checkout`; patches are applied in place from inside that dir,
-# which is why the paths are ../patches (job 31336680 failed on ../patches
-# from the repo root, and an earlier attempt patched the repo-root COPY of
-# the same filename, which is not compiled at all).
+# NOTE 1: the compiled source is original_nurbs_preprocessing/
+# edgeline_extraction_headless.cpp -- CMakeLists.txt lives in that dir and
+# names bare filenames. It is UNTRACKED in git, so `git checkout` on it is
+# a silent no-op and there is NO WAY TO RESET IT. Spartan's copy already
+# carries an unknown subset of the patch set (verified: g_boundary_radius_mm
+# is present, and juglet_boundary_radius.patch therefore refuses under
+# --forward). The original run_juglet_preprocessing.sbatch has the same
+# latent problem -- it is not re-runnable on the current cluster state.
+#
+# So: apply IDEMPOTENTLY. Skip a patch whose marker is already present,
+# apply it otherwise, then verify EVERY marker before building. If a marker
+# is missing the run aborts rather than silently building unpatched code.
 SRC_DIR="${REPO_ROOT}/original_nurbs_preprocessing"
 echo "=== Applying patches (in ${SRC_DIR}) ==="
 cd "${SRC_DIR}" || { echo "ERROR: no ${SRC_DIR}"; exit 1; }
+echo "  state before patching:"
 md5sum edgeline_extraction_headless.cpp
-for p in ../patches/juglet_boundary_radius.patch \
-         ../patches/juglet_mesh_diag.patch \
-         ../patches/juglet_mesh_filter.patch \
-         ../patches/juglet_mesh_thresholds.patch \
-         ../patches/juglet_edgeline_spheremin.patch \
-         ../patches/juglet_edgeline_sphereradii.patch \
-         ../patches/juglet_edgeline_nowriteconvert.patch \
-         ../patches/juglet_edgeline_walkk_headless.patch; do
-    patch -p1 --forward --fuzz=0 < "${p}"
-    rc=$?
-    if [ ${rc} -ne 0 ]; then
-        echo "ERROR: patch failed (rc=${rc}): ${p}"
-        exit 1
-    fi
-    echo "  applied ${p}"
-done
 
-# ---------- verify markers in the SOURCE, before building ----------
-echo "=== Verifying markers in patched source ==="
-grep -q "g_boundary_radius_mm" edgeline_extraction_headless.cpp \
-    || { echo "ERROR: boundary radius marker absent"; exit 1; }
-grep -q "SFS_WALK_K_LOCAL" edgeline_extraction_headless.cpp \
-    || { echo "ERROR: WALK-K MARKER ABSENT -- patch silently dropped, VOID RUN"; exit 1; }
-echo "  boundary radius marker: present"
-echo "  SFS_WALK_K_LOCAL marker: present"
+apply_patch() {   # $1=patch file  $2=marker  $3=target file
+    local p="$1" marker="$2" target="$3"
+    if grep -qF "${marker}" "${target}"; then
+        echo "  SKIP  (already applied) $(basename ${p})"
+        return 0
+    fi
+    if patch -p1 --batch --forward --fuzz=0 < "${p}"; then
+        echo "  APPLIED $(basename ${p})"
+    else
+        echo "  ERROR: patch failed: ${p}"
+        return 1
+    fi
+    if ! grep -qF "${marker}" "${target}"; then
+        echo "  ERROR: patch claimed success but marker absent (SILENT DROP): ${p}"
+        return 1
+    fi
+}
+
+E=edgeline_extraction_headless.cpp
+M=mesh_processing_headless.cpp
+apply_patch ../patches/juglet_boundary_radius.patch   "g_boundary_radius_mm"        "${E}" || exit 1
+apply_patch ../patches/juglet_mesh_diag.patch         "GROW-DIAG"                  "${M}" || exit 1
+apply_patch ../patches/juglet_mesh_filter.patch       "Single-file filter"         "${M}" || exit 1
+apply_patch ../patches/juglet_mesh_thresholds.patch   "Segmentation thresholds"    "${M}" || exit 1
+apply_patch ../patches/juglet_edgeline_spheremin.patch    "keep everything in mm"   "${E}" || exit 1
+apply_patch ../patches/juglet_edgeline_sphereradii.patch  "mm (was meters-assumed)" "${E}" || exit 1
+apply_patch ../patches/juglet_edgeline_nowriteconvert.patch "do NOT convert"        "${E}" || exit 1
+apply_patch ../patches/juglet_edgeline_walkk_headless.patch "SFS_WALK_K_LOCAL"    "${E}" || exit 1
+
+echo "=== Verifying all markers present ==="
+for m in g_boundary_radius_mm "keep everything in mm" "mm (was meters-assumed)" "do NOT convert" SFS_WALK_K_LOCAL; do
+    grep -qF "${m}" "${E}" || { echo "ERROR: edgeline marker absent: ${m}"; exit 1; }
+    echo "  edgeline: ${m}"
+done
+for m in "GROW-DIAG" "Single-file filter" "Segmentation thresholds"; do
+    grep -qF "${m}" "${M}" || { echo "ERROR: mesh marker absent: ${m}"; exit 1; }
+    echo "  mesh: ${m}"
+done
+echo "  all markers verified"
+rm -f *.orig *.rej
 echo "  walk K line(s):"
-grep -n "SFS_WALK_K_LOCAL" edgeline_extraction_headless.cpp
-grep -n "int K = " edgeline_extraction_headless.cpp | head -3
+grep -n "SFS_WALK_K_LOCAL" "${E}"
+grep -n "int K = " "${E}" | head -3
 
 # ---------- build ----------
 echo "=== Building EdgeLineExtractionHeadless ==="
