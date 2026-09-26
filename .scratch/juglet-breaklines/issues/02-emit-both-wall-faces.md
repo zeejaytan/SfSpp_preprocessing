@@ -94,7 +94,57 @@ eroded surface as "boundary", which fits the traced loop sitting radially
 *inside* its own surface's extent on 5 of 9 sherds. Kept as a separate
 variable so it is not confused with 1–4, which are established.
 
-## Patch 1 launched (job 31336680) — and a build-target correction
+## PATCH 1 RESULT (job 31337092): **REFUTED — the K hypothesis was wrong**
+
+Run to completion, intervention verified (all 8 markers present, `int
+K = 2` in the source, `using K=2` on all pieces at runtime, zero
+`using K=50` lines). It made things **markedly worse**.
+
+| | old (adaptive K) | new (K=2) |
+|---|---|---|
+| true mates passing the gate | 0/18 | 0/18 |
+| false pairs passing | 1/18 | **0/18** |
+| closest true contact to a breakline point | **0.17 mm** | **11.74 mm** |
+| sherd 4 trace extent | 10.0 × 12.9 × 14.0 mm | **0.09 × 0.19 × 0.22 mm** |
+| unique points @0.01 mm (shard 4) | 200/200 | **46/149** |
+| traced length / 2πR | 0.27–2.15 | **0.01–0.15** |
+
+**The adaptive K was load-bearing, exactly as its comment claimed.** With
+K=2 the nearest unused neighbour is almost always *another member of the
+same tight cluster*, so the walk crawls through duplicates, one per
+outer-loop iteration, and never leaves. The trace collapses to a
+sub-millimetre blob. The large K was crudely but effectively letting the
+walk **escape** the duplicate cluster by reaching a genuinely different
+point.
+
+**So the real defect is upstream of the walk: the boundary cloud is
+duplicate-dominated.** `pcl::BoundaryEstimation` on a dense surface
+returns large numbers of near-coincident points, and the NN-chain has no
+notion of stepping *along* a curve. The fix is therefore not a smaller
+K but a proper one:
+
+1. **Cluster/dedupe the boundary cloud first** (radius ~ the surface
+   spacing), *then* walk with a small K. Or replace the chain outright
+   with an ordering that cannot stall — a 2D minimum spanning tree or a
+   principal curve, which is what the function name
+   (`_breakLineFromConcaveHull`) suggests it was meant to be.
+2. Only then re-test K.
+
+**The known-good bundle is untouched** — the run wrote to
+`Juglet_Dataset_walkk1`, so `Juglet_Dataset_20260916` remains the
+reference. The K=2 output is kept in `artifacts/juglet_bl_walkk/` as the
+negative result, not as a candidate.
+
+**Six submissions to run one experiment.** Five failed on my own script
+errors (patch path, wrong source file, non-idempotent patch chain,
+relative path after a successful build, redirect into a missing
+directory, mesh staging collision). All died in under a minute before
+any compute, all printed the cause. The experiment itself ran first
+time. Cost: ~25 minutes of queue time and six chances to be wrong. **On
+a held allocation this would have been one attempt** — recommend
+switching for the next patch.
+
+## Patch 1 was launched — and a build-target correction
 
 **The defect was in a different file than first diagnosed.** The
 assembler-facing `edgeline_extraction.cpp` has a hardcoded `K = 50`, but

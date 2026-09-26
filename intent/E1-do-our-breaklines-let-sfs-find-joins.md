@@ -3,6 +3,27 @@
 **Status:** open · **Blocked by:** none · **Effort:** a measurement on
 existing scans, then a change to `edgeline_extraction.cpp`
 
+**2026-09-26, ticket 02 patch 1 — the obvious fix was wrong, and the
+wrongness is informative.** Making the rim walk local (K=2) was tested
+and **refuted**: it collapsed the trace to a sub-millimetre blob
+(sherd 4: 10×13×14 mm → 0.09×0.19×0.22 mm; traced length 1–15% of the
+rim; closest true contact 0.17 mm → 11.74 mm). The adaptive K it replaced
+was **load-bearing**: with a small K the walk's nearest unused neighbour
+is almost always another member of the same tight cluster, so it crawls
+and never leaves the cluster.
+
+So the defect is not the walk's *step size* but its **input**: the
+boundary cloud from `pcl::BoundaryEstimation` is duplicate-dominated,
+and a nearest-neighbour chain has no notion of stepping *along* a curve.
+The fix is to **cluster/dedupe the boundary cloud and then order it** (or
+replace the chain with a minimum spanning tree / principal curve — which
+is what the function name `_breakLineFromConcaveHull` suggests it was
+meant to be), not to retune K.
+
+This also confirms the trace is the binding constraint: a *worse* trace
+measurably pushed the nearest true contact from 0.17 mm to 11.74 mm, so
+the gate is sensitive to precisely this quantity.
+
 **2026-09-26, ticket 02 groundwork — and the question has moved.** Three
 measurements re-pointed the work, none of them needing C++:
 
