@@ -1,0 +1,27 @@
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
+@@ -821,9 +821,22 @@
+ 	currentPoint = cloud->points[0];
+ 	cloud_sequenced->points.push_back(currentPoint);
+ 
+-	// ADAPTIVE: Scale K with boundary size (5-50 range, ~10% of points)
++	// Juglet ticket 02, patch 1 of 4: make the rim walk LOCAL.
++	// The adaptive K (max(5, min(50, n/10))) let this nearest-neighbour
++	// chain hop across the rim interior: it appends the first unused
++	// point among K candidates, so with K up to 50 it consumes a local
++	// cluster and then stalls -- every candidate already used -- while
++	// the outer loop spins. Measured on the Juglet bundle: traced length
++	// 0.27-2.15x the rim it should cover, internal jumps of 10-24 mm
++	// against a 0.3 mm median step, one sherd reduced to a 3.6 mm stub
++	// carrying all 200 padded points. Two arcs jumped together, not a rim.
++	// K=2 steps to the adjacent unused point and terminates honestly when
++	// the walk meets itself, so loop closure falls out for free. This
++	// REMOVES the adaptive behaviour deliberately: K is the variable
++	// under test, and if it was load-bearing the gate number will show it.
++	// SFS_WALK_K_LOCAL marks the change for post-build verification.
+ 	int boundary_size = cloud->points.size();
+-	int K = std::max(5, std::min(50, boundary_size / 10));
++	int K = 2;  // SFS_WALK_K_LOCAL
+ 	std::cout << "[ADAPTIVE SEQUENCING] Boundary has " << boundary_size
+ 	          << " points, using K=" << K << " for point sequencing" << std::endl;
+ 
