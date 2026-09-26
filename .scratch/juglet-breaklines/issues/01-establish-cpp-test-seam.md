@@ -179,9 +179,23 @@ earlier in this ticket.
 - [x] The Python transcription in `scripts/diagnostics/` is checked against
       the C++ on the same fixture, so the diagnosis rests on the shipped
       code and not on a re-implementation
-- [ ] Behaviour-preservation check: the extraction moved production code,
-      so the pipeline must be re-run and diffed against the known-good
-      bundle to prove the move changed nothing
+- [x] **Behaviour-preservation, at source level, mechanically.**
+      `scripts/diagnostics/verify_extraction.py` diffs the moved functions
+      against the code as it was before the move (the parent of `3ce060e`)
+      and requires the remainder to be **identical**, listing what it
+      removed. Result: `pointExistsInCLoud` identical;
+      `getPointsInSequence` identical after removing three dead locals.
+      Re-run it after any edit to `edge_line_ordering.cpp` — it exits
+      non-zero and says so if the file drifts from its own description.
+- [ ] Behaviour-preservation, at binary level — **deliberately folded into
+      ticket 07**, not skipped. A full pipeline re-run cannot isolate a code
+      move from the known pre-existing non-determinism (two runs of the
+      *same* binary already differ on 1 of 9 breaklines), so it would need
+      four runs — each binary twice — to establish a baseline before
+      attributing any difference. That is not worth doing twice; the same
+      re-run is required after the actual fix, and ticket 07 does it once,
+      then. What *is* verified here: `EdgeLineExtractionHeadless` compiles
+      and links against the moved unit.
 
 ## Still owed
 
