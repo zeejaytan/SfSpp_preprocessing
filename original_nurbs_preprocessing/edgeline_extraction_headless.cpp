@@ -29,6 +29,10 @@
 
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
+
+// Edge-line ordering lives in its own translation unit so the tests and
+// this pipeline compile the same code. See edge_line_ordering.h.
+#include "edge_line_ordering.h"
 // Removed VTK headers for headless build (PCL built with -DWITH_VTK=OFF)
 // #include <pcl/io/vtk_io.h>
 // #include <pcl/io/vtk_lib_io.h>
@@ -711,18 +715,10 @@ MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 }
 
 
-bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
-{
-	bool ptExists = false;
-	for (size_t i = 0; i < cloud->points.size(); i++)
-	{
-		if (cloud->points[i].x == pt.x && cloud->points[i].y == pt.y && cloud->points[i].z == pt.z)
-		{
-			ptExists = true;
-		}
-	}
-	return ptExists;
-}
+// pointExistsInCLoud and getPointsInSequence now live in
+// edge_line_ordering.{h,cpp} so that the tests and the pipeline compile
+// the same ordering code. See edge_line_ordering.h for the contract and
+// for the measured defects in the current implementation.
 
 // ADAPTIVE DENSIFICATION: Ensure breaklines have sufficient point density for downstream operations
 MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spacing_mm = 2.0) {
@@ -807,94 +803,6 @@ MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spaci
 	          << " to " << densified.rows() << " points" << std::endl;
 
 	return densified;
-}
-
-void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
-{
-
-	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
-
-	kdtree.setInputCloud(cloud);
-
-	pcl::PointXYZ searchPoint;
-	pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
-	pcl::ExtractIndices<pcl::PointXYZ> extract;
-	std::vector<int> indices;
-
-	pcl::PointXYZ currentPoint, nextPoint, previousPoint;
-
-
-	currentPoint = cloud->points[0];
-	cloud_sequenced->points.push_back(currentPoint);
-
-	// ADAPTIVE: Scale K with boundary size (5-50 range, ~10% of points)
-	int boundary_size = cloud->points.size();
-	int K = std::max(5, std::min(50, boundary_size / 10));
-	std::cout << "[ADAPTIVE SEQUENCING] Boundary has " << boundary_size
-	          << " points, using K=" << K << " for point sequencing" << std::endl;
-
-	for (size_t t = 1; t < cloud->points.size(); t++)
-	{
-		searchPoint = currentPoint;
-		std::vector<int> pointIdxNKNSearch(K);
-		std::vector<float> pointNKNSquaredDistance(K);
-		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
-		{
-
-			if (t == 1)
-			{
-				PointXYZ p;
-				p.x = (*cloud)[pointIdxNKNSearch[1]].x; p.y = (*cloud)[pointIdxNKNSearch[1]].y; p.z = (*cloud)[pointIdxNKNSearch[1]].z;
-				cloud_sequenced->points.push_back(p);
-				previousPoint = currentPoint;
-				currentPoint = p;
-			}
-			else
-			{
-				if (pointIdxNKNSearch.size() > 0)
-				{
-					for (std::size_t x = 0; x < pointIdxNKNSearch.size(); ++x)
-					{
-						PointXYZ p1;
-						p1.x = (*cloud)[pointIdxNKNSearch[x]].x; p1.y = (*cloud)[pointIdxNKNSearch[x]].y; p1.z = (*cloud)[pointIdxNKNSearch[x]].z;
-						if (!pointExistsInCLoud(p1, cloud_sequenced))
-						{
-							cloud_sequenced->points.push_back(p1);
-							previousPoint = currentPoint;
-							currentPoint = p1;
-							break;
-						}
-					}
-
-					/*PointXYZ p1;
-					p1.x = (*cloud)[pointIdxNKNSearch[1]].x; p1.y = (*cloud)[pointIdxNKNSearch[1]].y; p1.z = (*cloud)[pointIdxNKNSearch[1]].z;
-					PointXYZ p2;
-					p2.x = (*cloud)[pointIdxNKNSearch[2]].x; p2.y = (*cloud)[pointIdxNKNSearch[2]].y; p2.z = (*cloud)[pointIdxNKNSearch[2]].z;
-					if (p1.x == previousPoint.x && p1.y == previousPoint.y && p1.z == previousPoint.z)
-					{
-						if (cloud_sequenced->points[0].x != p2.x && cloud_sequenced->points[0].y != p2.y && cloud_sequenced->points[0].z != p2.z)
-						{
-							cloud_sequenced->points.push_back(p2);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p2;
-					}
-					else
-					{
-						if (cloud_sequenced->points[0].x != p1.x && cloud_sequenced->points[0].y != p1.y && cloud_sequenced->points[0].z != p1.z)
-						{
-							cloud_sequenced->points.push_back(p1);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p1;
-					}*/
-				}
-			}
-		}
-	}
-
-	cloud_sequenced->width = cloud_sequenced->points.size();
-	cloud_sequenced->height = 1;
 }
 
 // Juglet fix (2026-09): boundary radius actually used, in cloud units (mm).
