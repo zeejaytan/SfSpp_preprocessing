@@ -94,6 +94,35 @@ eroded surface as "boundary", which fits the traced loop sitting radially
 *inside* its own surface's extent on 5 of 9 sherds. Kept as a separate
 variable so it is not confused with 1–4, which are established.
 
+## Patch 1 launched (job 31336680) — and a build-target correction
+
+**The defect was in a different file than first diagnosed.** The
+assembler-facing `edgeline_extraction.cpp` has a hardcoded `K = 50`, but
+that file **is not compiled** — `run_juglet_preprocessing.sbatch` builds
+`EdgeLineExtractionHeadless` from `edgeline_extraction_headless.cpp`,
+whose walk uses an *adaptive* `K = max(5, min(50, n/10))`. Same class of
+defect (non-local walk, first-unused-among-K), different code. The
+patch targets the headless file, and defect 3 (dead reload) is present
+there too, at line 1032.
+
+A first patch was written against the non-compiled file and **deleted
+rather than shipped** — it would have applied cleanly and changed
+nothing, which is the quietest possible way to produce a false null.
+
+Patch 1 = `K: max(5, min(50, n/10)) → 2`, one hunk, marker
+`SFS_WALK_K_LOCAL`, generated with `difflib` from the git blob so the
+hunk count and line endings are exact (hand-written hunks were wrong
+twice; the patch is **LF** because that is what Spartan checks out, and
+it verifies at `patch --fuzz=0`).
+
+Job 31336680 also: writes to a **separate output base**
+(`Juglet_Dataset_walkk1`) so the known-good bundle survives a
+regression; greps the marker in the source *before* building and again
+in the runtime log (`using K=50` present ⇒ stale binary ⇒ void run);
+and does **not** run the gate itself — scoring a re-extract from inside
+the extracting job is how a broken input gets certified by its own
+producer. The gate runs on the laptop afterwards.
+
 ## Fix order — one variable each, re-measure after every one
 
 1. **K: 50 → 2** in `getPointsInSequence`, and stop appending when the
