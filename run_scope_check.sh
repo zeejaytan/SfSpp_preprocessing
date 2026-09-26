@@ -34,12 +34,23 @@ SIF="${ROOT}/pcl_191_nurbs.sif"
 [ -x "${BIN}" ] || { echo "ERROR: ${BIN} missing -- build first"; exit 1; }
 [ -f "${SIF}" ] || { echo "ERROR: ${SIF} missing"; exit 1; }
 
-# Where each pot's meshes live. Pot_A's are symlinks into temp_download/, so
-# they are copied with -L to bring the real vertices across.
+# Where each pot's inputs live. Two things must be staged, because the
+# edgeline stage consumes SURFACE point clouds produced by the earlier mesh
+# stage -- it does not read the .obj meshes itself:
+#
+#   <obj meshes>                 -> Temp/Data/<pot>/*.obj        (enumerates pieces)
+#   Dataset/Surfaces/<pot>/*     -> Temp/Data/<pot>/*            (the actual input)
+#
+# Pot_A's .obj files are symlinks into temp_download/, so they are copied
+# with -L to bring the real vertices across. Dataset/Surfaces/ currently
+# holds 18 Juglet and 24 Pot_A files; the real tree's Temp/Data/ has NO
+# Surface_*.xyz at all, so this staging is not optional -- without it the
+# binary exits 255 on "cannot copy file ... Surface_0.xyz".
 declare -A MESHES=(
     [Juglet]="${ROOT}/Temp/Data/Juglet"
     [Pot_A]="${ROOT}/Dataset/Mesh/Pot_A"
 )
+SURFACES="${ROOT}/Dataset/Surfaces"
 
 snapshot_loop() {
     # $1 = boundary.pcd to watch, $2 = destination dir
@@ -74,15 +85,22 @@ run_pot() {
 
     rm -rf "${tree}" "${snapdir}"
     mkdir -p "${tree}/Temp/Data/${pot}" "${tree}/Temp/Axes" \
-             "${tree}/Dataset/Mesh/${pot}" "${snapdir}"
+             "${tree}/Dataset/Mesh/${pot}" \
+             "${tree}/Dataset/Surfaces/${pot}" \
+             "${tree}/Dataset/Breaklines/${pot}" "${snapdir}"
 
-    local n=0
+    local n=0 s=0
     for f in "${src}"/*.obj; do
         [ -e "${f}" ] || continue
         cp -L "${f}" "${tree}/Temp/Data/${pot}/"   # -L: follow symlinks
         n=$((n + 1))
     done
-    echo "  staged ${n} meshes into an isolated tree"
+    for f in "${SURFACES}/${pot}"/*; do
+        [ -e "${f}" ] || continue
+        cp -L "${f}" "${tree}/Temp/Data/${pot}/"
+        s=$((s + 1))
+    done
+    echo "  staged ${n} meshes and ${s} surface clouds"
 
     snapshot_loop "${edge}/boundary.pcd" "${snapdir}" &
     local watcher=$!
@@ -97,10 +115,18 @@ run_pot() {
     wait "${watcher}" 2>/dev/null
 
     local pieces snaps
-    pieces=$(grep -c "ADAPTIVE SEQUENCING" "${log}" 2>/dev/null || echo 0)
+    # grep -c prints 0 AND exits 1 when there is no match, so `|| echo 0`
+    # would append a second line and make the integer test fail. `|| true`
+    # alone is correct: the count is already in the output.
+    pieces=$(grep -c "ADAPTIVE SEQUENCING" "${log}" 2>/dev/null || true)
+    [ -n "${pieces}" ] || pieces=0
     snaps=$(ls "${snapdir}"/boundary_*.pcd 2>/dev/null | wc -l)
 
     echo "  exit code            ${rc}"
+    if [ "${rc}" -ne 0 ]; then
+        echo "  ** the binary failed. Tail of its log:"
+        tail -n 6 "${log}" 2>/dev/null | sed 's/^/     /'
+    fi
     echo "  pieces sequenced     ${pieces}   (from the run log)"
     echo "  boundary snapshots   ${snaps}"
     if [ "${pieces}" -gt 0 ] && [ "${snaps}" -lt "${pieces}" ]; then
