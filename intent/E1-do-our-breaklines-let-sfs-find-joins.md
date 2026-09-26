@@ -3,7 +3,26 @@
 **Status:** open · **Blocked by:** none · **Effort:** a measurement on
 existing scans, then a change to `edgeline_extraction.cpp`
 
-## Why it matters
+**2026-09-26, ticket 01 measured it. Two causes, and the dominant one is
+coverage, not wall-face confusion.** The extractor traces exactly **one**
+wall face per sherd, and which one is arbitrary — inner for sherds 1, 5,
+9; outer for 2, 3, 4, 6, 7, 8. Consequences, both measured:
+
+- **10 of 18 true mates are inner-vs-outer**, so a 2 mm
+  agreeing-normal comparison cannot see them at all. The assignment is
+  also *uninformative*: 10/18 non-mate pairs are same-face too, so face
+  agreement predicts nothing about a pair being real.
+- **But fixing the face would not be enough.** Of the 8 same-face mates,
+  only 1 (pair 6-7) has traces within 2 mm at ground truth; the rest sit
+  5–30 mm from the 0.02 mm truth. On those same-face pairs the normals
+  agree at **0.92–1.00 (6–23°)**, which passes the gate easily.
+
+**This corrects an earlier reading.** The "normals are opposed 67–129°"
+figure came from pair 2-9, which is an *opposite-face* pair — the opposed
+normals are the signature of tracing two different wall faces, not a
+separate defect in the normals themselves. The real headline is that the
+extracted segment **does not span the seam**. Fix order: coverage first,
+then both-faces. Both are required; neither alone suffices.
 
 SfS++ (the assembler, `../structure-from-sherds-pp`) decides two sherds
 join by asking: is a point on one sherd's breakline within ~2 mm of a
@@ -43,11 +62,15 @@ reasons, and they need different fixes:
 
 ## Done when
 
-- [ ] **Measured, not guessed:** for each of the Juglet's 9 sherds, which
+- [x] **Measured, not guessed:** for each of the Juglet's 9 sherds, which
       surface face (inner / outer / both) does each extracted breakline
       segment come from, and does the segment span the actual seam? A
       per-segment table, in millimetres, with the GT contact point
-      marked
+      marked. **Done 2026-09-26** (ticket 01): one face per sherd,
+      arbitrary; 10/18 true mates opposite-face; 34.7% of points
+      ambiguous; only 1/8 same-face mates within 2 mm at GT. Scripts and
+      output in `../structure-from-sherds-pp/artifacts/juglet_run1/`
+      (`breakline_face_*.py`, `sameface_gt_geometry.py`)
 - [ ] **One variable changed, one hypothesis tested.** E.g. "make
       segmentation emit both wall faces" — then re-measure. Not a bundle
       of changes, because then we learn nothing about which one worked

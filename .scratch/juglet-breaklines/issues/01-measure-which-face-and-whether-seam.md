@@ -17,11 +17,64 @@ for all 9 Juglet sherds, in millimetres:
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** resolved
 
 **Needs-eye:** none — this ticket produces a table, not a placement
 claim. The render requirement lands in ticket 02 with the first real
 change.
+
+## Result (2026-09-26): two independent causes, and the bigger one is NOT the face
+
+Scripts and output (assembly repo, where the data already lives):
+`../structure-from-sherds-pp/artifacts/juglet_run1/`
+`breakline_face_audit.py|.txt`, `breakline_face_crosstab.py|.txt`,
+`sameface_gt_geometry.py|.txt`. Inputs: the 18 Juglet `Surface_*.xyz`
+and 9 `Axis.xyz` from the bundle on Spartan (fetched to
+`artifacts/juglet_surfaces/`, `artifacts/juglet_axes/`).
+
+### 1. The extractor traces ONE wall face per sherd, and which one is arbitrary
+
+| sherd | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|
+| face traced | inner | outer | outer | outer | inner | outer | outer | outer | inner |
+
+Confidence is high (97–100% of points on that face). Over 1800 breakline
+points: 43.8% outer, 21.5% inner, **34.7% ambiguous** (within 0.5 mm of
+both faces). Ambiguity is concentrated in sherd 8 (96%) and 9 (61%).
+
+### 2. Ten of the eighteen true mates are on opposite faces
+
+Cross-tab against the conservator answer key: **10/18 true mates are
+inner-vs-outer**, so the assembler comparing the two traces can never see
+them. Critically the assignment is **arbitrary, not informative**: 10/18
+non-mate pairs are same-face too, so "same face" predicts nothing about
+whether a pair is real.
+
+### 3. …and fixing the face would NOT be enough
+
+Of the 8 same-face true mates, only **1/8** has its traces within 2 mm at
+ground truth:
+
+| pair | nearest trace | normal dot | gate inliers @2mm/0.85 |
+|---|---|---|---|
+| 6-7 | 0.92 mm | 0.99 (6°) | **55** |
+| 1-9 | 5.04 mm | 0.95 (18°) | 0 |
+| 4-6 | 9.98 mm | 0.78 (39°) | 0 |
+| 3-7 | 14.84 mm | 0.92 (23°) | 0 |
+| 5-9 | 19.75 mm | 0.99 (8°) | 0 |
+| 1-5 | 22.22 mm | 1.00 (3°) | 0 |
+| 7-8 | 25.88 mm | 0.99 (7°) | 0 |
+| 6-8 | 30.40 mm | 0.65 (49°) | 0 |
+
+**This corrects the working theory.** The normals are *not* the problem:
+on same-face pairs they agree at 0.92–1.00 (6–23°), which comfortably
+passes the gate's 0.85. The opposed normals seen on 2-9 (70.9°) are the
+*signature of the opposite-face assignment*, not a separate defect. The
+dominant failure is **coverage**: the extracted segment does not span the
+seam, sitting 5–30 mm from contact where truth is 0.02 mm.
+
+So the ranking for ticket 02 is the reverse of what this ticket guessed:
+**coverage first, both-faces second.**
 
 ## Why this first
 

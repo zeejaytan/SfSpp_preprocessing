@@ -9,7 +9,28 @@ starting with the cause ticket 01 identified as dominant.
 **Blocked by:** 01 (the measurement decides which change to make first —
 do not start this before 01 reports)
 
-**Status:** needs-info
+**Status:** ready-for-agent — **re-prioritised by ticket 01: do
+COVERAGE first, both-faces second.** The reason is in the results below,
+and it contradicts this ticket's original guess.
+
+## Ticket 01's findings that reorder this work
+
+- The extractor traces **one** wall face per sherd, arbitrarily
+  (inner: 1, 5, 9; outer: 2, 3, 4, 6, 7, 8). 10/18 true mates are
+  therefore inner-vs-outer and invisible to the gate — but the split is
+  uninformative (10/18 non-mates are same-face too).
+- On the 8 **same-face** true mates, normals agree at **0.92–1.00
+  (6–23°)**, comfortably passing the gate. The opposed-normals reading
+  from 2-9 was a *symptom* of the opposite-face assignment, not a second
+  defect.
+- Only **1/8** same-face mates has traces within 2 mm at ground truth
+  (the rest 5–30 mm off). **Coverage is the dominant cause.**
+
+**So: start with (2) seam coverage. It is necessary and insufficient on
+its own — it can only help the 8 same-face pairs, of which 7 still miss
+the seam. Then (1) both-faces, which is what unlocks the other 10.** Both
+are needed; do them in that order, one at a time, so the gate number
+attributes the credit.
 
 **Needs-eye:** `visual-qa` pair showing the extracted breakline on both
 sides of a real seam, correct-vs-attempt, witnessed by the conservator,
