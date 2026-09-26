@@ -24,6 +24,13 @@ original_nurbs_preprocessing/gen_normals
 original_nurbs_preprocessing/fileForNormalEst_*
 nested_git_backup_*/
 
+# Pipeline scratch. Temp/ was tracked by accident (315 files: staged
+# copies of the input meshes and intermediate edge-line output) and was
+# the source of 80 phantom "deleted" entries in git status on the
+# cluster. Untracked 2026-09-26; the real inputs live in Dataset/Mesh/
+# and are unaffected.
+Temp/
+
 # --- laptop <-> GitHub <-> Spartan workspace conventions ---
 # Laptop-side rsync landing zone (see scripts/remote/fetch_artifacts.sh)
 artifacts/
