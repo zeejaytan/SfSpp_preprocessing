@@ -3,10 +3,39 @@
 **Status:** open · **Blocked by:** none · **Effort:** a measurement on
 existing scans, then a change to `edgeline_extraction.cpp`
 
-**2026-09-26, ticket 01 measured it. Two causes, and the dominant one is
-coverage, not wall-face confusion.** The extractor traces exactly **one**
-wall face per sherd, and which one is arbitrary — inner for sherds 1, 5,
-9; outer for 2, 3, 4, 6, 7, 8. Consequences, both measured:
+**2026-09-26, ticket 02 groundwork — and the question has moved.** Three
+measurements re-pointed the work, none of them needing C++:
+
+1. **The extractor already emits both wall faces** (`Breakline_0` and
+   `Breakline_1`, both genuine surface traces). There is no missing-face
+   bug in *our* code. The assembler reads only `Breakline_0` — an
+   assembly-side limitation, and recording it as our defect would have
+   been wrong.
+2. **Reading both makes the gate worse** (1/18 true vs 4/18 false, against
+   0/18 vs 1/18 today), because pooling lets opposite wall faces match at
+   0.17 mm. All four face-pairing conventions were tested; only 1/18
+   passes under any. Face pairing is not the lever.
+3. **Coverage is the real problem.** 22 of 36 directed true contacts sit
+   2.8–29.5 mm from the nearest breakline point. The breaklines are
+   well-formed closed loops — they simply do not pass through the seam.
+   On 5 of 9 sherds the traced loop's radial band sits *inside* its own
+   surface's extent, which is what a loop closed on the wrong feature
+   looks like.
+
+**So the question narrows to: does our rim trace follow the true outer
+boundary of the surface, or an interior curvature ring?** That is a
+preprocessing question with a falsifiable test, and it is now the only
+one left on this side of the fence.
+
+**Two corrections to what was written earlier here:**
+- The "one face per sherd, arbitrarily" finding was an artifact of
+  comparing which surface file each `Breakline_0` sat on. All nine sit on
+  `Surface_0`. Whether that is the inner or outer wall varies — but that
+  is a property of the *segmentation's* file ordering, not a choice the
+  rim tracer makes, and it is not something this ticket should have
+  reported as a face-confusion defect.
+- The "opposed normals" reading stays withdrawn: on same-face pairs the
+  normals agree at 0.92–1.00.
 
 - **10 of 18 true mates are inner-vs-outer**, so a 2 mm
   agreeing-normal comparison cannot see them at all. The assignment is
