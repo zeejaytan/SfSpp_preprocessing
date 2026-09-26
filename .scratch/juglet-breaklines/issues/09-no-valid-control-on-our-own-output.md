@@ -2,11 +2,79 @@
 
 **Answers:** E1
 
-**Blocked by:** nothing — this is the precondition for every other ticket here
+**Blocked by:** nothing — this was the precondition for every other ticket here
 
-**Status:** ready-for-agent
+**Status:** resolved — the control now exists, and it fails
 
-**Needs-eye:** none — this is a measurement defect, not a geometry claim.
+**Needs-eye:** none — a measurement result, no geometry claim carried forward
+without a render.
+
+## THE ANSWER: our preprocessing scores 7/15 on the authors' own control pot
+
+Re-ran the current code on Pot_A (2026-09-26, job on holder 31352585),
+fetched the breaklines, and added a `pota_fresh` arm to the gate probe:
+
+| arm | whose breaklines | strict pass at truth | min gaps |
+|---|---|---|---|
+| `pota_orig` | authors' released sample | **15/15** | 0.09–1.30 mm |
+| **`pota_fresh`** | **our current code, re-run today** | **7/15** | 0.26–1.67 mm where it passes |
+| `pota` (old) | our Nov-2025 bundle | 0/15 — **void**, see below | — |
+| `juglet` | our current code, Juglet | 0/18 | 0.17–30 mm |
+
+**Our preprocessing loses 8 of 15 true joins on the pot SfS++ was developed
+on.** The passing pairs are genuinely good (0.26–1.67 mm), so this is not a
+frame or units artifact: where our curves are right, they are right.
+
+The `pota_fresh` arm is legitimate because the fresh output is in the
+**scan frame** — its breakline centroids sit 0.7–2.5 mm from the Pot_A mesh
+centroids on 6 of 8 pieces, the same frame the authors' breaklines occupy
+(within ~1 mm). Same frame, so the authors' ground truth applies directly,
+which makes this the like-for-like comparison the "15/15 control" was
+believed to be.
+
+### Why the old `pota` arm is void
+
+Its bundle is `NURBS_Dataset_20251103`, whose eight pieces are arranged
+**4.5× further apart** than Pot_A's real sherds (331 mm vs 73 mm mean
+pairwise centroid distance). No rigid fit (RMS 186 mm) and no similarity fit
+(RMS 251 mm) reconciles it with the meshes. **The current code does not
+reproduce that**: the fresh run lands within 2.5 mm on 6 of 8. So the old
+0/15 measured a stale artifact of some earlier pipeline state, not the code
+we are working on. That number should never have been read as a result, and
+this ticket is where it is retracted.
+
+### Where the 8 losses are, which is more actionable than the rate
+
+**All six of piece 1's pairs fail** (1-2, 1-3, 1-4, 1-5, 1-6, 1-7), plus 2-4
+and 2-5. Piece 1 is the largest sherd in the pot — 100 064 vertices, ~63 mm
+across — and the only piece whose breakline centroid sits materially off its
+mesh (9.1 mm). A single bad sherd is costing six of the eight lost joins.
+
+That is a far better starting point than "the method fails on this
+material": one specific, largest, most-sampled sherd, with a measurable
+offset, account for three quarters of the damage.
+
+## What this settles, and what it does not
+
+**Settles:** the user's proposal. There *is* something to restore. My
+earlier caution — do not touch the algorithm before we have a measurement
+that can fail — was right for its moment and is now discharged: we have the
+measurement, and it says the pipeline needs work. The paper-vs-code gaps
+(interior-surface selection, the missing ordering step, the dead noise
+filter, padding instead of 1.9 mm resampling) are back on the table as
+*live* work rather than as a theory about the Juglet.
+
+**Does not settle:** the Juglet. 0/18 is still worse than 7/15, so the
+Juglet is harder material *and* our pipeline is already substantially
+broken on good material. Those are two separate problems and should not be
+conflated again.
+
+## A second, independent defect, still open
+
+`main_headless.cpp:64` in the assembly repo **silently drops any sherd whose
+breakline has fewer than 50 points** — no warning. The Nov-2025 Pot_A bundle
+had two such pieces (6 and 8, 30 points). Cheap to fix, and until it is
+logged, a sherd can vanish from a result with nothing to show for it.
 
 ## The finding
 

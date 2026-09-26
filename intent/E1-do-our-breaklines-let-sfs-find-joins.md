@@ -203,13 +203,49 @@ Pot_A ground-truth files are byte-identical, but our breakline bundle sits
 **1881 mm away in z** from the authors', and the probe's "gaps" of
 2466–3305 mm are that offset rather than any property of the curves.
 
-**So no valid measurement of our own preprocessing exists on any pot it
+**So no valid measurement of our own preprocessing existed on any pot it
 should handle.** This question — *is the Juglet's 0/18 our fault or the
-material's?* — therefore **cannot be answered yet**, and the earlier
+material's?* — therefore **could not be answered**, and the earlier
 reasoning in this file that leaned on a Pot_A control was leaning on the
-authors' data. The Juglet's own 0/18 remains believable: its bundle and
-ground truth were built together and its gaps (0.17–30 mm) are the right
-order for the material.
+authors' data.
+
+## 2026-09-26, ticket 09 resolved — the control now exists, and it fails
+
+Re-ran the current code on Pot_A and added a `pota_fresh` arm to the gate
+probe, pairing our fresh breaklines with the **authors'** ground truth —
+legitimate because the fresh output is in the scan frame (breakline
+centroids 0.7–2.5 mm from the mesh centroids on 6 of 8, the frame the
+authors' own breaklines occupy to ~1 mm).
+
+| arm | whose breaklines | strict pass at truth |
+|---|---|---|
+| `pota_orig` | authors' released sample | **15/15** |
+| **`pota_fresh`** | **our current code** | **7/15** |
+| `juglet` | our current code, Juglet | 0/18 |
+
+**Our preprocessing loses 8 of 15 true joins on the pot SfS++ was developed
+on.** Passing pairs sit at 0.26–1.67 mm, so this is not a frame artifact.
+
+And the losses are not spread evenly: **all six of piece 1's pairs fail**,
+plus 2-4 and 2-5. Piece 1 is the largest sherd (100 064 vertices, ~63 mm)
+and the only one whose breakline centroid sits materially off its mesh
+(9.1 mm). One bad sherd accounts for three quarters of the damage — a far
+better target than "the method fails on this material".
+
+**The old `pota` 0/15 is retracted as void.** Its Nov-2025 bundle has its
+pieces arranged 4.5× too far apart, and the current code does not reproduce
+that. It measured a stale artifact.
+
+Consequences, stated carefully:
+
+- The Juglet's 0/18 is *worse* than 7/15, so the Juglet is harder material
+  **and** our pipeline is already substantially broken on good material.
+  Two problems; do not conflate them again.
+- The paper-vs-code gaps (interior-surface selection, the missing ordering
+  step, the dead noise filter, padding instead of 1.9 mm resampling) are
+  live work, not a theory about one pot.
+- The still-open cheap fix: `main_headless.cpp:64` silently drops any sherd
+  with fewer than 50 breakline points.
 
 A second, independent defect surfaced on the way:
 `main_headless.cpp:64` in the assembly repo **silently drops any sherd whose
