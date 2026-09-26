@@ -191,6 +191,36 @@ ordering chain:
 The ordering work was a real defect worth fixing, and it was also a red
 herring for this question. Both are true, and only one of them was assumed.
 
+## 2026-09-26, ticket 09 — there is NO valid control on our own output
+
+The "Pot_A 15/15" control has been the **SfS++ authors' released sample**
+all along, not our pipeline's output. `data_path.h` carries two Pot_A
+datasets — `POT_A` (our `NURBS_Dataset_20251103/`) and `POT_A_ORIG`
+(`sfs_main/original_samples/`) — and the 15/15 came from the second.
+
+Our own Pot_A output scores 0/15 — **and that number is unusable too.** Both
+Pot_A ground-truth files are byte-identical, but our breakline bundle sits
+**1881 mm away in z** from the authors', and the probe's "gaps" of
+2466–3305 mm are that offset rather than any property of the curves.
+
+**So no valid measurement of our own preprocessing exists on any pot it
+should handle.** This question — *is the Juglet's 0/18 our fault or the
+material's?* — therefore **cannot be answered yet**, and the earlier
+reasoning in this file that leaned on a Pot_A control was leaning on the
+authors' data. The Juglet's own 0/18 remains believable: its bundle and
+ground truth were built together and its gaps (0.17–30 mm) are the right
+order for the material.
+
+A second, independent defect surfaced on the way:
+`main_headless.cpp:64` in the assembly repo **silently drops any sherd whose
+breakline has fewer than 50 points** — no warning — and our Pot_A bundle
+already has two (pieces 6 and 8, 30 points each). On Pot_A the assembler
+would quietly assemble from 6 of 8 sherds.
+
+Priority order is therefore inverted from what this file assumed: establish
+the frame convention and get a control that *can* fail, before improving
+anything. See ticket 09.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
