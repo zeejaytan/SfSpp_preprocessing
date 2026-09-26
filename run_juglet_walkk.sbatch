@@ -110,14 +110,25 @@ grep -n "SFS_WALK_K_LOCAL" "${E}"
 grep -n "int K = " "${E}" | head -3
 
 # ---------- build ----------
+# Absolute paths throughout: the patch block left us cd'd in ${SRC_DIR},
+# and a relative check there reported "binary missing" on job 31336993
+# even though the build had just succeeded.
+BUILD_DIR="${SRC_DIR}/build"
 echo "=== Building EdgeLineExtractionHeadless ==="
+cd "${REPO_ROOT}" || exit 1
 ${APPTAINER} exec --bind /data:/data "${NURBS_IMG}" /bin/bash -lc \
-    "cd ${REPO_ROOT}/original_nurbs_preprocessing && rm -rf build && mkdir -p build && cd build && cmake .. && make -j8 EdgeLineExtractionHeadless" \
-    2>&1 | tail -n 15
-[ ${PIPESTATUS[0]} -ne 0 ] && { echo "ERROR: build failed"; exit 1; }
-[ -x original_nurbs_preprocessing/build/EdgeLineExtractionHeadless ] \
-    || { echo "ERROR: binary missing"; exit 1; }
-ls -lh original_nurbs_preprocessing/build/EdgeLineExtractionHeadless
+    "cd ${SRC_DIR} && rm -rf build && mkdir -p build && cd build && cmake .. && make -j8 EdgeLineExtractionHeadless" \
+    > "${OUT_BASE}/build_walkk.log" 2>&1
+rc=$?
+if [ ${rc} -ne 0 ]; then
+    echo "ERROR: build failed (rc=${rc}); last 25 lines:"
+    tail -n 25 "${OUT_BASE}/build_walkk.log"
+    exit 1
+fi
+tail -n 3 "${OUT_BASE}/build_walkk.log"
+[ -x "${BUILD_DIR}/EdgeLineExtractionHeadless" ] \
+    || { echo "ERROR: binary missing at ${BUILD_DIR}"; exit 1; }
+ls -lh "${BUILD_DIR}/EdgeLineExtractionHeadless"
 
 # ---------- re-extract breaklines only ----------
 # Surfaces and meshes are unchanged by this patch, so they are reused
@@ -134,9 +145,9 @@ export NURBS_OUTPUT_BASE="${OUT_BASE}"
 echo "=== Step 2: Breakline Extraction (walk K=2) ==="
 rm -f "${OUT_BASE}/SfS_pp/Breaklines/"*.pcd
 # Breakline discovery scans Temp/ recursively for *.obj
-mkdir -p Temp/Data/Juglet
-cp -f Dataset/Mesh/Juglet/Juglet_Piece_*_Mesh.obj Temp/Data/Juglet/ 2>/dev/null
-echo "  staged objs: $(ls Temp/Data/Juglet/*.obj 2>/dev/null | wc -l) (expected 9)"
+mkdir -p "${REPO_ROOT}/Temp/Data/Juglet"
+cp -f "${REPO_ROOT}"/Dataset/Mesh/Juglet/Juglet_Piece_*_Mesh.obj "${REPO_ROOT}/Temp/Data/Juglet/" 2>/dev/null
+echo "  staged objs: $(ls ${REPO_ROOT}/Temp/Data/Juglet/*.obj 2>/dev/null | wc -l) (expected 9)"
 
 ${APPTAINER} exec --bind /data:/data "${NURBS_IMG}" /bin/bash -lc \
     "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/EdgeLineExtractionHeadless" \
