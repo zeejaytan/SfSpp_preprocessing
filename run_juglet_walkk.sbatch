@@ -151,10 +151,25 @@ export NURBS_OUTPUT_BASE="${OUT_BASE}"
 
 echo "=== Step 2: Breakline Extraction (walk K=2) ==="
 rm -f "${OUT_BASE}/SfS_pp/Breaklines/"*.pcd
-# Breakline discovery scans Temp/ recursively for *.obj
-mkdir -p "${REPO_ROOT}/Temp/Data/Juglet"
-cp -f "${REPO_ROOT}"/Dataset/Mesh/Juglet/Juglet_Piece_*_Mesh.obj "${REPO_ROOT}/Temp/Data/Juglet/" 2>/dev/null
-echo "  staged objs: $(ls ${REPO_ROOT}/Temp/Data/Juglet/*.obj 2>/dev/null | wc -l) (expected 9)"
+# Breakline discovery scans Temp/ recursively for *.obj. It must find
+# EXACTLY the 9 single-digit-named meshes: the Nov-2025 binaries truncate
+# the stem to 14 chars, so "Juglet_Piece_01" becomes "Juglet_Piece_0" and
+# all 2-digit meshes collapse onto one name (the reason the whole dataset
+# uses Juglet_Piece_1..9). Staging a glob of both conventions put 18 objs
+# in here and the extractor then asked for Juglet_Piece_0_Surface_0.xyz,
+# which does not exist -- job 31337049, exit 255. So: copy 01 -> 1 by
+# name, into a cleaned directory, and assert the count.
+STAGE="${REPO_ROOT}/Temp/Data/Juglet"
+rm -rf "${STAGE}"
+mkdir -p "${STAGE}"
+for p in $(seq 1 9); do
+    src="${REPO_ROOT}/Dataset/Mesh/Juglet/Juglet_Piece_$(printf '%02d' $p)_Mesh.obj"
+    dst="${STAGE}/Juglet_Piece_${p}_Mesh.obj"
+    if [ ! -f "${src}" ]; then echo "ERROR: missing ${src}"; exit 1; fi
+    cp -f "${src}" "${dst}"
+done
+echo "  staged objs: $(ls ${STAGE}/*.obj 2>/dev/null | wc -l) (expected 9)"
+ls "${STAGE}" | head -n 12
 
 ${APPTAINER} exec --bind /data:/data "${NURBS_IMG}" /bin/bash -lc \
     "cd ${REPO_ROOT} && ./original_nurbs_preprocessing/build/EdgeLineExtractionHeadless" \
