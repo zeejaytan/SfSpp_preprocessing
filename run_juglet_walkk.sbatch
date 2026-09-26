@@ -37,6 +37,13 @@ echo "=== Juglet breakline re-extract: walk K=2 (ticket 02 patch 1) ==="
 echo "Started: $(date)   Job: ${SLURM_JOB_ID}"
 echo "Output base: ${OUT_BASE}  (original bundle untouched)"
 
+# Create the output base FIRST. The build log is redirected into it, and
+# a redirect into a missing directory fails before the command runs -- job
+# 31337028 reported "build failed (rc=1)" with an empty log for exactly
+# this reason, and no build was attempted at all.
+mkdir -p "${OUT_BASE}" || { echo "ERROR: cannot create ${OUT_BASE}"; exit 1; }
+echo "  output base ready"
+
 cd "${REPO_ROOT}" || exit 1
 
 echo "=== Syncing code ==="
