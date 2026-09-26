@@ -16,6 +16,14 @@ slurm-*.out
 temp_download/
 
 
+# Vendored nested pipeline source: build output, third-party lib, data
+# live only on the cluster and are deliberately not tracked.
+original_nurbs_preprocessing/alglib/
+original_nurbs_preprocessing/build*/
+original_nurbs_preprocessing/gen_normals
+original_nurbs_preprocessing/fileForNormalEst_*
+nested_git_backup_*/
+
 # --- laptop <-> GitHub <-> Spartan workspace conventions ---
 # Laptop-side rsync landing zone (see scripts/remote/fetch_artifacts.sh)
 artifacts/
