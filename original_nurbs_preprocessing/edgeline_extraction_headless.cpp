@@ -872,6 +872,18 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 			estimated_spacing_mm = std::sqrt((bsorted0 * bsorted1) / std::max(100, num_pts));
 	}
 	double boundary_radius_mm = std::max(1.0, std::min(15.0, estimated_spacing_mm * 6.0));
+	// SFS-T11: diagnostic override for the radius sweep. Absent => unchanged.
+	// The radius is adaptive (spacing * 6, clamped), so sweeping it means
+	// overriding the VALUE, not editing the multiplier.
+	{
+		extern double ticket11_boundary_radius_override_mm();
+		const double ovr = ticket11_boundary_radius_override_mm();
+		if (ovr > 0.0) {
+			std::cout << "[SFS-T11] boundary radius OVERRIDDEN: " << boundary_radius_mm
+			          << " -> " << ovr << " mm" << std::endl;
+			boundary_radius_mm = ovr;
+		}
+	}
 	g_boundary_radius_mm = boundary_radius_mm;
 	boundary_est.setRadiusSearch(boundary_radius_mm);
 	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"

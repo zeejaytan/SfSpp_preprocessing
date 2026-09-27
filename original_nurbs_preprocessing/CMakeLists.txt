@@ -40,6 +40,9 @@ add_executable(MeshPreprocessing mesh_processing.cpp)
 add_executable(EdgeLineExtraction edgeline_extraction.cpp ${PROJ_DEP})
 add_executable(MeshPreprocessingHeadless mesh_processing_headless.cpp)
 add_executable(EdgeLineExtractionHeadless edgeline_extraction_headless.cpp ${EDGE_LINE_ORDERING} ${PROJ_DEP})
+# Ticket 11: boundary-radius sweep hook. Inert unless
+# SFSPP_BOUNDARY_RADIUS_MM is set, so default behaviour is unchanged.
+target_sources(EdgeLineExtractionHeadless PRIVATE boundary_radius_hook.cpp)
 add_executable(EdgeLineExtractionLegacy edgeline_extraction_backup.cpp ${PROJ_DEP})
 
 # Link Libraries
