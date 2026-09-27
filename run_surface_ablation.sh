@@ -53,6 +53,30 @@ stage() {
         [ -e "${f}" ] || continue
         cp -L "${f}" "${TREE}/Dataset/Point/${POT}/"
     done
+    # The mesh stage's OUTPUT goes to Temp/Data/<pot>/, not to
+    # Dataset/Point. Staging only the inputs leaves Temp/Data empty, the
+    # extractor finds no .obj, and it exits 0 having done nothing -- which
+    # is exactly what happened on the first attempt at this script. Copy
+    # the mesh-stage tree across when it exists, and refuse to continue
+    # without it.
+    local src="${ROOT}/diag_pota3/Temp/Data/${POT}"
+    if [ -d "${src}" ]; then
+        for f in "${src}"/*; do
+            [ -e "${f}" ] || continue
+            cp -L "${f}" "${TREE}/Temp/Data/${POT}/"
+        done
+    fi
+    local n_obj n_surf
+    n_obj=$(ls "${TREE}/Temp/Data/${POT}"/*.obj 2>/dev/null | wc -l)
+    n_surf=$(ls "${TREE}/Temp/Data/${POT}"/*_Surface_0.xyz 2>/dev/null | wc -l)
+    echo "    staged into Temp/Data: ${n_obj} obj, ${n_surf} Surface_0.xyz"
+    if [ "${n_obj}" -eq 0 ] || [ "${n_surf}" -eq 0 ]; then
+        echo "    ERROR: staged tree incomplete; the extractor would exit 0"
+        echo "           having done nothing. Expected mesh-stage output at"
+        echo "           ${src} -- run run_pota_fresh3.sh first."
+        return 1
+    fi
+    return 0
 }
 
 run_extract() {
