@@ -85,8 +85,106 @@ Test 1 and test 3 are cheap and can be run before any code changes. **Do
 test 3 first** — it is arithmetic on data already on disk, and it would
 eliminate a whole class of explanations for nothing.
 
+## Test 3, run: a scale artefact is ELIMINATED, and piece 1 is the key
+
+`offset_size_dependence.py`, on sherds spanning **37–119 mm (3.3×)**:
+
+| piece | sherd size | verts | offset (median) | within 2 mm |
+|---|---|---|---|---|
+| **1** | 119.2 mm | 100 064 | **0.69 mm** | **100%** |
+| 2 | 111.3 | 55 814 | 2.82 | 30% |
+| 3 | 87.8 | 41 197 | 3.49 | 0% |
+| 4 | 88.1 | 33 475 | 3.59 | 0% |
+| 5 | 98.8 | 34 168 | 3.61 | 0% |
+| 6 | 119.1 | 29 184 | 2.99 | 0.8% |
+| 7 | 42.8 | 10 593 | 3.77 | 0% |
+| 8 | 36.6 | 10 366 | 3.52 | 0% |
+
+**Scale and units are eliminated.** A scale artefact grows with the object.
+Here the seven non-control pieces span 3.3× in size and their offsets move
+only **1.34×** (2.82–3.77 mm) — a near-constant *distance*.
+
+Within the seven the correlation is **−0.69**: the offset *shrinks* as the
+sherd grows. That is the wrong direction for any scale explanation and the
+right direction for a **bounded** effect — a fixed search radius or a fixed
+smoothing displacement, both of which matter less on a large sherd. That is
+candidate 1 and candidate 2, and they are now the only survivors.
+
+**Piece 1 is the key to the whole thing.** It is the *largest* sherd in the
+pot (119 mm, 100 064 vertices — the best-sampled by some margin) and it is
+**right**: 0.69 mm, 100% inside tolerance. So the bias is not unconditional.
+Any explanation must account for the best-sampled, largest sherd being
+correct while the other six are 3–3.8 mm out. A pure parameter bias would
+displace piece 1 too.
+
+This is the sharpest lead in the chain, and it is a question about the
+pipeline rather than the pot: **what is different about piece 1?** Its size
+and vertex count are the obvious handles, and the answer should say
+whether the rim placement degrades as a sherd gets smaller or coarser.
+
+## Piece 1 investigated: the selection rule is vacuous on 7 of 8 sherds
+
+Comparing the one sherd that matches against the seven that miss:
+
+| piece | verts | size | clusters | largest cluster holds | offset | ok |
+|---|---|---|---|---|---|---|
+| **1** | 100 064 | 119 mm | **31** | **18.6%** | **0.69 mm** | **YES** |
+| 2 | 55 814 | 111 | 1 | **100%** | 2.82 | no |
+| 3 | 41 197 | 88 | 1 | 100% | 3.49 | no |
+| 4 | 33 475 | 88 | 1 | 100% | 3.59 | no |
+| 5 | 34 168 | 99 | 1 | 100% | 3.61 | no |
+| 6 | 29 184 | 119 | 1 | 100% | 2.99 | no |
+| 7 | 10 593 | 43 | 1 | 100% | 3.77 | no |
+| 8 | 10 366 | 37 | 1 | 100% | 3.52 | no |
+
+**The rule "Surface_0 = the largest cluster" makes no choice at all on seven
+of eight sherds.** There, one cluster holds 100% of the sherd's points, so
+"largest" is trivially satisfied and the whole sherd — both walls — is
+carried forward as one surface. On piece 1 the largest of 31 clusters holds
+18.6%, so a real selection happens, and its rim comes out right.
+
+**This is a correction to my own first reading.** I initially took
+"seven sherds have one cluster" to mean the sherd was never split, and
+built a mechanism on that. Checking the run tree refuted it: **all eight
+sherds were split into `Surface_0` and `Surface_1`.** The cluster files and
+the named surfaces are different intermediates, and the defect is that the
+*selection among clusters* is vacuous, not that clustering was skipped.
+
+What this does and does not license:
+
+- **Supported:** on seven of eight sherds the inner/outer decision is not
+  being made by the stated rule at all, whatever the surfaces are called. Any
+  account of the 3.5 mm offset has to explain a rim taken from a
+  both-walls-together surface.
+- **Not yet supported:** that this *causes* the offset. It is a strong
+  association with perfect separation on this pot, and piece 1 is the only
+  sherd where the rule does real work and the only one that is right. But
+  association on eight sherds of one pot is not causation, and the
+  discriminating test is named below.
+
+**Discriminating test.** If the vacuous selection is the cause, then forcing a
+real choice on a failing sherd should move its rim toward the reference.
+Take piece 3, whose `Surface_0` and `Surface_1` both exist: extract a rim
+from **each** separately and measure both against the authors' piece-3
+curve. If one of them lands within ~1 mm, the offset is the surface choice
+and the fix is selection. **If both land ~3.5 mm off, the cause is upstream
+of the surface choice entirely** — in the surface construction or the
+boundary detection — and ticket 04 is the wrong place to be working.
+
+This is cheap: the per-surface point clouds are already on disk
+(`pota_run_surfaces/Pot_A_Piece_03_Surface_0.xyz` and `_1.xyz`).
+
 ## Acceptance criteria
 
+- [x] A scale/units explanation is eliminated by measurement, not argument
+- [x] **Piece 1 is explained**: it is the only sherd where "largest cluster"
+      does real work (18.6% of 31) and the only one whose rim matches. On
+      seven of eight the rule is vacuous (one cluster = 100%)
+- [ ] The per-surface rim test above: does one of piece 3's two surfaces give
+      a rim within ~1 mm of the reference? This decides whether the fix is
+      surface selection (ticket 04) or something upstream of it
+- [ ] The offset is explained by one of the three candidates above, with the
+      discriminating measurement quoted — or a fourth is found and recorded
 - [ ] The offset is explained by one of the three candidates above, with the
       discriminating measurement quoted — or a fourth is found and recorded
 - [ ] At least one prediction is tested that could have come out otherwise
