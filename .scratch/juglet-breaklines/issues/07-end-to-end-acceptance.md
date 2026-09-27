@@ -97,6 +97,88 @@ So the target is **what puts the rim ~3.5 mm to one side of the reference**,
 consistently, on six of eight sherds. That is a concrete, well-localised
 question and it is where the next effort belongs.
 
+## RESOLVED (2026-09-27) — the 3.5 mm offset is NOT the cause, and the remaining failures are mostly not ours
+
+The offset was traced, measured and then **intervention-tested**, and it does
+not cost us the joins. Swapping each sherd's rim to the other surface brings
+pieces 3–8 from 3.5–3.8 mm off the reference to **0.53–0.80 mm** with 99–100%
+of points inside the 2 mm gate (baseline drift 0.00 mm on all eight, so the
+arms are comparable). **The gate score went the other way: 7/15 → 6/15.** No
+failing pair was recovered; the pairs that passed passed more comfortably, and
+piece 1 — in six pairs — was made worse.
+
+So the offset is real and is **not** on the causal path. Ticket 04 stays live
+as a paper-compliance fix, not as a remedy. Two errors are recorded in it: I
+tested the mesh's normal instead of the wall's, and I nearly reported a 5×
+proxy improvement as a fix.
+
+**With the curves now within 0.8 mm of the reference, the per-pair diagnosis
+is:**
+
+| failing pairs | cause | ours? |
+|---|---|---|
+| 1-3, 1-4, 1-5, 1-6, 1-7 | piece 1's rim faces **outward** while its neighbours' face inward; normals −0.96 to −1.00 | **no — geometry** |
+| 2-5 | piece 2's rim truncated to 46% of the reference (ticket 01's walk defect) | yes |
+| 2-4 | curves 8.8 mm apart though normals agree at 0.99 | yes |
+
+**Six of the eight are piece 1, and they are not ours.** Established by
+measurement, each alternative excluded:
+
+- piece 1's breakline normals agree with its own mesh at **+0.996** — nothing
+  inverted;
+- the sherd is outward-facing (**86.8%** away from its own centroid);
+- the normals are genuine **surface** normals, perpendicular to the rim
+  (|n·tangent| = 0.012), so the traversal direction is not the explanation and
+  **ticket 03's normal vote cannot recover these pairs**;
+- at the ground truth **all eight** sherds are outward-facing, piece 1 most
+  strongly (0.0% inward vs 16.7% median), so this is not a face-convention
+  artefact;
+- piece 1 is **not misplaced** — 21.9 mm from the mean of the other seven,
+  well inside their 63–95 mm spread.
+
+Piece 1 is the largest sherd (119 mm, 100 064 vertices) and the most exposed,
+so its fracture surface faces out of the vessel while its neighbours' face
+inward. **Pot_A's honest ceiling is ~12–13 of 15, not 15/15.**
+
+## Witnessed look: `juglet_sfs29` — DONE 2026-09-27, and weak
+
+The one case where the machine's **own** output was a false merge rather than
+a missed one: sherds 2 and 9 at GT gap 0.02 mm, machine placement 11.45 mm
+apart and 110° rotated. Staged in `visual-qa/`; note on
+`viewer/annotations_manifest_juglet_sfs29.jsonl`.
+
+**Conservator's judgement (verbatim):** *"i don't know what is to verify. it
+is very obvious left is correctly fit and right is nowhere close."*
+
+Two things follow.
+
+**One. The look is closed, and it is weak evidence.** The eye confirms a figure
+the numbers already gave and nobody would have doubted. It removes a residual
+doubt about the 11.45 mm and nothing more. It is **not** evidence for the
+offset, the face choice, piece 1's orientation, or the Pot_A score — those rest
+on measurement and intervention.
+
+**Two. My framing of the ask was bad, and the conservator said so.** I asked
+them to judge whether "11.45 mm and 110° read correctly on screen". That asks
+a conservator to *measure*, which is my job, and the answer was obvious
+without measuring — so the look cost their time and returned nothing. **The
+correct ask for a correct-vs-attempt look is a judgement of plausibility as a
+conservator** — "do these two sherds look like they belong together on this
+vessel?" — never a reading of a figure.
+
+## The look that would actually be worth having
+
+A **single** look of piece 1's breakline on its own sherd with its
+neighbours' breaklines at ground truth, so the conservator can judge whether
+piece 1's rim sits where the rim of that sherd should. That is the one
+genuinely open geometric question left: the curve is 0.69 mm from the
+reference — our best — correctly oriented for its own surface, yet it opposes
+every other sherd's rim at −0.96 to −1.00, accounting for six of the eight
+remaining failures. Whether a conservator reads that as a rim in the right
+place on an awkwardly-shaped sherd, or as a rim on the wrong part of it, is
+not something the numbers settled. **That** is a judgement only the eye can
+make, and unlike the pair above, the answer is not obvious.
+
 ## Note
 
 The gate probe runs on the **laptop**, never inside the extracting job.
