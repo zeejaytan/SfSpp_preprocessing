@@ -232,6 +232,35 @@ and the only one whose breakline centroid sits materially off its mesh
 (9.1 mm). One bad sherd accounts for three quarters of the damage — a far
 better target than "the method fails on this material".
 
+> **Corrected 2026-09-27.** The paragraph above is wrong about piece 1, and
+> the correction matters more than the original claim. Comparing our curve
+> against **the authors' curve for the same sherd in the same frame** — the
+> comparison this project had never made — shows piece 1 is the **best**
+> piece we produce: 0.69 mm median from the reference, 100% of its points
+> inside the 2 mm gate tolerance, 98% of the reference's traced length. Its
+> 9.1 mm centroid offset is 5% of its own 174 mm diagonal, which is better
+> than most; piece 2 is proportionally worse. Piece 1's six failures are
+> caused by its *partners*.
+>
+> **The dominant defect is a systematic ~3.5 mm displacement.** Six of eight
+> of our curves sit 2.99–3.77 mm from the reference, displaced in *both*
+> directions, with traced lengths matching to 2–9%. A tight, near-constant
+> displacement at unchanged length is the same curve on a **parallel surface
+> about 3.5 mm away** — not a truncated walk. Against a 2 mm gate that fails
+> every comparison it touches, and a pair survives only when two sherds'
+> offsets happen to cancel. This is consistent with the interior/exterior
+> wall question already recorded in this file, and it points at ticket 04
+> rather than at the ordering work.
+>
+> Piece 2 alone carries the ordering defect: 46% of the reference's traced
+> length, reverse distance to 80 mm. So the walk accounts for roughly one
+> sherd of eight here, not eight of fifteen lost joins.
+>
+> **Not yet tested:** whether the 3.5 mm displacement runs along the surface
+> normal. That is the discriminating measurement between "the other wall
+> face" and "a different feature", and it decides whether ticket 04 is the
+> fix.
+
 **The old `pota` 0/15 is retracted as void.** Its Nov-2025 bundle has its
 pieces arranged 4.5× too far apart, and the current code does not reproduce
 that. It measured a stale artifact.

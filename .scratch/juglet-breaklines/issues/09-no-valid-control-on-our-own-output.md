@@ -43,16 +43,48 @@ reproduce that**: the fresh run lands within 2.5 mm on 6 of 8. So the old
 we are working on. That number should never have been read as a result, and
 this ticket is where it is retracted.
 
-### Where the 8 losses are, which is more actionable than the rate
+### Where the 8 losses are — and a correction to how I first read them
 
-**All six of piece 1's pairs fail** (1-2, 1-3, 1-4, 1-5, 1-6, 1-7), plus 2-4
-and 2-5. Piece 1 is the largest sherd in the pot — 100 064 vertices, ~63 mm
-across — and the only piece whose breakline centroid sits materially off its
-mesh (9.1 mm). A single bad sherd is costing six of the eight lost joins.
+**First read, wrong:** I attributed the losses to piece 1, calling it "the
+only piece whose breakline sits materially off its mesh". Two things were
+wrong with that. Its 9.1 mm centroid offset is 5% of its 174 mm diagonal,
+which is *better* than most; and piece 2 is proportionally worse (29%). More
+importantly, comparing our curve against **the authors' curve for the same
+sherd in the same frame** — the comparison this project had never made —
+shows piece 1 is the *best* piece we produce.
 
-That is a far better starting point than "the method fails on this
-material": one specific, largest, most-sampled sherd, with a measurable
-offset, account for three quarters of the damage.
+| piece | our→ref (median) | ref→our | within 2 mm | our len / theirs |
+|---|---|---|---|---|
+| **1** | **0.69 mm** | 0.70 | **100%** | 98% |
+| 2 | 2.82 | **35.0** (p90 80) | 30% | **46%** |
+| 3 | 3.49 | 3.47 | 0% | 102% |
+| 4 | 3.59 | 3.58 | 0% | 100% |
+| 5 | 3.61 | 3.59 | 0% | 105% |
+| 6 | 2.99 | 3.01 | 0.8% | 102% |
+| 7 | 3.77 | 3.70 | 0% | 106% |
+| 8 | 3.52 | 3.46 | 0% | 109% |
+
+**Piece 1's curve is essentially the reference curve.** Its six gate
+failures are caused by its *partners*, six of the other seven sherds.
+
+**The dominant defect is a systematic ~3.5 mm displacement.** Six of eight
+of our curves sit 2.99–3.77 mm from the reference, displaced in *both*
+directions, with traced lengths matching to 2–9%. A tight, near-constant
+displacement at unchanged length is not a truncated walk — it is the same
+curve on a **parallel surface about 3.5 mm away**. Against a 2 mm gate that
+fails every comparison it touches, and whether a pair survives depends on
+whether two sherds' offsets happen to cancel. That is why some pairs pass
+(2-8, 3-5, 3-6, 4-6, 4-7, 4-8, 6-7) and others do not.
+
+**Piece 2 alone shows the walk defect**: its traced length is 46% of the
+reference and the reverse distance reaches 80 mm. So the ordering problem is
+real but accounts for roughly one sherd of eight here, not eight of fifteen
+lost joins.
+
+**Next measurement, not yet done:** if the 3.5 mm displacement runs along the
+surface normal, it is the other wall face and the interior/exterior choice
+(ticket 04) is the fix. That is the discriminating test and it has not been
+run.
 
 ## What this settles, and what it does not
 
