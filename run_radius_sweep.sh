@@ -88,7 +88,10 @@ run_arm() {
     local adaptive
     adaptive=$(grep -o "boundary_r=[0-9.]*mm" "${log}" 2>/dev/null | head -n 1)
     local override
-    override=$(grep -c "SFS-T11.*OVERRIDDEN" "${log}" 2>/dev/null || echo 0)
+    # grep -c prints 0 AND exits 1 on no match, so `|| echo 0` appends a
+    # second line. `|| true` is correct: the count is already in stdout.
+    override=$(grep -c "SFS-T11.*OVERRIDDEN" "${log}" 2>/dev/null || true)
+    [ -n "${override}" ] || override=0
     echo "    ${tag}: exit $?  breaklines=${n}  ${adaptive:-no boundary_r line}  overrides=${override}"
     if [ "${n}" -lt 8 ]; then
         echo "    ** expected 8 breaklines, got ${n}. Tail:"
@@ -96,8 +99,9 @@ run_arm() {
         return 1
     fi
     if [ "${tag}" = "control" ] && [ "${override}" != "0" ]; then
-        echo "    ** the control arm reported an override -- the hook is not inert"
-        echo "       and the sweep is void."
+        echo "    ** the control arm reported an override (${override}) -- the hook"
+        echo "       is not inert, so the sweep is void. Check that"
+        echo "       SFSPP_BOUNDARY_RADIUS_MM is absent in the control arm."
         return 1
     fi
     mkdir -p "${OUT}/${tag}"
