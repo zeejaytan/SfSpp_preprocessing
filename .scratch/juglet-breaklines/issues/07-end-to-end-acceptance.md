@@ -44,6 +44,59 @@ eye disagrees with the gate, the eye is right and the ticket stays open.
 
 Do not let a partial improvement blur into any of the others.
 
+## CORRECTION (2026-09-27) — the denominators, now measured rather than asserted
+
+This ticket's own acceptance criteria already ask for the honest
+denominator. It is now measured, by placing each pair at ground truth and
+measuring the **real surface-to-surface gap with no breakline involved**
+(`artifacts/juglet_run1/real_gap_at_truth.py`):
+
+| | true pairs | pairs that genuinely touch | median gap | our score | honest denominator |
+|---|---|---|---|---|---|
+| **Juglet** | 18 | **10** | 0.34 mm | 0/18 | **0/10** |
+| **Pot_A** | 15 | **15** | 0.06 mm | 7/15 | **7/15** |
+
+Two consequences, and the second is the more important:
+
+1. **The Juglet's honest denominator is 10, not 18** — confirmed. Eight pairs
+   are separated by **3.5–19 mm of empty space** (1-5, 1-6, 3-7, 4-5, 4-6,
+   5-9, 7-8, 8-9). No extraction can pass a 2 mm gate on them, because there
+   is nothing there to trace. This is a property of an eroded surface.
+
+2. **The "Pot_A held at 15/15" criterion above is WRONG and must be replaced.**
+   Pot_A has never scored 15/15 on **our** output — the 15/15 was always the
+   SfS++ authors' released sample. Our own fresh run scores **7/15**, and
+   since all 15 of Pot_A's pairs genuinely touch (0.02–0.12 mm), **every one
+   of those 8 losses is ours.** There is no material excuse available on
+   Pot_A, which makes it the clean target: a pot where the gate is fair for
+   every pair.
+
+**Replace the Pot_A criterion with:** *our Pot_A score is reported per pair
+against its 15 genuinely-touching pairs, and any change is judged on
+movement in that number — not on a 15/15 that was never ours to hold.* A
+change that improves the Juglet's 0/10 while leaving Pot_A's 7/15 flat is
+progress; one that improves the Juglet while degrading Pot_A is a
+regression, and must be labelled.
+
+## Where the remaining Pot_A losses come from
+
+Located, and it is not the ordering walk and not the face selection:
+
+- Six of eight of our curves sit **2.99–3.77 mm off the authors'** for the
+  same sherd, displaced **tangentially** (not along the surface normal, so
+  not the other wall), same loop size and length, and the offset runs the
+  whole way round. Against a 2 mm gate that fails every comparison it
+  touches, and a pair survives only when two sherds' offsets partly cancel.
+- Rendered and inspected: piece 1 (offset 0.69 mm) shows the two curves
+  overdrawing around the entire rim — that is what agreement looks like.
+  Piece 3 shows two distinct parallel curves 3.5–5.6 mm apart.
+- The ordering walk is implicated on **one** sherd of eight (piece 2, 46% of
+  the reference's traced length). It is not the main damage.
+
+So the target is **what puts the rim ~3.5 mm to one side of the reference**,
+consistently, on six of eight sherds. That is a concrete, well-localised
+question and it is where the next effort belongs.
+
 ## Note
 
 The gate probe runs on the **laptop**, never inside the extracting job.

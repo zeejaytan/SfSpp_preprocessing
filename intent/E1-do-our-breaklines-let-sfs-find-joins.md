@@ -286,6 +286,47 @@ Priority order is therefore inverted from what this file assumed: establish
 the frame convention and get a control that *can* fail, before improving
 anything. See ticket 09.
 
+## 2026-09-27 — the denominators measured, and Pot_A's losses are ours
+
+Placed each true pair at ground truth and measured the **real
+surface-to-surface gap, no breakline involved**
+(`structure-from-sherds-pp/artifacts/juglet_run1/real_gap_at_truth.py`):
+
+| | true pairs | genuinely touch | median gap | our score | honest denominator |
+|---|---|---|---|---|---|
+| Juglet | 18 | **10** | 0.34 mm | 0/18 | **0/10** |
+| Pot_A | 15 | **15** | 0.06 mm | 7/15 | **7/15** |
+
+**The Juglet's honest denominator is 10.** Eight pairs stand off by
+**3.5–19 mm of empty space** (1-5, 1-6, 3-7, 4-5, 4-6, 5-9, 7-8, 8-9). No
+extraction can pass a 2 mm gate on them, because there is nothing there to
+trace. On an eroded surface that is a material limit rather than a method
+failure — and the conservator's judgement that eroded sherds do not touch
+and may have sizeable gaps is what predicted it.
+
+**And the "Pot_A 15/15 control" is gone for good, in the other direction.**
+Our own output has never scored 15/15. It scores **7/15**, and because all
+15 of Pot_A's pairs genuinely touch, at 0.02–0.12 mm, **all 8 of those
+losses are ours.** Pot_A is the clean target: the gate is fair for every
+pair and there is no material excuse. Any claim of "no regression against
+Pot_A at 15/15" was measuring the authors' data — twice over.
+
+**Located, on Pot_A, and it is neither the walk nor the face choice.**
+Comparing our curve with the authors' for the same sherd in the same frame:
+six of eight sit **2.99–3.77 mm off**, displaced **tangentially** — not
+along the surface normal, so not the other wall — with the same loop size
+(radius ratio 1.03) and the same traced length, the offset running the whole
+way round. Rendered and inspected: piece 1 (0.69 mm) shows the curves
+overdrawing around the entire rim; piece 3 shows two distinct parallel
+curves 3.5–5.6 mm apart. The ordering walk is implicated on one sherd of
+eight (piece 2, 46% of the reference length) and is not the main damage.
+
+So the open question is now specific and falsifiable: **what puts the rim
+about 3.5 mm to one side of the reference, consistently, on six of eight
+sherds?** That is where effort belongs — not the ordering rewrite
+(ticket 03, demoted) and not the face selection (ticket 04, whose premise
+this contradicts on Pot_A).
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
