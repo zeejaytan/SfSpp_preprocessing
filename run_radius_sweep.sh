@@ -41,6 +41,17 @@ RADII="1.0 2.0 3.0 4.0 6.0 9.0"
 
 [ -x "${BUILD}/EdgeLineExtractionHeadless" ] || { echo "ERROR: binary not built"; exit 1; }
 [ -d "${BASE}" ] || { echo "ERROR: no mesh-stage output at ${BASE}"; exit 1; }
+
+# The hook must be IN the binary. A stale object from an earlier failed
+# build produced seven identical arms that all reported success, so this
+# is checked before anything is staged.
+if [ "$(strings "${BUILD}/EdgeLineExtractionHeadless" 2>/dev/null | grep -c "SFS-T11" || true)" = "0" ]; then
+    echo "ERROR: the binary does not contain the sweep hook."
+    echo "       A sweep without the hook produces identical arms and looks"
+    echo "       successful. Run build_with_hook.sh first."
+    exit 1
+fi
+echo "hook present in binary: yes"
 rm -rf "${OUT}"; mkdir -p "${OUT}"
 
 stage() {
@@ -119,6 +130,24 @@ for r in ${RADII}; do
     run_arm "r${r}" "${r}" || exit 1
 done
 
+echo
+echo "### void check: any radius arm identical to the control?"
+identical=""
+for d in "${OUT}"/r*/; do
+    [ -d "$d" ] || continue
+    arm=$(basename "$d")
+    if diff -r -q "${OUT}/control" "$d" > /dev/null 2>&1; then
+        identical="${identical} ${arm}"
+    fi
+done
+if [ -n "${identical}" ]; then
+    echo "    ** IDENTICAL TO CONTROL:${identical}"
+    echo "       Those arms did not change anything, so the sweep is VOID."
+    echo "       The hook is linked but did not alter the output -- check"
+    echo "       whether the override is reached on this code path."
+    exit 1
+fi
+echo "    every radius arm differs from the control: sweep is real"
 echo
 echo "### out: ${OUT}"
 for d in "${OUT}"/*/; do
