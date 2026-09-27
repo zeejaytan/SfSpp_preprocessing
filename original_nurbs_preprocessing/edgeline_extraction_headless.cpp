@@ -33,6 +33,10 @@
 // Edge-line ordering lives in its own translation unit so the tests and
 // this pipeline compile the same code. See edge_line_ordering.h.
 #include "edge_line_ordering.h"
+
+// Ticket 11: boundary-radius sweep hook. Inert unless SFSPP_BOUNDARY_RADIUS_MM
+// is set, so default behaviour is unchanged.
+#include "boundary_radius_override.h"
 // Removed VTK headers for headless build (PCL built with -DWITH_VTK=OFF)
 // #include <pcl/io/vtk_io.h>
 // #include <pcl/io/vtk_lib_io.h>
@@ -876,7 +880,6 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// The radius is adaptive (spacing * 6, clamped), so sweeping it means
 	// overriding the VALUE, not editing the multiplier.
 	{
-		extern double ticket11_boundary_radius_override_mm();
 		const double ovr = ticket11_boundary_radius_override_mm();
 		if (ovr > 0.0) {
 			std::cout << "[SFS-T11] boundary radius OVERRIDDEN: " << boundary_radius_mm
