@@ -174,12 +174,97 @@ boundary detection — and ticket 04 is the wrong place to be working.
 This is cheap: the per-surface point clouds are already on disk
 (`pota_run_surfaces/Pot_A_Piece_03_Surface_0.xyz` and `_1.xyz`).
 
+## RESOLVED — the offset is real, precisely characterised, and NOT the cause
+
+The surface-swap ablation, real extractor, all eight sherds. Baseline drift
+**0.00 mm on every piece**, so the arms are comparable.
+
+| piece | baseline vs reference | swapped vs reference | |
+|---|---|---|---|
+| 1 | **0.69 mm (100%)** | 5.37 mm (0%) | already right; swap breaks it |
+| 2 | 2.82 mm (30%) | 4.26 mm (14%) | truncated; swap does not help |
+| 3 | 3.49 mm (0%) | **0.67 mm (100%)** | fixed |
+| 4 | 3.59 mm (0%) | **0.72 mm (100%)** | fixed |
+| 5 | 3.61 mm (0%) | **0.80 mm (99.4%)** | fixed |
+| 6 | 2.99 mm (0.8%) | **0.61 mm (100%)** | fixed |
+| 7 | 3.77 mm (0%) | **0.53 mm (100%)** | fixed |
+| 8 | 3.52 mm (0%) | **0.72 mm (100%)** | fixed |
+
+**Six of eight are fixed by taking the rim from the other wall**, and the
+two that do not move are exactly the two that were already right. So the
+selection rule is *inconsistently* correct: piece 1 already picks the right
+wall, and flipping it breaks that. "Largest cluster" is not always wrong, it
+is right by coincidence on some sherds.
+
+**But the gate probe does not follow: 7/15 → 6/15.**
+
+| arm | strict pass at ground truth |
+|---|---|
+| `pota_fresh` (Surface_0) | **7/15** |
+| `pota_swapped` (Surface_1) | **6/15** |
+
+Per pair, the swap only makes pairs that *already passed* pass more
+comfortably — 4-8 goes from min gap 0.42 to 0.54 mm, 4-7 from 1.06 to
+0.59 mm. **No lost pair was recovered.** Piece 1 was made worse, and it is
+in six pairs.
+
+### What this means
+
+**The 3.5 mm offset is not on the causal path to the lost joins.** Making
+the curves five times closer to the reference changes nothing at the gate.
+The offset is real, it is now measured to 0.00 mm reproducibility, and it is
+**not why we lose 8 of 15**.
+
+This also retires ticket 04 as the fix. It remains a genuine paper-vs-code
+deviation worth doing on its own merits — the paper specifies the interior
+surface, the code takes the largest cluster — but it is **not** what costs
+the joins, and it must not be presented as the remedy.
+
+### The error this exposed, recorded because it nearly happened twice
+
+I twice inferred a cause from a correlation and only tested it by
+intervention:
+
+1. Measured the offset direction against the **mesh's** normal, found it
+   tangential (|cos| 0.255), and concluded "not the other wall." Wrong: the
+   two walls meet the mesh at an angle, so a wall-to-wall displacement *is*
+   tangential to the mesh. I tested the wrong normal. I marked ticket 04
+   `needs-info` on that basis.
+2. Then the swap showed the offset *was* the wall, and I was about to hand
+   ticket 04 the win on "the curves now match".
+
+Both failures share a shape: a real measurement, a plausible inference, and
+no intervention to test it. The ablation was the intervention, and the gate
+probe was the score that mattered — not the offsets. **A metric that improves
+while the thing being measured does not is not progress**, and the temptation
+to stop at "the curves match the reference now" is precisely what would have
+made this a false result.
+
+### Where the lost joins therefore are NOT
+
+- not the ~3.5 mm rim offset (measured, intervention-tested, no effect)
+- not the interior/exterior wall choice (same ablation, no effect)
+- not the ordering walk, except on piece 2 (ticket 01, 1 sherd of 8)
+- not the frame or units (fresh output verified in the scan frame)
+
+That leaves the gate's own criterion, and the fact that our 7/15 pairs pass
+while 8 pairs sit 3.7–8.8 mm apart at ground truth with **no breakline
+involved in that measurement**. The next thing to examine is what
+distinguishes a passing pair from a failing one *given* correct curves —
+which is a question about the gate and the normals, not about our curves.
+
 ## Acceptance criteria
 
 - [x] A scale/units explanation is eliminated by measurement, not argument
 - [x] **Piece 1 is explained**: it is the only sherd where "largest cluster"
       does real work (18.6% of 31) and the only one whose rim matches. On
       seven of eight the rule is vacuous (one cluster = 100%)
+- [x] The offset is **explained**: it is the interior/exterior wall choice,
+      fixed on 6 of 8 by the swap, with 0.00 mm baseline drift
+- [x] **And shown not to be the cause of the lost joins** — the gate goes
+      7/15 → 6/15 under the swap, recovering no pair
+- [ ] The failing pairs are characterised given correct curves: what makes a
+      pair fail when both rims are within 0.8 mm of the reference
 - [ ] The per-surface rim test above: does one of piece 3's two surfaces give
       a rim within ~1 mm of the reference? This decides whether the fix is
       surface selection (ticket 04) or something upstream of it
