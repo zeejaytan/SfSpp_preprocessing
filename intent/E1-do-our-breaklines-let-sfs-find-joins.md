@@ -327,6 +327,28 @@ sherds?** That is where effort belongs — not the ordering rewrite
 (ticket 03, demoted) and not the face selection (ticket 04, whose premise
 this contradicts on Pot_A).
 
+## 2026-09-28 — ticket 04 resolved: the pipeline selects per sherd, 7/15 → 11/15
+
+Implemented the paper's ray-vs-axis interior/exterior test as a
+dependency-free unit (`surface_classify.{h,cpp}`) with 5 passing CTest
+entries, wired into the edgeline loop: when `Surface_1` wins the vote the
+two inputs are exchanged so `Breakline_0` comes from the interior wall.
+No axis file → warns and keeps historic order.
+
+Pot_A, verified by `cmp` per piece (the first version of the exchange
+logged success while copying each file onto itself — caught by
+byte-comparison, fixed with post-write verification): piece 1 kept on
+`Surface_0` (820 vs 225), pieces 2–8 exchanged with large margins except
+piece 2 (403 vs 280, weak — the ambiguous sherd).
+
+Gate: **11/15**. The five piece-1 pairs recovered at 0.16–1.24 mm. All four
+remaining failures contain piece 2, whose rim is 46% of the reference —
+the ordering defect, now the only thing between us and 15/15 on this pot.
+
+Two defects, two fixes, cleanly separated: wall selection (5 pairs, done)
+and piece-2 truncation (4 pairs, ticket 03 — back in scope for this
+specific measured reason).
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

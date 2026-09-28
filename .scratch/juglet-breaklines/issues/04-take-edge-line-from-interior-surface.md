@@ -28,7 +28,41 @@ on some sherds, not systematically.
 **Blocked by:** 03 (the edge line must be a well-ordered loop before it
 is worth choosing which surface it comes from)
 
-**Status:** in-progress — classifier + tests written 2026-09-28, building next
+**Status:** resolved 2026-09-28 — pipeline reproduces the 11/15 demonstration
+
+## RESOLUTION: the pipeline now selects per sherd, 7/15 → 11/15
+
+Classifier (`surface_classify.{h,cpp}`, dependency-free) + 5 unit tests
+(passing) + wiring that exchanges the two Surface inputs when `Surface_1`
+wins the vote, so `Breakline_0` always comes from the interior wall.
+
+Pot_A run with axes staged, verified by `cmp` on disk per piece (not by log
+lines — the first version of the exchange logged success while copying each
+file onto itself, caught only by byte-comparison):
+
+| piece | vote | action | audit |
+|---|---|---|---|
+| 1 | S0 wins 820 vs 225 | kept | KEPT confirmed |
+| 2 | S1 wins 403 vs 280 | exchanged | EXCHANGED confirmed |
+| 3–8 | S1 wins by ~950 vs ~50 | exchanged | EXCHANGED confirmed |
+
+Piece 2's margin (403 vs 280) is notably weaker than the rest — consistent
+with piece 2 being the ambiguous truncated sherd.
+
+Gate (`t04_interior` arm): **11/15**. Passing: 1-3, 1-4, 1-5, 1-6, 1-7, 3-5,
+3-6, 4-6, 4-7, 4-8, 6-7. Failing: **1-2, 2-4, 2-5, 2-8 — all contain
+piece 2**, whose rim is 46% of the reference length. The five piece-1 pairs
+recovered at 0.16–1.24 mm.
+
+Piece 2's exchanged rim now reaches piece 1 at 0.45 mm (was 22.94 mm) but
+with opposing normals, so 1-2 still fails — on normals, not distance. That
+is a thread for the ordering work, not this ticket.
+
+**Open remainder, stated not buried:** the Juglet per-sherd assignment has
+not run — there are no Juglet axis files (`Dataset/Axes/` holds Pot_A
+only), so the vote cannot fire there. And the witnessed render (Needs-eye)
+is still owed; the matplotlib offset render exists but is not a staged
+`visual-qa` look.
 
 **Needs-eye:** the conservator should be shown, for one true pair, which
 face each sherd's edge line came from — on the render staged in 07.
