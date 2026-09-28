@@ -6,7 +6,7 @@
 changed — ticket 03 is the record of what happens when the wrong stage is
 fixed eight times in a row)
 
-**Status:** blocked — do not start until ticket 13 names the stage
+**Status:** in-progress — stage named by ticket 13, see below
 
 **Needs-eye:** required before closing. Any change to where a rim is traced
 is a geometry claim; stage the before/after rims against the authors'
