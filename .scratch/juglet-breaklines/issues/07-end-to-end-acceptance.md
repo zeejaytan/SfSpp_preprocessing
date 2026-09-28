@@ -20,9 +20,11 @@ passing number is not something to believe on its own.
       ticket 14 (1-2 passes thin on 2 inliers; 2-8 rides on piece 8's wall
       rim). No regressions: all pairs that passed at 11/15 still pass.
 - [ ] Juglet true-mate pass rate materially non-zero at ground truth, per
-      pair, honest denominator 10. Still 0/10. The Juglet has no axis files
-      so the ticket-04 vote cannot fire there, and its 8 non-touching pairs
-      are a material limit no extraction can pass.
+      pair, honest denominator 10. Still 0/10. Its 8 non-touching pairs
+      are a material limit no extraction can pass. (Corrected 2026-09-29:
+      the "no axis files" clause is withdrawn — all 9 Juglet axes were found
+      in the archive and staged at `Dataset/Axes/Juglet/`, so the vote CAN
+      fire there now; the run has not happened yet.)
 - [ ] Per-pair failure reasons for the Juglet (wear / wall / unresolved).
 - [x] One claimed join staged correct-versus-attempt and witnessed
       (`juglet_sfs29`, closed as weak — confirms the 11.45mm figure, decides

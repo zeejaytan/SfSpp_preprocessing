@@ -61,11 +61,15 @@ Piece 2's exchanged rim now reaches piece 1 at 0.45 mm (was 22.94 mm) but
 with opposing normals, so 1-2 still fails — on normals, not distance. That
 is a thread for the ordering work, not this ticket.
 
-**Open remainder, stated not buried:** the Juglet per-sherd assignment has
-not run — there are no Juglet axis files (`Dataset/Axes/` holds Pot_A
-only), so the vote cannot fire there. And the witnessed render (Needs-eye)
-is still owed; the matplotlib offset render exists but is not a staged
-`visual-qa` look.
+## ADDENDUM 2026-09-29: Juglet axes exist, were merely unwired
+
+The MATLAB axis step DID run for the Juglet: all 9 axes sit in
+`Juglet_Dataset_20260916/SfS_pp/Axes/` (single-candidate, one line each,
+same format as Pot_A's). An early `find` with too-shallow depth reported
+4/9 and was wrong. They are now staged at `Dataset/Axes/Juglet/` (9 files;
+axes are untracked cluster data, same as Pot_A's). The vote and the
+axis-dependent rim flags can now fire on the Juglet — the "no axis, keep
+historic order" path no longer applies there.
 
 ## GUARDS 2026-09-28: the vote picks a scrap on piece 2, so the vote gets guards
 

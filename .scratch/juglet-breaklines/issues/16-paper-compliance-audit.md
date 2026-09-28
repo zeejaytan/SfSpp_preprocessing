@@ -90,7 +90,7 @@ the largest clusters without classifying them."
   Each has a measurement behind it (see its ticket); none should be
   described as "what the paper specifies."
 
-## Axes (flagged, not judged)
+## Axes (refined 2026-09-29: they exist, including for the Juglet)
 
 `Dataset/Axes/` is produced by MATLAB (`AxisExtraction/*.m`, PotSAC
 references in scripts), not by the C++ pipeline. The paper's axis comes
@@ -98,6 +98,14 @@ from its modified PotSAC on the inner surface. Whether our MATLAB matches
 that method was not checked — it is the one input our vote depends on that
 has never been audited. If the vote ever misbehaves on a new pot, look
 here first.
+
+Update: the Juglet axes DO exist — all 9 in `Juglet_Dataset_20260916/`,
+single-candidate, same format — and are now staged at
+`Dataset/Axes/Juglet/`. An early shallow `find` reported 4/9 and was wrong.
+What remains unaudited is the MATLAB *method*, not the Juglet *files*.
+(The assembler also carries its own C++ axis code — `ComputePottmannAxis`,
+`ComputePotSACAxis`, `RefineAxis` — called from the ranking path, while the
+mains load the files. File-vs-computed precedence there was not traced.)
 
 ## Acceptance criteria
 
