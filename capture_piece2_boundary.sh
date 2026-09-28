@@ -26,6 +26,11 @@ OUT="${ROOT}/diag_piece2_out"
 
 [ -x "${BUILD}/EdgeLineExtractionHeadless" ] || { echo "ERROR: not built"; exit 1; }
 [ -d "${SRC}" ] || { echo "ERROR: no mesh-stage output at ${SRC}"; exit 1; }
+# Stage from the UNEXCHANGED mesh output. diag_t04_pota's Temp/Data was
+# exchanged in place by the ticket-04 run, so staging from it silently puts
+# old-Surface_1 content under the Surface_0 name -- which is how the first
+# capture grabbed the wrong wall's cloud. diag_pota3 predates the classifier.
+SRC="${ROOT}/diag_pota3/Temp/Data/Pot_A"
 
 rm -rf "${TREE}" "${OUT}"
 mkdir -p "${TREE}/Temp/Data/${POT}" "${TREE}/Temp/Axes" \
@@ -44,21 +49,43 @@ done
 echo "    staged: $(ls "${TREE}/Temp/Data/${POT}" | wc -l) files"
 echo "    axis: $(ls "${TREE}/Dataset/Axes" 2>/dev/null | wc -l)"
 
+# Temp_edge/boundary.pcd is overwritten per surface, so poll and snapshot
+# each distinct version. Surface_0 is processed first, Surface_1 second;
+# without this only the second survives, which is how the first capture
+# grabbed the wrong wall's cloud.
+EDGE="${TREE}/Temp/Temp_edge/${POT}"
+snapshot_loop() {
+    local last="" n=0 h
+    mkdir -p "${OUT}/snaps"
+    while :; do
+        if [ -f "${EDGE}/boundary.pcd" ]; then
+            h=$(md5sum "${EDGE}/boundary.pcd" 2>/dev/null | cut -d' ' -f1)
+            if [ -n "${h}" ] && [ "${h}" != "${last}" ]; then
+                n=$((n + 1))
+                cp "${EDGE}/boundary.pcd" "${OUT}/snaps/boundary_$(printf '%02d' ${n})_${h:0:8}.pcd"
+                last="${h}"
+            fi
+        fi
+        sleep 0.3
+    done
+}
+snapshot_loop &
+WATCHER=$!
 ( cd "${TREE}" && "${APPTAINER}" exec --bind /data:/data "${SIF}" \
     env POT_NAME="${POT}" "${BUILD}/EdgeLineExtractionHeadless" ) > "${LOG}" 2>&1
 echo "    exit $? (not trusted)"
+kill "${WATCHER}" 2>/dev/null; wait "${WATCHER}" 2>/dev/null
 grep "ADAPTIVE SEQUENCING" "${LOG}" 2>/dev/null | head -n 4 | sed 's/^/    /'
 grep "SFS-T04" "${LOG}" 2>/dev/null | head -n 4 | sed 's/^/    /'
 
-EDGE="${TREE}/Temp/Temp_edge/${POT}"
-if [ -f "${EDGE}/boundary.pcd" ]; then
-    cp "${EDGE}/boundary.pcd" "${OUT}/piece2_boundary.pcd"
-    echo "    boundary.pcd: $(grep -m1 "^POINTS" "${OUT}/piece2_boundary.pcd" | awk '{print $2}') points"
-else
-    echo "    ** no boundary.pcd produced"
+if [ "$(ls "${OUT}"/snaps/boundary_*.pcd 2>/dev/null | wc -l)" -eq 0 ]; then
+    echo "    ** no boundary snapshots captured"
     tail -n 8 "${LOG}" | sed 's/^/       /'
     exit 1
 fi
+for f in "${OUT}"/snaps/boundary_*.pcd; do
+    echo "    $(basename "$f"): $(grep -m1 "^POINTS" "$f" | awk '{print $2}') points"
+done
 if [ -f "${EDGE}/boundaryImproved.pcd" ]; then
     cp "${EDGE}/boundaryImproved.pcd" "${OUT}/piece2_boundaryImproved.pcd"
 fi
