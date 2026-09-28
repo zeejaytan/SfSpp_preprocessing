@@ -345,9 +345,17 @@ Gate: **11/15**. The five piece-1 pairs recovered at 0.16–1.24 mm. All four
 remaining failures contain piece 2, whose rim is 46% of the reference —
 the ordering defect, now the only thing between us and 15/15 on this pot.
 
-Two defects, two fixes, cleanly separated: wall selection (5 pairs, done)
-and piece-2 truncation (4 pairs, ticket 03 — back in scope for this
-specific measured reason).
+Two defects, one fixed, one characterized: wall selection (5 pairs, done —
+pipeline at 11/15) and piece 2 (4 pairs). Ticket 03 investigated piece 2
+fully and closed it as unfixable by any measured intervention: its boundary
+clouds touch the reference along one 17-point arc (S0) and in scattered
+runs (S1, ref coverage 36%), so no ordering/pruning/filter/hull/radius
+recovers the 303mm rim — eight interventions tried, each with its failing
+numbers on record. Where its curves do meet the neighbours (1-2 at 0.45mm),
+normals oppose at max 0.488 over the whole rim while agreeing with its own
+mesh at +0.997: real geometry, no sign flip available. The four piece-2
+pairs are not recoverable without a boundary-detection investigation this
+chain did not open.
 
 ## The two candidate causes, separated
 

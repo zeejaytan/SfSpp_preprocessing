@@ -65,7 +65,25 @@ about the walk. The walk's own failure is truncation, measured as coverage
 **Blocked by:** 02 (dedupe first — sequencing on a duplicate-laden cloud
 cannot be judged)
 
-**Status:** ready-for-agent
+**Status:** closed as characterized-but-unfixed, 2026-09-28 — see below
+
+## Scope correction: dedupe eliminated, rewrite required
+
+Piece 2's two boundary clouds diagnosed on the verified Python
+transcription (ticket 01: matches the C++ exactly):
+
+| cloud | n | K | exact dupes | coverage as-is | coverage after dedupe (exact, 1e-6, 1e-4, 1e-3 mm) |
+|---|---|---|---|---|---|
+| Surface_0 (86 pts) | 86 | 8 | 30 | 0.634 | **0.634 at every level** |
+| Surface_1 (202 pts) | 202 | 20 | 26 | 0.265 | **0.265 at every level** |
+
+Dedupe at four thresholds changes **nothing**. Ticket 02 is eliminated as
+the fix for this sherd. The stall structure is the ticket-01 mechanism
+exactly (18 of 20 K-window candidates already visited on the 202-point
+cloud) — the rule itself, not its input. So this ticket is back in scope,
+narrowed: replace the non-local rule with tangent continuation, judged by
+piece 2's rim going from 46%/27% to full and the gate moving 11/15 → 15/15.
+The general-coverage criteria below still apply as regression guards.
 
 **Needs-eye:** none yet; the witnessed render is in 07.
 
@@ -80,6 +98,47 @@ cannot be judged)
 - [ ] The reconstruction is marked as such in a code comment, so nobody
       later mistakes it for the authors' algorithm
 - [ ] Acceptance probe run before and after, both numbers recorded
+
+## CLOSED 2026-09-28: piece 2's input does not contain a traceable rim
+
+Everything tried against piece 2's two boundary clouds (86 and 202 points),
+each measured, each failing for a recorded reason:
+
+| intervention | result on piece 2 | verdict |
+|---|---|---|
+| tangent-continuation rewrite (this ticket's plan) | validated in Python first: coverage **0.116 / 0.035**, worse than the old rule's 0.570 / 0.252 | **not built** — the port failed before any C++ was written, which is the TDD loop working |
+| dedupe at exact/1e-6/1e-4/1e-3 mm | coverage **unchanged** at every level (0.634 / 0.265) | eliminated (ticket 02 for this sherd) |
+| paper's noise filter (ticket 05) | removes almost nothing (86→86, 202→199): the thicket is dense, not isolated | eliminated |
+| angular sort around centroid | 12/85 steps >3× median, max 9.9mm; S1 max 28.6mm | eliminated |
+| concave-hull traversal | fragments: longest loop 54% of reference; 2D projection folds the 3D rim | eliminated |
+| MST diameter path | 163/202 pts but weaves, median 3.32mm from reference, 26% within 2mm | eliminated |
+| leaf-pruning + walk | overlap stays ~27%: the rim points are not in the cloud to begin with | eliminated |
+| boundary radius 1–9mm | lengths 0.25–1.52× reference, offsets 2.4–14.8mm; nothing approaches it | eliminated |
+
+The overlap map is the decisive measurement: S0's cloud touches the
+reference along **one 17-point arc** (10% of the rim), S1's in scattered runs
+of 10/7/6/6/4/4. Ref coverage: **10% and 36%**. No ordering, pruning,
+filtering, or hull of these clouds can emit the authors' 303mm rim, because
+~65–90% of it has no nearby cloud points.
+
+And where curves do meet, normals oppose for real reasons: pair 1-2 sits at
+**0.45mm** with max dot **0.488 over the whole rim**, while the t04 piece-2
+normals agree with its own mesh at **+0.997**. No sign flip fixes it; the
+walls face 62° apart at the seam.
+
+**What this means.** Piece 2's boundary *detection* — not its ordering —
+fails to return the rim. The cloud is a thicket (52 components at 2×
+spacing, 30 MST leaves) that no tested traversal converts to the reference.
+The authors extracted a clean 303mm rim from presumably similar input, so
+their boundary stage differs somewhere upstream of anything measured here.
+That difference is unlocated, and locating it is a boundary-detection
+investigation this ticket's ordering scope does not cover.
+
+**The four piece-2 pairs (1-2, 2-4, 2-5, 2-8) are therefore not recoverable
+by any measured intervention.** The pipeline stands at **11/15** on Pot_A
+with ticket 04's fix. The C++ replacement walk written for this ticket was
+validated in Python, failed there, and was never built — recorded so the
+work is not repeated, and so the TDD discipline that caught it is visible.
 
 ## Note
 
