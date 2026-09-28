@@ -253,6 +253,38 @@ involved in that measurement**. The next thing to examine is what
 distinguishes a passing pair from a failing one *given* correct curves —
 which is a question about the gate and the normals, not about our curves.
 
+## MIXED BUNDLE: 11/15 — per-sherd selection demonstrated, not inferred
+
+Hand-built on the laptop from the two ablation arms (no pipeline change):
+piece 1+2 from baseline (`Surface_0`), pieces 3–8 from the swapped arm
+(`Surface_1`). Scored with the authors' ground truth (`mixed_select` arm):
+
+| arm | strict pass |
+|---|---|
+| baseline (`Surface_0` everywhere) | 7/15 |
+| swapped (`Surface_1` everywhere) | 6/15 |
+| **mixed (per-sherd: 1+2 from S0, 3–8 from S1)** | **11/15** |
+
+Passing: 1-3, 1-4, 1-5, 1-6, 1-7, 3-5, 3-6, 4-6, 4-7, 4-8, 6-7.
+Failing: **1-2, 2-4, 2-5, 2-8 — all four contain piece 2.**
+
+Five piece-1 pairs recovered at 0.16–1.24 mm. One previously-passing pair
+lost: 2-8 went 0.26 → 1.22 mm, because piece 8's swapped rim no longer meets
+piece 2's *truncated* rim — collateral of the ordering defect, not of the
+selection.
+
+**This is what a per-sherd interior/exterior test would produce**, and it is
+measured rather than argued: neither blanket choice is right (7/15 and 6/15),
+the per-sherd choice is 11/15. The remaining four all contain piece 2, whose
+rim is 46% of the reference length — ticket 03's ordering defect, relevant
+again for this specific measured reason rather than the general one it was
+demoted for.
+
+The mixed bundle is a **demonstration, not a pipeline output**. The pipeline
+change — the paper's interior/exterior rule replacing "largest cluster" —
+still has to be implemented (ticket 04). What this settles is that the rule
+is worth implementing: +4 pairs measured, with the mechanism named per pair.
+
 ## Acceptance criteria
 
 - [x] A scale/units explanation is eliminated by measurement, not argument
