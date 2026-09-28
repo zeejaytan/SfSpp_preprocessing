@@ -1128,6 +1128,24 @@ void getBreakLineForDecorativeParts(string fileName)
 
 		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
 		getPointsInSequence(boundaryCloud, cloud_sequenced);
+
+		// SFS-T14: persist the decorative rim instead of discarding it.
+		// This ordered rim was computed and dropped (local variable, end of
+		// loop) -- the third such dead end in this pipeline. Ticket 14 must
+		// measure it against the reference before deciding how the edgeline
+		// stage consumes it, and that needs the file on disk. Additive only:
+		// no existing output changes, one file per cluster beside the
+		// Cluster_N.pcd files this function already writes.
+		{
+			std::stringstream ss;
+			ss << fileName + "Decorative_" << t << ".pcd";
+			cloud_sequenced->width = cloud_sequenced->points.size();
+			cloud_sequenced->height = 1;
+			pcl::io::savePCDFile(ss.str(), *cloud_sequenced);
+			std::cout << "[SFS-T14] decorative rim for cluster " << t << ": "
+			          << cloud_sequenced->points.size() << " ordered points -> "
+			          << ss.str() << std::endl;
+		}
 	}
 }
 
