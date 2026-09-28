@@ -179,6 +179,30 @@ bool ticket04_place_interior_first(const std::string& surf0_path,
               << (s0_interior ? "WINNING" : "losing") << " configuration "
               << win << " vs " << lose << " of " << total << " sampled points"
               << std::endl;
+    // Candidacy guards: the vote alone picked a 171-point scrap sitting
+    // 45 mm from the fracture (Pot_A piece 2, margin 403 vs 280) over an
+    // 11,263-point surface covering 82% of the reference rim. A wall of a
+    // sherd is comparable in area to the other wall -- measured 0.80-0.96
+    // on the seven good sherds against 0.015 on piece 2 -- and a near-tie
+    // vote (1.44 here against ~13-30 elsewhere) is ambiguity, not a win.
+    // Either guard firing keeps the historic order and says why. Both
+    // thresholds are provisional (8 sherds, one pot) and recorded as such;
+    // each separates the observed bad case from the good ones by 7x or more.
+    if (!s0_interior) {
+        const double size_ratio =
+            static_cast<double>(p1.size()) / static_cast<double>(p0.size() > 0 ? p0.size() : 1);
+        const double margin =
+            static_cast<double>(win) / static_cast<double>(lose > 0 ? lose : 1);
+        std::cout << "[SFS-T04] winner size ratio " << size_ratio
+                  << " (need >= 0.10), margin " << margin << " (need >= 2.0)"
+                  << std::endl;
+        if (size_ratio < 0.10 || margin < 2.0) {
+            std::cout << "[SFS-T04] guards reject the swap: winner looks like "
+                         "a fragment, not a wall -- keeping historic order"
+                      << std::endl;
+            return true;  // ran fine; decision is to keep order
+        }
+    }
     if (s0_interior) {
         std::cout << "[SFS-T04] keeping order: Surface_0 is interior"
                   << std::endl;
