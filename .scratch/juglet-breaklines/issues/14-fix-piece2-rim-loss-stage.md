@@ -6,13 +6,50 @@
 changed — ticket 03 is the record of what happens when the wrong stage is
 fixed eight times in a row)
 
-**Status:** in-progress — stage named by ticket 13, see below
+**Status:** in-progress — target refined twice by measurement, see below
 
 **Needs-eye:** required before closing. Any change to where a rim is traced
 is a geometry claim; stage the before/after rims against the authors'
 reference in `visual-qa/` as a single look per affected sherd.
 
-## Scope as currently understood (to be replaced by ticket 13's finding)
+## REFINEMENT 2026-09-28: the surface is short, not just the boundary cloud
+
+Ticket 13 named boundary estimation (82% → 36%). Deeper measurement moves
+the target upstream again — the surface itself is under-grown:
+
+- Piece-2 Surface_0's 30 uncovered reference points are **scattered** (runs
+  of 6/3/3/2/2/… and singles) at **2.0–2.8mm**, just over the threshold.
+  Not a missing region: the surface ends ~2mm inside the authors' rim
+  along scattered stretches. (`overlap` reasoning; scripts below.)
+- Stored normals are fine (rim-zone |dot| vs tight PCA normals: 0.993 vs
+  1.000 off-rim), so the surface is well-formed but short — not corrupt.
+- Downsampling (`downsamplePointCloud`, uniform sampling targeting
+  8000–12000 pts) and the B-spline fitting stage
+  (`improveSurfaceBoundaryByFittingBSplineSurface`) are the unexamined
+  candidates for the 2mm inset. Neither has been measured yet.
+
+And the unclustered points cover **100% of the reference at 0.53mm median**,
+with 18% covered ONLY there. So the fracture-edge strip this surface lacks
+exists in the intermediates — split into unclustered by region growing.
+
+Eliminated along the way (each with numbers, none re-tried):
+radius × angle sweep (no cell isolates the rim; small radius flags wall
+texture 1029+ pts), noise filter (removes almost nothing — dense thicket),
+angular sort (28mm jumps), concave hull (fragments at 54%; 2D projection
+folds the 3D rim), MST diameter (weaves 3.3mm off, 26% within 2mm),
+leaf-pruning (overlap stays ~27%), tangent-walk rewrite (port covered
+0.116/0.035 — worse; never built), discarded `boundaryImproved` cloud
+(coverage stays 0.68/0.27, <45% near ref).
+
+## The experiment this is now set up for (not yet run)
+
+Feed piece 2's boundary detection the union of Surface_0 + unclustered
+points near the surface edge, instead of Surface_0 alone. Predicts a full
+rim near the reference because the union covers 100% of it at sub-mm.
+Requires pipeline modification (merge before boundary estimation) plus the
+NaN guard from ticket 13 for any filter output. One variable, one run,
+scored per pair from 11/15 — the shape that settled every earlier question
+in this chain.
 
 Candidates, in pipeline order, with what would confirm each:
 
