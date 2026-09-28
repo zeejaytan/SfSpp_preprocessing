@@ -93,6 +93,11 @@ run_arm() {
     if [ "${n}" -lt 8 ]; then
         echo "    ** expected 8 breaklines, got ${n}. Tail:"
         tail -n 8 "${elog}" | sed 's/^/       /'
+        mkdir -p "${OUT}/${tag}"
+        echo "edgeline produced ${n}/8 breaklines" > "${OUT}/${tag}.FAILED"
+        cp "${elog}" "${OUT}/${tag}.edgeline.log"
+        cp "${mlog}" "${OUT}/${tag}.mesh.log"
+        rm -rf "${tree}"
         return 1
     fi
     mkdir -p "${OUT}/${tag}"
@@ -103,12 +108,14 @@ run_arm() {
 }
 
 echo "### control arm: both vars UNSET (pipeline as it stands)"
-run_arm control unset || exit 1
-
+run_arm control unset || echo "CONTROL FAILED -- sweep is void"
+# Continue on arm failure: a crashed arm is a result (fragility), not a
+# reason to skip the remaining arms. Each failure is recorded in OUT as
+# <tag>.FAILED with the tail of the log.
 for s in ${SMOOTHS}; do
     echo
     echo "### smoothness ${s} deg"
-    run_arm "s${s}" "${s}" || exit 1
+    run_arm "s${s}" "${s}" || echo "    ${s}: arm recorded as failed, continuing"
 done
 
 echo
