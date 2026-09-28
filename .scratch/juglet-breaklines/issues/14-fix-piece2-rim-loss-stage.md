@@ -41,7 +41,39 @@ leaf-pruning (overlap stays ~27%), tangent-walk rewrite (port covered
 0.116/0.035 — worse; never built), discarded `boundaryImproved` cloud
 (coverage stays 0.68/0.27, <45% near ref).
 
-## The experiment this is now set up for (not yet run)
+## EXPERIMENT RUN 2026-09-28: union breaks the fit, not the detector — NEGATIVE
+
+Fed boundary detection S0 + nearby-unclustered (D=3: +1389 pts, D=5:
++1427 pts), no axis staged so Breakline_0 comes from the S0 path in all
+arms, existing binary, no rebuild:
+
+| arm | rim length | len/ref | med off | gate pairs |
+|---|---|---|---|---|
+| control (S0) | 138.3mm | 0.456 | 2.82 | baseline |
+| D3 | **10.8mm** | 0.036 | 2.57 | none pass |
+| D5 | **10.8mm** | 0.036 | 2.57 | none pass |
+
+The union collapses the rim to a padded 10.8mm stub (ticket 06's pattern:
+padding hiding a fragment). Ruled out as cause: unclustered normals are
+fine (median 0.979 vs tight PCA).
+
+**The byte-level finding that locates it:** all three `boundary.pcd`
+files are BYTE-IDENTICAL (`78572793`). The union changed nothing about
+boundary detection output — consistent with the downsampler normalizing to
+its 8000–12000 target budget before detection. But the Breakline_0 files
+differ. Identical boundary in, different rim out means the union poisoned
+something DOWNSTREAM that also reads Surface_0.xyz: the B-spline surface
+fit. Dumping 1400 rough fracture points into the fitted surface distorts
+the fit the rim is projected onto.
+
+So naive concatenation is out, and the experiment's value is the
+elimination plus the location: the remaining candidates are (a) S0's ~2mm
+shortfall at surface *construction* (mesh stage / split — the strip sits
+in unclustered), and (b) a fit-robust way to include the fracture strip
+that does not poison the spline. Neither is an edgeline-side change, which
+is why every edgeline-side intervention in ticket 03 failed.
+
+## The experiment this was set up for (now run, above)
 
 Feed piece 2's boundary detection the union of Surface_0 + unclustered
 points near the surface edge, instead of Surface_0 alone. Predicts a full
