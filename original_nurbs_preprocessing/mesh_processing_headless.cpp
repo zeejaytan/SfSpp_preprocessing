@@ -14,6 +14,7 @@
 #include <pcl/features/normal_3d.h> 
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/obj_io.h>
+#include <pcl/kdtree/kdtree_flann.h>  // SFS-T14: mesh-normal lookup
 // Removed VTK headers for headless build (PCL built with -DWITH_VTK=OFF)
 // #include <pcl/io/vtk_lib_io.h>
 // #include <pcl/io/impl/vtk_lib_io.hpp>
@@ -655,7 +656,14 @@ int getClusters_EuclideanDistBased(string fileName)
 
 	std::vector<pcl::PointIndices> cluster_indices;
 	pcl::EuclideanClusterExtraction<pcl::PointNormal> ec;
-	ec.setClusterTolerance(2); // 2cm
+	// SFS-T14: tolerance 1.5mm, not 2. The old value (commented "2cm" --
+	// the pipeline is millimetres, so one of the two is wrong) fuses the
+	// whole unclustered file into a single cluster on Pot_A piece 2
+	// (1426+1+1 at 2.0mm); at 1.5mm it yields 64 clusters whose top six
+	// hold 1100+ points, and per-patch rims from those reach the 2-4 and
+	// 2-5 seams by distance where the single merged rim reaches only 2-1.
+	// Measured on laptop (fracture_patch_rims.py), not chosen.
+	ec.setClusterTolerance(1.5);
 
 	// ADAPTIVE: Scale cluster size thresholds with point cloud density
 	int num_pts = missedPoints->points.size();
@@ -1136,12 +1144,64 @@ void getBreakLineForDecorativeParts(string fileName)
 		// stage consumes it, and that needs the file on disk. Additive only:
 		// no existing output changes, one file per cluster beside the
 		// Cluster_N.pcd files this function already writes.
+		//
+		// Normals attached from the MESH (nearest vertex normal per rim
+		// point), because the gate compares normals (dot > 0.85) and an
+		// xyz-only file scores nothing. Measured: the authors' piece-2 rim
+		// normals match mesh normals at 100%/86% on the 2-4/2-5 seams with
+		// zero flipped, so the mesh field is the orientation source -- no
+		// reference involved. PCA normals would carry arbitrary sign.
 		{
 			std::stringstream ss;
 			ss << fileName + "Decorative_" << t << ".pcd";
 			cloud_sequenced->width = cloud_sequenced->points.size();
 			cloud_sequenced->height = 1;
-			pcl::io::savePCDFile(ss.str(), *cloud_sequenced);
+			// Mesh path from the unclustered path: same directory,
+			// <piece>_Mesh.obj for <piece>_unclustered.ply.
+			std::string meshPath = fileName;
+			const std::string unc = "_unclustered.ply";
+			const std::size_t upos = meshPath.rfind(unc);
+			pcl::PointCloud<pcl::PointNormal>::Ptr meshCloud(new pcl::PointCloud<pcl::PointNormal>);
+			bool haveMeshNormals = false;
+			if (upos != std::string::npos) {
+				meshPath.replace(upos, unc.length(), "_Mesh.obj");
+				if (pcl::io::loadOBJFile(meshPath, *meshCloud) == 0 &&
+				    !meshCloud->points.empty()) {
+					haveMeshNormals = true;
+				} else {
+					std::cout << "[SFS-T14] no mesh normals at " << meshPath
+					          << " -- writing xyz-only rim" << std::endl;
+				}
+			}
+			if (haveMeshNormals && !cloud_sequenced->points.empty()) {
+				pcl::KdTreeFLANN<pcl::PointNormal> mkt;
+				mkt.setInputCloud(meshCloud);
+				pcl::PointCloud<pcl::PointNormal>::Ptr withN(new pcl::PointCloud<pcl::PointNormal>);
+				std::vector<int> kidx(1);
+				std::vector<float> kdist(1);
+				for (const auto& p : cloud_sequenced->points) {
+					pcl::PointNormal q;
+					q.x = p.x;
+					q.y = p.y;
+					q.z = p.z;
+					pcl::PointNormal s;
+					s.x = p.x;
+					s.y = p.y;
+					s.z = p.z;
+					if (mkt.nearestKSearch(s, 1, kidx, kdist) > 0) {
+						const auto& mn = (*meshCloud)[kidx[0]];
+						q.normal_x = mn.normal_x;
+						q.normal_y = mn.normal_y;
+						q.normal_z = mn.normal_z;
+					}
+					withN->points.push_back(q);
+				}
+				withN->width = withN->points.size();
+				withN->height = 1;
+				pcl::io::savePCDFile(ss.str(), *withN);
+			} else {
+				pcl::io::savePCDFile(ss.str(), *cloud_sequenced);
+			}
 			std::cout << "[SFS-T14] decorative rim for cluster " << t << ": "
 			          << cloud_sequenced->points.size() << " ordered points -> "
 			          << ss.str() << std::endl;

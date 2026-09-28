@@ -3324,6 +3324,30 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         if (posSurface != string::npos)
             breaklineFileName.replace(posSurface, string("Surface_1").length(), "Breakline_1");
     }
+
+    // SFS-T14: append fracture-zone patch rims as extra segments of
+    // Breakline_0 only (the file the assembler and the probe read).
+    // The mesh stage now persists one ordered, mesh-normalled rim per
+    // unclustered patch (<piece>_unclustered.plyDecorative_<t>.pcd) beside
+    // the Cluster files. Measured on Pot_A piece 2: patch rims reach the
+    // 2-4 and 2-5 seams by distance where the wall rim does not, and the
+    // 1-2 seam scores 13 strict inliers through the probe. Appending (not
+    // replacing) keeps every currently-passing pair intact: existing
+    // segments are untouched, new ones only add.
+    if (breaklineFileName.find("Breakline_0") != string::npos) {
+        extern void ticket14_append_patch_rims(
+            pcl::PointCloud<pcl::PointNormal>::Ptr cloud,
+            std::vector<std::string>& seg_index,
+            const std::string& surface_dir, const std::string& piece_key);
+        std::string surf_dir = surfacePointCloudFilePath;
+        const size_t ls = surf_dir.find_last_of("/\\");
+        if (ls != std::string::npos) surf_dir.erase(ls);
+        std::string piece_key = currentFileName;
+        const size_t ps = piece_key.find("_Surface_");
+        if (ps != std::string::npos) piece_key.erase(ps);
+        ticket14_append_patch_rims(cloud_CompleteBreakline, index,
+                                   surf_dir, piece_key);
+    }
     // 저장 폴더: Dataset/Breaklines
     const std::string breaklinesDir = "Dataset/Breaklines/";  // Changed for container compatibility
     // std::filesystem::create_directories(breaklinesDir);  // Disabled for container compatibility

@@ -47,6 +47,9 @@ target_sources(EdgeLineExtractionHeadless PRIVATE boundary_radius_hook.cpp)
 # Active whenever an axis file exists; without one it logs and keeps the
 # historic order, so behaviour on axis-less runs is unchanged.
 target_sources(EdgeLineExtractionHeadless PRIVATE ticket04_interior_first.cpp surface_classify.cpp)
+# Ticket 14: append fracture-zone patch rims to Breakline_0. No-op when no
+# Decorative files exist for a piece, so pieces without them are unaffected.
+target_sources(EdgeLineExtractionHeadless PRIVATE ticket14_patch_rims.cpp)
 add_executable(EdgeLineExtractionLegacy edgeline_extraction_backup.cpp ${PROJ_DEP})
 
 # Link Libraries
