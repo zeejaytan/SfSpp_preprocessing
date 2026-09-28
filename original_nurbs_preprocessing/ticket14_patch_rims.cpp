@@ -20,11 +20,14 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 
-// Minimum rim length worth appending. Below this the ordering is
-// meaningless and the points are noise at the gate. The measured patch
-// rims run 69-134 points; 8 is far below any of them, so it only excludes
-// degenerate output, never a real rim.
-static const std::size_t kMinPatchRimPoints = 8;
+// Minimum rim length worth appending. The measured fracture rims that
+// matter run 69-240 points; but the 1.5mm tolerance also shatters
+// unclustered zones into ~10-point fragments (pieces 1 and 3 emitted 8+2
+// of them in the first full run), which are noise at the gate, not rims.
+// 30 is far below any real rim and far above the fragments. The first
+// version of this constant was 8, which let the fragments through -- caught
+// by reading the append log, not the gate score.
+static const std::size_t kMinPatchRimPoints = 30;
 
 void ticket14_append_patch_rims(
     pcl::PointCloud<pcl::PointNormal>::Ptr cloud,
