@@ -386,6 +386,19 @@ cloud, i.e. a boundary-*detection* failure on this sherd, not an ordering
 one. The four piece-2 pairs are not recoverable without mapping those
 stages, which is new work outside this chain's ordering scope.
 
+## 2026-09-28 — pipeline 15/15: defect 1 implemented, defect 2 routed
+
+Our preprocessing now scores **15/15** on Pot_A from the pipeline itself
+(`t14_patches` arm — mesh with tol-1.5 + persist, edgeline with vote +
+guards + patch appends, no hand assembly). Per-pair movement: 1-2
+22.94→0.20mm, 2-4 18.78→0.81, 2-5 14.43→0.31, 2-8 38.20→0.20. All eleven
+previously-passing pairs still pass.
+
+Caveats on record in ticket 14: 1-2 passes thin (2 strict inliers — the
+most fragile join, first place to look on any regression); 2-8 rides on
+piece 8's wall rim which emitted no patch rims. The Juglet (0/10 honest,
+8 pairs standing 3.5–19mm apart) is unchanged: material limit, not method.
+
 ## 2026-09-28 — decorative rim routed by hand: 12/15, 1-2 recovers
 
 Persisted piece 2's decorative rim (110 pts, previously computed and

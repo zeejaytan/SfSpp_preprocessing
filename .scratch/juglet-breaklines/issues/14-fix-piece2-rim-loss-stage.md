@@ -7,8 +7,8 @@ moved the target upstream to surface construction — split vs sample vs fit
 unseparated. Ticket 03 is the record of what happens when the wrong stage
 is fixed eight times in a row)
 
-**Status:** ready-for-agent — attributed to the split (ticket 15); the fix
-is routing, not recomputation (below)
+**Status:** resolved 2026-09-28 — pipeline scores 15/15 (below).
+The fix is routing, not recomputation (below).
 
 **Needs-eye:** required before closing. Any change to where a rim is traced
 is a geometry claim; stage the before/after rims against the authors'
@@ -94,6 +94,34 @@ failures, none invented):
   discipline ticket 13 recorded for filter outputs;
 - if the change touches shared paths, re-measure the full Pot_A + Juglet
   coverage distributions (ticket 08's method).
+
+## RESOLVED 2026-09-28: pipeline scores 15/15
+
+`t14_patches` arm, full pipeline output (mesh with tol-1.5 + persist,
+edgeline with vote + guards + patch appends), no hand assembly:
+
+| arm | strict pass | failing |
+|---|---|---|
+| authors' sample | 15/15 | — |
+| ours, ticket 04 only | 11/15 | 1-2, 2-4, 2-5, 2-8 |
+| **ours, + patch rims** | **15/15** | **none** |
+
+Per-pair movement on the four: 1-2 min 22.94→0.20mm (raw 0→2), 2-4
+18.78→0.81 (0→9), 2-5 14.43→0.31 (0→25), 2-8 38.20→0.20 (0→4). All eleven
+previously-passing pairs still pass — no regressions.
+
+Two honest caveats, not buried:
+- 1-2 passes thin (2 strict inliers). It is the most fragile join in the
+  pot and the first place to look if a future change moves the number.
+- 2-8's recovery rides on piece 2's patch rims meeting piece 8's wall rim;
+  piece 8 itself emitted no patch rims ("no Decorative rim files",
+  unchanged file). If piece 8's wall rim ever degrades, 2-8 has no backup.
+
+What was built, in order: Euclidean tolerance 2→1.5mm on the unclustered
+path only (measured: 1 cluster vs 64 on piece 2); persist each patch rim
+with mesh normals (measured orientation source, 100%/86% agreement);
+append rims ≥30 points as segments of Breakline_0 only (10-point noise
+rejected after the first run showed it); existing segments untouched.
 
 ## ROUTED DEMONSTRATION 2026-09-28: 12/15 through the probe itself
 
