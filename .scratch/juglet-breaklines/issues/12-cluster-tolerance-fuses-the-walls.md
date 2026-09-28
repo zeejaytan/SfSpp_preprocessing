@@ -152,7 +152,37 @@ rather than improving it. Recorded as fragility, not gate movement.
 
 Looser arms (8.0/15.0/25.0) in flight. Gate scored on laptop after fetch.
 
-## Acceptance criteria (original, superseded for the Euclidean part) (original, superseded for the Euclidean part)
+## Round 1 results — the split is causal, and looser is worse
+
+Sweep of `SFS_SMOOTHNESS_DEG` (curvature fixed at default 1.5), full
+mesh + edgeline per arm, control unset:
+
+| arm | RegionGrowing clusters | gate |
+|---|---|---|
+| control (4.5°) | [8,2,2,2,3,2,6,4] | **7/15** |
+| 2.0° | [2,1,2,2,2,2,9,6] | **crashed** — piece 2 → 1 cluster, empty unclustered file → edgeline SIGABRT, 1/8 breaklines |
+| 8.0° | [6,2,3,3,6,3,4,3] | **4/15** |
+| 15.0° | [4,1,2,5,2,1,1,1] | **crashed** — same empty-file SIGABRT |
+| 25.0° | 1 cluster | **failed in mesh stage** — no surfaces at all |
+
+Control reproduced `pota_fresh` 7/15 exactly, so the sweep is valid.
+
+**This is the first intervention that moves the gate by changing the
+surface split** — loosening 4.5° → 8° merges clusters somewhat and drops
+7/15 → 4/15, losing previously-passing pairs 2-8, 4-8, 6-7 (4-8 went from
+min gap 0.42 to 17.57 mm). Unlike the radius (flat) and the wall swap
+(no recovery), the RegionGrowing split is **on the causal path**.
+
+Both directions away from default hurt or crash, so the default sits in a
+narrow workable window. Round 2 (3.0/3.5/5.0/6.0) tests whether anything in
+it beats 7/15.
+
+Two fragilities recorded along the way, both real defects independent of
+the gate: the edgeline **crashes** (SIGABRT) instead of skipping an empty
+unclustered file, and the mesh stage at 25° produces no surfaces with only
+a warning. Either one silently or loudly breaks a run.
+
+## Acceptance criteria (original, superseded for the Euclidean part) (original, superseded for the Euclidean part) (original, superseded for the Euclidean part)
 
 - [ ] Both clustering sites (lines 658 and 1948) are examined; they currently
       disagree with each other
