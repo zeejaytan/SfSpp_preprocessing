@@ -182,6 +182,28 @@ the gate: the edgeline **crashes** (SIGABRT) instead of skipping an empty
 unclustered file, and the mesh stage at 25° produces no surfaces with only
 a warning. Either one silently or loudly breaks a run.
 
+## Round 2 — the default is the best tested value
+
+| arm | gate | note |
+|---|---|---|
+| 2.0° | crash | piece 2 → 1 cluster, empty unclustered file, SIGABRT |
+| 3.0° | crash | same failure mode |
+| 3.5° | crash | same failure mode |
+| 4.5° (default) | **7/15** | control, reproduced twice |
+| 5.0° | 7/15 | ties default |
+| 6.0° | 6/15 | |
+| 8.0° | 4/15 | loses 2-8, 4-8, 6-7 |
+| 15.0° | crash | same failure mode |
+| 25.0° | mesh-stage fail | 1 cluster, no surfaces |
+
+**Nothing beats the default.** Tightening past ~4° collapses piece 2 to a
+single cluster and crashes the pipeline; loosening degrades the gate
+monotonically (7 → 7 → 6 → 4). The split is causal — it moves the gate —
+but the parameter is already at or near its optimum, so smoothness tuning
+is **not the fix**. The remaining gap needs the per-sherd interior/exterior
+rule (ticket 04, running) for the five piece-1 pairs and the ordering fix
+(ticket 03) for piece 2's four pairs.
+
 ## Acceptance criteria (original, superseded for the Euclidean part) (original, superseded for the Euclidean part) (original, superseded for the Euclidean part)
 
 - [ ] Both clustering sites (lines 658 and 1948) are examined; they currently
