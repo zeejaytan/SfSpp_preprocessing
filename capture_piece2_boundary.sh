@@ -49,23 +49,33 @@ done
 echo "    staged: $(ls "${TREE}/Temp/Data/${POT}" | wc -l) files"
 echo "    axis: $(ls "${TREE}/Dataset/Axes" 2>/dev/null | wc -l)"
 
-# Temp_edge/boundary.pcd is overwritten per surface, so poll and snapshot
-# each distinct version. Surface_0 is processed first, Surface_1 second;
-# without this only the second survives, which is how the first capture
-# grabbed the wrong wall's cloud.
+# Ticket 13: Temp_edge/ is overwritten per surface, so poll and snapshot
+# EVERY intermediate, each with its own dedupe state. Surface_0 is processed
+# first, Surface_1 second; without this only the second survives, which is
+# how the first capture grabbed the wrong wall's cloud.
+# The intermediates that map the surface->boundary path:
+#   cloud_Surface_AllSamples_Cleaned.pcd (input to boundary estimation)
+#   boundary.pcd (the walk's input, after the line-974 reload)
+#   boundaryImproved.pcd, cloud_Filtered.pcd (computed then discarded)
+#   cloudForSpline.pcd, CompleteBreakline.pcd (downstream, for context)
 EDGE="${TREE}/Temp/Temp_edge/${POT}"
+WATCH="cloud_Surface_AllSamples_Cleaned.pcd boundary.pcd boundaryImproved.pcd cloud_Filtered.pcd cloudForSpline.pcd CompleteBreakline.pcd"
 snapshot_loop() {
-    local last="" n=0 h
     mkdir -p "${OUT}/snaps"
+    declare -A last n
     while :; do
-        if [ -f "${EDGE}/boundary.pcd" ]; then
-            h=$(md5sum "${EDGE}/boundary.pcd" 2>/dev/null | cut -d' ' -f1)
-            if [ -n "${h}" ] && [ "${h}" != "${last}" ]; then
-                n=$((n + 1))
-                cp "${EDGE}/boundary.pcd" "${OUT}/snaps/boundary_$(printf '%02d' ${n})_${h:0:8}.pcd"
-                last="${h}"
+        for w in ${WATCH}; do
+            local f="${EDGE}/${w}" h tag
+            [ -f "${f}" ] || continue
+            h=$(md5sum "${f}" 2>/dev/null | cut -d' ' -f1)
+            [ -n "${h}" ] || continue
+            tag="${w%.pcd}"
+            if [ "${h}" != "${last[$tag]:-}" ]; then
+                last[$tag]="${h}"
+                n[$tag]=$(( ${n[$tag]:-0} + 1 ))
+                cp "${f}" "${OUT}/snaps/${tag}_$(printf '%02d' ${n[$tag]})_${h:0:8}.pcd"
             fi
-        fi
+        done
         sleep 0.3
     done
 }
@@ -78,17 +88,14 @@ kill "${WATCHER}" 2>/dev/null; wait "${WATCHER}" 2>/dev/null
 grep "ADAPTIVE SEQUENCING" "${LOG}" 2>/dev/null | head -n 4 | sed 's/^/    /'
 grep "SFS-T04" "${LOG}" 2>/dev/null | head -n 4 | sed 's/^/    /'
 
-if [ "$(ls "${OUT}"/snaps/boundary_*.pcd 2>/dev/null | wc -l)" -eq 0 ]; then
-    echo "    ** no boundary snapshots captured"
+if [ "$(ls "${OUT}"/snaps/*.pcd 2>/dev/null | wc -l)" -eq 0 ]; then
+    echo "    ** no snapshots captured"
     tail -n 8 "${LOG}" | sed 's/^/       /'
     exit 1
 fi
-for f in "${OUT}"/snaps/boundary_*.pcd; do
+for f in "${OUT}"/snaps/*.pcd; do
     echo "    $(basename "$f"): $(grep -m1 "^POINTS" "$f" | awk '{print $2}') points"
 done
-if [ -f "${EDGE}/boundaryImproved.pcd" ]; then
-    cp "${EDGE}/boundaryImproved.pcd" "${OUT}/piece2_boundaryImproved.pcd"
-fi
 BL="${TREE}/Dataset/Breaklines/${POT}"
 cp "${BL}"/Pot_A_Piece_02_Breakline_*.pcd "${OUT}/" 2>/dev/null || true
 echo "    out: $(ls "${OUT}" | wc -l) files"
