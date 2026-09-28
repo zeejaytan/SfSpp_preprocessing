@@ -4,7 +4,7 @@
 
 **Blocked by:** nothing
 
-**Status:** ready-for-agent
+**Status:** needs-info — premise wrong, see correction 2026-09-28 below; do NOT run the Euclidean-tolerance sweep as specified
 
 **Needs-eye:** required before closing. A geometry claim about which surface
 the rim comes from, so the conservator's eye on the affected sherd.
@@ -99,7 +99,41 @@ point spacing, as the boundary radius already is — rather than set once. The
 paper does not specify a cluster tolerance, so this is **our judgement, not a
 compliance fix**, and must be recorded as such.
 
-## Acceptance criteria
+## CORRECTION 2026-09-28 — wrong clustering stage, do not run as specified
+
+Read the code before sweeping (`mesh_processing_headless.cpp`):
+
+- `Surface_0` / `Surface_1` come from **RegionGrowing** in `surfaceSegmentation`
+  (`:1641-1649`, `:1686`), with defaults `smoothnessAngleThreshold = 4.5`,
+  `curvatureThreshold = 1.5` (`:2088`) and existing env overrides
+  `SFS_SMOOTHNESS_DEG` / `SFS_CURVATURE_THRESH` (`:2093-2094`). No rebuild
+  needed to sweep these.
+- `setClusterTolerance(2)` (`:658`) lives in `getClusters_EuclideanDistBased`,
+  called only by `getBreakLineForDecorativeParts` (`:1034`) on the
+  **unclustered-point** file (`:1906`). It feeds decorative breaklines, not
+  `Surface_0`.
+- `setClusterTolerance(3)` (`:1948`) lives in `getClusters`, which has **no
+  callers** in the file. Dead code.
+- The "31 vs 1 cluster" observation in ticket 10 counted
+  `*_unclustered.plyCluster_*.pcd` files — the decorative-stage output, not
+  the surface split. The association with piece 1 matching is therefore
+  **unexplained by this mechanism**, and the falsifiable prediction in this
+  ticket (raise Euclidean tolerance → walls separate → gate moves) tests the
+  wrong stage.
+
+So the Euclidean-tolerance sweep must NOT run. The surviving upstream
+candidate is the **RegionGrowing smoothness/curvature split** that actually
+produces `Surface_0` / `Surface_1`, sweepable today via the existing env
+vars. The per-sherd, constant, lateral translation signature (ticket 11
+withdrawal + direction measurement) is consistent with a per-sherd surface
+split difference, which is what that stage controls.
+
+Redirect: sweep `SFS_SMOOTHNESS_DEG` on Pot_A piece 3 first (single-file mode
+exists, `:2036-2043`), then all 8. Measure per-sherd cluster behaviour of the
+*RegionGrowing* split plus gate score from 7/15. Both halves, per the rule in
+ticket 11.
+
+## Acceptance criteria (original, superseded for the Euclidean part)
 
 - [ ] Both clustering sites (lines 658 and 1948) are examined; they currently
       disagree with each other
