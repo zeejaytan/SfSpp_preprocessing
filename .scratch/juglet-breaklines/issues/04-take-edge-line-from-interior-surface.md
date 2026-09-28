@@ -28,7 +28,8 @@ on some sherds, not systematically.
 **Blocked by:** 03 (the edge line must be a well-ordered loop before it
 is worth choosing which surface it comes from)
 
-**Status:** resolved 2026-09-28 — pipeline reproduces the 11/15 demonstration
+**Status:** resolved 2026-09-28 — pipeline reproduces the 11/15 demonstration,
+then 15/15 with patch rims (ticket 14)
 
 ## RESOLUTION: the pipeline now selects per sherd, 7/15 → 11/15
 

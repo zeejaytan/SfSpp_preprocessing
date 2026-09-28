@@ -2,9 +2,11 @@
 
 **Answers:** E1
 
-**Blocked by:** nothing — this is now the front of the queue
+**Blocked by:** nothing — this was the front of the queue; investigation
+complete 2026-09-28, see RESOLVED section at foot
 
-**Status:** ready-for-agent
+**Status:** resolved — offset explained (wrong wall) and exonerated (fixing
+it moved the gate 7/15 → 6/15). No further work belongs here.
 
 **Needs-eye:** **required before this ticket can close.** The offset is a
 geometry claim and the render already exists

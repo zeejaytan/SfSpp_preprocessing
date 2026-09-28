@@ -2,9 +2,10 @@
 
 **Answers:** E1
 
-**Blocked by:** nothing — measurement with small diagnostic code changes
+**Blocked by:** nothing — measurement complete; verdict recorded below
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-09-28 — split loses the strip, fit preserves,
+sample stable; decorative rim routed under ticket 14
 
 **Needs-eye:** none — tables of numbers, no geometry claim. A render enters
 only if the inset needs judging by eye.

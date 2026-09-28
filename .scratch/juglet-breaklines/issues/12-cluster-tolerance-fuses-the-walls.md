@@ -4,7 +4,10 @@
 
 **Blocked by:** nothing
 
-**Status:** needs-info — premise wrong, see correction 2026-09-28 below; do NOT run the Euclidean-tolerance sweep as specified
+**Status:** closed — premise (Euclidean tolerance fuses walls) was wrong;
+the value nevertheless changed 2→1.5 under ticket 14 for a separately
+measured reason (1 cluster vs 64 on piece 2's unclustered path, which is
+the only caller). The `// 2cm` comment discrepancy is recorded but untouched.
 
 **Needs-eye:** required before closing. A geometry claim about which surface
 the rim comes from, so the conservator's eye on the affected sherd.

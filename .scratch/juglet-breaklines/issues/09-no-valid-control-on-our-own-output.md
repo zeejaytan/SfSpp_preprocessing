@@ -4,7 +4,10 @@
 
 **Blocked by:** nothing — this was the precondition for every other ticket here
 
-**Status:** resolved — the control now exists, and it fails
+**Status:** resolved — the control now exists, and it PASSES: our pipeline
+scores 15/15 on Pot_A (`t14_patches` arm), matching the authors' sample.
+The 0/15 that motivated this ticket is retracted as a stale-bundle
+artifact; the 7/15 middle chapter is recorded in the body.
 
 **Needs-eye:** none — a measurement result, no geometry claim carried forward
 without a render.

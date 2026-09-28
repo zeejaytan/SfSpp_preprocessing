@@ -9,7 +9,25 @@ passing number is not something to believe on its own.
 
 **Blocked by:** 06 (and therefore 01-05)
 
-**Status:** ready-for-agent
+**Status:** in-progress — Pot_A half done by our own output (15/15,
+`t14_patches` arm); Juglet half untouched at 0/10 honest
+
+## 2026-09-28 — Pot_A acceptance met, by our pipeline, not the sample
+
+- [x] **Pot_A at 15/15 on our output.** The old criterion ("held at 15/15")
+      measured the authors' sample twice over; it is now met genuinely by
+      the `t14_patches` arm, per pair, with the two caveats on record in
+      ticket 14 (1-2 passes thin on 2 inliers; 2-8 rides on piece 8's wall
+      rim). No regressions: all pairs that passed at 11/15 still pass.
+- [ ] Juglet true-mate pass rate materially non-zero at ground truth, per
+      pair, honest denominator 10. Still 0/10. The Juglet has no axis files
+      so the ticket-04 vote cannot fire there, and its 8 non-touching pairs
+      are a material limit no extraction can pass.
+- [ ] Per-pair failure reasons for the Juglet (wear / wall / unresolved).
+- [x] One claimed join staged correct-versus-attempt and witnessed
+      (`juglet_sfs29`, closed as weak — confirms the 11.45mm figure, decides
+      nothing else; framing lesson recorded).
+- [ ] Handoff clause (probe passes / assembler finds nothing) not yet triggered.
 
 **Needs-eye:** a `visual-qa` pair per true mate that now passes —
 correct placement beside the machine's — staged via `visual-qa-helper`

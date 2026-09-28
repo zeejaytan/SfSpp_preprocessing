@@ -4,7 +4,12 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** in-progress
+**Status:** resolved 2026-09-28 — seam delivered everything asked: CTest
+target compiling the same source as production, fixture on real geometry,
+DISABLED marking only known-broken behaviour, behaviour-preservation proof.
+The binary-level pipeline re-run it deferred lives in ticket 07; the
+ordering code itself was restored byte-identical after the reverted
+ticket-03 experiment.
 
 **Needs-eye:** none — this ticket produces a test target and a
 characterisation, not a geometry claim.

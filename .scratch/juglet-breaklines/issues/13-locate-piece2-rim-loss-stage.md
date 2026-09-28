@@ -2,9 +2,10 @@
 
 **Answers:** E1
 
-**Blocked by:** nothing — measurement only, no code changes
+**Blocked by:** nothing — measurement only, no code changes; complete
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-09-28 — collapse named: boundary estimation
+(82% → 36%), refined by ticket 15 to surface split upstream of it
 
 **Needs-eye:** none — this ticket produces a per-stage coverage table, not a
 geometry claim. A render is required only if the table points at a stage

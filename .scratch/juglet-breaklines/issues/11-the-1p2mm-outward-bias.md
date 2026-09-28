@@ -1,10 +1,16 @@
-# 11: The ~1.2 mm outward bias in our rims — the actual cause
+# 11: The ~1.2 mm outward bias in our rims — WITHDRAWN 2026-09-28
+
+Central finding refuted: measuring each rim's radius from its OWN centroid
+was circular. Direct measurement puts both rims on the mesh (ours 0.02mm,
+authors' 0.00mm). There is no 1.2mm wall offset. Retained as the record of
+the error, not as a finding.
 
 **Answers:** E1
 
-**Blocked by:** nothing. This is the front of the queue.
+**Blocked by:** nothing. This was the front of the queue; central finding
+refuted 2026-09-28, retained as error record.
 
-**Status:** ready-for-agent
+**Status:** closed — do not act on the bias claim
 
 **Needs-eye:** required before this ticket closes. It is a geometry claim
 about where our rim sits, and the conservator's eye is what settles whether

@@ -408,6 +408,18 @@ the probe with t04 partners fixed: **1-2 passes, 13 strict inliers at
 pipeline routing change (persist + wire into the breakline) is demonstrated
 worthwhile (+1 measured) but not yet implemented — ticket 14.
 
+## 2026-09-28 — tickets brought current with the 15/15 result
+
+Status sweep, no new measurements: 01 resolved (seam delivered; ordering
+code restored byte-identical after the reverted experiment); 09 resolved
+(control passes on our output); 10 resolved (offset exonerated); 11 closed
+as withdrawn (circular measure); 12 closed (premise wrong; tolerance
+changed under 14 for separate measured reason); 13 resolved (collapse
+named); 15 resolved (split loses, fit preserves, sample stable); 04 and 14
+resolved (pipeline 15/15); 07 in-progress (Pot_A half met genuinely,
+Juglet half untouched). Tickets 02/05/06 stay open as paper-compliance
+work, explicitly not gate remedies.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
