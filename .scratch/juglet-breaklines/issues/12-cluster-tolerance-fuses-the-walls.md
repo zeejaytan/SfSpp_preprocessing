@@ -133,7 +133,26 @@ exists, `:2036-2043`), then all 8. Measure per-sherd cluster behaviour of the
 *RegionGrowing* split plus gate score from 7/15. Both halves, per the rule in
 ticket 11.
 
-## Acceptance criteria (original, superseded for the Euclidean part)
+## Sweep running — and the RegionGrowing counts confirm the stage confusion
+
+Control arm (defaults 4.5deg/1.5) RegionGrowing cluster counts per piece:
+**[8, 2, 2, 2, 3, 2, 6, 4]** — every piece splits into ≥2 clusters.
+
+Ticket 10's "31 vs 1" counted `*_unclustered.plyCluster_*.pcd` files, the
+**decorative-stage** output. The RegionGrowing split that actually feeds
+`Surface_0`/`Surface_1` gives every piece ≥2 clusters. So the "vacuous
+selection" story built on the 31-vs-1 counts was measuring the wrong
+intermediate entirely, and the piece-1 association with it is void.
+
+Tighter smoothness (2.0deg) gives **[2, 1, 2, 2, 2, 2, 9, 6]** — piece 2
+collapses to a single cluster — and the edgeline stage then **crashes** on
+an empty `Pot_A_Piece_02_unclustered.ply` (PLYReader parse error → KdTree
+assertion → SIGABRT, 1/8 breaklines). A tighter gate breaks the pipeline
+rather than improving it. Recorded as fragility, not gate movement.
+
+Looser arms (8.0/15.0/25.0) in flight. Gate scored on laptop after fetch.
+
+## Acceptance criteria (original, superseded for the Euclidean part) (original, superseded for the Euclidean part)
 
 - [ ] Both clustering sites (lines 658 and 1948) are examined; they currently
       disagree with each other
