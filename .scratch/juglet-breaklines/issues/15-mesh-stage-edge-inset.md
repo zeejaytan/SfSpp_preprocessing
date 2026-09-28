@@ -61,16 +61,53 @@ so split-loss vs fit-inset cannot be told apart from disk.
    is judged by the per-stage coverage table + gate from 11/15, never by
    cluster counts alone.
 
-## Acceptance criteria
+## VERDICT 2026-09-28: the split loses the strip; the fit preserves it
 
-- [ ] Mesh stage run twice; Surface_0 diff reported (seed question settled)
-- [ ] Raw pre-fit clusters saved and measured: split-loss vs fit-inset
-      attributed with numbers, not argued
-- [ ] The 2mm shortfall attributed to ONE of split / sample / fit, with the
-      measurement that rules out the other two
-- [ ] Ticket 14 pointed at the attributed sub-stage (it currently says
-      boundary estimation, which ticket 13 named before this refinement)
-- [ ] Authors' arm in every comparison (ticket 11's rule)
+Raw pre-fit clusters captured via the SFS-T15 save (`raw_vs_fitted.py`):
+
+| file | n | ref within 2mm | med |
+|---|---|---|---|
+| tmpSurfaceCluster_Raw_0 | 7,499 | **80.5%** | 1.39 |
+| tmpSurfaceCluster_Raw_1 | 52 | 1.8% | 49.86 |
+| tmpSurfaceCluster_Improved_0 (Surface_0) | 11,264 | **82.2%** | 1.26 |
+| tmpSurfaceCluster_Improved_1 (Surface_1) | 172 | 10.1% | 45.33 |
+
+- **Sample: STABLE.** Mesh stage run twice on identical inputs → Surface_0
+  byte-identical. Random sampling is OUT. (One-line seed fix not needed.)
+- **Split: LOSES the strip.** Raw Cluster_0 already lacks 20% of the rim;
+  the strip sits in unclustered (100% at 0.53mm). Region growing with
+  smoothness 4.5° stops at the fracture and the edge strip is never in
+  either wall cluster.
+- **Fit: PRESERVES (slightly improves).** 80.5% → 82.2%, median 1.39 →
+  1.26mm. The NURBS fit does not inset the edge on this sherd. Fit
+  robustness is OUT as the cause here.
+
+So the 2mm shortfall enters at the RegionGrowing split and nothing
+downstream of it can recover what was never assigned to a wall.
+
+## Third dead end: the fracture-zone rim is computed and discarded
+
+`getBreakLineForDecorativeParts` (`mesh_processing_headless.cpp:1032`)
+runs Euclidean clustering on the unclustered points, boundary estimation
+per cluster, and `getPointsInSequence` — then the function ends and the
+ordered rim (`cloud_sequenced`, a local) is dropped. Verified by reading
+`:1128-1135`: no save, no return, loop end, function end.
+
+That is the rim this whole chain has been looking for: traced from the
+points that actually cover the fracture zone (100% at 0.53mm), computed by
+existing code, thrown away. Third instance of the pattern after the line-974
+reload and the dead outlier filter. Ticket 14's fix is to route it into the
+breakline instead of recomputing anything.
+
+## Acceptance criteria (updated with verdicts)
+
+- [x] Mesh stage run twice; Surface_0 IDENTICAL — seed settled, sampling out
+- [x] Raw pre-fit clusters saved and measured: raw 80.5%, fitted 82.2% —
+      split loses the strip, fit preserves it
+- [x] The 2mm shortfall attributed: SPLIT (strip sits in unclustered at
+      100%/0.53mm; sample stable; fit preserves)
+- [x] Ticket 14 pointed at the attributed sub-stage (see below)
+- [ ] Authors' arm in every comparison (ticket 11's rule — ongoing)
 
 ## Note
 

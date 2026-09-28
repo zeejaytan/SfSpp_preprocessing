@@ -7,7 +7,8 @@ moved the target upstream to surface construction — split vs sample vs fit
 unseparated. Ticket 03 is the record of what happens when the wrong stage
 is fixed eight times in a row)
 
-**Status:** blocked — waiting on ticket 15's attribution
+**Status:** ready-for-agent — attributed to the split (ticket 15); the fix
+is routing, not recomputation (below)
 
 **Needs-eye:** required before closing. Any change to where a rim is traced
 is a geometry claim; stage the before/after rims against the authors'
@@ -73,6 +74,26 @@ shortfall at surface *construction* (mesh stage / split — the strip sits
 in unclustered), and (b) a fit-robust way to include the fracture strip
 that does not poison the spline. Neither is an edgeline-side change, which
 is why every edgeline-side intervention in ticket 03 failed.
+
+## TARGET ATTRIBUTED 2026-09-28 (ticket 15): route, don't recompute
+
+The split assigns piece 2's fracture strip to unclustered points; the fit
+preserves whatever it is given (80.5→82.2%); sampling is stable. And
+`getBreakLineForDecorativeParts` (`mesh_processing_headless.cpp:1032`)
+already extracts an ordered rim from those unclustered points — then drops
+it (`cloud_sequenced` local, `:1128-1135`, no save). Third dead end in this
+pipeline (line-974 reload, dead outlier filter, now this).
+
+So the fix is ROUTING, not a new computation: persist that rim beside the
+wall breaklines instead of discarding it. Constraints (all from measured
+failures, none invented):
+- scored per pair from 11/15 with the authors' arm riding along;
+- must keep piece 1 correct and the six passing pairs passing;
+- must not undo ticket 04 (guard audit re-run);
+- the rim comes from unclustered points, so it needs the NaN/validity
+  discipline ticket 13 recorded for filter outputs;
+- if the change touches shared paths, re-measure the full Pot_A + Juglet
+  coverage distributions (ticket 08's method).
 
 ## The experiment this was set up for (now run, above)
 
