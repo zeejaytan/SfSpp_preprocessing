@@ -140,6 +140,35 @@ with ticket 04's fix. The C++ replacement walk written for this ticket was
 validated in Python, failed there, and was never built — recorded so the
 work is not repeated, and so the TDD discipline that caught it is visible.
 
+## REFINEMENT 2026-09-28: the loss is between surface and boundary cloud
+
+One more measurement locates defect 2 precisely, and it is NOT the walk.
+Same reference, same 2mm threshold, three stages:
+
+| stage (piece 2) | ref rim within 2mm |
+|---|---|
+| Surface_0 (11,263 pts) | **82%** |
+| boundary cloud S0-path (86 pts) | **10%**, one 17-pt arc |
+| boundary cloud S1-path (202 pts) | **36%**, scattered runs |
+| unclustered (1,428 pts) | 100% at 0.53mm |
+
+The rim zone exists in the surface (82%) and is gone by the boundary cloud
+(10–36%). **The walk cannot lose what it was never given.** Defect 2 is a
+boundary-*detection* failure on this sherd — somewhere in
+`cleanSamples` → `estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface`
+→ sphere-marching → boundary estimation — not an ordering failure. This
+ticket's ordering scope never covered it, which is why eight interventions
+at the wrong stage all failed.
+
+Also tested and eliminated here: using the discarded `boundaryImproved`
+cloud (boundary + nearby unclustered, the dead code at line 974) — coverage
+stays 0.68/0.27 with <45% near the reference. Un-discarding it is not the
+fix either.
+
+What remains is mapping the surface→boundary stages for piece 2: new work,
+not a continuation. Scripts: `improved_cloud_test.py`, `overlap_map.py`,
+`where_is_the_excess.py`, `which_way_is_the_offset.py`.
+
 ## ADDENDUM 2026-09-28: the surfaces, not just the clouds
 
 The closure above blames boundary *detection* (clouds missing the rim).
