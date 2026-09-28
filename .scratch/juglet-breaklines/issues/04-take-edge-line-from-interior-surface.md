@@ -64,6 +64,33 @@ only), so the vote cannot fire there. And the witnessed render (Needs-eye)
 is still owed; the matplotlib offset render exists but is not a staged
 `visual-qa` look.
 
+## GUARDS 2026-09-28: the vote picks a scrap on piece 2, so the vote gets guards
+
+Measured on piece 2's intermediates (`surfaces_cover_rim.py`):
+
+| source | points | authors' rim within 2mm | median |
+|---|---|---|---|
+| Surface_0 | 11,263 | 82% | 1.26mm |
+| Surface_1 | **171** | 10% | **45mm** |
+| unclustered | 1,428 | **100%** | **0.53mm** |
+
+**Surface_1 is a 171-point scrap sitting 45mm from the fracture**, and the
+vote picked it (margin 403 vs 280 — the weakest of all eight by far).
+Worse, the unclustered points — the fracture zone region-growing refused —
+cover the whole reference rim at half a millimetre. So the vote erred AND
+the best rim source for this sherd is neither named surface.
+
+The guard, implemented in `ticket04_interior_first.cpp`: an S1 win stands
+only if S1 holds **≥10% of S0's points** AND the margin ratio is **≥2.0**.
+Separations on current data: size 0.015 vs 0.80–0.96, margin 1.44 vs
+~3.6–30. Either guard firing keeps historic order with the reason logged.
+Both thresholds provisional (8 sherds, one pot) and recorded as such.
+
+**Prediction, on record before the run:** piece 2 keeps Surface_0 and the
+pipeline reproduces the hand-built mixed bundle at **11/15**, failing
+exactly 1-2, 2-4, 2-5, 2-8. Run `run_ticket04_pota.sh` in flight; audit
+table plus gate score together, audit first.
+
 **Needs-eye:** the conservator should be shown, for one true pair, which
 face each sherd's edge line came from — on the render staged in 07.
 

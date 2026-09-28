@@ -357,6 +357,22 @@ mesh at +0.997: real geometry, no sign flip available. The four piece-2
 pairs are not recoverable without a boundary-detection investigation this
 chain did not open.
 
+## 2026-09-28 — vote guards, and piece 2's surfaces measured
+
+The vote picked a **171-point scrap 45mm from the fracture** over an
+11,263-point surface covering 82% of the reference (piece 2, margin 403 vs
+280 — weakest of the eight). Ticket 04 now guards: an S1 win stands only
+with ≥10% of S0's size and margin ≥2.0 (separations 0.015 vs 0.80–0.96 and
+1.44 vs ~3.6–30; both provisional). Prediction on record: pipeline
+reproduces the mixed 11/15.
+
+Deeper: piece 2's **unclustered points cover 100% of the reference at
+0.53mm median**, and 18% of it is covered ONLY there, not by S0. The
+fracture zone sits in the points region-growing refused. So the future fix
+for piece 2 starts with S0 + unclustered as the rim source — never S1, and
+never S0 alone. Ticket 03 carries the pointer; ticket 12 carries the
+smoothness context (default optimal, both directions hurt or crash).
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

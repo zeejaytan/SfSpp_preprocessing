@@ -140,6 +140,24 @@ with ticket 04's fix. The C++ replacement walk written for this ticket was
 validated in Python, failed there, and was never built — recorded so the
 work is not repeated, and so the TDD discipline that caught it is visible.
 
+## ADDENDUM 2026-09-28: the surfaces, not just the clouds
+
+The closure above blames boundary *detection* (clouds missing the rim).
+Surface-level measurement refines that without reopening it:
+
+- Piece 2's Surface_1 (171 pts, 45mm from the rim) is a scrap the vote
+  wrongly picked; ticket 04 now guards against exactly this.
+- Piece 2's **unclustered points cover 100% of the reference at 0.53mm
+  median** — better than either named surface. The fracture zone sits in
+  the points region-growing refused to cluster.
+- 30/169 ref points (18%) are covered ONLY by unclustered, not S0.
+
+So a future boundary-detection investigation starts with a concrete lead:
+the rim zone for this sherd is in S0 (82%) + unclustered (the rest), never
+in S1. Any fix that does not consult the unclustered points cannot cover
+the full rim. Scripts: `surfaces_cover_rim.py`, `unclustered_covers_rim.py`,
+`overlap_map.py` (all in `structure-from-sherds-pp/artifacts/juglet_run1/`).
+
 ## Note
 
 The paper reports the axis-direction sign ambiguity is handled at
