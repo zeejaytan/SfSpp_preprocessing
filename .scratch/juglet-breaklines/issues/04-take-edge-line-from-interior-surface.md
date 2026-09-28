@@ -91,6 +91,19 @@ pipeline reproduces the hand-built mixed bundle at **11/15**, failing
 exactly 1-2, 2-4, 2-5, 2-8. Run `run_ticket04_pota.sh` in flight; audit
 table plus gate score together, audit first.
 
+## CONFIRMED 2026-09-28: pipeline scores 11/15 with the guard live
+
+Audit (by `cmp`, per piece): 01 KEPT, 02 KEPT via guard rejection, 03–08
+EXCHANGED. Piece 1's file is byte-identical to baseline; piece 2's differs
+byte-wise (fresh mesh run colliding with the known run-to-run variation)
+while its pairs behave as predicted.
+
+Gate (`t04_interior` arm): **11/15**, failing exactly **1-2, 2-4, 2-5, 2-8**
+— the predicted set. The five piece-1 pairs recovered at 0.16–1.24 mm.
+
+Defect 1 is implemented, not demonstrated: per-sherd interior selection
+with scrap-guards, 7/15 → 11/15 from the pipeline itself.
+
 **Needs-eye:** the conservator should be shown, for one true pair, which
 face each sherd's edge line came from — on the render staged in 07.
 
