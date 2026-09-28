@@ -95,6 +95,31 @@ failures, none invented):
 - if the change touches shared paths, re-measure the full Pot_A + Juglet
   coverage distributions (ticket 08's method).
 
+## ROUTED DEMONSTRATION 2026-09-28: 12/15 through the probe itself
+
+Piece 2's decorative rim (110 pts from the unclustered fracture zone,
+enriched with mesh normals exactly as the assembler's fallback does, one
+segment header) scored through `gate_probe_b0.py` with the other 7 pieces
+from the t04 arm (`decor_piece2` arm):
+
+| arm | strict pass | failing |
+|---|---|---|
+| t04 (wall rims) | 11/15 | 1-2, 2-4, 2-5, 2-8 |
+| **decor piece 2 + t04 rest** | **12/15** | 2-4 (6.28mm), 2-5 (5.10mm), 2-8 (24.49mm) |
+
+**1-2 passes: 13 strict inliers at 0.56mm.** The other three fail on
+distance with any normals — the decorative rim spans the 1-2 seam region
+only, which is consistent with its 21% reference coverage.
+
+This is a demonstration assembled by hand, not a pipeline output: the
+routing change (persist + wire the decorative rim into the breakline the
+assembler reads) is still to be implemented. What it settles is that the
+change is worth implementing — +1 pair measured on the scored metric, with
+the mechanism (fracture-zone rim reaches the seam the wall rim misses)
+named per pair. The remaining three need the fuller fracture-zone rim
+(100% at 0.53mm sits in the unclustered points; the decorative path
+extracted 110 of ~1400 as rim) or the piece-2 boundary work to continue.
+
 ## The experiment this was set up for (now run, above)
 
 Feed piece 2's boundary detection the union of Surface_0 + unclustered

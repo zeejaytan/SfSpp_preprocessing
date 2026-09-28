@@ -373,8 +373,6 @@ for piece 2 starts with S0 + unclustered as the rim source — never S1, and
 never S0 alone. Ticket 03 carries the pointer; ticket 12 carries the
 smoothness context (default optimal, both directions hurt or crash).
 
-## 2026-09-28 — vote guards confirmed: pipeline 11/15, failing the predicted set
-
 Ticket 04's guard (an S1 win stands only with ≥10% of S0's size and margin
 ≥2.0) ran in the pipeline: audit by `cmp` shows 01 KEPT, 02 KEPT via guard
 rejection, 03–08 EXCHANGED. Gate (`t04_interior` arm): **11/15**, failing
@@ -387,6 +385,15 @@ Surface_0 covers 82% — so the rim is lost between surface and boundary
 cloud, i.e. a boundary-*detection* failure on this sherd, not an ordering
 one. The four piece-2 pairs are not recoverable without mapping those
 stages, which is new work outside this chain's ordering scope.
+
+## 2026-09-28 — decorative rim routed by hand: 12/15, 1-2 recovers
+
+Persisted piece 2's decorative rim (110 pts, previously computed and
+dropped), enriched with mesh normals as the assembler does, scored through
+the probe with t04 partners fixed: **1-2 passes, 13 strict inliers at
+0.56mm**. Overall **12/15**, failing only 2-4/2-5/2-8 on distance. The
+pipeline routing change (persist + wire into the breakline) is demonstrated
+worthwhile (+1 measured) but not yet implemented — ticket 14.
 
 ## The two candidate causes, separated
 
