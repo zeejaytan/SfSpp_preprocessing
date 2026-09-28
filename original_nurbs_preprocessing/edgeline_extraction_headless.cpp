@@ -3552,12 +3552,42 @@ int main()
             std::cout << "Surface 0 point cloud file: " << inputSurfaceFolder + surfaceFile0 << std::endl;
             std::cout << "Surface 1 point cloud file: " << inputSurfaceFolder + surfaceFile1 << std::endl;
 
-            fs::copy_file(inputSurfaceFolder + surfaceFile0, 
-                         outputSurfaceFolder + surfaceFile0, 
+            fs::copy_file(inputSurfaceFolder + surfaceFile0,
+                         outputSurfaceFolder + surfaceFile0,
                          fs::copy_options::overwrite_existing);
-            fs::copy_file(inputSurfaceFolder + surfaceFile1, 
-                         outputSurfaceFolder + surfaceFile1, 
+            fs::copy_file(inputSurfaceFolder + surfaceFile1,
+                         outputSurfaceFolder + surfaceFile1,
                          fs::copy_options::overwrite_existing);
+
+            // SFS-T04: interior/exterior classification, paper section IV-B1.
+            // Breakline_0 must come from the interior surface. If Surface_1
+            // wins the vote, exchange the two input files so the interior
+            // surface is processed as Surface_0. The exchange (not a copy)
+            // keeps Breakline_1 coming from the other surface, so both
+            // breaklines still trace distinct walls, correctly labelled.
+            // Axis missing or unreadable => warn and keep historic order;
+            // never silently change which surface feeds Breakline_0.
+            {
+                extern bool ticket04_place_interior_first(
+                    const std::string& surf0_path, const std::string& surf1_path,
+                    const std::string& axis_path);
+                const std::string axis_path =
+                    std::string("Dataset/Axes/") + fileNameOnly + "_Axis.xyz";
+                if (!fs::exists(axis_path)) {
+                    std::cout << "[SFS-T04] " << fileNameOnly
+                              << ": no axis file at " << axis_path
+                              << " -- keeping historic Surface_0 order"
+                              << std::endl;
+                } else if (!ticket04_place_interior_first(
+                               inputSurfaceFolder + surfaceFile0,
+                               inputSurfaceFolder + surfaceFile1,
+                               axis_path)) {
+                    std::cout << "[SFS-T04] " << fileNameOnly
+                              << ": classification unavailable -- keeping "
+                                 "historic Surface_0 order"
+                              << std::endl;
+                }
+            }
 
             processFragmentData(inputSurfaceFolder + surfaceFile0, objPath.string());
             processFragmentData(inputSurfaceFolder + surfaceFile1, objPath.string());

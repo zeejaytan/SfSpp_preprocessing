@@ -43,6 +43,10 @@ add_executable(EdgeLineExtractionHeadless edgeline_extraction_headless.cpp ${EDG
 # Ticket 11: boundary-radius sweep hook. Inert unless
 # SFSPP_BOUNDARY_RADIUS_MM is set, so default behaviour is unchanged.
 target_sources(EdgeLineExtractionHeadless PRIVATE boundary_radius_hook.cpp)
+# Ticket 04: interior/exterior classification per the paper (section IV-B1).
+# Active whenever an axis file exists; without one it logs and keeps the
+# historic order, so behaviour on axis-less runs is unchanged.
+target_sources(EdgeLineExtractionHeadless PRIVATE ticket04_interior_first.cpp surface_classify.cpp)
 add_executable(EdgeLineExtractionLegacy edgeline_extraction_backup.cpp ${PROJ_DEP})
 
 # Link Libraries
@@ -83,6 +87,14 @@ target_compile_definitions(test_edge_line_ordering
 # passing today -> enabled
 add_test(NAME edge_line_ordering_clean_rim     COMMAND test_edge_line_ordering clean-rim)
 add_test(NAME edge_line_ordering_no_revisit    COMMAND test_edge_line_ordering no-revisit)
+
+# Ticket 04: interior/exterior classification. Dependency-free (no PCL),
+# new code written test-first, so these are expected to PASS on landing.
+# If any fails, the classifier is wrong, not the test.
+add_executable(test_surface_classify tests/test_surface_classify.cpp surface_classify.cpp)
+add_test(NAME surface_classify_inner_outer COMMAND test_surface_classify inner-outer)
+add_test(NAME surface_classify_degenerate  COMMAND test_surface_classify degenerate)
+add_test(NAME surface_classify_empty       COMMAND test_surface_classify empty)
 
 # Known-broken today. Disabled by the DISABLED test PROPERTY, which is the
 # single mechanism -- an earlier attempt used the DISABLED_ name prefix as

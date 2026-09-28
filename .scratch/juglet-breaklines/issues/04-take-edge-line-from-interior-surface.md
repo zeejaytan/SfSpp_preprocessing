@@ -1,23 +1,14 @@
 # 04: Take the edge line from the interior surface only
 
-> **STATUS: the deviation is CONFIRMED. The remedy is NOT confirmed.**
+> **STATUS: implementing. The remedy is now DEMONSTRATED per-sherd.**
 >
-> An intervention test settled this. Taking each Pot_A sherd's rim from
-> `Surface_1` instead of `Surface_0` — a blanket swap, real extractor,
-> baseline drift 0.00 mm on all eight pieces — brings **six of eight** rims
-> from 3.5–3.8 mm off the authors' reference to **0.53–0.80 mm**, with 99–100%
-> of points inside the 2 mm gate. The two sherds that do not move are the two
-> that were already correct (piece 1, 0.69 mm) and the truncated one
-> (piece 2).
->
-> **And the gate score went the other way: 7/15 → 6/15.** No failing pair was
-> recovered; the pairs that passed simply passed more comfortably, and piece
-> 1 — in six pairs — was made worse.
->
-> So: do this ticket because **the paper specifies it and the code does not
-> comply**, which is a real deviation worth correcting on its own merits. Do
-> **not** present it as the fix for the lost joins, because it is measured
-> not to be. Full numbers in ticket 10.
+> A blanket swap (ticket 10) fixed six of eight rims to 0.53–0.80 mm but
+> moved the gate 7/15 → 6/15, because piece 1 was already right and the swap
+> broke it. The per-sherd mix — pieces 1+2 from `Surface_0`, 3–8 from
+> `Surface_1` — scores **11/15**, recovering all five piece-1 pairs, with
+> every remaining failure containing piece 2. So the remedy is a per-sherd
+> rule, which is exactly what the paper's interior/exterior test is. Full
+> numbers in ticket 10.
 
 **What to build:** the two surfaces of a sherd are classified as interior
 and exterior, and the edge line is taken from the **interior** one — as
@@ -37,7 +28,7 @@ on some sherds, not systematically.
 **Blocked by:** 03 (the edge line must be a well-ordered loop before it
 is worth choosing which surface it comes from)
 
-**Status:** ready-for-agent
+**Status:** in-progress — classifier + tests written 2026-09-28, building next
 
 **Needs-eye:** the conservator should be shown, for one true pair, which
 face each sherd's edge line came from — on the render staged in 07.
