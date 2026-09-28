@@ -2,11 +2,12 @@
 
 **Answers:** E1
 
-**Blocked by:** 13 (the stage must be named by measurement before it is
-changed — ticket 03 is the record of what happens when the wrong stage is
-fixed eight times in a row)
+**Blocked by:** 15 (ticket 13 named boundary estimation; deeper measurement
+moved the target upstream to surface construction — split vs sample vs fit
+unseparated. Ticket 03 is the record of what happens when the wrong stage
+is fixed eight times in a row)
 
-**Status:** in-progress — target refined twice by measurement, see below
+**Status:** blocked — waiting on ticket 15's attribution
 
 **Needs-eye:** required before closing. Any change to where a rim is traced
 is a geometry claim; stage the before/after rims against the authors'
