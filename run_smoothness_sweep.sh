@@ -32,7 +32,12 @@ OUT="${ROOT}/diag_smooth_out"
 POT=Pot_A
 # Control + 4 values: tighter, default-ish, looser, much looser.
 # Default is 4.5; 25 matches the Juglet note (piece 3 needs ~25 deg).
-SMOOTHS="2.0 8.0 15.0 25.0"
+# Round 1 (2026-09-28): 2.0 crashed the edgeline, 8.0 scored 4/15 vs
+# control 7/15, 15.0 crashed, 25.0 failed in the mesh stage. So the
+# interesting window is between the crash (2.0) and the default (4.5),
+# plus just above default.
+# Round 2: 3.0 3.5 5.0 6.0.
+SMOOTHS="3.0 3.5 5.0 6.0"
 
 for b in MeshPreprocessingHeadless EdgeLineExtractionHeadless; do
     [ -x "${BUILD}/${b}" ] || { echo "ERROR: ${b} not built"; exit 1; }
