@@ -1779,6 +1779,14 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             cloudWithNormals_Cluster2->width = cloudWithNormals_Cluster2->points.size();
             cloudWithNormals_Cluster2->height = 1;
 
+            // SFS-T15: save the RAW region clusters before B-spline fitting.
+            // Ticket 15 must separate split-loss (strip never in either
+            // cluster) from fit-inset (strip present raw, gone after fit),
+            // and the raw clusters were never written to disk. Diagnostic
+            // only: two extra PLY writes beside the fitted outputs.
+            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Raw_0.ply", *cloudWithNormals_Cluster1, false); // ASCII mode
+            pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Raw_1.ply", *cloudWithNormals_Cluster2, false); // ASCII mode
+
             pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster1(new pcl::PointCloud<pcl::PointNormal>);
             improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
             cloudWithNormals_Cluster1->points.clear();
