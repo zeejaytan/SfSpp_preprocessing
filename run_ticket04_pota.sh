@@ -77,3 +77,12 @@ grep "SFS-T04" "${ELOG}" 2>/dev/null | head -n 30 || echo "    ** NO SFS-T04 LIN
 BL="${TREE}/Dataset/Breaklines/${POT}"
 echo "    breakline .pcd written: $(ls "${BL}"/*.pcd 2>/dev/null | wc -l)"
 echo "    pieces sequenced: $(grep -c "ADAPTIVE SEQUENCING" "${ELOG}" 2>/dev/null || true)"
+echo "--- exchange audit: Temp/Data Surface_0 must equal Dataset/Surfaces Surface_1"
+echo "    wherever the vote logged an exchange (and vice versa for keeps)"
+for p in 01 02 03 04 05 06 07 08; do
+    t0="${TREE}/Temp/Data/${POT}/Pot_A_Piece_${p}_Surface_0.xyz"
+    o0="${TREE}/Dataset/Surfaces/${POT}/Pot_A_Piece_${p}_Surface_0.xyz"
+    o1="${TREE}/Dataset/Surfaces/${POT}/Pot_A_Piece_${p}_Surface_1.xyz"
+    if cmp -s "${t0}" "${o0}"; then st="KEPT(order unchanged)"; elif cmp -s "${t0}" "${o1}"; then st="EXCHANGED"; else st="NEITHER -- unexpected content"; fi
+    echo "    piece ${p}: ${st}"
+done

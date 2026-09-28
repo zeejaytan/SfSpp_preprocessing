@@ -102,13 +102,18 @@ bool exchange_files(const std::string& a, const std::string& b, std::string& why
     std::string cb((std::istreambuf_iterator<char>(sb)), std::istreambuf_iterator<char>());
     sa.close();
     sb.close();
+    // tmp holds A's content; then A <- B's content, B <- tmp. The previous
+    // version of this function wrote A <- A and B <- B (each file onto
+    // itself) while logging success -- caught only because the fetched
+    // breaklines were byte-identical to baseline on the exchanged pieces.
+    // Never trust this function's log line; verify with cmp.
     {
         std::ofstream t(tmp, std::ios::binary | std::ios::trunc);
         if (!t) {
             why = "cannot write " + tmp;
             return false;
         }
-        t << cb;
+        t << ca;
     }
     {
         std::ofstream oa(a, std::ios::binary | std::ios::trunc);
@@ -117,7 +122,7 @@ bool exchange_files(const std::string& a, const std::string& b, std::string& why
             std::remove(tmp.c_str());
             return false;
         }
-        oa << ca;
+        oa << cb;
     }
     {
         std::ofstream ob(b, std::ios::binary | std::ios::trunc);
@@ -129,6 +134,19 @@ bool exchange_files(const std::string& a, const std::string& b, std::string& why
         ob << t.rdbuf();
     }
     std::remove(tmp.c_str());
+    // Verify the exchange took: re-read both and require them swapped.
+    {
+        std::ifstream va(a, std::ios::binary);
+        std::ifstream vb(b, std::ios::binary);
+        const std::string na((std::istreambuf_iterator<char>(va)),
+                             std::istreambuf_iterator<char>());
+        const std::string nb((std::istreambuf_iterator<char>(vb)),
+                             std::istreambuf_iterator<char>());
+        if (na != cb || nb != ca) {
+            why = "post-exchange verification failed for " + a + " / " + b;
+            return false;
+        }
+    }
     return true;
 }
 
