@@ -430,6 +430,14 @@ resolved (pipeline 15/15); 07 in-progress (Pot_A half met genuinely,
 Juglet half untouched). Tickets 02/05/06 stay open as paper-compliance
 work, explicitly not gate remedies.
 
+## 2026-09-29 — Juglet axes found and staged; vote can fire there now
+
+All 9 Juglet axes existed in `Juglet_Dataset_20260916/` (an early shallow
+`find` wrongly reported 4/9) and are now staged at `Dataset/Axes/Juglet/`.
+Ticket 04/07/16 updated; the MATLAB *method* remains unaudited, and the
+assembler's file-vs-computed axis precedence untraced. Next: run the Juglet
+with the vote live.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
