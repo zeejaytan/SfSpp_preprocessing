@@ -381,10 +381,12 @@ rejection, 03–08 EXCHANGED. Gate (`t04_interior` arm): **11/15**, failing
 exactly **1-2, 2-4, 2-5, 2-8** — the set predicted before the run. The five
 piece-1 pairs recovered at 0.16–1.24 mm.
 
-Defect 1 is implemented, not demonstrated. The four remaining pairs all
-contain piece 2, whose boundary clouds miss 64–90% of the rim (ticket 03,
-closed as characterized-but-unfixed with eight tried interventions on
-record).
+Defect 1 is implemented, not demonstrated. Defect 2 (piece 2) refined by
+ticket 03: its boundary clouds cover 10%/36% of the reference while its
+Surface_0 covers 82% — so the rim is lost between surface and boundary
+cloud, i.e. a boundary-*detection* failure on this sherd, not an ordering
+one. The four piece-2 pairs are not recoverable without mapping those
+stages, which is new work outside this chain's ordering scope.
 
 ## The two candidate causes, separated
 
