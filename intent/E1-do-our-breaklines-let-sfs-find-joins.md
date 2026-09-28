@@ -10,15 +10,22 @@ the edge-line ordering is byte-identical in `DominicoRyu/SfSpp_preprocessing`
 us. **But the released code does not implement what the paper specifies**
 (§IV-B1, "Edge line extraction and segmentation"), in four ways:
 
-1. The paper takes the edge line from the **interior** surface. The code
-   takes `Surface_0` = the **largest cluster** with no interior/exterior
-   test, and emits an edge line for both surfaces. On the authors' thin
-   thrown pots "largest" probably lands on the same physical face for
-   every sherd, so their results are unaffected. On the Juglet, where
-   inner and outer areas are nearly equal, it lands on **different faces
-   for different sherds** — which is the arbitrary face assignment, and
-   why 10 of 18 true mates end up inner-vs-outer and invisible to the
-   2 mm gate.
+1. The paper takes the edge line from the **interior** surface, selected
+   as one of the **two largest clusters** and then classified by the
+   ray-axis test. The code selected the two largest clusters correctly
+   (`mesh_processing_headless.cpp:1799-1800`) but **skipped the
+   classification entirely** — no interior/exterior test — and emitted an
+   edge line for both surfaces. (An earlier version of this file said the
+   code "takes the largest cluster where the paper takes the interior
+   surface." That was wrong — see ticket 16. The paper does exactly the
+   largest-two selection; the missing step was classification only.) On the
+   authors' thin thrown pots the unclassified order probably keeps the same
+   physical face first on every sherd, so their results are unaffected. On
+   the Juglet, where inner and outer areas are nearly equal, the file order
+   lands on **different faces for different sherds** — which is the
+   arbitrary face assignment, and why 10 of 18 true mates end up
+   inner-vs-outer and invisible to the 2 mm gate. Ticket 04 now classifies
+   per sherd; Pot_A went 7/15 → 11/15 on that step.
 2. The paper orders edge-line points "**using their normals and a voting
    algorithm**". The code uses a nearest-neighbour chain. **That step is
    not implemented at all** — and it is precisely the step whose absence
@@ -36,10 +43,12 @@ constant.** That is a better-defined and more defensible target than
 
 **Limits, stated honestly:** the paper names the voting algorithm but
 does not specify it, pointing to supplementary material this corpus does
-not contain. And whether "largest cluster = interior" holds on the
-authors' own 142 fragments cannot be checked from here — if it does,
-this is a robustness gap exposed by the Juglet rather than an error in
-their reported results.
+not contain. And whether the authors' own 142 fragments always classify
+the same way ours do cannot be checked from here — if they do, the Juglet
+exposes a robustness gap rather than an error in their reported results.
+(Corrected 2026-09-29 per ticket 16: the old wording here, "largest cluster
+= interior", misdescribed both sides — the paper selects the two largest
+and then classifies, and so do we now.)
 
 **2026-09-26, ticket 02 patch 1 — the obvious fix was wrong, and the
 wrongness is informative.** Making the rim walk local (K=2) was tested
@@ -181,9 +190,10 @@ Juglet's gate score.
 Juglet's zero joins are the ones already recorded here and *not* in the
 ordering chain:
 
-- **face selection** — `Surface_0` is the largest cluster with no
-  interior/exterior test, and 10 of 18 true mates are inner-vs-outer
-  (item 1 at the top of this file, and ticket 04);
+- **face selection** — the two surfaces were emitted unclassified (the
+  two-largest selection itself matches the paper; the missing
+  classification did not — ticket 16), and 10 of 18 true mates are
+  inner-vs-outer (item 1 at the top of this file, and ticket 04);
 - **the trace missing the seam** — 22 of 36 directed true contacts sit
   2.8–29.5 mm from the nearest breakline point, so the loops are
   well-formed but do not pass through the join.

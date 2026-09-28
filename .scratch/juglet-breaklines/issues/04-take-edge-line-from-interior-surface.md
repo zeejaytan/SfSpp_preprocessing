@@ -12,9 +12,11 @@
 
 **What to build:** the two surfaces of a sherd are classified as interior
 and exterior, and the edge line is taken from the **interior** one — as
-the paper specifies. Today the code takes whichever surface cluster is
-*larger*, with no interior/exterior test at all, and emits an edge line
-for both.
+the paper specifies. The paper selects the two largest clusters and then
+classifies them; the code did the first half (largest → `Surface_0`) with
+no interior/exterior test at all, and emitted an edge line for both.
+(Corrected per ticket 16: "largest" was never the deviation — only the
+missing classification was.)
 
 The rule is **inconsistently correct**, which is the finding. On seven of
 eight Pot_A sherds a single cluster holds 100% of the points, so "largest"
@@ -150,8 +152,8 @@ question is *scored on* says, not what the proxy says.
 
 ## Note
 
-If the authors' own 142 fragments also rely on "largest = interior", this
-change may alter their results too — we cannot check that from here, and
-the spec records it as a robustness gap rather than an error in their
-reported work. Say so in any write-up rather than implying their method
-is wrong on their data.
+If the authors' own 142 fragments classify the same way ours now do, this
+change is behaviour-neutral on their data — we cannot check that from here.
+(Corrected per ticket 16: both sides select the two largest; the old wording
+here, "largest = interior", misdescribed the comparison.) Say so in any
+write-up rather than implying their method is wrong on their data.
