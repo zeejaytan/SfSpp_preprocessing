@@ -373,6 +373,19 @@ for piece 2 starts with S0 + unclustered as the rim source — never S1, and
 never S0 alone. Ticket 03 carries the pointer; ticket 12 carries the
 smoothness context (default optimal, both directions hurt or crash).
 
+## 2026-09-28 — vote guards confirmed: pipeline 11/15, failing the predicted set
+
+Ticket 04's guard (an S1 win stands only with ≥10% of S0's size and margin
+≥2.0) ran in the pipeline: audit by `cmp` shows 01 KEPT, 02 KEPT via guard
+rejection, 03–08 EXCHANGED. Gate (`t04_interior` arm): **11/15**, failing
+exactly **1-2, 2-4, 2-5, 2-8** — the set predicted before the run. The five
+piece-1 pairs recovered at 0.16–1.24 mm.
+
+Defect 1 is implemented, not demonstrated. The four remaining pairs all
+contain piece 2, whose boundary clouds miss 64–90% of the rim (ticket 03,
+closed as characterized-but-unfixed with eight tried interventions on
+record).
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
