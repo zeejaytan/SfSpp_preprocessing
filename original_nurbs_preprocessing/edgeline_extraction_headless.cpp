@@ -3592,6 +3592,23 @@ int main()
             std::cout << "Surface 0 point cloud file: " << inputSurfaceFolder + surfaceFile0 << std::endl;
             std::cout << "Surface 1 point cloud file: " << inputSurfaceFolder + surfaceFile1 << std::endl;
 
+            // SFS-T17: skip pieces with missing Surface files (warn +
+            // continue) instead of letting copy_file throw and abort the
+            // whole pot (return -1). Missing surfaces are now EXPECTED
+            // output for sherds the mesh stage cannot split: with stale
+            // temps cleaned, a non-producing piece leaves nothing behind,
+            // and skipping loudly beats aborting silently-processed subsets
+            // (the 50-point drop showed what silent subsetting costs).
+            if (!fs::exists(inputSurfaceFolder + surfaceFile0) ||
+                !fs::exists(inputSurfaceFolder + surfaceFile1)) {
+                std::cout << "[SFS-T17] " << fileNameOnly
+                          << ": missing Surface file(s), skipping piece "
+                             "(mesh stage produced no surfaces for it)"
+                          << std::endl;
+                myfile << fileNameOnly << "\tSKIPPED-missing-surfaces" << std::endl;
+                t_individual.reset();
+                continue;
+            }
             fs::copy_file(inputSurfaceFolder + surfaceFile0,
                          outputSurfaceFolder + surfaceFile0,
                          fs::copy_options::overwrite_existing);

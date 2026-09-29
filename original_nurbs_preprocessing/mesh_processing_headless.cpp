@@ -1940,7 +1940,17 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 tmp_path.erase(period_idx);
             }
 
-            break;
+            // SFS-T17: NO break here. An earlier version broke out of the
+            // retry loop on a single cluster, which (a) defeated the loop's
+            // evident purpose -- loosen the smoothness threshold and try
+            // again, up to 30 iterations -- and (b) left the previous
+            // piece's tmpSurfaceCluster files in the shared intermediate
+            // dir, which the per-piece copy below then presented as this
+            // piece's surfaces (Juglet pieces 3 and 9 carried pieces 2 and
+            // 8's surfaces byte-identically). Falling through lets the
+            // loop retry loosened; if it still yields one cluster after 30
+            // tries, the stale-cleanup in main plus the exists-check at the
+            // copy make that LOUD missing output instead of silent copies.
         }
 
         //------------------------------------------------------
@@ -2181,6 +2191,22 @@ int main(int argc, char** argv) {
         std::cout << "Segmentation thresholds: smoothness=" << smoothnessAngleThreshold
                   << "deg curvature=" << curvatureThreshold << std::endl;
         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;
+        // SFS-T17: delete stale per-piece temp surfaces BEFORE segmenting.
+        // tmpSurfaceCluster_*.ply are fixed names in the shared intermediate
+        // dir; a piece that produces nothing left the previous piece's files
+        // behind, and the exists-check below then copied them as this
+        // piece's surfaces (Juglet 3 and 9, byte-identical to 2 and 8).
+        // With stale files gone, a non-producing piece fails LOUDLY at the
+        // exists-check instead of inheriting. (No error_code overload:
+        // single-threaded here, exists-then-remove is exact, and it avoids
+        // a <system_error> dependency for 4 lines.)
+        for (const char* stale : {"tmpSurfaceCluster_Raw_0.ply",
+                                  "tmpSurfaceCluster_Raw_1.ply",
+                                  "tmpSurfaceCluster_Improved_0.ply",
+                                  "tmpSurfaceCluster_Improved_1.ply"}) {
+            const std::string sp = intermediatePath + stale;
+            if (fs::exists(sp)) fs::remove(sp);
+        }
         surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold);
 
 		std::string tempFileName0 = intermediatePath + "tmpSurfaceCluster_Improved_0.ply";
