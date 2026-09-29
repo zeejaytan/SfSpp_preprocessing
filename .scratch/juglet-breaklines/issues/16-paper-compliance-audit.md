@@ -107,12 +107,74 @@ What remains unaudited is the MATLAB *method*, not the Juglet *files*.
 `ComputePotSACAxis`, `RefineAxis` — called from the ranking path, while the
 mains load the files. File-vs-computed precedence there was not traced.)
 
+## ADDENDUM 2026-09-29: second pass — the assembler side, plus three new gaps
+
+A sidekick mapped the assembly repo's inputs (verified below by reading the
+cited lines, not taken on trust). Three findings change the audit, one of
+them correcting this ticket:
+
+### Correction: descriptors ARE computed — downstream, differently
+
+Ticket 16 item 1 said no axis-based descriptors are produced. Too broad.
+`class/filter.cpp:161-219` (`CalculateFeatureAxisless`) computes per-point
+Dist/Height/Theta/Thickness with `LanczosDiffLow` diffs and a `Gaussian`
+smoothing pass, and `GetThickness` (`:221-260`) measures thickness against
+`sur_out_`. What the paper specifies is finite differences +
+**Savitzky-Golay** + Gaussian (kernel 7, σ=2.0); no Savitzky-Golay exists
+repo-wide, and the Gaussian call differs in parameters. So the step EXISTS
+in the assembly repo with different smoothing — the gap is a smoothing
+mismatch, not an absence. Item 1 is corrected to that.
+
+### New gap A: `is_seg_base_` is compiled out everywhere
+
+`#define NO_BASE_INFO` sits in `main.cpp:34`, `main_headless.cpp:32`, and
+`main_headless_correct.cpp:52` (with `NO_RIM_INFO` commented out in all
+three). So `is_seg_base_` is forced false in every binary, and the
+base-pair logic (the `sane&&seg_base` skips in `FeatureComp`, the base-only
+paths in `ExclusivelyPickEdge`) never executes. The paper's rim/base
+machinery runs on rim flags alone here. Verified in all three mains, not
+inferred.
+
+### New gap B: `Surface_F` is expected by name and never produced
+
+`data_path.h` points `surface_fr[i]` at `Surfaces/<piece>_Surface_F.pcd`;
+`main_headless_correct.cpp:187` and `main.cpp:95` always call the 3-arg
+`LoadSurface` (only `main_headless.cpp:88-93` falls back). Zero such files
+exist in either the Juglet archive or the Pot_A dataset (measured).
+`reconstruction.cpp:701/749` runs the fractional-surface correspondence
+(`sur_frac_.BuildTree`, `MakeCorWOBuildTree`) on the resulting empty
+clouds. The paper segments three surfaces — interior, exterior, fractured —
+and our mesh stage emits two named walls while the fracture zone sits
+inside `unclustered.ply`, which no `Surface_F` filename ever points at.
+This is the same fracture zone ticket 14's patch rims are mined from, seen
+from the assembler's side: the data exists, the filename it is read by does
+not.
+
+### Wiring fact (operational, not a gap)
+
+The JUGLET assembly paths point at the archive
+(`JUGLET_BASE .../Juglet_Dataset_20260916/SfS_pp/`), not at fresh output.
+Re-extracted Juglet breaklines do not reach the assembler until staged
+there. Any Juglet rerun that stops at `Dataset/Breaklines/` has not
+actually fed the matcher.
+
+### Method note for this audit
+
+Steps 1–4 above were mapped by a sidekick and each load-bearing claim
+re-checked by reading the cited lines. Unverified and therefore NOT
+claimed: the exact semantics of the rim-flag reads in `BuildTree`/`LCS`
+(flag logic is subtle; cited but not interpreted here), and the MATLAB
+PotSAC-vs-paper comparison (still open, as before).
+
 ## Acceptance criteria
 
 - [ ] The "largest cluster" correction above propagated to E1 and ticket 04
       (search for the phrase; fix each occurrence rather than appending)
 - [ ] Each numbered deviation either names its fix ticket or records why it
-      is accepted (1: assembly-repo question filed or answered; 2–4: tickets
-      03/05/06 updated, not duplicated; 5, 7: measured or explicitly deferred)
+      is accepted (1: CORRECTED 2026-09-29 — descriptors exist downstream
+      with different smoothing; remaining question is Savitzky-Golay vs
+      Lanczos, assembly-repo scope. New gaps A/B above need tickets or
+      recorded acceptance: A = base machinery compiled out; B = Surface_F
+      never produced while reconstruction reads it)
 - [ ] Nothing in this ticket re-argues settled measurements — it cites
       ticket + line and moves on
