@@ -4,7 +4,27 @@
 
 **Blocked by:** nothing — laptop measurement on data already on disk
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-09-29 — cosmetic, with the table
+
+## Spike result: agree 60, disagree 5 — all five on the authors' files
+
+Paper test implemented per segment over authors' rims + ours (height/radius
+vs axis, std ≤1.0, adjacent variation ≤0.1, ≥20 pts), compared against the
+recorded rim flags in the same files:
+
+- Our files: **zero disagreements.** Every segment our flag calls rim
+  passes the paper test, and vice versa.
+- Authors' files: 5 segments flagged rim fail the paper test (on
+  gradualness — their std_h/std_r pass at 0.15–2.39/0.4–0.74, so the ≤0.1mm
+  adjacent-variation rule is what bites). Their bundle still scores 15/15,
+  so no gate consequence either.
+
+Caveat recorded: the paper picks ONE most-stable rim section per sherd
+while files carry per-segment flags, so this compares threshold-vs-flag
+rather than selection-vs-selection. Within that limit, there is nothing to
+implement — our criterion coincides with the paper's test everywhere on our
+data, and the only deviations found are in the authors' own files against
+their own test. Lane decision: close cosmetic.
 
 **Needs-eye:** none — a comparison table, not a geometry claim. A render
 enters only if the table disagrees with the gate and the disagreement needs
