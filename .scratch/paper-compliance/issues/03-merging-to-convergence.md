@@ -1,0 +1,55 @@
+# 03: Does merging-to-convergence change anything?
+
+**Answers:** E1
+
+**Blocked by:** nothing — code change + rerun, or laptop simulation first
+
+**Status:** ready-for-agent
+
+**Needs-eye:** none unless cluster assignments visibly change on a sherd
+that matters at the gate.
+
+## Why this ticket exists
+
+Paper: cluster merging "repeats until no further merges are possible."
+Ours (`mergeClusters`, `mesh_processing_headless.cpp:1427-1552): single
+pass over pairs (collect in Step 1, merge in Step 2), no convergence loop.
+The outer `surfaceSegmentation` loop retries on *count* < 2 with looser
+angle instead — a different condition that can mask under-merging by
+loosening rather than by merging. Ticket 16 gap 7. Unmeasured effect.
+
+## Research spike (do first)
+
+1. Read `mergeClusters` fully (criteria: kNN pairs ≥3, patch-normal dot
+   >0.95, boundary-curvature diff ≤0.1, inner-point verification 0.75/0.25)
+   and answer: on Pot_A piece 2/3 (saved intermediates on disk), would a
+   second pass merge anything the first pass left? Simulate the second pass
+   on laptop from the saved cluster files if feasible; otherwise reason
+   from the merge-pair logs of a rerun with extra logging.
+2. If a second pass merges nothing anywhere on Pot_A: close with that
+   measurement — single-pass is behaviorally identical to convergence here,
+   and the deviation is cosmetic.
+3. If it merges: judge by the per-stage coverage table (ticket 13's method)
+   whether the merged clusters change any surface that matters, then decide
+   the lane.
+
+## What to build (only if the spike shows merges)
+
+- Iterate Steps 1–2 to convergence (no merges in a full pass) with the
+  existing criteria unchanged and a pass cap + log line per pass, so a
+  pathological input cannot loop forever and the behavior is visible.
+- No criterion values change in this ticket. Tuning 0.95/0.1/0.75/0.25 is
+  a separate decision with its own measurement; bundling it here would
+  make any result unattributable.
+
+## Acceptance criteria
+
+- [ ] Spike: second-pass merges counted on real Pot_A data (zero is an
+      answer)
+- [ ] Lane declared: gate (which surfaces change + predicted pair movement)
+      or cosmetic-close with the counts
+- [ ] If implemented: cluster counts per sherd before/after, gate per pair
+      from the current baseline, guard audit re-run (ticket 04's decisions
+      must be shown stable or changed-with-reason — merging alters the
+      clusters the vote sees)
+- [ ] Authors' arm in every comparison
