@@ -4,7 +4,7 @@
 
 **Blocked by:** nothing — small, reviewable, high blast radius
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-09-30 — corruption fixed, Pot_A unregressed at 15/15
 
 **Needs-eye:** none for the fix (plumbing + control flow). The resulting
 Juglet breaklines get witnessed under ticket 07's eye requirement, not here.
@@ -107,6 +107,13 @@ blocks 5 touching pairs from ever being scored.
       5 touching pairs unmeasurable (pieces 3/9 absent). Old 0/10 retracted
       (scored on copies), not compared against. Honest denominator is now
       "0 of 5 scorable, 5 unmeasurable" — not 0/10.
-- [ ] Pot_A re-measured per pair from its baseline (must be unchanged;
-      the path is unexercised there, prove it)
-- [ ] Authors' arm rides along; guard audit re-run
+- [x] Pot_A re-measured per pair from its baseline (must be unchanged;
+      the path is unexercised there, prove it): `t17_noregress` 15/15 with
+      per-pair output IDENTICAL to `t14_patches` except the header line
+      (verified 2026-09-30 by diff of full probe outputs). All 8 Surface_0
+      present, no SFS-T17 skip lines in the Pot_A run (audit 01 KEPT,
+      02 KEPT via guard, 03–08 EXCHANGED — same as pre-17).
+- [x] Authors' arm rides along; guard audit re-run: `pota_orig` (authors'
+      released sample) still 15/15; Pot_A vote pattern unchanged (piece 2
+      still guard-rejected, margins landslide 4.3–32.2), so the guards
+      survived the edit.

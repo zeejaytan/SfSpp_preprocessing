@@ -446,6 +446,31 @@ Ticket 04/07/16 updated; the MATLAB *method* remains unaudited, and the
 assembler's file-vs-computed axis precedence untraced. Next: run the Juglet
 with the vote live.
 
+## 2026-09-30 — ticket 17: the Juglet gate was measured on corrupted data; re-measured clean
+
+The first Juglet vote run crashed partway (SIGABRT, exit 134) and, worse,
+silently corrupted: pieces 3 and 9 carried pieces 2 and 8's surfaces
+**byte-identically** (`cmp`/md5) through surfaces into breaklines. Mechanism,
+read from the code: `tmpSurfaceCluster_*.ply` are fixed filenames in the
+shared intermediate dir; the single-cluster branch `break`s out of the
+retry loop writing nothing, and the per-piece exists-check copy then
+inherits the previous piece's files. Alphabetical order picked exactly the
+observed pairs. The old 0/10 honest score is **retracted, not compared**.
+
+Fix (three small changes, one bug): stale temps deleted per piece (inherit
+→ loud missing), premature `break` removed (retry loop loosens to 45° as
+evidently intended), missing surfaces skip loudly in both stages instead of
+aborting/asserting. Verified: 7 genuine + 2 loud skips, zero copies, both
+stages complete.
+
+Outcome against hope: loosening did NOT recover pieces 3 and 9 (one cluster
+after 30 retries each) — they skip, and 5 touching pairs are unmeasurable
+until someone decides what a single-cluster sherd should produce. Clean
+Juglet state: **0 of 5 scorable touching pairs pass, 5 unmeasurable**.
+Pot_A re-measured per pair IDENTICAL to the 15/15 baseline (header line
+excepted); authors' arm still 15/15; vote/guard pattern unchanged. The
+question stays open; the ruler is now clean.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

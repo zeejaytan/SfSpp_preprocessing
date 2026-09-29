@@ -10,7 +10,12 @@ passing number is not something to believe on its own.
 **Blocked by:** 06 (and therefore 01-05)
 
 **Status:** in-progress — Pot_A half done by our own output (15/15,
-`t14_patches` arm); Juglet half untouched at 0/10 honest
+`t14_patches` arm, re-verified identical under ticket-17 code); Juglet half
+retracted-and-remeasured: old 0/10 rested on copied surfaces (ticket 17)
+and is withdrawn, not compared. Clean state 2026-09-30: **0 of 5 scorable
+touching pairs pass, 5 touching pairs unmeasurable** (pieces 3 and 9
+produce no surfaces — single cluster after 30 loosened retries — and skip
+loudly). Seven present breaklines md5-unique, zero copies.
 
 ## 2026-09-28 — Pot_A acceptance met, by our pipeline, not the sample
 
@@ -20,7 +25,12 @@ passing number is not something to believe on its own.
       ticket 14 (1-2 passes thin on 2 inliers; 2-8 rides on piece 8's wall
       rim). No regressions: all pairs that passed at 11/15 still pass.
 - [ ] Juglet true-mate pass rate materially non-zero at ground truth, per
-      pair, honest denominator 10. Still 0/10. Its 8 non-touching pairs
+      pair, honest denominator 10. **RETRACTED 2026-09-30 (ticket 17):**
+      the 0/10 was scored on corrupted data — pieces 3 and 9 carried
+      pieces 2 and 8's surfaces byte-identically, so 4 of 9 breaklines
+      were copies. Clean re-measurement: 0/5 on scorable touching pairs
+      (1-2, 1-4, 1-8, 2-5, 6-7 all fail); 5 touching pairs unmeasurable
+      (pieces 3/9 absent). Its 8 non-touching pairs
       are a material limit no extraction can pass. (Corrected 2026-09-29:
       the "no axis files" clause is withdrawn — all 9 Juglet axes were found
       in the archive and staged at `Dataset/Axes/Juglet/`, so the vote CAN
