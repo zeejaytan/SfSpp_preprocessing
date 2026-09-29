@@ -915,13 +915,26 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr unclusteredPoints(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud_Improved(new pcl::PointCloud<pcl::PointXYZ>);
-	
+
 	std::experimental::filesystem::path filePathNew = { currentMeshFile };
 	string fileNameOnly = filePathNew.stem().string().substr(0,14);
 	// string outPathNew = filePathNew.parent_path().string() + "\\";
 	string outPathNew = tempDataPath(potID);
-	
-	pcl::io::loadPLYFile(outPathNew + fileNameOnly + "_unclustered.ply", *unclusteredPoints);
+
+	// SFS-T07: the mesh stage writes no _unclustered.ply when region growing
+	// assigns every point to a cluster (Juglet piece 3). The unchecked load
+	// below then left an empty cloud into setInputCloud, whose assert
+	// aborted the whole run (SIGABRT, exit 134) partway through the pot --
+	// 4 of 18 breaklines written, rest silently missing. With no unclustered
+	// points there is nothing to improve the boundary with, so proceed with
+	// the boundary cloud as-is and say so.
+	if (pcl::io::loadPLYFile(outPathNew + fileNameOnly + "_unclustered.ply", *unclusteredPoints) == -1 ||
+	    unclusteredPoints->points.empty()) {
+		std::cout << "[SFS-T07] no unclustered points for " << fileNameOnly
+		          << " -- boundary proceeds unimproved" << std::endl;
+		*boundaryCloud_Improved = *boundaryCloud;
+	}
+	else {
 	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
 	kdtree.setInputCloud(unclusteredPoints);
 
@@ -944,6 +957,9 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	boundaryCloud_Improved->width = static_cast<int>(boundaryCloud_Improved->points.size());
 	boundaryCloud_Improved->height = 1;
 	pcl::io::savePCDFile(tempEdgeFolder + "boundaryImproved.pcd", *boundaryCloud_Improved);
+	}  // else (unclustered points present): SFS-T07 guard above takes the
+	   // empty path. The brace closes the else opened at the load check;
+	   // do not reindent the block between them as a separate change.
 	//-----------------------------------------------------------------------------
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
