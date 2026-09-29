@@ -70,14 +70,43 @@ margins and keep history — but history would then be missing files, and
 "keep" is meaningless. If that happens, the ticket's answer is "skip the
 sherd loudly," not a fourth mechanism. Say which outcome occurred.
 
-## Acceptance criteria
+## RESOLVED 2026-09-30: corruption gone, pieces 3 and 9 loudly missing
 
-- [ ] Rerun shows 9 distinct Surface_0 files (md5-unique) OR explicit
-      per-piece skips with warnings — never silent copies. Verified by
-      `cmp`, not by log lines (ticket 04's exchange bug is why).
-- [ ] No two pieces' breaklines byte-identical unless their meshes are
-- [ ] Juglet gate re-measured per pair (honest denominator recomputed —
-      the old 0/10 rested on copies and is retracted, not compared against)
+Full Juglet rerun with all three changes: mesh completes, edgeline
+completes (previously SIGABRT at piece 4), 14 breaklines (7 pieces × 2),
+18 sequenced. Audit: 01 KEPT, 02 KEPT (guard), 03–08 as voted, with pieces
+3 and 9 MISSING surfaces → skipped loudly in both stages.
+
+- 9 Surface_0 files: 7 genuine + 2 absent. No copies anywhere (md5-unique
+  across all present breaklines).
+- Piece 2's file hash matches the old shared file: the old 2&3 copy was
+  piece 2's genuine output all along; piece 3 never had output. Same for
+  8/9. Direction of inheritance confirmed.
+- Votes: piece 1 keep (570v528), piece 2 guard-reject, 7 exchange decisive
+  (25.47). Guards rejected 4 swaps on margins 1.17–1.87.
+
+Gate on the 7 present pieces (`score_present_juglet.py`; probe crashes on
+missing files so a standalone same-gate scorer was written — same strict
+rule, missing skips instead of crashes):
+**0/5 on scorable touching pairs** (1-2, 1-4, 1-8, 2-5, 6-7 all fail).
+Five touching pairs [(1,9),(2,9),(3,5),(3,7),(7,9)] are unmeasurable —
+absent, not zero. The old 0/10 was scored on copies and is retracted, not
+compared against.
+
+Open question from the ticket, answered against hope: loosening did NOT
+recover pieces 3 and 9 as genuine surfaces — 30 iterations still yield one
+cluster each. Per the ticket's own rule ("skip the sherd loudly"), they
+skip. What a single-cluster sherd SHOULD produce remains undecided and now
+blocks 5 touching pairs from ever being scored.
+
+- [x] Rerun shows genuine outputs or explicit skips — never silent copies:
+      7 md5-unique Surface_0 files + pieces 3, 9 MISSING with warnings in
+      both stages. Verified by `cmp`, not by log lines.
+- [x] No two pieces' breaklines byte-identical (`dup_check.py`: none).
+- [x] Juglet gate re-measured per pair: 0/5 on scorable touching pairs;
+      5 touching pairs unmeasurable (pieces 3/9 absent). Old 0/10 retracted
+      (scored on copies), not compared against. Honest denominator is now
+      "0 of 5 scorable, 5 unmeasurable" — not 0/10.
 - [ ] Pot_A re-measured per pair from its baseline (must be unchanged;
       the path is unexercised there, prove it)
 - [ ] Authors' arm rides along; guard audit re-run
