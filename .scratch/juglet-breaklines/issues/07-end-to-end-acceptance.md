@@ -36,6 +36,25 @@ loudly). Seven present breaklines md5-unique, zero copies.
       in the archive and staged at `Dataset/Axes/Juglet/`, so the vote CAN
       fire there now; the run has not happened yet.)
 - [ ] Per-pair failure reasons for the Juglet (wear / wall / unresolved).
+      **Scorable five diagnosed 2026-09-30** (`diagnose_scorable5.py`, full
+      breaklines at GT; closest-pair dots and trace-to-seam measured, not
+      the 20mm-window figures which overstated):
+
+      | pair | trace min_d | closest normals | trace-to-seam | reason |
+      |---|---|---|---|---|
+      | 1-2 | 21.9mm | −0.14 (unrelated) | 25.4 / 8.2mm | **coverage**: piece 1's loop misses this seam entirely |
+      | 1-4 | 2.9mm | −0.52 opposed | 2.3 / 5.2mm | **wall**: curves near, faces opposed |
+      | 1-8 | 13.5mm | −0.52 opposed | 25.8 / 8.6mm | **coverage** (+faces): piece 1's loop misses this seam |
+      | 2-5 | 2.7mm | −0.21 opposed | 3.3 / 1.8mm | **wall**: nearest miss, faces opposed at closest approach |
+      | 6-7 | 3.5mm | +0.55 weak agree | 2.4 / 6.3mm | **coverage**: same-wall-ish, piece 7's rim 6mm off the seam |
+
+      Piece 1's loop spans nearly full sherd extent (maxR 24 vs mesh 27mm)
+      yet sits 25mm from the 1-2 and 1-8 seams while passing 2.3mm from the
+      1-4 seam: a full-size loop on the wrong feature for part of its
+      length — the E1 "trace misses the seam" candidate, confirmed on this
+      sherd. Not an interior ring (extent is full), not truncation.
+      The five unmeasurable pairs (touching 3 or 9) stay **absent, not
+      zero** — no reason can be given where no surface exists.
 - [x] One claimed join staged correct-versus-attempt and witnessed
       (`juglet_sfs29`, closed as weak — confirms the 11.45mm figure, decides
       nothing else; framing lesson recorded).
