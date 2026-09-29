@@ -418,6 +418,14 @@ the probe with t04 partners fixed: **1-2 passes, 13 strict inliers at
 pipeline routing change (persist + wire into the breakline) is demonstrated
 worthwhile (+1 measured) but not yet implemented — ticket 14.
 
+## 2026-09-29 — paper-compliance write-up pass closed two tickets
+
+Ticket 02 (rim criteria): paper test vs recorded flags agree 60–5, all
+five disagreements on the authors' own files — cosmetic, nothing to
+implement. Ticket 04 (region params): accepted with justification, no code
+change — the ticket-12 sweep shows the default optimal. Neither moves any
+gate number; both stop the next audit from re-reporting them.
+
 ## 2026-09-28 — tickets brought current with the 15/15 result
 
 Status sweep, no new measurements: 01 resolved (seam delivered; ordering
