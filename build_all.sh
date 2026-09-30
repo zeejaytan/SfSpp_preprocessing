@@ -11,7 +11,7 @@ SIF="${ROOT}/pcl_191_nurbs.sif"
 LOG=/tmp/all_build.log
 
 "${APPTAINER}" exec --bind /data:/data "${SIF}" /bin/bash -c \
-    "cd '${SRC}/build' && cmake .. && make -j8 MeshPreprocessingHeadless EdgeLineExtractionHeadless test_surface_classify test_edge_line_ordering" \
+    "cd '${SRC}/build' && cmake .. && make -j8 MeshPreprocessingHeadless EdgeLineExtractionHeadless test_surface_classify test_edge_line_ordering test_boundary_filter" \
     > "${LOG}" 2>&1
 rc=$?
 echo "BUILD-EXIT=${rc}"
@@ -24,4 +24,4 @@ ls -lh "${SRC}/build/MeshPreprocessingHeadless" "${SRC}/build/EdgeLineExtraction
 echo
 echo "=== unit tests ==="
 "${APPTAINER}" exec --bind /data:/data "${SIF}" /bin/bash -c \
-    "cd '${SRC}/build' && ./test_surface_classify && ./test_edge_line_ordering clean-rim && ./test_edge_line_ordering no-revisit" 2>&1 | tail -n 12
+    "cd '${SRC}/build' && ./test_surface_classify && ./test_edge_line_ordering clean-rim && ./test_edge_line_ordering no-revisit && ./test_boundary_filter" 2>&1 | tail -n 16
