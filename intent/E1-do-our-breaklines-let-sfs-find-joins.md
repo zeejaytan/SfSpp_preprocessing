@@ -497,6 +497,15 @@ confirmed by a completing rerun. Short rims (2: 9pts, 7: 8pts) now sit
 below the assembler's 50-point threshold, where they fail loudly instead
 of passing silently.
 
+## 2026-09-30 — paper-compliance 01 closed as removal, not emission
+
+The spike proved populating `Surface_F` would change zero executed
+instructions (sole consumer `IcpFine` has no callers), so the ticket
+converted to dead-expectation removal, implemented assembly-side: both
+unconditional 3-arg loads now 2-arg, `IcpFine` refuses empty frac loudly,
+in-container rebuild clean. No such files exist in either dataset; nothing
+that runs changes. Emission would have been pure cost.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

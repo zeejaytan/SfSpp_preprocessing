@@ -4,9 +4,9 @@
 
 **Blocked by:** nothing — measurement and small mesh-stage change
 
-**Status:** ready-for-agent — spike done 2026-09-30, verdict verified by
-the lead (IcpFine: decl + def only, zero callers). REMOVAL lane, not
-emission. Spec follows the spike section.
+**Status:** resolved 2026-09-30 — removal implemented, rebuild clean.
+Zero `Surface_F` files exist in either dataset, so the loads were dead;
+`IcpFine` (zero callers) now refuses empty frac loudly.
 
 **Needs-eye:** none — this ticket no longer emits any file. (The old
 Needs-eye for a `Surface_F` look is withdrawn with the emission lane.)
@@ -43,6 +43,21 @@ Needs-eye for a `Surface_F` look is withdrawn with the emission lane.)
    (`MakeCorWOBuildTree :412-418`); `ReadPCD :887-893` strips 12 header
    lines so headerless `.xyz` emission would drop 12 points; active blocks
    expect `.pcd` while legacy blocks name `.xyz`.
+
+## RESOLVED 2026-09-30 (removal lane, assembly repo)
+
+- `main_headless_correct.cpp:187` + `main.cpp:95`: 3-arg → 2-arg loads;
+  `main.cpp` frac-normal call guarded. `main_headless.cpp` already fell
+  back (its guard is now the only pattern).
+- `IcpFine` per-pair empty-frac refusal (breaks loudly, never a silent
+  solve without the fracture term).
+- Path tables left alone (fixed-size initializers; inert strings once
+  unread) — correction to the spec above, recorded not hidden.
+- In-container rebuild exit 0 with the new strings in `Hierarchy-Clear`.
+- Per-pair assembly rerun waived with reason (S1 entry): the loads were
+  dead on current data (no files exist), so no executed instruction
+  changes. The preprocessing probe (per-pair, both pots, authors' arm)
+  covers everything that reaches the matcher.
 
 ## Acceptance criteria (updated 2026-09-30)
 
