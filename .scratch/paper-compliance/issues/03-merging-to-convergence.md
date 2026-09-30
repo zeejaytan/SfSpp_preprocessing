@@ -4,15 +4,11 @@
 
 **Blocked by:** nothing — code change + rerun, or laptop simulation first
 
-**Status:** ready-for-agent — spike done 2026-09-30: YES as a code-path
-fact. Single pass CAN miss chain merges (Step 1 tests all pairs against
-pre-merge membership; `merged[j]` skips chain partners; Step 2 appends
-without re-verification). Whether it DOES on real data is unmeasured —
-hence the build spec below. No laptop simulation: saved intermediates
-can't replay membership-dependent gates faithfully; instrument and rerun.
+**Status:** resolved 2026-09-30 — cosmetic-close with counts. The loop is
+implemented (cap 10, per-pass log) and the data says it never fires.
 
-**Needs-eye:** none unless cluster assignments visibly change on a sherd
-that matters at the gate.
+**Needs-eye:** none — cluster assignments changed nowhere that matters
+(nowhere at all, by the counts below).
 
 ## What to build
 
@@ -62,7 +58,34 @@ loosening rather than by merging. Ticket 16 gap 7. Unmeasured effect.
   a separate decision with its own measurement; bundling it here would
   make any result unattributable.
 
+## RESOLVED 2026-09-30: second pass merges nothing anywhere
+
+Full Juglet mesh log (persisted to the run tree): 13 segmentation attempts,
+every one `pass 1: 0 merges` (cluster counts per attempt: 4,0,4,1,1,3,3,2,
+2,12,6,1,4 — the 0- and 1-counts are pieces 3/9's failed attempts). No pass
+2 ever executes on either pot. Single-pass is behaviorally identical to
+convergence on all observed data — the code-path possibility (chain merges)
+does not occur. The loop stays as the paper's stated behavior with a cap;
+it costs one empty pass per segmentation.
+
+- Pot_A: `merge_conv` 15/15, per-pair IDENTICAL to `t14_patches`.
+- Juglet: 0/5 scorable, 5 unmeasurable, zero copies — unchanged.
+- Vote/guard pattern unchanged on both pots.
+- Honest variance note: piece 1's Juglet breakline differs byte-wise
+  between the two runs (md5 changed) with the score unmoved — run-to-run
+  non-determinism already on record in ticket 07 (segment boundaries), not
+  a merge effect (zero merges executed).
+
 ## Acceptance criteria
+
+- [x] Spike: second-pass merges counted on real data — zero everywhere.
+- [x] Lane declared: cosmetic-close with the counts.
+- [x] Implemented: criteria unchanged, cap 10, per-pass log line. Guard
+      audit re-run (vote pattern unchanged on both pots).
+- [x] Authors' arm in every comparison (pota_orig 15/15 standing; neither
+      comparison moved, so no authors'-side change to track).
+- [x] Juglet gate re-measured per pair: 0/5 scorable, 5 unmeasurable —
+      unchanged.
 
 - [x] Spike: second-pass merges on real data — Pot_A gate half:
       `merge_conv` 15/15, per-pair IDENTICAL to `t14_patches` (header
