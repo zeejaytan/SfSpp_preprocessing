@@ -70,6 +70,9 @@ if [ "$(ls "${DATA}"/*_Surface_0.xyz 2>/dev/null | wc -l)" -eq 0 ]; then
     tail -n 10 "${MLOG}" | sed 's/^/       /'
     exit 1
 fi
+echo "--- mergeClusters passes (preproc 03 settlement):"
+grep "mergeClusters pass" "${MLOG}" 2>/dev/null || echo "    ** NO PASS LINES"
+cp -f "${MLOG}" "${TREE}/mesh_stage.log" 2>/dev/null || true
 
 echo
 echo "### edgeline stage (classifier active)"
