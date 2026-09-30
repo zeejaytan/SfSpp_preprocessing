@@ -2000,7 +2000,10 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	pointCloud_b1_ptr->width = static_cast<int>(pointCloud_b1_ptr->points.size());
 	pointCloud_b1_ptr->height = 1;
 
-	cout << "Detected segments = " + noOfSegmentsDetected << endl;
+	// (Was: "Detected segments = " + noOfSegmentsDetected -- pointer
+	// arithmetic on the literal, printing "etected segments = " and reading
+	// out of bounds for large counts. Streamed properly.)
+	cout << "Detected segments = " << noOfSegmentsDetected << endl;
 
 
 	//finding the breakline segments fronm the raw breakline pts
@@ -2042,11 +2045,18 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 		for (size_t i = 1; i < smoothedSegment->points.size() - 1; i++)
 		{
 			tree_->nearestKSearch(smoothedSegment->points[i], 20, nn_indices, nn_dists);
-			for (size_t i = 0; i < 20; i++)
+			// Ticket 06: bound by FOUND count, not the requested K=20.
+			// nearestKSearch returns fewer than K when the cloud is
+			// smaller (a 1.9mm-resampled short rim has ~12 points); the
+			// hardcoded i<20 loop below read past the vectors and
+			// segfaulted the pot (Juglet piece 2, exit 139). Previously
+			// masked because rims were clamp-inflated to >=30 points.
+			// The 1.8mm distance gate is unchanged (separate decision).
+			for (size_t k = 0; k < nn_indices.size(); k++)
 			{
-				if (nn_dists[i] <= 1.8)
+				if (nn_dists[k] <= 1.8)
 				{
-					nn_indicesAll.push_back(nn_indices[i]);
+					nn_indicesAll.push_back(nn_indices[k]);
 				}
 				//rawBreaklinePtsInSegment->points.push_back(rawBreaklinePts->points[nn_indices[i]]);
 			}
