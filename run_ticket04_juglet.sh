@@ -81,6 +81,7 @@ echo "### edgeline stage (classifier active)"
 echo "    exit $? (not trusted)"
 echo "--- SFS-T04 decisions:"
 grep "SFS-T04" "${ELOG}" 2>/dev/null | head -n 30 || echo "    ** NO SFS-T04 LINES -- the classifier never ran"
+cp -f "${ELOG}" "${TREE}/edgeline_stage.log" 2>/dev/null || true
 BL="${TREE}/Dataset/Breaklines/${POT}"
 echo "    breakline .pcd written: $(ls "${BL}"/*.pcd 2>/dev/null | wc -l)"
 echo "    pieces sequenced: $(grep -c "ADAPTIVE SEQUENCING" "${ELOG}" 2>/dev/null || true)"
