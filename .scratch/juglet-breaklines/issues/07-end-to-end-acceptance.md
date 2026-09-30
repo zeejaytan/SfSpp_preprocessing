@@ -215,18 +215,35 @@ correct ask for a correct-vs-attempt look is a judgement of plausibility as a
 conservator** — "do these two sherds look like they belong together on this
 vessel?" — never a reading of a figure.
 
-## The look that would actually be worth having
+## Witnessed look: `pota_12` — STAGED 2026-10-01, awaiting eye
 
-A **single** look of piece 1's breakline on its own sherd with its
-neighbours' breaklines at ground truth, so the conservator can judge whether
-piece 1's rim sits where the rim of that sherd should. That is the one
-genuinely open geometric question left: the curve is 0.69 mm from the
-reference — our best — correctly oriented for its own surface, yet it opposes
-every other sherd's rim at −0.96 to −1.00, accounting for six of the eight
-remaining failures. Whether a conservator reads that as a rim in the right
-place on an awkwardly-shaped sherd, or as a rim on the wrong part of it, is
-not something the numbers settled. **That** is a judgement only the eye can
-make, and unlike the pair above, the answer is not obvious.
+Single look (no fake comparison): Pot_A pieces 1+2 meshes at conservator
+GT (piece 1 tan, piece 2 teal) with OUR Breakline_0 rims as red tubes
+(resample19 = current pipeline truth). Desc
+`visual-qa/viewer/pairs/pota_12_single.json`, staged clean (copied as-is,
+109k faces; gate via shared `load_single_preview`: finite, mm-scale, all
+three colors present). Builder:
+`structure-from-sherds-pp/artifacts/juglet_run1/build_pota12_look.py`
+(per-segment tubes — never streaking across segment jumps; first-header
+skipped; sherds decimated separately THEN colored since stage decimation
+drops vertex colors).
+
+**The ask (plausibility, never measurement):** "do these two sherds look
+like they belong together on this vessel — and does the red run on the
+seam?" Tubes are 0.7mm markers, not evidence width. If the eye says no,
+the 15/15 has a false member and ticket 07 reopens on pair 1-2; if yes,
+the thinnest pass is witnessed genuine. Either way the note gets a
+same-round agent reply (Needs-eye rule).
+
+## Superseded 2026-10-01: the two stale owed looks (struck, not staged)
+
+An explicit decision, not neglect — see chat 2026-10-01. The offset render
+(ticket 10 requires it) would only confirm an exonerated figure, and the
+piece-1 rim question below was settled when its six pairs recovered at
+0.16–1.24mm. Staging either repeats the juglet_sfs29 framing error (asking
+the eye to measure). The original reasoning is kept for the record:
+
+## The look that would actually be worth having (2026-09-27; stale as posed)
 
 ## Note
 
