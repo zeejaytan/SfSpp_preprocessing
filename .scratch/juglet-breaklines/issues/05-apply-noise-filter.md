@@ -16,7 +16,9 @@ silently do nothing.
 **Blocked by:** 04 (filter the edge line once it is known which surface
 it belongs to)
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-09-30 — the filter runs, is ordered, and is
+tested. Gate unmoved on both pots, as the ticket predicted (its own note:
+no movement is expected and is not evidence of pointlessness).
 
 **Needs-eye:** none.
 
@@ -33,6 +35,23 @@ it belongs to)
       visible in the log
 - [ ] A synthetic boundary with a gross outlier loses that outlier, shown
       by a test
+
+## RESOLVED 2026-09-30
+
+- The filter runs after surface selection and its result is what gets
+  ordered — shared seam `boundary_filter.{h,cpp}`, compiled into both
+  pipeline and test; the `boundary.pcd` reload is gone with a comment
+  recording it was there and why it was wrong.
+- Radius/neighbors from the cloud's own spacing (bbox-sheet boundary
+  radius; 3/6 split at 100 points) — same on juglet and 300mm pot.
+- Kept/removed counts logged per face (`[SFS-T05]`); empty-filter falls
+  back to unfiltered LOUDLY, never a silent vanishing trace.
+- Unit test green 6/6 (synthetic 15mm rim + gross outlier 100mm off: 60
+  kept, outlier gone, empty safe).
+- Pot_A `filter_live` 15/15 — per-pair inliers moved (1-2: 2→3, 1-3:
+  18→25) with all pairs still passing; vote pattern unchanged.
+- Juglet 0/5 scorable, 5 unmeasurable, zero copies — trace bytes moved,
+  no pair crossed the gate.
 
 ## Note
 

@@ -480,6 +480,14 @@ Juglet attempts, all `pass 1: 0 merges`; Pot_A gate per-pair identical at
 observed data. Cosmetic-close with counts; the loop stays as the paper's
 stated behavior.
 
+## 2026-09-30 — paper-compliance 05 closed: the noise filter is live
+
+The dead reload is deleted; the filter output is what gets ordered
+(shared seam, unit test 6/6). Pot_A 15/15 with per-pair inliers moved but
+all passing; Juglet 0/5 scorable unchanged. As the ticket predicted, no
+gate movement — the value is that the code now does what the method says,
+under test.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
