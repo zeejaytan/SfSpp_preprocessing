@@ -712,11 +712,17 @@ MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 		}
 	}
 
-	// INTEGRATION POINT #1: ADAPTIVE DENSIFICATION after sphere-marching
-	// Ensure breakline has sufficient density for downstream segment detection and rim classification
-	std::cout << "[INTEGRATION POINT #1] Pre-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
-	smoothedBreakLine = adaptiveDensifyBreakline(smoothedBreakLine, 2.0);
-	std::cout << "[INTEGRATION POINT #1] Post-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
+	// INTEGRATION POINT #1: EQUIDISTANT RESAMPLING after sphere-marching
+	// (ticket 06). Spacing exposed, defaulting to the paper's 1.9mm -- not
+	// hard-coded, because that value was tuned on larger vessels and ours
+	// are an order of magnitude smaller. SFS_RESAMPLE_MM overrides per run
+	// without rebuilding.
+	std::cout << "[INTEGRATION POINT #1] Pre-resampling: " << smoothedBreakLine.rows() << " points" << std::endl;
+	double resample_spacing_mm = 1.9;
+	if (const char* sfs_r = std::getenv("SFS_RESAMPLE_MM")) { if (*sfs_r) resample_spacing_mm = std::stod(sfs_r); }
+	std::cout << "[SFS-T06] resample spacing=" << resample_spacing_mm << "mm" << std::endl;
+	smoothedBreakLine = adaptiveDensifyBreakline(smoothedBreakLine, resample_spacing_mm);
+	std::cout << "[INTEGRATION POINT #1] Post-resampling: " << smoothedBreakLine.rows() << " points" << std::endl;
 
 	return smoothedBreakLine;
 }
@@ -727,42 +733,45 @@ MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 // the same ordering code. See edge_line_ordering.h for the contract and
 // for the measured defects in the current implementation.
 
-// ADAPTIVE DENSIFICATION: Ensure breaklines have sufficient point density for downstream operations
-MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spacing_mm = 2.0) {
+// Ticket 06: true equidistant resampling at the specified spacing.
+// The paper (§IV-B1): "resampled to generate equidistant points with a
+// point-to-point distance of d = 1.9mm." This was a [30,200]-clamped
+// densify-or-skip: sparse inputs were inflated to clamp fiction (a 3.6mm
+// fragment became "200 points"), dense inputs passed through at whatever
+// spacing they had. Now every breakline is resampled to
+// round(perimeter/spacing) points at uniform arc-length intervals --
+// spacing specified, not count. Unit lie fixed too (perimeter was
+// computed in mm, labelled meters, and multiplied by 1000 -- the logs
+// reported rims a thousand times too long while the count math
+// accidentally worked through the same /1000).
+MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spacing_mm = 1.9) {
 	int num_points = breakline.rows();
 
-	// Safety: Need at least 2 points to densify
+	// Safety: Need at least 2 points to resample
 	if (num_points < 2) {
-		std::cerr << "[DENSIFY] Too few points (" << num_points << ") to densify, returning as-is" << std::endl;
+		std::cerr << "[SFS-T06] Too few points (" << num_points << ") to resample, returning as-is" << std::endl;
 		return breakline;
 	}
 
-	// Calculate perimeter (total arc length) in meters
-	double perimeter_m = 0.0;
+	// Traced length (arc length) in mm -- the cloud is mm.
+	double perimeter_mm = 0.0;
 	for (int i = 0; i < num_points - 1; i++) {
 		Eigen::Vector3d p1(breakline(i,0), breakline(i,1), breakline(i,2));
 		Eigen::Vector3d p2(breakline(i+1,0), breakline(i+1,1), breakline(i+1,2));
-		perimeter_m += (p2 - p1).norm();
-	}
-	double perimeter_mm = perimeter_m * 1000.0;
-
-	// Calculate target point count based on perimeter and target spacing
-	double target_spacing_m = target_spacing_mm / 1000.0;
-	int target_count = (int)(perimeter_m / target_spacing_m);
-
-	// Apply bounds: minimum 30 points, maximum 200 points
-	target_count = std::max(30, std::min(200, target_count));
-
-	// If already dense enough (within 20% of target), skip densification
-	if (num_points >= (int)(target_count * 0.8)) {
-		std::cout << "[DENSIFY] Breakline already dense (" << num_points
-		          << " points >= " << (int)(target_count * 0.8) << " target), skipping densification" << std::endl;
-		return breakline;
+		perimeter_mm += (p2 - p1).norm();
 	}
 
-	std::cout << "[DENSIFY] Perimeter=" << perimeter_mm << "mm, current="
-	          << num_points << " points, target=" << target_count
-	          << " points (spacing=" << target_spacing_mm << "mm)" << std::endl;
+	int target_count = std::max(2, (int)std::round(perimeter_mm / target_spacing_mm));
+
+	std::cout << "[SFS-T06] traced length=" << perimeter_mm << "mm, resampling "
+	          << num_points << " -> " << target_count
+	          << " points at ~" << target_spacing_mm << "mm" << std::endl;
+	if (target_count <= 5) {
+		std::cout << "[SFS-T06] WARNING: traced length " << perimeter_mm
+		          << "mm yields only " << target_count
+		          << " points -- a fragment, not a rim. It must fail loudly "
+		             "downstream, never pass as a full breakline." << std::endl;
+	}
 
 	// Use linear interpolation for densification (simple and preserves geometry)
 	// Calculate uniform arc-length parameter for each target point
@@ -775,9 +784,10 @@ MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spaci
 		cumulative_lengths.push_back(cumulative_lengths.back() + segment_length);
 	}
 
-	// Generate densified points at uniform arc-length intervals
+	// Generate resampled points at uniform arc-length intervals (mm units
+	// throughout -- cumulative_lengths was built from the mm cloud).
 	MatrixXd densified(target_count, 3);
-	double interval = perimeter_m / (target_count - 1);
+	double interval = (target_count > 1) ? perimeter_mm / (target_count - 1) : 0.0;
 
 	int source_idx = 0;
 	for (int i = 0; i < target_count; i++) {
@@ -806,7 +816,7 @@ MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spaci
 		densified.row(i) << interpolated(0), interpolated(1), interpolated(2);
 	}
 
-	std::cout << "[DENSIFY] Successfully densified from " << num_points
+	std::cout << "[SFS-T06] resampled from " << num_points
 	          << " to " << densified.rows() << " points" << std::endl;
 
 	return densified;
@@ -1403,7 +1413,26 @@ void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::Point
     }
 
     file.close();
-    std::cout << "Saved PCD with " << totalSegments << " segments to: " << filename << std::endl;
+    // Ticket 06: every breakline reports its traced length (arc length in
+    // mm -- points are already mm here, convertToMM=false at the call).
+    // Deliberately stdout, NOT a file comment line: the assembler's header
+    // parser is position-sensitive (data_structure.cpp:218+ reads line[1]
+    // then exactly totalSegments range lines), so a new comment line risks
+    // the format freeze that keeps the assembler untouched. A short trace
+    // is loud here instead of passing silently as a point count.
+    double traced_mm = 0.0;
+    for (size_t i = 1; i < cloud.points.size(); ++i) {
+        const double dx = cloud.points[i].x - cloud.points[i-1].x;
+        const double dy = cloud.points[i].y - cloud.points[i-1].y;
+        const double dz = cloud.points[i].z - cloud.points[i-1].z;
+        traced_mm += std::sqrt(dx*dx + dy*dy + dz*dz);
+    }
+    std::cout << "Saved PCD with " << totalSegments << " segments to: " << filename
+              << " (traced length=" << traced_mm << "mm, " << totalPoints << " points)" << std::endl;
+    if (traced_mm < 9.5) {
+        std::cout << "[SFS-T06] WARNING: " << filename << " traces only "
+                  << traced_mm << "mm -- a fragment, never a full breakline." << std::endl;
+    }
 }
 
 
