@@ -471,6 +471,15 @@ Pot_A re-measured per pair IDENTICAL to the 15/15 baseline (header line
 excepted); authors' arm still 15/15; vote/guard pattern unchanged. The
 question stays open; the ruler is now clean.
 
+## 2026-09-30 — paper-compliance 03 closed: merging converges trivially
+
+`mergeClusters` now iterates to convergence (cap 10, per-pass log).
+Second pass merges nothing on any segmentation attempt of either pot (13
+Juglet attempts, all `pass 1: 0 merges`; Pot_A gate per-pair identical at
+15/15; Juglet 0/5 scorable unchanged). Single-pass ≡ convergence on all
+observed data. Cosmetic-close with counts; the loop stays as the paper's
+stated behavior.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
