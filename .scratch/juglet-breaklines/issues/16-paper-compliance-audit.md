@@ -58,6 +58,15 @@ the largest clusters without classifying them."
    (`edge_line_ordering.cpp:51`). Ticket 03 closed unimplemented; Pot_A
    reaches 15/15 without it, so it is not currently load-bearing for the
    gate — but it remains the plainest unimplemented sentence in §IV-B1.
+   DISPOSITION 2026-09-30: will not implement. The paper names "a voting
+   algorithm" without specifying it (supplementary material absent from
+   this corpus), so any implementation would be our invention wearing the
+   paper's name — and it would risk the pot that works for zero predicted
+   gain (coverage indistinguishable Juglet-vs-Pot_A per ticket 08).
+   Reopens only on: (a) a specified algorithm, or (b) a pot where the
+   coverage distribution implicates ordering as the discriminator. Until
+   then this stays the known, measured, accepted deviation — the one
+   sentence of §IV-B1 we knowingly do not implement.
 3. **Noise filter dead.** Computed (`:949-972`: radius from boundary radius,
    min-neighbors 3/6) then discarded by the `boundary.pcd` reload (`:974`).
    Ticket 05. Measured harmless on piece 2 (dense thicket, removes almost
@@ -106,6 +115,56 @@ What remains unaudited is the MATLAB *method*, not the Juglet *files*.
 (The assembler also carries its own C++ axis code — `ComputePottmannAxis`,
 `ComputePotSACAxis`, `RefineAxis` — called from the ranking path, while the
 mains load the files. File-vs-computed precedence there was not traced.)
+
+## ADDENDUM 2026-09-30: MATLAB method audited (read, not run)
+
+Source: `AxisExtraction/` at the Spartan checkout root (62 `.m` files;
+md5s below — the audit pins these bytes, not "the MATLAB" vaguely).
+No license needed: read-only comparison against paper lines 149/173.
+
+- **6-point Pottmann minimal solver: present.**
+  `compute_pottmann_axis.m` builds the Plücker system and solves the
+  reduced eigensystem (md5 `b8630781`); `compute_axis_of_symmetry.m`
+  samples 6-point sets × 1000 iterations with mean/scale normalization
+  (`37eff04b`).
+- **Biaxial Cao error + robustifiers: present.** `compute_biaxial_cao_error`,
+  `robustifier_gm` (sampling stage) and `robustifier_huber` (ranking
+  stage), inlier threshold 1.0.
+- **Refinement: present.** `refine_axis` (LM, `1f8d2d16`) runs on the top
+  10 candidates (300 iters, 1e-3), then again post-dedup at 1e-9 on the
+  full cloud (`run_potsac.m:46-49,78-80`, `7822954e`).
+- **Multi-axis capability: present, single axis consumed.** `run_potsac`
+  keeps the top 10, dedups at >10° (cos 0.9848), keeps costs within 10% of
+  best — the paper's "modified version capable of producing multiple
+  axes." But `extract_axis.m:11-13` (`cc4fa5af`) saves only `vt(:,1)`.
+  The axis files (single-line `.xyz`) carry the best axis only. Matches
+  the downstream format; the modification exists upstream of consumption.
+- **Inner-surface-only (paper line 149): NOT what the code does.** The code
+  reads `Surface_0` AND `Surface_1` in raw file order — unclassified, the
+  same arbitrary order ticket 04 fixed downstream — concatenates both and
+  estimates on the union (`read_surfaces.m:21-37`, `443e6355`;
+  `run_potsac.m:1-16`). This matches the paper's PotSAC-both description
+  (line 173: "using both exterior and interior surface information") and
+  the error metric is sign-robust by design (paper lines 519-527), so the
+  line-149 sentence is most likely an imprecise description, not a live
+  deviation. Recorded as measured-likely-cosmetic, not accepted-blind.
+- **MLESAC vs RANSAC: noted without verdict.** Paper says MLESAC sampling;
+  the code is plain random 6-point sampling with robust-cost ranking.
+  Same family, different selection rule; no measurement of the difference.
+- **Hazards, not verdicts:** `read_surfaces.m` hardcodes
+  `D:/SFS_BB_temp/Plt_A` (dead Windows paths in comments show the
+  lineage); equal-count truncation takes the FIRST N points of each
+  surface (`:35-37`) — order-dependent subset, could bias if points are
+  spatially ordered; `extract_axis.m:8` downsamples both surfaces jointly
+  (`C0(:,1:1:end)` — step 1, i.e. no-op as written).
+
+**Bottom line for the vote:** the axis input is paper-plausible end to end
+(minimal solver, biaxial error, refinement, multi-candidate). The Juglet's
+near-tie votes (52–55%) are NOT explained by a broken axis method — they
+stand as material indeterminacy (handmade, non-symmetric), which is S2's
+question, not a compliance gap. This closes the last unaudited input the
+vote depends on. (Local fetch deleted after hashing; source of truth is
+the Spartan path above.)
 
 ## ADDENDUM 2026-09-29: second pass — the assembler side, plus three new gaps
 

@@ -506,6 +506,19 @@ unconditional 3-arg loads now 2-arg, `IcpFine` refuses empty frac loudly,
 in-container rebuild clean. No such files exist in either dataset; nothing
 that runs changes. Emission would have been pure cost.
 
+## 2026-09-30 — audit inputs closed: MATLAB axis method matches; ordering vote explicitly declined
+
+- The MATLAB axis extraction is paper-plausible end to end (6-pt Pottmann
+  solver, biaxial Cao error, LM refinement, multi-candidate dedup). It
+  uses both unclassified file-order surfaces where line 149 says inner —
+  immaterial given the sign-robust metric. The Juglet's near-tie votes are
+  material indeterminacy, not a broken axis. Last unaudited vote input
+  closed (ticket 16 addendum, md5-pinned).
+- The paper's ordering vote stays unimplemented by explicit decision: the
+  algorithm is unspecified in the corpus, Pot_A is 15/15 without it, and
+  implementing it would be invention risking the working pot. Reopen
+  conditions recorded in ticket 16.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
