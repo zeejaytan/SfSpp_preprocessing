@@ -50,6 +50,8 @@ target_sources(EdgeLineExtractionHeadless PRIVATE ticket04_interior_first.cpp su
 # Ticket 14: append fracture-zone patch rims to Breakline_0. No-op when no
 # Decorative files exist for a piece, so pieces without them are unaffected.
 target_sources(EdgeLineExtractionHeadless PRIVATE ticket14_patch_rims.cpp)
+# Ticket 05: boundary noise filter seam, shared with the unit test below.
+target_sources(EdgeLineExtractionHeadless PRIVATE boundary_filter.cpp)
 add_executable(EdgeLineExtractionLegacy edgeline_extraction_backup.cpp ${PROJ_DEP})
 
 # Link Libraries
@@ -98,6 +100,16 @@ add_executable(test_surface_classify tests/test_surface_classify.cpp surface_cla
 add_test(NAME surface_classify_inner_outer COMMAND test_surface_classify inner-outer)
 add_test(NAME surface_classify_degenerate  COMMAND test_surface_classify degenerate)
 add_test(NAME surface_classify_empty       COMMAND test_surface_classify empty)
+
+# Ticket 05: boundary noise filter. The test links the SAME
+# boundary_filter.cpp the pipeline compiles (see above), so it cannot pass
+# against different code than production runs. Expected to PASS on landing:
+# a synthetic rim with one gross outlier must keep the rim, drop the
+# outlier, and survive empty input.
+add_executable(test_boundary_filter tests/test_boundary_filter.cpp boundary_filter.cpp)
+target_link_libraries(test_boundary_filter ${PCL_LIBRARIES} stdc++fs)
+add_test(NAME boundary_filter_gross_outlier COMMAND test_boundary_filter gross-outlier)
+add_test(NAME boundary_filter_empty         COMMAND test_boundary_filter empty)
 
 # Known-broken today. Disabled by the DISABLED test PROPERTY, which is the
 # single mechanism -- an earlier attempt used the DISABLED_ name prefix as

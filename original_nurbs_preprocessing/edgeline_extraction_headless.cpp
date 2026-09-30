@@ -37,6 +37,9 @@
 // Ticket 11: boundary-radius sweep hook. Inert unless SFSPP_BOUNDARY_RADIUS_MM
 // is set, so default behaviour is unchanged.
 #include "boundary_radius_override.h"
+// Ticket 05: boundary noise filter seam -- the pipeline and the unit test
+// compile the same boundary_filter.cpp. See boundary_filter.h.
+#include "boundary_filter.h"
 // Removed VTK headers for headless build (PCL built with -DWITH_VTK=OFF)
 // #include <pcl/io/vtk_io.h>
 // #include <pcl/io/vtk_lib_io.h>
@@ -961,35 +964,39 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	   // empty path. The brace closes the else opened at the load check;
 	   // do not reindent the block between them as a separate change.
 	//-----------------------------------------------------------------------------
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
-	pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
-	// build the filter
-	outrem.setInputCloud(boundaryCloud_Improved);
-
-	// ADAPTIVE: Match outlier removal radius to boundary detection radius
-	int num_boundary = boundaryCloud_Improved->points.size();
-	// Juglet fix (2026-09): same unit lie (cloud is mm, so 0.002-0.020 read
-	// as sub-micron radii -> every boundary point an "outlier" -> empty
-	// cloud_Filtered -> the same writeASCII abort one step later). Reuse the
-	// boundary radius (8/6), keeping the old [2,20] clamp shape.
-	double outlier_radius_mm = (g_boundary_radius_mm > 0)
+	// Ticket 05: wire the filter output through. filterBoundaryNoise is the
+	// shared seam (boundary_filter.{h,cpp}) -- production and test call it.
+	// Radius derives from the cloud's own spacing via g_boundary_radius_mm
+	// (bbox sheet area); neighbor count relaxes for small clouds, so the
+	// stage behaves the same on a 65mm juglet and a 300mm pot.
+	// (Radius intent kept: Juglet fix 2026-09 -- the cloud is mm, so the
+	// radius must be too; reuse the boundary radius with the old [2,20]
+	// clamp shape. Neighbor count relaxes for small boundaries.)
+	const int num_boundary = static_cast<int>(boundaryCloud_Improved->points.size());
+	const double outlier_radius_mm = (g_boundary_radius_mm > 0)
 		? std::max(2.0, std::min(20.0, g_boundary_radius_mm * 8.0 / 6.0))
 		: 3.0;  // fallback if the boundary stage never ran (should not happen)
-	outrem.setRadiusSearch(outlier_radius_mm);
-
-	// COMBINATION APPROACH PART 1: Relax outlier removal for small boundaries
-	int min_neighbors = (num_boundary < 100) ? 3 : 6;  // Less strict for small boundaries
-	outrem.setMinNeighborsInRadius(min_neighbors);
-	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, outlier_r="
-	          << outlier_radius_mm << "mm, min_neighbors=" << min_neighbors << std::endl;
-	outrem.setKeepOrganized(true);
-	// apply filter
-	outrem.filter(*cloud_filtered);
+	const int min_neighbors = (num_boundary < 100) ? 3 : 6;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
+	filterBoundaryNoise(boundaryCloud_Improved, cloud_filtered,
+	                    outlier_radius_mm, min_neighbors);
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Filtered.pcd", *cloud_filtered);
 
-	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud_Improved);
+	// Ticket 05: the reload that was here (boundary.pcd over
+	// boundaryCloud_Improved) discarded the filter output -- the filter
+	// ran, saved, printed, and was thrown away. Deleted; the filtered
+	// cloud is what gets ordered. If the filter empties the cloud, fall
+	// back LOUDLY to the unfiltered boundary rather than sequencing
+	// nothing (an empty order is how traces used to vanish silently).
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_to_sequence(new pcl::PointCloud<pcl::PointXYZ>);
+	if (cloud_filtered->points.empty()) {
+		std::cout << "[SFS-T05] filter emptied the cloud -- sequencing UNFILTERED boundary (loud fallback)" << std::endl;
+		*cloud_to_sequence = *boundaryCloud_Improved;
+	} else {
+		*cloud_to_sequence = *cloud_filtered;
+	}
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
-	getPointsInSequence(boundaryCloud_Improved, cloud_sequenced);
+	getPointsInSequence(cloud_to_sequence, cloud_sequenced);
 
 	std::cout << "[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode..." << std::endl;
 	pcl::io::savePLYFile(tempEdgeFolder + "_breakLineFromConcaveHull.ply", *cloud_sequenced, false); // ASCII mode
