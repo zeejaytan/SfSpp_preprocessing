@@ -488,6 +488,15 @@ all passing; Juglet 0/5 scorable unchanged. As the ticket predicted, no
 gate movement — the value is that the code now does what the method says,
 under test.
 
+## 2026-09-30 — paper-compliance 06 closed: 1.9mm resampling live, 15/15 held
+
+Clamp fiction gone (files carry 8–32 honest points on the Juglet);
+Pot_A holds 15/15; Juglet 0/5 unmoved. The change exposed a hardcoded
+K=20 loop that segfaulted on 12-point rims — bounded by found count,
+confirmed by a completing rerun. Short rims (2: 9pts, 7: 8pts) now sit
+below the assembler's 50-point threshold, where they fail loudly instead
+of passing silently.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
