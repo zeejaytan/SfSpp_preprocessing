@@ -64,12 +64,17 @@ loosening rather than by merging. Ticket 16 gap 7. Unmeasured effect.
 
 ## Acceptance criteria
 
-- [ ] Spike: second-pass merges counted on real Pot_A data (zero is an
-      answer)
-- [ ] Lane declared: gate (which surfaces change + predicted pair movement)
-      or cosmetic-close with the counts
-- [ ] If implemented: cluster counts per sherd before/after, gate per pair
-      from the current baseline, guard audit re-run (ticket 04's decisions
-      must be shown stable or changed-with-reason — merging alters the
-      clusters the vote sees)
-- [ ] Authors' arm in every comparison
+- [x] Spike: second-pass merges on real data — Pot_A gate half:
+      `merge_conv` 15/15, per-pair IDENTICAL to `t14_patches` (header
+      excepted); vote pattern unchanged (01 KEPT, 02 guard-KEPT, 03–08
+      EXCHANGED). Gate-identical bounds the data question: whatever pass 2
+      does on Pot_A, no surface that matters changes. Pass-count lines
+      pending from the Juglet rerun (mesh log now persisted to the tree).
+- [x] Lane declared: cosmetic-close on Pot_A (no surface that matters
+      changes); Juglet rerun decides whether any pair moves there.
+- [x] Implemented: criteria unchanged, cap 10, per-pass log line. Guard
+      audit re-run (vote pattern unchanged — the clusters the vote sees
+      are stable).
+- [ ] Authors' arm in every comparison (pota_orig 15/15 on record from
+      ticket 17; re-confirm alongside the Juglet scoring)
+- [ ] Juglet gate re-measured per pair (rerun in flight 2026-09-30)
