@@ -1426,12 +1426,24 @@ bool verifyClusterMerge(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, int innerP
 
 void mergeClusters(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, std::vector<pcl::PointIndices>& clusters) {
 
-	std::vector<std::pair<int, int>> mergePairs;
-	std::vector<bool> merged(clusters.size(), false);
-
 	std::cout << "mergeClusters function called." << std::endl;
 
-	// Step 1: Compare all cluster pairs and store merge information
+	// Paper compliance (preproc ticket 03): the paper repeats merging
+	// "until no further merges are possible." This was a single
+	// collect-then-execute pass, which misses chain merges as a code-path
+	// fact: Step 1 tests every pair against pre-merge membership, and a
+	// merged cluster is skipped as a partner, so (A,B)+(AB,C) can never
+	// complete in one pass. Criteria below are UNCHANGED; only repetition
+	// is new. Cap + per-pass line so a pathological input cannot loop
+	// forever and the behavior stays visible in the log.
+	const int SFS_MERGE_MAX_PASSES = 10;
+	int mergePass = 0;
+	while (mergePass < SFS_MERGE_MAX_PASSES) {
+		++mergePass;
+		std::vector<std::pair<int, int>> mergePairs;
+		std::vector<bool> merged(clusters.size(), false);
+
+		// Step 1: Compare all cluster pairs and store merge information
 	for (size_t i = 0; i < clusters.size(); ++i) {
 		if (merged[i]) continue;
 
@@ -1550,6 +1562,11 @@ void mergeClusters(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, std::vector<pcl
 	clusters.erase(std::remove_if(clusters.begin(), clusters.end(), [](const pcl::PointIndices& cluster) {
 		return cluster.indices.empty();
 		}), clusters.end());
+
+	std::cout << "mergeClusters pass " << mergePass << ": " << mergePairs.size()
+	          << " merges, " << clusters.size() << " clusters remain" << std::endl;
+	if (mergePairs.empty()) break;
+	}  // while (mergePass): preproc ticket 03 convergence loop
 }
 
 #include <random>

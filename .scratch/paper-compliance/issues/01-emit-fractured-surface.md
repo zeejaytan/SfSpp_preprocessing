@@ -4,11 +4,47 @@
 
 **Blocked by:** nothing — measurement and small mesh-stage change
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent — spike done 2026-09-30, verdict verified by
+the lead (IcpFine: decl + def only, zero callers). REMOVAL lane, not
+emission. Spec follows the spike section.
 
-**Needs-eye:** required before closing. A new file appears in the handoff;
-the conservator should see what it contains on one sherd before anything
-downstream consumes it.
+**Needs-eye:** none — this ticket no longer emits any file. (The old
+Needs-eye for a `Surface_F` look is withdrawn with the emission lane.)
+
+## Spike outcome: dead expectation, not missing data
+
+- Sole consumer chain (`MakeCorWithSur :701/:749` → `COR_frac` → 
+  `P2PConstraint :2109`) is reachable only via `IcpFine`
+  (`reconstruction.cpp:2039`), which has **zero call sites** repo-wide.
+  The live binary runs `FeatureComp → PairwisePruning → StateManager` —
+  none read `sur_frac_` (verified: zero reads in feature_matching,
+  ranking_system, filter, axis_estimation, two_phase, optimizer).
+- Every empty-cloud op on the dead path is inert (early-return load,
+  zero-iteration loops, zero-residual constraint, non-firing emptiness
+  check at `:2098-2099` — which is why the failure would be silent, not
+  loud, if `IcpFine` ever runs).
+- **Populating `Surface_F` files would change zero executed instructions
+  in any built binary.** Emission is pure cost, no effect. Ticket premise
+  corrected: live code in a dead function, not silent corruption.
+
+## What to build (removal, assembly repo)
+
+1. Delete the `surface_fr` path entries from the ACTIVE `data_path.h`
+   blocks (keep legacy BB blocks untouched — different reader).
+2. Make the two unconditional 3-arg `LoadSurface` calls
+   (`main_headless_correct.cpp:187`, `main.cpp:95`) 2-arg, matching the
+   guarded `main_headless.cpp:89-93` pattern — or guard them the same way.
+   Keep the `sur_frac_.CalculateLineNormal` guard (`:191-192`) consistent
+   with whatever remains.
+3. If `IcpFine` stays: add a per-pair `cor.empty()` guard where `:2098`
+   assumes non-empty, so re-enabling it without files fails LOUDLY. If it
+   goes, its `sur_frac_` reads go with it. Either way, no silent path.
+4. Hazards on record (do not re-introduce): one-sided population risks UB
+   (`MakeCorWOBuildTree :412-418`); `ReadPCD :887-893` strips 12 header
+   lines so headerless `.xyz` emission would drop 12 points; active blocks
+   expect `.pcd` while legacy blocks name `.xyz`.
+
+## Acceptance criteria (updated 2026-09-30)
 
 ## Why this ticket exists
 

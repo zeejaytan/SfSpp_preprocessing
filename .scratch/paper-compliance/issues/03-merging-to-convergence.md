@@ -4,10 +4,30 @@
 
 **Blocked by:** nothing — code change + rerun, or laptop simulation first
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent — spike done 2026-09-30: YES as a code-path
+fact. Single pass CAN miss chain merges (Step 1 tests all pairs against
+pre-merge membership; `merged[j]` skips chain partners; Step 2 appends
+without re-verification). Whether it DOES on real data is unmeasured —
+hence the build spec below. No laptop simulation: saved intermediates
+can't replay membership-dependent gates faithfully; instrument and rerun.
 
 **Needs-eye:** none unless cluster assignments visibly change on a sherd
 that matters at the gate.
+
+## What to build
+
+- Iterate Steps 1–2 to convergence (no merges in a full pass) with the
+  existing criteria UNCHANGED (tuning 0.95/0.1/0.75/0.25 is a separate
+  decision; bundling makes results unattributable).
+- Pass cap (e.g. 10) + one log line per pass:
+  `mergeClusters pass <P>: <N> merges, <M> clusters remain` — a
+  pathological input cannot loop forever and the behavior is visible.
+  Pass-2-with-N>0 settles YES-on-data; all later passes N=0 settles
+  behaviorally-identical-to-convergence for that input.
+- Per-pair detail rides on the existing pass/fail log lines, prefixed by
+  pass number so pairs that only pass with merged membership visible can
+  be grouped.
+- No criterion values change in this ticket.
 
 ## Why this ticket exists
 
