@@ -78,9 +78,11 @@ eye disagrees with the gate, the eye is right and the ticket stays open.
       available until the probe says so
 - [ ] At least one claimed join is staged correct-versus-attempt and
       witnessed
-- [ ] If the probe passes and the assembler still finds nothing, that is
+- [x] If the probe passes and the assembler still finds nothing, that is
       recorded as a finding and handed to `structure-from-sherds-pp` with
-      the numbers attached — not treated as a failure here
+      the numbers attached — not treated as a failure here.
+      **TRIGGERED 2026-10-01:** probe 15/15 in, assembly 0/8 + 0/15 out
+      (job 31835065); handed over as assembly ticket 09 with log cites.
 
 ## The three claims this must keep separate
 
