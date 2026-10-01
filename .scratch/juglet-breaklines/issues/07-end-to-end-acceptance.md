@@ -215,7 +215,31 @@ correct ask for a correct-vs-attempt look is a judgement of plausibility as a
 conservator** — "do these two sherds look like they belong together on this
 vessel?" — never a reading of a figure.
 
-## Witnessed look: `pota_12` — STAGED 2026-10-01, awaiting eye
+## Witnessed look: `pota_12` — DONE 2026-10-01, both parts answered
+
+**Conservator's judgement (verbatim):** *"they seem to go well together.
+the red run on seam, most of the time, however there is gaps. also on the
+blue sherd: there are straight lines run across the sherds, these are not
+the seam"*
+
+**Same-round reply (measured, 2026-10-01):**
+
+1. *"Go well together"* — CONFIRMED by the eye. The thinnest pass is
+   genuine at sherd level; the 15/15 stands, witnessed on its most fragile
+   member. This is the verdict the look was staged for, and it is positive.
+2. *"Red on seam most of the time, with gaps"* — consistent with the
+   coverage data; no action.
+3. *"Straight lines across the blue sherd"* — CONFIRMED REAL and NEW.
+   Piece 2's `Breakline_0` seg 24-44 (21 pts, 38mm) lies on the mesh face
+   (≤0.93mm) up to 15.9mm from the wall rim; segs 0-4/5-23 hug the rim
+   (≤2mm). Not a staging artifact (per-segment tubes). Most likely
+   ticket-14 appended decorative/patch content (piece 2 owns 4+
+   `Decorative` files in the run tree) — attribution is ticket 18's spike.
+   The gate is blind to this class (passes on the wall portion; extra
+   segments only add opportunities on all-true-mate Pot_A). On non-mate
+   material it is false-positive surface — filed as ticket 18
+   (`18-face-crossing-traces-in-breakline-0.md`), which owns attribution,
+   separation/labeling, re-measurement, and re-staging if red changes.
 
 Single look (no fake comparison): Pot_A pieces 1+2 meshes at conservator
 GT (piece 1 tan, piece 2 teal) with OUR Breakline_0 rims as red tubes

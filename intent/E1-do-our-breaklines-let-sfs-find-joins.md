@@ -519,6 +519,14 @@ that runs changes. Emission would have been pure cost.
   implementing it would be invention risking the working pot. Reopen
   conditions recorded in ticket 16.
 
+## 2026-10-01 — `pota_12` witnessed: thinnest pass genuine, plus new finding
+
+Pair 1-2 confirmed belonging together by the eye; red on seam with gaps
+as measured. New: piece 2's `Breakline_0` carries a 38mm face-crossing
+trace (seg 24-44, ≤0.93mm on mesh, up to 15.9mm off the wall rim) —
+likely appended decorative content, invisible to the gate, filed as
+ticket 18. The only known false-positive surface in a passing bundle.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
