@@ -79,12 +79,18 @@ the largest clusters without classifying them."
 5. **Rim criterion differs.** Paper: height/radius std ≤1.0mm, gradual
    change ≤0.1mm, ≥20 points. Ours: plane-fit curvature error (>0.12) plus
    axis-distance deviation <50% of mean (`:2861`, `:3296-3300`). Different
-   test entirely; never compared head-to-head.
+   test entirely; never compared head-to-head. CORRECTION 2026-10-01
+   (fork audit): the 0.12 gate is UPSTREAM's own code, verified — never
+   ours. The closeout stands for the BEHAVIOR; the attribution was wrong
+   (inherited deviation, not ours).
 6. **Region-growing parameters differ.** Paper: τθ=4, τκ=1, nb=10. Ours:
    4.5°/1.5, 15–40 neighbors, adaptive cluster sizes (`:1717-1727`,
    defaults `:2174`). Ticket 12 showed the default optimal and both
    directions hurt or crash — so these values are measured-good on Pot_A,
    but they are not the paper's values and should not be cited as such.
+   CORRECTION 2026-10-01 (fork audit): the 4.5/1.5 defaults are UPSTREAM's
+   own (`mesh_processing.cpp:1735-1736`), verified — never ours. Same
+   standing: behavior accepted, attribution corrected to inherited.
 7. **Merging does not iterate to convergence.** Paper: repeat until no
    merges possible. Ours: single pass over pairs; the outer loop retries on
    *count* < 2 instead (`:1647-1660`), which is a different condition.
