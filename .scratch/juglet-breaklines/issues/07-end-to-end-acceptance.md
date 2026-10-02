@@ -217,7 +217,13 @@ correct ask for a correct-vs-attempt look is a judgement of plausibility as a
 conservator** — "do these two sherds look like they belong together on this
 vessel?" — never a reading of a figure.
 
-## Witnessed look: `pota_12` — DONE 2026-10-01, both parts answered
+## Witnessed look: `pota_12` — DONE 2026-10-01, both parts answered;
+POSTSCRIPT 2026-10-02 (ticket 18 spike): the "straight lines" are true
+2-8 seam traces (0.07–0.13mm), not defects — the look showed one pair
+while piece 2's rim legitimately contains other seams' traces. LESSON:
+single-pair looks hide other-seam content and invite false defect
+readings; future looks either show all of a sherd's seams or state which
+seams are out of frame. The agent's append-inference is retracted.
 
 **Conservator's judgement (verbatim):** *"they seem to go well together.
 the red run on seam, most of the time, however there is gaps. also on the

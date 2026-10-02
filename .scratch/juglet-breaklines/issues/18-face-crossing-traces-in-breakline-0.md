@@ -4,7 +4,11 @@
 
 **Blocked by:** nothing — measurement + small edgeline change
 
-**Status:** ready-for-agent
+**Status:** resolved 2026-10-02 — REFUTED by measurement (see spike).
+No code changes; the lines are true seams in the wrong look context.
+
+**Needs-eye:** the originating look (`pota_12`, witnessed 2026-10-01) is
+done and stands; no re-stage (nothing changes).
 
 **Needs-eye:** the originating look (`pota_12`, witnessed 2026-10-01) is
 done and stands; closing needs no second look unless the fix changes what
@@ -17,35 +21,43 @@ this class (the gate passed WITH the pollution present).
 however there is gaps. also on the blue sherd: there are straight lines
 run across the sherds, these are not the seam"*
 
-## What measurement says (2026-10-01, same-round reply)
+## What measurement said 2026-10-01 (SUPERSEDED — see spike outcome below;
+kept so the retraction is auditable)
 
-- "Go well together": CONFIRMED. The thinnest pass (1-2) is genuine at
-  sherd level. The 15/15 stands, now witnessed on its most fragile member.
-- "Red on seam most of the time, with gaps": consistent with the coverage
-  data (ticket 07 diagnosis). No action.
-- "Straight lines across the blue sherd": CONFIRMED REAL, not a staging
-  artifact (tubes are per file segment; the first-header skip is fixed —
-  no streaks). Piece 2's `Breakline_0` (resample19, 4 segments) at GT:
-  segs 0-4 and 5-23 hug the 574-pt wall rim (≤2mm — the red-on-seam the
-  eye saw); seg 24-44 (21 pts, 38mm arclen) lies ON the mesh face
-  (≤0.93mm) wandering up to 15.9mm from the wall rim. A 38mm trace across
-  the face, inside the file that claims to be the rim.
+- "Go well together": CONFIRMED (stands — thinnest pass genuine).
+- "Red on seam with gaps": consistent with coverage (stands).
+- "Straight lines": CONFIRMED REAL as geometry (stands — tubes are
+  per-segment, no streaks) BUT misattributed: "most likely appended
+  decorative/patch rims" was stated before measuring and is WITHDRAWN.
+  The segs are <30pts (append floor excludes them); they trace the 2-8
+  seam (0.07–0.13mm). The "false-positive surface / pollution" framing
+  below is withdrawn with it — there is no known false-positive surface
+  in any passing bundle at this time.
 
-## Why it matters (and why the gate didn't see it)
+## SPIKE OUTCOME 2026-10-02: premise refuted — the lines are true 2-8 seams
 
-`Breakline_0` mixes the seam rim with face-crossing traces — most likely
-ticket-14 appended decorative/patch rims (piece 2 owns 4+ `Decorative`
-files of 75–119 ordered pts in the same run tree; exact attribution of
-seg 24-44 is this ticket's spike, not assumed here). The gate scores per
-segment pair and passes on the wall-rim portion, so the pollution is
-invisible to it: on Pot_A every pair is a true mate, so extra segments
-only add opportunities. On non-mate material the same content is
-false-positive surface — the exact shape ticket 06 was created to kill
-(a fragment passing as rim), re-entering through the append path. The
-finer the gate gets, the more this class matters: it is currently the
-only known false-positive surface in a passing bundle.
+Attribution by the ticket's own rule (≥30pts + T14 log lines for appends;
+byte comparison where applicable):
 
-## What to build (spike first)
+- Piece 2's small segs (5/19/21 pts) are all BELOW the 30-pt append floor
+  (`kMinPatchRimPoints`) — they CANNOT be ticket-14 appends. (The e2e
+  rebuild's T14 log confirms the mechanism working as designed: 114+119pt
+  appends logged with file positions, sub-30 fragments skipped loudly.)
+- At GT against ALL of piece 2's mates (correct Pot_A transforms this
+  time — an earlier pass used Juglet transforms and produced garbage
+  200–600mm figures, discarded, not trusted):
+  s0 → 0.13mm from piece 8; s2 → 0.07mm from piece 8; wall → 0.09–0.13mm
+  from pieces 1, 4, 5 AND 8 (the full loop passes every seam).
+- So s0/s2 trace the **2-8 seam** — genuine seam content, invisible in a
+  look that shows only sherds 1+2. The eye read them correctly ("not the
+  seam" = not the 1-2 seam); the defect inference was the agent's, from
+  a context-limited look, and it is withdrawn. Duplicate seam coverage
+  (wall + fragments all on 2-8) is harmless to the gate (more inliers).
+- s1 (19pts, nearest 9.8mm from piece 8): near-seam fragment, minor,
+  unexplained — recorded, not chased (one fragment, no gate impact).
+- CORRECTION of the 2026-10-01 same-round reply: "most likely appended
+  decorative/patch rims" was wrong — stated before measuring, against
+  this ticket's own spike rule. Retracted with the numbers above.
 
 1. Attribute seg 24-44 (and 0-4/5-23): decorative append, patch-rim
    append, or wall-rim branch (interior ring)? Read the append call order
@@ -62,11 +74,11 @@ only known false-positive surface in a passing bundle.
 
 ## Acceptance criteria
 
-- [ ] Spike: seg-level attribution with byte evidence (which append, which
-      call order)
-- [ ] `Breakline_0` carries no unlabeled face-crossing trace, or the
-      label + consumer exist and are tested
-- [ ] Pot_A per-pair from 15/15 (no regression), Juglet 0/5-or-better,
-      authors' arm alongside
-- [ ] If red changes on piece 2: `pota_12` re-staged and re-witnessed
-- [ ] Ticket 14's +4 pairs accounted for (kept or explicitly re-diagnosed)
+- [x] Spike: seg-level attribution — DONE (not appends: <30pts floor
+      excludes + T14 log corroborates; 2-8 seam traces at 0.07–0.13mm)
+- [x] No unlabeled face-crossing trace exists — VACUOUS (duplicate 2-8
+      coverage is wall loop + corner-split fragments of the same seam)
+- [x] Pot_A 15/15 untouched (no code changed); Juglet unmeasured (nothing
+      to measure — no change)
+- [x] Re-stage NOT NEEDED (nothing changes)
+- [x] Ticket 14's +4 pairs unaffected (append mechanism exonerated)
