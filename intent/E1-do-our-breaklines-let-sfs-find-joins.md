@@ -527,6 +527,13 @@ trace (seg 24-44, ≤0.93mm on mesh, up to 15.9mm off the wall rim) —
 likely appended decorative content, invisible to the gate, filed as
 ticket 18. The only known false-positive surface in a passing bundle.
 
+## 2026-10-02 — ticket 18 refuted: the lines are true 2-8 seams, look was context-limited
+
+Piece 2's small segments sit below the 30-pt append floor (not appends)
+and 0.07–0.13mm from piece 8's mesh (true seam traces). Lesson: single-pair
+looks hide other-seam content — future looks state which seams are out of
+frame. Agent's append-inference retracted in the ticket.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
