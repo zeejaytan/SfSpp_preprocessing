@@ -149,6 +149,16 @@ assumptions, or something about the object. The difference is decided
 here, by what we hand over: a breakline that a 2 mm / agreeing-normal
 test cannot fail is a breakline nobody can assemble from.
 
+## Where it stands
+
+Our break-line tracing passes all 15 checks on the reference pot (Pot A). On the Juglet,
+none of the 5 touching pairs that can be measured passes, and 5 more cannot be measured.
+Sherds 3 and 9 produce no usable break surfaces at all, and loosening the settings did
+not bring them back. This looks like the tracing failing on this pot, not SfS++.
+
+Weight: one reference pot passing, one real pot failing.
+Next: the end-to-end run (ticket 07), then why sherds 3 and 9 give nothing.
+
 ## 2026-09-26, ticket 08 — the walk is NOT the Juglet's problem
 
 Measured every sherd face of both pots, not one sherd: **18 Juglet faces**
