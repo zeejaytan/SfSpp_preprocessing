@@ -4,7 +4,7 @@
 
 **Blocked by:** nothing
 
-**Status:** closed — premise (Euclidean tolerance fuses walls) was wrong;
+**Status:** resolved — premise (Euclidean tolerance fuses walls) was wrong;
 the value nevertheless changed 2→1.5 under ticket 14 for a separately
 measured reason (1 cluster vs 64 on piece 2's unclustered path, which is
 the only caller). The `// 2cm` comment discrepancy is recorded but untouched.

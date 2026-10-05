@@ -10,7 +10,7 @@ the error, not as a finding.
 **Blocked by:** nothing. This was the front of the queue; central finding
 refuted 2026-09-28, retained as error record.
 
-**Status:** closed — do not act on the bias claim
+**Status:** resolved — do not act on the bias claim
 
 **Needs-eye:** required before this ticket closes. It is a geometry claim
 about where our rim sits, and the conservator's eye is what settles whether
