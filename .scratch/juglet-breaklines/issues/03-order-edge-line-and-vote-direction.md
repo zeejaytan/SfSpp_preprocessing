@@ -65,7 +65,7 @@ about the walk. The walk's own failure is truncation, measured as coverage
 **Blocked by:** 02 (dedupe first — sequencing on a duplicate-laden cloud
 cannot be judged)
 
-**Status:** closed as characterized-but-unfixed, 2026-09-28 — see below
+**Status:** resolved as characterized-but-unfixed, 2026-09-28 — see below
 
 ## Scope correction: dedupe eliminated, rewrite required
 

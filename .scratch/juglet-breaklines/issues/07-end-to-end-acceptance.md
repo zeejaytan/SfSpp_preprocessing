@@ -16,6 +16,7 @@ and is withdrawn, not compared. Clean state 2026-09-30: **0 of 5 scorable
 touching pairs pass, 5 touching pairs unmeasurable** (pieces 3 and 9
 produce no surfaces — single cluster after 30 loosened retries — and skip
 loudly). Seven present breaklines md5-unique, zero copies.
+**Working in:** not recorded (in progress before this line existed; last changed 2026-10-02)
 
 ## 2026-09-28 — Pot_A acceptance met, by our pipeline, not the sample
 
