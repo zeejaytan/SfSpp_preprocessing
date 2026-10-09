@@ -544,6 +544,14 @@ and 0.07–0.13mm from piece 8's mesh (true seam traces). Lesson: single-pair
 looks hide other-seam content — future looks state which seams are out of
 frame. Agent's append-inference retracted in the ticket.
 
+## 2026-09-28 — ticket 11 withdrawn: there is no 1.2 mm outward offset in our rims
+
+Ticket 11 claimed our traced rims sit about 1.2 mm further out than the authors' on six
+of eight Pot A sherds. That was the ruler, not the rims: each rim's radius was measured
+from its own centroid, which is circular. Measured directly against the mesh, both sit on
+it (ours 0.02 mm, the authors' 0.00 mm). It rules nothing in or out for E1; it only
+removes a defect that never existed. `.scratch/juglet-breaklines/issues/11-the-1p2mm-outward-bias.md`
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
