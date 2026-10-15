@@ -797,6 +797,25 @@ Ticket: `.scratch/pota-repro/issues/25-remaining-vetoes.md`.
 Weight: all-piece centroid instrumentation with a validated
 systematic, same-job control, corrected record.
 
+## 2026-10-16 — pota-repro 26: the points are right; their order is scrambled
+
+The pairwise hunt ended back where the rims are made. The candidate
+stage is exonerated — true edges survive it. What kills them is an
+overlap test deleting 323 of ours against 5 of the authors', and the
+port proves why: at the true seating our overlap areas run 30–250×
+the authors'. The points agree to under a millimetre — it is their
+order along the loop that is scrambled, with jumps up to 93mm where
+the authors never exceed 5. The render shows it at a glance: our loop
+stitched with red leaps, theirs a clean closed ring. No search
+threshold can separate true areas that large from false, so forcing
+the gate would repeat the earlier trap in reverse — the fix belongs
+in the rim walk, piece by piece, the same pattern that cured the last
+one. The staged set waits: four fixes, one strict pass. Ticket:
+`.scratch/pota-repro/issues/26-rp-starvation.md`.
+
+Weight: two jobs with valid controls, a faithful port of the overlap
+check, the teleport render the lead checked.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
