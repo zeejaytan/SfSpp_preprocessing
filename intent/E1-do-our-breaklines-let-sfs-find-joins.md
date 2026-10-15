@@ -159,6 +159,29 @@ not bring them back. This looks like the tracing failing on this pot, not SfS++.
 Weight: one reference pot passing, one real pot failing.
 Next: the end-to-end run (ticket 07), then why sherds 3 and 9 give nothing.
 
+**2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
+preprocessing does not regenerate the authors' own Pot A inputs.**
+Unmodified upstream (DominicoRyu @ `d5ee6865`, fresh headless container,
+zero source shims) on the authors' Pot A scans: piece 1 correct (0.52 mm),
+pieces 2–8 shifted +1.8–3.5 mm upward in Z with matching point counts; the
+shift is already in the fresh surfaces, so edge tracing is faithful to bad
+input. Two blockers: fresh edge files lack the `#` segment headers the
+untouched reader requires (0 of 8 load; only our fork writes headers), and
+the MATLAB axis program is incomplete as released (missing loader,
+Windows-only paths, a dimension error on current MATLAB, a 59-line
+refinement file existing only in our fork — axes leg closed as a
+documented gap). Fresh-vs-authors gate 6/15; untouched assembly on the
+fresh bundle places nothing while the ORIG arm in the same job scores
+8/8 + 15/15. This is the method genuinely failing (case 1), not the ruler
+or the reference. Consequence for this question: no bundle from any code
+we can honestly call the authors' passes the acceptance gate — the
+acceptance test below remains open, and the "Pot_A is not regressed"
+criterion now cuts the other way (our patched pipeline reached 15/15 on
+11–15 pairs; the released code reaches 0 loadable edges). Evidence:
+`artifacts/untouched_pota_verify_20261015/` (`TASK3_EVIDENCE.md`,
+`SHIM_CHANGES.md`, `HANDOFF_TASK3.md`); staged view
+`structure-from-sherds-pp/artifacts/visual-qa/task3_fresh_vs_orig/`.
+
 ## 2026-09-26, ticket 08 — the walk is NOT the Juglet's problem
 
 Measured every sherd face of both pots, not one sherd: **18 Juglet faces**
