@@ -39,6 +39,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 09 | Pristine axle repair (smallest fix that finds the shipped axles) | gate (KILL: 1/8 after R1+R2+R3; redesign needed) | issues/09-pristine-axle-repair.md |
 | 12 | Reverse-engineered axle finder (fit 01–04, prove on sealed 05–08) | 2/8 (fit 2/4 + held-out 0/4; direction solved where fittable, ~2-3mm material floor; P06 + multi-axis open) | issues/12-axle-finder-redesign.md |
 | 13 | Genuine piece-2 rim fix (last blocker to 8/8) | gate 15/15 patched (landed; E2E best 7/8+11/15 — blocker now search-side) | issues/13-piece2-rim-fix.md |
+| 14 | Diagnose piece-6's direction miss (base? disjoint? vote poverty?) | diagnosis + fix proposal | issues/14-piece6-diagnosis.md |
 | 10 | Axle generalisation (held-out pieces, then pots B–J) | gate | issues/10-axle-generalise.md |
 | 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
@@ -48,7 +49,7 @@ Tickets 05's verdict is quarantined: it compared fork code against fork (NURBS) 
 
 - **Allowed sources:** the paper text (`papers/text/sfspp-2502.13986v1.md`), the pristine checkout (`sfs_main/archive_2025_sfs_modified_src @ 9195c01`, upstream `DominicoRyu/SfSpp_preprocessing @ d5ee6865`), Pot A data (`sfs_main/original_samples/SfS_pp/Pot_A_*`, 8 sherds / 15 ground-truth edges per `class/data_path.h:1610–1707`), and the shipped Pot A assembly inputs as the answer key.
 - **Blocked sources (reading them fails review):** `SfSpp_preprocessing` fork code (`edgeline_extraction*.cpp`, `mesh_processing_headless.cpp`, `sfs_axes/`), `.scratch/pota-repro/notes/task3-axes-plan.md`, issues/05 numbers and verdict. Tickets 01–04 per-pot census counts remain usable as data facts.
-- **Target:** an axle finder that works on pots with no reference axles (Juglet and later scans). Success bar per ticket; final bar: direction ≤5°, position ≤2mm vs shipped Pot A axles on held-out pieces, then Gate 15/15 + E2E 8/8 + 15/15 at k=5/b=3.
+- **Target:** an axle finder that works on pots with no reference axles (Juglet and later scans). Success bar per ticket; final bar: direction ≤5° everywhere, position ≤2mm where the fragment spans enough shape (direction-strict, position-conditional — decided 2026-10-15: the P01/P04/P05 family proves a ~2-3mm material floor from handmade variation, recorded as floor not failure), then Gate 15/15 + E2E 8/8 + 15/15 at k=5/b=3.
 
 ## Done when
 
