@@ -43,7 +43,8 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 15 | Align refine cost with selection cost (GM refine) | landed: (a) passes — refine-from-shipped 4/4, P06 8.19°→2.00°; 6/8 under bar | issues/15-gm-refine-align.md |
 | 16 | Frozen re-validation on sealed 05/07/08 (+ near-tie selection if needed) | landed: (a)-baseline P05 pass, P07 count-miss, P08 direction-miss; (b) moves P08-sh2 but regresses P06 — NOT frozen | issues/16-sealed-revalidation.md |
 | 10 | Generalise the frozen (a)-finder to pots B–J (frozen 2026-10-16; cross-pot only, Pot A held-out spent in 16) | landed: 117/155 (75%) dir-pass, H-family 1/11 new — per-family repairs next, not E2E | issues/10-axle-generalise.md |
-| 17 | Diagnose the Pot H collapse (span floor? vote dilution? fragment type?) | diagnosis + fix/admission proposal | issues/17-poth-diagnosis.md |
+| 17 | Diagnose the Pot H collapse (span floor? vote dilution? fragment type?) | landed: base-type + sub-floor support + dilution combined; refusal-gate proposal | issues/17-poth-diagnosis.md |
+| 18 | Refusal gate for unidentifiable fragments + H base-cap renders | confusion matrix + Needs-eye: renders | issues/18-refusal-gate.md |
 | 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
 ## Pristine-only axis path (added 2026-10-15, binding on tickets 07–10)

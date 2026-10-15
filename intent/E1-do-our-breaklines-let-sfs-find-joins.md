@@ -625,6 +625,27 @@ Weight: nine pots, 155 pieces, single runs — the 75% direction is solid
 as a direction; per-family rates need repeat runs before they conclude
 anything.
 
+## 2026-10-16 — pota-repro 17: Pot H diagnosed — base caps under the support floor
+
+Pot H is not "too small": its biggest piece dwarfs passing fragments
+elsewhere. Its collapse is three proven effects stacked: four pieces
+are base-cap geometry (surface normals facing along the axle, fragments
+touching it — a shape the wall-tuned vote cannot see, with hundreds of
+singular-math warnings as the symptom); every true axle in the pot owns
+only 6–17% of its fragment's points, under the finder's 10% support
+floor (even a perfect oracle proposing the truth gets rejected); and on
+multi-axle pieces the vote splits and the pruning kills the survivors.
+The passing piece survived by 8 thousandths of support share — luck, not
+margin. Deliverable: an admission test, not a fix — the finder refuses
+a fragment when its own vote cost runs hot AND its round-1 winner owns
+under a fifth of the points (both observable without the answer key).
+Thresholds provisional, confirmed on all nine pots by the follow-up.
+Ticket: `.scratch/pota-repro/issues/17-poth-diagnosis.md`.
+
+Weight: one pot (11 pieces) for the mechanism, nine pots for the
+threshold calibration to come — the stack is solid; the gate numbers
+await the follow-up.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
