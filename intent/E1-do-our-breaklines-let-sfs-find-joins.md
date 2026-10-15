@@ -604,6 +604,27 @@ Weight: one pot, eight sherds, single runs — the direction (rims now
 sufficient, search now the limit) is solid; sizes of any claimed fix
 need more pots before they conclude anything.
 
+## 2026-10-16 — pota-repro 10: the finder generalises partially, 117/155 across B–J
+
+The frozen GM-refine axle finder ran unmodified over pots B–J (155
+pieces, 12 compute jobs, all clean): **117 of 155 pieces (75%) point
+within 5° of the shipped reference axles, with zero tuning.**
+Single-axle wall pieces pass nearly everywhere (pot G 7/7, pot D's
+first 16 pieces 16/16, pot I's first 15 pieces 15/15). The misses fall
+in the two failure families Pot A already taught us (multi-axle pieces
+where the peel seats too few modes; pockets where the cost landscape
+prefers a wrong axle) plus one new family: **pot H collapses at 1/11**
+— small fragments carrying up to 6 axles each, where the finder often
+returns nothing at all. Verdict class: the method genuinely works on
+single-axle walls across nine new pots and genuinely fails on small
+multi-axle fragments — the next work is per-family repair (H first),
+not the end-to-end gate yet. Ticket:
+`.scratch/pota-repro/issues/10-axle-generalise.md`.
+
+Weight: nine pots, 155 pieces, single runs — the 75% direction is solid
+as a direction; per-family rates need repeat runs before they conclude
+anything.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
