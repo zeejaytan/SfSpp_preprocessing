@@ -779,6 +779,24 @@ checked the render: six in the ring, one gap, one flung. Ticket:
 Weight: one cure job with a valid control, composition checks proving
 the walk innocent and the append guilty, veto evidence with scores.
 
+## 2026-10-16 — pota-repro 25: starved, not vetoed — and the gate stays
+
+The instrumentation answered the open question decisively: neither
+remaining piece is vetoed — no true seating ever reaches the judging
+stage at all. Loosening the profile gate would have seated a
+higher-scoring wrong answer, so the gate stays authoritative and the
+veto-fix line of attack is closed. The hunt moves one stage earlier,
+to where pairs of edges first propose candidates: one pair shows the
+same support as the authors' run but its true candidates die on the
+axis test, and the other piece joins through pairs nobody
+instrumented. A past record was corrected along the way — the
+"vetoed fully-true assembly" was never fully true. The lead checked
+the render: closed vessel beside a ring with a gap and a flung piece.
+Ticket: `.scratch/pota-repro/issues/25-remaining-vetoes.md`.
+
+Weight: all-piece centroid instrumentation with a validated
+systematic, same-job control, corrected record.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
