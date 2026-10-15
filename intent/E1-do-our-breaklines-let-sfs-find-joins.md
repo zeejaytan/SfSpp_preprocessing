@@ -721,6 +721,26 @@ multi-pass pieces, and a mesh stage that rolls dice run to run. Ticket:
 Weight: gate plus control for the fix; a three-way controlled
 comparison for the search verdict; the lead checked the slice render.
 
+## 2026-10-16 — pota-repro 22: the beam wants the truth; three gates won't let it
+
+The search-side diagnosis is complete and honest about its limit:
+reproduced inside a single bundle, the beam's own scoring prefers the
+true seating by a wide margin — but three gates veto true candidates
+before selection. Two were relaxed with the authors' control holding
+perfect throughout (one even seated an extra piece correctly on clean
+rims). The third gate checks the fragment's profile shape, and it
+stands on rim content: our rim still follows the old merged wall, so
+the gate is right to object and gutting it would be destroying the
+test instead of passing it. The cure is prescribed, not guessed: a
+rim that follows the recovered wall, run through the two validated
+relaxations. The other worker's hazard fixes were found mid-flight in
+the shared files and left strictly alone for its own landing. Ticket:
+`.scratch/pota-repro/issues/22-beam-attractor.md`.
+
+Weight: four assembly jobs with valid controls, rim-centroid
+instrumentation proving the binding gate, identical-pose reproduction
+from different rim content.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
