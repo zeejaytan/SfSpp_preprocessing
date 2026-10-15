@@ -38,7 +38,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 08 | Pristine axle failure repro (no fork in the loop) | gate | issues/08-pristine-axle-repro.md |
 | 09 | Pristine axle repair (smallest fix that finds the shipped axles) | gate | issues/09-pristine-axle-repair.md |
 | 10 | Axle generalisation (held-out pieces, then pots B–J) | gate | issues/10-axle-generalise.md |
-| 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate | issues/11-patch-ablation-e2e.md |
+| 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
 ## Pristine-only axis path (added 2026-10-15, binding on tickets 07–10)
 
