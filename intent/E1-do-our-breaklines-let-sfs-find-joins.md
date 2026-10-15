@@ -575,6 +575,35 @@ from its own centroid, which is circular. Measured directly against the mesh, bo
 it (ours 0.02 mm, the authors' 0.00 mm). It rules nothing in or out for E1; it only
 removes a defect that never existed. `.scratch/juglet-breaklines/issues/11-the-1p2mm-outward-bias.md`
 
+## 2026-10-15 — pota-repro 13: piece 2's rim recovered, gate 15/15, reassembly 7/8
+
+Piece 2's missing rim was a truncated walk, not missing geometry: the
+greedy ordering walk stalls at the first boundary component (183 input
+points → 45 sequenced, 141 mm of a ~300 mm rim), and the assembler's
+silent 50-point minimum drops the 48-point stub with no log line. Fix
+(SFS-T13, `original_nurbs_preprocessing/edge_line_ordering.cpp`): when
+sequenced/input coverage falls below 0.40, keep walking with jumps to the
+nearest unvisited input. The threshold fires on exactly 1 of 16 Pot_A
+wall surfaces; the other 7 pieces' rims are byte-identical. Render
+checked by the lead: the fixed rim follows the authors' reference loop
+at the same millimetre scale (179 pts, 450 mm traced incl. 4 jump chords
+vs authors' 169 pts / 302 mm).
+
+Numbers (same-binary authors' arm alongside, all jobs clean): piece 2
+loads; gate **15/15** on the patched arm; end-to-end best **7/8 + 11/15**
+— pieces 1, 3–8 seat perfectly, piece 2 seats 120° off or unseated, and
+any patch content poisons the search (forest 441 vs 257). True piece-2
+matches exist at the gate (4–21 strict inliers) but the beam will not
+take them. Verdict class: the measurement is now right and the remaining
+failure is the method's search, not our rims — the blocker moved from
+rims to search, with piece 2's mesh-stage exterior wall (a 171-point
+scrap vs the authors' ~12k-point wall) as the last known-missing input.
+Ticket: `.scratch/pota-repro/issues/13-piece2-rim-fix.md`.
+
+Weight: one pot, eight sherds, single runs — the direction (rims now
+sufficient, search now the limit) is solid; sizes of any claimed fix
+need more pots before they conclude anything.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

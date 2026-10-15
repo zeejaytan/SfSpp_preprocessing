@@ -108,4 +108,97 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 
 	cloud_sequenced->width = cloud_sequenced->points.size();
 	cloud_sequenced->height = 1;
+
+	// SFS-T13 second chance (ticket 13): the greedy walk above stalls dead
+	// the moment the current point's K nearest neighbours are all visited,
+	// which is then true on every remaining iteration -- the walk covers
+	// the first boundary component and silently drops the rest. On a
+	// single-loop boundary the walk covers ~all of the input and nothing
+	// below fires; on a fragmented boundary (Pot_A piece 2 wall: 45 of
+	// 183 sequenced, traced 91mm of a ~300mm rim) the missing rim
+	// resamples under the assembler's 50-point load minimum
+	// (main_pristine_batch.cpp load loop: point_.cols() < 50 -> off,
+	// no log line), and the piece vanishes from the reassembly with no
+	// error. Calibration over the 16 Pot_A wall surfaces (pota06_fresh
+	// edgeline_stage.log, sequenced->sphere-marched): p1 0.87/0.51,
+	// p2 0.25/0.41, p3 0.86/0.67, p4 0.90/0.81, p5 0.64/0.82,
+	// p6 0.89/0.86, p7 0.91/0.67, p8 0.74/0.90. Threshold 0.40 fires on
+	// exactly one surface (p2 S0, the wall whose rim must be recovered);
+	// the p2 S1 scrap (0.41) and all 14 other surfaces keep byte-identical
+	// output. Provisional like the T04 guards (8 sherds, one pot).
+	// Appended components stay contiguous, so the downstream peak
+	// detector splits at the jumps and each component is classified on
+	// its own merits.
+	{
+		const double coverage = static_cast<double>(cloud_sequenced->points.size())
+			/ static_cast<double>(boundary_size > 0 ? boundary_size : 1);
+		if (coverage < 0.40 && cloud_sequenced->points.size() < cloud->points.size())
+		{
+			int jumps = 0;
+			while (cloud_sequenced->points.size() < cloud->points.size())
+			{
+				// One greedy step from currentPoint; on dead end, jump
+				// to the nearest unvisited input point and continue.
+				searchPoint = currentPoint;
+				std::vector<int> idx(K);
+				std::vector<float> dist(K);
+				bool advanced = false;
+				if (kdtree.nearestKSearch(searchPoint, K, idx, dist) > 0)
+				{
+					for (std::size_t x = 0; x < idx.size(); ++x)
+					{
+						PointXYZ p1;
+						p1.x = (*cloud)[idx[x]].x; p1.y = (*cloud)[idx[x]].y; p1.z = (*cloud)[idx[x]].z;
+						if (!pointExistsInCLoud(p1, cloud_sequenced))
+						{
+							cloud_sequenced->points.push_back(p1);
+							previousPoint = currentPoint;
+							currentPoint = p1;
+							advanced = true;
+							break;
+						}
+					}
+				}
+				if (!advanced)
+				{
+					double best = -1.0;
+					PointXYZ pjump = currentPoint;
+					for (size_t i = 0; i < cloud->points.size(); ++i)
+					{
+						PointXYZ q = (*cloud)[i];
+						if (pointExistsInCLoud(q, cloud_sequenced))
+							continue;
+						const double dx = q.x - currentPoint.x;
+						const double dy = q.y - currentPoint.y;
+						const double dz = q.z - currentPoint.z;
+						const double d2 = dx * dx + dy * dy + dz * dz;
+						if (best < 0.0 || d2 < best)
+						{
+							best = d2;
+							pjump = q;
+						}
+					}
+					if (best < 0.0)
+						break; // nothing unvisited left
+					cloud_sequenced->points.push_back(pjump);
+					previousPoint = currentPoint;
+					currentPoint = pjump;
+					++jumps;
+				}
+			}
+			std::cout << "[SFS-T13] second-chance: coverage " << coverage
+			          << " -> " << static_cast<double>(cloud_sequenced->points.size())
+			              / static_cast<double>(boundary_size > 0 ? boundary_size : 1)
+			          << " (" << cloud_sequenced->points.size() << "/" << boundary_size
+			          << ", " << jumps << " jumps)" << std::endl;
+			cloud_sequenced->width = cloud_sequenced->points.size();
+			cloud_sequenced->height = 1;
+		}
+		else
+		{
+			std::cout << "[SFS-T13] pass: coverage " << coverage
+			          << " (" << cloud_sequenced->points.size() << "/" << boundary_size
+			          << "), no second chance" << std::endl;
+		}
+	}
 }
