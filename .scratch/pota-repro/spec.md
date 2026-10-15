@@ -45,7 +45,8 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 10 | Generalise the frozen (a)-finder to pots B–J (frozen 2026-10-16; cross-pot only, Pot A held-out spent in 16) | landed: 117/155 (75%) dir-pass, H-family 1/11 new — per-family repairs next, not E2E | issues/10-axle-generalise.md |
 | 17 | Diagnose the Pot H collapse (span floor? vote dilution? fragment type?) | landed: base-type + sub-floor support + dilution combined; refusal-gate proposal | issues/17-poth-diagnosis.md |
 | 18 | Refusal gate for unidentifiable fragments + H base-cap renders | landed: ship cost>1.40 AND share<0.22 (H 11/11 refused, 97.4% specificity); H3 eye-confirmed by lead on all four renders | issues/18-refusal-gate.md |
-| 19 | Pot A end-to-end assembly on admitted fragments (our rims + our axles) | E2E 8/8 + 15/15 | issues/19-admitted-e2e.md |
+| 19 | Pot A end-to-end assembly on admitted fragments (our rims + our axles) | landed: ORIG control 8/8+15/15 valid; fresh-ablated 7/8+11/15 (only p2 off ~103°); patched arm 7/8+7/15 (patch poison ×3); p2 is the last blocker | issues/19-admitted-e2e.md |
+| 20 | Piece-2 endgame (exterior wall? beam preference?) | full 8/8 + 15/15 | issues/20-piece2-endgame.md |
 | 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
 ## Pristine-only axis path (added 2026-10-15, binding on tickets 07–10)

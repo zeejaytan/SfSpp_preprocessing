@@ -665,6 +665,25 @@ Weight: 155 pieces across nine pots for the gate; four renders for the
 geometry. The 75% that passes plus the refusals are now the admitted
 set the end-to-end proof runs on.
 
+## 2026-10-16 — pota-repro 19: end-to-end 7/8 + 11/15, piece 2 the last one standing
+
+Our rims plus our axles through the untouched assembly program: seven
+of eight pieces seat within a degree and a few millimetres of the
+authors' own seatings, and the authors' arm alongside reproduced its
+perfect score exactly, so the run counts. The eighth piece flings
+itself 103° off — visible on the render as one orange arc escaping an
+otherwise closed ring — and the second-chance rim repair changes
+nothing about it except poisoning the search further (measured three
+times now, so that repair stays out of the seating path). The refusal
+gate admits all eight, correctly: it judges axles, and this piece's
+axle is fine — its rim is short, which the gate cannot see. One
+suspect order for the follow-up: the wall the mesh stage builds for
+this piece, then the search's taste for the wrong seating. Ticket:
+`.scratch/pota-repro/issues/19-admitted-e2e.md`.
+
+Weight: one full assembly job with both arms inside it, plus the
+render the lead checked. Pot A is one piece away from perfect.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
