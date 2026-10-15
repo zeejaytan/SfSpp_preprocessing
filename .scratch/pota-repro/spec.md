@@ -33,11 +33,12 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 03 | Header writer fix (emit segment block) | gate | issues/03-header-writer-fix.md |
 | 04 | Surface interior-first fix | gate | issues/04-surface-interior-first.md |
 | 05 | sfs_axes Python port | gate | issues/05-sfs-axes-port.md |
-| 06 | Gate + E2E re-run with pristine controls | gate | issues/06-gate-e2e-rerun.md |
-| 07 | Pristine PotSAC map (paper §IV-B2 → author files) | compliance | issues/07-pristine-potsac-map.md |
+| 06 | Gate + E2E re-run with pristine controls | gate (SHORTFALL: gate 15/15, E2E 4/8+3/15) | issues/06-gate-e2e-rerun.md |
+| 07 | Pristine PotSAC map (paper §IV-B2 → author files) | compliance (results-in: refine_axis MISSING from pin) | issues/07-pristine-potsac-map.md |
 | 08 | Pristine axle failure repro (no fork in the loop) | gate | issues/08-pristine-axle-repro.md |
 | 09 | Pristine axle repair (smallest fix that finds the shipped axles) | gate | issues/09-pristine-axle-repair.md |
 | 10 | Axle generalisation (held-out pieces, then pots B–J) | gate | issues/10-axle-generalise.md |
+| 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate | issues/11-patch-ablation-e2e.md |
 
 ## Pristine-only axis path (added 2026-10-15, binding on tickets 07–10)
 
