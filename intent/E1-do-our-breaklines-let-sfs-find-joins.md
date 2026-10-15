@@ -646,6 +646,25 @@ Weight: one pot (11 pieces) for the mechanism, nine pots for the
 threshold calibration to come — the stack is solid; the gate numbers
 await the follow-up.
 
+## 2026-10-16 — pota-repro 18: refusal gate shipped, H3 eye-confirmed
+
+The admission test is in and frozen: the finder refuses a fragment
+when its own best vote costs more than 1.40 per point AND its round-1
+winner owns under 22% of the points — both visible without the answer
+key. The one allowed threshold move (share 0.20 → 0.22) bought one more
+caught failure at zero new false refusals; the matrix after: all 11
+H pieces refused, 3 passing pieces wrongly refused out of 117, and the
+remaining failures (tails, counts, landscapes) proven unreachable on
+these two statistics — they show healthy round-1 support, so they need
+a different signal, not a looser gate. The lead looked at all four base
+renders: foot-ring arcs, a domed cap, flat plates, each pierced straight
+through by the shipped axis — base caps, claim closed. Ticket:
+`.scratch/pota-repro/issues/18-refusal-gate.md`.
+
+Weight: 155 pieces across nine pots for the gate; four renders for the
+geometry. The 75% that passes plus the refusals are now the admitted
+set the end-to-end proof runs on.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
