@@ -1811,6 +1811,79 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 
         numberOfClustersCreated = clusters.size();
 
+        // SFS-T21 (pota-repro ticket 21): split a merged wall pair.
+        // Pot_A piece 2 grows BOTH walls into clusters[0] at every
+        // smoothness threshold (3.5deg merges fully into one 7441-pt
+        // cluster; 4.5deg leaves a 51-pt scrap as clusters[1]), so the
+        // historic largest-two assignment feeds a merged double wall to
+        // Surface_0 and scrap to Surface_1. The two walls carry opposite,
+        // internally-consistent normals (a laptop median-split of the merged
+        // surface separates them 100.0%/98.4% at 0.31mm). When the second
+        // cluster is degenerate vs the first (same 0.10 bar as the SFS-T04
+        // exchange guard), split clusters[0] by sign of (n . median-normal)
+        // and keep the split only if both parts are healthy; otherwise the
+        // historic clusters flow through untouched.
+        if (clusters.size() > 1)
+        {
+            const size_t t21_n0 = clusters[0].indices.size();
+            const size_t t21_n1 = clusters[1].indices.size();
+            const double t21_ratio = t21_n0 > 0 ? static_cast<double>(t21_n1) / static_cast<double>(t21_n0) : 1.0;
+            if (t21_n0 >= 1000 && t21_ratio < 0.10)
+            {
+                std::vector<double> t21_mx, t21_my, t21_mz;
+                t21_mx.reserve(t21_n0); t21_my.reserve(t21_n0); t21_mz.reserve(t21_n0);
+                for (int idx : clusters[0].indices)
+                {
+                    t21_mx.push_back(normals->points[idx].normal_x);
+                    t21_my.push_back(normals->points[idx].normal_y);
+                    t21_mz.push_back(normals->points[idx].normal_z);
+                }
+                const size_t t21_mid = t21_n0 / 2;
+                std::nth_element(t21_mx.begin(), t21_mx.begin() + t21_mid, t21_mx.end());
+                std::nth_element(t21_my.begin(), t21_my.begin() + t21_mid, t21_my.end());
+                std::nth_element(t21_mz.begin(), t21_mz.begin() + t21_mid, t21_mz.end());
+                double t21_rx = t21_mx[t21_mid], t21_ry = t21_my[t21_mid], t21_rz = t21_mz[t21_mid];
+                const double t21_rlen = std::sqrt(t21_rx * t21_rx + t21_ry * t21_ry + t21_rz * t21_rz);
+                bool t21_accept = false;
+                if (t21_rlen > 1e-9)
+                {
+                    t21_rx /= t21_rlen; t21_ry /= t21_rlen; t21_rz /= t21_rlen;
+                    std::vector<int> t21_pos, t21_neg;
+                    t21_pos.reserve(t21_n0); t21_neg.reserve(t21_n0);
+                    long t21_amb = 0;
+                    for (int idx : clusters[0].indices)
+                    {
+                        const pcl::Normal& t21_n = normals->points[idx];
+                        const double t21_nlen = std::sqrt(t21_n.normal_x * t21_n.normal_x + t21_n.normal_y * t21_n.normal_y + t21_n.normal_z * t21_n.normal_z);
+                        double t21_cos = 0.0;
+                        if (t21_nlen > 1e-9)
+                            t21_cos = (t21_n.normal_x * t21_rx + t21_n.normal_y * t21_ry + t21_n.normal_z * t21_rz) / t21_nlen;
+                        if (std::fabs(t21_cos) < 0.5) ++t21_amb;
+                        if (t21_cos >= 0.0) t21_pos.push_back(idx); else t21_neg.push_back(idx);
+                    }
+                    const size_t t21_big = std::max(t21_pos.size(), t21_neg.size());
+                    const size_t t21_small = std::min(t21_pos.size(), t21_neg.size());
+                    const double t21_split = t21_big > 0 ? static_cast<double>(t21_small) / static_cast<double>(t21_big) : 0.0;
+                    const double t21_ambfrac = static_cast<double>(t21_amb) / static_cast<double>(t21_n0);
+                    std::cout << "[SFS-T21] degenerate second cluster (ratio " << t21_ratio << "); normal-split of clusters[0] n=" << t21_n0
+                              << " -> +" << t21_pos.size() << "/-" << t21_neg.size() << " amb=" << t21_ambfrac << std::endl;
+                    if (t21_small >= static_cast<size_t>(dynMinCluster) && t21_split >= 0.10 && t21_ambfrac <= 0.15)
+                    {
+                        pcl::PointIndices t21_a, t21_b;
+                        t21_a.indices = (t21_pos.size() >= t21_neg.size()) ? t21_pos : t21_neg;
+                        t21_b.indices = (t21_pos.size() >= t21_neg.size()) ? t21_neg : t21_pos;
+                        clusters[0] = t21_a;
+                        clusters[1] = t21_b;
+                        numberOfClustersCreated = clusters.size();
+                        t21_accept = true;
+                        std::cout << "[SFS-T21] ACCEPTED: clusters[0]=" << t21_a.indices.size() << " clusters[1]=" << t21_b.indices.size() << std::endl;
+                    }
+                }
+                if (!t21_accept)
+                    std::cout << "[SFS-T21] REJECTED: keeping historic clusters." << std::endl;
+            }
+        }
+
         if (clusters.size() > 1)
         {
             auto& largestCluster = clusters[0];

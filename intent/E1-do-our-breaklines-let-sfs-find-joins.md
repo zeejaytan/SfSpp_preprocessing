@@ -702,6 +702,25 @@ Weight: two multi-arm assembly jobs with valid controls, plus the
 three-panel render the lead checked — closed vessel, escaped piece,
 seated swap.
 
+## 2026-10-16 — pota-repro 21: wall recovered and committed; the search is the remaining fight
+
+The missing wall is back: where one file held two fused sheets, each
+wall now has its own file — the cross-section render shows it cleanly
+— and the rim gate reads 15/15 with the authors' control valid beside
+it. That fix is committed. But the seating run refused to follow:
+whether the piece offers a stub, a patched rim, or the full true
+wall, the search parks it at the same wrong pose and drags four
+neighbours with it as a rigid block. More truth in, worse out — so
+the fault changed address from the extraction stage to the search,
+and the earlier acquittal is narrowed to what it actually tested (the
+authors' rim, not ours). Two hazards were found along the way and left
+untouched for their own tickets: a filename bug that silently wipes
+multi-pass pieces, and a mesh stage that rolls dice run to run. Ticket:
+`.scratch/pota-repro/issues/21-piece2-wall-recovery.md`.
+
+Weight: gate plus control for the fix; a three-way controlled
+comparison for the search verdict; the lead checked the slice render.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
