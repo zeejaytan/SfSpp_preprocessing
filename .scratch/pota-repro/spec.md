@@ -41,7 +41,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 13 | Genuine piece-2 rim fix (last blocker to 8/8) | gate 15/15 patched (landed; E2E best 7/8+11/15 — blocker now search-side) | issues/13-piece2-rim-fix.md |
 | 14 | Diagnose piece-6's direction miss (base? disjoint? vote poverty?) | landed: vote finds truth 1/6000, Huber refine destroys it — cost mismatch | issues/14-piece6-diagnosis.md |
 | 15 | Align refine cost with selection cost (GM refine) | landed: (a) passes — refine-from-shipped 4/4, P06 8.19°→2.00°; 6/8 under bar | issues/15-gm-refine-align.md |
-| 16 | Frozen re-validation on sealed 05/07/08 (+ near-tie selection if needed) | validation, unseals 05/07/08 | issues/16-sealed-revalidation.md |
+| 16 | Frozen re-validation on sealed 05/07/08 (+ near-tie selection if needed) | landed: (a)-baseline P05 pass, P07 count-miss, P08 direction-miss; (b) moves P08-sh2 but regresses P06 — NOT frozen | issues/16-sealed-revalidation.md |
 | 10 | Axle generalisation (held-out pieces, then pots B–J) | gate | issues/10-axle-generalise.md |
 | 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
