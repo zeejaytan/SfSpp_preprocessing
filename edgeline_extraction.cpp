@@ -1038,8 +1038,12 @@ void writeMatrix_to_XYZ_withNormals(MatrixXd& src, string fileName)
 }
 
 // Custom PCD writer with segment headers for SFS compatibility
+// Emits the `index` table built during cloud assembly verbatim, so the
+// pristine assembly reader (BreakLine::ReadPCDFileWithInfo) sees the
+// `# nSeg totalPts / # ranges` block it requires. Ticket pota-repro/03.
 //-----------------------------------------------------------------------------
-void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::PointCloud<pcl::PointNormal>& cloud)
+void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::PointCloud<pcl::PointNormal>& cloud,
+                                   const std::vector<std::string>& segmentIndex)
 {
     std::ofstream file(filename);
     if (!file.is_open()) {
@@ -1047,44 +1051,23 @@ void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::Point
         return;
     }
 
-    // Read segment files to get segment information
-    std::vector<std::pair<int, int>> segments; // start_index, end_index pairs
-    int totalPoints = 0;
-    
-    // Read segment files from Segments/ directory
-    boost::filesystem::path segDir("Segments/");
-    if (boost::filesystem::exists(segDir)) {
-        std::vector<boost::filesystem::path> segFiles;
-        copy(boost::filesystem::directory_iterator(segDir), 
-             boost::filesystem::directory_iterator(), 
-             back_inserter(segFiles));
-        sort(segFiles.begin(), segFiles.end());
-        
-        for (const auto& segFile : segFiles) {
-            if (segFile.extension() == ".xyz") {
-                MatrixXd segMatrix = readFile(segFile.string(), 6);
-                int segSize = segMatrix.rows();
-                int startIdx = totalPoints + 1; // 1-indexed
-                int endIdx = totalPoints + segSize;
-                segments.push_back({startIdx, endIdx});
-                totalPoints += segSize;
-            }
-        }
-    }
-    
-    // If no segments found, create single segment
+    int totalPoints = (int)cloud.points.size();
+
+    // Use the caller-built segment table ("start end rimflag" per entry).
+    // Fall back to one segment covering the whole cloud if it is empty.
+    std::vector<std::string> segments = segmentIndex;
     if (segments.empty()) {
-        segments.push_back({1, (int)cloud.points.size()});
-        totalPoints = cloud.points.size();
+        segments.push_back("1 " + std::to_string(totalPoints) + " 0");
     }
+    int totalSegments = (int)segments.size();
 
     // Write PCD header with segment information
     file << "# .PCD v0.7 - Point Cloud Data file format" << std::endl;
-    file << "# " << segments.size() << " " << totalPoints << " 0" << std::endl;
-    
+    file << "# " << totalSegments << " " << totalPoints << " 0" << std::endl;
+
     // Write segment ranges
     for (const auto& seg : segments) {
-        file << "# " << seg.first << " " << seg.second << " 0" << std::endl;
+        file << "# " << seg << std::endl;
     }
     
     // Standard PCD header
@@ -2858,6 +2841,7 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
     bool atLeastOneSegIsRim = false;
     int totalPtsCounter = 0;
     PointNormal tmpPtN;
+    tmpPtN.curvature = 0.0f; // ORIG breaklines carry ~0 curvature (1.9e-42); never emit uninitialised garbage
 
     // 축 정보 확인 (Axes 폴더)
     std::string baseFileName = currentMeshFile.substr(0, currentMeshFile.find("_Mesh"));
@@ -2969,7 +2953,7 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
                 pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryLoad);
             }
             for (const auto &bp : boundaryLoad->points) {
-                pcl::PointNormal pn; pn.x = bp.x; pn.y = bp.y; pn.z = bp.z;
+                pcl::PointNormal pn; pn.x = bp.x; pn.y = bp.y; pn.z = bp.z; pn.curvature = 0.0f;
                 if (!cloud_OrigWithNormals->empty()) {
                     std::vector<int> idx(1); std::vector<float> dist2(1);
                     pcl::PointNormal query; query.x = bp.x; query.y = bp.y; query.z = bp.z;
@@ -2989,7 +2973,8 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         }
 
         // Write with custom PCD writer to include segment header + normals
-        writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline);
+        // (segment ranges come from the `index` table built above, verbatim)
+        writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index);
         pcl::io::savePLYFile(plyFilePath, *cloud_CompleteBreakline);
         if (fs::exists(completeBreaklinePath)) {
             fs::rename(completeBreaklinePath, xyzFilePath);
