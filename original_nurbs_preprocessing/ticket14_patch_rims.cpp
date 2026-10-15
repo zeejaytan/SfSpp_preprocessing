@@ -10,6 +10,7 @@
 // A separate translation unit so the whole of ticket 14's edgeline side is
 // one removable file plus the call-site block.
 
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -92,7 +93,38 @@ void ticket14_append_patch_rims(
         // Segment index is 1-based and contiguous: new segment starts after
         // the last existing point.
         const int start = static_cast<int>(cloud->points.size()) + 1;
-        for (const auto& p : rim->points) cloud->points.push_back(p);
+        // SFS-T23b (pota-repro ticket 23): the appended points previously
+        // carried whatever curvature the Decorative PCDs held (uninitialized
+        // memory from the mesh stage, run-varying ~1e32 garbage), while the
+        // assembler loads column 7 into feature_[6] and scores triangle
+        // curvature coherence off it -- a real E2E nondeterminism vector.
+        // Compute the SAME |dN/ds| curvature the wall-rim path uses
+        // (edgeline_extraction_headless.cpp fractured-surface loop: central
+        // difference of neighbour normals over arc length, capped at 1.0,
+        // endpoints 0.01), so patch rows are consistent with wall rows.
+        const std::size_t n = rim->points.size();
+        for (std::size_t i = 0; i < n; ++i) {
+            pcl::PointNormal p = rim->points[i];
+            double curvature = 0.01;
+            if (i > 0 && i + 1 < n) {
+                const pcl::PointNormal& a = rim->points[i - 1];
+                const pcl::PointNormal& b = rim->points[i + 1];
+                const double dnx = b.normal_x - a.normal_x;
+                const double dny = b.normal_y - a.normal_y;
+                const double dnz = b.normal_z - a.normal_z;
+                const double dpx = b.x - a.x;
+                const double dpy = b.y - a.y;
+                const double dpz = b.z - a.z;
+                const double nl = std::sqrt(dnx * dnx + dny * dny + dnz * dnz);
+                const double al = std::sqrt(dpx * dpx + dpy * dpy + dpz * dpz);
+                if (al > 1e-6) {
+                    curvature = nl / al;
+                    if (curvature > 1.0) curvature = 1.0;
+                }
+            }
+            p.curvature = static_cast<float>(curvature);
+            cloud->points.push_back(p);
+        }
         const int end = static_cast<int>(cloud->points.size());
         std::ostringstream ss;
         ss << start << " " << end << " 1";

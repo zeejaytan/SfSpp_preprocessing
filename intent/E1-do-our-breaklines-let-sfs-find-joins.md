@@ -741,6 +741,24 @@ Weight: four assembly jobs with valid controls, rim-centroid
 instrumentation proving the binding gate, identical-pose reproduction
 from different rim content.
 
+## 2026-10-16 — pota-repro 23: two hazards defused, the pipeline rolls no dice
+
+Both traps are closed. The filename bug that silently wiped multi-pass
+pieces is gone — the trigger case now stages its surfaces, zero
+strays. And the run-to-run dice roll is over: three unseeded random
+draws fixed, plus a family of uninitialized curvature values found by
+bisection (live scoring noise through the assembler's curvature check,
+now computing the same formula as the wall path) — the final proof is
+full-tree byte-identity across reruns, all sixteen rims identical.
+Nothing regressed: the authors' control holds perfect, the gate holds
+15/15, the seating numbers sit exactly in the known shortfall band the
+search-side ticket owns. The diffs were reviewed line by line before
+landing. Ticket:
+`.scratch/pota-repro/issues/23-pipeline-landmines.md`.
+
+Weight: trigger-plus-fix proofs per hazard, byte-identity reruns, two
+valid controls. Every future bundle comparison now measures signal.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

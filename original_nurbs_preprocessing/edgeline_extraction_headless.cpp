@@ -1077,6 +1077,9 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 	pcl::RandomSample<pcl::PointXYZ> rs;
 	rs.setInputCloud(cloud_OriginalSurface);
 	rs.setSample(10000);
+	// SFS-T23b (pota-repro ticket 23): fixed seed. Default seed_ is
+	// time(NULL), so the 10k fit subset (and fitted rims) varied run-to-run.
+	rs.setSeed(20261023u);
 
 	rs.filter(*cloud_Sampled);
 
@@ -1181,6 +1184,7 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		ptTmp.normal_x = -normalEst.x;
 		ptTmp.normal_y = -normalEst.y;
 		ptTmp.normal_z = -normalEst.z;
+		ptTmp.curvature = 0.0f; // SFS-T23b: deterministic (write-only diagnostic cloud).
 		projectedPointCloudWithNormals->points.push_back(ptTmp);
 	}
 
@@ -1219,6 +1223,7 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		ptTmp.normal_x = -normalEst.x;
 		ptTmp.normal_y = -normalEst.y;
 		ptTmp.normal_z = -normalEst.z;
+		ptTmp.curvature = 0.0f; // SFS-T23b: deterministic (write-only diagnostic cloud).
 		cloud_AllPointsOnBSplineSurface->points.push_back(ptTmp);
 	}
 

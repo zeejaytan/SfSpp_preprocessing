@@ -802,6 +802,10 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	pcl::RandomSample<pcl::PointXYZ> rs;
 	rs.setInputCloud(cloud_OriginalSurface);
 	rs.setSample(10000);
+	// SFS-T23b (pota-repro ticket 23): fixed seed. Default seed_ is
+	// time(NULL), so the 10k fit subset (and the fitted surface) varied
+	// run-to-run. Geometry for a fixed seed is unchanged vs any one draw.
+	rs.setSeed(20261023u);
 
 	rs.filter(*cloud_Sampled);
 
@@ -944,6 +948,12 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			ptTmp.normal_x = meshPointCloud->points[i].normal_x;  //-normalEst.x;
 			ptTmp.normal_y = meshPointCloud->points[i].normal_y; //-normalEst.y;
 			ptTmp.normal_z = meshPointCloud->points[i].normal_z; //-normalEst.z;
+			// SFS-T23b (pota-repro ticket 23): deterministic curvature.
+			// Was uninitialized memory, so Surface PLYs byte-differed
+			// run-to-run (geometry cols 0-5 were already identical).
+			// 0.0f matches the historical dummy-curvature convention;
+			// nothing downstream reads this field.
+			ptTmp.curvature = 0.0f;
 			improvedSurfacePointCloud->points.push_back(ptTmp);
 		}
 		else if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < 3 && angleDiff < 40) // || angleDiff > 140)) //0.5) // 1 && (angleDiff < 30 || angleDiff > 150))
@@ -955,6 +965,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			ptTmp.normal_x = meshPointCloud->points[i].normal_x;  //-normalEst.x;
 			ptTmp.normal_y = meshPointCloud->points[i].normal_y; //-normalEst.y;
 			ptTmp.normal_z = meshPointCloud->points[i].normal_z; //-normalEst.z;
+			ptTmp.curvature = 0.0f; // SFS-T23b: deterministic (see above).
 			improvedSurfacePointCloud_other->points.push_back(ptTmp);
 		}
 
@@ -965,6 +976,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 		ptTmp_b.normal_x = -normalEst.x;  //-normalEst.x;
 		ptTmp_b.normal_y = -normalEst.y; //-normalEst.y;
 		ptTmp_b.normal_z = -normalEst.z; //-normalEst.z;
+		ptTmp_b.curvature = 0.0f; // SFS-T23b: deterministic (see above).
 		bSplineSurface->points.push_back(ptTmp_b);
 
 
@@ -976,6 +988,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 		ptTmp.normal_x = -normalEst.x;
 		ptTmp.normal_y = -normalEst.y;
 		ptTmp.normal_z = -normalEst.z;
+		ptTmp.curvature = 0.0f; // SFS-T23b: deterministic (see above).
 		projectedPointCloudWithNormals->points.push_back(ptTmp);
 	}
 
@@ -1000,6 +1013,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 		ptTmp.normal_x = segmentedSurfacePointCloud->points[i].normal_x;
 		ptTmp.normal_y = segmentedSurfacePointCloud->points[i].normal_y;
 		ptTmp.normal_z = segmentedSurfacePointCloud->points[i].normal_z;
+		ptTmp.curvature = 0.0f; // SFS-T23b: deterministic (see above).
 		improvedSurfacePointCloud->points.push_back(ptTmp);
 	}
 
@@ -1184,6 +1198,12 @@ void getBreakLineForDecorativeParts(string fileName)
 					q.x = p.x;
 					q.y = p.y;
 					q.z = p.z;
+					// SFS-T23b (pota-repro ticket 23): zero the curvature.
+					// Was uninitialized here, so the Decorative_N.pcd files
+					// byte-differed run-to-run in an unread column. The
+					// curvature T14 consumes is recomputed downstream; this
+					// field is cosmetic (0 = historical dummy convention).
+					q.curvature = 0.0f;
 					pcl::PointNormal s;
 					s.x = p.x;
 					s.y = p.y;
@@ -1582,8 +1602,10 @@ bool checkNormalsIntersection(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1, pcl::P
 	std::vector<int> sampled_indices;
 	sampled_indices.reserve(num_samples);
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	// SFS-T23b (pota-repro ticket 23): fixed seed. Was random_device, so
+	// the 30 sampled indices -- and hence the flipNormals decision and all
+	// downstream surfaces -- varied run-to-run.
+	std::mt19937 gen(20261023u);
 	std::uniform_int_distribution<> dis(0, cloud1->points.size() - 1);
 
 	for (int i = 0; i < num_samples; ++i) {
@@ -1985,17 +2007,14 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_0.ply", *cloudWithNormals_Cluster1, false); // ASCII mode
             pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_1.ply", *cloudWithNormals_Cluster2, false); // ASCII mode
 
-            // Getting file name without path and extension
-            const size_t last_slash_idx = tmp_path.find_last_of("/");
-            if (std::string::npos != last_slash_idx)
-            {
-                tmp_path.erase(0, last_slash_idx + 1);
-            }
-            const size_t period_idx = tmp_path.rfind('.');
-            if (std::string::npos != period_idx)
-            {
-                tmp_path.erase(period_idx);
-            }
+            // SFS-T23a (pota-repro ticket 23): DO NOT mangle tmp_path here.
+            // The historic basename-strip mutated the retry-loop-local
+            // tmp_path, so any iteration >= 2 saved tmpSurfaceCluster_*.ply
+            // to the process CWD and the per-piece exists-check then staged
+            // NO surfaces for the piece. The stripped value was never
+            // consumed (the loop below does not use tmp_path), so the strip
+            // is deleted; tmp_path stays the intermediate dir every pass.
+            std::cout << "[SFS-T23a] cluster files saved under " << tmp_path << std::endl;
 
             for (size_t t = 0; t < clusters.size(); t++)
             {
@@ -2018,17 +2037,9 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             cloudWithNormals_Cluster1->width = cloudWithNormals_Cluster1->points.size();
             cloudWithNormals_Cluster1->height = 1;
 
-            // Getting file name without path and extension
-            const size_t last_slash_idx = tmp_path.find_last_of("/");
-            if (std::string::npos != last_slash_idx)
-            {
-                tmp_path.erase(0, last_slash_idx + 1);
-            }
-            const size_t period_idx = tmp_path.rfind('.');
-            if (std::string::npos != period_idx)
-            {
-                tmp_path.erase(period_idx);
-            }
+            // SFS-T23a (pota-repro ticket 23): same tmp_path-mangle removed
+            // here (see above) -- the stripped value was never consumed, and
+            // the mutation poisoned every retry-loop pass after the first.
 
             // SFS-T17: NO break here. An earlier version broke out of the
             // retry loop on a single cluster, which (a) defeated the loop's
