@@ -684,6 +684,24 @@ this piece, then the search's taste for the wrong seating. Ticket:
 Weight: one full assembly job with both arms inside it, plus the
 render the lead checked. Pot A is one piece away from perfect.
 
+## 2026-10-16 — pota-repro 20: the search is innocent, our wall is missing
+
+The swap test acquitted the search: the authors' piece-2 rim dropped
+into our bundle seats perfectly four times out of four, while our own
+rim never seats strictly in five attempts. Point by point, the input
+meshes are byte-identical — yet where the authors have a wall, we
+have a 171-point scrap floating 3mm off, and our rim walk follows the
+scrap instead of the wall. The wall is lost downstream of the mesh,
+upstream of the rim walk; the two existing leads point at the surface
+labelling. A measurement lesson came free: the loose scoreboard
+reports "perfect" with the piece visibly 10° adrift, so from here the
+strict bar is the only acceptance. Ticket:
+`.scratch/pota-repro/issues/20-piece2-endgame.md`.
+
+Weight: two multi-arm assembly jobs with valid controls, plus the
+three-panel render the lead checked — closed vessel, escaped piece,
+seated swap.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
