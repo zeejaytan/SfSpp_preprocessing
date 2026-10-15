@@ -36,7 +36,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 06 | Gate + E2E re-run with pristine controls | gate (SHORTFALL: gate 15/15, E2E 4/8+3/15) | issues/06-gate-e2e-rerun.md |
 | 07 | Pristine PotSAC map (paper §IV-B2 → author files) | compliance (results-in: refine_axis MISSING from pin) | issues/07-pristine-potsac-map.md |
 | 08 | Pristine axle failure repro (no fork in the loop) | gate (results-in: NO — 0/8 yield an axle; loader missing + vote crashes on iter 1) | issues/08-pristine-axle-repro.md |
-| 09 | Pristine axle repair (smallest fix that finds the shipped axles) | gate | issues/09-pristine-axle-repair.md |
+| 09 | Pristine axle repair (smallest fix that finds the shipped axles) | gate (KILL: 1/8 after R1+R2+R3; redesign needed) | issues/09-pristine-axle-repair.md |
 | 10 | Axle generalisation (held-out pieces, then pots B–J) | gate | issues/10-axle-generalise.md |
 | 11 | Ablate patch segments on p2–p5, re-run E2E (follows 06 shortfall) | gate (results-in: 11/15 gate, 7/7+11/11 placeable; patches load-bearing yet search-poison; p2 rim next) | issues/11-patch-ablation-e2e.md |
 
