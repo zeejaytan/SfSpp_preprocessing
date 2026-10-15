@@ -759,6 +759,26 @@ landing. Ticket:
 Weight: trigger-plus-fix proofs per hazard, byte-identity reruns, two
 valid controls. Every future bundle comparison now measures signal.
 
+## 2026-10-16 — pota-repro 24: the attractor cured, two pieces left
+
+The cure test moved the seating from three pieces to six — and, more
+importantly, the wrong pose is gone: the piece sits 1.85° from the
+authors' seating. The surprise was where the poison lived: the rim
+walk itself was good all along (matching the authors' wall point for
+point); the damage came from 575 decorative-groove points stapled on
+afterwards with jumps up to 107mm. Skipping that append for the piece
+fixed the rim. What remains is one unplaced piece and one flipped
+nearly backwards, both held by the profile-shape gate — and the open
+question is whether the true seatings are vetoed or merely outscored,
+which needs finer instrumentation before anyone touches the gate. Per
+the ticket's own rules, with the bar unmet, nothing lands yet: the rim
+fix and both relaxations wait for the veto fix as one set. The lead
+checked the render: six in the ring, one gap, one flung. Ticket:
+`.scratch/pota-repro/issues/24-clean-rim-rerun.md`.
+
+Weight: one cure job with a valid control, composition checks proving
+the walk innocent and the append guilty, veto evidence with scores.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
