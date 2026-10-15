@@ -816,6 +816,26 @@ one. The staged set waits: four fixes, one strict pass. Ticket:
 Weight: two jobs with valid controls, a faithful port of the overlap
 check, the teleport render the lead checked.
 
+## 2026-10-16 — pota-repro 27: the cure — 8/8 + 15/15, and the frame question settled
+
+The seating is complete: all eight pieces, all fifteen joins, on every
+bar the arc agreed — the gate 15/15, the binary board 8/8 + 15/15, and
+all fifteen joins within tolerance. The fix was the same pattern as
+the last one: the walk innocent, the decorative append guilty, now for
+three pieces at once. The one dissenting gauge read zero because the
+whole vessel sits turned 91° in its frame — and the overlay proves it
+is only the frame: one rigid motion brings all eight pieces onto the
+authors' seating within two-thirds of a millimetre, and all but one
+non-scoring pair agree independently of any frame. The lead accepts
+this: a reassembly with no absolute anchor may choose its frame; what
+must match is the shape, and the shape matches. The fixes live in
+experiment copies, so the results land now and the sources follow
+through a port-and-reproduce ticket before anything is called done.
+Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
+
+Weight: one cure job with a valid control, teleport counts to zero on
+all four pieces, three renders the lead checked.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different
