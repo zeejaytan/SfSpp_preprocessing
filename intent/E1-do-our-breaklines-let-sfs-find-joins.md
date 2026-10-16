@@ -836,6 +836,25 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 28: the pipeline is home; the assembly tree has drifted
+
+The port split in half. The pipeline half is fully home: rebuilt from
+repo sources, the gate reads 15/15 with zero teleports, and its fixes
+are committed. The assembly half voided itself honestly: the authors'
+control scored 2/8, so per protocol the run counts for nothing — and
+the diagnosis is specific, not hand-waving. The assembly tree the cure
+was proven on is not the tree in the repo: a merge threshold moved, a
+normals check is dead code, scoring leftovers linger. The pipeline
+fixes land because they proved out of the repo; the search relaxations
+stay staged, uncommitted, until a repo-traceable binary reproduces the
+cure. Next: archaeology first (which tree proved the cure?), then one
+ablation at a time, with the transform capture fixed so no run's
+evidence evaporates again. Ticket:
+`.scratch/pota-repro/issues/28-port-and-land.md`.
+
+Weight: byte-identical hunk verification, a reproduced pipeline half,
+a voided assembly run with a named suspect and a commit to blame.
+
 ## The two candidate causes, separated
 
 At ground truth, the Juglet's true mates fail the gate for two different

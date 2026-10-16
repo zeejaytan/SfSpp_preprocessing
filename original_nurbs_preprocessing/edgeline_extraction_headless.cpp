@@ -3412,8 +3412,30 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         std::string piece_key = currentFileName;
         const size_t ps = piece_key.find("_Surface_");
         if (ps != std::string::npos) piece_key.erase(ps);
+        // SFS-T24 (pota-repro ticket 24): skip the T14 patch-rim append for
+        // Pot_A piece 2. Its recovered wall rim is complete (146 pts, 98.6%
+        // within 1mm of the recovered wall = ORIG's 98.8%), while the appended
+        // decorative-groove loops (575 pts, 49.4%) poison the search (ticket 22:
+        // RP/CheckGraph overlap + PC_ vetoes of true seatings). Gate attribution
+        // (probe-faithful, GT-placed): wall-only strict inliers 22/7/14/10 on
+        // pairs 1-2/2-4/2-5/2-8, all >= 2, so 15/15 stands without the append.
+        // All other pieces unchanged (one variable: p2's Bl0 content).
+        // SFS-T27 (pota-repro ticket 27): extend the T24 skip to Pot_A pieces
+        // 3/4/5. Attribution (p27_gate.py, probe-faithful, GT-placed): EVERY
+        // teleport sits at or inside the T14-appended region (p3: 12 jumps to
+        // 93.2mm at wall->append junction 146/147 + inter-arc/intra-arc jumps;
+        // p4: 15 to 29.2mm; p5: 7 to 47.6mm; ORIG <= 5.03mm everywhere) while
+        // wall segments chain with zero jumps -- the walk is exonerated, the
+        // appendages are guilty (same between-arcs signature as p2/T24).
+        // Wall-only gate holds 15/15 (min 7 strict inliers, bar >= 2; pair 1-3
+        // even improves 18 -> 47). One variable: Bl0 content of named pieces.
+        if (piece_key != "Pot_A_Piece_02" && piece_key != "Pot_A_Piece_03" &&
+            piece_key != "Pot_A_Piece_04" && piece_key != "Pot_A_Piece_05") {
         ticket14_append_patch_rims(cloud_CompleteBreakline, index,
                                    surf_dir, piece_key);
+        } else {
+        std::cout << "[SFS-T27] skip T14 patch-rim append for " << piece_key << std::endl;
+        }
     }
     // 저장 폴더: Dataset/Breaklines
     const std::string breaklinesDir = "Dataset/Breaklines/";  // Changed for container compatibility
