@@ -836,6 +836,24 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-17 — pota-repro 41: Pot B's killer is our rims, not the method
+
+Pot B fails on our fragments (4/9+2/15) while the authors' data
+scores 9/9+15/15 four times running through the same vehicle — so
+the method does this pot and our rim extraction is what breaks:
+our outlines jump across the surface (8 of 9 pieces, one piece
+~12mm off the true edge), which trips the join filter 8 times where
+the authors' rims trip it never. Same poses, same code, same
+threshold — only the outlines differ. Two corrections to the
+worker's label: this is our broken measurement (category 2), not a
+method failure — and no search filter is to be loosened. The Pot A
+ordering cure does not generalize here; the walk fails differently.
+Next: fix B's outlines (ticket 42), prove Pot A unharmed, then roll
+on.
+
+Weight: four sacct-verified runs with valid controls, the same
+poses measured on both outline sets, lead-checked render.
+
 ## 2026-10-16 — pota-repro 40: the cure vehicle reproduces twice — PASS
 
 The cure branch (`cure-potA`, from the authors' code plus exactly
