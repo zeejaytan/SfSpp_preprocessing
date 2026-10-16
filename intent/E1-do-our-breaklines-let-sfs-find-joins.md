@@ -836,6 +836,27 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-17 — pota-repro 39+42: all pots measured; the blocker is the beam, not the outlines
+
+Every pot B–J now has end-to-end numbers with valid author-data
+controls: the vehicle reproduces the authors fully or nearly (five
+pots perfect, the rest close), while our chain fails everywhere —
+best D at roughly half seated, C and J at zero. The axle-finder is
+exonerated (authors' axles collapse identically on our outlines).
+And Pot B's outline fix scored 15/15 on the gate yet changed
+nothing end to end across three different outlines — fitting
+candidates that the beam never seats. The common shape: our chain
+makes an order of magnitude more candidates than the authors'
+(twenty-five thousand vs two thousand on Pot E) and the true joins
+drown in filtering. One honest gap: the seating pictures never made
+it onto the laptop (the snapshots did, so they can be redrawn —
+required before any fix ticket closes). Next: find out why the beam
+starves fitting candidates (ticket 43), then carry whatever seats
+Pot B across the other pots.
+
+Weight: eight pots, nineteen end-to-end runs, every control valid,
+sacct-verified throughout.
+
 ## 2026-10-17 — pota-repro 41: Pot B's killer is our rims, not the method
 
 Pot B fails on our fragments (4/9+2/15) while the authors' data
