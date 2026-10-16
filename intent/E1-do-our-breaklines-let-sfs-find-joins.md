@@ -836,6 +836,26 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 34: the acquittal stands, fairly this time
+
+The retrial returned the same verdict — but this time the pipeline
+was working, so the verdict means something. The threshold is
+innocent on a base that seats the ring: identical geometry to the
+reference on both arms. The last admission single also reproduces
+the reference to seven thousandths of a millimetre. And a
+provenance correction redrew one corner of the map: the remaining
+check threshold's true upstream is 50, not 100 — a relaxation sits
+where a restoration was assumed, and testing it is the last single
+ever owed. After that, singles are over: every threshold tried
+alone, every one neutral. What remains is interaction — tested
+jointly, one stage at a time, with the load-bearing weighting kept
+in place because removing it is already proven to crater the
+authors' score. Ticket:
+`.scratch/pota-repro/issues/34-c1-retest.md`.
+
+Weight: three sacct-verified runs, snapshot-identity proofs, and a
+blame-verified correction that created the last single.
+
 ## 2026-10-16 — pota-repro 33: admission spent; an old acquittal overturned
 
 The veto is proven covered — the flag's only consumer is the line
