@@ -836,6 +836,25 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 30: the ruler was broken, not (only) the method
+
+Six runs, no movement on the floor — and the most important finding
+is about the ruler. The binary scoreboard does not track the saved
+geometry: identical outputs scored 8/8 in one run and 7/8 in another,
+and a run scored 0/8 while its saved ring seated exactly like the
+reference. The scoreboard tracks selection luck, not shape — so it no
+longer gates runs. What gates them now: exact pruned counts (stable
+every run) plus the strict table computed from saved geometry. Under
+that honest ruler the floor is real but specific: everything turns
+right, everything sits within about a centimetre, and the remaining
+error is a systematic sideways shift concentrated on three pieces —
+not thinning, not tolerance, not a dead threshold. Three handles
+remain, taken one at a time. Ticket:
+`.scratch/pota-repro/issues/30-translation-floor.md`.
+
+Weight: six sacct-verified runs, bit-identity proofs, stable failing
+edge sets across every arm.
+
 ## 2026-10-16 — pota-repro 29: the void was a harness artifact; the gate drift was real
 
 Two corrections in one ticket. First, the voided run never tested what
