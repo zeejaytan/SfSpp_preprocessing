@@ -4,13 +4,13 @@
 
 **Answers:** E1
 
-**Blocked by:** 38-land-cure-set (needs the landed, repo-built cure).
+**Blocked by:** 40-cure-branch-vehicle (vehicle = cure-potA @ bffefb6, proven 8/8+15/15 ×2 on Pot A).
 
 **Status:** ready-for-agent
 
 **Starting position:** Pot A reproduces the paper (binary 8/8+15/15 both arms, landed cure). Ticket 10 mapped cross-pot axles (117/155 dir-pass with the refusal gate: cost>1.40 AND share<0.22); ticket 18's gate decides admission per fragment. This ticket runs the full pipeline — our rims + our axles + landed-cure assembly at k=5/b=3 — on every pot B–J, admitted fragments only, each pot with its ORIG control.
 
-**Rules:** same-binary ORIG control per pot (a pot counts only with a valid ORIG arm); refusals excluded by rule (recorded, not scored); binary tallies + snapshots-strict tables per pot (strict diagnostic per the bar ruling); no commits except this ticket's record; reuse the ticket-38 repo-built binaries; laptop poll per sbatch via sacct directly.
+**Rules:** assembly = cure-potA @ bffefb6 (NOT fork main), preprocessing @ f1fd6b4, fresh clones, zero patches. REPEATS mandatory — beam variance proven on Pot A (identical search space picked 7/8+7/15 and 8/8+13/15): minimum TWO E2E runs per pot; a pot counts only with a valid ORIG arm in the same run. Refusals excluded by rule (recorded, not scored); binary tallies + snapshots-strict tables per pot per run (strict diagnostic per the bar ruling); no commits except this ticket's record; laptop poll per sbatch via sacct directly (never slurm_poll.sh).
 
 - [ ] Per-pot runs B–J (admitted fragments;Axle keys per ticket-10 record; refusal list per ticket-18 rule)
 - [ ] Per-pot ORIG controls; per-pot binary + strict tables

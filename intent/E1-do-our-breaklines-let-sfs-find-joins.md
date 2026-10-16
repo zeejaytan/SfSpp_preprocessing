@@ -836,6 +836,20 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 40: the cure vehicle reproduces twice — PASS
+
+The cure branch (`cure-potA`, from the authors' code plus exactly
+two one-line fixes) scores 8/8+15/15 on both arms, twice running,
+from clean checkouts — and the diff revealed the third fix was
+never needed there, because the authors' code already had the right
+number and only our fork had drifted. The paper's bar now
+reproduces on a traceable vehicle: our rims, our axles, two small
+repairs, everything else the authors'. Both rings eye-checked
+closed. Next: every pot, same vehicle, repeats per pot (ticket 39).
+
+Weight: two sacct-verified runs, lead-checked branch delta and
+render, strict tables identical to the ticket-36 proof.
+
 ## 2026-10-16 — pota-repro 38: landed fork reproduces the abl2 basin, not the cure
 
 The three assembly commits are landed and pushed (P22FIX, P22FIX2,
