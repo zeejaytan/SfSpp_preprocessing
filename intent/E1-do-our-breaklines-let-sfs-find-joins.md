@@ -836,6 +836,25 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 35: refinement closed; the chase turns around
+
+The last single reproduces the reference exactly, and the whole
+refinement stage restored jointly moves the authors' score the wrong
+way — two edges over the line, a genuinely worse minimum. Refinement
+is closed: neutral alone, worse together, so the floor is not there.
+And the 0/8 scoreboard on a visibly seated ring is the deepest split
+yet between the two rulers — the old one now disagrees with
+photographs. Six tickets of subtraction have mapped every threshold
+that does not matter. What remains is the one result none of them
+explains: the cure itself. The chase turns around — rebuild the tree
+that seated the ring, test it with today's ruler, and either bisect
+forward from a reproduced 15/15 or admit the 15/15 was luck and
+rethink the bar. Ticket:
+`.scratch/pota-repro/issues/35-joint-refinement.md`.
+
+Weight: two sacct-verified runs, full strict tables, an eye-checked
+render of a 0/8 ring that seats.
+
 ## 2026-10-16 — pota-repro 34: the acquittal stands, fairly this time
 
 The retrial returned the same verdict — but this time the pipeline
