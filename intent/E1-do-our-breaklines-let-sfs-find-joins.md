@@ -836,6 +836,24 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 29: the void was a harness artifact; the gate drift was real
+
+Two corrections in one ticket. First, the voided run never tested what
+it claimed: the assembly fork renamed its entry point, the build shim
+missed silently, and the run executed the fork's own driver at the
+wrong search width — so the authors' 2/8 said nothing about the code
+deltas. Second, with the shim asserts fixed, restoring one drifted
+threshold (the pairwise axis gate, back to the true upstream value —
+a commit message claiming "upstream" was factually wrong) moves the
+authors' score 0/8 to 8/8. What remains is not collapse but looseness:
+everything sits, turned right, shifted by millimetres over a
+systematic floor of about 7–9mm. Nothing lands — one threshold per
+run from here. Ticket:
+`.scratch/pota-repro/issues/29-assembly-provenance.md`.
+
+Weight: two sacct-verified runs with shim asserts, a named false
+"upstream" claim, an eye-checked seating render of both rings.
+
 ## 2026-10-16 — pota-repro 28: the pipeline is home; the assembly tree has drifted
 
 The port split in half. The pipeline half is fully home: rebuilt from
