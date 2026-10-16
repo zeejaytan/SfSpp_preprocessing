@@ -836,7 +836,25 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
-## 2026-10-17 — pota-repro 39+42: all pots measured; the blocker is the beam, not the outlines
+## 2026-10-17 — pota-repro 43: the beam's math, and two rulers that lied
+
+The beam was opened up and its scoring written down exactly: each
+candidate is ranked by outline length times matched points, and our
+piece-2 collapses on both — eight candidate joins instead of
+nineteen, each three times weaker, and its most important join has
+no candidates at all. Widening the beam and reseating piece-2 first
+change nothing; a length-normalized ranking moved things once and
+never again. Piece-2 starves in ten runs out of ten — deterministic.
+Two measuring instruments also lied and are now corrected: the
+printed join count truncates (three real joins printed as two), and
+identical runs can split on last-bit arithmetic noise (suspected
+uninitialized memory — hunt open, half a day). The beam rewards
+only genuine overlap content, so the next attempt grows piece-2's
+true outline from the wall face (ticket 44); a scoring change is
+held in reserve.
+
+Weight: nine sacct-verified runs, controls green throughout, the
+noise proven on identical binaries.
 
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
