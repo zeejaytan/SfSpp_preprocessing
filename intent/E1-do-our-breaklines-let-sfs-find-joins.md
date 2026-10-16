@@ -856,6 +856,22 @@ held in reserve.
 Weight: nine sacct-verified runs, controls green throughout, the
 noise proven on identical binaries.
 
+## 2026-10-17 — pota-repro 44: piece-2 seated — and why the win comes with an asterisk
+
+Giving piece-2 back its missing lower outline seats it on all three
+true joins, three runs out of three, with every control green — Pot B
+fresh now scores full marks alongside the authors' data, the first
+pot to do so. An honest failure came first: walking the wall face
+for the lip diverged up to 34 mm — the face is surface, not outline.
+But the winning outline was traced from the authors' own reference
+piece, not discovered in our data — so this proves the beam seats
+piece-2 *given* the outline (sufficiency), not that our chain finds
+it. Landing it as proof, with the asterisk on the record; the real
+fix — finding that outline without the reference — is ticket 45.
+
+Weight: three identical same-binary runs, all controls green,
+render eye-checked; the asterisk is the finding, not a footnote.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
