@@ -836,6 +836,24 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 32: the last ruler falls; the residue is not refinement
+
+Two more restores, both reproduce the reference geometry to a
+hundredth of a millimetre — and change nothing. The iteration budget
+even takes the loose scoreboard to its best ever while the strict
+table does not move a single edge: the two rulers now disagree on
+record, and only one of them measures shape. Along the way the second
+ruler fell too: pruned counts read 61/105 on geometry identical to
+the 63/103 reference — tally-side, like the binary score. What gates
+a run now is only the strict table off saved geometry. The floor has
+survived everything in the refinement stage, so the search moves
+upstream to the admission gates — with one threshold deliberately
+held back for a combination run. Ticket:
+`.scratch/pota-repro/issues/32-refinement-residue.md`.
+
+Weight: two sacct-verified runs, snapshot-identity to 0.017mm, full
+strict edge tables on all four arms.
+
 ## 2026-10-16 — pota-repro 31: the floor lives in the refinement stage
 
 Two arms, opposite lessons. Tightening the outlier rejection the
