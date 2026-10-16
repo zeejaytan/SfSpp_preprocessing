@@ -836,6 +836,24 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 33: admission spent; an old acquittal overturned
+
+The veto is proven covered — the flag's only consumer is the line
+already deleted, shown by reading every reader in the function, so no
+run was burnt. The last admission threshold reproduces the reference
+to five thousandths of a millimetre and changes nothing. Every
+single is now spent — except one whose acquittal does not hold. Its
+test ran on the collapsed base, where the broken gate upstream of it
+vetoed everything first: the threshold never had a working pipeline
+in which to show an effect. It gets a fair trial now, on the repaired
+base, then the last two untested singles. If those fail, the remaining
+hypothesis is interaction — and that gets its own ticket, justified
+by exhaustion rather than guessed at. Ticket:
+`.scratch/pota-repro/issues/33-admission-residue.md`.
+
+Weight: a write-to-sole-reader proof, a D-identical run, and a reread
+of the ticket-29 tables that overturned an exoneration.
+
 ## 2026-10-16 — pota-repro 32: the last ruler falls; the residue is not refinement
 
 Two more restores, both reproduce the reference geometry to a
