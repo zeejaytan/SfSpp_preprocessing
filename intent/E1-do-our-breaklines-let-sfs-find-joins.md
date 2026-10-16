@@ -845,10 +845,14 @@ But the numbers are ORIG 8/8+13/15, fresh 7/8+10/15 — the 8/8+15/15
 belongs to the cure tree (upstream code plus the three staged fixes),
 not to our fork with the three fixes landed. Something else still
 differs between the fork and the cure tree — the refinement weighting
-is the known suspect, deliberately left out. Second finding: a
-concurrent run picked 7/8+7/15 out of the identical search space
-where ours picked 8/8+13/15 — single-run tallies wobble, so every
-pot in the B–J run needs repeats. Next: rule which vehicle carries
+is the known suspect, deliberately left out. Second finding: two
+independent runs picked 7/8+7/15 and 8/8+13/15 out of the identical
+search space (same binary, same pruned counts) — single-run tallies
+wobble, so every pot in the B–J run needs repeats. (Attribution
+correction 22:00: the "concurrent hand" was the lead's own first
+38 worker, still alive when a retry was dispatched onto the same
+ticket — two chains, no intruder. The double-run accident is what
+proved the wobble.) Next: rule which vehicle carries
 the B–J run before ticket 39 starts.
 
 Weight: sacct-verified jobs, lead-checked delta and render, two
