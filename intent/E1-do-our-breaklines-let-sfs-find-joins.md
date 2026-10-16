@@ -836,29 +836,23 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
-## 2026-10-16 — pota-repro 36: the 15/15 was agreement, not accuracy — bar review
+## 2026-10-16 — BAR RULING (conservator): the paper's bar stands
 
-The rebuild reproduces the cure's geometry exactly — every snapshot
-identical to the archived files — but not its headline number. The
-15/15 was measured between our two reconstructions of the pot, which
-agree with each other to under 2° and 7mm on every join; it was
-recorded as accuracy against the answer key. Against the answer key,
-with today's ruler, the cure scores 12/15 on our fragments and 6/15
-on the authors' own — and their own archived files score the same.
-Two things follow. First, the paper's own claim — every sherd seated,
-every join found — reproduces fully on both arms; that was never in
-doubt tonight. Second, our harder bar (every join within a
-centimetre) fails even on the authors' reference data, so the gap is
-in the expectation, not just the code — and our fragments outscore
-their data 12 to 6, because our cleaned rims seat more truly than
-their decorated ones. No further HSD runs until the bar is ruled:
-ticket `.scratch/pota-repro/issues/36-cure-rebuild.md` is landed
-STOP-for-review. Next: the conservator rules — accept the paper's
-bar and land the cure, or authorize chasing 12→15 knowing it means
-beating the reference on its own data.
+The 15/15 measured agreement between reconstructions, not accuracy
+against the key. The paper's own claim — every sherd seated, every
+join found at k=5/b=3 — reproduces fully on both arms, and that is
+the acceptance bar from here. The harder centimetre bar is retired
+to diagnostic: it fails even on the authors' reference data, and our
+fragments outscore their data 12 to 6 because cleaned rims seat more
+truly than decorated ones. No forward bisect (nothing to bisect
+from). Next: land the cure set as proper commits, prove it from a
+clean checkout, then run every pot. Tickets 38–39 cut.
 
-Weight: a deterministic reproduction, both arms' full strict tables,
-and the arm-agreement number measured on the same files.
+Weight: the conservator's ruling, recorded the same night as the
+evidence that forced it. (Ticket-36 evidence:
+`.scratch/pota-repro/issues/36-cure-rebuild.md` — deterministic
+reproduction, both arms' full strict tables, arm-agreement measured
+on the same files.)
 
 ## 2026-10-16 — pota-repro 35: refinement closed; the chase turns around
 
