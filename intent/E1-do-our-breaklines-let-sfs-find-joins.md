@@ -836,6 +836,22 @@ Ticket: `.scratch/pota-repro/issues/27-rim-ordering.md`.
 Weight: one cure job with a valid control, teleport counts to zero on
 all four pieces, three renders the lead checked.
 
+## 2026-10-16 — pota-repro 31: the floor lives in the refinement stage
+
+Two arms, opposite lessons. Tightening the outlier rejection the
+lineage once used moves one edge — noise-adjacent, the floor stands.
+But restoring the upstream refinement weights splits the world: the
+authors' score craters to 6/15 (their weighting is load-bearing, not
+optional) while our fragments jump to 11/15, the best yet. Neither
+weighting is the answer — but the floor now has an address. It lives
+in how the refinement weighs its evidence, and the remaining
+suspects fit on one hand: the tightened robustness scales, the
+lengthened iteration budget. Ticket:
+`.scratch/pota-repro/issues/31-translation-bias.md`.
+
+Weight: two sacct-verified runs, full strict edge tables, an
+eye-checked render showing the dropped loop on the authors' arm.
+
 ## 2026-10-16 — pota-repro 30: the ruler was broken, not (only) the method
 
 Six runs, no movement on the floor — and the most important finding
