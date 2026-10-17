@@ -1275,6 +1275,19 @@ wanders. Routing the right branch through is ticket 73's job.
 Weight: two runs, both deterministic,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 63: separating "match this" from "don't match this" heals D
+
+Recalled rim spans now carry two meanings: confirmed veto
+rims stay vetoed, new recalls stay matchable. With that split,
+the big pot recovers its unflagged score three runs in a
+row — the veto, not the matching, caused its slide. One
+correction rides along: edits to the second outline file per
+piece never load, so an earlier attribution through it is
+void (its reroute findings stand).
+
+Weight: twelve runs (flags + nine stages, all controls green),
+renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
