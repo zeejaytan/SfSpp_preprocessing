@@ -112,6 +112,17 @@ Tickets 05's verdict is quarantined: it compared fork code against fork (NURBS) 
 - **Blocked sources (reading them fails review):** `SfSpp_preprocessing` fork code (`edgeline_extraction*.cpp`, `mesh_processing_headless.cpp`, `sfs_axes/`), `.scratch/pota-repro/notes/task3-axes-plan.md`, issues/05 numbers and verdict. Tickets 01–04 per-pot census counts remain usable as data facts.
 - **Target:** an axle finder that works on pots with no reference axles (Juglet and later scans). Success bar per ticket; final bar: direction ≤5° everywhere, position ≤2mm where the fragment spans enough shape (direction-strict, position-conditional — decided 2026-10-15: the P01/P04/P05 family proves a ~2-3mm material floor from handmade variation, recorded as floor not failure), then Gate 15/15 + E2E 8/8 + 15/15 at k=5/b=3.
 
+## Visual evidence (lane rule, 2026-10-18)
+
+Every fix ticket stages what it changed where the eye can judge it: the
+fresh trace drawn on its own mesh beside the author's trace on the same
+mesh, or the found axle drawn through the sherd beside the reference
+axle — in `visual-qa/` as a staged pair, never a flat picture alone
+(workspace rule; pictures stay a lead-only debugging aid). Tickets that
+need witnessing carry a `Needs-eye:` line. Mapping the author's input
+onto our mesh for comparison is evidence-only and allowed; no author
+points may enter a fix (44-asterisk rule).
+
 ## Done when
 
 - Gate 15/15 + E2E 8/8 + 15/15 on Pot A with fresh chain, ORIG arm alongside.
