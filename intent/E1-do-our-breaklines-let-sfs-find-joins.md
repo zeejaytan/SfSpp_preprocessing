@@ -1134,6 +1134,21 @@ to the remaining five begins.
 Weight: four sacct-verified jobs, ORIG-validity first,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 61: the recipe is not a general uplift
+
+Five pots, twenty runs, every author control green — and the
+honest table is mixed. One pot gained two pieces and held them
+three runs straight. Two slipped a little, consistently. One
+wobbled, one sat at zero as before. The deepest finding: the
+seated pieces are almost never the marked ones — the marks move
+outcomes through the search's dynamics, not by seating
+themselves. So marking is spent as a lever; what remains is
+per-pot detective work on the search itself, where each pot
+falls short of a believable ceiling. Both renders eye-checked.
+
+Weight: twenty sacct-verified jobs, ORIG-validity per pot
+first, five renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
