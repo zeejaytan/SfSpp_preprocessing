@@ -1315,6 +1315,18 @@ the restart.
 Weight: nine end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 75: the guard holds, the shredded piece walks clean
+
+A heading guard plus selecting the inner loop walks the
+shredded piece's lip clean: sixteen points, all within two
+millimetres of the author's, zero jumps, no reordering.
+Guarded, the piece seats — though the pot still trails the
+author's score, with the miss now outside this piece. The
+hop you witnessed is cured at the source.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 ## 2026-10-18 — pota-repro 63: separating "match this" from "don't match this" heals D
 
 Recalled rim spans now carry two meanings: confirmed veto
