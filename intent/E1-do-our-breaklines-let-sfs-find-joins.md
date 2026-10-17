@@ -1085,6 +1085,25 @@ conservator.
 Weight: offline screening only, eye-check overruled the best
 numbers, both renders eye-checked.
 
+## 2026-10-17 — pota-repro 58: the recipe does not travel yet
+
+The pilot pot refused the recipe. Where our unflagged outlines
+seated four of six, the flagged ones seated none — three runs,
+scattered errors, the first piece never even placed, render
+eye-checked with the true ring coherent and our attempts
+everywhere but on it. The vehicle is acquitted: the authors'
+data scores perfectly through it. The difference is the pot
+itself — this one shows its foot where the last showed only
+mouth, and our marker cannot tell the two apart: it missed true
+mouth arcs and flagged foot arcs that poison the search two
+ways. Rolling this recipe further would spread the failure, so
+the pilot rule held. Teaching the marker mouth from foot —
+using a sign the authors' own files already carry — is ticket
+59's job, then this pot gets re-piloted.
+
+Weight: three sacct-verified runs per arm, ORIG-validity first,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
