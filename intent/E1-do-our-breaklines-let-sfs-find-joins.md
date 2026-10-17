@@ -1287,6 +1287,22 @@ piece, is ticket 74's job.
 Weight: three end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 74: the float explained, the shredded piece bounded
+
+The seventeen-millimetre float is neither our content's frame
+nor the search alone: the true edge is identical everywhere,
+and the search seats the author's content exactly. What
+happens is the search climbs a rim-overlap hill whose peak
+sits seventeen millimetres from truth — our rim shape shifted
+the hill. And the shredded piece has no walkable branch in
+its file at all: the longest clean chain is thirty-nine
+points against two hundred needed. Recovering it means
+re-walking with a guard that stops the trace hopping faces —
+ticket 75. Reshaping the hill is ticket 76.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 ## 2026-10-18 — pota-repro 63: separating "match this" from "don't match this" heals D
 
 Recalled rim spans now carry two meanings: confirmed veto
