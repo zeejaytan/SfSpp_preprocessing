@@ -1303,6 +1303,18 @@ ticket 75. Reshaping the hill is ticket 76.
 Weight: three end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 76: tightening the gates changes nothing
+
+Halving both inlier gates and switching the refinement off
+leave the seat bit-identical — the float survives all three.
+Gate-tightening is the wrong family and the refinement is
+exonerated. What remains is reweighting the score, or
+breaking the symmetry some other way — queued for after
+the restart.
+
+Weight: nine end-to-end runs, all controls green,
+render eye-checked.
+
 ## 2026-10-18 — pota-repro 63: separating "match this" from "don't match this" heals D
 
 Recalled rim spans now carry two meanings: confirmed veto
