@@ -1166,6 +1166,22 @@ in the logs, so counting them comes first: ticket 63.
 Weight: screening-only, zero new runs spent, code-verified,
 renders eye-checked.
 
+## 2026-10-17 — pota-repro 64: the extreme case, explained
+
+The conservator's question — full marks here, zero there, same
+chain — is answered. Every outline on the null pot is
+crisscrossed by ordering leaps, up to eleven centimetres, where
+the authors' run clean loops; the render shows it in one glance.
+The leaps collapse every gate and kill two of five joins at the
+overlap test outright. One axle is genuinely wrong too, but two
+good-axle pieces still seat nothing — outlines bind all four.
+Search, vehicle, and marking are exonerated with numbers; the
+small pot amplifies but does not cause. Repairing the walk is
+ticket 65's job, same family as the cure that saved Pot A.
+
+Weight: screening-only, six pre-existing runs verified,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
