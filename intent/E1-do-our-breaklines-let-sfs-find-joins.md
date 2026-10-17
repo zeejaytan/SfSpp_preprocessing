@@ -1253,6 +1253,17 @@ ticket 71's job.
 Weight: three runs, all deterministic,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 71: there is no inner loop to choose
+
+Keeping one face's points collapses the outline to a partial
+arc plus a straight chord across the mouth — worse, not
+better. The ceilings prove it: for two pieces, none of our
+points sit on the authors' curve at all. The true lip is lost
+before detection even runs. Finding where is ticket 72's job.
+
+Weight: four runs, all deterministic,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
