@@ -937,6 +937,24 @@ re-walks the real surface.
 Weight: six sacct-verified jobs, zero author points anywhere,
 controls green in every run, renders eye-checked.
 
+## 2026-10-17 — pota-repro 49: eight of nine, with names
+
+Loosening the authors' twenty-point minimum to ten recovered three
+true mouth arcs — verified point-for-point against the authors' own
+data — and the seventh sherd clicked into the ring along the
+contacts they enabled. Eight of nine seated, twice in three runs,
+every control green, both renders eye-checked: the baseline shows
+the seventh sherd adrift across the interior, the relaxed run seats
+it on the true rim with only the eighth still floating. The losers
+taught as much: re-smoothing our outlines to the authors' even pace
+wrecked the score — the matcher reads the raw sampling itself, so
+the pace is signal, not noise. The last miss is a contact with no
+measurable grip at the true seating; blaming or saving it is
+ticket 51's job, matcher-side.
+
+Weight: six sacct-verified jobs, identities extracted per run,
+resample rejection measured not asserted.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
