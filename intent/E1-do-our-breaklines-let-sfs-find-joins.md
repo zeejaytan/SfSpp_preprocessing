@@ -955,6 +955,21 @@ ticket 51's job, matcher-side.
 Weight: six sacct-verified jobs, identities extracted per run,
 resample rejection measured not asserted.
 
+## 2026-10-17 — pota-repro 50: the surface has no more to give
+
+Re-walking our whole piece-2 surface ridge by ridge found nothing
+more: the forty-millimetre gap is bare sheet metal, no ridge spans
+it, and the walk added three points of already-covered ground. The
+genuine match stays exactly as thin, the end-to-end unmoved three
+runs straight, controls green throughout, render eye-checked with
+the new rows riding the mating outlines. Direction unlocked
+existence; nothing on the sequence side grows strength. The hunt
+moves content-side — what each point *says*, not where it sits —
+which is ticket 52, while 51 keeps working the beam side.
+
+Weight: three sacct-verified runs, deterministic rebuild,
+gate unregressed edge-for-edge.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
