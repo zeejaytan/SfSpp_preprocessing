@@ -1218,6 +1218,18 @@ to split the loops apart and keep the inner one: ticket 68.
 Weight: screening-only, no new runs spent,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 68: the true curve was never traced
+
+Neither loop sits on the authors' curve — both float
+millimetres off, and only a nine-point nub touches it. Three
+tickets have now proven the extracted file holds no
+recoverable outline: not in its labels, not in its order, not
+in either loop. The repair must move upstream of the file
+entirely, into the walk that traces the lip: ticket 69.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
