@@ -1002,6 +1002,23 @@ reshaping the wall itself, ticket 54's pipeline work.
 Weight: three sacct-verified runs, numpy replication of the
 assembler's own estimator, offline refutations before spend.
 
+## 2026-10-17 — pota-repro 54: the wall is innocent, the path is guilty
+
+The ticket went in to reshape the wall and came out acquitting
+it: our sheets lie on the authors' sheets to a third of a
+millimetre. The defect is where our outline *walks* — down the
+middle of the wall instead of along its edge, a millimetre off
+the authors' path for the whole run, confirmed point by point at
+the true seating. Smoothing, flipping, relabelling, trimming —
+every surface-side lever died measured, and even twenty-fold
+smoothing only shrank the sheet without moving the path. The end
+runs sat unmoved three times, controls green, both renders
+eye-checked: the authors' outline rides the sheet edge, ours cuts
+across it. Re-walking the path is ticket 55's job.
+
+Weight: three sacct-verified runs, composition proof before
+spend, premise refutation recorded not buried.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
