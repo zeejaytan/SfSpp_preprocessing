@@ -1104,6 +1104,23 @@ using a sign the authors' own files already carry — is ticket
 Weight: three sacct-verified runs per arm, ORIG-validity first,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 59: the marker learns mouth from foot
+
+Four of six, three runs straight — the pilot pot is back to its
+unflagged best, with names on every seated piece. The fix was a
+gate the authors' files already hinted at: the lip is the widest
+ring, so anything narrower is foot and gets spared — computed
+honestly on our own outlines, nothing copied. Recall alone
+scored zero, proving the foot poison dominated all along. Two
+misses remain honestly attributed: one piece too rough-walled
+even for the second chance, one placed-but-wrong which is a
+seating problem, not a marking one. The render shows the seated
+ring tracking the true one. Arm C ships as the pot's recipe; the
+second pilot goes next.
+
+Weight: nine sacct-verified runs, three arms, identities
+recomputed against binaries, render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
