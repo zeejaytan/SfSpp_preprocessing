@@ -921,6 +921,22 @@ content — is ticket 49.
 Weight: three identical same-binary runs, paper-recipe flagger
 validated 17/18 against the authors' own marks, full controls.
 
+## 2026-10-17 — pota-repro 48: walking the right way, still too quiet
+
+Smoothing our honest piece-2 outline to the authors' even pace
+changed nothing — the pace was never the problem. But walking it in
+the authors' direction, mirroring how they travel the surface,
+coaxed out the first genuine piece-2-to-1 match ever, identical on
+three runs. It is real and far too weak: one thin match where the
+authors' data brings five strong ones, so the beam still starves.
+Both renders eye-checked: the new branches ride the mating outlines
+with a clean step, no leaps. What remains is the walk itself — the
+descending branch is eleven lonely points, detached — so ticket 50
+re-walks the real surface.
+
+Weight: six sacct-verified jobs, zero author points anywhere,
+controls green in every run, renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
