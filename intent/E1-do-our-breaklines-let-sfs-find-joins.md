@@ -872,6 +872,22 @@ fix — finding that outline without the reference — is ticket 45.
 Weight: three identical same-binary runs, all controls green,
 render eye-checked; the asterisk is the finding, not a footnote.
 
+## 2026-10-17 — pota-repro 46: the author's recipe, read off their data
+
+Comparing the authors' finished outlines against ours, piece by
+piece across all pots, revealed their recipe: evenly spaced points
+every 1.8 mm, no jumps, no decoration — and one flag our chain
+never sets, which marks mouth and base arcs so the matcher ignores
+them. Without that flag our outlines feed the matcher ten times
+the candidates on some pots, drowning the true joins. That single
+missing flag is now the prime suspect for every pot at once, and
+emitting it is ticket 47. The same comparison exonerated our
+surfaces for piece-2: its missing outline points are sitting in our
+data — the outline walk drops them, which is ticket 45's hunt.
+
+Weight: 620-row fingerprint table, laptop-side analysis, no code
+touched; the flag mechanism verified in the assembler's own code.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
