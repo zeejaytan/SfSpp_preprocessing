@@ -1019,6 +1019,22 @@ across it. Re-walking the path is ticket 55's job.
 Weight: three sacct-verified runs, composition proof before
 spend, premise refutation recorded not buried.
 
+## 2026-10-17 — pota-repro 55: even perfect positions fail
+
+The rim-path hunt ended with a bound, not a fix. Our outline
+does ride wide of the edge mid-run — proven numerically — but
+four honest snap-back estimators all died flat, and the decisive
+test put our points at the authors' exact true positions and
+still recovered nothing: the wall's stand-off stayed a quarter
+of theirs. No beam or walk or snap can cross that gap, so no
+assembly runs were spent proving it. The cross-sections show why
+— walls all around, yet the lip's own shape defeats the gauge.
+The defect is the lip's shape, and only rebuilding it qualifies:
+ticket 56. Scratch surgery on this piece is declared exhausted.
+
+Weight: login-node screening only, cheat bound diagnostic,
+both renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
