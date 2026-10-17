@@ -970,6 +970,21 @@ which is ticket 52, while 51 keeps working the beam side.
 Weight: three sacct-verified runs, deterministic rebuild,
 gate unregressed edge-for-edge.
 
+## 2026-10-17 — pota-repro 52: the seventh column is a dead wire
+
+Two quiet kills. The mystery seventh column never even loads —
+the reader parses six values a row, so the authors' residue there
+is ballast, and writing their exact bits back changed nothing
+three runs straight. And the surface directions are live but only
+destructive: smoothing them erased the one genuine match while
+leaving everything else untouched. Six runs, controls green,
+renders eye-checked. What remains live is the thickness estimate
+the matcher gates on — computed from surface and directions, not
+stored — which is ticket 53's ground.
+
+Weight: six sacct-verified runs, wire-trace proof, one voided
+batch disclosed by the worker, not hidden.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
