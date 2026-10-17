@@ -1149,6 +1149,23 @@ falls short of a believable ceiling. Both renders eye-checked.
 Weight: twenty sacct-verified jobs, ORIG-validity per pot
 first, five renders eye-checked.
 
+## 2026-10-17 — pota-repro 62: one flag does two jobs, badly
+
+The mechanism is proven in the code: a single mark means both
+"this is mouth, veto it" and "do not match here" — so recalling
+a true mouth arc deletes its true matches. That is exactly what
+happened: the slipped pots lost true contacts both directly
+(marked spans zeroed) and by pure reroute (identical pairs
+losing beam slots), one piece fell from first to fourth in the
+search order, and the gainer won only because the beam started
+from a different piece and took the true pair first. Nowhere did
+a false piece seat — one true basin outcompeted another. The fix
+is to split the mark in two, but the veto kills are not printed
+in the logs, so counting them comes first: ticket 63.
+
+Weight: screening-only, zero new runs spent, code-verified,
+renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
