@@ -1309,8 +1309,11 @@ Halving both inlier gates and switching the refinement off
 leave the seat bit-identical — the float survives all three.
 Gate-tightening is the wrong family and the refinement is
 exonerated. What remains is reweighting the score, or
-breaking the symmetry some other way — queued for after
-the restart.
+breaking the symmetry some other way — ticket 77 tried
+four reweightings over twelve runs and all came back null.
+The slide wins on rim-coincidence count, not overlap area,
+and holds under every gate and weighting. What remains is
+correcting the rim shape itself, or a new scoring idea.
 
 Weight: nine end-to-end runs, all controls green,
 render eye-checked.
