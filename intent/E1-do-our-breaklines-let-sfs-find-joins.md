@@ -985,6 +985,23 @@ stored — which is ticket 53's ground.
 Weight: six sacct-verified runs, wire-trace proof, one voided
 batch disclosed by the worker, not hidden.
 
+## 2026-10-17 — pota-repro 53: the wall leans on the rim
+
+The thickness gate is finally measured, and it acquits the method
+while convicting one wall. Our piece-1 matches the authors almost
+exactly — the pipeline works in general. But our piece-2 wall
+leans against its own rim, noisy and close, where the authors'
+stands back clean: two-thirds of its thickness readings are
+garbage, the middle reading sits a full gate-tolerance off, and
+true pairs fail the gate by construction. The render shows it
+plainly — our blue cloud crowds the red outline, theirs keeps its
+distance. Smoothing the directions only killed the last genuine
+match. Every point-side lever is now spent; what remains is
+reshaping the wall itself, ticket 54's pipeline work.
+
+Weight: three sacct-verified runs, numpy replication of the
+assembler's own estimator, offline refutations before spend.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
