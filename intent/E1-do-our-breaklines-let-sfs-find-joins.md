@@ -1182,6 +1182,18 @@ ticket 65's job, same family as the cure that saved Pot A.
 Weight: screening-only, six pre-existing runs verified,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 65: regrouping labels is not a repair
+
+The first repair attempt is honestly spent: re-labelling which
+points belong to which run changed nothing — same points, same
+order, same zero — because the program never reads those
+labels. The leaps live in the point order itself, so the real
+fix must re-walk the points, the way the Pot A cure did. That
+is ticket 66's job.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
