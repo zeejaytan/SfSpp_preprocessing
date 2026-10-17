@@ -42,3 +42,5 @@
 **6. Jobs: screening-only, none cut — no sacct IDs.** T66's 33277750/33278681/33278682 (all COMPLETED 0:0, polled directly) stand as the ordering-null evidence.
 
 **Successor:** the split-then-select repair ticket this diagnosis names; roll the two-loop check (fresh count ≈2× ORIG + parallel-loop r-h) wherever doubled contours recur (E/I/J forests dwarf ORIG).
+
+**Corroboration (conservator eyewitness, 2026-10-18):** independently witnessed a breakline trace jumping across to another break edge after finishing its own — the face-hop mechanism confirmed by eye, classified as a preprocessing bug requiring fixing.
