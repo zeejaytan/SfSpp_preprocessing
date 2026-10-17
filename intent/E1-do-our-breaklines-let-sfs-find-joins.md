@@ -1206,6 +1206,18 @@ ticket 67's job, before any more assembly runs on these pots.
 Weight: three end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 67: our outline traces the lip twice
+
+The walk is chaining two parallel edges of the lip — inner and
+outer, a wall-thickness apart — into one outline, plus a stray
+spur across the mouth. The radius-height plot shows both loops
+shadowing the authors' single curve. No re-ordering could ever
+merge them, which closes out the two spent repairs. The fix is
+to split the loops apart and keep the inner one: ticket 68.
+
+Weight: screening-only, no new runs spent,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
