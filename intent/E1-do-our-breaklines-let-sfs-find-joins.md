@@ -1264,6 +1264,17 @@ before detection even runs. Finding where is ticket 72's job.
 Weight: four runs, all deterministic,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 72: the good outline was in the file all along
+
+The clean lip exists — traced on the other surface branch,
+under a millimetre off the authors' — but the assembler only
+ever reads the first outline file, so it stays invisible. The
+blue curve tracks theirs; the red one it actually uses
+wanders. Routing the right branch through is ticket 73's job.
+
+Weight: two runs, both deterministic,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
