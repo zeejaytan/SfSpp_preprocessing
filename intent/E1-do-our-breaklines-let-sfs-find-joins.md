@@ -904,6 +904,23 @@ ticket 48.
 Weight: five sacct-verified jobs, full controls green throughout,
 render eye-checked; the negative end-to-end honestly recorded.
 
+## 2026-10-17 — pota-repro 47: the missing labels were the lever
+
+Stamping our outlines with the authors' mouth-and-base marks the
+paper's own way — steady height and radius, gentle change,
+twenty points minimum — lifted Pot B from four sherds to seven,
+three identical runs, every control green. The forest of false
+candidates thinned by a quarter. Recall is honestly short: eight of
+our outlines hold no arc steady enough to earn the mark, including
+three near-misses the rule keeps unmarked. Both renders eye-checked:
+our marked arc sits on the mouth where the authors' does, and the
+seated ring tracks the true ring with two sherds off. Chasing the
+rest — a forgiving threshold, named identities, cleaner outline
+content — is ticket 49.
+
+Weight: three identical same-binary runs, paper-recipe flagger
+validated 17/18 against the authors' own marks, full controls.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
