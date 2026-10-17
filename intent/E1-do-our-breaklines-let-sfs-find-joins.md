@@ -1121,6 +1121,19 @@ second pilot goes next.
 Weight: nine sacct-verified runs, three arms, identities
 recomputed against binaries, render eye-checked.
 
+## 2026-10-17 — pota-repro 60: the recipe travels
+
+Second pilot, same story: four of seven, three runs identical,
+every seated piece named, the authors' data green through the
+same vehicle. No foot poison this time — the gate correctly
+spared the base arcs it was taught to spare. Two pilots, two
+transfers, both at their unflagged best with honest ceilings
+declared. The recipe is no longer one pot's luck; the roll-out
+to the remaining five begins.
+
+Weight: four sacct-verified jobs, ORIG-validity first,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
