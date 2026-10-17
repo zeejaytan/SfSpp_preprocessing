@@ -1661,6 +1661,21 @@ the same family ticket 79 is correcting.
 
 Weight: login-node measurement over all pots B–J, no runs.
 
+## 2026-10-18 — pota-repro 80: most floats are a slot swap, not the walk
+
+The walk is innocent in ninety-four of them: our Surface_0
+carries the author's Surface_1 — exterior wall where the
+interior should be — because a size sort puts the denser
+wall first and the guard that would correct it never ran.
+The trace faithfully drew the wrong wall's loop. Fourteen
+more are the known doubled-walk defect; the trackers are
+simply the pieces that escaped the swap. The fix is
+re-running with the guard wired in, starting with the
+smallest pot — ticket 81, held until the in-flight workers
+are home.
+
+Weight: login-node screening, render eye-checked.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
