@@ -888,6 +888,22 @@ data — the outline walk drops them, which is ticket 45's hunt.
 Weight: 620-row fingerprint table, laptop-side analysis, no code
 touched; the flag mechanism verified in the assembler's own code.
 
+## 2026-10-17 — pota-repro 45: the lip was ours all along — but geometry isn't agreement
+
+Piece-2's missing outline was sitting in our own data, filed in a
+second outline the assembler never reads. Recovering it honestly —
+no reference points — lifted the outline-to-outline scores most of
+the way to the reference-traced version. Yet the assembly still
+refuses piece-2, three runs out of three. The measured reason: the
+matcher compares smoothed derivative runs, not raw shapes, and our
+honest outline's strongest agreement scores half what the beam's
+frontier demands. Right shape, wrong signature. Closing that last
+gap — the same shape in a signature the matcher accepts — is
+ticket 48.
+
+Weight: five sacct-verified jobs, full controls green throughout,
+render eye-checked; the negative end-to-end honestly recorded.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
