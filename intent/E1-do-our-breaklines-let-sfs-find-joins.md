@@ -1194,6 +1194,18 @@ is ticket 66's job.
 Weight: three end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 66: the outline itself is wrong, not just its order
+
+Even perfectly re-walked, the null pot still scores zero —
+because our outline carries twice the points and folds back on
+itself where the authors' runs one clean loop, sitting five or
+six millimetres off theirs. Ordering was a co-symptom; the walk
+is tracing the wrong curve. Diagnosing where it steps off is
+ticket 67's job, before any more assembly runs on these pots.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
