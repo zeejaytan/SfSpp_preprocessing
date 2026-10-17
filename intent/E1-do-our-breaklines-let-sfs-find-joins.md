@@ -1051,6 +1051,23 @@ target the other pots inherit is that shape, not a perfect nine.
 Weight: sixteen sacct-verified runs, six beam-side conditions,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 56: the lip curls
+
+The shape error finally has a name and a place. The wall's bulk
+is innocent; only a three-millimetre band at the lip is wrong,
+carrying eight times too much rim-hugging material — the surface
+fit curls there instead of standing back. Cutting the curl away
+collapses the readings instead of curing them: the wall behind
+lies outside the gauge's corridor, so only a refit that *moves*
+material can help. No assembly runs were spent — the bound was
+decisive, both renders eye-checked with our rays landing shallow
+and broken against the authors' clean curve. The refit is ticket
+57's job, and it reaches back into the surface-fitting stage
+itself.
+
+Weight: offline screening only, joint bound decisive,
+both renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
