@@ -1275,6 +1275,18 @@ wanders. Routing the right branch through is ticket 73's job.
 Weight: two runs, both deterministic,
 render eye-checked.
 
+## 2026-10-18 — pota-repro 73: the null pot scores — with a caveat
+
+Filing the good exterior traces where the program looks moves
+the pot off zero: two pieces seated, three runs in a row, all
+controls green. The seated pair shares the true shape but
+floats seventeen millimetres off — rotation right, position
+floating. Chasing that floor, plus the one still-shredded
+piece, is ticket 74's job.
+
+Weight: three end-to-end runs, all controls green,
+render eye-checked.
+
 ## 2026-10-18 — pota-repro 63: separating "match this" from "don't match this" heals D
 
 Recalled rim spans now carry two meanings: confirmed veto
