@@ -1230,6 +1230,18 @@ entirely, into the walk that traces the lip: ticket 69.
 Weight: three end-to-end runs, all controls green,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 69: the offset lives upstream of the walk
+
+Guards straighten the walk — one loop instead of four
+chained runs — but the loop still floats millimetres off the
+authors' curve, and shrinking the detector's radius only
+breaks detection entirely. The error is already in the cloud
+of edge points the walk is given, so the next fix moves one
+stage earlier, to what feeds the detector: ticket 70.
+
+Weight: four runs, all deterministic,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
