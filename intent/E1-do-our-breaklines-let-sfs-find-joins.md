@@ -1068,6 +1068,23 @@ itself.
 Weight: offline screening only, joint bound decisive,
 both renders eye-checked.
 
+## 2026-10-17 — pota-repro 57: the shelf that fooled the gauge
+
+Eleven ways of moving the lip material, and every one fails the
+joint test the authors' data passes. The best-looking attempt
+beat their numbers — and the eye overruled the numbers: a flat
+uniform shelf where their curve breathes, a cliff at the blend
+edge, a fifty-millimetre ray escaping into space. Sculpting the
+gauge, not a wall. Even their true positions plus the refit
+reach barely half their readings. Scratch refit is exhausted;
+what remains is genuine pipeline surface-fitting work, a
+different weight class. Six straight measured negatives end the
+piece-2 campaign; the decision on what follows belongs to the
+conservator.
+
+Weight: offline screening only, eye-check overruled the best
+numbers, both renders eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
