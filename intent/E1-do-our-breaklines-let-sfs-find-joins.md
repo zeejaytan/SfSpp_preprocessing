@@ -1644,6 +1644,23 @@ distinction is the whole point of this question.
 
 ## Source
 
+## 2026-10-18 — float audit: 110 of 129 fresh outlines float, and jumps don't explain it
+
+All 129 fresh fracture outlines measured against the author's:
+110 float more than two millimetres off, 19 track — and
+every pot keeps at least one tracker. The floaters do not
+share jumps (thirty have none; trackers carry up to ten).
+What they share is coverage: every floater matches under
+half the author's outline, every tracker over half — a
+perfect split. Three pots float nearly whole at a uniform
+five to nine millimetres: a systematic wrong-loop offset,
+not piece-by-piece noise. And the author's position survives
+inside at least one floater — masking recovers it to under
+a millimetre — so the float is extra wrong-loop material,
+the same family ticket 79 is correcting.
+
+Weight: login-node measurement over all pots B–J, no runs.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
