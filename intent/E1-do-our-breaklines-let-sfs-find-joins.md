@@ -1242,6 +1242,17 @@ stage earlier, to what feeds the detector: ticket 70.
 Weight: four runs, all deterministic,
 render eye-checked.
 
+## 2026-10-17 — pota-repro 70: a bigger net catches one loop, still the wrong one
+
+Widening the detector's reach collapses the doubled loop into
+a single curve — but it keeps the outer edge, still
+millimetres off the authors'. The size of the net picks how
+many loops survive, not which one. Choosing the inner face is
+ticket 71's job.
+
+Weight: three runs, all deterministic,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
