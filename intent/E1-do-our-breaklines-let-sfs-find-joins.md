@@ -1035,6 +1035,22 @@ ticket 56. Scratch surgery on this piece is declared exhausted.
 Weight: login-node screening only, cheat bound diagnostic,
 both renders eye-checked.
 
+## 2026-10-17 — pota-repro 51: eight of nine is the ceiling
+
+Sixteen assemblies, every control green, and the last sherd's
+verdict is in: it seats only twice in sixteen, both times at the
+cost of half the pot — seating it scatters the pieces its
+contacts compete with for the same beam slots, and forcing it
+collapses the assembly to four of nine. The render shows the
+bargain plainly: the eighth sherd on the true foot line beside
+the first, the rest adrift. Its one dead contact has no grip at
+all, worst in the forest on every axis. Eight of nine with named
+pieces is the material ceiling for our outlines — and the honest
+target the other pots inherit is that shape, not a perfect nine.
+
+Weight: sixteen sacct-verified runs, six beam-side conditions,
+render eye-checked.
+
 Every pot B–J now has end-to-end numbers with valid author-data
 controls: the vehicle reproduces the authors fully or nearly (five
 pots perfect, the rest close), while our chain fails everywhere —
