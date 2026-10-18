@@ -1713,6 +1713,35 @@ starve it. No piece had to be refused.
 Weight: six end-to-end runs, all controls green, renders
 eye-checked.
 
+## 2026-10-19 — E1 close-out: swap roll-out complete; C01 traced to 210/211
+
+The slot-exchange cure rolled out to every swapped pot in the census:
+E (guarded re-run, 29+56), D, I (own-census correction + densified
+I27), J (7+13), B (controls exact), C (C02/C04 at S24 bar), G (4/7+2/10
+vs bar 4/7+3/10, one edge at the 50mm gate). Every E2E run bit-identical
+across repeats, all Slurm jobs clean, all renders eye-checked. The
+remaining question was never joins — it was the one rim that traced
+badly: Pot C piece 1, whose lip folds back and nearly touches itself.
+
+Forty tickets (99–139) traced that rim from a 402-point double-tracing
+walk to 278 honest dots at gate 4.25mm, 210 of 211 author points covered
+within 5mm. Recipe, all banked with controls: clean bag (row deletion),
+multiscale un-blinding (r1), snap displacement caps (2.5), span-localized
+admissions, a recovery walk that knows working from stuck (state-function
+trigger, no re-tuned constants), and a segment-crediting gate ruled an
+honest measurement by falsifiability check. Each refutation named its
+owner: ROR deletion, boundary-test blindness, snap drag, walk refusal.
+One author point (O37, 5.45mm) stands open — the only uncovered point,
+pending upstream re-extraction in the lip gap. Tickets:
+`.scratch/pota-repro/issues/99-*.md` through `139-last-point-o37.md`;
+spec rows 99–139 in `.scratch/pota-repro/spec.md`.
+
+Weight: single rim, login-node analysis, author loop as gate-evidence
+only — the recipe generalises by construction (bag-relative rules, no
+ported coordinates) but has been proven on one rim. Upstream
+re-extraction for O37 and the E2E re-run of the finished C01 bundle are
+the two open items.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
