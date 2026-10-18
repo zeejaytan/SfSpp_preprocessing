@@ -6,7 +6,7 @@ GOAL: MATCH AUTHOR'S INPUT.
 
 **Blocked by:** 133 (3 dots junk 0 visited on-road, but greedy ratio 116/282=0.4113 trips T13's absolute 0.40 gate and suppresses recovery; forced-T13 probe 209/gate 4.3001/uncovered 8 NOT banked; key-space refusal at far-arc dot, 208 unique keys of 282 slots) + 126 rule-form (derive from the bag, never port; a per-bag constant is a port — the gate must be a FUNCTION of bag/walk state)
 
-**Status:** ready-for-agent
+**Status:** results-in
 
 **What to deliver:** a recovery rule that fires on the 282 bag. Constraint (ORIG-free, stated before running): the trigger must be a function of walk/bag state, not a re-tuned constant — name the feature that distinguishes honest-density ratio (dots sequencing on-road, coverage falling) from stuck ratio (no visits, coverage flat) and gate recovery on THAT. Candidates: visits-per-N-steps, coverage-delta-per-N-steps, unique-key exhaustion rate — worker's choice, stated first with the honest-vs-stuck evidence from the 133 freeze. Test on 282: walk + gate vs both marks (verbatim 116-strand AND forced probe 209/4.3001/8 — match-or-beat the probe honestly; beating it banks the recipe, matching it confirms the mechanism). Success bar: walk >=206 AND gate at/below 4.3107 AND uncovered below 15 AND 0 jumps >=40mm AND the trigger feature stated with its honest/stuck separation. If no state-function separates them, refute with the distributions — that says recovery-gating is bag-specific and the 282 walk stays probe-class.
 
@@ -14,6 +14,21 @@ GOAL: MATCH AUTHOR'S INPUT.
 
 **Rules:** control reproduces 133's two marks first (verbatim strand 116 + forced probe numbers quoted, probe NOT re-run as control... no: reproduce the strand, quote the probe from file) or stop; read-only on all inputs (zero ORIG points; ORIG Bl_0 gate-evidence only); COMMIT NOTHING; Comments-only ticket edits; NO re-tuned constants.
 
-- [ ] Strand reproduced + trigger feature stated with separation
-- [ ] Recovery walk vs both marks
-- [ ] Verdict + recipe or bag-specific refutation
+- [x] Strand reproduced + trigger feature stated with separation
+- [x] Recovery walk vs both marks
+- [x] Verdict + recipe or bag-specific refutation
+
+## Comments (worker, 2026-10-19 -- laptop numpy only; COMMIT NOTHING)
+
+**Verdict: RECOVERY-GATED LANDING -- all 4 bar legs hold on walk M134d, probe beaten honestly on 3 of 4 marks. Recipe banks.**
+
+**0. Control GREEN (reproduce-or-stop PASSED).** Rebuilt 279 + 282 in .scratch/pota134_repro (p134_step1.py, walk_plain verbatim from 133): 279-greedy 100/279, final 206, 4 jumps, gate med 4.3107 / uncovered 15 / spans [(32,37),(46,50),(96,97),(165,165),(173,173)] -- multiset-equals 133 control. Strand-282: greedy 116/282 = 0.4113 (T13 suppressed), final 116, 0 jumps, gate 5.4597 / uncovered 97, newdots seqpos 38/52/53, strand slot 221 [25.13,66.52,424.99] -- verbatim-equals 133 strand. Probe quoted from 133 file (NOT re-run): forced-T13 209 / 4.3001 / ORIGcov 99/211 / uncovered 8 / spans [(36,37),(46,47),(96,97),(165,165),(173,173)]. Zero ORIG points copied; ORIG = Bl_0 gate-evidence + seating only; tickets 39-133 read-only.
+
+**1. Trigger T134 stated BEFORE any recovery run (p134_trigger.txt).** Function of walk/bag state, zero retuned constants (K=34 verbatim; 1mm = R133 stated dedupe, reused; ratio 0.40 untouched -- latched override, exactly the suppression 133 s4 diagnosed). FIRE iff (i) admitted-dot visited fraction == 1 AND (ii) newly-covered-vs-control ORIG count > 0. 282: (i) 3/3 on-road (38/52/53), (ii) 7 (O32,33,34,35,48,49,50; DO deltas -1.46..-6.39) -> FIRE. Stuck analogue = 116 group-B orphans 0/3 ever visited (nearest 101.6mm, out of every window) -> SUPPRESS. Separation = on-road visits + coverage payoff. Two candidates REFUTED with distributions before stating: coverage-delta trailing-K (282 +22 vs 116 +10, both >0 -- does not separate) and K-net key-fresh lookahead (0 on BOTH walks at identical slot-221 stall; reposition lookahead pays 0 everywhere -- local key-space dead both sides; the difference is purely global: 282 global key-fresh 128 @43.24mm vs 116 global 3 @101.63mm; C270 base already carries 74 dup-shadowed slots).
+
+**2. Recovery walk vs both marks (4 attempts, all reported; trigger unchanged throughout).**
+ (a) M134 (index-greedy + forward global teleport): 252 / 4.2874 / uncovered 8, 3 teleports incl. 2 landings >=40mm (61.08, 57.31). Beats probe on walk+gate, matches uncovered, MISSES big0. (b) M134b (DFS backtrack, zero teleports): unique 282/282 seqlen 868 (586 re-treads), 4.8520 / 8 / big0. Misses ONLY gate: duplicate road points re-weight the walked-point median. (c) M134c (retreat-to-nearest-road, 15 retreats): unique 282 seqlen 297, 4.2199 / 8, big=1 (single 79.13mm final retreat; 13/15 <= 10.33). Marginal analysis: ONLY retreats #6,#7,#11 pay (fix spans [181..205],[162..180],[115..164]); the 79mm pocket pays ZERO. (d) M134d BANKED (envelope retreat: landing must be <= walk own max greedy stride 24.67mm, frozen pre-trigger; else HALT): seqlen 290, unique 278/282, 12 retreats (max 10.33), 0 forwards, gate med 4.2488 / <2mm 29.3% / gaps5 98 / maxstep 25.8 / ORIGcov 99/211 / uncovered 8 / spans [(36,37),(46,47),(96,97),(165,165),(173,173)]. Bar: walk 278>=206 HOLD | gate 4.2488<=4.3107 HOLD | uncovered 8<15 HOLD | 0 steps>=40mm HOLD -- ALL-HOLD. Vs probe 209/4.3001/8: walk BEATS (+69 unique), gate BEATS (4.2488<4.3001), uncovered MATCHES (8=8, same spans), big jumps 0 vs probe maxstep 53.1 -- beats-or-matches on all four. Left unsequenced: 4 zero-payoff isolated dup-shadowed slots (incl. the 79mm pocket) -- coverage-identical, honestly reported, not hidden.
+
+**3. Recipe to bank (T134 + M134d).** Freeze strand; evaluate (i)+(ii); if FIRE, greedy-verbatim then index-advance in K34 (key-stale allowed, d>=1mm), retreating at index-stall to mm-nearest own-seq road position with index-unvisited K-net within the walk own max-greedy-stride envelope, HALT otherwise; ratio gate latched overridden once fired. No mm band, no ratio change, no window, no per-bag constant: envelope and visits and payoff all derive from the frozen walk/bag state. Guarded arm not applicable (single-walker ticket; no second variable beyond the licensed recovery).
+
+**4. Renders + paths.** artifacts/pota134/p134_walk.png eye-checked (walks vs arc + gold dots | DO-vs-ORIG recovery at/below probe | trigger honest-vs-stuck bars). Texts mirrored: artifacts/pota134/{p134_control,p134_freeze,p134_keyspace,p134_stuckref,p134_trigger,p134_trigger_b,p134_trigger_c,p134_trigger_d,p134_walk,p134_walk_b,p134_walk_c,p134_walk_d}.txt. Scratch .scratch/pota134_repro/ (step1..step8 + render .py + npy). Tickets 39-133 untouched; COMMIT NOTHING done.
