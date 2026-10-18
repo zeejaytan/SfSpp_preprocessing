@@ -1676,6 +1676,20 @@ are home.
 
 Weight: login-node screening, render eye-checked.
 
+## 2026-10-18 — the two in-flight workers came home silent, and the lead collected
+
+Both workers' runs had finished hours earlier with no
+report. The tallies: the guarded Pot E bundle crashes the
+assembler at launch — fifteen-point rims where the working
+bundle's smallest is seventy-eight — while the plain bundle
+repeats the best fresh score. And the rim-shape re-walk
+reproduced the same off-lip loop exactly, so re-walking
+cannot correct that shape. Curing the crash is ticket 82;
+the near-free swap cure, ticket 81, is released.
+
+Weight: six end-to-end runs, controls green, render
+eye-checked.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation

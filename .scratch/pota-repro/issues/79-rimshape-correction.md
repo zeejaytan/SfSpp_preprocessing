@@ -15,3 +15,7 @@
 - [ ] Shape-correction arms, one variable each
 - [ ] Gate (overlap share at GT) + E2E rerun x3 or measured why-not
 - [ ] Job IDs + sacct states
+
+## Comments (lead landing, 2026-10-18 — worker silent post-completion, tallies collected by lead)
+
+E2E 33302163/64/65 all COMPLETED 0:0. C_B = C_C = C_S24base = 2/3+1/3 x3 bit-identical; C_orig 4/4+5/5; A 8/8+15/15. NULL: shape arms did not move the pair. Render artifacts/pota79/C79_gate_overlays.png eye-checked — B arm overlays S24base exactly on C02+C04: the guard re-walk reproduced the same off-lip loop, so re-walking cannot correct this shape; a different loop (not a re-walk) is needed. C02 stays a shape problem per 80 (fused, swap will not cure).
