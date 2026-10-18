@@ -18,6 +18,9 @@ GOAL: MATCH AUTHOR'S INPUT.
 - [ ] Verdict on prediction + contribution split (dots fix vs guard fix)
 - [ ] Implementation recipe if confirmed (file + line + guard condition)
 
+## Lead note (2026-10-19 — method correction)
+User ruling: once a deletion is known-good (103's row), all later arms run on the cleaned bag ONLY — testing on the full bag with a known-bad row still in it confounds the comparison. The FULL-bag arms above are therefore struck as evidence; the valid verdict rests on EDITED-UNGUARDED vs EDITED-GUARDED vs DENSIFY (all row-deleted): guard still dies at dot 44, densify still 5.54 behind 4.68. Verdict unchanged, evidence base narrowed. Rule for all future tickets: cleaned bag is the baseline; never re-test on a known-contaminated input.
+
 ## Comments (worker, 2026-10-18 — DENSIFY prediction, registered BEFORE running)
 
 **Scope addition from lead: third arm DENSIFY (denser-dots vs guard head-to-head).**
