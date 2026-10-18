@@ -1690,6 +1690,18 @@ the near-free swap cure, ticket 81, is released.
 Weight: six end-to-end runs, controls green, render
 eye-checked.
 
+## 2026-10-18 — pota-repro 81: the swap cure seats a whole pot
+
+Exchanging the slots back seats all six pieces of the
+smallest pot, three runs in a row — the first full pot
+beyond the control. One piece needed its loop densified
+past the fifty-point loading gate. Every swapped rim now
+rides the author's outline under a millimetre. Rolling the
+same cure across the remaining swapped pots is next.
+
+Weight: six end-to-end runs, all controls green, renders
+eye-checked.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
