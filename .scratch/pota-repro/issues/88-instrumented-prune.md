@@ -1,0 +1,36 @@
+# 88: Instrumented PairwisePruning — log per-edge score/area/axis to name the firing sub-gate (S24base vs 85B)
+
+**What to build:** an INSTRUMENTED-ONLY copy of the matcher (vehicle cure-potA @ bffefb6 stays pinned and untouched — copy the source to NEW scratch, instrument there, build there) that logs per-candidate (score, OverlapCheck_3d area, axis_angle, overlap_ boolean, SamePart basket id, prune decision + which sub-gate fired) from PairwisePruning (asm/class/feature_matching.cpp:1615 print site asm/main.cpp:218), run once each on S24base and 85B C inputs, and names the sub-gate that kills the true 02-04 edge on 85B but spares it on S24base.
+
+**Answers:** E1
+
+**Blocked by:** 87 (FLIP-BOUND at +0.5mm: flip in (0,0.5mm], third loop ruled out by construction; recommends 86 §4(ii)) + 86 (PARTIAL: three literal sub-gates — axis 0.436 / basket-score 1.5 + area-50 overlap / MergeSimPair 0.175,20; binary logs print totals only) + 85 (vehicle pattern, controls, bit-identical x3 discipline).
+
+**Status:** landed-GATE-NAMED (lead 2026-10-18 — fidelity verified, sacct-verified, vehicle untouched)
+
+**Starting position:** Read 86 Comments §2 (sub-gate code sites + thresholds) and 87 Comments §2 (E2E table, prune totals to reproduce) before touching anything. Bundles under /data/gpfs/projects/punim2657/pota85_repro/ are READ-ONLY (md5-guarded). New scratch /data/gpfs/projects/punim2657/pota88_repro/ for the instrumented source copy, build, logs. Fidelity gate FIRST: the instrumented binary must reproduce the known prune totals (S24base 17/212, 85B 27/267) exactly before its per-edge logs mean anything — if it does not, stop and report, do not interpret.
+
+**Rules:** land with the firing sub-gate NAMED (which of axis / basket-score / overlap-area / merge, with the true-edge numbers on both bundles) + per-edge log excerpts for the true 02-04 candidate + fix recipe the gate implies (threshold / term / valley reshaping per 74 §4); single diagnostic runs only, no E2E campaign (the flip is already bound x3); instrumented binary NEVER presented as a vehicle — vehicle @ bffefb6 untouched, tree-clean check before and after; zero ORIG points; no commits; sacct-direct polling if jobs are cut (never scripts/slurm_poll.sh); Comments-only ticket edits (append ## Comments worker-date + flip Status to results-in; checkboxes stay with lead); renders only if a picture carries the mechanism.
+
+- [ ] Instrumented copy builds; fidelity gate (17/27 totals reproduced)
+- [ ] Firing sub-gate named with true-edge numbers both bundles
+- [ ] Fix recipe the gate implies
+- [ ] Job IDs + sacct states
+
+## Comments (lead landing, 2026-10-18)
+
+Lead review: sacct lead-verified 33369238 + 33369811 COMPLETED 0:0. Fidelity gate passes (17/212 + 27/267 reproduced exactly, E2E both arms reproduced) — per-edge logs trustworthy. Verdict GATE-NAMED stands with one REVISION to the 86 hypothesis: the firing gate is the AXIS veto (axis 0.29 S24 → 1.17-1.42 crest across <=0.5mm), not the overlap kill — axis runs first and shadows overlap (the trio would also die by overlap at 165-170 >> 50). Even the passing S24 bundle loses 3/4 full-support siblings to axis (0.53-0.62) — the gate is razor-thin everywhere. Fix recipe = relax axis veto to gross-misalignment guard AND soften area-50 to a penalty; both needed. C rim work stays closed; next is a matcher-source change per user decision.
+
+## Comments (worker, 2026-10-18 -- COMMIT NOTHING; vehicle untouched; lead to commit)
+
+Verdict: GATE-NAMED -- the firing sub-gate is the PairwisePruning AXIS veto (axis_angle > 0.436 rad, feature_matching.cpp:1715 loop), shadowing a would-fire OVERLAP kill (area >> 50). Basket-score (1.5) never fires on the true basket; MergeSimPair only folds duplicates. COMMIT NOTHING; lead to commit.
+
+0. Build (NEW scratch /data/gpfs/projects/punim2657/pota88_repro/; vehicle P39/asm @ bffefb6 untouched, tree-clean verified before/after; bundles read-only, md5-guarded per job; zero ORIG points). asm_inst = vehicle + 9 additive fprintf probe lines in feature_matching.cpp only (P88CAND/XF per-candidate score/area/axis/overlap/inlier/seg/R/t; P88KILL-AXIS / P88KILL-BASKET-SCORE / P88KILL-OVERLAP / P88SURV with basket id + lowest; P88KILL-MERGE) -- diff vs vehicle 9 added / 0 removed; zero logic change. Two instrumented runs, one per bundle (STEPS=4, POT_C overlay, k=5/b=3 shim, LINK-SHIM-OK + LINK-FORKMAIN-ABSENT-OK + DRIVER-SHIM-OK per arm). No E2E campaign. Run script pota88_repro/run_pota88_inst.sbatch.
+
+1. Fidelity gate PASSES x2 (bit-stable across both runs). S24base: Total number 212 / pruned 17 + E2E 2/3 + 1/3 (passing reference reproduced). 85B: Total number 267 / pruned 27 + E2E 0/3 + 0/3 (flip reproduced). So per-edge logs are trustworthy.
+
+2. True-edge numbers (shard pair 2-4 = C02-C04, basket 2 both bundles; GT adjacency confirmed in bundle simple_graph). S24 TRUE (survives, seats): score 0.3280, area 2.00, axis 0.2862, overlap 0, inlier 102, lowest 0.3280 -> P88SURV -> in final 17. Its 3 full-support siblings (inlier 102/106, scores 0.3476/0.2671/0.2580) die by AXIS (0.5254/0.6166/0.6017) -- the axis gate is razor-thin even on the passing bundle. 85B TRUE-SEAT family (best fits, scores 0.2695/0.2846/0.3089 ~= S24 true 0.3280; mutual-R-consistent; overlap footprint area 165-170 = the 43.7 percent coincidence; overlap 1): axis 1.4174/1.4249/1.3649/1.1716 -> ALL P88KILL-AXIS in basket 2. Four more true-footprint candidates die by OVERLAP (1.2607/441.01, 0.8661/65.07, 0.6720/58.39, 0.4791/60.30, areas 58-441 >> 50). Basket 2 lowest 0.3330 < 1.5, so basket-score never fires; the surviving 0.3330/area-0.00/inlier-34 candidates are low-support partial matches (false -- E2E 0/3 with them present). No 85B 2-4 candidate has inlier >= 60 (max 40) vs S24 102/106. Code order matters: the axis loop runs BEFORE the overlap loop, so AXIS shadows OVERLAP -- the trio would also have died by overlap (165-170 >> 50) had axis passed.
+
+3. Fix recipe (matcher-side, no third loop -- consistent with 87): the binding constraint is the axis veto 0.436 on the true alignment (axis disagreement 0.29 -> 1.17-1.42 across a <=0.5mm face shift). (i) Relax the pre-graph axis veto to a gross-misalignment guard (e.g. >= 1.5 rad) or demote it to a soft penalty, letting CheckGraph/beam arbitrate -- it currently fires before the overlap gate and kills best-fit true edges. (ii) Convert the OverlapCheck area-50 hard kill into a soft score penalty (per 74 section-4 valley reshaping): the true edge has the basket's best ICP fit and should win its basket DESPITE its coincidence footprint, not die by it. (i) first -- overlap alone would still kill the trio (165-170 >> 50), so both changes are needed; basket-score 1.5 and MergeSimPair need no change.
+
+4. Jobs + logs (lead-verifiable): 33369238 (probe-only run, COMPLETED 0:0) + 33369811 (XF run, COMPLETED 0:0), sacct State COMPLETED / ExitCode 0:0 for job + batch + extern both. Run dirs /data/gpfs/projects/punim2657/sfs_main/pota88_run_33369238 (fidelity) and .../pota88_run_33369811 (verdict: binary logs with P88 lines). Analysis: pota88_repro/P88_true_edge_excerpts.txt + P88_basket2_notes.txt, mirrored at laptop artifacts/pota88/. Spartan leftovers: pota88_repro/ (asm_inst, run script, excerpts, 2 slurm out files) only. No other-ticket paths touched; nothing committed.
