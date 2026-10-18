@@ -6,7 +6,7 @@
 
 **Blocked by:** 87 (FLIP-BOUND at +0.5mm: flip in (0,0.5mm], third loop ruled out by construction; recommends 86 §4(ii)) + 86 (PARTIAL: three literal sub-gates — axis 0.436 / basket-score 1.5 + area-50 overlap / MergeSimPair 0.175,20; binary logs print totals only) + 85 (vehicle pattern, controls, bit-identical x3 discipline).
 
-**Status:** landed-GATE-NAMED (lead 2026-10-18 — fidelity verified, sacct-verified, vehicle untouched)
+**Status:** landed-GATE-NAMED-MECHANISM-ONLY (lead 2026-10-18 — user decision: matcher stays untouched; fix recipe rejected, mechanism kept as input-side criteria)
 
 **Starting position:** Read 86 Comments §2 (sub-gate code sites + thresholds) and 87 Comments §2 (E2E table, prune totals to reproduce) before touching anything. Bundles under /data/gpfs/projects/punim2657/pota85_repro/ are READ-ONLY (md5-guarded). New scratch /data/gpfs/projects/punim2657/pota88_repro/ for the instrumented source copy, build, logs. Fidelity gate FIRST: the instrumented binary must reproduce the known prune totals (S24base 17/212, 85B 27/267) exactly before its per-edge logs mean anything — if it does not, stop and report, do not interpret.
 
@@ -16,6 +16,10 @@
 - [ ] Firing sub-gate named with true-edge numbers both bundles
 - [ ] Fix recipe the gate implies
 - [ ] Job IDs + sacct states
+
+## Comments (lead correction, 2026-10-18 — user decision)
+
+User: the solution is NOT to change the SfS++ matcher at all — match our preprocessing to the author's input, which is proven to seat. So: 88's MECHANISM stands (axis veto fires first at 0.436, overlap shadows; both are facts about the author's regime), but 88 §3's FIX RECIPE (relax veto / soften area-50) is REJECTED — no matcher-source ticket will be cut. Redirect: the axis + coincidence numbers become PREPROCESSING-SIDE acceptance criteria — our loops must keep true-edge axis disagreement and coincidence footprint inside the author's regime (S24base axis 0.2862 passes; crest 1.17-1.42 does not). Next C work, if any, is input-side: what in our rim extraction puts the true edge out-of-regime, checked against the author's own C inputs as evidence-only rulers.
 
 ## Comments (lead landing, 2026-10-18)
 
