@@ -2,7 +2,7 @@
 
 Goal: MATCH AUTHOR'S INPUT — our preprocessing must reproduce the author's perfect-score input (Pot A: gate 15/15 + E2E 8/8+15/15 at k=5/b=3, Table V). Tracked in spec.md + intent/E1-do-our-breaklines-let-sfs-find-joins.md. Read those two files first.
 
-Standing user rule (2026-10-18): ONE ticket at a time — every ticket stops and asks for the user's call before the next is cut. The goal line GOAL: MATCH AUTHOR'S INPUT heads every ticket brief. No auto-chaining tickets.
+Standing user rule (2026-10-18): ONE fix per ticket, but DON'T stop between tickets — keep chaining toward the goal autonomously. The goal line GOAL: MATCH AUTHOR'S INPUT heads every ticket brief. Stop for the user only when genuinely blocked or a decision changes scope/cost/risk.
 
 ## Settled (thesis lines, all committed + pushed to origin main)
 
