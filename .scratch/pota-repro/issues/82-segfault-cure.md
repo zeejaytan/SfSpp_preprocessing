@@ -19,3 +19,6 @@ LANDED as crash-cure + honest partial. Crash cause BOUND (not rim size — long 
 - [ ] Crash-piece bisection + trigger bound
 - [ ] Cure (pad/merge/refuse) + E2E rerun x3 or measured why-not
 - [ ] Job IDs + sacct states
+
+## Decision (lead, 2026-10-18 — user chose option 1)
+Accepted as crash-cure + honest partial, move on. v1 (format-restore) runs clean 0/6+0/2 x3; v2 (merge-cure) seats 0-2/24 below E_fresh best 7/31 with residual doubling honestly reported. No further merge round: E is 29/31 swapped per the 80 census, so E's real cure is the swap roll-out (83+), then guarded E re-runs on the swapped base. v1/v2 stand as the crash-cure record.
