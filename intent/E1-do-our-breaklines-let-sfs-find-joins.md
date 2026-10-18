@@ -1699,6 +1699,17 @@ past the fifty-point loading gate. Every swapped rim now
 rides the author's outline under a millimetre. Rolling the
 same cure across the remaining swapped pots is next.
 
+## 2026-10-18 — pota-repro 82: the crash was a file format, and the merge feeds the beam
+
+The guarded bundle crashed on launch because every
+outline file was saved headerless — the reader loaded
+nothing and the scorer fell over on empty data. Not rim
+size: long rims failed identically. Restored to proper
+format, the crash is gone six runs in a row; merging the
+fragments feeds the beam seventeen thousand hypotheses
+and seats a couple of pieces. Short single rims alone
+starve it. No piece had to be refused.
+
 Weight: six end-to-end runs, all controls green, renders
 eye-checked.
 
