@@ -6,7 +6,7 @@ GOAL: KNOW WHETHER THE REFERENCE CURE SURVIVES ITS MECHANISM BEING WRONG.
 
 **Blocked by:** 170 (worktree + binaries; sequence AFTER it lands -- same relay worktree, no parallel builds), 153/155 (veto-cured Pot A 8/8 now unexplained under user ruling 2026-10-20: veto dropped for all, mechanism wrong), 169 (snap med 2.19 on-rim; veto destroys vs moves).
 
-**Status:** ready-for-agent -- DO NOT dispatch before 170 lands.
+**Status:** ready-for-agent (170 landed 2026-10-20 -- unblocked).
 
 **User ruling (2026-10-20):** a logically wrong mechanism cannot be kept because it produces the right result on one example. Re-gate Pot A veto-free and watch the 8/8 together.
 
