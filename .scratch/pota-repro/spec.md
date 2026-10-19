@@ -124,6 +124,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 91 | Swap cure roll-out 4 (Pot I): pure SXC on own census 28 + 2 controls (ticket-listed 22/30 corrected), 13 forest, I28/29/30 no-GT | landed-STOPPED-AT-DENSIFY (login-node, 0 jobs): gate 27/27 GREEN 0.53-0.83mm; min new-Bl_0 over GT-scored = I27 n=49 <= 50 -> no E2E per rule; renders eye-checked by worker; successor 94 LANDED below | issues/91-swap-cure-i.md |
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
+| 157 | C01 mesh side-by-side (dispatched): author vs vetoed trace on Pot C mesh | running (0 jobs) | issues/157-c01-mesh-sbs.md |
 | 156 | E2E Pot C with veto-cured C01 (dispatched): beat 2/3+1/3, C01 at GT | running (0 jobs) | issues/156-e2e-potC-veto.md |
 | 155 | Port RELAYED: veto proven on built binary (P02_0 97 vs 743, P03_0 80 vs 502, P04_0 103 vs 259, P05_0 97 vs 343; veto drops 0-227/rim); Pot C E2E still open | done (6 jobs) | issues/155-port-cure-to-production-copy.md |
 | 154 | Cure shipped to WRONG copy (root; harmless, non-production): production builds the sub-copy — superseded by 155 | done (Spartan worktree ready, 0 jobs) | issues/154-apply-build-reextract.md |
