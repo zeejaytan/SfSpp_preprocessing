@@ -125,7 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 153 | Revive dead code (dispatched): apply 150 patch to prep sources, rebuild, prove outer blocked | running (login-node, 0 jobs) | issues/153-revive-dead-code.md |
-| 152 | Small spans + densify (dispatched): diagnose (169,171)/(179,181), extend LIP-STRIP, re-walk | running (login-node, 0 jobs) | issues/152-small-spans-densify.md |
+| 152 | Small spans: NEITHER starved, 14 dots closed both, uncovered 0, gate 1.25; weave still policy (23/21) | done (login-node, 0 jobs) | issues/152-small-spans-densify.md |
 | 151 | True dense extraction: mesh NOT empty, 31 lip-strip dots closed (102,120), uncovered 25->6, gate 1.27; weave now walker-policy (17/18) not density | done (login-node, 0 jobs) | issues/151-dense-extraction-98-125.md |
 | 150 | Source elimination: TAP CLOSABLE at cloud level (outer cut 98.9%, inner 100%); patch = face gate at :949 + un-kill :1032 ROR; GridX secondary named | done (login-node, 0 jobs) | issues/150-source-elimination-prep.md |
 | 149 | Filtered thin-line walk: gate 1.31, honest 25 at predicted spans, weave down 3x (13/15) but parity bar missed — gap-driven, extraction still the fix | done (login-node, 0 jobs) | issues/149-filtered-thinline-walk.md |
