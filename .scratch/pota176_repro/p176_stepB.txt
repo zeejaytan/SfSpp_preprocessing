@@ -1,0 +1,17 @@
+code_r S0 = 6.4657 (expect 6.4657)
+estimator fires=364 (expect 364)
+estimator bit-exact maxdev=0.000000 (expect 0)
+loops=[274, 247, 97, 18] (expect [274,247,97,18])
+curation: NEAR=86 MID=187 FAR=91 drop=73 keep=291 (expect 86/187/91?/73/291)
+unclustered n=2343
+uncl-snap disp: med=2.12 n>1mm=209/291 max=3.6
+mesh-snap disp: med=0.77 n>1mm=86/291 max=1.8 agree=0/291
+ORIG-guided strip n=612 (expect 612)
+mesh-pool ORIG-free cand n=2862
+candM dist-to-ORIG: min=0.08 med=5.39 max=61.25 frac<2.5=0.289
+mesh-pool ORIG-guided strip n=839 overlap-with-612pts: need point-compare
+stripM->strip612 maxdev=3.6994 n>1mm=267 (pool-equivalence)
+th=0.3 outer=12529 inner=9180 fold=1405 (target 11769/8692/2653)
+th=0.4 outer=12210 inner=8954 fold=1950 (target 11769/8692/2653)
+th=0.5 outer=11769 inner=8692 fold=2653 (target 11769/8692/2653)
+th=0.6 outer=11231 inner=8322 fold=3561 (target 11769/8692/2653)

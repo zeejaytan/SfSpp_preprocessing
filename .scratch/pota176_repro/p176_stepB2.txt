@@ -1,0 +1,21 @@
+rebuilt BAG n=753 (expect 753)
+recorded BAG n=753 maxdev=0.000000
+nearest-tri dist: med=0.000104 max=0.000485 (expect 0.000/0.000)
+bag wall origin: inner=212 fold=264 outer=277 (175: 212/264/277)
+TRUE n=476 (expect 476) OUTER n=277 (expect 277)
+TRUE seeds=[0, 51, 135, 203, 367, 67]
+TRUE seed0: seqlen=448/476 ORIGcov=211 med=0.9564 <2mm=90.8% gaps5=6 maxstep=11.6 over25=0 unc=0 flips=52 selfint=15 t90=128 BAND=10.8 HALT 12.03>10.82
+TRUE seed1: seqlen=428/476 ORIGcov=211 med=0.9549 <2mm=92.1% gaps5=15 maxstep=14.9 over25=0 unc=0 flips=58 selfint=78 t90=151 BAND=5.1 HALT 15.17>5.07
+TRUE seed2: seqlen=439/476 ORIGcov=211 med=0.9492 <2mm=92.0% gaps5=3 maxstep=14.8 over25=0 unc=0 flips=49 selfint=13 t90=124 BAND=6.9 HALT 22.95>6.92
+TRUE seed3: seqlen=415/476 ORIGcov=210 med=0.9677 <2mm=91.6% gaps5=14 maxstep=14.0 over25=0 unc=0 flips=57 selfint=87 t90=159 BAND=6.9 HALT 18.61>6.91
+TRUE seed4: seqlen=421/476 ORIGcov=210 med=0.9677 <2mm=91.9% gaps5=17 maxstep=14.0 over25=0 unc=0 flips=57 selfint=88 t90=167 BAND=4.7 HALT 6.27>4.67
+TRUE seed5: seqlen=490/476 ORIGcov=211 med=0.9849 <2mm=89.2% gaps5=43 maxstep=35.0 over25=2 unc=0 flips=73 selfint=156 t90=163 BAND=35.0 
+TRUE BEST seed2: ORIGcov=211 med=0.9492 <2mm=92.0% flips=49 selfint=13
+OUTER seeds=[0, 216, 62, 36, 90, 129]
+OUTER seed0: seqlen=90/277 ORIGcov=36 med=2.3686 <2mm=36.7% gaps5=10 maxstep=7.7 over25=0 unc=135 flips=0 selfint=0 t90=10 BAND=7.7 HALT 9.18>7.66
+OUTER seed1: seqlen=202/277 ORIGcov=78 med=2.1535 <2mm=42.6% gaps5=33 maxstep=25.1 over25=1 unc=47 flips=0 selfint=17 t90=44 BAND=12.7 HALT 55.98>12.72
+OUTER seed2: seqlen=70/277 ORIGcov=30 med=2.2843 <2mm=40.0% gaps5=8 maxstep=21.1 over25=0 unc=159 flips=0 selfint=3 t90=6 BAND=21.1 HALT 22.99>21.13
+OUTER seed3: seqlen=138/277 ORIGcov=50 med=2.3484 <2mm=37.7% gaps5=23 maxstep=19.4 over25=0 unc=106 flips=0 selfint=11 t90=30 BAND=9.2 HALT 10.66>9.16
+OUTER seed4: seqlen=224/277 ORIGcov=75 med=2.4529 <2mm=36.2% gaps5=34 maxstep=25.1 over25=1 unc=50 flips=0 selfint=15 t90=44 BAND=12.7 HALT 55.98>12.72
+OUTER seed5: seqlen=127/277 ORIGcov=47 med=2.3470 <2mm=37.8% gaps5=20 maxstep=21.3 over25=0 unc=111 flips=0 selfint=9 t90=19 BAND=19.6 HALT 34.85>19.62
+OUTER BEST seed1: ORIGcov=78 med=2.1535 <2mm=42.6% flips=0 selfint=17

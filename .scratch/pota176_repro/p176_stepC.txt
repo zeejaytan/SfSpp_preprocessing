@@ -1,0 +1,87 @@
+C02 mesh nV=25358 nF=50756 loops=[]
+C02 S0: n=8171 code_r=6.7694 fires=208
+  fires vs Bl_0: NEAR=201 MID=7 FAR=0 (no loops->drop 0, keep 208)
+  mesh-snap disp: med=0.41 n>1mm=0/208 max=1.0
+  strip(face-ref<=2.5 & off-sheet>=1): n=1410
+  BAG n=1604 (snap 208 + strip 1410 - dupes)
+  ORIG-free cand n=3517; gap stations(>=2mm from sheet)=7828
+  gap->cand: med=12.27 max=45.60 frac<2=0.167
+  seed0: seqlen=228/1604 cov=37 med=1.0182 <2mm=89.5% gaps5=0 maxstep=4.4 over25=0 unc=180 flips=7 selfint=22 crossRef_cov=0 HALT 10.81>3.10
+  seed1: seqlen=159/1604 cov=23 med=1.1401 <2mm=83.6% gaps5=0 maxstep=4.8 over25=0 unc=195 flips=8 selfint=15 crossRef_cov=0 HALT 8.64>4.75
+  seed2: seqlen=347/1604 cov=69 med=1.0925 <2mm=87.0% gaps5=0 maxstep=3.9 over25=0 unc=148 flips=13 selfint=21 crossRef_cov=2 HALT 4.03>3.93
+  seed3: seqlen=302/1604 cov=46 med=1.1357 <2mm=87.7% gaps5=0 maxstep=3.6 over25=0 unc=171 flips=18 selfint=17 crossRef_cov=0 HALT 6.34>3.12
+  seed4: seqlen=235/1604 cov=31 med=0.9802 <2mm=88.5% gaps5=0 maxstep=4.2 over25=0 unc=187 flips=24 selfint=57 crossRef_cov=0 HALT 7.54>4.03
+  seed5: seqlen=209/1604 cov=41 med=1.1771 <2mm=80.9% gaps5=0 maxstep=3.9 over25=0 unc=176 flips=9 selfint=15 crossRef_cov=3 HALT 4.03>3.93
+C02 FACE0 BEST seed2: seqlen=347/1604 ORIGcov=69/221 med=1.0925 <2mm=87.0% gaps5=0 maxstep=3.9 unc=148 flips=13 selfint=21
+C02 S1: n=9019 code_r=7.1134 fires=255
+  fires vs Bl_1: NEAR=246 MID=9 FAR=0 (no loops->drop 0, keep 255)
+  mesh-snap disp: med=0.42 n>1mm=2/255 max=1.1
+  strip(face-ref<=2.5 & off-sheet>=1): n=2059
+  BAG n=2290 (snap 255 + strip 2059 - dupes)
+  ORIG-free cand n=4498; gap stations(>=2mm from sheet)=8659
+  gap->cand: med=9.70 max=44.12 frac<2=0.205
+  seed0: seqlen=759/2290 cov=120 med=1.0606 <2mm=88.1% gaps5=0 maxstep=4.5 over25=0 unc=190 flips=21 selfint=294 crossRef_cov=0 HALT 7.97>3.21
+  seed1: seqlen=85/2290 cov=14 med=1.0594 <2mm=85.9% gaps5=0 maxstep=3.1 over25=0 unc=296 flips=6 selfint=33 crossRef_cov=0 HALT 3.28>3.14
+  seed2: seqlen=384/2290 cov=68 med=1.0348 <2mm=89.3% gaps5=0 maxstep=4.4 over25=0 unc=242 flips=3 selfint=71 crossRef_cov=0 HALT 7.55>4.36
+  seed3: seqlen=181/2290 cov=26 med=1.2473 <2mm=80.1% gaps5=0 maxstep=4.1 over25=0 unc=283 flips=14 selfint=69 crossRef_cov=2 HALT 4.36>4.10
+  seed4: seqlen=213/2290 cov=29 med=1.1279 <2mm=85.9% gaps5=0 maxstep=4.8 over25=0 unc=280 flips=10 selfint=65 crossRef_cov=0 HALT 6.41>4.79
+  seed5: seqlen=304/2290 cov=36 med=1.1801 <2mm=87.2% gaps5=0 maxstep=3.9 over25=0 unc=273 flips=22 selfint=232 crossRef_cov=0 HALT 7.03>3.93
+C02 FACE1 BEST seed0: seqlen=759/2290 ORIGcov=120/313 med=1.0606 <2mm=88.1% gaps5=0 maxstep=4.5 unc=190 flips=21 selfint=294
+C03 mesh nV=15526 nF=31056 loops=[]
+C03 S0: n=5868 code_r=7.0363 fires=195
+  fires vs Bl_0: NEAR=133 MID=59 FAR=3 (no loops->drop 0, keep 195)
+  mesh-snap disp: med=0.47 n>1mm=1/195 max=1.0
+  strip(face-ref<=2.5 & off-sheet>=1): n=960
+  BAG n=1102 (snap 195 + strip 960 - dupes)
+  ORIG-free cand n=2308; gap stations(>=2mm from sheet)=5517
+  gap->cand: med=7.20 max=31.97 frac<2=0.194
+  seed0: seqlen=172/1102 cov=37 med=0.9180 <2mm=90.7% gaps5=3 maxstep=6.7 over25=0 unc=151 flips=9 selfint=21 crossRef_cov=0 HALT 14.72>6.61
+  seed1: seqlen=224/1102 cov=39 med=0.9827 <2mm=87.1% gaps5=1 maxstep=5.2 over25=0 unc=148 flips=17 selfint=31 crossRef_cov=0 HALT 4.52>3.22
+  seed2: seqlen=255/1102 cov=50 med=1.1562 <2mm=85.5% gaps5=2 maxstep=5.9 over25=0 unc=138 flips=21 selfint=53 crossRef_cov=0 HALT 6.36>4.30
+  seed3: seqlen=155/1102 cov=31 med=1.1237 <2mm=85.2% gaps5=0 maxstep=4.5 over25=0 unc=157 flips=8 selfint=16 crossRef_cov=0 HALT 4.95>4.51
+  seed4: seqlen=512/1102 cov=88 med=1.0216 <2mm=85.4% gaps5=5 maxstep=8.3 over25=0 unc=99 flips=48 selfint=130 crossRef_cov=0 HALT 18.40>8.26
+  seed5: seqlen=229/1102 cov=43 med=1.0024 <2mm=87.3% gaps5=3 maxstep=5.7 over25=0 unc=144 flips=14 selfint=47 crossRef_cov=0 HALT 19.15>4.12
+C03 FACE0 BEST seed4: seqlen=512/1102 ORIGcov=88/191 med=1.0216 <2mm=85.4% gaps5=5 maxstep=8.3 unc=99 flips=48 selfint=130
+C03 S1: n=2935 code_r=7.2726 fires=142
+  fires vs Bl_1: NEAR=116 MID=26 FAR=0 (no loops->drop 0, keep 142)
+  mesh-snap disp: med=0.36 n>1mm=0/142 max=0.9
+  strip(face-ref<=2.5 & off-sheet>=1): n=395
+  BAG n=512 (snap 142 + strip 395 - dupes)
+  ORIG-free cand n=1173; gap stations(>=2mm from sheet)=2637
+  gap->cand: med=6.68 max=26.56 frac<2=0.220
+  seed0: seqlen=260/512 cov=71 med=1.2640 <2mm=81.5% gaps5=2 maxstep=6.3 over25=0 unc=45 flips=20 selfint=13 crossRef_cov=0 HALT 10.77>6.25
+  seed1: seqlen=331/512 cov=86 med=1.2429 <2mm=79.5% gaps5=3 maxstep=7.3 over25=0 unc=29 flips=21 selfint=35 crossRef_cov=0 HALT 9.98>2.32
+  seed2: seqlen=414/512 cov=97 med=1.2841 <2mm=79.5% gaps5=7 maxstep=7.4 over25=0 unc=18 flips=32 selfint=53 crossRef_cov=0 HALT 20.25>4.05
+  seed3: seqlen=427/512 cov=114 med=1.2429 <2mm=80.3% gaps5=3 maxstep=6.3 over25=0 unc=2 flips=30 selfint=21 crossRef_cov=0 HALT 10.77>6.25
+  seed4: seqlen=248/512 cov=52 med=1.4279 <2mm=73.0% gaps5=7 maxstep=7.9 over25=0 unc=63 flips=18 selfint=27 crossRef_cov=0 HALT 34.61>7.91
+  seed5: seqlen=381/512 cov=103 med=1.3574 <2mm=76.9% gaps5=3 maxstep=10.9 over25=0 unc=12 flips=28 selfint=44 crossRef_cov=0 HALT 9.98>4.28
+C03 FACE1 BEST seed3: seqlen=427/512 ORIGcov=114/120 med=1.2429 <2mm=80.3% gaps5=3 maxstep=6.3 unc=2 flips=30 selfint=21
+C04 mesh nV=11507 nF=23010 loops=[]
+C04 S0: n=6730 code_r=4.5806 fires=195
+  fires vs Bl_0: NEAR=195 MID=0 FAR=0 (no loops->drop 0, keep 195)
+  mesh-snap disp: med=0.39 n>1mm=1/195 max=1.0
+  strip(face-ref<=2.5 & off-sheet>=1): n=423
+  BAG n=584 (snap 195 + strip 423 - dupes)
+  ORIG-free cand n=1717; gap stations(>=2mm from sheet)=6118
+  gap->cand: med=10.39 max=29.58 frac<2=0.005
+  seed0: seqlen=512/584 cov=131 med=1.0317 <2mm=85.5% gaps5=1 maxstep=5.2 over25=0 unc=0 flips=12 selfint=29 crossRef_cov=15 HALT 6.59>5.20
+  seed1: seqlen=258/584 cov=59 med=0.9955 <2mm=86.0% gaps5=4 maxstep=5.7 over25=0 unc=69 flips=5 selfint=66 crossRef_cov=0 HALT 22.67>3.84
+  seed2: seqlen=515/584 cov=130 med=1.0106 <2mm=85.8% gaps5=4 maxstep=8.0 over25=0 unc=0 flips=12 selfint=44 crossRef_cov=15 HALT 7.01>7.01
+  seed3: seqlen=501/584 cov=130 med=1.0119 <2mm=86.0% gaps5=1 maxstep=5.2 over25=0 unc=0 flips=12 selfint=30 crossRef_cov=15 HALT 7.01>5.20
+  seed4: seqlen=536/584 cov=131 med=1.0317 <2mm=85.8% gaps5=6 maxstep=8.8 over25=0 unc=0 flips=14 selfint=53 crossRef_cov=15 HALT 10.22>8.78
+  seed5: seqlen=302/584 cov=67 med=1.0305 <2mm=85.4% gaps5=5 maxstep=5.7 over25=0 unc=60 flips=6 selfint=70 crossRef_cov=0 HALT 24.89>5.23
+C04 FACE0 BEST seed0: seqlen=512/584 ORIGcov=131/131 med=1.0317 <2mm=85.5% gaps5=1 maxstep=5.2 unc=0 flips=12 selfint=29
+C04 S1: n=8459 code_r=4.4722 fires=238
+  fires vs Bl_1: NEAR=238 MID=0 FAR=0 (no loops->drop 0, keep 238)
+  mesh-snap disp: med=0.46 n>1mm=1/238 max=1.2
+  strip(face-ref<=2.5 & off-sheet>=1): n=375
+  BAG n=557 (snap 238 + strip 375 - dupes)
+  ORIG-free cand n=1788; gap stations(>=2mm from sheet)=7608
+  gap->cand: med=10.70 max=29.48 frac<2=0.003
+  seed0: seqlen=213/557 cov=66 med=1.2094 <2mm=84.5% gaps5=2 maxstep=7.1 over25=0 unc=76 flips=38 selfint=29 crossRef_cov=0 HALT 6.76>5.05
+  seed1: seqlen=381/557 cov=101 med=1.1309 <2mm=84.5% gaps5=12 maxstep=8.9 over25=0 unc=41 flips=58 selfint=146 crossRef_cov=13 HALT 10.26>6.12
+  seed2: seqlen=283/557 cov=81 med=1.2017 <2mm=85.9% gaps5=2 maxstep=6.4 over25=0 unc=60 flips=48 selfint=56 crossRef_cov=0 HALT 16.45>3.93
+  seed3: seqlen=396/557 cov=116 med=1.1487 <2mm=86.9% gaps5=2 maxstep=6.4 over25=0 unc=25 flips=59 selfint=65 crossRef_cov=1 HALT 16.45>3.93
+  seed4: seqlen=181/557 cov=45 med=1.1566 <2mm=89.0% gaps5=2 maxstep=6.4 over25=0 unc=97 flips=31 selfint=50 crossRef_cov=0 HALT 16.45>3.93
+  seed5: seqlen=228/557 cov=63 med=1.1834 <2mm=87.7% gaps5=2 maxstep=6.4 over25=0 unc=78 flips=39 selfint=52 crossRef_cov=0 HALT 16.45>3.93
+C04 FACE1 BEST seed3: seqlen=396/557 ORIGcov=116/146 med=1.1487 <2mm=86.9% gaps5=2 maxstep=6.4 unc=25 flips=59 selfint=65

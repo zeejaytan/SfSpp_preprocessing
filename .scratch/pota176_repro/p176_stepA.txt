@@ -1,0 +1,36 @@
+C01 mesh: 11875 v 23114 f
+C01 boundary edges=636
+C01 loops=[]
+C01 S0 n=11165
+C01 S0 vs ORIG Bl_0(n=211): min=0.72 med=2.97 max=5.20 <2mm=30/211 unc5=2
+C01 S0 vs ORIG Bl_1(n=230): min=0.23 med=2.62 max=4.82 <2mm=79/230 unc5=0
+C01 S1 n=1619
+C01 S1 vs ORIG Bl_0(n=211): min=31.37 med=52.85 max=80.31 <2mm=0/211 unc5=211
+C01 S1 vs ORIG Bl_1(n=230): min=32.57 med=54.88 max=83.30 <2mm=0/230 unc5=230
+C02 mesh: 25358 v 50756 f
+C02 boundary edges=0
+C02 loops=[]
+C02 S0 n=8171
+C02 S0 vs ORIG Bl_0(n=221): min=0.09 med=0.98 max=2.47 <2mm=206/221 unc5=0
+C02 S0 vs ORIG Bl_1(n=313): min=3.81 med=6.12 max=8.83 <2mm=0/313 unc5=285
+C02 S1 n=9019
+C02 S1 vs ORIG Bl_0(n=221): min=3.47 med=6.03 max=15.10 <2mm=0/221 unc5=190
+C02 S1 vs ORIG Bl_1(n=313): min=0.11 med=1.22 max=7.26 <2mm=274/313 unc5=3
+C03 mesh: 15526 v 31056 f
+C03 boundary edges=0
+C03 loops=[]
+C03 S0 n=5868
+C03 S0 vs ORIG Bl_0(n=191): min=0.15 med=1.05 max=3.00 <2mm=163/191 unc5=0
+C03 S0 vs ORIG Bl_1(n=120): min=9.12 med=10.02 max=11.05 <2mm=0/120 unc5=120
+C03 S1 n=2935
+C03 S1 vs ORIG Bl_0(n=191): min=9.89 med=20.01 max=53.84 <2mm=0/191 unc5=191
+C03 S1 vs ORIG Bl_1(n=120): min=0.05 med=0.79 max=3.40 <2mm=107/120 unc5=0
+C04 mesh: 11507 v 23010 f
+C04 boundary edges=0
+C04 loops=[]
+C04 S0 n=6730
+C04 S0 vs ORIG Bl_0(n=131): min=0.05 med=0.71 max=1.50 <2mm=131/131 unc5=0
+C04 S0 vs ORIG Bl_1(n=146): min=2.77 med=5.56 max=7.60 <2mm=0/146 unc5=116
+C04 S1 n=8459
+C04 S1 vs ORIG Bl_0(n=131): min=2.10 med=5.36 max=6.20 <2mm=0/131 unc5=87
+C04 S1 vs ORIG Bl_1(n=146): min=0.04 med=0.58 max=1.66 <2mm=146/146 unc5=0

@@ -1,0 +1,108 @@
+C02 F0: fires=208
+  per-station reclaim: 221/221 stations<=2.5mm (max 1.8)
+  gap stations(ORIG>=2mm from sheet)=15; BAG n=412 (fires 208 + reclaim 221 - dupes)
+  FRESH bundle Bl_0 direct vs ORIG: cov=217/221 med=0.7782 <2mm=98.5%
+  FIRES seed0: seqlen=195/208 cov=203 med=0.8318 <2mm=96.4% gaps5=7 maxstep=8.2 unc=0 flips=2 selfint=0 xcov=0 HALT 16.50>7.80
+  FIRES seed1: seqlen=195/208 cov=203 med=0.8318 <2mm=96.4% gaps5=7 maxstep=18.4 unc=0 flips=2 selfint=1 xcov=0 HALT 16.50>7.80
+  FIRES seed2: seqlen=198/208 cov=203 med=0.8380 <2mm=96.5% gaps5=10 maxstep=30.1 unc=0 flips=2 selfint=6 xcov=0 HALT 22.71>7.80
+  FIRES seed3: seqlen=200/208 cov=203 med=0.8333 <2mm=96.5% gaps5=11 maxstep=27.1 unc=0 flips=2 selfint=0 xcov=0 HALT 41.36>7.80
+  FIRES seed4: seqlen=197/208 cov=203 med=0.8318 <2mm=96.4% gaps5=8 maxstep=8.2 unc=0 flips=2 selfint=0 xcov=0 HALT 11.94>7.80
+  FIRES seed5: seqlen=199/208 cov=203 med=0.8347 <2mm=96.5% gaps5=9 maxstep=20.6 unc=0 flips=2 selfint=0 xcov=0 HALT 20.57>7.80
+  FIRES BEST seed0: seqlen=195/208 cov=203/221 med=0.8318 <2mm=96.4% gaps5=7 maxstep=8.2 unc=0 flips=2 selfint=0
+  FULL seed0: seqlen=403/412 cov=221 med=0.6878 <2mm=98.5% gaps5=6 maxstep=14.8 unc=0 flips=10 selfint=17 xcov=0 HALT 19.29>9.67
+  FULL seed1: seqlen=403/412 cov=221 med=0.6878 <2mm=98.5% gaps5=6 maxstep=14.8 unc=0 flips=10 selfint=15 xcov=0 HALT 19.29>9.67
+  FULL seed2: seqlen=396/412 cov=220 med=0.6882 <2mm=99.0% gaps5=0 maxstep=3.5 unc=0 flips=13 selfint=6 xcov=0 HALT 5.07>3.54
+  FULL seed3: seqlen=394/412 cov=221 med=0.6783 <2mm=99.5% gaps5=1 maxstep=9.7 unc=0 flips=8 selfint=9 xcov=0 HALT 42.87>9.67
+  FULL seed4: seqlen=400/412 cov=221 med=0.6874 <2mm=99.2% gaps5=6 maxstep=13.7 unc=0 flips=8 selfint=10 xcov=0 HALT 25.12>9.67
+  FULL seed5: seqlen=397/412 cov=220 med=0.6887 <2mm=99.0% gaps5=1 maxstep=14.9 unc=0 flips=14 selfint=6 xcov=0 HALT 28.71>14.87
+  FULL BEST seed3: seqlen=394/412 cov=221/221 med=0.6783 <2mm=99.5% gaps5=1 maxstep=9.7 unc=0 flips=8 selfint=9
+C02 F1: fires=255
+  per-station reclaim: 313/313 stations<=2.5mm (max 2.2)
+  gap stations(ORIG>=2mm from sheet)=39; BAG n=543 (fires 255 + reclaim 313 - dupes)
+  FRESH bundle Bl_1 direct vs ORIG: cov=269/313 med=0.9501 <2mm=94.4%
+  FIRES seed0: seqlen=233/255 cov=257 med=0.9336 <2mm=95.3% gaps5=15 maxstep=25.7 unc=3 flips=2 selfint=1 xcov=0 HALT 22.92>8.08
+  FIRES seed1: seqlen=256/255 cov=258 med=0.9359 <2mm=94.9% gaps5=29 maxstep=31.8 unc=3 flips=4 selfint=13 xcov=0 HALT 47.96>8.95
+  FIRES seed2: seqlen=243/255 cov=258 med=0.9325 <2mm=95.5% gaps5=17 maxstep=23.5 unc=3 flips=2 selfint=2 xcov=0 HALT 36.57>8.08
+  FIRES seed3: seqlen=235/255 cov=258 med=0.9336 <2mm=95.3% gaps5=13 maxstep=8.1 unc=3 flips=2 selfint=1 xcov=0 HALT 20.23>8.08
+  FIRES seed4: seqlen=243/255 cov=258 med=0.9432 <2mm=94.7% gaps5=19 maxstep=21.8 unc=3 flips=3 selfint=8 xcov=0 HALT 26.99>8.08
+  FIRES seed5: seqlen=239/255 cov=258 med=0.9325 <2mm=95.4% gaps5=16 maxstep=14.3 unc=3 flips=2 selfint=6 xcov=0 HALT 9.99>8.08
+  FIRES BEST seed2: seqlen=243/255 cov=258/313 med=0.9325 <2mm=95.5% gaps5=17 maxstep=23.5 unc=3 flips=2 selfint=2
+  FULL seed0: seqlen=508/543 cov=312 med=0.6314 <2mm=99.2% gaps5=4 maxstep=7.8 unc=0 flips=8 selfint=17 xcov=0 HALT 28.39>7.83
+  FULL seed1: seqlen=510/543 cov=308 med=0.6415 <2mm=99.2% gaps5=2 maxstep=9.1 unc=3 flips=5 selfint=17 xcov=0 HALT 32.10>9.06
+  FULL seed2: seqlen=512/543 cov=308 med=0.6415 <2mm=99.2% gaps5=3 maxstep=11.8 unc=3 flips=6 selfint=16 xcov=0 HALT 22.80>11.79
+  FULL seed3: seqlen=514/543 cov=308 med=0.6497 <2mm=99.0% gaps5=2 maxstep=13.8 unc=3 flips=6 selfint=17 xcov=0 HALT 26.90>5.60
+  FULL seed4: seqlen=516/543 cov=308 med=0.6592 <2mm=98.8% gaps5=6 maxstep=17.5 unc=3 flips=6 selfint=20 xcov=0 HALT 9.13>7.89
+  FULL seed5: seqlen=524/543 cov=312 med=0.6391 <2mm=98.1% gaps5=19 maxstep=18.0 unc=0 flips=10 selfint=37 xcov=0 HALT 31.01>10.33
+  FULL BEST seed0: seqlen=508/543 cov=312/313 med=0.6314 <2mm=99.2% gaps5=4 maxstep=7.8 unc=0 flips=8 selfint=17
+C03 F0: fires=195
+  per-station reclaim: 191/191 stations<=2.5mm (max 2.3)
+  gap stations(ORIG>=2mm from sheet)=28; BAG n=322 (fires 195 + reclaim 191 - dupes)
+  FRESH bundle Bl_0 direct vs ORIG: cov=159/191 med=0.9527 <2mm=86.8%
+  FIRES seed0: seqlen=198/195 cov=136 med=1.3049 <2mm=69.2% gaps5=27 maxstep=31.5 unc=12 flips=3 selfint=22 xcov=0 HALT 45.34>9.10
+  FIRES seed1: seqlen=199/195 cov=136 med=1.3251 <2mm=69.3% gaps5=30 maxstep=37.7 unc=12 flips=6 selfint=18 xcov=0 
+  FIRES seed2: seqlen=190/195 cov=136 med=1.3542 <2mm=67.9% gaps5=23 maxstep=23.0 unc=12 flips=3 selfint=18 xcov=0 HALT 45.34>23.00
+  FIRES seed3: seqlen=195/195 cov=136 med=1.3306 <2mm=68.7% gaps5=26 maxstep=23.0 unc=12 flips=4 selfint=25 xcov=0 HALT 45.34>23.00
+  FIRES seed4: seqlen=200/195 cov=136 med=1.3279 <2mm=69.5% gaps5=29 maxstep=37.7 unc=12 flips=5 selfint=20 xcov=0 
+  FIRES seed5: seqlen=185/195 cov=136 med=1.3925 <2mm=67.0% gaps5=17 maxstep=20.2 unc=12 flips=4 selfint=14 xcov=0 HALT 45.34>16.53
+  FIRES BEST seed0: seqlen=198/195 cov=136/191 med=1.3049 <2mm=69.2% gaps5=27 maxstep=31.5 unc=12 flips=3 selfint=22
+  FULL seed0: seqlen=312/322 cov=190 med=0.6882 <2mm=89.7% gaps5=12 maxstep=15.3 unc=0 flips=8 selfint=15 xcov=0 HALT 15.28>9.27
+  FULL seed1: seqlen=113/322 cov=75 med=0.6771 <2mm=92.0% gaps5=5 maxstep=8.3 unc=112 flips=5 selfint=4 xcov=0 HALT 9.22>8.26
+  FULL seed2: seqlen=76/322 cov=42 med=0.5957 <2mm=73.7% gaps5=3 maxstep=9.3 unc=145 flips=0 selfint=2 xcov=0 HALT 15.88>9.27
+  FULL seed3: seqlen=246/322 cov=145 med=0.6802 <2mm=90.2% gaps5=7 maxstep=15.3 unc=42 flips=2 selfint=12 xcov=0 HALT 15.28>9.27
+  FULL seed4: seqlen=159/322 cov=104 med=0.6941 <2mm=94.3% gaps5=5 maxstep=8.3 unc=83 flips=7 selfint=4 xcov=0 HALT 9.22>8.26
+  FULL seed5: seqlen=217/322 cov=137 med=0.6965 <2mm=95.4% gaps5=5 maxstep=8.3 unc=50 flips=9 selfint=5 xcov=0 HALT 9.22>8.26
+  FULL BEST seed0: seqlen=312/322 cov=190/191 med=0.6882 <2mm=89.7% gaps5=12 maxstep=15.3 unc=0 flips=8 selfint=15
+C03 F1: fires=142
+  per-station reclaim: 119/120 stations<=2.5mm (max 2.6)
+  gap stations(ORIG>=2mm from sheet)=13; BAG n=221 (fires 142 + reclaim 119 - dupes)
+  FRESH bundle Bl_1 direct vs ORIG: cov=110/120 med=0.8939 <2mm=90.4%
+  FIRES seed0: seqlen=132/142 cov=105 med=0.9848 <2mm=84.8% gaps5=8 maxstep=21.3 unc=0 flips=6 selfint=14 xcov=0 HALT 8.28>3.44
+  FIRES seed1: seqlen=126/142 cov=105 med=0.9379 <2mm=85.7% gaps5=2 maxstep=5.5 unc=0 flips=5 selfint=1 xcov=0 HALT 8.28>4.72
+  FIRES seed2: seqlen=139/142 cov=105 med=0.9376 <2mm=84.9% gaps5=14 maxstep=22.0 unc=0 flips=6 selfint=16 xcov=0 HALT 8.28>4.72
+  FIRES seed3: seqlen=141/142 cov=105 med=0.9381 <2mm=84.4% gaps5=16 maxstep=25.6 unc=0 flips=6 selfint=19 xcov=0 HALT 14.89>4.72
+  FIRES seed4: seqlen=123/142 cov=105 med=0.8888 <2mm=86.2% gaps5=3 maxstep=15.5 unc=0 flips=4 selfint=2 xcov=0 HALT 5.53>4.72
+  FIRES seed5: seqlen=132/142 cov=105 med=0.9848 <2mm=84.8% gaps5=9 maxstep=14.2 unc=0 flips=6 selfint=16 xcov=0 HALT 11.74>4.72
+  FIRES BEST seed4: seqlen=123/142 cov=105/120 med=0.8888 <2mm=86.2% gaps5=3 maxstep=15.5 unc=0 flips=4 selfint=2
+  FULL seed0: seqlen=211/221 cov=119 med=0.8574 <2mm=91.5% gaps5=2 maxstep=10.7 unc=0 flips=7 selfint=7 xcov=0 HALT 20.40>10.73
+  FULL seed1: seqlen=150/221 cov=86 med=0.7671 <2mm=90.7% gaps5=0 maxstep=3.9 unc=30 flips=4 selfint=1 xcov=0 HALT 12.57>3.87
+  FULL seed2: seqlen=215/221 cov=119 med=0.8616 <2mm=90.7% gaps5=6 maxstep=13.6 unc=0 flips=7 selfint=8 xcov=0 HALT 21.46>13.63
+  FULL seed3: seqlen=102/221 cov=60 med=0.8288 <2mm=86.3% gaps5=0 maxstep=3.9 unc=56 flips=1 selfint=0 xcov=0 HALT 12.57>3.87
+  FULL seed4: seqlen=211/221 cov=119 med=0.8525 <2mm=91.9% gaps5=1 maxstep=13.7 unc=0 flips=6 selfint=4 xcov=0 HALT 20.40>13.71
+  FULL seed5: seqlen=214/221 cov=119 med=0.8588 <2mm=91.6% gaps5=5 maxstep=15.2 unc=0 flips=8 selfint=13 xcov=0 HALT 22.10>15.20
+  FULL BEST seed4: seqlen=211/221 cov=119/120 med=0.8525 <2mm=91.9% gaps5=1 maxstep=13.7 unc=0 flips=6 selfint=4
+C04 F0: fires=195
+  per-station reclaim: 131/131 stations<=2.5mm (max 2.4)
+  gap stations(ORIG>=2mm from sheet)=0; BAG n=280 (fires 195 + reclaim 131 - dupes)
+  FRESH bundle Bl_0 direct vs ORIG: cov=115/131 med=0.7282 <2mm=93.0%
+  FIRES seed0: seqlen=163/195 cov=131 med=0.6828 <2mm=100.0% gaps5=2 maxstep=16.5 unc=0 flips=2 selfint=5 xcov=0 HALT 4.27>3.99
+  FIRES seed1: seqlen=183/195 cov=131 med=0.7111 <2mm=100.0% gaps5=9 maxstep=17.0 unc=0 flips=2 selfint=19 xcov=0 HALT 4.27>3.99
+  FIRES seed2: seqlen=165/195 cov=131 med=0.6790 <2mm=100.0% gaps5=3 maxstep=15.8 unc=0 flips=2 selfint=10 xcov=0 HALT 12.77>3.99
+  FIRES seed3: seqlen=192/195 cov=131 med=0.6917 <2mm=100.0% gaps5=12 maxstep=17.0 unc=0 flips=1 selfint=28 xcov=0 HALT 4.27>3.99
+  FIRES seed4: seqlen=190/195 cov=131 med=0.6917 <2mm=100.0% gaps5=15 maxstep=17.0 unc=0 flips=2 selfint=24 xcov=0 HALT 14.42>3.99
+  FIRES seed5: seqlen=180/195 cov=131 med=0.6853 <2mm=100.0% gaps5=10 maxstep=15.1 unc=0 flips=2 selfint=14 xcov=0 HALT 14.42>3.99
+  FIRES BEST seed2: seqlen=165/195 cov=131/131 med=0.6790 <2mm=100.0% gaps5=3 maxstep=15.8 unc=0 flips=2 selfint=10
+  FULL seed0: seqlen=267/280 cov=131 med=0.7273 <2mm=100.0% gaps5=3 maxstep=11.4 unc=0 flips=12 selfint=12 xcov=1 HALT 13.56>11.44
+  FULL seed1: seqlen=271/280 cov=131 med=0.7322 <2mm=98.5% gaps5=1 maxstep=12.7 unc=0 flips=13 selfint=12 xcov=1 HALT 13.22>12.71
+  FULL seed2: seqlen=262/280 cov=131 med=0.7320 <2mm=100.0% gaps5=1 maxstep=5.3 unc=0 flips=11 selfint=5 xcov=1 HALT 5.89>5.26
+  FULL seed3: seqlen=271/280 cov=131 med=0.7322 <2mm=98.9% gaps5=0 maxstep=3.9 unc=0 flips=11 selfint=6 xcov=1 HALT 13.56>3.86
+  FULL seed4: seqlen=272/280 cov=131 med=0.7320 <2mm=98.9% gaps5=2 maxstep=9.0 unc=0 flips=12 selfint=10 xcov=1 HALT 16.00>9.04
+  FULL seed5: seqlen=267/280 cov=131 med=0.7273 <2mm=100.0% gaps5=2 maxstep=5.3 unc=0 flips=11 selfint=5 xcov=1 HALT 23.79>5.26
+  FULL BEST seed0: seqlen=267/280 cov=131/131 med=0.7273 <2mm=100.0% gaps5=3 maxstep=11.4 unc=0 flips=12 selfint=12
+C04 F1: fires=238
+  per-station reclaim: 145/146 stations<=2.5mm (max 2.6)
+  gap stations(ORIG>=2mm from sheet)=0; BAG n=310 (fires 238 + reclaim 145 - dupes)
+  FRESH bundle Bl_1 direct vs ORIG: cov=146/146 med=0.7474 <2mm=91.1%
+  FIRES seed0: seqlen=241/238 cov=146 med=0.7632 <2mm=99.2% gaps5=20 maxstep=20.8 unc=0 flips=11 selfint=31 xcov=2 
+  FIRES seed1: seqlen=240/238 cov=146 med=0.7557 <2mm=99.2% gaps5=21 maxstep=20.8 unc=0 flips=11 selfint=31 xcov=2 
+  FIRES seed2: seqlen=239/238 cov=146 med=0.7632 <2mm=99.2% gaps5=21 maxstep=18.3 unc=0 flips=13 selfint=25 xcov=2 
+  FIRES seed3: seqlen=240/238 cov=146 med=0.7557 <2mm=99.2% gaps5=21 maxstep=20.8 unc=0 flips=13 selfint=27 xcov=2 
+  FIRES seed4: seqlen=209/238 cov=146 med=0.7633 <2mm=99.0% gaps5=9 maxstep=14.9 unc=0 flips=8 selfint=22 xcov=2 HALT 12.10>4.36
+  FIRES seed5: seqlen=197/238 cov=146 med=0.7407 <2mm=99.5% gaps5=8 maxstep=19.9 unc=0 flips=7 selfint=6 xcov=2 HALT 5.61>4.36
+  FIRES BEST seed5: seqlen=197/238 cov=146/146 med=0.7407 <2mm=99.5% gaps5=8 maxstep=19.9 unc=0 flips=7 selfint=6
+  FULL seed0: seqlen=291/310 cov=146 med=0.8170 <2mm=99.7% gaps5=2 maxstep=8.0 unc=0 flips=25 selfint=12 xcov=3 HALT 19.93>7.98
+  FULL seed1: seqlen=289/310 cov=146 med=0.8134 <2mm=99.7% gaps5=1 maxstep=14.1 unc=0 flips=24 selfint=16 xcov=3 HALT 22.23>4.72
+  FULL seed2: seqlen=297/310 cov=146 med=0.8197 <2mm=99.3% gaps5=2 maxstep=13.7 unc=0 flips=29 selfint=9 xcov=3 HALT 19.83>13.75
+  FULL seed3: seqlen=298/310 cov=146 med=0.8208 <2mm=99.3% gaps5=3 maxstep=11.2 unc=0 flips=29 selfint=14 xcov=3 HALT 13.75>11.16
+  FULL seed4: seqlen=299/310 cov=146 med=0.8197 <2mm=99.3% gaps5=5 maxstep=14.7 unc=0 flips=28 selfint=15 xcov=3 HALT 20.49>9.90
+  FULL seed5: seqlen=297/310 cov=146 med=0.8197 <2mm=99.0% gaps5=2 maxstep=8.5 unc=0 flips=29 selfint=6 xcov=3 HALT 13.74>8.53
+  FULL BEST seed1: seqlen=289/310 cov=146/146 med=0.8134 <2mm=99.7% gaps5=1 maxstep=14.1 unc=0 flips=24 selfint=16
