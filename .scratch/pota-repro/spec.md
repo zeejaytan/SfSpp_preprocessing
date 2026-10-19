@@ -125,7 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 150 | Source elimination prep-side (dispatched): split-select + guard + ROR prototype vs >=90% outer cut | running (login-node, 0 jobs) | issues/150-source-elimination-prep.md |
-| 149 | Filtered thin-line walk (dispatched): M144 machinery on ~131-dot thin bag, honest uncovered check | running (login-node, 0 jobs) | issues/149-filtered-thinline-walk.md |
+| 149 | Filtered thin-line walk: gate 1.31, honest 25 at predicted spans, weave down 3x (13/15) but parity bar missed — gap-driven, extraction still the fix | done (login-node, 0 jobs) | issues/149-filtered-thinline-walk.md |
 | 148 | Dot provenance: BAND NAMED two-loop composite (inner 116 true-edge + outer 195 face-loop); ONE stage (C-base 270); straddle-asymmetric; fix = face-align filter, honest uncovered ~25 at (102,120) | done (login-node, 0 jobs) | issues/148-dot-provenance-band.md |
 | 147 | Author-density parity: DENSITY-CONFIRMED (parity 206/206, flips 2/selfint 0, gate 1.19; uncovered 15 = 48mm void); wall-side SAME inner (wrong-edgeline refuted) | done (login-node, 0 jobs) | issues/147-author-density-parity.md |
 | 145 | E2E Pot C 314 bundle (dispatched): the beam votes on the finished trace, supersedes 141 | running (Slurm E2E) | issues/145-e2e-potC-314.md |
