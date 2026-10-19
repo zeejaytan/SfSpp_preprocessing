@@ -125,7 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 157 | C01 mesh side-by-side: author smooth closed loop; ours tracks lip but cuts chords on the left (lead eye-checked) | done (0 jobs) | issues/157-c01-mesh-sbs.md |
-| 165 | Surface close-ups (dispatched): shaded eye-judgement of bend at false loop vs rim | running (0 jobs) | issues/165-surface-closeups.md |
+| 165 | DONE: eye sees a HOLE not a crease -- red FAR ring rims a see-through data gap; bend theory dead by eye, hole-rim is third class (lead eye-checked both panels) | done (0 jobs) | issues/165-surface-closeups.md |
 | 164 | NEGATIVE: false loop sits on FLATTER sheet than rim (tilt 24.6 vs 29.0); bend does not own it; 3rd two-pot negative (lead eye-checked) | done (0 jobs) | issues/164-bend-aware-boundary.md |
 | 163 | DOUBLE NEGATIVE: support flips on Pot A (different phenomena per pot); snap moves dots ON-rim, drag refuted (lead eye-checked) | done (0 jobs) | issues/163-surface-support-test.md |
 | 162 | CLEAN NEGATIVE: no empty half-space exists; cloud is two parallel loops, rim sampled denser (density anti-separates); analysis-only, nothing built (lead eye-checked) | done (0 jobs) | issues/162-emptiness-veto.md |
