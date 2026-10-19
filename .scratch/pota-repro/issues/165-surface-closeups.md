@@ -8,6 +8,10 @@ GOAL: JUDGE THE BEND QUESTION WITH EYES, NOT TILT NUMBERS.
 
 **Status:** results-in
 
+## CORRECTION (user, 2026-10-19; lead misread retracted)
+
+The 'daylight through a hole' was a translucency/alpha rendering artifact -- the C01 mesh is SOLID and WHOLE. The lead's hole-rim verdict is RETRACTED; the 'hole-rim third class' claim is CONTESTED, not banked. Standing questions: (a) what are the 4 blue boundary loops traced in the mesh file, if the mesh is whole; (b) do FAR dots coincide with real mesh boundary edges, verified on the FILE not on renders. Lesson: renders for eye-judgement must be OPAQUE -- translucency fabricates holes.
+
 **User's demand (verbatim):** look at how the surface looks like AS AN IMAGE. I.e. shaded, lit renders (not wireframe, not scatter) of the C01 piece surface at: (a) the false-loop region (top, where the FAR/red dots form the parallel loop); (b) the true-rim region (where NEAR/green dots ride the ORIG loop). Same lighting, close-up, several angles each; veto dots + ORIG loop overlaid so the eye can connect dots to ground. The question the eye must answer: does the surface take a sharp turn (junction/crease) at the false loop, and how does that compare with the rim's ground?
 
 **What to deliver:** close-up shaded renders artifacts/pota165/ (mesh with lighting + dots + ORIG overlay, labeled panels), eye-checked, with the worker's own read of what the surface does at each site. No verdict on the bend debate required -- the PICTURES are the deliverable; judgement stays with the lead + user.
