@@ -1,0 +1,10 @@
+clouds: TRUE=598 OUTER=155
+TRUE greedy: len=151/598 strand slot=161 T13-ratio=0.2525 (FIRES?)
+TRUE envelope BAND=8.52 (greedy med=1.22 n>40=0)
+TRUE HALT: nearest road-retreat 12.89 exceeds envelope 8.52
+TRUE M-walk: seqlen=151 unique=151/598 retreats=0 forwards=0 guard=1 HALT: nearest road-retreat 12.89 exceeds envelope 8.52
+OUTER greedy: len=148/155 strand slot=137 T13-ratio=0.9548 (SUPPRESSED)
+OUTER envelope BAND=52.89 (greedy med=2.87 n>40=1)
+OUTER HALT: nearest road-retreat 64.01 exceeds envelope 52.89
+OUTER M-walk: seqlen=155 unique=154/155 retreats=1 forwards=0 guard=8 HALT: nearest road-retreat 64.01 exceeds envelope 52.89
+  OUTER retreat #0 at (147->148) len=45.34

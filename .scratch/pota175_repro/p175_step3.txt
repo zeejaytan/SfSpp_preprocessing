@@ -1,0 +1,9 @@
+TRUE walk: seqlen=151 cloud=598 ORIGcov=59/211 med=1.0331 <2mm=90.1% gaps5=2 maxstep=8.5 steps>25=0 uncovered(DO>5)=148 spans=[(0, 34), (98, 210)]
+TOPO TRUE-greedy: cls=68 flips=15 selfint=10 turns90=48
+TOPO TRUE-M: cls=68 flips=15 selfint=10 turns90=48
+TRUE leftover: 447/598 dots, dmin<2: 373, stations covered by leftover-only: 147/211
+OUTER walk: seqlen=155 cloud=155 ORIGcov=14/211 med=5.8328 <2mm=7.1% gaps5=30 maxstep=52.9 steps>25=4 uncovered(DO>5)=113 spans=[(0, 27), (40, 42), (49, 50), (60, 65), (72, 79), (85, 97), (123, 127), (135, 137), (142, 161), (164, 165), (182, 191), (198, 210)]
+TOPO OUTER-greedy: cls=146 flips=0 selfint=3 turns90=12
+TOPO OUTER-M: cls=153 flips=1 selfint=3 turns90=13
+OUTER leftover: 1/155 dots, dmin<2: 1, stations covered by leftover-only: 1/211
+GATE DONE

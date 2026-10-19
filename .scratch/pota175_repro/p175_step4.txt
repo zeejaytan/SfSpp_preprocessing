@@ -1,0 +1,10 @@
+spread1: seqlen=556 unique=554/598 ORIGcov=211/211 med=1.1255 <2mm=87.1% gaps5=17 maxstep=12.2 steps>25=0 uncovered=0
+TOPO spread1: cls=281 flips=79 selfint=93 turns90=219
+  pathlen=1040.1 author-loop=380.0 laps=2.74
+spread2: seqlen=553 unique=551/598 ORIGcov=211/211 med=1.0838 <2mm=88.1% gaps5=7 maxstep=11.1 steps>25=0 uncovered=0
+TOPO spread2: cls=266 flips=64 selfint=31 turns90=180
+  pathlen=842.3 author-loop=380.0 laps=2.22
+medoid: seqlen=393 unique=391/598 ORIGcov=146/211 med=1.1051 <2mm=88.3% gaps5=11 maxstep=8.7 steps>25=0 uncovered=61
+TOPO medoid: cls=192 flips=58 selfint=66 turns90=125
+  pathlen=709.7 author-loop=380.0 laps=1.87
+GATE DONE

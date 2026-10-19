@@ -1,0 +1,16 @@
+parent clouds: TRUE(inner+fold)=476 OUTER=277
+TRUE-row0 BAND=10.82 ret=2 HALT retreat 12.03> BAND 10.82: seqlen=448 ORIGcov=211/211 med=0.9564 <2mm=90.8% gaps5=6 maxstep=11.6 steps>25=0 uncovered=0 flips=52 selfint=15 turns90=128
+TRUE-medoid BAND=5.07 ret=3 HALT retreat 15.17> BAND 5.07: seqlen=428 ORIGcov=211/211 med=0.9549 <2mm=92.1% gaps5=15 maxstep=14.9 steps>25=0 uncovered=0 flips=58 selfint=78 turns90=151
+TRUE-spread0 BAND=6.92 ret=2 HALT retreat 22.95> BAND 6.92: seqlen=439 ORIGcov=211/211 med=0.9492 <2mm=92.0% gaps5=3 maxstep=14.8 steps>25=0 uncovered=0 flips=49 selfint=13 turns90=124
+TRUE-spread1 BAND=6.91 ret=3 HALT retreat 18.61> BAND 6.91: seqlen=415 ORIGcov=210/211 med=0.9677 <2mm=91.6% gaps5=14 maxstep=14.0 steps>25=0 uncovered=0 flips=57 selfint=87 turns90=159
+TRUE-spread2 BAND=12.18 ret=2 HALT retreat 24.16> BAND 12.18: seqlen=449 ORIGcov=211/211 med=0.9564 <2mm=90.9% gaps5=8 maxstep=14.5 steps>25=0 uncovered=0 flips=50 selfint=18 turns90=125
+TRUE-spread3 BAND=34.98 ret=14 : seqlen=490 ORIGcov=211/211 med=0.9849 <2mm=89.2% gaps5=43 maxstep=35.0 steps>25=2 uncovered=0 flips=73 selfint=156 turns90=163
+TRUE BEST: spread0 cov=211 flips=49 selfint=13 (N=6 best-of-N)
+OUTER-row0 BAND=7.66 ret=0 HALT retreat 9.18> BAND 7.66: seqlen=90 ORIGcov=36/211 med=2.3686 <2mm=36.7% gaps5=10 maxstep=7.7 steps>25=0 uncovered=135 flips=0 selfint=0 turns90=10
+OUTER-medoid BAND=12.72 ret=2 HALT retreat 55.98> BAND 12.72: seqlen=202 ORIGcov=78/211 med=2.1535 <2mm=42.6% gaps5=33 maxstep=25.1 steps>25=1 uncovered=47 flips=0 selfint=17 turns90=44
+OUTER-spread0 BAND=7.14 ret=1 HALT retreat 10.66> BAND 7.14: seqlen=117 ORIGcov=44/211 med=2.2217 <2mm=39.3% gaps5=23 maxstep=21.3 steps>25=0 uncovered=117 flips=0 selfint=13 turns90=27
+OUTER-spread1 BAND=20.32 ret=0 HALT retreat 28.72> BAND 20.32: seqlen=101 ORIGcov=34/211 med=2.4735 <2mm=38.6% gaps5=9 maxstep=20.3 steps>25=0 uncovered=140 flips=0 selfint=6 turns90=13
+OUTER-spread2 BAND=6.19 ret=2 HALT retreat 15.72> BAND 6.19: seqlen=200 ORIGcov=70/211 med=2.4862 <2mm=34.5% gaps5=25 maxstep=19.8 steps>25=0 uncovered=74 flips=0 selfint=25 turns90=40
+OUTER-spread3 BAND=17.67 ret=2 HALT retreat 55.98> BAND 17.67: seqlen=216 ORIGcov=78/211 med=2.2804 <2mm=39.8% gaps5=35 maxstep=25.1 steps>25=1 uncovered=47 flips=0 selfint=17 turns90=44
+OUTER BEST: medoid cov=78 flips=0 selfint=17 (N=6 best-of-N)
+STEP12 DONE

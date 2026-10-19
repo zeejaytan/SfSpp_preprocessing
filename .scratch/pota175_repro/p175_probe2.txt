@@ -1,0 +1,9 @@
+TRUE-cloud cap: 211/211 stations <2mm; cloud-missing runs=[]
+row0-walk station span: 38..94 (first=94 last=54)
+TRUE cloud per-station dmin: max=1.66 stations>2mm=[]
+seed row0(row=0): seqlen=151 cov=59/211 med=1.033 BAND=8.52 HALT retreat 12.89> BAND 8.52
+seed medoid(row=54): seqlen=393 cov=146/211 med=1.105 BAND=7.24 HALT retreat 12.97> BAND 7.24
+seed spread0(row=0): seqlen=151 cov=59/211 med=1.033 BAND=8.52 HALT retreat 12.89> BAND 8.52
+seed spread1(row=495): seqlen=556 cov=211/211 med=1.125 BAND=6.58 HALT retreat 13.63> BAND 6.58
+seed spread2(row=394): seqlen=553 cov=211/211 med=1.084 BAND=6.58 HALT retreat 17.65> BAND 6.58
+seed spread3(row=70): seqlen=427 cov=162/211 med=1.089 BAND=34.98 HALT retreat 43.85> BAND 34.98

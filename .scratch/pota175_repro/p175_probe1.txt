@@ -1,0 +1,12 @@
+pred split: inner-face=328 outer-face=155 edge=270 (total 753)
+pred-inner: ruler inner=324 outer=0 mid=4 | dmin<2: 303 (92.4%) | dmin med=0.93
+pred-outer: ruler inner=11 outer=126 mid=18 | dmin<2: 12 (7.7%) | dmin med=5.83
+pred-edge: ruler inner=115 outer=4 mid=151 | dmin<2: 206 (76.3%) | dmin med=1.40
+ruler-outer in pred-inner: 0/130; ruler-inner in pred-outer: 11/450
+edge: sta coverage 153/211 stations; dmin<2 stations 135/211
+bins with inner+outer present: 64; inner-med<outer-med: 61
+edge dots nearer local inner-med vs outer-med: 197 vs 41
+edge radius med=55.48 vs inner med=53.44 outer med=58.40
+pred-inner station cover (dmin<2): 166/211
+pred-outer station cover (dmin<2): 11/211
+pred-edge station cover (dmin<2): 135/211

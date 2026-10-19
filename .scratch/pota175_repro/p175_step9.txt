@@ -1,0 +1,9 @@
+label0: n=336 ruler-inner=260 ruler-outer=1 ruler-mid=80
+label1: n=262 ruler-inner=179 ruler-outer=3 ruler-mid=96
+lab-row0 seed=0: seqlen=581 unique=581/598 ORIGcov=211/211 med=1.1300 <2mm=85.9% gaps5=16 maxstep=11.0 steps>25=0 flips=37 selfint=27 turns90=137 retreats=0 HALT retreat 45.58> BAND 11.04
+lab-medoid seed=54: seqlen=526 unique=525/598 ORIGcov=211/211 med=1.1255 <2mm=86.7% gaps5=17 maxstep=9.6 steps>25=0 flips=35 selfint=44 turns90=136 retreats=1 HALT retreat 6.31> BAND 6.21
+lab-spread1 seed=495: seqlen=402 unique=398/598 ORIGcov=199/211 med=1.0208 <2mm=88.8% gaps5=12 maxstep=13.0 steps>25=0 flips=25 selfint=53 turns90=96 retreats=4 HALT retreat 12.65> BAND 10.03
+lab-spread2 seed=394: seqlen=587 unique=584/598 ORIGcov=211/211 med=1.1356 <2mm=85.3% gaps5=25 maxstep=12.4 steps>25=0 flips=40 selfint=67 turns90=148 retreats=4 HALT retreat 24.26> BAND 10.03
+lab-spread3 seed=70: seqlen=568 unique=565/598 ORIGcov=211/211 med=1.1375 <2mm=85.2% gaps5=27 maxstep=36.0 steps>25=1 flips=38 selfint=62 turns90=150 retreats=3 HALT retreat 38.95> BAND 35.99
+lab-center seed=70: seqlen=568 unique=565/598 ORIGcov=211/211 med=1.1375 <2mm=85.2% gaps5=27 maxstep=36.0 steps>25=1 flips=38 selfint=62 turns90=150 retreats=3 HALT retreat 38.95> BAND 35.99
+STEP9 DONE

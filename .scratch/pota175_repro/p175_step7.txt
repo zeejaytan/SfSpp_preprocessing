@@ -1,0 +1,9 @@
+spread2 plain: closure idx=541/553
+spread2-first-lap: seqlen=541 ORIGcov=209/211 med=1.0860 <2mm=88.2% gaps5=6 maxstep=7.1 steps>25=0 flips=62 selfint=25 turns90=176
+anchored sides: +1=150 -1=108 center=340
+anch-row0 HALT retreat 11.79> BAND 9.48: seqlen=151 ORIGcov=59/211 med=1.0331 <2mm=90.1% gaps5=2 maxstep=9.5 steps>25=0 flips=15 selfint=12 turns90=49
+anch-medoid HALT retreat 9.37> BAND 7.24: seqlen=391 ORIGcov=146/211 med=1.0936 <2mm=89.0% gaps5=17 maxstep=11.0 steps>25=0 flips=56 selfint=76 turns90=125
+anch-spread1 HALT retreat 9.37> BAND 7.24: seqlen=504 ORIGcov=201/211 med=1.0796 <2mm=87.7% gaps5=18 maxstep=11.0 steps>25=0 flips=71 selfint=80 turns90=158
+anch-spread2 HALT retreat 10.42> BAND 8.26: seqlen=133 ORIGcov=46/211 med=1.2779 <2mm=82.0% gaps5=4 maxstep=9.7 steps>25=0 flips=15 selfint=5 turns90=46
+anch-spread3 HALT retreat 43.85> BAND 34.98: seqlen=425 ORIGcov=162/211 med=1.0838 <2mm=88.9% gaps5=20 maxstep=35.0 steps>25=1 flips=60 selfint=83 turns90=134
+STEP7 DONE

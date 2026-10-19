@@ -1,0 +1,9 @@
+match dist: nearest max=5.80e-04 | second-nearest min=0.053 (uniqueness gap)
+matched: 753/753 at tol 2e-3
+BAG unclustered-rows=753 | in-strip=612 | S0-exclusive=141
+strip-row dots=612 (parent inner=207 outer=142 fold=263)
+S0-exclusive dots=141 (parent inner=5 outer=135 fold=1)
+parent-inner: n=212 dmin<2=189 (89.2%) med=1.00 station-cover=124/211
+parent-outer: n=277 dmin<2=96 (34.7%) med=2.49 station-cover=71/211
+parent-fold: n=264 dmin<2=236 (89.4%) med=0.98 station-cover=147/211
+TRUE-candidate (inner+fold): n=476 station-cover=190/211

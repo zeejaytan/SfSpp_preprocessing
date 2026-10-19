@@ -1,0 +1,6 @@
+parent-inner: cover=169/211 med-seat=1.165
+parent-outer: cover=90/211 med-seat=2.106
+parent-fold: cover=195/211 med-seat=0.985
+TRUE-cand inner+fold: cover=211/211 med-seat=0.755
+TRUE-missing stations (0): []
+their outer-dot distance: min=-1.00 med=-1.00

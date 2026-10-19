@@ -1,0 +1,2 @@
+bag identity: BAG=(753,3) ORIG=(211,3) (173 input intact)
+frame round-trip maxdev=5.23e-04 (expect ~0)

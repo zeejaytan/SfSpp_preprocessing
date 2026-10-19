@@ -1,0 +1,12 @@
+TRUE debris census (rB<45): n=25 dmin: min=0.2 med=1.1 -- MIXED -- DO NOT DROP
+OUTER debris census (rB<45): n=6 dmin: min=26.3 med=30.2 -- ALL FAR (drop safe)
+debris veto keeps 722/753
+curated clouds: TRUE=573 OUTER=149
+TRUE-row0 seed=0: seqlen=540 unique=534/573 ORIGcov=203/211 med=1.1434 <2mm=85.6% gaps5=41 maxstep=15.6 steps>25=0 flips=65 selfint=132 turns90=199 retreats=6 forwards=0 HALT retreat 29.59> BAND 14.01
+TRUE-medoid seed=50: seqlen=277 unique=276/573 ORIGcov=115/211 med=1.0317 <2mm=87.4% gaps5=22 maxstep=13.1 steps>25=0 flips=17 selfint=22 turns90=74 retreats=1 forwards=0 HALT retreat 15.38> BAND 13.11
+TRUE-spread0 seed=0: seqlen=540 unique=534/573 ORIGcov=203/211 med=1.1434 <2mm=85.6% gaps5=41 maxstep=15.6 steps>25=0 flips=65 selfint=132 turns90=199 retreats=6 forwards=0 HALT retreat 29.59> BAND 14.01
+TRUE-spread1 seed=470: seqlen=195 unique=194/573 ORIGcov=75/211 med=1.0737 <2mm=87.2% gaps5=15 maxstep=11.7 steps>25=0 flips=10 selfint=20 turns90=58 retreats=1 forwards=0 HALT retreat 39.20> BAND 11.68
+TRUE-spread2 seed=373: seqlen=158 unique=158/573 ORIGcov=61/211 med=1.0440 <2mm=88.0% gaps5=5 maxstep=10.2 steps>25=0 flips=10 selfint=11 turns90=35 retreats=0 forwards=0 HALT retreat 15.20> BAND 10.20
+TRUE-spread3 seed=370: seqlen=283 unique=282/573 ORIGcov=115/211 med=1.0331 <2mm=87.3% gaps5=25 maxstep=13.9 steps>25=0 flips=17 selfint=22 turns90=73 retreats=1 forwards=0 HALT retreat 15.38> BAND 13.89
+OUTER-row0 seed=0: seqlen=136 unique=136/149 ORIGcov=8/211 med=5.8112 <2mm=5.9% gaps5=25 maxstep=34.4 steps>25=1 flips=0 selfint=14 turns90=9 retreats=0 forwards=0 HALT retreat 46.75> BAND 34.43
+STEP6 DONE

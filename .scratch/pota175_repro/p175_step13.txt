@@ -1,0 +1,7 @@
+bag identity: BAG=(753,3) ORIG=(211,3)
+frame round-trip maxdev=5.23e-04 mm (TF non-orthogonality; 4000x below 2mm gate)
+BASE control: n=402 med=5.61 <2mm=22.9% ORIGcov=92/211 (expect 5.61/22.9/92)
+BASE CONTROL GREEN
+slot0 (trueface): n=439 filed, local frame, single-segment header
+slot1 (outerface): n=202 filed, local frame, single-segment header
+STEP13 DONE

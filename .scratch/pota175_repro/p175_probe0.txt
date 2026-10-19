@@ -1,0 +1,8 @@
+bag=753 ORIG=211
+ruler: inner=450 outer=130 mid=173
+straddle stations (inner+outer same st): 102 [1, 3, 5, 6, 9, 11, 12, 13, 15, 16, 19, 20, 23, 24, 26, 35, 37, 38, 39, 40, 42, 43, 44, 45, 48, 50, 51, 55, 60, 62, 63, 64, 66, 73, 74, 75, 78, 81, 82, 85]
+bag-frame radius: inner med=53.89 outer med=58.72 mid med=55.28
+mesh-align(bag-radial): inner med=-0.72 frac<-0.5=0.72 frac>0.5=0.02
+mesh-align(bag-radial): outer med=+0.96 frac<-0.5=0.00 frac>0.5=0.97
+mesh-align(bag-radial): mid med=+0.24 frac<-0.5=0.02 frac>0.5=0.10
+angular bins with both classes: 65/72

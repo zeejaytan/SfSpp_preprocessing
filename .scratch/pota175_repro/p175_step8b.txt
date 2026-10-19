@@ -1,0 +1,5 @@
+stations: inner-covered=199 edge-covered=174 union=211 neither=0
+inner-only=37 edge-only=12 both=162
+edge-only runs (8): [(30, 31), (49, 49), (66, 66), (69, 69), (96, 97), (103, 104), (181, 181), (196, 197)]
+inner-only runs (21): [(15, 17), (21, 26), (28, 28), (60, 60), (70, 70), (93, 93), (106, 106), (126, 127), (129, 130), (132, 132), (136, 138), (141, 141), (151, 152), (161, 162), (165, 166), (171, 171), (173, 175), (179, 179), (183, 183), (202, 202)]
+FLOOR: any single walk covering all 211 must switch sub-tracks >= 14 times (enter+leave each edge-only run)
