@@ -125,6 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 157 | C01 mesh side-by-side: author smooth closed loop; ours tracks lip but cuts chords on the left (lead eye-checked) | done (0 jobs) | issues/157-c01-mesh-sbs.md |
+| 162 | Emptiness veto (dispatched): neighbourhood-asymmetry feature per user idea | running (0 jobs) | issues/162-emptiness-veto.md |
 | 161 | Mesh overlay DONE: BASE hugs rim + interior chords; VAR tight left/bottom, veto-eaten span top-left (lead eye-checked) | done (0 jobs) | issues/161-mesh-overlay-160.md |
 | 160 | CLEAN NEGATIVE: no {veto,no-veto}x{greedy,splitwalk} passes both pots; align modes != true/false on C01; every admission knob exhausted (lead eye-checked) | done (2 jobs) | issues/160-extraction-admission-fix.md |
 | 159 | SUPERSEDED by 160: fix extraction first, veto adapts after | superseded | issues/159-adaptive-veto.md |
