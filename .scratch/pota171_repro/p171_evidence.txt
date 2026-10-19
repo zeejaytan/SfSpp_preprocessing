@@ -1,0 +1,27 @@
+# p171 evidence -- veto-free Pot A re-gate (worker, 2026-10-20)
+
+pair counts = PCD LINES (155 convention; dots = lines - 11 header). xyz render sizes differ slightly (binary dump drops).
+
+pair | veto-free (171 NOVETO) | veto-cured (155) | production base (155) | delta free-vs-cured | owner
+P01_0 | 220 (209 dots) | 217 (206) | 210 (199) | +3 | HOLD -- overlay dot-for-dot identical
+P01_1 | 337 (326) | 190 (179) | 210 (199) | +147 | REGRESS -- veto-free admits full extra outer loop (render)
+P02_0 | 181 (170) | 97 (86) | 743 (732) | +84 | REGRESS -- full rim loop returns (render)
+P02_1 | 174 (163) | 174 (163) | 171 (160) | 0 | HOLD
+P03_0 | 167 (156) | 80 (69) | 502 (491) | +87 | REGRESS -- full rim loop returns (render)
+P03_1 | 164 (153) | 164 (153) | 163 (152) | 0 | HOLD
+P04_0 | 162 (151) | 103 (92) | 259 (248) | +59 | REGRESS -- second-face content returns
+P04_1 | 162 (151) | 162 (151) | 156 (145) | 0 | HOLD
+P05_0 | 166 (155) | 97 (86) | 343 (332) | +69 | REGRESS -- second-face content returns
+P05_1 | 155 (144) | 155 (144) | 152 (141) | 0 | HOLD
+P06_0 | 160 (149) | 129 (118) | 158 (147) | +31 | MILD-REGRESS -- partial second-face content
+P06_1 | 156 (145) | 148 (137) | 152 (141) | +8 | HOLD (within resample band)
+P07_0 | 81 (70) | 75 (64) | 80 (69) | +6 | HOLD (within resample band)
+P07_1 | 82 (71) | 82 (71) | 79 (68) | 0 | HOLD
+P08_0 | 79 (68) | 79 (68) | 77 (66) | 0 | HOLD -- overlay identical
+P08_1 | 76 (65) | 66 (55) | 71 (60) | +10 | HOLD (within resample band)
+
+jobs: build 33447936 COMPLETED 0:0 el 51s; run 33448009 COMPLETED 0:0 el 57s.
+proof lines (run_noveto.log): 16x [FACE VETO] kept==all dropped==0 align<=2; 16x [POTA171-NOVETO] T05 bypass; SPLIT-WALK active (32 lines); NOVETO-RUN-EXIT:0.
+binaries: veto 19397aab41908acc15f640c7a44aff55 (restored); NOVETO 38c050d2ac09f8023546233a7bae054f (removed after run).
+restore: worktree diff md5 e546596c90f8552ed9a40db34c5c2a4b == baseline; Breaklines content-identical to bl_backup (5886758985a81de635c737cdccca7e66).
+status lines: 29 (2 modified + 27 untracked) == baseline; no pota171* spill remains.
