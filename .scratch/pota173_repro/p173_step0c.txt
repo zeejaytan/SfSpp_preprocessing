@@ -1,0 +1,8 @@
+unclustered dist-to-S0-sheet: <1mm=131 | 1-2=166 | 2-6=1301 | >6=745 (n=2343)
+unclustered dist-to-S0fired-edge: <1=88 | 1-2.5=342 | 2.5-6=1102 | >6=811
+ORIG-free candidate (off-sheet>=1mm & edge-adjacent<6mm): n=1402
+  cand dist-to-ORIG: min=0.07 med=3.27 max=60.90 frac<2.5=0.426
+  gap station -> cand: min=0.07 med=0.75 max=1.66 frac<2=1.000
+  gap station -> ALL unclustered: max=1.66 frac<2=1.000
+ORIG-guided strip n=612; overlap with cand=597
+STRIP DONE

@@ -1,0 +1,9 @@
+unsequenced=224
+strand2 greedy len=56 seed=522
+strand2 BAND=5.35 med=1.72
+HALT2 24.04 > 5.35
+strand2 seqlen=637 unique=630 HALT2 24.04 > 5.35
+union ORIGcov=211/211
+strand2 visits 152/45 of walk-missed-bag-covered
+strand2 dots already in primary: 440/637
+strand2-alone gate: med=1.2684 <2mm=76.0%

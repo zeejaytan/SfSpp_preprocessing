@@ -1,0 +1,16 @@
+densified bag: 753 dots (expect 753), ORIG Bl_0 211
+den-greedy: len=194/753 strand slot=540 T13-ratio=0.2576 (strand=>T13 FIRES?)
+envelope BAND=5.84 (own max greedy stride; greedy med=1.37 n>40=0)
+strand key-space K34: neighbours<1mm (twin-stale)=1/33
+leftover beyond strand: 559/753
+  leftover dist-from-strand-end: min=11.6 med=88.6 max=120.2 n<=BAND=0.0%
+HALT: nearest road-retreat 6.18 exceeds envelope 5.84 -- walk ends
+DEN M-walk: seqlen=211 unique=210/753 retreats=1 forwards=0 guard=18 HALT: nearest road-retreat 6.18 exceeds envelope 5.84 -- walk ends
+  retreat #0 at (193->194) len=2.88
+DEN gate: seqlen=211 med=1.3127 <2mm=71.6% gaps5=11 maxstep=9.2 ORIGcov 59/211 uncovered(DO>5)=148 spans=[(0, 109), (173, 210)]
+uncovered(DO>=2) runs=[(0, 111), (171, 210)]
+steps>25mm: n=0 []
+big>=40: n=0
+payoff: den-greedy ORIGcov=59/211 -> den-M ORIGcov=59/211 (sign 0)
+TOPO den-greedy: cls=111 flips=20 selfint=9 turns90=53
+TOPO den-M: cls=126 flips=21 selfint=11 turns90=58

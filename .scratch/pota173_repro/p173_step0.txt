@@ -1,0 +1,36 @@
+loops OK [274,247,97,18] HOLE=1
+S0 staged n=11165
+S0 normals: med=1.000000 min=0.999999 NaN=0
+unclustered n=2343
+unc normals: med=1.000000 min=1.000000 NaN=0 zero=0
+gap stations n=188
+shortfall control: sheet->gap min=0.76 med=3.09 max=5.20 (expect ~0.76/~2.9/~5.2)
+rim strip: unclustered within 2.5mm of ORIG: n=612/2343
+strip dist-to-ORIG: min=0.068 med=1.148 max=2.500
+gap station -> strip: min=0.068 med=0.743 max=1.657 frac<2mm=1.000
+strip normals: med=1.000000 min=1.000000 NaN=0
+merged sheet n=11777 (+612 strip); bbox identical=False
+spacing S0=1.0776 -> r=6.4657 | merged=1.0492 -> r=6.2954
+running estimator on S0-only (control)...
+S0-only control: mine-fired=364 c0=364 maxdev=0.0000 n>0.5mm=0 (expect 364/0.0000/0)
+ESTIMATOR CONTROL BIT-EXACT
+running estimator on merged sheet with code-formula r=6.2954...
+merged fired=253 (S0-only 364); strip-point fires=99/612
+of 364 S0 fires retained in merged set: 130 (maxdev 21.9599)
+PART1 DONE
+merged fired labels: NEAR=83 MID=64 FAR=106
+drop FAR&HOLE=87; NEAR-dropped=0
+kept=166
+snap disp: med=0.00 n>1mm=61/166 max=3.1
+DENSIFIED BAG: n=166 seating(cap)=80/211
+  R0  post-snap min=6.80 max=6.85 seated=0/2
+  R1  post-snap min=5.43 max=6.85 seated=0/19
+  R2  post-snap min=5.86 max=29.12 seated=0/8
+  R3  post-snap min=1.96 max=38.46 seated=1/35
+  R4  post-snap min=0.40 max=2.50 seated=7/10
+  R5  post-snap min=0.97 max=2.40 seated=3/6
+  R6  post-snap min=0.54 max=2.09 seated=29/32
+  R7  post-snap min=0.16 max=1.06 seated=11/11
+  R8  post-snap min=0.54 max=2.37 seated=3/5
+  R9  post-snap min=0.94 max=1.87 seated=3/3
+  R10 post-snap min=0.82 max=1.62 seated=6/6

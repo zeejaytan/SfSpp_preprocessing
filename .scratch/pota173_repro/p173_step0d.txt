@@ -1,0 +1,29 @@
+S0-fired: n=364 NEAR=86 MID=187 FAR=91 drop-FAR&HOLE=73 NEAR-dropped=0
+unclustered n=2343
+rim strip (<=2.5mm ORIG): n=612/2343
+strip: n=612 NEAR=528 MID=84 FAR=0 drop-FAR&HOLE=0 NEAR-dropped=0
+strip kept=612 dropped=0
+strip-overlap ORIG-free cand: 597/612
+S0 snap disp: med=2.12 n>1mm=209/291 max=3.6
+full-364 post-snap seating: 90/211 (expect 90)
+strip snap disp: med=0.000 max=0.000 n>1mm=0 (expect ~identity)
+concat n=903 (291+612)
+exact-duplicate rows removed=150 -> BAG n=753
+DENSIFIED BAG CAP: 211/211
+  R0  cap min=0.59 max=1.19 seated=2/2
+  R1  cap min=0.07 max=1.30 seated=19/19
+  R2  cap min=0.46 max=1.66 seated=8/8
+  R3  cap min=0.16 max=1.49 seated=35/35
+  R4  cap min=0.32 max=1.13 seated=10/10
+  R5  cap min=0.16 max=1.03 seated=6/6
+  R6  cap min=0.26 max=1.33 seated=32/32
+  R7  cap min=0.32 max=0.93 seated=11/11
+  R8  cap min=0.45 max=0.99 seated=5/5
+  R9  cap min=0.46 max=0.86 seated=3/3
+  R10 cap min=0.16 max=1.28 seated=6/6
+  R11 cap min=0.07 max=1.48 seated=46/46
+  R12 cap min=0.21 max=0.94 seated=5/5
+on-arc dots (<2mm ORIG): 521/753
+station-ordered gaps: med=1.76 p90=3.11 max=4.49 (author 1.80/1.80/1.97 per 147)
+BASE-CONTROL: n=402 med=5.61 <2mm=22.9% ORIGcov 92/211 (expect 5.61/22.9/92)
+STEP0D DONE

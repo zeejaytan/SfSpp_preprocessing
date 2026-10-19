@@ -1,0 +1,14 @@
+strand1-alone: ORIGcov=59/211 med=1.3127 <2mm=71.6%
+strand2-alone: ORIGcov=172/211 med=1.2257 <2mm=78.3%
+UNION: ORIGcov=172/211 med=1.2541 <2mm=76.3%
+union uncovered(DO>5)=35 spans=[(19, 53)]
+union uncovered(DO>=2) runs=[(17, 55)]
+s1: seqlen=211 maxstep=9.2 gaps5=11 steps>25=0
+s2: seqlen=507 maxstep=10.2 gaps5=15 steps>25=0
+TOPO s1-greedy: cls=111 flips=20 selfint=9 turns90=53
+TOPO s1-M: cls=126 flips=21 selfint=11 turns90=58
+TOPO s2-M: cls=280 flips=73 selfint=88 turns90=172
+170-ref: strand1-greedy 84/7/1/4 | strand1-M 126/19/16/25 | union 90/211 med 4.5249 <2mm 31.0%%
+s1 radial: matched<2mm=151/211 cos-med=1.000 frac(cos>0.9)=1.000
+s2 radial: matched<2mm=397/507 cos-med=1.000 frac(cos>0.9)=1.000
+GATE DONE

@@ -1,0 +1,12 @@
+strip station-ordered consecutive spacing: n=611 med=1.84 p90=3.21 max=5.34
+r=6.4657 merged fired=204 strip-fires=88/612
+r=6.2954 merged fired=253 strip-fires=99/612
+S0-only recheck fired=364 (expect 364)
+merged r=6.4657: fired=204 strip-fires=88
+lost S0 fires at r=6.4657: 246
+  lost dist-to-ORIG: min=0.72 med=4.22 max=7.84
+  lost by run: {6: 36, 11: 60, 3: 35, 1: 21, -1: 31, 7: 11, 5: 8, 10: 6, 2: 5, 12: 7, 4: 11, 8: 9, 9: 4, 0: 2}
+strip fires: 88
+  strip-fire by run: {6: 3, 5: 4, -1: 17, 2: 4, 7: 6, 4: 13, 1: 2, 3: 4, 10: 4, 12: 7, 11: 17, 0: 1, 9: 3, 8: 3}
+  strip-fire dist-to-ORIG: min=0.16 med=1.23 max=2.50
+DIAG DONE
