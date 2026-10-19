@@ -125,6 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 157 | C01 mesh side-by-side: author smooth closed loop; ours tracks lip but cuts chords on the left (lead eye-checked) | done (0 jobs) | issues/157-c01-mesh-sbs.md |
+| 159 | Adaptive veto (dispatched): per-piece rule, cure kept on A + rim kept on C01 | running (0 jobs) | issues/159-adaptive-veto.md |
 | 158 | Walker NEEDS veto: no-veto 30.18mm/0% worse than fresh and cured; veto load-bearing but Pot-A rule misfires on flare (lead eye-checked) | done (1 job) | issues/158-betterwalk-no-veto.md |
 | 156 | E2E BLOCKED at gate: veto eats C01 true rim (27.68mm med, 0% cov) -- Pot-A-tuned rule misfires on flaring break; E2E omitted by entailment | done (1 job) | issues/156-e2e-potC-veto.md |
 | 155 | Port RELAYED: veto proven on built binary (P02_0 97 vs 743, P03_0 80 vs 502, P04_0 103 vs 259, P05_0 97 vs 343; veto drops 0-227/rim); Pot C E2E still open | done (6 jobs) | issues/155-port-cure-to-production-copy.md |
