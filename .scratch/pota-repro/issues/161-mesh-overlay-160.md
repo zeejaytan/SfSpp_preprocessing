@@ -8,6 +8,10 @@ GOAL: A PICTURE THAT MEANS SOMETHING -- BOTH WALKS SEEN AGAINST THE SHERD.
 
 **Status:** results-in
 
+## Revisit note (user, 2026-10-19)
+
+Bl_1's identity is UNRESOLVED: whether it is the outer edgeline or the inner edgeline is not established, and against the author's output it looks wildly incorrect either way. Known slot semantics (2026-10-17): slot 0 = interior wall face, slot 1 = exterior wall face (Surface_0 -> Breakline_0, Surface_1 -> Breakline_1); the assembler opens only slot 0. Open questions for revisit: (1) which physical edge Bl_1 is supposed to be; (2) gate Bl_1 vs ORIG Bl_0/Bl_1 to quantify 'wildly'; (3) whether the face-hop stitching artifact (wall-thickness fingerprint) affects Bl_1 too. Evidence: artifacts/pota161/ (black loop, BASE==VAR 92 pts).
+
 **What to deliver:** renders showing, on the C01 piece mesh: (a) BASE walk (current output, red), (b) VAR walk (fix attempt, green), (c) author's ORIG loops (grey/black) as reference. Same camera for all; one side-by-side panel + one overlay panel minimum. Each walk drawn as an ORDERED trace (line through sequenced points, not scatter) so walk order is visible; label clearly which is dots-vs-walk: these are WALKS (ordered breakline traces), not raw dot clouds. Eye-check before reporting.
 
 **Starting position:** 160 Comments (BASE/VAR pcd paths, staged trees); 157 Comments + .scratch/pota157_repro/p157_render.py (mesh overlay pattern). Renders to artifacts/pota161/.
