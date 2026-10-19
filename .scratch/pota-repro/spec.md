@@ -125,6 +125,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
 | 157 | C01 mesh side-by-side: author smooth closed loop; ours tracks lip but cuts chords on the left (lead eye-checked) | done (0 jobs) | issues/157-c01-mesh-sbs.md |
+| 170 | No-veto manual-ring walk (dispatched): curated bag, post-snap, gated vs fresh; E2E separate | running (0 jobs) | issues/170-no-veto-manual-ring-walk.md |
 | 169 | DONE (lead eye-checked): estimator EXONERATED bit-exact 364/364; all gaps SHEET SHORTFALL 2.0-6.4mm (sheet ends before rim); +snap-recovery (post-snap 90/211 vs 168 pre-snap 23) +veto-loss (all 61 rim-seaters dropped in VAR) | done (0 jobs) | issues/169-why-finder-silent-at-gaps.md |
 | 168 | DONE honest negative (lead eye-checked): curation holds (73 dropped, ORIG untouched); walk 23/211, all 13 gaps owned UPSTREAM ADMISSION (bag empty <2mm at gap stations; walk complete vs bag) | done (0 jobs) | issues/168-drop-second-ring-close-gaps.md |
 | 167 | DONE negative (lead eye-checked): through-hole NOT pipe (no descent, flake+far-wall detached); FAR rings OUTSIDE hole so exclusion would not cure C01 | done (0 jobs) | issues/167-pipe-exclusion.md |

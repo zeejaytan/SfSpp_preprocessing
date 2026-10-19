@@ -1742,6 +1742,12 @@ ported coordinates) but has been proven on one rim. Upstream
 re-extraction for O37 and the E2E re-run of the finished C01 bundle are
 the two open items.
 
+## 2026-10-20 — C01 scan-defect ruling + veto cancelled (user decision)
+
+C01's mesh is not watertight: it is an imperfect scan with unseen areas left open (636 boundary edges: MAIN-sheet hole loop1 247e ~26mm + hovering FLAKE + CRUMB -- in the source data as received, no full-res exists anywhere). The user ruled the hole a special case (mesh defective, not solid clay): the fix for this piece is to manually delete the second false edge before the walker, not a veto. The veto programme is CANCELLED for C01 -- its premise (clean mesh, veto the false lip) is void where the mesh itself is the defect; it stays valid only where it was proven (Pot A 8/8). Remaining C01 gaps are admission-side (sheet ends 2-6.4mm short of rim at all 13 gap runs; estimator exonerated bit-exact). Lane continues veto-free: curated walk (170), then E2E.
+
+Weight: user ruling on inspected evidence (opaque renders, planar cut, file boundary census) + 166/167/169 numbers.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
