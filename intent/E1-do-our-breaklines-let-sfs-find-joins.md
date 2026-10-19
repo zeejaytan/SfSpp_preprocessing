@@ -1748,6 +1748,18 @@ C01's mesh is not watertight: it is an imperfect scan with unseen areas left ope
 
 Weight: user ruling on inspected evidence (opaque renders, planar cut, file boundary census) + 166/167/169 numbers.
 
+## 2026-10-20 — veto dropped entirely (user ruling: mechanism incorrect)
+
+The veto is removed from the pipeline everywhere, not parked per-piece. User verdict: the mechanism is wrong in itself -- it deletes dots instead of moving them back, so Pot A's seating predates the veto (user correction 2026-10-20) and stands on its own evidence -- no re-explanation owed. 171 continues as an information-only run (which pairs the veto touched), not a requirement.
+
+## 2026-10-20 — agreed work order (user decision)
+
+If C assembles (176): roll the split-fix out to every pot and test each like the Pot A cure (per-pot gate + E2E). If C still does not assemble: debug the cause, fix it, and only then write the full fixes ledger. Ledger comes last in both branches.
+
+## 2026-10-20 — 174 accepted (a+b); 176 run-1 E2E ties bar; frame architecture found
+
+174: mesh-stage reclaim proven same-binary (188/188 stations <2mm, Pot A ref-cover 0.97-1.00) and veto-free edge reproduces 171 red with first veto-free P04/P05/P06 loops, zero genuine leavers. Leg (c) closed as not-the-blocker (below). 176 run-1 (33449864 COMPLETED 0:0): A_orig 8/8+15/15, C_orig 4/4+5/5 (ORIG control seats Pot C fully -- the pipeline CAN assemble with author rims), C_176 2/3+1/3 -- ties the bar with T estimates byte-identical to 145. A gated-correct rim (0.95) does not move the search: the seating is stuck downstream of the rims, assembler-side. Frame architecture (lead relay finding): bundle breaklines live in MESH frame, the assembler applying T at runtime; the staged walk was already seated (worker's save), so the build now inverse-transforms and takes normals from author G0 (P39-fresh C01 is shredded, 19.6mm off rim). Runs 2-3 pending for the x3 verdict; on a triple tie the next ticket debugs the assembler (search/hypotheses/scoring), not the edges. Both live lanes run veto-free by lead steer: 175's filed slot-0 true walk contains no veto stage; 176 builds its bundle from veto-free binaries only (no 1c6a8f9 chain); 174's re-segmentation fix must stand alone with cured-vs-noveto deltas void as a landing leg. The fixes ledger will carry no veto entry -- dropped mechanisms are not documented as fixes.
+
 Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 (2026-09-26, oracle-init proof + Pot_A control). Extractor:
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation

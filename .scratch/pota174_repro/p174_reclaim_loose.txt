@@ -1,0 +1,27 @@
+S0 (11165, 6) S1 (1619, 6)
+unclustered n=2343
+round 0: +1458 (S0 1028 S1 430) free=885
+round 1: +495 (S0 389 S1 106) free=390
+round 2: +166 (S0 50 S1 116) free=224
+round 3: +149 (S0 7 S1 142) free=75
+round 4: +38 (S0 3 S1 35) free=37
+round 5: +4 (S0 0 S1 4) free=33
+round 6: +4 (S0 0 S1 4) free=29
+round 7: none
+RECLAIMED sheet n=15098 (S0+1477 S1+837)
+GAP188: min 0.068 med 0.749 max 1.816 frac<2mm 1.000 n<2 188/188
+  R0 n=2 max 1.187 <2mm 2/2
+  R1 n=19 max 1.302 <2mm 19/19
+  R2 n=8 max 1.657 <2mm 8/8
+  R3 n=35 max 1.489 <2mm 35/35
+  R4 n=10 max 1.130 <2mm 10/10
+  R5 n=6 max 1.033 <2mm 6/6
+  R6 n=32 max 1.330 <2mm 32/32
+  R7 n=11 max 0.932 <2mm 11/11
+  R8 n=5 max 1.477 <2mm 5/5
+  R9 n=3 max 0.856 <2mm 3/3
+  R10 n=6 max 1.278 <2mm 6/6
+  R11 n=46 max 1.816 <2mm 46/46
+  R12 n=5 max 0.938 <2mm 5/5
+S1-grown -> S0-grown: min 0.000 med 13.691 (faces distinct if min>>0)
+saved p174_reclaimed.npy

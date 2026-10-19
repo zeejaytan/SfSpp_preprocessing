@@ -1,0 +1,4 @@
+S1 n=1619
+S1->thr8-S0: med 0.000 max 2.242 frac<1mm 0.999 frac<2mm 0.999
+S1->ctl-S0: med 14.949 max 28.073 frac<1mm 0.007 frac<2mm 0.012
+FACE-SPILL verdict: SPILL -- second face absorbed into S0

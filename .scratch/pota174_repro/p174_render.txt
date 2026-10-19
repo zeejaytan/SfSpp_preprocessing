@@ -1,0 +1,6 @@
+C01 coverage: ctl<2 7/188, reclaim<2 188/188
+C01 top view saved
+tripwire P02_0 saved
+tripwire P03_0 saved
+tripwire P01_1 saved
+DONE

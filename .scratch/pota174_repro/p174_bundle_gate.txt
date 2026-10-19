@@ -1,0 +1,25 @@
+bundle P01_1 n=193
+  red-noveto n=321: trace-vs-bun cov0.324 med11.65 max33.72 | bun-vs-trace cov0.513 med1.08 max18.66
+  blue-cure n=168: trace-vs-bun cov0.149 med14.11 max40.19 | bun-vs-trace cov0.057 med17.37 max51.71
+  worktree-ref n=325: trace-vs-bun cov0.622 med1.32 max33.26 | bun-vs-trace cov0.964 med0.89 max4.94
+bundle P02_0 n=155
+  red-noveto n=165: trace-vs-bun cov0.000 med3.44 max6.43 | bun-vs-trace cov0.000 med3.44 max6.43
+  blue-cure n=80: trace-vs-bun cov0.000 med5.03 max9.25 | bun-vs-trace cov0.000 med22.04 max86.71
+  worktree-ref n=295: trace-vs-bun cov0.000 med3.49 max6.41 | bun-vs-trace cov0.000 med3.41 max6.37
+bundle P03_0 n=146
+  red-noveto n=150: trace-vs-bun cov0.000 med3.51 max5.58 | bun-vs-trace cov0.000 med3.46 max5.58
+  blue-cure n=64: trace-vs-bun cov0.000 med8.87 max19.48 | bun-vs-trace cov0.000 med32.30 max58.32
+  worktree-ref n=160: trace-vs-bun cov0.000 med3.49 max5.64 | bun-vs-trace cov0.000 med3.48 max5.64
+bundle P04_0 n=140
+  red-noveto: MISSING
+  blue-cure n=85: trace-vs-bun cov0.000 med9.34 max24.14 | bun-vs-trace cov0.000 med15.29 max46.66
+  worktree-ref n=231: trace-vs-bun cov0.000 med3.74 max5.10 | bun-vs-trace cov0.000 med3.66 max5.05
+bundle P05_0 n=135
+  red-noveto: MISSING
+  blue-cure n=81: trace-vs-bun cov0.000 med5.08 max19.61 | bun-vs-trace cov0.000 med11.21 max36.05
+  worktree-ref n=153: trace-vs-bun cov0.000 med3.72 max5.39 | bun-vs-trace cov0.000 med3.71 max5.38
+bundle P06_0 n=137
+  red-noveto: MISSING
+  blue-cure n=110: trace-vs-bun cov0.045 med4.37 max16.81 | bun-vs-trace cov0.044 med11.42 max38.63
+  worktree-ref n=160: trace-vs-bun cov0.000 med3.38 max4.26 | bun-vs-trace cov0.000 med3.35 max3.89
+DONE

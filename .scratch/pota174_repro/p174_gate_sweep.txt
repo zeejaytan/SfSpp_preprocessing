@@ -1,0 +1,58 @@
+gap stations n=188
+staged S0 n=11165
+ARM 4.5: n=11165 file=Pot_C_Piece_01_Surface_0.xyz
+  ORIG211: min 0.720 med 2.966 max 5.196 frac<2mm 0.142
+  GAP188: min 0.762 med 3.091 max 5.196 frac<2mm 0.037 n<2 7/188
+    R0 n=2 min 2.704 med 2.780 max 2.856 <2mm 0/2
+    R1 n=19 min 2.259 med 2.970 max 3.974 <2mm 0/19
+    R2 n=8 min 2.611 med 2.914 max 3.920 <2mm 0/8
+    R3 n=35 min 1.512 med 2.789 max 4.606 <2mm 2/35
+    R4 n=10 min 2.049 med 3.136 max 3.922 <2mm 0/10
+    R5 n=6 min 2.047 med 2.624 max 3.535 <2mm 0/6
+    R6 n=32 min 0.762 med 3.324 max 4.300 <2mm 3/32
+    R7 n=11 min 2.249 med 2.761 max 3.792 <2mm 0/11
+    R8 n=5 min 2.241 med 3.063 max 3.810 <2mm 0/5
+    R9 n=3 min 2.153 med 2.467 max 2.788 <2mm 0/3
+    R10 n=6 min 2.091 med 3.145 max 3.683 <2mm 0/6
+    R11 n=46 min 1.588 med 3.667 max 5.196 <2mm 2/46
+    R12 n=5 min 2.900 med 3.484 max 4.066 <2mm 0/5
+  vs-staged-S0: new->staged med 0.000 max 0.000 (reach gain if med>0 at rim)
+  staged->new (old covered?): med 0.000 max 0.000 fracoldcov<1mm 1.000
+ARM 8: n=14272 file=Pot_C_Piece_01_Surface_0.xyz
+  ORIG211: min 0.068 med 0.954 max 3.415 frac<2mm 0.896
+  GAP188: min 0.068 med 0.952 max 3.415 frac<2mm 0.883 n<2 166/188
+    R0 n=2 min 1.187 med 1.244 max 1.302 <2mm 2/2
+    R1 n=19 min 0.317 med 0.867 max 1.723 <2mm 19/19
+    R2 n=8 min 1.812 med 2.787 max 3.415 <2mm 1/8
+    R3 n=35 min 0.163 med 1.191 max 2.628 <2mm 26/35
+    R4 n=10 min 0.316 med 0.862 max 3.002 <2mm 8/10
+    R5 n=6 min 0.159 med 0.495 max 1.033 <2mm 6/6
+    R6 n=32 min 0.256 med 1.038 max 2.531 <2mm 30/32
+    R7 n=11 min 0.323 med 0.818 max 1.185 <2mm 11/11
+    R8 n=5 min 0.448 med 0.714 max 0.988 <2mm 5/5
+    R9 n=3 min 0.460 med 0.704 max 0.856 <2mm 3/3
+    R10 n=6 min 1.063 med 1.763 max 2.091 <2mm 5/6
+    R11 n=46 min 0.068 med 0.891 max 2.148 <2mm 45/46
+    R12 n=5 min 0.205 med 0.539 max 0.938 <2mm 5/5
+  vs-staged-S0: new->staged med 0.000 max 48.374 (reach gain if med>0 at rim)
+  staged->new (old covered?): med 0.000 max 3.005 fracoldcov<1mm 1.000
+ARM 12: n=14272 file=Pot_C_Piece_01_Surface_0.xyz
+  ORIG211: min 0.068 med 0.954 max 3.415 frac<2mm 0.896
+  GAP188: min 0.068 med 0.952 max 3.415 frac<2mm 0.883 n<2 166/188
+    R0 n=2 min 1.187 med 1.244 max 1.302 <2mm 2/2
+    R1 n=19 min 0.317 med 0.867 max 1.723 <2mm 19/19
+    R2 n=8 min 1.812 med 2.787 max 3.415 <2mm 1/8
+    R3 n=35 min 0.163 med 1.191 max 2.628 <2mm 26/35
+    R4 n=10 min 0.316 med 0.862 max 3.002 <2mm 8/10
+    R5 n=6 min 0.159 med 0.495 max 1.033 <2mm 6/6
+    R6 n=32 min 0.256 med 1.038 max 2.531 <2mm 30/32
+    R7 n=11 min 0.323 med 0.818 max 1.185 <2mm 11/11
+    R8 n=5 min 0.448 med 0.714 max 0.988 <2mm 5/5
+    R9 n=3 min 0.460 med 0.704 max 0.856 <2mm 3/3
+    R10 n=6 min 1.063 med 1.763 max 2.091 <2mm 5/6
+    R11 n=46 min 0.068 med 0.891 max 2.148 <2mm 45/46
+    R12 n=5 min 0.205 med 0.539 max 0.938 <2mm 5/5
+  vs-staged-S0: new->staged med 0.000 max 48.374 (reach gain if med>0 at rim)
+  staged->new (old covered?): med 0.000 max 3.005 fracoldcov<1mm 1.000
+ARM 20: no Surface_0 in []
+DONE

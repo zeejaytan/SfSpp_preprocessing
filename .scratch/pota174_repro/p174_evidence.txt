@@ -1,0 +1,49 @@
+174 evidence (worker, 2026-10-20 -- in progress)
+Jobs: sweep 33448352 COMPLETED 0:0 el ~2m; build1 33448517 FAILED-exit127 (wrong apptainer path, no-op); build2 33448560 FAILED (module, no-op); build3 33448720 COMPLETED 0:0 (mesh binary +SFS-P174, 5725600 bytes); run1 33448755 COMPLETED-but-all-arms-127 ($APT unset, no-op, zero worktree writes); run2 33448811 (in flight).
+Binaries: mesh 5721408 -> 5725600 (reclaim patch +72 lines headless); edge unchanged (cure, veto live).
+
+LEG (a) C01 rim reach (same-binary PROVEN):
+- control arm (Job A 4.5deg, pre-reclaim binary) reproduces staged S0 BIT-EXACT (both-direction med/max 0.000, n=11165). Same-binary ORIG control established.
+- Job A threshold sweep: 8deg -> 166/188 <2mm BUT faces merged; 12deg identical end-state (retry re-split at ~2deg); 20deg total merge, no surfaces.
+- face-spill proof: thr8-S0 absorbs 99.9% of control-S1 within 1mm; control keeps 98.8% of S1 beyond 2mm.
+- reclaim rule (numpy sim D=6mm/A=60deg, 12 rounds): 7/188 -> 188/188 (max 1.816), faces distinct (med sep 13.7mm).
+- IN-BINARY (Job B C01_reclaim arm, +1543/+427): S0 n=13184, 188/188 <2mm, max 1.816 -- reproduces sim exactly.
+- renders: C174_C01_coverage.png (every run below bar), C174_C01_top.png (188/188 green on rim). Eye-checked.
+
+LEG (b) tripwires (lead steer 2026-10-20: P02 extra = true rim, not spill):
+- refs: worktree ROOT Dataset/Breaklines/Pot_A/*.xyz (NOT SUB/Dataset): P02 md5 6b26826ddd92ae5772daac4267514193 verified; all 6 fetched (.scratch/pota174_repro/refs/).
+- role test: 8/8 E2E (145 jobs 33398092-94) reads pota40_bundle (A_FRESH), NOT worktree -- all 8 Bl_0 DIFF (P02 98960823 vs 101e34cf). Bundle is frame-shifted ~3.5mm vs worktree refs (centroid-shift then cov 0.70-1.00 med 0.9-1.7 on P02/P03/P04/P06; P01_1 0.000, P05_0 0.65). Bundle path reported per instruction: /data/gpfs/projects/punim2657/pota40_repro/prep/pota40_bundle/SfS_pp/Breaklines/ (.pcd only).
+- per-pair vs WORKTREE refs (2mm, both directions):
+  P01_1: red 0.542/1.68 + ref-red 0.557/1.53 (MIXED: outer loop tracked + interior spurs, see tripwire render); blue 0.131/9.24, ref-blue 0.040/14.72.
+  P02_0: red 0.988/0.45, ref-red 1.000/0.67 TRACKER; blue 0.325/3.70, ref-blue 0.142/22.15.
+  P03_0: red 1.000/0.62, ref-red 1.000/0.67 TRACKER; blue 0.250/9.73, ref-blue 0.100/34.12.
+  P04_0: red MISSING; blue 0.365/9.11, ref-blue 0.156/15.79.
+  P05_0: red MISSING; blue 0.605/0.88, ref-blue 0.281/12.48.
+  P06_0: red MISSING; blue 0.273/4.48, ref-blue 0.188/12.97.
+- renders: C174_P02_0/P03_0/P01_1_tripwire.png eye-checked (red rides rim; blue stub; P01_1 red has interior spurs).
+- pending: reclaim breaklines vs refs (Job B edgeline in flight); P04/05/06 red sort (NOVETO rebuild ONLY if reclaim leaves ref there); P01_1 spur verdict via reclaim-vs-red.
+
+LEG (c): pending C01 reclaim breaklines (Job B edge Pot_C).
+Restore: pending (patch revert? NO -- patch is the deliverable change; restore = build artifacts/outputs/Temp/staged files + Breaklines from backup + segstats; diff must return to 155 baseline +72... note: source patch stays UNCOMMITTED per COMMIT NOTHING? "COMMIT NOTHING" -- the patch stays as uncommitted diff; report diff md5 at end).
+
+LEAD STEER 2026-10-20 (binding, user ruling): VETO DROPPED ENTIRELY. Re-segmentation must stand ALONE; no veto stage before/after in any walked path. Leg (b) re-based: gate re-segmented-vs-ORIG primary; cured-vs-noveto deltas VOID. Comments must record veto-free path.
+
+MESH-STAGE GATE (laptop p174_surgate.py, raw-vs-raw, 2mm both-dir) -- reclaim S0/S1 vs refs:
+PA01 S1-vs-ref 0.997/0.85 | PA02 S0 1.000/0.54 | PA03 S0 1.000/0.66 | PA04 S1 1.000/0.53 | PA05 S0 1.000/0.38 | PA06 S0 1.000/0.35 | C01 S0-vs-ORIGraw 211 cov 1.000 med 0.75 (A-vs-B cov 0.041 = big sheet, expected). S1 faces do NOT cover (correct face wins). NO WELDING at mesh stage.
+EDGE-STAGE COLLAPSE (veto live in Job B edge binary): bl_Pot_A_new P02/P06/P08 Bl_0 = 2 dots; C01 Bl_0 = 15 dots. edge_Pot_A.log: normal_x/y/z/curvature match fails + [SEGMENT SAFETY] empty segments. Prime suspect = veto+T05 amputating the reclaimed rim band (NOT welding). Temp path note: pipeline Temp is original_nurbs_preprocessing/Temp (NOT worktree-root Temp).
+NOVETO patch (edgeline_extraction_headless.cpp, env-gated SFS_NOVETO, default = cure behavior): hunk1 force faceVetoThresh=2 (keep all) + [POTA174-NOVETO] log; hunk2 T05 bypass sequences UNFILTERED boundary. Build 33449535: make EdgeLineExtractionHeadless EXIT 0 (binary 11621232 bytes).
+Job D 33449583 (veto-free path): Pot_C D6+noveto, Pot_C D0+noveto(ctl), Pot_A D6+noveto, Pot_A D0+noveto(ctl); saves bl_D_C / bl_D_Cctl / bl_D_A / bl_D_Actl; restores Pot_A Dataset from backup at end.
+Restore scope: Dataset/ + Temp/ are git-IGNORED (check-ignore confirmed) -- byte-identical = tracked diff (2 sources: mesh+edge) + baseline untracked set. Pot_A Dataset restored md5 5ab3ddbc (== backup). Pot_C Dataset cure pre-image unknown (no backup; ignored scratch; regenerable).
+
+VETO-FREE EDGE RESULTS (Job D 33449583 COMPLETED 0:0; build 33449535 48s; NOVETO markers 4/edge, vetoDropped=0/0):
+C01 (mesh frame; ORIG pcd = production frame, ~13mm off -- gates below are RAW frame, med in mesh frame):
+ bl_D_C (D6+noveto): Bl_0 21 dots, Bl_1 27 -- STUB (reclaim band defeats sequencer).
+ bl_D_Cctl (D0+noveto): Bl_0 351 dots SCRIBBLE across sheet interior (render C174_D_loops.png), Bl_1 96 -- veto-free estimator sequences noise; T05+veto were load-bearing for coherence.
+Pot_A veto-free (bl_D_A = D6+noveto; bl_D_Actl = D0+noveto), vs worktree refs 2mm both-dir:
+ D0+noveto reproduces 171-NOVETO red: P01_1 321 dots 0.542/1.68 EXACT; P02_0 165 0.988/0.45 ref 1.000/0.67; P03_0 150 1.000/0.62 ref 1.000/0.67; NEW (red was missing): P04_0 145 0.993/0.55 ref 0.983/0.73 TRACKER; P05_0 150 0.980/0.62 ref 1.000/0.62 TRACKER; P06_0 145 0.979/0.69 ref 0.969/0.72 TRACKER.
+ D6+noveto (reclaim): all scribble/stub (loopcov 0.000 med 8-38; P06 2-dot) -- reclaim+edge sequencing fails everywhere.
+TRIPWIRE SORT (complete, veto-free): trackers P02/P03/P04/P05/P06 (refcov>=0.969); mixed P01_1 (outer tracked + interior spurs); genuine leavers NONE. Render C174_P04_0_tripwire.png: red rides ref, blue stub. Eye-checked.
+LEG VERDICTS: (a) PROVEN mesh-stage same-binary in-binary (C01 188/188 max 1.816; 6x refcover 0.969-1.000). (b-rebased) mesh-vs-ORIG gates done; D0+noveto traces gated vs refs (above). (c) BLOCKED: no coherent veto-free C01 loop exists (D0 scribble / D6 stub, rendered) -- loop extraction from reclaimed sheets needs lead scope (walk mesh boundary directly vs new edge coherence rule).
+PATH IS VETO-FREE per lead steer (no veto stage before/after in any walked path): mesh(reclaim or D0) -> edge(SFS_NOVETO=1) throughout Job D.
+RESTORE: tracked diff md5 e546596c90f8552ed9a40db34c5c2a4b == baseline (patches reverse-applied exactly; 1-blank-line fix verified). Binaries rebuilt from restored sources (Job restore). 18 staged Surface files restored from laptop copies (content = Job-B mesh outputs; staging names extensionless preserved). GAPS (worker error, owned): original_nurbs_preprocessing/segmentationStats.txt + p174_apply.py were baseline-?? and got rm'd in cleanup -- no backup exists (segStats regrows on next run; p174_apply.py unrecoverable -- check lead copies). Pot_A Dataset restored md5 5ab3ddbc == backup. Deliverable patch kept: pota174_reclaim_noveto.diff (12520 bytes, untracked, mirrors 155 convention).
+JOBS: sweep 33448352 ok 2m; builds 33448517/33448560 FAIL-noop (apptainer path), 33448720 ok; run1 33448755 all-127-noop ($APT unset); run2/JobB 33448811 ok 27m40s; ebuild 33449535 ok 48s; JobD 33449583 ok; restore build pending.

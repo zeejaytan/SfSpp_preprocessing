@@ -1,0 +1,19 @@
+PAIR P01_1 ref n=325
+  red-noveto n=321: trace-vs-ref cov0.542 med1.68 max14.87 | ref-vs-trace cov0.557 med1.53 max19.90
+  blue-cure n=168: trace-vs-ref cov0.131 med9.24 max15.98 | ref-vs-trace cov0.040 med14.72 max52.71
+PAIR P02_0 ref n=295
+  red-noveto n=165: trace-vs-ref cov0.988 med0.45 max4.21 | ref-vs-trace cov1.000 med0.67 max1.73
+  blue-cure n=80: trace-vs-ref cov0.325 med3.70 max9.53 | ref-vs-trace cov0.142 med22.15 max88.89
+PAIR P03_0 ref n=160
+  red-noveto n=150: trace-vs-ref cov1.000 med0.62 max1.63 | ref-vs-trace cov1.000 med0.67 max1.55
+  blue-cure n=64: trace-vs-ref cov0.250 med9.73 max20.54 | ref-vs-trace cov0.100 med34.12 max58.92
+PAIR P04_0 ref n=231
+  red-noveto: MISSING
+  blue-cure n=85: trace-vs-ref cov0.365 med9.11 max25.08 | ref-vs-trace cov0.156 med15.79 max48.19
+PAIR P05_0 ref n=153
+  red-noveto: MISSING
+  blue-cure n=81: trace-vs-ref cov0.605 med0.88 max20.78 | ref-vs-trace cov0.281 med12.48 max36.94
+PAIR P06_0 ref n=160
+  red-noveto: MISSING
+  blue-cure n=110: trace-vs-ref cov0.273 med4.48 max17.33 | ref-vs-trace cov0.188 med12.97 max40.51
+DONE
