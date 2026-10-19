@@ -17,7 +17,10 @@ GOAL: SETTLE ON THE FILE WHAT THE RENDER LIED ABOUT.
 - [ ] watertight verdict + real boundary loops enumerated on the file
 - [ ] FAR/NEAR distance-to-mesh-boundary numbers
 - [ ] opaque re-render, eye-checked
-## Comments (worker, 2026-10-20 -- file verdict + opaque renders)
+## Comments
+
+### Lead follow-up 2026-10-20 (Spartan reachable via Windows ssh agent)
+Full-res check closed as un-runnable: no full-resolution Pot C mesh exists anywhere on the cluster -- only the same `_DS` files under `temp_download/Mesh/Pot_C/` (Nov 2025). Laptop and cluster `Pot_C_Piece_01_Mesh_DS.obj` are byte-identical (md5 a0a34170). So the hole + flake + crumb are in the source data as received, not a decimation artifact of ours. SSH route for this session: `C:\Windows\System32\OpenSSH\ssh.exe` (Windows agent holds `spartan-laptop-key`); MSYS2 ssh cannot sign (passphrase-locked key, no agent). (worker, 2026-10-20 -- file verdict + opaque renders)
 
 VERDICT on "do FAR dots sit on real mesh boundary edges": NO as a class, PARTLY as a ring subset -- and none of the 4 loops is the fracture rim. Numbers are point-to-SEGMENT distances on the FILE (gate frame), not render estimates.
 
