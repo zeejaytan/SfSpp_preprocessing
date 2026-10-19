@@ -124,7 +124,7 @@ Success bar (interview converged): Gate 15/15 + end-to-end 8/8 + 15/15 at k=5/b=
 | 91 | Swap cure roll-out 4 (Pot I): pure SXC on own census 28 + 2 controls (ticket-listed 22/30 corrected), 13 forest, I28/29/30 no-GT | landed-STOPPED-AT-DENSIFY (login-node, 0 jobs): gate 27/27 GREEN 0.53-0.83mm; min new-Bl_0 over GT-scored = I27 n=49 <= 50 -> no E2E per rule; renders eye-checked by worker; successor 94 LANDED below | issues/91-swap-cure-i.md |
 | 108 | Lip-band snap: REFUTED both widths (X1 stump 0.0% edge, X2 keeps 8/40 row) — band-distance overlaps like 106A; no distance threshold separates | landed (login-node, 0 jobs): render eye-checked by lead | issues/108-lipband-snap.md |
 | 146 | Double-twice densify (dispatched): two doublings of 314, zigzag must fall per rung | running (login-node, 0 jobs) | issues/146-double-twice-densify.md |
-| 147 | Author-density parity (dispatched): measure author vs our on-arc spacing, walk density-matched bag | running (login-node, 0 jobs) | issues/147-author-density-parity.md |
+| 147 | Author-density parity: DENSITY-CONFIRMED (parity 206/206, flips 2/selfint 0, gate 1.19; uncovered 15 = 48mm void); wall-side SAME inner (wrong-edgeline refuted) | done (login-node, 0 jobs) | issues/147-author-density-parity.md |
 | 145 | E2E Pot C 314 bundle (dispatched): the beam votes on the finished trace, supersedes 141 | running (Slurm E2E) | issues/145-e2e-potC-314.md |
 | 144 | Recovery on 314 (dispatched): M134d-form re-derived on the dense bag | running (login-node, 0 jobs) | issues/144-recovery-on-314.md |
 | 143 | True densify (dispatched): fresh mesh-sampled dots (not midpoints) vs the 8-floor, spans + O37 | running (login-node, 0 jobs) | issues/143-true-densify.md |
