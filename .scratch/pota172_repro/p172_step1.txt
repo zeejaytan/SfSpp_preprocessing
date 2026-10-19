@@ -1,0 +1,17 @@
+unclustered n=2343
+gap station -> nearest unclustered: min 0.068 med 0.743 max 1.657 | frac<2mm 1.000
+near-rim unclustered pts n=188: dist-to-sheet min 1.09 med 2.98 max 5.30
+--- per-run station->unclustered min/med/max ---
+R0 : unc min 0.59 med 0.89 max 1.19 | lt2 2/2
+R1 : unc min 0.07 med 0.80 max 1.30 | lt2 19/19
+R2 : unc min 0.46 med 0.71 max 1.66 | lt2 8/8
+R3 : unc min 0.16 med 0.79 max 1.49 | lt2 35/35
+R4 : unc min 0.32 med 0.62 max 1.13 | lt2 10/10
+R5 : unc min 0.16 med 0.49 max 1.03 | lt2 6/6
+R6 : unc min 0.26 med 0.75 max 1.33 | lt2 32/32
+R7 : unc min 0.32 med 0.79 max 0.93 | lt2 11/11
+R8 : unc min 0.45 med 0.71 max 0.99 | lt2 5/5
+R9 : unc min 0.46 med 0.70 max 0.86 | lt2 3/3
+R10: unc min 0.16 med 0.62 max 1.28 | lt2 6/6
+R11: unc min 0.07 med 0.82 max 1.48 | lt2 46/46
+R12: unc min 0.21 med 0.54 max 0.94 | lt2 5/5

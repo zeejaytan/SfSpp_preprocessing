@@ -1,0 +1,5 @@
+saved p172_coverage.png
+saved run R11 closeup: 2430 tris drawn, 793 sheet pts
+saved run R3 closeup: 1733 tris drawn, 715 sheet pts
+saved run R6 closeup: 1537 tris drawn, 698 sheet pts
+saved p172_overview.png

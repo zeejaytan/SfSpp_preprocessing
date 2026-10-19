@@ -1,0 +1,24 @@
+mesh local verts 11875 faces 23114
+G0 (211, 3)
+S0 staged n=11165
+boundary edges 636 (expect 636)
+gap stations n=188
+sheet_d reproduce CSV: max abs diff = 0.000000
+d_bnd: min 36.23 med 53.71 max 79.96
+d_surf(mesh triangles): min 0.000 med 0.021 max 0.262
+mesh-surf <1mm 1.000 <2mm 1.000 <5mm 1.000
+--- per-run ---
+R0  (  0..  1 n= 2): sheet min 2.70 med 2.78 | mesh min 0.020 med 0.047 max 0.075 | bnd min 36.7 | lt2 2/2 -> MESH-HAS-IT
+R1  (  3.. 21 n=19): sheet min 2.26 med 2.97 | mesh min 0.002 med 0.024 max 0.163 | bnd min 36.2 | lt2 19/19 -> MESH-HAS-IT
+R2  ( 23.. 30 n= 8): sheet min 2.61 med 2.91 | mesh min 0.001 med 0.008 max 0.037 | bnd min 42.9 | lt2 8/8 -> MESH-HAS-IT
+R3  ( 34.. 68 n=35): sheet min 1.51 med 2.79 | mesh min 0.001 med 0.027 max 0.262 | bnd min 42.9 | lt2 35/35 -> MESH-HAS-IT
+R4  ( 72.. 81 n=10): sheet min 2.05 med 3.14 | mesh min 0.002 med 0.029 max 0.131 | bnd min 47.0 | lt2 10/10 -> MESH-HAS-IT
+R5  ( 83.. 88 n= 6): sheet min 2.05 med 2.62 | mesh min 0.002 med 0.013 max 0.055 | bnd min 48.0 | lt2 6/6 -> MESH-HAS-IT
+R6  ( 93..124 n=32): sheet min 0.76 med 3.32 | mesh min 0.000 med 0.029 max 0.227 | bnd min 53.5 | lt2 32/32 -> MESH-HAS-IT
+R7  (126..136 n=11): sheet min 2.25 med 2.76 | mesh min 0.000 med 0.008 max 0.085 | bnd min 67.7 | lt2 11/11 -> MESH-HAS-IT
+R8  (139..143 n= 5): sheet min 2.24 med 3.06 | mesh min 0.001 med 0.005 max 0.044 | bnd min 72.6 | lt2 5/5 -> MESH-HAS-IT
+R9  (145..147 n= 3): sheet min 2.15 med 2.47 | mesh min 0.001 med 0.001 max 0.048 | bnd min 72.4 | lt2 3/3 -> MESH-HAS-IT
+R10 (151..156 n= 6): sheet min 2.09 med 3.15 | mesh min 0.001 med 0.020 max 0.087 | bnd min 74.2 | lt2 6/6 -> MESH-HAS-IT
+R11 (158..203 n=46): sheet min 1.59 med 3.67 | mesh min 0.000 med 0.015 max 0.155 | bnd min 46.0 | lt2 46/46 -> MESH-HAS-IT
+R12 (206..210 n= 5): sheet min 2.90 med 3.48 | mesh min 0.002 med 0.008 max 0.140 | bnd min 37.3 | lt2 5/5 -> MESH-HAS-IT
+saved p172_meshgap.npz + p172_gapstations.csv
