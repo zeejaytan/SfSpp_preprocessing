@@ -14,6 +14,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <functional>
+#include <map>
+#include <limits>
+#include <algorithm>
 #include <sstream>
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include <experimental/filesystem>
@@ -803,6 +807,20 @@ MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spaci
 	return densified;
 }
 
+// POTA-153 replacement for getPointsInSequence
+// (edgeline_extraction_headless.cpp:806-892 @ 4accb8d).
+// APPLY: replace the whole function body from the signature line
+//   void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, ...)
+// through the lone closing '}' immediately before
+//   void getInitialBoundary_UsingPCL_BoundaryAlgo(...)
+// Signature UNCHANGED -- all callers and downstream file layout intact.
+// Requires <functional>, <map>, <limits>, <algorithm> (added by part1 hunk 0).
+//
+// Split-then-select + forward guard (150 section 3c, 67 section 4):
+// connected components at 5mm gaps, walk each largest-first with a
+// distance-gated half-plane guard (forward cos>=0, 6mm gate). Cross-component
+// steps never teleport: they are recorded as cuts in file order for
+// detectSeparateLineSegments. No ORIG geometry anywhere in this function.
 void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
 
@@ -810,82 +828,107 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 
 	kdtree.setInputCloud(cloud);
 
-	pcl::PointXYZ searchPoint;
-	pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
-	pcl::ExtractIndices<pcl::PointXYZ> extract;
-	std::vector<int> indices;
+	const float COMP_GAP_MM = 5.0f;
+	const float GUARD_GATE_MM = 6.0f;
 
-	pcl::PointXYZ currentPoint, nextPoint, previousPoint;
+	size_t n = cloud->points.size();
+	if (n == 0) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
 
-
-	currentPoint = cloud->points[0];
-	cloud_sequenced->points.push_back(currentPoint);
+	// union-find components at COMP_GAP_MM (pairwise; n is O(hundreds))
+	std::vector<int> parent(n);
+	for (size_t i = 0; i < n; i++) parent[i] = (int)i;
+	std::function<int(int)> findRoot = [&](int a) {
+		while (parent[a] != a) { parent[a] = parent[parent[a]]; a = parent[a]; }
+		return a;
+	};
+	for (size_t i = 0; i < n; i++) for (size_t j = i + 1; j < n; j++)
+	{
+		float dx = cloud->points[i].x - cloud->points[j].x;
+		float dy = cloud->points[i].y - cloud->points[j].y;
+		float dz = cloud->points[i].z - cloud->points[j].z;
+		if (dx*dx + dy*dy + dz*dz < COMP_GAP_MM * COMP_GAP_MM)
+		{ int ri = findRoot((int)i), rj = findRoot((int)j); if (ri != rj) parent[ri] = rj; }
+	}
+	std::map<int, std::vector<int>> comps;
+	for (size_t i = 0; i < n; i++) comps[findRoot((int)i)].push_back((int)i);
+	std::vector<std::vector<int>> ordered;
+	for (auto &kv : comps) ordered.push_back(kv.second);
+	std::sort(ordered.begin(), ordered.end(), [](const std::vector<int> &a, const std::vector<int> &b){ return a.size() > b.size(); });
+	std::cout << "[SPLIT-WALK] components=" << ordered.size();
+	for (auto &c : ordered) std::cout << " " << c.size();
+	std::cout << std::endl;
 
 	// ADAPTIVE: Scale K with boundary size (5-50 range, ~10% of points)
-	int boundary_size = cloud->points.size();
-	int K = std::max(5, std::min(50, boundary_size / 10));
-	std::cout << "[ADAPTIVE SEQUENCING] Boundary has " << boundary_size
+	int K = std::max(5, std::min(50, (int)n / 10));
+	std::cout << "[ADAPTIVE SEQUENCING] Boundary has " << n
 	          << " points, using K=" << K << " for point sequencing" << std::endl;
 
-	for (size_t t = 1; t < cloud->points.size(); t++)
+	std::vector<char> visited(n, 0);
+	std::vector<size_t> cuts;
+	for (size_t ci = 0; ci < ordered.size(); ci++)
 	{
-		searchPoint = currentPoint;
-		std::vector<int> pointIdxNKNSearch(K);
-		std::vector<float> pointNKNSquaredDistance(K);
-		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+		std::vector<int> &comp = ordered[ci];
+		if (comp.empty()) continue;
+		int seed = comp[0];
+		pcl::PointXYZ currentPoint = cloud->points[seed];
+		pcl::PointXYZ previousPoint = currentPoint;
+		cloud_sequenced->points.push_back(currentPoint);
+		visited[seed] = 1;
+		size_t compDone = 1;
+		bool first = true;
+		while (compDone < comp.size())
 		{
-
-			if (t == 1)
+			std::vector<int> pointIdxNKNSearch(K);
+			std::vector<float> pointNKNSquaredDistance(K);
+			int found = kdtree.nearestKSearch(currentPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
+			int best = -1;
+			float bestD2 = std::numeric_limits<float>::max();
+			float fwdx = currentPoint.x - previousPoint.x;
+			float fwdy = currentPoint.y - previousPoint.y;
+			float fwdz = currentPoint.z - previousPoint.z;
+			for (int k = 0; k < found; k++)
 			{
-				PointXYZ p;
-				p.x = (*cloud)[pointIdxNKNSearch[1]].x; p.y = (*cloud)[pointIdxNKNSearch[1]].y; p.z = (*cloud)[pointIdxNKNSearch[1]].z;
-				cloud_sequenced->points.push_back(p);
-				previousPoint = currentPoint;
-				currentPoint = p;
-			}
-			else
-			{
-				if (pointIdxNKNSearch.size() > 0)
+				int cand = pointIdxNKNSearch[k];
+				if (cand < 0 || (size_t)cand >= n || visited[cand]) continue;
+				float vx = cloud->points[cand].x - currentPoint.x;
+				float vy = cloud->points[cand].y - currentPoint.y;
+				float vz = cloud->points[cand].z - currentPoint.z;
+				float d2 = vx*vx + vy*vy + vz*vz;
+				if (!first)
 				{
-					for (std::size_t x = 0; x < pointIdxNKNSearch.size(); ++x)
-					{
-						PointXYZ p1;
-						p1.x = (*cloud)[pointIdxNKNSearch[x]].x; p1.y = (*cloud)[pointIdxNKNSearch[x]].y; p1.z = (*cloud)[pointIdxNKNSearch[x]].z;
-						if (!pointExistsInCLoud(p1, cloud_sequenced))
-						{
-							cloud_sequenced->points.push_back(p1);
-							previousPoint = currentPoint;
-							currentPoint = p1;
-							break;
-						}
-					}
-
-					/*PointXYZ p1;
-					p1.x = (*cloud)[pointIdxNKNSearch[1]].x; p1.y = (*cloud)[pointIdxNKNSearch[1]].y; p1.z = (*cloud)[pointIdxNKNSearch[1]].z;
-					PointXYZ p2;
-					p2.x = (*cloud)[pointIdxNKNSearch[2]].x; p2.y = (*cloud)[pointIdxNKNSearch[2]].y; p2.z = (*cloud)[pointIdxNKNSearch[2]].z;
-					if (p1.x == previousPoint.x && p1.y == previousPoint.y && p1.z == previousPoint.z)
-					{
-						if (cloud_sequenced->points[0].x != p2.x && cloud_sequenced->points[0].y != p2.y && cloud_sequenced->points[0].z != p2.z)
-						{
-							cloud_sequenced->points.push_back(p2);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p2;
-					}
-					else
-					{
-						if (cloud_sequenced->points[0].x != p1.x && cloud_sequenced->points[0].y != p1.y && cloud_sequenced->points[0].z != p1.z)
-						{
-							cloud_sequenced->points.push_back(p1);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p1;
-					}*/
+					if (d2 > GUARD_GATE_MM * GUARD_GATE_MM) continue;
+					if (vx*fwdx + vy*fwdy + vz*fwdz < 0.0f) continue;
 				}
+				if (d2 < bestD2) { bestD2 = d2; best = cand; }
 			}
+			if (best < 0)
+			{
+				// guard starved: nearest unvisited dot of this component (records a cut)
+				float bn = std::numeric_limits<float>::max();
+				for (int cand : comp) if (!visited[cand])
+				{
+					float dx = cloud->points[cand].x - currentPoint.x;
+					float dy = cloud->points[cand].y - currentPoint.y;
+					float dz = cloud->points[cand].z - currentPoint.z;
+					float d2 = dx*dx + dy*dy + dz*dz;
+					if (d2 < bn) { bn = d2; best = cand; }
+				}
+				if (best >= 0) cuts.push_back(cloud_sequenced->points.size());
+			}
+			if (best < 0) break;
+			previousPoint = currentPoint;
+			currentPoint = cloud->points[best];
+			cloud_sequenced->points.push_back(currentPoint);
+			visited[best] = 1;
+			compDone++;
+			first = false;
 		}
+		if (ci + 1 < ordered.size()) cuts.push_back(cloud_sequenced->points.size());
 	}
+
+	std::cout << "[SPLIT-WALK] sequenced=" << cloud_sequenced->points.size() << " cuts=" << cuts.size();
+	for (size_t c : cuts) std::cout << " @" << c;
+	std::cout << std::endl;
 
 	cloud_sequenced->width = cloud_sequenced->points.size();
 	cloud_sequenced->height = 1;
@@ -953,14 +996,37 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 
 	//get points which on the boundary form point cloud;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud(new pcl::PointCloud<pcl::PointXYZ>);
+	// POTA-153 mesh-observable face-side veto (no ORIG geometry enters this gate).
+	// The fixed 0.6pi angle gate above admits BOTH lip faces as boundary; the veto
+	// drops outer-lip-face dots here: keep surface-normal-vs-centroid-radial
+	// alignment <= FACE_ALIGN_VETO. surfCentroid is the mean of THIS input surface
+	// cloud (pipeline-native, ORIG-free). Evidence + bars:
+	// .scratch/pota153_repro/p153_vetofield.txt (centroid-radial 181/182 outer
+	// dropped, 88/88 inner kept; bars >=90% / >=95%).
+	const float FACE_ALIGN_VETO = 0.5f;
+	Eigen::Vector3f surfCentroid(0.0f, 0.0f, 0.0f);
+	for (const auto &p : cloudWithoutNormals->points) surfCentroid += p.getVector3fMap();
+	if (!cloudWithoutNormals->points.empty()) surfCentroid /= (float)cloudWithoutNormals->points.size();
+	size_t faceVetoKept = 0, faceVetoDropped = 0;
 	for (int i = 0; i < cloud->points.size(); i++)
 	{
 		if (boundary[i].boundary_point == 1)
 		{
-			boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
+			Eigen::Vector3f rp = cloudWithoutNormals->points[i].getVector3fMap() - surfCentroid;
+			float rl = rp.norm();
+			Eigen::Vector3f nn(normals->points[i].normal_x, normals->points[i].normal_y, normals->points[i].normal_z);
+			float align = (rl > 1e-6f) ? nn.dot(rp / rl) : 0.0f;
+			if (align <= FACE_ALIGN_VETO)
+			{
+				boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
+				faceVetoKept++;
+			}
+			else faceVetoDropped++;
 		}
 	}
 	boundaryCloud->width = boundaryCloud->points.size();
+	std::cout << "[FACE VETO] boundary kept=" << faceVetoKept << " dropped=" << faceVetoDropped
+	          << " (align<= " << FACE_ALIGN_VETO << ", centroid-observable)" << std::endl;
 	boundaryCloud->height = 1;
 	boundaryCloud->is_dense = true;
 
@@ -1029,7 +1095,11 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	outrem.filter(*cloud_filtered);
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Filtered.pcd", *cloud_filtered);
 
-	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud_Improved);
+	// POTA-153: DELETED killer reload-over (was: loadPCDFile(boundary.pcd) into
+	// boundaryCloud_Improved, discarding the filtered/resampled cloud). Sequencing now
+	// consumes boundaryCloud_Improved as built above (face-vetoed, unclustered-
+	// resampled). cloud_Filtered.pcd remains a diagnostic artifact only: per 150
+	// section 2, ROR revival alone is dead-or-harmful, so it must not feed sequencing.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
 	getPointsInSequence(boundaryCloud_Improved, cloud_sequenced);
 
