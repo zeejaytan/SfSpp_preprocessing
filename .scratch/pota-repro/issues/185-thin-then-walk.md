@@ -1,6 +1,13 @@
 # 185 - Thin band to centreline, then walk (arm 3 of 3-way shootout)
 
-Status: dispatched
+Status: DONE (WINS shootout)
+
+## Lead verdict (2026-10-20)
+- 204 dots / arc 365.0 / closure 1.79 / gaps 0 / D-tokens 2 (run 131) / rim-med 0.64.
+- Passes every bar; verbatim walker, key-free, no walker change. Qualifications: arc 5%
+  short (smoothing shrink), 8 contiguous author stations uncovered (24-31 kink sector).
+- SHOOTOUT WINNER vs 183 (D28) and 184 (refuted). Evidence: artifacts/pota185/.
+- Next: 186 bundles this loop for E2E (p180 pattern).
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal

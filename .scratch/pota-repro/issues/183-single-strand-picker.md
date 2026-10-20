@@ -1,6 +1,11 @@
 # 183 - Single-strand picker (arm 1 of 3-way shootout)
 
-Status: dispatched
+Status: DONE (mixed, loses shootout)
+
+## Lead verdict (2026-10-20)
+- 202 dots / closure 0.85 PASS bar, but arc +9pc, D-alphabet 28 (fragmented spacing).
+- Loses to 185 (204 / closure 1.79 / D-tokens 2, run 131). Spacing evenness decided it.
+- Evidence: artifacts/pota183/p183_order_trace.png.
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
