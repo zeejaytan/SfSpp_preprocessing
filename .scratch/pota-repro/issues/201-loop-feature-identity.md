@@ -1,6 +1,6 @@
 # 201 - Do our thinned loops speak the author\u2019s words (laptop leg)
 
-Status: open
+Status: landed (lead 2026-10-20: B09/A07 INTRINSIC -- thin halved word agreement; B04/J03 exonerated -- downstream; thickness leg inconclusive)
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
@@ -22,3 +22,18 @@ Per-piece (B09, B04, J03, A07 + C01 control): LCS agreement numbers, thickness v
 
 ## Required evidence
 Comments: script paths, source lines cited for token + thickness rules, per-piece numbers table, per-piece verdicts, cross-piece verdict. Final output: same, self-contained.
+
+## Comments (lead 2026-10-20: worker finished silent -- numbers in artifacts/pota201/p201_numbers.json, lib cites feature_matching.cpp:72-95/215-320/1479-1490 + filter.cpp:50-265, verbatim replication; lead verdict below)
+
+Metric: longest run of matching quantized (Dist/Height/Theta) tokens vs author loop, as fraction of min length (fwd_cov); cond4_cov = same run additionally requiring thickness agreement (GetThickness repl with mesh-vert proxy -- documented deviation, ticket-53 method).
+
+| piece | thin_fwd | fresh_fwd | thin_cond4 | fresh_cond4 | thick shift (mm) | verdict |
+|---|---|---|---|---|---|---|
+| B09 (dropped) | 0.286 | 0.600 | 0.114 | 0.600 | 0.01 | INTRINSIC: thin HALVED word agreement (0.60->0.29). Fresh rim already spoke author words; resample rewrote them. Geometry gate-green, words damaged. |
+| A07 (dropped) | 0.475 | 0.762 | 0.475 | 0.524 | 0.07 | INTRINSIC: same story (0.76->0.48). Thin improved rim-truth 0.45->0.35 while damaging the token run the assembler reads. |
+| B04 (dropped) | 0.535 | 0.559 | 0.333 | 0.346 | 0.15 | EXONERATED at loop level: words unchanged at seating level. Dies downstream (competition/pruning). |
+| J03 (unseated) | 0.556 | 0.434 | 0.062 | 0.063 | 0.27 | EXONERATED: thin improved words to C01 level, still unseated. Search-basin miss stands (193). |
+| C01 (SEATS, control) | 0.544 | 0.028 | 0.049 | 0.028 | 0.07 | Calibrator: seating needs fwd ~0.5+; fresh doubled 0.028 seats nothing, thinned 0.544 seats. |
+
+Cross-piece: fwd agreement predicts seating (C01 0.544 seats; J03 0.556 + B04 0.535 at that level but fail downstream; B09/A07 damaged below it by the thin itself). cond4_cov is low even for seating C01 (0.049) -- thickness leg INCONCLUSIVE under the mesh-vert proxy; do not cite thickness as the driver.
+Answer to m04633: improved geometry != improved words. Resampling rewrites the quantized token sequence; rim-truth (distance) and word agreement moved in OPPOSITE directions on B09/A07. That is why closer-to-author lines do not assemble.
