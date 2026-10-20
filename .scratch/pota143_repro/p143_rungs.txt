@@ -1,0 +1,22 @@
+queries: 339 S0 verts
+Rung-S r3 r=0.80821: 98/339 pass
+  SURF-C1: disp-ok=37 mid-ok=16 both=4
+  admitted 0
+Rung-S r4 r=0.40410: 36/339 pass
+  SURF-C1: disp-ok=21 mid-ok=6 both=0
+  admitted 0
+Rung-X2 pitch=1.2: 1326 grid nodes
+Rung-X2 r1 r=3.23284: 308/1326 pass
+  SURF-C1: disp-ok=240 mid-ok=90 both=78
+  admitted 21 (21 on-arc, 0 junk): seats [(34, 1.72), (36, 4.37), (37, 4.21), (38, 4.0), (44, 0.79), (44, 2.6), (44, 3.63), (45, 4.3), (46, 4.99), (94, 2.93), (96, 3.36), (97, 0.94), (97, 1.2), (163, 2.23), (164, 0.81), (165, 0.53), (165, 2.88), (166, 1.67), (173, 3.27), (174, 1.93), (175, 3.12)]
+Rung-X4 pitch=0.6: 5262 grid nodes
+Rung-X4 r1 r=3.23284: 1230/5262 pass
+  SURF-C1: disp-ok=949 mid-ok=340 both=299
+  admitted 1 (1 on-arc, 0 junk): seats [(94, 2.76)]
+
+SATURATION CURVE (marginal new on-arc dots per rung, dedupe vs 292+earlier):
+  rung-1 (rA/r1/rB/r2 x S0-verts): 10 admitted, 10 on-arc, 0 junk (p143_admit.txt)
+  Rung-S r3 r=0.80821: 0 admitted (0 on-arc, 0 junk)
+  Rung-S r4 r=0.40410: 0 admitted (0 on-arc, 0 junk)
+  Rung-X2 r1 r=3.23284: 21 admitted (21 on-arc, 0 junk)
+  Rung-X4 r1 r=3.23284: 1 admitted (1 on-arc, 0 junk)

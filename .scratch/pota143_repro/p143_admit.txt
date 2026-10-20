@@ -1,0 +1,119 @@
+S0 cloud: 11165 verts
+U verts: 2342
+O36 local=[-29.96  21.47 379.93]
+O46 local=[-27.5   36.17 387.91]
+O96 local=[ 38.91  60.05 422.11]
+O165 local=[ 59.61 -31.13 400.07]
+O173 local=[ 52.27 -38.47 390.71]
+O37 local=[-30.14  23.09 380.7 ]
+C=270 ROW40=40 G282=282
+S0 verts within 10mm of a current uncovered mid: 339/11165
+  near O36: n10=63
+  near O46: n10=68
+  near O96: n10=63
+  near O165: n10=97
+  near O173: n10=48
+  near O37: n10=62
+ladder: r0=6.46568 rA=4.84926 r1=3.23284 rB=2.42463 r2=1.61642
+r0=6.46568mm: 54 boundary dots in current-span neighbourhoods
+rA=4.84926mm: 89 boundary dots in current-span neighbourhoods
+r1=3.23284mm: 122 boundary dots in current-span neighbourhoods
+rB=2.42463mm: 244 boundary dots in current-span neighbourhoods
+r2=1.61642mm: 226 boundary dots in current-span neighbourhoods
+
+RESPONSE vs SCALE per current uncovered mid (pre-snap boundary dots n5/n10/min):
+  mid O36   r0=0/10/5.65 rA=2/21/3.96 r1=2/26/3.96 rB=2/47/3.96 r2=0/30/6.10
+  mid O46   r0=0/8/5.79 rA=3/18/3.24 r1=3/22/3.24 rB=3/49/3.24 r2=0/37/5.53
+  mid O96   r0=1/8/4.94 rA=1/14/4.94 r1=7/35/0.76 rB=9/50/0.76 r2=5/41/2.27
+  mid O165  r0=8/16/4.43 rA=8/24/4.43 r1=8/25/4.43 rB=8/65/4.43 r2=10/81/4.43
+  mid O173  r0=0/14/5.04 rA=0/14/5.04 r1=0/16/5.04 rB=0/35/5.04 r2=0/35/5.04
+  mid O37   r0=0/9/5.45 rA=1/18/4.40 r1=1/23/4.40 rB=1/42/4.40 r2=0/29/6.14
+rA: 89 cand snap disp med=2.23 p90=2.63 max=3.62
+r1: 122 cand snap disp med=2.29 p90=3.69 max=6.90
+rB: 244 cand snap disp med=2.80 p90=5.64 max=7.83
+r2: 226 cand snap disp med=3.21 p90=5.63 max=7.42
+rA SURF-C1(disp<=2.5,dmid<=5 union): disp-ok=73 mid-ok=8 both=7
+r1 SURF-C1(disp<=2.5,dmid<=5 union): disp-ok=83 mid-ok=22 both=13
+rB SURF-C1(disp<=2.5,dmid<=5 union): disp-ok=102 mid-ok=43 both=15
+r2 SURF-C1(disp<=2.5,dmid<=5 union): disp-ok=82 mid-ok=35 both=8
+Pool-A SURF-C1 survivors: 43
+ROR-6 rejects: 21
+S->S0 index map misses: 0/364
+reject  81 r1=fail nnb=  0 disp=0.00 dmid-min=4.94 rings=['O96']
+reject 106 r1=PASS nnb= 12 disp=2.13 dmid-min=52.42 rings=-
+reject 107 r1=PASS nnb= 11 disp=2.34 dmid-min=52.85 rings=-
+reject 108 r1=PASS nnb= 10 disp=2.01 dmid-min=51.66 rings=-
+reject 109 r1=PASS nnb=  6 disp=2.56 dmid-min=57.31 rings=-
+reject 110 r1=PASS nnb=  6 disp=3.29 dmid-min=54.53 rings=-
+reject 114 r1=PASS nnb=  5 disp=2.27 dmid-min=49.85 rings=-
+reject 123 r1=PASS nnb=  4 disp=2.45 dmid-min=38.92 rings=-
+reject 135 r1=PASS nnb=  6 disp=2.50 dmid-min=38.32 rings=-
+reject 136 r1=PASS nnb=  5 disp=2.74 dmid-min=40.84 rings=-
+reject 139 r1=PASS nnb=  2 disp=0.99 dmid-min=13.87 rings=-
+reject 183 r1=PASS nnb=  5 disp=2.35 dmid-min=7.57 rings=-
+reject 202 r1=PASS nnb=  4 disp=7.30 dmid-min=73.67 rings=-
+reject 272 r1=PASS nnb=  4 disp=1.61 dmid-min=11.58 rings=-
+reject 274 r1=PASS nnb=  3 disp=0.75 dmid-min=11.58 rings=-
+reject 275 r1=PASS nnb=  4 disp=1.45 dmid-min=12.46 rings=-
+reject 300 r1=PASS nnb=  6 disp=2.31 dmid-min=8.84 rings=-
+reject 331 r1=PASS nnb=  8 disp=3.09 dmid-min=14.97 rings=-
+reject 332 r1=PASS nnb=  7 disp=0.75 dmid-min=5.68 rings=-
+reject 333 r1=PASS nnb=  6 disp=2.15 dmid-min=5.68 rings=-
+reject 347 r1=PASS nnb=  7 disp=6.99 dmid-min=73.67 rings=-
+Pool-B survivors (r1-pass & disp<=2.5 & per-span ring<=5): 0
+  A-rA dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-r1 dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-rB dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+  A-r2 dropped: dedupe-collision (dbag<1mm)
+ADMITTED after dedupe+ROW40 (A-then-B): 10
+  A-rA snap=[[ 36.46  64.29 422.74]] disp=0.00 dmid=4.94
+  A-rA snap=[[-27.13  36.26 388.98]] disp=2.26 dmid=1.14
+  A-rA snap=[[-26.15  38.46 391.19]] disp=2.00 dmid=4.22
+  A-rA snap=[[-28.12  34.05 388.83]] disp=2.23 dmid=2.40
+  A-rA snap=[[-30.09  18.69 379.77]] disp=2.34 dmid=2.79
+  A-rA snap=[[-30.33  21.34 382.07]] disp=2.38 dmid=2.18
+  A-r1 snap=[[ 38.77  63.24 425.67]] disp=0.00 dmid=4.79
+  A-r1 snap=[[ 41.06  58.75 424.41]] disp=2.32 dmid=3.41
+  A-r1 snap=[[ 38.55  60.56 421.38]] disp=1.65 dmid=0.96
+  A-r1 snap=[[ 36.18  60.87 420.73]] disp=2.50 dmid=3.17
+admitted ORIG-seat dist: [4.12 1.14 1.19 1.13 0.88 2.18 4.79 1.07 0.96 0.95] idx: [34, 36, 45, 46, 48, 94, 94, 96, 96, 98] within-5mm: 10/10
+JUNK (>5mm): 0
+  A-rA -> ORIG[94] d=4.12 disp=0.00 dmid=4.94
+  A-rA -> ORIG[46] d=1.14 disp=2.26 dmid=1.14
+  A-rA -> ORIG[48] d=1.19 disp=2.00 dmid=4.22
+  A-rA -> ORIG[45] d=1.13 disp=2.23 dmid=2.40
+  A-rA -> ORIG[34] d=0.88 disp=2.34 dmid=2.79
+  A-rA -> ORIG[36] d=2.18 disp=2.38 dmid=2.18
+  A-r1 -> ORIG[96] d=4.79 disp=0.00 dmid=4.79
+  A-r1 -> ORIG[98] d=1.07 disp=2.32 dmid=3.41
+  A-r1 -> ORIG[96] d=0.96 disp=1.65 dmid=0.96
+  A-r1 -> ORIG[94] d=0.95 disp=2.50 dmid=3.17

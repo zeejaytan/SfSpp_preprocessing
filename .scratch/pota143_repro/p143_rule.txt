@@ -1,0 +1,37 @@
+R143 finer TRUE extraction (stated BEFORE running, ORIG-free)
+=====================================================
+GOAL: denser TRUE dots sampled from the mesh, not midpoints of old dots.
+
+Pool A (extraction re-run, primary): S0 cloud verts within 10mm of the 5
+currently-uncovered span mids + O37 single, tested with the port-exact
+empty-sector boundary test (123 verbatim: float32, exact-float-zero
+delta-skip, singleton-wrap, strict >0.6*pi, full-S0 neighbours) at a FINER
+ladder: r0=6.46568, rA=r0*0.75=4.84926, r1=r0/2=3.23284, rB=r1*0.75=2.42463,
+r2=r0/4=1.61642. New vs 123: rA and rB are intermediate scales never tested
+(finer lip-gap sampling in SCALE); queries confined to 10mm neighbourhoods
+of the CURRENT uncovered spans (36,37)/(46,47)/(96,97)/(165,165)/(173,173)
++ O37 single (finer lip-gap sampling in SPACE: 123's neighbourhoods were the
+old blind spans [9..13]/[32..50]/[160..161]/[173], most now covered).
+Seeds are S0 verts only, never filter rejects (121 stands).
+
+Pool B (reject re-license, secondary): the 21 ROR-6 rejects, r1-tested on own
+S0 verts (123 verbatim), licensed per-span dmid<=5 to each span's OWN mid
+(O36/O46/O96/O165/O173/O37 local frame via TF^-1; gate ORIG names mids only).
+Differs from 132 (single O41 mid, missed flanks by construction) and 139
+(O37-only, ring empty): one tight ring per span.
+
+Snap SURF-C1 (frozen): K=1 snap to U verts, disp<=2.5 (124's calibrated knee;
+>2.5 buys drift not seats, measured) + dmid<=5 to the licensing mid.
+Dedupe >=1.0mm vs the 282 bag in pool-A-then-B order + ROW40-coord exclusion.
+Base bag = 282 (C=270 + SN124=8 + SN128=1 + SN133=3); each new dot sub-mm
+seated or declared junk: admitted dot with ORIG seat >5mm = JUNK, counts
+against the bar (junk must be 0).
+
+Walker: plain greedy K34+T13 verbatim (walk_plain from 128), bar arm.
+M134d-form recovery reported ONLY if greedy lands 4/4 (per 128 s4 stale-latch
+lesson, verbatim GUARD/M134d on a changed bag is not evidence).
+
+Success bar: uncovered strictly below 8 (floor broken) AND junk 0 AND gate
+at/below 4.3107. If pools yield no admissible on-arc dot (admitted 0 after
+dedupe), REFUTE with saturation evidence: response-vs-scale curves per span,
+snap-shadow/dedupe autopsy, per-span dmid calibration (no operating point).

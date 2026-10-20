@@ -1,0 +1,9 @@
+bags: 292 + grids22 -> 314
+GREEDY-314: greedy=140/314 ratio=0.4459 final=140 jumps=0 at=[]
+GREEDY gate: greedy-phase final=140 gate med=3.9851 <2mm=35.0% gaps5=23 maxstep=21.7 big40max=0.0 ORIGcov 66/211 uncovered=91 spans=[(115, 205)]
+grid-dot visits on-road: 14/22
+BAR(greedy): pushes>=206:FAIL(140) uncovered<8:FAIL(91) junk0:PASS(32/32) gate<=4.3107:PASS(3.9851)
+FORCED-314(probe,NOT banked): greedy=140/314 final=241 jumps=2
+FORCED gate: greedy-phase final=241 gate med=3.9732 <2mm=34.9% gaps5=44 maxstep=58.0 big40max=58.0 ORIGcov 116/211 uncovered=0 spans=[]
+  jump seqpos 139->140 len=43.2
+  jump seqpos 191->192 len=58.0

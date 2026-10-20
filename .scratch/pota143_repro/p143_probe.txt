@@ -1,0 +1,5 @@
+FORCED-292: greedy=126/292 final=219 jumps=2
+  jump seqpos 125->126 len=31.1
+  jump seqpos 168->169 len=53.1
+FORCED gate: final=219 gate med=4.2199 <2mm=34.7% gaps5=40 maxstep=53.1 big40=1 ORIGcov 110/211 uncovered=2 spans=[(165, 165), (173, 173)]
+vs M134d-282 (290/278u/med 4.2488/unc 8/same spans): beat-or-match?
