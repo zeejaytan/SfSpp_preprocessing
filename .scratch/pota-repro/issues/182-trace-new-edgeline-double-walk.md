@@ -1,6 +1,16 @@
 # 182 — Trace the double-walk on the NEW edgeline (post-176)
 
-Status: dispatched
+Status: DONE
+
+## Lead verdict (2026-10-20)
+- Mechanism: walk does NOT lap twice -- it zigzags across the ~2-dot-wide TRUE strip,
+  consuming two rows alternately (79/438 retrograde steps, 49 flips, two-row lateral
+  scatter ~0.3/~1.3mm). One station-lap costs 434 dots / 650mm vs author 211 / 380mm.
+- 67 face-hop ruled DIFFERENT mechanism (disjoint loops + 5.5mm hop vs within-lap weave).
+- Closure-check verdict: NO -- trims only the 5-dot tail; doubling is woven in progressively.
+- Cure: single-track discipline in the walk rule; p180 Viterbi (220/383.5/closure 1.48)
+  already demonstrates it on this edge. Next: ticket the walk-rule fix.
+- Evidence: artifacts/pota182/p182_order_trace.png + p182_station_sweep.png (worker eye-checked).
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
