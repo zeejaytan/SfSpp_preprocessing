@@ -1,0 +1,4 @@
+Total number : 45
+Total number pruned : 8
+********* Sherd accuracy : 2 / 3 (66.6667%) ********* 
+********* Edge accuracy : 1 / 3 (33.3333%) ********* 
