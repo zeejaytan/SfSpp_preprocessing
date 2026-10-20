@@ -43,4 +43,7 @@ paths, any per-piece slot flips. Final report: same, self-contained, plus
 the explicit go/no-go request. Do NOT flip to done -- the USER flips this
 one with their verdict; lead records it.
 
+## Lead R6 (2026-10-20) -- gate VERIFIED, awaiting USER verdict
+Worker could not locate this ticket file (searched wrong tree); full write-back arrived via message and is recorded here. Numbers rechecked EXACT on laptop (P01 0.48/99.7 + 0.66/96.3; P16 0.80/76.2 + 1.45/51.8); all 3 jobs sacct-COMPLETED 0:0 (build 2:17, sample 0:43, pipe 14:56); source md5 verified (LF-normalised worktree file = 21fbb6b5 = exact 213-cure source; binary differs only by build-dir path); 29/29 overlays + 58+58 lane files + gate_table.csv on disk. Eye-checked P01 (both lanes coincide, one negligible stray squiggle) and P16 (both lanes deviate: orange cuts interior shortcut, red leaves blue on upper arc -- genuinely the worst sherd). Provenance note: no Pot_D Point PCDs exist anywhere; inputs synthesised by sampling ORIG meshes at legacy Pot_A density (36.24 pts/mm2, mesh-observable only) -- accepted, documented in ticket. Worker recommendation: GO on 23 clean, flag 6 mixed (P12/P15/P16/P22/P25/P27). Status stays ready-for-agent -- the USER closes this one with go/no-go.
+
 ## Comments (worker)
