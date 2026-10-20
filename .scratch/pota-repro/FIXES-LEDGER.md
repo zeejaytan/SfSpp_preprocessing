@@ -36,7 +36,8 @@ Owner tickets: 180, 186, 190, 191.
 
 ## F. Boundary: thin is NOT a blanket default (194)
 Force-applied 185 v3 to Pot B's clean singles: 6/9+5/15 -> 2/9+1/15 x3 (jobs 33485122/29/30, NOT void). Split found one face each (label-flicker only); thin gated clean yet seating collapsed. Thinning is indicated ONLY on a doubling diagnosis (179 census), never blanket.
-Owner ticket: 194.
+Owner ticket: 194. Attribution (198): collapse is GLOBAL/UNIFORM -- 14/15 edges wrong every run incl. byte-identical B01; per-rim repairs rejected; surviving edge is beam chance. Mechanism: thinned resample shifts the features every sherd matches on.
+Owner tickets: 194, 198.
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless), 195 (D harmless), 196 (A control holds), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
