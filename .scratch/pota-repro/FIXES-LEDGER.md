@@ -44,5 +44,10 @@ Owner ticket: 194. Attribution (198): collapse is GLOBAL/UNIFORM -- 14/15 edges 
 196 (full default chain on Pot A CONTROL, clean singles): A_196 5/8+3/15, 4/8+1/15 x2 vs 8/8+15/15 bar, jobs 33486565/66/67, controls green; GLOBAL scramble (0-1/15 strict edges, all pieces) incl. untouched rims -- SAME signature as 194/198. DEFAULT REJECTED: thin-then-walk must never ship blanket; rim-truth-med falsifier is BLIND to this mode (passed 8/8 while E2E collapsed) -- E2E on the control is the real ship-gate.
 Owner tickets: 194, 196, 198.
 
+## G. Boundary: never pool faces before splitting (204/C03 diagnosis, 2026-10-20)
+Symptom: 204 pooled both face bags (F0+F1) then re-split geometrically by wall-facing (inner/fold/outer). On C03 the author's own second edge (Bl_1) entered Bl_0's bag and survived: F1 ring follows ORIG Bl_1 at med 0.86mm/91%% <2mm while Bl_0/Bl_1 are disjoint (med 15.88, 0%% <2mm); split kept 503/543 (fold share 77%%, only 40 refused); thin averaged two real edges into a false middle (6.52/7.3%% vs fresh 0.95/86.8%%); walk output == thin centreline point-set exactly (0.00), i.e. walk innocent. C02/C04 survived the same pooling only because their second strands read as outer-wall (C02 refused 511/955, C04 360/589).
+Rule: provenance (which surface file a dot came from: Surface_0 interior vs Surface_1 exterior) is EXACT and must be split on BEFORE any pooling -- walk each face's bag separately, file each slot from its own face (175 as written). Pool-then-geometric-split is REJECTED: at the lip fold both edges read identically, so geometry cannot recover a label the pool already discarded. E2E proof pending (204 jobs 33499348/49/50); entered as constraint, not yet as applied fix.
+Owner tickets: 204, 205.
+
 ## Pending proofs (not yet in this ledger)
-194 (B harmless), 195 (D harmless), 196 (A control holds), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
+194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
