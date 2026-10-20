@@ -1,6 +1,13 @@
 # 184 - Heading rule in greedy walker (arm 2 of 3-way shootout)
 
-Status: dispatched
+Status: DONE (honest negative)
+
+## Lead verdict (2026-10-20)
+- 24 configs x 6 seeds, all miss bar. Closest: 327 dots / closure 45.1 (bar: <=240 / <=2.0).
+- Mechanism: on a 2-wide strip the correct single-track move IS sideways half the time;
+  a direction penalty fights the geometry (strands rows, recovery leaps 12-38mm).
+- Arm 2 premise refuted: discipline must come from strand separation (183/185), not a
+  direction term. Evidence: artifacts/pota184/p184_order_trace.png. Controls green.
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
