@@ -1,0 +1,10 @@
+G282 shape (282, 3); rebuild-equals-stored: True
+bag parts: guarded=270 +124=8 +128=1 +133=3 -> 282 (no 143/146 dots)
+M134d seq: seqlen=290 unique=278 (expect 290/278)
+author G0 shape (211, 3) (expect (211,3))
+G0 vs 134-OG maxdev=0.000000 (expect 0: same frame)
+M134d 176-recipe gate: seqlen=290 med=4.2488 <2mm=29.3% gaps5=98 maxstep=25.8 ORIGcov 99/211 uncovered=8 over25=[25.7, 25.8]
+CONTROL vs 134 file (290/4.2488/99/8): GREEN
+176-s1 reference (Comments s1): 439 dots, ORIGcov 211/211, med 0.9492, <2mm 92.0%%, gaps5 3, maxstep 14.8
+AUTHOR-ORIG (proxy validation; expect n=211 arc~380 closure~1.8 gaps0 tokens3 bins[11,12,13]): n=211 arc=378.2mm closure=1.80mm max=1.97 med=1.80 gaps>5=0 zero-steps=0 D-tokens=3 bins=[11, 12, 13] top3=[(12, 109), (11, 100), (13, 1)] longest-run=4
+M134d pre-densify walk (bag frame, rigid-invariant): n=290 arc=1361.0mm closure=20.42mm max=25.77 med=3.50 gaps>5=98 zero-steps=1 D-tokens=73 bins=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 47, 48, 49, 52, 54, 56, 60, 62, 68, 70, 75, 78, 81, 84, 88, 95, 96, 97, 101, 103, 107, 113, 119, 121, 132, 144, 164, 171] top3=[(14, 15), (33, 14), (20, 13)] longest-run=8
