@@ -1,6 +1,16 @@
 # 186 - Bundle the thin-loop C01 input, E2E x3 (p180 pattern)
 
-Status: dispatched
+Status: DONE
+
+## Lead verdict (2026-10-20)
+- C01 SEATED x6: worker chain (33482185/86/87) + lead duplicate chain (33482198/99/200),
+  all COMPLETED 0:0, tallies IDENTICAL: C_186 155/24, 3/3+3/3, T_0to_0 present everywhere.
+- 179 falsifier NOT triggered (155, not ~40). Bar partially met: seating + edges pass;
+  pruned 24 below 30-40 band -- gate is now pruning-side, not input-side. No further
+  input-side iteration without new evidence.
+- Controls green both chains (A 8/8+15/15, C_orig 4/4+5/5).
+- Standing answers: workers CAN ssh Spartan themselves (worker ran full chain after probe)
+  -- brief full-chain henceforth. Handoff discipline: file + final output, never child messaging.
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
@@ -35,3 +45,15 @@ Staged scripts + md5s + job IDs + per-run tallies + honest verdict vs bar.
 **5. Bar + falsifier (same 179 bar 180 beat).** Predict: Total 40 -> 100-125 band, pruned 8 -> 30-40 band, C01 pairs >=1 survivor, C01 seated (edges 1/3 -> >=2/3), controls green (A 8/8+15/15, C_orig 4/4+5/5). FALSIFIER owned in advance: Total stays ~40 -> thin-loop input is NOT the gate (assembler-side or segment-window cause), proposal refuted -- report honestly, no further input-side iteration without new evidence.
 
 **6. Evidence.** .scratch/pota186_repro/ (scripts + both walk npys + reference pcds + md5 + logs + RELAY.txt) + artifacts/pota186/ (3 renders). No repo sources touched, dataset read-only, COMMIT NOTHING.
+
+## Comments (worker, 2026-10-20 -- E2E x3 COMPLETE, mixed vs bar; COMMIT NOTHING)
+
+Parent follow-up granted Spartan SSH; full chain executed from this worker. COMMIT NOTHING held (tracked diff empty apart from this section).
+
+**S1. Relay.** ssh_exec spartan OK (spartan-login2.hpc.unimelb.edu.au). Recon: 98-SXC base present, vehicle HEAD bffefb6 (assert passed). Uploaded 3 stage files; arrival walk md5 32b80e8b... match. First login-node build FAILED on a worker porting bug (P39 pointed at .../pota39_repro/asm instead of .../prep/pota39_bundle_C/SfS_pp); fixed in .scratch/pota186_repro/p186_build.py (py_compile OK), re-uploaded, BUILD DONE exit 0: WALK GREEN 204x3, G0 med 0.64, segs 402->204, ONLY C01-Bl_0 differs (e1e59c->ef922d), 98-SXC intact ALL-OK. Note: Spartan Bl_0 md5 (ef922d) differs from the laptop reference (1b891676) by CRLF line-endings ONLY (laptop write tool emits CR; equal-modulo-CRLF True, verified by download+diff); in-job bundle guard uses the Spartan-side manifest, self-consistent.
+
+**S2. Jobs.** sbatch x3: 33482185, 33482186, 33482187 -- all COMPLETED 0:0 (11-17 min). Run dirs /data/gpfs/projects/punim2657/sfs_main/pota186_run_<JOBID>/, per-run pota186_fetch.tgz present (e.g. 41896 bytes in run 185).
+
+**S3. Tallies (identical x3 -- deterministic).** A_orig 124/70 + 8/8 + 15/15; A_fresh 420/119 + 8/8 + 15/15; C_orig 125/40 + 4/4 + 5/5 (matches C_orig as-before); C_186 155/24 + 3/3 + 3/3. T-files x3 identical: T_0to_0 + T_1to_1 + T_3to_3 (C_186 lacks T_2to_2; T_0to_0 pose differs from C_orig as expected with new input).
+
+**S4. Verdict vs bar (honest, mixed).** PASS: controls green (A 8/8+15/15, C_orig 4/4+5/5); C01 seated (T_0to_0 present x3); edges 3/3 clears >=2/3; literal falsifier NOT triggered (Total 155, not ~40 -- the input moves the needle). FAIL: pruned 24 below 30-40 band and below control 40; one fewer seated pair (3 vs 4, missing T_2to_2); Total 155 overshoots 100-125 band. Net: thin loop generates MORE hypotheses (+30 raw) but FEWER survive pruning -- C01 itself seats, the gate is now pruning-side (or segment-window), not input-side. No further input-side iteration proposed without new evidence.
