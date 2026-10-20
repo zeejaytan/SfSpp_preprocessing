@@ -33,7 +33,8 @@ Owner tickets: 143, 144, 175, 185.
 191 (transfer to G): 3 doubled edges cured with 185 v3, jobs 33484406/07/09 COMPLETED 0:0, G_191 5/7+3/10 x3, +1 sherd over fresh bar (60/39: 4/7+3/10), controls G_orig 7/7+10/10 + A green. Supersedes 83. APPLIED.
 190 (gated thin on F01 doubled edge only, singles untouched): F_190 6/6+9/9 x3 = 81 bar, jobs 33485426/27/28; bar-neutral, no regression. This is the gated default done right.
 193 (gated thin on J03 doubled edge only): J_THIN 7/10+13/18 x3 exact, bit-identical seated set to 92 SXC; J03 placed-but-wrong -> unplaced -- doubling NOT what kept J03 out (search-basin miss stands, needs assembly-lane work). Bar held, no regression, no further J rim work.
-Owner tickets: 180, 186, 190, 191, 193.
+189 (Pot E, 13 gated thin loops of 25 doubled): below bar x3, only cured E23 seats (2/3 runs) -- HONEST NEGATIVE; generation fixed, placement fails downstream. E needs assembly-side work, not more rim work.
+Owner tickets: 180, 186, 189, 190, 191, 193.
 
 ## F. Boundary: thin is NOT a blanket default (194)
 Force-applied 185 v3 to Pot B's clean singles: 6/9+5/15 -> 2/9+1/15 x3 (jobs 33485122/29/30, NOT void). Split found one face each (label-flicker only); thin gated clean yet seating collapsed. Thinning is indicated ONLY on a doubling diagnosis (179 census), never blanket.
