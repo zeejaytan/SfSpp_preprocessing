@@ -1,6 +1,6 @@
 # 197 - D-only ablation: is the walk chain sufficient without the swap?
 
-Status: dispatched
+Status: landed (lead 2026-10-20: MIXED verified -- D-only recovers C01-C03 true join x3 deterministic, pot-level falsifier fires 2/4 vs 4/4; side-finding: landed sections added ~270 rim pts)
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
@@ -12,3 +12,19 @@ Test whether section D of the ledger (densify -> split -> thin+walk -> recovery)
 2. Slot choice: use 175's measured recommendation (cite which + apply; no new rules).
 3. Bundle: ONLY the D-chain outputs differ (byte-proofs, only-changed diff, veto-absence, 180/186 pattern).
 4. E2E: upload the PRISTINE tree (not cure-potA), login-node build, sbatch x3 + laptop-side poll per AGENTS.md. Falsifier: pristine+D < pristine+ORIG (any run seating less) refutes D-sufficiency; pristine+D == pristine+ORIG (and C01 seated) proves D is the ONLY load-bearing change.
+
+## Comments (worker, 2026-10-20 -- pristine E2E x3, renders eye-checked; COMMIT NOTHING)
+
+**Verdict: MIXED -- D-only seats C01 (one true join, x3 deterministic) but does NOT reproduce full-pot ORIG seating. By the ticket letter (pristine+D == pristine+ORIG proves D-only-load-bearing) the falsifier FIRES at pot level (2/4 vs 4/4); by the goal question (does D ALONE seat C01) the answer is YES at edge level. D is load-bearing for C01, not sufficient for the pot.**
+
+**0. What ran.** Pristine vehicle (asm @ 11f4827, tree-clean, zero delta, P22FIX absent, veto present, gate 0.610, rank 50, k5/b3 in-tree shim) + pristine prep (pipe from reverted tree e31540b: 8 breaklines / 8 surfaces / 6 axes). Bundle pota197_bundle_C_197 = pristine base with ONLY C01-Bl_0 replaced by the D loop (204-dot TRUE thin-loop, closure 1.79, G0-donor NN med 0.64; recursive diff proves only that file differs, md5 9f5612800c66e5fb57016ead3c6d5568). 5 arms/job x 3 jobs (33490262/63/64, all COMPLETED 0:0, all arms container exit 0): A_orig + A_fresh (STEPS=8) / C_orig BAR + C_fresh + C_197 (STEPS=4).
+
+**1. Tallies (identical x3 -- deterministic).** C_orig BAR 4/4 sherd + 4/5 edge (all 5 GT edges geometrically PASS: rot<=0.015 rad, trans<=5.2; the 5th needs the method to also propose it). C_fresh 0/4 + 0/5. C_197 2/4 + 1/5. A_fresh 7/8 + 10/15 (vehicle sane). A_orig varies 2/8, 2/8, 8/8 across jobs (Totals identical 124/71: beam nondeterminism in the pristine vehicle on Pot A; C arms unaffected, bit-identical T matrices x3).
+
+**2. The one true join is C01-C03 (edge-level proof, replicates the binary's own criterion: rel-rot<=0.35 rad, rel-trans<=50).** C_197: C01-C02 rot 3.131 FAIL; C01-C03 rot 0.0533 rad (3.06 deg) trans 21.1 PASS x3; C01-C04, C02-C03, C02-C04 all FAIL (rot 1.5-3.1). So the walk chain moved C01 from zero true joins (C_fresh) to its real C01-C03 neighbour join. Render .scratch/pota197_repro/p197_result_render.png (eye-checked): BAR pot coherent; D-only pot scattered except C01+C03 running together along the base curve.
+
+**3. Side-finding for the ledger (kept out of the verdict path -- both E2E arms share the pristine base).** Pristine C01-Bl_0 = 132 pts / 4 segs (md5 dcb078dd) vs landed-fresh 402 pts / 13 segs (e1e59cdf): pristine is a strict spatial subset (med 0.23mm, max 0.45mm, n>2mm 0), i.e. landed sections A/B/C ADDED ~270 rim points to unchained C01-Bl_0. Same story C04-Bl_0 (b5dcec46 -> 1ae68ad1); other 6 breaklines + all 8 surfaces byte-identical. Attribution to T13/T21/T23/T24/T27 NOT done -- follow-up ticket.
+
+**4. Infra notes (E2E needed two sbatch fixes; both in .scratch/pota197_repro/run_pota197_stage_AC.sbatch).** (a) Line-77 stray `>` inside bash -c region dumped script text (jobs 33489717-19 all arms exit 1); fixed to match 186 line 72 exactly. (b) OVERLAY-NOT-VISIBLE-IN-CONTAINER: pristine data_path.h carries trailing comments (`#define POT_A   // E2E...`) so `^...$` matches failed; relaxed in-container check to grep -Eq `^#define POT_X([^_]|$)` and make_overlay sed to `s|^#define POT_A|...`. Jobs 33490032-34 then failed only on (b); jobs 33490262-64 green. Also: the stage script never tars the fetch dir (tar line dropped in port) -- tarred by hand on the login node (sfs_main/pota197_run_33490262/pota197_fetch.tgz) and downloaded to .scratch/pota197_repro/p197_fetch_262.tgz.
+
+**5. Evidence.** Spartan: prep bundles pota197_repro/pota197_prep/pota197_bundle_C{,_197}/ (BL md5 manifests alongside); D loop .scratch/pota197_repro/p197_true_walk.npy (= staged 186 walk, maxdiff 0.0); E2E RUNDIRs sfs_main/pota197_run_3349026{2,3,4}/ (Result T_ito_i + binary logs); job IDs above. Laptop: .scratch/pota197_repro/ (p197_build.py, p197_dchain.py + p197_dchain.txt, stage sbatch, p197_fetch_262.tgz, p197_result_render.png, mesh_C0{1..4}.obj, GT_C0{1..4}.txt). D-loop input renders artifacts/pota197/ (eye-checked in round 1).
