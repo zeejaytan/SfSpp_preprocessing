@@ -63,9 +63,11 @@ present. Lead check: staged P08 mesh IS the 208-fresh P08 mesh (bounds
 identical [-36.6,-3.6,287.5]/[0.1,26.5,313.7], 62.7k vs 62.2k verts) --
 staging accurate. 4-lane picture (p210_P08_4lane.png): all 4 lanes present
 (fB0 64 / fB1 59 / oB0 60 / oB1 63), correctly paired on two rims; drawn
-red/blue coincide 100%<2mm. No annotation file saved the mark, so the exact
-spot is unrecovered -- awaiting the marked location (upper undrawn rim vs
-gap on the drawn rim). Script: artifacts/pota209/p210_check_p08.py.
+red/blue coincide 100%<2mm. Pin re-taken (left panel, [-10.8,10.7,295.7], 'this edge trace is missing'):
+measured -- red fB1 passes 0.85mm from the pin (2 pts <2mm), blue oB0
+0.41mm. Both traces present at the marked edge; the 'missing' red is viewer
+occlusion from that camera angle, not missing data. No defect; no ticket.
+Script: artifacts/pota209/p210_check_p08.py.
 
 Standing decision (user, 2026-10-20): for future trace-on-mesh verification
 a picture is sufficient -- no viewer staging required. (Viewer still stands
