@@ -7,7 +7,8 @@ Answers: E1-do-our-breaklines-let-sfs-find-joins
 Prove the thin-then-walk default is HARMLESS on clean rims: force-apply the 185 v3 recipe to Pot B's already-single SXC Bl_0 loops, bundle, E2E x3 vs 93's bar. If tallies match 93, the default is safe everywhere (cures doubled, keeps clean).
 
 ## Method (worker runs FULL chain, SSH works -- Host spartan)
-1. Thin: apply 185 v3 (thin TRUE strip to centreline, uniform 1.8mm resample, verbatim walk_m144) to each of B02-B09's clean single SXC Bl_0 loops (B01 forest excluded, with 78 per 93/187). Gate each loop: closure <=2.0, single wrap, rim-truth med (check-only, expect ~0.5-1.15 per 187).
+0. Split (175 pre-step, read 175-two-walks-two-slots.md first): apply the 175 split-by-parent-surface rule to each B02-B09 SXC Bl_0 loop BEFORE thinning -- mesh-observable features only, no ORIG in the rule. Expectation on clean singles: each loop yields ONE face cloud (no second cloud); if the split finds two faces inside a 'clean' loop, that is new evidence -- report it, do not silently pool. Then thin+walk the face cloud(s) per step 1.
+1. Thin: apply 185 v3 (thin TRUE strip to centreline, uniform 1.8mm resample, verbatim walk_m144) to each face cloud from step 0 (B01 forest excluded, with 78 per 93/187). Gate each loop: closure <=2.0, single wrap, rim-truth med (check-only, expect ~0.5-1.15 per 187).
 2. Falsifier (own in advance): any loop whose rim-truth med worsens by >0.5mm vs its unthinned SXC input is REFUSED (not bundled) -- thinning must not move clean dots off the rim.
 3. Bundle: rebuild with ONLY the thinned Bl_0 slots changed (byte-proofs, only-changed diff, veto-absence, 180/186 pattern).
 4. E2E: upload, login-node build (expect BUILD DONE), sbatch x3 + laptop-side poll per AGENTS.md. Bar = 93 SXC (cite tallies from 93/187). Verdict: MATCH (>= bar, no piece unseated that 93 seated) or REGRESSION (name the dropping piece + numbers).
