@@ -1,4 +1,4 @@
-// Headless version - removed Windows graphics libraries
+// Headless version - removed Windows graphics libraries 
 
 #include <iostream>
 #include <iomanip>
@@ -293,37 +293,16 @@ void uniformSampling(string cloudPath, string cloudOutPath, double cloud_res = 0
 	writer.write<pcl::PointNormal>(cloudOutPath, *cloud_filtered, false);
 }
 
-void writeMatrix_to_XYZ(Eigen::MatrixXd& src, string fileName, int cols = 3, bool convertToMM = true)
+void writeMatrix_to_XYZ(Eigen::MatrixXd& src, string fileName, int cols = 3)
 {
 	ofstream writeStream(fileName, ios::out | ios::trunc);
 	if (writeStream)
 	{
-		// Check if this is for CGAL processing (temporary files)
-		bool isCGALFile = (fileName.find("fileForNormalEst") != string::npos);
-		// Check if this is for EdgeLineExtraction (Surface_ files need clean XYZ without headers)
-		bool isEdgeLineFile = (fileName.find("_Surface_") != string::npos);
-
-		if (!isCGALFile && !isEdgeLineFile) {
-			// Add SFS-compatible header format only for final output files (not Surface_ files)
-			writeStream << "# SFS-compatible surface file" << endl;
-			writeStream << "# 1 " << src.rows() << " 1" << endl;
-			writeStream << "segment 0 0 " << (src.rows() - 1) << endl;
-			// Add padding lines to match expected header structure (total 12 lines)
-			for (int i = 0; i < 9; i++) {
-				writeStream << "#" << endl;
-			}
-		}
-
 		for (size_t i = 0; i < src.rows(); i++)
 		{
 			for (size_t j = 0; j < cols; j++)
 			{
-				double value = src(i, j);
-				// Convert coordinates (x,y,z) to millimeters, keep normals as-is
-				if (convertToMM && j < 3) {
-					value *= 1000.0;  // meters to millimeters
-				}
-				writeStream << value << " ";
+				writeStream << src(i, j) << " ";
 			}
 			writeStream << endl;
 		}
@@ -349,38 +328,7 @@ void setInputFile(std::string inputFile, std::string tempPath = "") {
     }
 }
 
-// Adaptive parameter infrastructure for sparse/dense point clouds
-struct AdaptiveParams {
-    int k_neighbors;        // For KNN searches
-    double radius_mm;       // For radius searches (in millimeters)
-    int min_cluster;        // For clustering
-    int max_cluster;
-    double boundary_radius_m; // For boundary detection (in meters)
-};
 
-AdaptiveParams computeAdaptiveParams(int num_points, double avg_spacing_m) {
-    AdaptiveParams p;
-    double avg_spacing_mm = avg_spacing_m * 1000.0;
-
-    // K neighbors: scale with density, clamp 5-50
-    p.k_neighbors = std::max(5, std::min(50, num_points / 200));
-
-    // Radius searches: 3-5× average point spacing
-    p.radius_mm = std::max(0.5, std::min(10.0, avg_spacing_mm * 4.0));
-
-    // Clustering: 0.2-1% of points
-    p.min_cluster = std::max(10, std::min(100, num_points / 500));
-    p.max_cluster = std::max(1000, num_points * 3);
-
-    // Boundary: 5-7× spacing in meters
-    p.boundary_radius_m = std::max(0.001, std::min(0.015, avg_spacing_m * 6.0));
-
-    std::cout << "[ADAPTIVE PARAMS] N=" << num_points << ", spacing=" << avg_spacing_mm
-              << "mm, K=" << p.k_neighbors << ", boundary_r=" << (p.boundary_radius_m*1000)
-              << "mm, cluster=[" << p.min_cluster << "-" << p.max_cluster << "]" << std::endl;
-
-    return p;
-}
 
 // Forward declarations for curvature computation
 std::vector<int> getKNNPoints(const Eigen::Vector3f& center_point, const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, int K);
@@ -397,7 +345,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 		pointCloudMatrix.row(i) << sampledPointCloud->points[i].x, sampledPointCloud->points[i].y, sampledPointCloud->points[i].z;
 	}
 	std::cout << "[DEBUG getNormalsOnSurface] Writing matrix to XYZ file..." << std::endl;
-	writeMatrix_to_XYZ(pointCloudMatrix, fragmentMeshFile + "_Sampled.xyz", 3, false);
+	writeMatrix_to_XYZ(pointCloudMatrix, fragmentMeshFile + "_Sampled.xyz", 3);
 
 	string fName = fragmentMeshFile + "_Sampled.xyz";
 	const char* fname = fName.c_str();
@@ -415,10 +363,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	}
 	std::cout << "[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: " << points.size() << std::endl;
 
-	// ADAPTIVE: Scale K neighbors with density (5 for dense, 15-20 for sparse)
-	int nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000));
-	std::cout << "[ADAPTIVE CGAL] Using " << nb_neighbors << " neighbors for "
-	          << points.size() << " points (density-aware)" << std::endl;
+	const int nb_neighbors = 5;
 
 	// Estimates normals direction.
 	CGAL::pca_estimate_normals<Concurrency_tag>
@@ -493,33 +438,6 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	surfaceWithNormals->width = surfaceWithNormals->points.size();
 	surfaceWithNormals->height = 1;
 
-	// CRITICAL FIX: Compute curvature using PCL's robust PCA-based estimation
-	std::cout << "[DEBUG getNormalsOnSurface] Computing curvature for " << surfaceWithNormals->points.size() << " points..." << std::endl;
-
-	// Use PCL's NormalEstimation which computes curvature from PCA eigenvalues
-	pcl::NormalEstimation<pcl::PointNormal, pcl::PointNormal> ne;
-	pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>());
-	ne.setInputCloud(surfaceWithNormals);
-	ne.setSearchMethod(tree);
-
-	// ADAPTIVE: Scale curvature K with density (10-50 range)
-	int curv_k = std::max(10, std::min(50, (int)surfaceWithNormals->points.size() / 300));
-	ne.setKSearch(curv_k);
-	std::cout << "[ADAPTIVE CURVATURE] Using K=" << curv_k << " for "
-	          << surfaceWithNormals->points.size() << " points" << std::endl;
-
-	// Compute curvature (stored in the curvature field automatically)
-	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_curvature(new pcl::PointCloud<pcl::PointNormal>());
-	ne.compute(*cloud_with_curvature);
-
-	// Copy curvature values back to original cloud (positions/normals already correct)
-	for (size_t i = 0; i < surfaceWithNormals->points.size(); i++)
-	{
-		surfaceWithNormals->points[i].curvature = cloud_with_curvature->points[i].curvature;
-	}
-
-	std::cout << "[DEBUG getNormalsOnSurface] Curvature computation complete." << std::endl;
-
 
 	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
 	for (size_t i = 0; i < numberOfPoints; i++)
@@ -565,95 +483,25 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr downsampledCloudPoints(new pcl::PointCloud<p
 pcl::PointCloud<pcl::PointNormal>::Ptr downsampledCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 std::string outputFile = "";
 
-// Auto-tunes sampling radius based on scene scale; aims for ~targetSamples (default 10000)
-// If targetSamples <= 0, skips downsampling and uses raw point cloud instead
-std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 10000) {
-	pcl::PointCloud<pcl::PointXYZ>::Ptr originalPointCloudXYZ(new pcl::PointCloud<pcl::PointXYZ>);
+std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F) {
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalPointCloud(new pcl::PointCloud<pcl::PointNormal>);
-
-	if (pcl::io::loadPCDFile<pcl::PointXYZ>(inputPcdFile, *originalPointCloudXYZ) == -1) {
+	if (pcl::io::loadPCDFile<pcl::PointNormal>(inputPcdFile, *originalPointCloud) == -1) {
 		PCL_ERROR("Couldn't read file\n");
-		return "";
+		return ""; 
 	}
-
-	// Convert XYZ to PointNormal (normals will be computed later)
-	pcl::copyPointCloud(*originalPointCloudXYZ, *originalPointCloud);
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::copyPointCloud(*originalPointCloud, *originalCloudWithNormals);
 
-	// SPECIAL CASE: If targetSamples <= 0, skip downsampling and use raw cloud
-	if (targetSamples <= 0) {
-		std::cout << "[NO DOWNSAMPLING] Using raw point cloud with " << originalCloudWithNormals->size() << " points" << std::endl;
-		// Use raw cloud directly - copy to downsampledCloud
-		pcl::copyPointCloud(*originalCloudWithNormals, *downsampledCloud);
-		pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
-		getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
-
-		pcl::PLYWriter writer;
-		outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
-		std::cout << "[NO DOWNSAMPLING] Saving PLY with normals..." << std::endl;
-		writer.write<pcl::PointNormal>(outputFile, *downsampledCloudWithNormals, false);
-		return outputFile;
-	}
-
 	pcl::KdTreeFLANN<pcl::PointNormal> kdTree;
 	kdTree.setInputCloud(originalCloudWithNormals);
 
-    uniformSampler.setInputCloud(originalCloudWithNormals);
-
-    // Estimate bounding box diagonal as proxy for scale
-    float minx=std::numeric_limits<float>::max(), miny=minx, minz=minx;
-    float maxx=-minx, maxy=-minx, maxz=-minx;
-    for (const auto& p : originalPointCloudXYZ->points) {
-        if (!std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.z)) continue;
-        if (p.x < minx) minx = p.x; if (p.x > maxx) maxx = p.x;
-        if (p.y < miny) miny = p.y; if (p.y > maxy) maxy = p.y;
-        if (p.z < minz) minz = p.z; if (p.z > maxz) maxz = p.z;
-    }
-    float dx = maxx - minx, dy = maxy - miny, dz = maxz - minz;
-    float diag = std::sqrt(dx*dx + dy*dy + dz*dz);
-
-    // Target sample size and tolerance (with configurable targetSamples)
-    const int lowerBound = targetSamples * 0.8;  // 80% of target
-    const int upperBound = targetSamples * 1.2;  // 120% of target
-
-    // Initialize leaf from scale (smaller -> denser). Start moderately dense.
-    float leaf = std::max(0.0005f, 0.0015f * diag);
-    int iter = 0;
-    do {
-        uniformSampler.setRadiusSearch(leaf);
-        uniformSampler.filter(*downsampledCloud);
-        if (downsampledCloud->size() > (size_t)upperBound) {
-            // Too many points -> increase radius modestly
-            leaf *= 1.25f;
-        } else if (downsampledCloud->size() < (size_t)lowerBound) {
-            // Too few -> shrink radius
-            leaf *= 0.75f;
-        } else {
-            break;
-        }
-    } while (++iter < 12);
-
-    // Safety minimum: ensure not extremely sparse
-    if (downsampledCloud->size() < 2000) {
-        int attempts = 0;
-        while (downsampledCloud->size() < 2000 && leaf > 1e-5f && attempts < 8) {
-            leaf *= 0.6f;
-            uniformSampler.setRadiusSearch(leaf);
-            uniformSampler.filter(*downsampledCloud);
-            attempts++;
-        }
-    }
-
-    // Log downsampling result
-    std::cout << "[DOWNSAMPLING RESULT] Target=" << targetSamples << " points, "
-              << "Bounds=[" << lowerBound << "-" << upperBound << "], "
-              << "Result=" << downsampledCloud->size() << " points, "
-              << "Radius(leaf)=" << std::fixed << std::setprecision(5) << leaf << std::endl;
+	uniformSampler.setInputCloud(originalCloudWithNormals);
+	uniformSampler.setRadiusSearch(samplingRadius); //downsample_10
+	uniformSampler.filter(*downsampledCloud);
 
 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
-    getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+	getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
 
 	pcl::PLYWriter writer;
 	outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
@@ -679,15 +527,8 @@ int getClusters_EuclideanDistBased(string fileName)
 	std::vector<pcl::PointIndices> cluster_indices;
 	pcl::EuclideanClusterExtraction<pcl::PointNormal> ec;
 	ec.setClusterTolerance(2); // 2cm
-
-	// ADAPTIVE: Scale cluster size thresholds with point cloud density
-	int num_pts = missedPoints->points.size();
-	int min_cluster = std::max(10, std::min(100, num_pts / 500));
-	int max_cluster = std::max(1000, num_pts * 3);
-	ec.setMinClusterSize(min_cluster);
-	ec.setMaxClusterSize(max_cluster);
-	std::cout << "[ADAPTIVE CLUSTER 1] N=" << num_pts << ", min=" << min_cluster
-	          << ", max=" << max_cluster << std::endl;
+	ec.setMinClusterSize(50); // 100);
+	ec.setMaxClusterSize(25000);
 	ec.setSearchMethod(tree);
 	ec.setInputCloud(missedPoints);
 	ec.extract(cluster_indices);
@@ -1090,23 +931,7 @@ void getBreakLineForDecorativeParts(string fileName)
 		pcl::BoundaryEstimation<pcl::PointXYZ, pcl::Normal, pcl::Boundary> boundary_est;
 		boundary_est.setInputCloud(cloudWithoutNormals);
 		boundary_est.setInputNormals(normals);
-
-		// ADAPTIVE: Compute boundary radius based on cluster density
-		// Note: Point cloud coordinates are in MILLIMETERS after coordinate fix
-		// Estimate average spacing from point count (assuming ~1m^2 pottery piece)
-		int num_pts = cloudWithoutNormals->points.size();
-		double estimated_spacing_m = std::sqrt(1.0 / std::max(100, num_pts));  // sqrt(area / density)
-		double estimated_spacing_mm = estimated_spacing_m * 1000.0;  // Convert to millimeters
-
-		// Calculate radius in millimeters (6x the estimated spacing)
-		double boundary_radius_mm = estimated_spacing_mm * 6.0;
-		// Cap between 1mm and 50mm (original uses 3mm fixed)
-		boundary_radius_mm = std::max(1.0, std::min(50.0, boundary_radius_mm));
-
-		boundary_est.setRadiusSearch(boundary_radius_mm);  // PCL expects same units as coordinates (mm)
-		std::cout << "[ADAPTIVE BOUNDARY] Cluster " << t << " has " << num_pts
-		          << " points, spacing≈" << estimated_spacing_mm << "mm, boundary_r="
-		          << boundary_radius_mm << "mm" << std::endl;
+		boundary_est.setRadiusSearch(3);
 		//boundary_est.setAngleThreshold(PI/4);
 		boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
 		boundary_est.compute(boundary);
@@ -1141,8 +966,8 @@ void getBreakLineForDecorativeParts(string fileName)
 		// Check if boundary cloud is empty before processing
 		if (boundaryCloud->points.empty()) {
 			std::cerr << "[WARNING] Cluster " << t << " has no boundary points! Skipping getPointsInSequence." << std::endl;
-			std::cerr << "[WARNING] This may indicate the boundary radius (" << boundary_radius_mm
-			          << "mm) is too small for the point spacing." << std::endl;
+			std::cerr << "[WARNING] This may indicate the boundary radius is too small; current fixed radius is " << 3
+			          << "mm." << std::endl;
 			continue;  // Skip to next cluster
 		}
 
@@ -1562,10 +1387,10 @@ void savePLYandXYZ(const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, const st
 		pointCloudMatrix.row(i) << cloud->points[i].x, cloud->points[i].y, cloud->points[i].z,
 			cloud->points[i].normal_x, cloud->points[i].normal_y, cloud->points[i].normal_z;
 	}
-	writeMatrix_to_XYZ(pointCloudMatrix, basePath + ".xyz", 6, false);
+	writeMatrix_to_XYZ(pointCloudMatrix, basePath + ".xyz", 6);
 }
 
-void convertPLYtoXYZ(string inputFile, string outFile, bool convertToMM = true)
+void convertPLYtoXYZ(string inputFile, string outFile)
 {
 	pcl::PointCloud<pcl::PointNormal>::Ptr mesh_cloud(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::io::loadPLYFile(inputFile, *mesh_cloud);
@@ -1574,7 +1399,7 @@ void convertPLYtoXYZ(string inputFile, string outFile, bool convertToMM = true)
 	{
 		pointCloudMatrix.row(i) << mesh_cloud->points[i].x, mesh_cloud->points[i].y, mesh_cloud->points[i].z, mesh_cloud->points[i].normal_x, mesh_cloud->points[i].normal_y, mesh_cloud->points[i].normal_z;
 	}
-	writeMatrix_to_XYZ(pointCloudMatrix, outFile, 6, convertToMM);
+	writeMatrix_to_XYZ(pointCloudMatrix, outFile, 6);
 }
 
 void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold)
@@ -1587,23 +1412,13 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
     int numberOfClustersCreated = -1;
     int maxIterations = 30;  // Prevent infinite loops
     int currentIteration = 0;
-    double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration
     
     while (numberOfClustersCreated < 2 && currentIteration < maxIterations)
     {
         if (numberOfClustersCreated != -1 && numberOfClustersCreated < 2)
         {
-            std::cout << "Single cluster found (iteration " << (currentIteration + 1) 
-                      << "/" << maxIterations << ")...Increasing angle threshold (+2) and trying again..." << std::endl;
-            smoothnessAngleThreshold += 2; // actually increase threshold to loosen smoothness criterion
-            
-            // Safety check: if angle threshold gets too negative, break out
-            if (smoothnessAngleThreshold > 45.0)
-            {
-                std::cout << "Warning: Angle threshold reached maximum (45 deg)"
-                          << "). Using single cluster result." << std::endl;
-                break;
-            }
+            std::cout << "Single cluster found...Increasing angle theshold (+2) and trying again..." << std::endl;
+            smoothnessAngleThreshold -= 2;
         }
         currentIteration++;
         
@@ -1656,20 +1471,49 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         pass.setFilterLimits(0.0, 1.0);
         pass.filter(*indices);
 
-        // Tune parameters based on current cloud size to handle scale differences robustly
-        int Npts = static_cast<int>(cloud->points.size());
-        int dynMinCluster = std::max(minCluster, std::max(30, Npts / 500));          // ~0.2% of points, min 30
-        int dynK          = std::max(noOfNeighbours, std::min(40, std::max(15, Npts / 500))); // 15..40 range
-
         pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;
-        reg.setMinClusterSize(dynMinCluster);
+        reg.setMinClusterSize(minCluster);
         reg.setMaxClusterSize(1000000);
         reg.setSearchMethod(tree);
-        reg.setNumberOfNeighbours(dynK);
+        reg.setNumberOfNeighbours(noOfNeighbours);
         reg.setInputCloud(cloud);
         reg.setInputNormals(normals);
         reg.setSmoothnessThreshold(smoothnessAngleThreshold / 180.0 * M_PI);
         reg.setCurvatureThreshold(curvatureThreshold);
+
+        // Juglet diagnostic (2026-09): verify the actual growing inputs.
+        // Piece 9 fragments at every smoothness gate while first-pass stats
+        // look healthy; print what region growing really sees (sizes must
+        // match, angles/curvature from the second-pass normals it uses).
+        {
+            std::cout << "[GROW-DIAG] cloud=" << cloud->points.size()
+                      << " normals=" << normals->points.size() << std::endl;
+            if (!cloud->points.empty() && cloud->points.size() == normals->points.size()) {
+                pcl::search::KdTree<pcl::PointXYZ> dkt;
+                dkt.setInputCloud(cloud);
+                double asum = 0.0, cmax = 0.0;
+                long acnt = 0;
+                size_t stride = std::max<size_t>(1, cloud->points.size() / 300);
+                std::vector<int> kidx(16);
+                std::vector<float> kdist(16);
+                for (size_t di = 0; di < cloud->points.size(); di += stride) {
+                    if (dkt.nearestKSearch(cloud->points[di], 16, kidx, kdist) <= 1) continue;
+                    const auto& nn0 = normals->points[di];
+                    Eigen::Vector3f n0(nn0.normal_x, nn0.normal_y, nn0.normal_z);
+                    for (int k = 1; k < 16 && k < (int)kidx.size(); ++k) {
+                        const auto& nnb = normals->points[kidx[k]];
+                        Eigen::Vector3f n1(nnb.normal_x, nnb.normal_y, nnb.normal_z);
+                        float dd = n0.dot(n1) / (n0.norm() * n1.norm() + 1e-12f);
+                        if (dd > 1.f) dd = 1.f; if (dd < -1.f) dd = -1.f;
+                        asum += std::acos(dd); ++acnt;
+                    }
+                    float cc = normals->points[di].curvature;
+                    if (cc > cmax) cmax = cc;
+                }
+                std::cout << "[GROW-DIAG] mean15angle_deg=" << (acnt ? asum / acnt * 180.0 / M_PI : -1)
+                          << " maxcurv=" << cmax << std::endl;
+            }
+        }
 
         std::vector<pcl::PointIndices> clusters;
         reg.extract(clusters);
@@ -1936,14 +1780,8 @@ void getClusters(string fileName)
 	pcl::EuclideanClusterExtraction<pcl::PointNormal> ec;
 	ec.setClusterTolerance(3);
 
-	// ADAPTIVE: Scale cluster size thresholds with point cloud density
-	int num_pts = missedPoints->points.size();
-	int min_cluster = std::max(10, std::min(100, num_pts / 500));
-	int max_cluster = std::max(1000, num_pts * 3);
-	ec.setMinClusterSize(min_cluster);
-	ec.setMaxClusterSize(max_cluster);
-	std::cout << "[ADAPTIVE CLUSTER 2] N=" << num_pts << ", min=" << min_cluster
-	          << ", max=" << max_cluster << std::endl;
+	ec.setMinClusterSize(100); 
+	ec.setMaxClusterSize(25000);
 	ec.setSearchMethod(tree);
 	ec.setInputCloud(missedPoints);
 	ec.extract(cluster_indices);
@@ -2019,6 +1857,18 @@ int main(int argc, char** argv) {
     }
     std::sort(pcd_files.begin(), pcd_files.end());
     
+    // Juglet fix (2026-09): honor the single-file argv mode (argv[1] matched
+    // as a substring of the PCD stem). Previously a no-op fall-through, so a
+    // finicky piece could never be re-run alone with different thresholds.
+    if (!specific_mesh_file.empty()) {
+        std::vector<fs::path> single;
+        for (const auto& fp : pcd_files) {
+            if (fp.stem().string().find(specific_mesh_file) != std::string::npos) single.push_back(fp);
+        }
+        pcd_files.swap(single);
+        std::cout << "Single-file filter '" << specific_mesh_file << "': " << pcd_files.size() << " PCD(s)" << std::endl;
+    }
+
     ofstream myfile(baseOutputPath + "segmentationTimes.txt", std::ofstream::out | std::ofstream::app);
     
     for (const auto& file_path : pcd_files) {
@@ -2049,9 +1899,8 @@ int main(int argc, char** argv) {
             continue;
         }
         
-        setInputFile(inputFilePath, dataPath);
-        // FINAL: Target 19,000 points - optimized for sample dataset matching (~19K output)
-        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, 19000);
+        setInputFile(inputFilePath, dataPath); 
+        std::string downsampledFilePath = downsamplePointCloud(inputFilePath);
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
         
@@ -2064,6 +1913,14 @@ int main(int argc, char** argv) {
         
         int minCluster = 50, noOfNeighbours = 10;
         double smoothnessAngleThreshold = 4.5, curvatureThreshold = 1.5;
+        // Juglet fix (2026-09): per-run tuning without rebuilding. Defaults
+        // preserve Nov-2025 behaviour; the Juglet's tight bends put ~30% of
+        // neighbour pairs past 25 deg while rim flips are ~180 deg, so a
+        // looser gate keeps the inner/outer split. Piece 3 needs ~25 deg.
+        if (const char* sfs_s = std::getenv("SFS_SMOOTHNESS_DEG")) { if (*sfs_s) smoothnessAngleThreshold = std::stod(sfs_s); }
+        if (const char* sfs_c = std::getenv("SFS_CURVATURE_THRESH")) { if (*sfs_c) curvatureThreshold = std::stod(sfs_c); }
+        std::cout << "Segmentation thresholds: smoothness=" << smoothnessAngleThreshold
+                  << "deg curvature=" << curvatureThreshold << std::endl;
         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;
         surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold);
 
@@ -2077,14 +1934,14 @@ int main(int argc, char** argv) {
         
         if (fs::exists(tempFileName0)) {
             fs::copy_file(tempFileName0, outputFileName0, fs::copy_options::overwrite_existing);
-            convertPLYtoXYZ(outputFileName0, dataPath + fileNameOnly + "_Surface_0.xyz", false);
+            convertPLYtoXYZ(outputFileName0, dataPath + fileNameOnly + "_Surface_0.xyz");
         } else {
             std::cout << "Warning: Source file not found: " << tempFileName0 << std::endl;
         }
 
         if (fs::exists(tempFileName1)) {
             fs::copy_file(tempFileName1, outputFileName1, fs::copy_options::overwrite_existing);
-            convertPLYtoXYZ(outputFileName1, dataPath + fileNameOnly + "_Surface_1.xyz", false);
+            convertPLYtoXYZ(outputFileName1, dataPath + fileNameOnly + "_Surface_1.xyz");
         } else {
             std::cout << "Warning: Source file not found: " << tempFileName1 << std::endl;
         }
