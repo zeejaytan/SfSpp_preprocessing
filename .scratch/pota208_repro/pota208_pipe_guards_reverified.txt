@@ -1,0 +1,23 @@
+### re-verification Tue 20 Oct 2026 22:51:30 AEDT (pipe log lost by worker rm; sources unchanged since pipe)
+b1ed4d1ff7630ded7019375460c262ff8cf32447
+?? build-e2e/
+?? build_e2e_headless.sbatch
+?? probe_env.sbatch
+clean-check-done
+-- markers in mesh cpp:
+0
+-- markers in edge cpp:
+0
+-- cure-hunk greps (expect 0):
+0
+-- B/M markers (expect 0/0):
+0
+0
+-- binaries present:
+ls: cannot access '/data/gpfs/projects/punim2657/sfs-e2e-pristine/build-e2e-pristine/MeshPreprocessingHeadless': No such file or directory
+ls: cannot access '/data/gpfs/projects/punim2657/sfs-e2e-pristine/build-e2e-pristine/EdgeLineExtractionHeadless': No such file or directory
+### binaries (build-e2e/, 22:27/22:28 build PASS timestamps)
+-rwxrwxr-x 1 zhuojiat punim2657 5274120 Oct 20 22:28 /data/gpfs/projects/punim2657/sfs-e2e-pristine/build-e2e/EdgeLineExtractionHeadless
+-rwxrwxr-x 1 zhuojiat punim2657 1379448 Oct 20 22:27 /data/gpfs/projects/punim2657/sfs-e2e-pristine/build-e2e/MeshPreprocessingHeadless
+-- SFS-T24/T27 in edge binary (expect 0):
+0
