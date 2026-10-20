@@ -777,8 +777,23 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	pcl::BoundaryEstimation<pcl::PointXYZ, pcl::Normal, pcl::Boundary> boundary_est;
 	boundary_est.setInputCloud(cloudWithoutNormals);
 	boundary_est.setInputNormals(normals);
+    // POTA-218 ARM B (radius shrink, compile with -DPOTA218_ARM_B): tightened
+    // adaptive rule 3x-spacing / clamp 1.5-8mm. NOTE the cure-line baseline here
+    // is a FIXED 4mm (main line carries 6x/3-50 adaptive, ~line 968 there); the
+    // arm ports that adaptive form in tightened parameters, below both (P16-S1
+    // N=6134: spacing 0.26 -> 0.77 -> clamped 1.5mm vs 4mm control / 3mm main).
+    // No flag = control: fixed 4mm cure-line behavior, byte-logic unchanged.
+#ifdef POTA218_ARM_B
+	int num_pts218 = (int)cloudWithoutNormals->points.size();
+	double spacing218 = std::sqrt(400.0 / (double)std::max(50, num_pts218));
+	double radius218 = std::max(1.5, std::min(8.0, spacing218 * 3.0));
+	boundary_est.setRadiusSearch(radius218);
+	std::cout << "[ARM-B radius] pts=" << num_pts218 << " spacing~" << spacing218
+	          << "mm r=" << radius218 << "mm" << std::endl;
+#else
     // Original boundary search radius
     boundary_est.setRadiusSearch(4);
+#endif
 	//boundary_est.setAngleThreshold(0.6 * M_PI);//M_PI
 	boundary_est.setAngleThreshold(M_PI * 0.6);//M_PI
 	boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
@@ -799,6 +814,13 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	for (const auto &p : cloudWithoutNormals->points) surfCentroid += p.getVector3fMap();
 	if (!cloudWithoutNormals->points.empty()) surfCentroid /= (float)cloudWithoutNormals->points.size();
 	size_t faceVetoKept = 0, faceVetoDropped = 0;
+#if defined(POTA218_ARM_A) || defined(POTA218_ARM_C)
+	// POTA-218 ARM A/C neighbor field: same-patch dots around each candidate.
+	// (ORIG-free: pipeline input cloud geometry + input normals only.)
+	pcl::KdTreeFLANN<pcl::PointXYZ> armTree218;
+	armTree218.setInputCloud(cloudWithoutNormals);
+	size_t armKept218 = 0, armDropped218 = 0;
+#endif
 	std::size_t N = std::min<std::size_t>(boundary.points.size(), cloudWithoutNormals->points.size());
 	N = std::min<std::size_t>(N, normals->points.size());
 	for (std::size_t i = 0; i < N; i++)
@@ -811,8 +833,93 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 			float align = (rl > 1e-6f) ? nn.dot(rp / rl) : 0.0f;
 			if (align <= FACE_ALIGN_VETO)
 			{
+#ifdef POTA218_ARM_A
+				// ARM A (surround test, -DPOTA218_ARM_A): drop candidate dots fully
+				// surrounded by same-patch dots. K=12 neighbors projected on the
+				// tangent plane (input normal); max angular gap < 120deg means no
+				// void beside the dot => twisted-face interior, not a true edge
+				// (a rim dot on a straight edge sees a ~180deg+ void sector).
+				{
+					const int K218 = 12;
+					std::vector<int> aIdx218(K218);
+					std::vector<float> aDist218(K218);
+					int aFound218 = armTree218.nearestKSearch(cloudWithoutNormals->points[i], K218, aIdx218, aDist218);
+					bool drop218 = false;
+					if (aFound218 >= 6)
+						{
+							Eigen::Vector3f nrm218(nn(0), nn(1), nn(2));
+							if (nrm218.norm() < 1e-9f) nrm218 = Eigen::Vector3f(0, 0, 1);
+							else nrm218.normalize();
+							Eigen::Vector3f help218 = (std::fabs(nrm218(2)) < 0.9f) ? Eigen::Vector3f(0, 0, 1) : Eigen::Vector3f(0, 1, 0);
+							Eigen::Vector3f t1218 = nrm218.cross(help218).normalized();
+							Eigen::Vector3f t2218 = nrm218.cross(t1218).normalized();
+							Eigen::Vector3f pi218 = cloudWithoutNormals->points[i].getVector3fMap();
+							std::vector<double> ang218;
+							for (int kk = 1; kk < aFound218; kk++)
+								{
+									Eigen::Vector3f off218 = cloudWithoutNormals->points[aIdx218[kk]].getVector3fMap() - pi218;
+									double x218 = off218.dot(t1218), y218 = off218.dot(t2218);
+									if (x218 * x218 + y218 * y218 < 1e-12) continue;
+									ang218.push_back(std::atan2(y218, x218));
+								}
+							if (ang218.size() >= 5)
+								{
+									std::sort(ang218.begin(), ang218.end());
+									double maxGap218 = 0.0;
+									for (size_t gg = 0; gg < ang218.size(); gg++)
+										{
+											double g218 = ang218[(gg + 1) % ang218.size()] - ang218[gg];
+											if (g218 < 0) g218 += 2.0 * M_PI;
+											if (g218 > maxGap218) maxGap218 = g218;
+										}
+									if (maxGap218 < 2.094) drop218 = true; // 120deg
+								}
+						}
+					if (drop218) armDropped218++;
+					else { boundaryCloud->points.push_back(cloudWithoutNormals->points[i]); armKept218++; }
+					faceVetoKept++;
+				}
+#else
+#ifdef POTA218_ARM_C
+				// ARM C (normal gate, -DPOTA218_ARM_C): keep only candidates near a
+				// normal discontinuity (face/fracture transition). Max deviation of
+				// the input normals among K=12 same-patch neighbors < 30deg means
+				// coherent face interior => drop. (215 measured face p90 18deg vs
+				// fracture p10 28deg; 30deg sits just above that split.)
+				{
+					const int K218 = 12;
+					std::vector<int> cIdx218(K218);
+					std::vector<float> cDist218(K218);
+					int cFound218 = armTree218.nearestKSearch(cloudWithoutNormals->points[i], K218, cIdx218, cDist218);
+					bool drop218 = false;
+					if (cFound218 >= 6)
+						{
+							Eigen::Vector3f n0218(normals->points[i].normal_x, normals->points[i].normal_y, normals->points[i].normal_z);
+							if (n0218.norm() < 1e-9f) n0218 = Eigen::Vector3f(0, 0, 1);
+							else n0218.normalize();
+							double maxDev218 = 0.0;
+							for (int kk = 1; kk < cFound218; kk++)
+								{
+									Eigen::Vector3f nk218(normals->points[cIdx218[kk]].normal_x, normals->points[cIdx218[kk]].normal_y, normals->points[cIdx218[kk]].normal_z);
+									if (nk218.norm() < 1e-9f) continue;
+									nk218.normalize();
+									double d218 = n0218.dot(nk218);
+									if (d218 > 1.0) d218 = 1.0;
+									if (d218 < -1.0) d218 = -1.0;
+									double dev218 = std::acos(d218);
+									if (dev218 > maxDev218) maxDev218 = dev218;
+								}
+							if (maxDev218 < 0.5236) drop218 = true; // 30deg
+						}
+					if (drop218) armDropped218++;
+					else { boundaryCloud->points.push_back(cloudWithoutNormals->points[i]); armKept218++; }
+					faceVetoKept++;
+				}
+#else
 				boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
 				faceVetoKept++;
+#endif
+#endif
 			}
 			else faceVetoDropped++;
 		}
@@ -828,6 +935,23 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 
 	pcl::io::savePCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
+#if defined(POTA218_ARM_A) || defined(POTA218_ARM_B) || defined(POTA218_ARM_C)
+	// POTA-218 diagnostic only (no logic effect): per-face copy of the post-arm
+	// pre-snap dots. The shared tempEdgeFolder keeps ONE face (last writer wins,
+	// 217 gap); scoring needs both faces, so each face saves its own copy here.
+	{
+		std::string armFace218 = "Sx";
+		if (currentFileName.find("Surface_0") != std::string::npos) armFace218 = "S0";
+		else if (currentFileName.find("Surface_1") != std::string::npos) armFace218 = "S1";
+		pcl::io::savePCDFile(tempEdgeFolder + "boundary_" + armFace218 + ".pcd", *boundaryCloud);
+	}
+#endif
+#ifdef POTA218_ARM_A
+	std::cout << "[ARM-A surround] kept=" << armKept218 << " dropped=" << armDropped218 << " (K=12, gap<120deg)" << std::endl;
+#endif
+#ifdef POTA218_ARM_C
+	std::cout << "[ARM-C normalgate] kept=" << armKept218 << " dropped=" << armDropped218 << " (K=12, dev<30deg)" << std::endl;
+#endif
 	pcl::PointCloud<pcl::PointXYZ>::Ptr unclusteredPoints(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud_Improved(new pcl::PointCloud<pcl::PointXYZ>);
 	
