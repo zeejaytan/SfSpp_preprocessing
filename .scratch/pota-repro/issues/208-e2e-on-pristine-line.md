@@ -10,7 +10,7 @@ on the pristine line, reporting numbers against the fork-era ledger.
 7ffede4/c617fd8 live reverts + d0c0304 vendored-dir deletion + b1ed4d1 D-evidence
 merge). D-chain scripts live under .scratch/pota1* on this line.
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Build first (login node, cheap)
 
@@ -85,3 +85,39 @@ needed: quiesce/resolve the Spartan main checkout (commit or relocate the
 T24/T27 live state + Juglet outputs) OR designate an alternate Spartan
 checkout/worktree where e2e-pristine can build and run without disturbing the
 live main-tree pipeline inputs, then re-dispatch this ticket.
+
+## Lead verdict (2026-10-20, second dispatch -- E2E COMPLETE, ticket done)
+
+The STOP block above is superseded: lead shelved both live Spartan-main edits
+(stash@{0} root sphere-calibration, stash@{1} vendored T24/T27 -- both named
+'pre-E2E shelf 2026-10-20', Juglet data untouched), pulled main to eac8482,
+and steered the worker past the gate. The 2 stashes are still shelved on
+Spartan -- restore-or-drop decision pending.
+
+Meaning first: the pristine line runs end to end and the reference outputs
+still seat perfectly (8 of 8 fragments, 15 of 15 joins -- the control is
+green, so the ruler and the reference answer both hold). Fresh outputs from
+the pristine line seat 7 of 8 fragments and 9 of 15 joins -- below the bar.
+One sherd (piece 1) sits clearly wrong, turned ~112 deg and ~271 mm off;
+the other seven sit within ~3.4 deg / ~13 mm of correct, four of them inside
+the strict 5 deg / 10 mm bar. The render (seat_fresh208_vs_gt.png,
+lead eye-checked) shows a coherent vessel with seven pieces hugging the
+reference and piece 1 scattered. This is claim 1 of the three: the gap is
+in the method's search/selection on the denser fresh forest (253 vs 124
+candidates), not rim fidelity (fresh rims at author parity: counts +0-4,
+arc ratios 0.99-1.06) and not the measurement.
+
+Evidence (all verified by lead, not taken on report): branch `e2e-pristine`
+commits 705ae33 (pipe+D) / 1944667 / 020c221 (ORIG control) / 1f2f913
+(seating+strict+render) / 00c321b, base b1ed4d1. Jobs: pipe 33504975
+COMPLETED 0:0 (2:43, meshes=8, 16/16 surfaces, 16/16 breaklines, Bl1 59-165
+pts -- carried risk 207#1 did NOT materialise, no new ticket); diag
+33505417 COMPLETED 0:0 (D0-D3 gates do not fire; pass-through composition,
+no blanket densify per 194/195/196 precedent); stage-1 33505533 CANCELLED
+by worker after ORIG arm (fresh arm ~1.2h/step too slow for 12h -- carried
+risk 207#3 materialised as documented slowness); fresh-only 33505947
+COMPLETED 0:0. Spartan-side Acc files re-read by lead: ORIG 8/8+15/15,
+fresh 7/8 (87.5%) + 9/15 (60%). Strict table re-read from origin:
+STRICT-SHERD 4/8. Ledger comparison: no collapse, better than ticket-06's
+4/8+3/15, below the bar. Worker mistakes (lost pipe .out, symlinked md5)
+both recovered and recorded; guards re-verified 22:51 vs unchanged sources.

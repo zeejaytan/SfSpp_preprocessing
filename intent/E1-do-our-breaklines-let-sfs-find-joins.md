@@ -1765,3 +1765,7 @@ Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 `edgeline_extraction.cpp` (segment finding ~line 1632, segmentation
 `clusteringOnNormals` ~line 2118, writer `writeBreaklinePCDWithSegments`
 ~line 1042). Juglet patches already in `patches/juglet_*.patch`.
+
+## 2026-10-20 — 208 pristine-line E2E: chain proven, fresh seats 7/8+9/15 (below bar)
+
+Pristine line (6da985d + 207 live reverts + vendored-dir deletion + D-evidence) compiles clean in the container and runs Pot A end to end. ORIG control 8/8+15/15 (ruler + reference hold). Fresh: 7/8 fragments, 9/15 joins; strict 4/8; p1 misplaced ~112 deg / ~271 mm, pieces 2-8 within ~3.4 deg / 13 mm; render shows a coherent vessel. Gap is search/selection on the denser fresh forest (253 vs 124), not rim fidelity (author parity) -- claim 1 (method-side), honestly below bar, no collapse vs 06. Weight: one full E2E on the clean line, control green. Next: restore-or-drop the 2 shelved Spartan stashes; debug ticket on assembler search (why the denser forest seats worse) before any rim retune.
