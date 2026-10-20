@@ -58,6 +58,25 @@ overlays P01/P02 eye-checked by lead -- red/blue ride the same rim.
 Gates: only the two known pre-existing failures. Status stays
 ready-for-human until the conservator witnesses the pairs.
 
+P08 accuracy challenge (same day): user marked an edge missing red with blue
+present. Lead check: staged P08 mesh IS the 208-fresh P08 mesh (bounds
+identical [-36.6,-3.6,287.5]/[0.1,26.5,313.7], 62.7k vs 62.2k verts) --
+staging accurate. 4-lane picture (p210_P08_4lane.png): all 4 lanes present
+(fB0 64 / fB1 59 / oB0 60 / oB1 63), correctly paired on two rims; drawn
+red/blue coincide 100%<2mm. No annotation file saved the mark, so the exact
+spot is unrecovered -- awaiting the marked location (upper undrawn rim vs
+gap on the drawn rim). Script: artifacts/pota209/p210_check_p08.py.
+
+Standing decision (user, 2026-10-20): for future trace-on-mesh verification
+a picture is sufficient -- no viewer staging required. (Viewer still stands
+for reassembly judging per workspace rules.)
+
+Lead follow-up (same day): user notes some sherds seem to miss one edge's
+trace. From the 209 numbers: all 16 lanes exist in bundle v0; the pairs
+draw only the matched lane by design. One genuine shortfall: P01 fresh-Bl1
+n=92 vs author-Bl1 n=214 (existing points ride the rim, prox 0.13/0.28) --
+why it stops at less than half length goes to a new ticket.
+
 ## Comments (worker, 2026-10-20 -- 8 pairs staged, laptop matplotlib + viewer; COMMIT NOTHING)
 
 **Done: all 8 Pot A pieces staged as lane-rule pairs (OUR rim red vs AUTHOR rim blue on OUR 208-fresh mesh). No piece missing, nothing substituted.**
