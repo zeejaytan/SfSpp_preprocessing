@@ -50,5 +50,11 @@ Symptom: 204 pooled both face bags (F0+F1) then re-split geometrically by wall-f
 Rule: provenance (which surface file a dot came from: Surface_0 interior vs Surface_1 exterior) is EXACT and must be split on BEFORE any pooling -- walk each face's bag separately, file each slot from its own face (175 as written). Pool-then-geometric-split is REJECTED: at the lip fold both edges read identically, so geometry cannot recover a label the pool already discarded. E2E proof pending (204 jobs 33499348/49/50); entered as constraint, not yet as applied fix.
 Owner tickets: 204, 205.
 
+## H. Pristine Pot A 100% recipe (210 seating + 213 traces, 2026-10-20)
+Symptom: pristine-line fresh seated 7/8+9/15 with correct drawn lanes (208); P02-P08 slots flipped (209), P01-Bl1 a foot-step loop, not a rim (211).
+What seated it: per-piece B-swap only (210: P02-P08 Bl0<->Bl1, job 33510738 COMPLETED 0:0 -> 8/8+15/15). What completed the traces: author-faithful walk (207) + 213 split-walk (FACE_ALIGN_VETO 0.5->2.0 keep-all + splitRimVsStepRing_213; P01 Bl1 med 0.67/97.3 vs author, Bl0 0.50/100 unchanged; jobs 33514459/33514736). Branch: origin/pristine-splitwalk (committed 2026-10-20, NOT merged -- 214 proves it on D first). NOT on this arm: D-chain steps 143/144/185 -- 196 put the full chain on this exact control and printed 4-5/8 (see F). 175 holds as verified invariant (per-face walks, no pooling; 212/213 logs). The cured Bl1 slot is unread by the assembler (slot-0-only); no reseat run, by user decision 2026-10-20.
+Decision: RECORDED as the Pot A recipe; 214 proves it on D.
+Owner tickets: 207, 209, 210, 211, 213.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
