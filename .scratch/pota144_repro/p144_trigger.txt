@@ -1,0 +1,36 @@
+# TRIGGER T144 (stated BEFORE any 314 recovery run; ORIG-free; zero retuned constants)
+# Rule-form per 134: per-bag latch anchor + state-function trigger. Re-derived on 314 -- no transplanted numbers.
+#
+# LATCH L144 (314's own walk state, from p144_freeze.txt):
+#  strand slot=221 coord=[25.13,66.52,424.99] final=140/314 ratio=0.4459
+#   -- IDENTICAL far-arc dot as 282's strand (133/134): same refusal site, different walk (140 vs 116).
+#  envelope = walk's OWN max greedy stride 21.72 (median 2.83, p90 5.56, n>40mm=0), frozen pre-trigger.
+#  key-space at strand: K-net(34) key-fresh=0 (local dead, as on 282) / index-unvisited-in-K=7;
+#   global key-fresh=136, nearest 43.24 (282-analogue: 128 @43.24 -- same signature, twin slot 228 d=0.00 key-stale).
+#  T13 suppression active (0.4459>=0.40): the 133 mechanism reprised on the dense bag.
+#
+# TRIGGER (walk/bag-state functions only; structural predicates, no thresholds):
+#  FIRE iff (i) admitted-dot on-road MAJORITY: visited strictly exceeds unvisited over the cumulative
+#   admitted set (314-282 = 32 dots): 24 vs 8 -> HOLDS.
+#   AND (ii) newly-covered-vs-predecessor ORIG sign >0: +2 vs 292-greedy (O44,O97) AND +18 vs 279-greedy -> HOLDS.
+#  Separation check (same predicates, must reproduce known verdicts):
+#   282 recheck: (i) 3 vs 0 HOLDS + (ii) +7 vs 279 HOLDS -> FIRE, consistent with banked T134.
+#   116-stuck analogue: (i) 0 vs 3 (B orphans, nearest 101.6mm) FAILS -> SUPPRESS. Separates.
+#  Why majority-form, not verbatim ==1: ==1 was 282's shape (3 pre-strand dots); on 314 the 8 unvisited grids
+#   sit beyond-strand in the open span (115,205), seats O163-166/O173-175 all on-arc (seatDO 0.5-3.3, junk 0),
+#   minDistRoad 53-66mm -- unreached, not orphaned (vs stuck 101.6mm). ==1 would false-negative a bag whose
+#   forced probe banks everything (241/3.9732/0); majority + payoff-sign keeps 282's verdict, fires on 314,
+#   still suppresses mostly-orphaned rungs (e.g. 2-vs-30 would SUPPRESS). No numeric constant introduced.
+#  Slim-payoff note (not hidden): (ii) vs 292 is +2 only -- the grids' marginal payoff under GREEDY; recovery
+#   must chain the open span to earn the rest. ORIGcov trajectory flat tail (47,47,47) is stuck-like locally;
+#   honest signal lives in whole-walk 24/32 + payoff sign, same reading as 134's freeze.
+#
+# MECHANISM M144 (= M134d form, 314 values): greedy-phase VERBATIM (K34+T13 bar arm -> strands at 140,
+#  reproduced); then index-advance in K34 (key-stale allowed, d>=1mm twin-skip = R133 dedupe, reused not tuned),
+#  retreating at index-stall to mm-nearest own-seq road position with index-unvisited K-net inside the 21.72
+#  envelope, else HALT; ratio gate latched-overridden once fired. No forwards teleports: with no license stated,
+#  a clean bank needs every banked step <=25mm and zero >=40mm (137/138 rule); a step breaching it is reported
+#  as mechanism evidence, not banked.
+# PREDICTION: unique >140 (beat strand) AND gate <=3.9851 AND uncovered <15 AND maxstep<=25 AND big0(>=40).
+#  Forced-314 probe (241/3.9732/0, jumps 43.2+58.0, NOT banked) is the mechanism reference, not the bar.
+# FALSIFIER: envelope HALT before paying pockets, advance-chain step >25mm, or gate drift past 3.9851.
