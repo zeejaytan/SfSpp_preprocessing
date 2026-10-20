@@ -542,9 +542,7 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 
 void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
-	cloud_sequenced->points.clear();
-	if (!cloud || cloud->points.empty()) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
-	if (cloud->points.size() == 1) { cloud_sequenced->points.push_back(cloud->points[0]); cloud_sequenced->width = 1; cloud_sequenced->height = 1; return; }
+
 	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
 
 	kdtree.setInputCloud(cloud);
@@ -565,24 +563,22 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 		int K = 50;
 		std::vector<int> pointIdxNKNSearch(K);
 		std::vector<float> pointNKNSquaredDistance(K);
-    int foundK = kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
-    if (foundK > 0)
-    {
+		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
+		{
 
-        if (t == 1)
-        {
-            PointXYZ p;
-            int pick = (foundK >= 2) ? pointIdxNKNSearch[1] : pointIdxNKNSearch[0];
-            p.x = (*cloud)[pick].x; p.y = (*cloud)[pick].y; p.z = (*cloud)[pick].z;
-            cloud_sequenced->points.push_back(p);
-            previousPoint = currentPoint;
-            currentPoint = p;
-        }
+			if (t == 1)
+			{
+				PointXYZ p;
+				p.x = (*cloud)[pointIdxNKNSearch[1]].x; p.y = (*cloud)[pointIdxNKNSearch[1]].y; p.z = (*cloud)[pointIdxNKNSearch[1]].z;
+				cloud_sequenced->points.push_back(p);
+				previousPoint = currentPoint;
+				currentPoint = p;
+			}
 			else
 			{
 				if (pointIdxNKNSearch.size() > 0)
 				{
-					for (std::size_t x = 0; x < (std::size_t)foundK; ++x)
+					for (std::size_t x = 0; x < pointIdxNKNSearch.size(); ++x)
 					{
 						PointXYZ p1;
 						p1.x = (*cloud)[pointIdxNKNSearch[x]].x; p1.y = (*cloud)[pointIdxNKNSearch[x]].y; p1.z = (*cloud)[pointIdxNKNSearch[x]].z;
@@ -679,12 +675,7 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	boundaryCloud->is_dense = true;
 	std::cout << "[EDGELINE DBG] boundaryCloud size=" << boundaryCloud->points.size() << std::endl;
 
-	// Fallback: if boundary is empty, seed with a small subset of the surface points to avoid empty sequences
-	if (boundaryCloud->points.empty() && !cloudWithoutNormals->points.empty()) {
-		std::size_t take = std::min<std::size_t>(cloudWithoutNormals->points.size(), 64);
-		for (std::size_t i = 0; i < take; ++i) boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
-		boundaryCloud->width = boundaryCloud->points.size();
-	}
+
 
 	pcl::io::savePCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
@@ -696,34 +687,25 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	// string outPathNew = filePathNew.parent_path().string() + "\\";
 	string outPathNew = tempDataPath(potID);
 	
-	int ply_ok = -1; // disabled due to PLYReader instability on files with camera properties
-	std::cout << "[EDGELINE DBG] unclustered size=" << 0 << " ply_ok=" << ply_ok << std::endl;
+	pcl::io::loadPLYFile(outPathNew + fileNameOnly + "_unclustered.ply", *unclusteredPoints);
 	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
-	if (ply_ok == 0 && !unclusteredPoints->empty()) {
-		kdtree.setInputCloud(unclusteredPoints);
-	} else {
-		// If unclustered PLY missing or empty, skip KD mapping; will use boundary as-is
-		unclusteredPoints->points.clear();
-	}
+	kdtree.setInputCloud(unclusteredPoints);
 
 	pcl::PointXYZ searchPoint;
 	// K nearest neighbor search
 	int K = 1;
 	std::vector<int> pointIdxNKNSearch(K);
 	std::vector<float> pointNKNSquaredDistance(K);
-	if (!unclusteredPoints->empty()) {
-		for (size_t i = 0; i < boundaryCloud->points.size(); i++)
+	for (size_t i = 0; i < boundaryCloud->points.size(); i++)
+	{
+		searchPoint = boundaryCloud->points[i];
+		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
 		{
-			searchPoint = boundaryCloud->points[i];
-			int found = kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
-			for (int j = 0; j < found; j++)
+			for (std::size_t j = 0; j < pointIdxNKNSearch.size(); j++)
 			{
 				boundaryCloud_Improved->points.push_back(unclusteredPoints->points[pointIdxNKNSearch[j]]);
 			}
 		}
-	} else {
-		// No improvement available; carry forward the boundary as improved
-		*boundaryCloud_Improved = *boundaryCloud;
 	}
 	boundaryCloud_Improved->width = static_cast<int>(boundaryCloud_Improved->points.size());
 	boundaryCloud_Improved->height = 1;
@@ -923,12 +905,6 @@ void fitBSplineSurfaceAndGetNormalsOnProjectedPoints(string pointCloudDataFile, 
 		ptTmp.normal_x = -normalEst.x;
 		ptTmp.normal_y = -normalEst.y;
 		ptTmp.normal_z = -normalEst.z;
-		
-		// Headless build: skip NURBS curvature differential evaluation to avoid OpenNURBS type dependencies
-		ptTmp.curvature = 0.0f;
-		
-		// Debug output disabled in headless skip-mode
-		
 		projectedPointCloudWithNormals->points.push_back(ptTmp);
 	}
 
@@ -1363,14 +1339,9 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 
 
 
-    MatrixXd b1, b1_withN;
-    b1 = readFile(b1_FilePath, 3);// 
-    b1_withN = readFile(b1_FilePath, 6);
-    // Guard: if too few points, emit a single segment and return (avoids OOB on small inputs)
-    if (b1.rows() < std::max(30, 3*len)) {
-        writeMatrix_to_XYZ_withNormals(b1_withN, outPath + "1.xyz");
-        return;
-    }
+	MatrixXd b1, b1_withN;
+	b1 = readFile(b1_FilePath, 3);// 
+	b1_withN = readFile(b1_FilePath, 6);
 	//int len = 60;
 	int k = 0;
 	int noOfPossiblePoints = b1.rows() - (2 * len);
@@ -1652,17 +1623,18 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 		smoothedSegment->width = smoothedSegment->points.size();
 		smoothedSegment->height = 1;
 
-            for (size_t i = 1; i + 1 < smoothedSegment->points.size(); i++)
-            {
-                // Loosen search to capture more neighbors at Tray scale
-                const int K_NEIGH = 20;
-                int found = tree_->nearestKSearch(smoothedSegment->points[i], K_NEIGH, nn_indices, nn_dists);
-                for (int j = 0; j < found; ++j) {
-                    if (j < static_cast<int>(nn_dists.size()) && nn_dists[j] <= 1.8) {
-                        nn_indicesAll.push_back(nn_indices[j]);
-                    }
-                }
-            }
+		for (size_t i = 1; i < smoothedSegment->points.size() - 1; i++)
+		{
+			tree_->nearestKSearch(smoothedSegment->points[i], 20, nn_indices, nn_dists);
+			for (size_t i = 0; i < 20; i++)
+			{
+				if (nn_dists[i] <= 1.8)
+				{
+					nn_indicesAll.push_back(nn_indices[i]);
+				}
+				//rawBreaklinePtsInSegment->points.push_back(rawBreaklinePts->points[nn_indices[i]]);
+			}
+		}
 
 		// Sort and remove duplicate indices
 		std::sort(nn_indicesAll.begin(), nn_indicesAll.end());
@@ -1684,19 +1656,6 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 	// Headless: disable visualization spinner for breakline preview
 }
 
-// Compute bounding box diagonal of a simple XYZ file
-static double compute_diag_from_xyz_file(const std::string& path) {
-    std::ifstream in(path);
-    if (!in.is_open()) return 1.0;
-    double x,y,z; bool any=false;
-    double minx=1e30,miny=1e30,minz=1e30,maxx=-1e30,maxy=-1e30,maxz=-1e30;
-    while (in >> x >> y >> z) { any=true; minx=std::min(minx,x); miny=std::min(miny,y); minz=std::min(minz,z); maxx=std::max(maxx,x); maxy=std::max(maxy,y); maxz=std::max(maxz,z); }
-    if (!any) return 1.0;
-    double dx=maxx-minx, dy=maxy-miny, dz=maxz-minz;
-    double d = std::sqrt(dx*dx+dy*dy+dz*dz);
-    return (d>1e-6)? d : 1.0;
-}
-
 void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileName, bool outerSurface, double distThreshold = 2, double distThresholdForMatchingEndpoints = 20)
 {
 	int numberOfPointsInCloud = 0;
@@ -1711,15 +1670,8 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 	string outPath = "";
 	string origFilePath = fileName;
 
-    MatrixXd originalPointCloudMatrix;
-    originalPointCloudMatrix = readFile(origFilePath, 3);
-    // Canonicalize scale so fixed thresholds behave consistently across datasets
-    double diag = compute_diag_from_xyz_file(origFilePath);
-    const double targetDiag = 100.0; // arbitrary canonical diagonal length
-    double scale_s = (diag > 1e-6) ? (targetDiag / diag) : 1.0;
-    if (std::isfinite(scale_s) && scale_s > 0.0 && std::fabs(scale_s - 1.0) > 1e-6) {
-        originalPointCloudMatrix *= scale_s;
-    }
+	MatrixXd originalPointCloudMatrix;
+	originalPointCloudMatrix = readFile(origFilePath, 3);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_OriginalSurface(new pcl::PointCloud<pcl::PointXYZ>);
 	for (size_t i = 0; i < originalPointCloudMatrix.rows(); i++)
 	{
@@ -1784,11 +1736,7 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 	pcl::PointCloud<pcl::PointNormal>::Ptr projectedCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	fitBSplineSurfaceAndGetNormalsOnProjectedPoints(fileName, cloud, projectedCloudWithNormals);
 
-    numberOfPoints = projectedCloudWithNormals->points.size();
-    // De-normalize back to original scale for downstream consumers
-    if (std::isfinite(scale_s) && scale_s > 0.0 && std::fabs(scale_s - 1.0) > 1e-6) {
-        for (auto &p : projectedCloudWithNormals->points) { p.x /= scale_s; p.y /= scale_s; p.z /= scale_s; }
-    }
+	numberOfPoints = projectedCloudWithNormals->points.size();
 	MatrixXd MatrixXYZ;// (3, numberOfPoints);
 	MatrixXd MatrixNormals;// (3, numberOfPoints);
 
@@ -1877,18 +1825,7 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 		cloud_New->points[i].normal_z = ProjectedMatrix(i, 5);
 	}
 
-        // Save raw breakline points (XYZ only) for downstream segmentation
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ProjectedXYZ(new pcl::PointCloud<pcl::PointXYZ>);
-        cloud_ProjectedXYZ->width = ProjectedMatrix.rows();
-        cloud_ProjectedXYZ->height = 1;
-        cloud_ProjectedXYZ->is_dense = false;
-        cloud_ProjectedXYZ->points.resize(cloud_ProjectedXYZ->width * cloud_ProjectedXYZ->height);
-        for (size_t i = 0; i < ProjectedMatrix.rows(); i++) {
-            cloud_ProjectedXYZ->points[i].x = ProjectedMatrix(i, 0);
-            cloud_ProjectedXYZ->points[i].y = ProjectedMatrix(i, 1);
-            cloud_ProjectedXYZ->points[i].z = ProjectedMatrix(i, 2);
-        }
-        pcl::io::savePCDFile(tempEdgeFolder + "CompleteBreakline.pcd", *cloud_ProjectedXYZ);
+	pcl::io::savePCDFile(tempEdgeFolder + "CompleteBreakline.pcd", *cloud);
 }
 
 void cleanSamples(string pointCloudDataFile)
@@ -1949,7 +1886,7 @@ void cleanSamples(string pointCloudDataFile)
 	pcl::StatisticalOutlierRemoval<pcl::PointNormal> sor;
 	sor.setInputCloud(cloud_OriginalSurface);
     sor.setMeanK(50);
-    sor.setStddevMulThresh(50); // relax to preserve more points for Tray scale
+	sor.setStddevMulThresh(9);
     sor.filter(*cloud_filteredB);
     std::cout << "[DEBUG] cleanSamples: after SOR pts=" << cloud_filteredB->points.size() << std::endl;
 	// pcl::io::savePCDFileASCII("cloud_Surface_AllSamples_Cleaned.pcd", *cloud_filteredB);
@@ -2952,41 +2889,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         string pcdFilePath = datasetBreaklinesFolder + breaklineFileName + ".pcd";
         string plyFilePath = datasetBreaklinesFolder + breaklineFileName + ".ply";
         string xyzFilePath = datasetBreaklinesFolder + breaklineFileName + ".xyz";
-
-        // Fallback: if breakline cloud is empty, synthesize from boundary points with normals from surface
-        if (cloud_CompleteBreakline->points.empty()) {
-            std::cerr << "[EDGELINE] Breakline cloud empty; synthesizing from boundary points" << std::endl;
-            // Load cleaned surface with normals
-            pcl::PointCloud<pcl::PointNormal>::Ptr cloud_OrigWithNormals(new pcl::PointCloud<pcl::PointNormal>);
-            pcl::io::loadPCDFile(tempEdgeFolder + "cloud_Surface_AllSamples_Cleaned.pcd", *cloud_OrigWithNormals);
-            pcl::KdTreeFLANN<pcl::PointNormal> kdtreePN;
-            if (!cloud_OrigWithNormals->empty()) {
-                kdtreePN.setInputCloud(cloud_OrigWithNormals);
-            }
-            // Load boundary points
-            pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryLoad(new pcl::PointCloud<pcl::PointXYZ>);
-            if (pcl::io::loadPCDFile(tempEdgeFolder + "boundaryImproved.pcd", *boundaryLoad) != 0) {
-                pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryLoad);
-            }
-            for (const auto &bp : boundaryLoad->points) {
-                pcl::PointNormal pn; pn.x = bp.x; pn.y = bp.y; pn.z = bp.z;
-                if (!cloud_OrigWithNormals->empty()) {
-                    std::vector<int> idx(1); std::vector<float> dist2(1);
-                    pcl::PointNormal query; query.x = bp.x; query.y = bp.y; query.z = bp.z;
-                    if (kdtreePN.nearestKSearch(query, 1, idx, dist2) > 0) {
-                        const auto &sn = cloud_OrigWithNormals->points[idx[0]];
-                        pn.normal_x = sn.normal_x; pn.normal_y = sn.normal_y; pn.normal_z = sn.normal_z;
-                    } else {
-                        pn.normal_x = 0.0f; pn.normal_y = 0.0f; pn.normal_z = 1.0f;
-                    }
-                } else {
-                    pn.normal_x = 0.0f; pn.normal_y = 0.0f; pn.normal_z = 1.0f;
-                }
-                cloud_CompleteBreakline->points.push_back(pn);
-            }
-            cloud_CompleteBreakline->width = cloud_CompleteBreakline->points.size();
-            cloud_CompleteBreakline->height = 1;
-        }
 
         // Write with custom PCD writer to include segment header + normals
         writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline);
