@@ -51,6 +51,12 @@ Bundle carries ORIG Axes per the 28/06 precedent (06 lead revision: the E2E runs
 - assembly: /data/gpfs/projects/punim2657/pota208_e2e (src @ b56bc80 detached, sbatches, run dirs)
 - Do NOT follow guide .mds / patches/SOURCE_ANCHOR.md (deleted vendored layout). Do NOT use build_new/ residue in the worktree (not this run's).
 
-## Seating PENDING (job 33505533, submitted; recipe = run_pota_restore_e2e.sbatch with space-stripped verdict fix)
+## Seating stage-1 (job 33505533, CANCELLED 0:15 at 11:13 -- fresh arm too slow for 12h, see below)
 
-[worker to fill: ORIG arm tally (must read 8/8+15/15 or VOID), fresh-v0 arm tally, pruned/hypothesis lines, sacct State/ExitCode, seating renders, ledger comparison vs 194/195/196]
+- ORIG arm DONE: Sherd 8/8 + Edge 15/15 (control VALID, not void), container exit 0, pruned 124/70 (identical to restore job 33502035), snapshot L_orig_Result_snapshot captured, all shim proofs green (LINK-SHIM-OK / LINK-FORKMAIN-ABSENT-OK / DRIVER-SHIM-OK / GTSTUB-SKIPPED-OK). sacct: CANCELLED (worker scancel after ORIG arm done).
+- Fresh arm (Total 253 vs ORIG 124 -- denser forest): reached beam Step 4 of 7+ (ORIG needed 7 steps / 290 lines) at ~1.2h/step vs ORIG ~0.45h/step; projected ~3.6h more with only ~47 min of allocation left (scontrol TimeLimit-extension denied). Worker cancelled rather than burn allocation on a doomed arm. Partial log preserved: pota208_run_33505533/L_fresh_binary.log (216 lines, Step 4 merges).
+- Fresh-only rerun SUBMITTED as job 33505947 (run_pota208_freshonly.sbatch: same recipe, fresh arm only, 24:00 limit; sapphire MaxTime 30 days). Build ~45 min + seating ~8-9h expected.
+
+## Seating PENDING (job 33505947)
+
+[worker to fill: fresh-v0 tally + VERDICT, pruned/hypothesis lines, sacct State/ExitCode, strict tables + seating renders (strict_and_render.py adapted; FETCH=restore GT + pot_a_mesh_all on laptop + fetched 208 snapshots), ledger comparison vs 194/195/196]
