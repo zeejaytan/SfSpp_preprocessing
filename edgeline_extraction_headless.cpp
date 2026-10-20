@@ -14,6 +14,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <functional>
+#include <map>
+#include <limits>
+#include <algorithm>
 #include <sstream>
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include <experimental/filesystem>
@@ -530,6 +534,10 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 	return ptExists;
 }
 
+// POTA-212 PORT NOTE (pristine line): this is the POTA-153 split-walk cure verbatim except this
+// header. Staged anchor was edgeline_extraction_headless.cpp:806-892 @ 4accb8d/main-line;
+// pristine anchor is :533-613 @ b1ed4d1 (pristine walker: seed cloud[0], greedy K=50,
+// dead iterations). Signature UNCHANGED. Requires <functional>, <map>, <limits>, <algorithm>.
 void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
 
@@ -537,79 +545,206 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 
 	kdtree.setInputCloud(cloud);
 
-	pcl::PointXYZ searchPoint;
-	pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
-	pcl::ExtractIndices<pcl::PointXYZ> extract;
-	std::vector<int> indices;
+	const float COMP_GAP_MM = 5.0f;
+	const float GUARD_GATE_MM = 6.0f;
 
-	pcl::PointXYZ currentPoint, nextPoint, previousPoint;
+	size_t n = cloud->points.size();
+	if (n == 0) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
 
-
-	currentPoint = cloud->points[0];
-	cloud_sequenced->points.push_back(currentPoint);
-	for (size_t t = 1; t < cloud->points.size(); t++)
+	// union-find components at COMP_GAP_MM (pairwise; n is O(hundreds))
+	std::vector<int> parent(n);
+	for (size_t i = 0; i < n; i++) parent[i] = (int)i;
+	std::function<int(int)> findRoot = [&](int a) {
+		while (parent[a] != a) { parent[a] = parent[parent[a]]; a = parent[a]; }
+		return a;
+	};
+	for (size_t i = 0; i < n; i++) for (size_t j = i + 1; j < n; j++)
 	{
-		searchPoint = currentPoint;
-		int K = 50;
-		std::vector<int> pointIdxNKNSearch(K);
-		std::vector<float> pointNKNSquaredDistance(K);
-		if (kdtree.nearestKSearch(searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0)
-		{
-
-			if (t == 1)
-			{
-				PointXYZ p;
-				p.x = (*cloud)[pointIdxNKNSearch[1]].x; p.y = (*cloud)[pointIdxNKNSearch[1]].y; p.z = (*cloud)[pointIdxNKNSearch[1]].z;
-				cloud_sequenced->points.push_back(p);
-				previousPoint = currentPoint;
-				currentPoint = p;
-			}
-			else
-			{
-				if (pointIdxNKNSearch.size() > 0)
-				{
-					for (std::size_t x = 0; x < pointIdxNKNSearch.size(); ++x)
-					{
-						PointXYZ p1;
-						p1.x = (*cloud)[pointIdxNKNSearch[x]].x; p1.y = (*cloud)[pointIdxNKNSearch[x]].y; p1.z = (*cloud)[pointIdxNKNSearch[x]].z;
-						if (!pointExistsInCLoud(p1, cloud_sequenced))
-						{
-							cloud_sequenced->points.push_back(p1);
-							previousPoint = currentPoint;
-							currentPoint = p1;
-							break;
-						}
-					}
-
-					/*PointXYZ p1;
-					p1.x = (*cloud)[pointIdxNKNSearch[1]].x; p1.y = (*cloud)[pointIdxNKNSearch[1]].y; p1.z = (*cloud)[pointIdxNKNSearch[1]].z;
-					PointXYZ p2;
-					p2.x = (*cloud)[pointIdxNKNSearch[2]].x; p2.y = (*cloud)[pointIdxNKNSearch[2]].y; p2.z = (*cloud)[pointIdxNKNSearch[2]].z;
-					if (p1.x == previousPoint.x && p1.y == previousPoint.y && p1.z == previousPoint.z)
-					{
-						if (cloud_sequenced->points[0].x != p2.x && cloud_sequenced->points[0].y != p2.y && cloud_sequenced->points[0].z != p2.z)
-						{
-							cloud_sequenced->points.push_back(p2);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p2;
-					}
-					else
-					{
-						if (cloud_sequenced->points[0].x != p1.x && cloud_sequenced->points[0].y != p1.y && cloud_sequenced->points[0].z != p1.z)
-						{
-							cloud_sequenced->points.push_back(p1);
-						}
-						previousPoint = currentPoint;
-						currentPoint = p1;
-					}*/
-				}
-			}
-		}
+		float dx = cloud->points[i].x - cloud->points[j].x;
+		float dy = cloud->points[i].y - cloud->points[j].y;
+		float dz = cloud->points[i].z - cloud->points[j].z;
+		if (dx*dx + dy*dy + dz*dz < COMP_GAP_MM * COMP_GAP_MM)
+		{ int ri = findRoot((int)i), rj = findRoot((int)j); if (ri != rj) parent[ri] = rj; }
 	}
+	std::map<int, std::vector<int>> comps;
+	for (size_t i = 0; i < n; i++) comps[findRoot((int)i)].push_back((int)i);
+	std::vector<std::vector<int>> ordered;
+	for (auto &kv : comps) ordered.push_back(kv.second);
+	std::sort(ordered.begin(), ordered.end(), [](const std::vector<int> &a, const std::vector<int> &b){ return a.size() > b.size(); });
+	std::cout << "[SPLIT-WALK] components=" << ordered.size();
+	for (auto &c : ordered) std::cout << " " << c.size();
+	std::cout << std::endl;
+
+	// ADAPTIVE: Scale K with boundary size (5-50 range, ~10% of points)
+	int K = std::max(5, std::min(50, (int)n / 10));
+	std::cout << "[ADAPTIVE SEQUENCING] Boundary has " << n
+	          << " points, using K=" << K << " for point sequencing" << std::endl;
+
+	std::vector<char> visited(n, 0);
+	std::vector<size_t> cuts;
+	for (size_t ci = 0; ci < ordered.size(); ci++)
+	{
+		std::vector<int> &comp = ordered[ci];
+		if (comp.empty()) continue;
+		int seed = comp[0];
+		pcl::PointXYZ currentPoint = cloud->points[seed];
+		pcl::PointXYZ previousPoint = currentPoint;
+		cloud_sequenced->points.push_back(currentPoint);
+		visited[seed] = 1;
+		size_t compDone = 1;
+		bool first = true;
+		while (compDone < comp.size())
+		{
+			std::vector<int> pointIdxNKNSearch(K);
+			std::vector<float> pointNKNSquaredDistance(K);
+			int found = kdtree.nearestKSearch(currentPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance);
+			int best = -1;
+			float bestD2 = std::numeric_limits<float>::max();
+			float fwdx = currentPoint.x - previousPoint.x;
+			float fwdy = currentPoint.y - previousPoint.y;
+			float fwdz = currentPoint.z - previousPoint.z;
+			for (int k = 0; k < found; k++)
+			{
+				int cand = pointIdxNKNSearch[k];
+				if (cand < 0 || (size_t)cand >= n || visited[cand]) continue;
+				float vx = cloud->points[cand].x - currentPoint.x;
+				float vy = cloud->points[cand].y - currentPoint.y;
+				float vz = cloud->points[cand].z - currentPoint.z;
+				float d2 = vx*vx + vy*vy + vz*vz;
+				if (!first)
+				{
+					if (d2 > GUARD_GATE_MM * GUARD_GATE_MM) continue;
+					if (vx*fwdx + vy*fwdy + vz*fwdz < 0.0f) continue;
+				}
+				if (d2 < bestD2) { bestD2 = d2; best = cand; }
+			}
+			if (best < 0)
+			{
+				// guard starved: nearest unvisited dot of this component (records a cut)
+				float bn = std::numeric_limits<float>::max();
+				for (int cand : comp) if (!visited[cand])
+				{
+					float dx = cloud->points[cand].x - currentPoint.x;
+					float dy = cloud->points[cand].y - currentPoint.y;
+					float dz = cloud->points[cand].z - currentPoint.z;
+					float d2 = dx*dx + dy*dy + dz*dz;
+					if (d2 < bn) { bn = d2; best = cand; }
+				}
+				if (best >= 0) cuts.push_back(cloud_sequenced->points.size());
+			}
+			if (best < 0) break;
+			previousPoint = currentPoint;
+			currentPoint = cloud->points[best];
+			cloud_sequenced->points.push_back(currentPoint);
+			visited[best] = 1;
+			compDone++;
+			first = false;
+		}
+		if (ci + 1 < ordered.size()) cuts.push_back(cloud_sequenced->points.size());
+	}
+
+	std::cout << "[SPLIT-WALK] sequenced=" << cloud_sequenced->points.size() << " cuts=" << cuts.size();
+	for (size_t c : cuts) std::cout << " @" << c;
+	std::cout << std::endl;
 
 	cloud_sequenced->width = cloud_sequenced->points.size();
 	cloud_sequenced->height = 1;
+}
+
+
+// POTA-213: per-surface loop separation (ORIG-free, Pot-A calibrated).
+// Splits the walk-input bag (boundaryCloud_Improved) into rim vs wall-base
+// step-ring by mesh-observable cylindrical shape about the piece pipeline
+// axis (Dataset/Axes/<Piece>_Axis.xyz, 6-number pipeline product). Rule
+// (stated in ticket 213 BEFORE building): RING iff 20<=r_med<=35 mm AND
+// r_std<2.0 AND h_span<4.0 AND 50<=count<=500. Fallbacks keep 212 whole-bag
+// behavior and are always logged, never silent.
+void writeMatrix_to_XYZ(MatrixXd& src, string fileName, int cols);
+static bool splitRimVsStepRing_213(
+    pcl::PointCloud<pcl::PointXYZ>::Ptr bag,
+    const Eigen::Vector3f& axisC, const Eigen::Vector3f& axisD, bool axisOK,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr rimOut,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr ringOut)
+{
+    rimOut->points.clear(); ringOut->points.clear();
+    size_t n = bag->points.size();
+    if (n == 0) { std::cout << "[LOOP-SELECT] empty bag, nothing to split" << std::endl; return axisOK; }
+    pcl::KdTreeFLANN<pcl::PointXYZ> kd; kd.setInputCloud(bag);
+    const float CGAP = 5.0f;
+    std::vector<int> comp(n, -1);
+    std::vector<std::vector<int> > comps;
+    std::vector<int> stack; std::vector<float> dist; std::vector<int> nbr;
+    for (size_t s = 0; s < n; s++) {
+        if (comp[s] != -1) continue;
+        std::vector<int> members; members.push_back((int)s); comp[s] = (int)comps.size();
+        stack.clear(); stack.push_back((int)s);
+        while (!stack.empty()) {
+            int cur = stack.back(); stack.pop_back();
+            nbr.clear(); dist.clear();
+            if (kd.radiusSearch(bag->points[cur], CGAP, nbr, dist) > 0) {
+                for (size_t k = 0; k < nbr.size(); k++) {
+                    if (comp[nbr[k]] == -1) { comp[nbr[k]] = (int)comps.size(); members.push_back(nbr[k]); stack.push_back(nbr[k]); }
+                }
+            }
+        }
+        comps.push_back(members);
+    }
+    std::sort(comps.begin(), comps.end(), [](const std::vector<int>& a, const std::vector<int>& b){ return a.size() > b.size(); });
+    std::cout << "[LOOP-SELECT] bag=" << n << " comps=" << comps.size();
+    if (!axisOK) std::cout << " axis=MISSING(fallback: whole-bag walk)";
+    std::cout << std::endl;
+    if (!axisOK) { rimOut->points = bag->points; return false; }
+    std::vector<char> isRingComp(comps.size(), 0);
+    size_t ringDots = 0;
+    for (size_t c = 0; c < comps.size(); c++) {
+        const std::vector<int>& m = comps[c];
+        std::vector<float> rr; rr.reserve(m.size());
+        float hmin = 1e30f, hmax = -1e30f;
+        for (size_t k = 0; k < m.size(); k++) {
+            Eigen::Vector3f v = bag->points[m[k]].getVector3fMap() - axisC;
+            float h = v.dot(axisD);
+            Eigen::Vector3f rad = v - h * axisD;
+            rr.push_back(rad.norm());
+            if (h < hmin) hmin = h; if (h > hmax) hmax = h;
+        }
+        size_t mid = rr.size() / 2;
+        std::nth_element(rr.begin(), rr.begin() + mid, rr.end());
+        float rmed = rr[mid];
+        double mean = 0; for (size_t k = 0; k < rr.size(); k++) mean += rr[k];
+        mean /= rr.size();
+        double var = 0; for (size_t k = 0; k < rr.size(); k++) { double d = rr[k] - mean; var += d * d; }
+        float rstd = (float)std::sqrt(var / rr.size());
+        float hspan = hmax - hmin;
+        bool ring = (rmed >= 20.0f && rmed <= 35.0f && rstd < 2.0f && hspan < 4.0f && m.size() >= 50 && m.size() <= 500);
+        isRingComp[c] = ring ? 1 : 0;
+        if (ring) ringDots += m.size();
+        std::cout << "[LOOP-SELECT] comp" << c << " count=" << m.size() << " r_med=" << rmed
+                  << " r_std=" << rstd << " h_span=" << hspan << " -> " << (ring ? "RING" : "RIM") << std::endl;
+    }
+    if (ringDots == 0) {
+        std::cout << "[LOOP-SELECT] no ring found -> whole-bag walk, sidecar empty" << std::endl;
+        rimOut->points = bag->points; return true;
+    }
+    if (ringDots == n) {
+        std::cout << "[LOOP-SELECT] FALLBACK: all-ring bag -> Bl=largest comp, rest sidecar" << std::endl;
+        for (size_t k = 0; k < comps[0].size(); k++) rimOut->points.push_back(bag->points[comps[0][k]]);
+        for (size_t c = 1; c < comps.size(); c++)
+            for (size_t k = 0; k < comps[c].size(); k++) ringOut->points.push_back(bag->points[comps[c][k]]);
+        rimOut->width = (int)rimOut->points.size(); rimOut->height = 1;
+        ringOut->width = (int)ringOut->points.size(); ringOut->height = 1;
+        return true;
+    }
+    for (size_t c = 0; c < comps.size(); c++) {
+        const std::vector<int>& m = comps[c];
+        for (size_t k = 0; k < m.size(); k++) {
+            if (isRingComp[c]) ringOut->points.push_back(bag->points[m[k]]);
+            else rimOut->points.push_back(bag->points[m[k]]);
+        }
+    }
+    rimOut->width = (int)rimOut->points.size(); rimOut->height = 1;
+    ringOut->width = (int)ringOut->points.size(); ringOut->height = 1;
+    std::cout << "[LOOP-SELECT] rim=" << rimOut->points.size() << " ring=" << ringOut->points.size() << std::endl;
+    return true;
 }
 
 void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BorderPointsCombined, string outPath)
@@ -652,14 +787,38 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 
 	//get points which on the boundary form point cloud; guard against size mismatch
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud(new pcl::PointCloud<pcl::PointXYZ>);
+	// POTA-213 keep-all veto (no ORIG geometry enters this gate). P01-S1 showed the
+	// centroid-radial alignment does NOT separate lip faces on Pot-A: the 0.5 gate kept
+	// 345/dropped 794 and shattered the true rim to 8 fragments (largest kept 113 < 214
+	// author pts), while veto-off input is already a clean 2-group (808 rim + 331
+	// wall-base step ring at 5mm). Any dropping threshold shatters the rim, so the
+	// principled Pot-A gate keeps the whole bag (align in [-1,1] always passes) and
+	// separation moves downstream to shape, inside this face's bag (175 stands).
+	const float FACE_ALIGN_VETO = 2.0f;
+	Eigen::Vector3f surfCentroid(0.0f, 0.0f, 0.0f);
+	for (const auto &p : cloudWithoutNormals->points) surfCentroid += p.getVector3fMap();
+	if (!cloudWithoutNormals->points.empty()) surfCentroid /= (float)cloudWithoutNormals->points.size();
+	size_t faceVetoKept = 0, faceVetoDropped = 0;
 	std::size_t N = std::min<std::size_t>(boundary.points.size(), cloudWithoutNormals->points.size());
+	N = std::min<std::size_t>(N, normals->points.size());
 	for (std::size_t i = 0; i < N; i++)
 	{
 		if (boundary.points[i].boundary_point == 1)
 		{
-			boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
+			Eigen::Vector3f rp = cloudWithoutNormals->points[i].getVector3fMap() - surfCentroid;
+			float rl = rp.norm();
+			Eigen::Vector3f nn(normals->points[i].normal_x, normals->points[i].normal_y, normals->points[i].normal_z);
+			float align = (rl > 1e-6f) ? nn.dot(rp / rl) : 0.0f;
+			if (align <= FACE_ALIGN_VETO)
+			{
+				boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
+				faceVetoKept++;
+			}
+			else faceVetoDropped++;
 		}
 	}
+	std::cout << "[FACE VETO] boundary kept=" << faceVetoKept << " dropped=" << faceVetoDropped
+	          << " (align<= " << FACE_ALIGN_VETO << ", centroid-observable)" << std::endl;
 	boundaryCloud->width = boundaryCloud->points.size();
 	boundaryCloud->height = 1;
 	boundaryCloud->is_dense = true;
@@ -714,11 +873,51 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	std::cout << "[EDGELINE DBG] cloud_filtered size=" << cloud_filtered->points.size() << std::endl;
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Filtered.pcd", *cloud_filtered);
 
-	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud_Improved);
-	std::cout << "[EDGELINE DBG] boundary reload size=" << boundaryCloud_Improved->points.size() << std::endl;
+	// POTA-212 port of POTA-153: DELETED killer reload-over (was: loadPCDFile(boundary.pcd) into
+	// boundaryCloud_Improved, discarding the face-vetoed, unclustered-snapped cloud). Sequencing now
+	// consumes boundaryCloud_Improved as built above. cloud_Filtered.pcd remains a diagnostic
+	// artifact only: ROR revival alone must not feed sequencing.
+	std::cout << "[EDGELINE DBG] boundary improved (no reload) size=" << boundaryCloud_Improved->points.size() << std::endl;
+	// POTA-213 loop separation: classify walk-input components by cylindrical shape
+	// about the piece pipeline axis; walk RIM for the Bl file (B-spline downstream
+	// sees rim only, no rim-ring chord) and sidecar the walked step-ring per face.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
-	getPointsInSequence(boundaryCloud_Improved, cloud_sequenced);
-	std::cout << "[EDGELINE DBG] cloud_sequenced size=" << cloud_sequenced->points.size() << std::endl;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_rimIn(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ringIn(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		Eigen::Vector3f axC(0,0,0), axD(0,0,1); bool axOK = false;
+		string axPath = axesFolder + fileNameOnly + "_Axis.xyz";
+		MatrixXd axM = readFile(axPath, 6);
+		if (axM.rows() >= 1 && axM.cols() >= 6) {
+			axC = Eigen::Vector3f((float)axM(0,0), (float)axM(0,1), (float)axM(0,2));
+			axD = Eigen::Vector3f((float)axM(0,3), (float)axM(0,4), (float)axM(0,5));
+			float dl = axD.norm(); if (dl > 1e-9f) axD /= dl;
+			axOK = true;
+		}
+		if (!axOK) std::cout << "[LOOP-SELECT] axis missing/unreadable: " << axPath << std::endl;
+		splitRimVsStepRing_213(boundaryCloud_Improved, axC, axD, axOK, cloud_rimIn, cloud_ringIn);
+	}
+	getPointsInSequence(cloud_rimIn, cloud_sequenced);
+	std::cout << "[EDGELINE DBG] cloud_sequenced (rim) size=" << cloud_sequenced->points.size() << std::endl;
+	{
+		string blBase = currentFileName;
+		{ size_t pp = blBase.find("Surface"); if (pp != string::npos) blBase.replace(pp, 7, "Breakline"); }
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ringWalked(new pcl::PointCloud<pcl::PointXYZ>);
+		if (!cloud_ringIn->points.empty()) getPointsInSequence(cloud_ringIn, cloud_ringWalked);
+		if (!cloud_ringWalked->points.empty()) {
+			pcl::io::savePCDFileASCII(tempEdgeFolder + "_breakLineFromConcaveHull_ring.pcd", *cloud_ringWalked);
+			pcl::io::savePCDFileASCII(datasetBreaklinesFolder + blBase + "_stepring.pcd", *cloud_ringWalked);
+		}
+		MatrixXd ringM((int)cloud_ringWalked->points.size(), 3);
+		for (int qi = 0; qi < (int)cloud_ringWalked->points.size(); qi++) {
+			ringM(qi,0) = cloud_ringWalked->points[qi].x;
+			ringM(qi,1) = cloud_ringWalked->points[qi].y;
+			ringM(qi,2) = cloud_ringWalked->points[qi].z;
+		}
+		writeMatrix_to_XYZ(ringM, tempEdgeFolder + "_breakLineFromConcaveHull_ring.xyz", 3);
+		writeMatrix_to_XYZ(ringM, datasetBreaklinesFolder + blBase + "_stepring.xyz", 3);
+		std::cout << "[LOOP-SELECT] sidecar " << blBase << "_stepring pts=" << cloud_ringWalked->points.size() << std::endl;
+	}
 
 	std::cout << "[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode..." << std::endl;
 	pcl::io::savePLYFile(tempEdgeFolder + "_breakLineFromConcaveHull.ply", *cloud_sequenced, false); // ASCII mode
