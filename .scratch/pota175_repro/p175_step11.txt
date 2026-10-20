@@ -1,0 +1,14 @@
+mesh triangles: inner-wall=8692 outer-wall=11769 fold=2653 (of 23114)
+bag=753 ORIG=211
+nearest-triangle dist: med=0.000 max=0.000
+parent-face labels: inner-wall=212 outer-wall=277 fold=264
+boundary edges=636 (expect 636)
+loops=[274, 247, 97, 18] (expect [274, 247, 97, 18])
+S0 curate (replica attempt): n=364 NEAR=86 MID=187 FAR=91 drop=0 (173 recorded 86/187/91/73; loop-trace diverges, keep0 NOT reused)
+origin mapping: INDEPENDENT route -- match BAG rows to unclustered rows (tolerance), strip set recomputed exactly
+strip recomputed=612 (173 recorded 612)
+BAG->U row match: maxdist=5.80e-04 (premise: BAG rows are unclustered rows)
+matched rows: 0/753
+BAG unclustered-rows=0 | in-strip=0 | S0-exclusive=0
+stage ledger: estimator fires 364 (173) -> curation keeps 291 (173, FAR&HOLE drop 73, NOT recomputed here) -> snap replaces positions (labels re-derived, 291) ; strip 612 native unclustered rows carried (wall labels re-derived, 612) ; dedup 903->753 drops 150 rows (173)
+origin x parent (by final unclustered-row; S0-snapped-onto-strip reads as strip): strip-row dots=612 (inner=207 outer=142 fold=263) | S0-exclusive dots=141 (inner=5 outer=135 fold=1)
