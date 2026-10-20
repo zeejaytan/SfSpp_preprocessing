@@ -27,6 +27,8 @@ Owner ticket: 82.
 3. Recovery (144): state trigger (admitted-majority + coverage-payoff) FIRES honest, walk M144 322/310, gate 3.9736, uncovered 0; recipe banked, applied through 145/186 lineage. APPLIED.
 Owner tickets: 143, 144, 175, 185.
 
+197 (D-only pristine ablation on Pot C): C_fresh 0/4+0/5 -> C_197 2/4+1/5, exactly one true join C01-C03 x3 deterministic; pot-level falsifier fires (2/4 vs 4/4). D recovers C01's edge but does not seat the pot. Side-finding: landed A/B/C sections added ~270 rim pts to unchained C01-Bl_0 (attribution open).
+
 ## E. E2E proofs of the new default (de-doubled input seats sherds)
 180 (first seating): Viterbi single loop 220/closure 1.48, rim-med 0.76; E2E jobs 33470102/3/4 COMPLETED 0:0, C_180 Total 165 x3, 3/3+3/3, T_0to_0 x3. APPLIED as proof de-doubling seats C01.
 186 (default recipe x6): 185-v3 loop bundled, jobs 33482185/86/87 + lead duplicates 33482198/99/200 all COMPLETED 0:0, C_186 155/24, 3/3+3/3 x6 deterministic. APPLIED -- this is the default.
