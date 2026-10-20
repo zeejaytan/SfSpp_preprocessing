@@ -1,16 +1,10 @@
-# 215 - Pot D six mixed lanes: targeted re-walk + re-score (214 follow-up)
+# 215 - Pot D P16 re-walk + re-score (214 follow-up; narrowed 2026-10-20)
 
 Status: ready-for-agent
 Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 ## Goal
-User verdict on the 214 gate (2026-10-20): fix the 6 mixed sherds first, then
-GO on all 29 together. Targeted re-walks for P12 (Bl0 interior chord),
-P15 (inner shortcut one arc), P16 (Bl1 stalled 83/140, Bl0 slightly short),
-P22 (mid-span excursion ~10mm), P25 (small-piece offset), P27 (parallel
-offset upper arc). The 23 clean sherds are NOT re-run (214 evidence stands).
-Re-score fixed lanes with the same 211 bar; the gate re-opens when all six
-are at bar.
+User verdict on the 214 gate (2026-10-20), refined same day: the five locally-wrong stretches (P12/P15/P22/P25/P27 -- same class as P01's stray squiggle, which seats fine) LET SLIDE, their 214 scores stand. Fix P16 ONLY (Bl0 leaves rim upper arc, Bl1 interior shortcut + stalled 83/140). The 23 clean + 5 slid sherds are NOT re-run. Re-score P16 with the same 211 bar; the gate re-opens when P16 is at bar.
 
 ## Boundary
 Same line: branch pristine-splitwalk (213 cure). Spartan: reuse
@@ -32,12 +26,10 @@ covers probe/re-extract jobs -- do NOT ask; held allocation for iterative
 work, sbatch only for long unattended runs with laptop-side poll.
 
 ## Acceptance
-All six sherds at bar both lanes (or a stated honest-negative per sherd
-with mechanism, if a lane will not come). Before/after overlays filed.
-Then 214's gate flips to GO on user nod -- this ticket does NOT flip it.
+P16 at bar both lanes (or a stated honest-negative with mechanism, if a lane will not come). Before/after overlay filed. Then 214's gate flips to GO on user nod -- this ticket does NOT flip it.
 
 ## Required evidence
-Comments: per-sherd cause + fix + before/after numbers + picture paths.
+Comments: P16 cause + fix + before/after numbers + picture paths.
 Final report: same, self-contained. Do NOT flip to done -- lead flips
 after review.
 
