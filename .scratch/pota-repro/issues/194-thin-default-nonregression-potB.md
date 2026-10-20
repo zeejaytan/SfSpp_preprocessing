@@ -12,7 +12,7 @@ Prove the thin-then-walk default is HARMLESS on clean rims: force-apply the 185 
 2. Thin: apply 185 v3 (thin TRUE strip to centreline, uniform 1.8mm resample, verbatim walk_m144) to each face cloud from step 1 (B01 forest excluded, with 78 per 93/187). Gate each loop: closure <=2.0, single wrap, rim-truth med (check-only, expect ~0.5-1.15 per 187).
 3. Falsifier (own in advance): any loop whose rim-truth med worsens by >0.5mm vs its unthinned SXC input is REFUSED (not bundled) -- thinning must not move clean dots off the rim.
 4. Bundle: rebuild with ONLY the thinned Bl_0 slots changed (byte-proofs, only-changed diff, veto-absence, 180/186 pattern).
-5. E2E: upload, login-node build (expect BUILD DONE), sbatch x3 + laptop-side poll per AGENTS.md. Bar = 93 SXC (cite tallies from 93/187). Verdict: MATCH (>= bar, no piece unseated that 93 seated) or REGRESSION (name the dropping piece + numbers).
+5. E2E: same vehicle cure-potA @ bffefb6 (this carries every Pot A-diagnosis change: preprocessing T13/T21/T23/T24/T27 + assembler P22FIX/P22FIX2 + C2-restore per ticket 38 -- verify HEAD before building); same-binary ORIG control must reproduce its bar (93's ORIG arm) or the run is VOID. Upload, login-node build (expect BUILD DONE), sbatch x3 + laptop-side poll per AGENTS.md.
 
 ## Constraints
 Laptop + Spartan both allowed. COMMIT NOTHING (worker). No repo sources touched, dataset read-only. Finish by writing the self-contained result to this ticket's Comments + final output -- never via send_message.
