@@ -26,7 +26,7 @@ covers probe/re-extract jobs -- do NOT ask; held allocation for iterative
 work, sbatch only for long unattended runs with laptop-side poll.
 
 ## Acceptance
-P16 at bar both lanes (or a stated honest-negative with mechanism, if a lane will not come). Before/after overlay filed. Then 214's gate flips to GO on user nod -- this ticket does NOT flip it.
+P16 at bar both lanes (or a stated honest-negative with mechanism, if a lane will not come). Before/after overlay filed. Fix stated GENERALLY (portable, not P16-hardcoded) -- next ticket applies the same fix to the five slid sherds as a same-class-or-not test, THEN 214's gate flips to GO on user nod. This ticket does NOT flip the gate.
 
 ## Required evidence
 Comments: P16 cause + fix + before/after numbers + picture paths.
