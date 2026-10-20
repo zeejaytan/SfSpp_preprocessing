@@ -1,0 +1,14 @@
+unsequenced slots: 4 [133, 160, 197, 200]
+  slot 133 keyfresh=False nearest=[(132, 0.0, True), (133, 0.0, True), (118, 2.97, False), (16, 3.27, False), (127, 3.88, False)]
+  slot 160 keyfresh=False nearest=[(160, 0.0, True), (260, 6.74, False), (184, 6.91, False), (82, 6.99, False), (161, 7.03, False)]
+  slot 197 keyfresh=False nearest=[(196, 0.0, True), (197, 0.0, True), (200, 0.0, True), (198, 4.74, False), (199, 4.74, False)]
+  slot 200 keyfresh=False nearest=[(196, 0.0, True), (197, 0.0, True), (200, 0.0, True), (198, 4.74, False), (199, 4.74, False)]
+max point-DO=4.95 uncovered=0
+  C36/37 maxDO=2.23
+  C46/47 maxDO=1.24
+  C96/97 maxDO=0.96
+  C165 maxDO=2.07
+  C173 maxDO=3.74
+  O37 maxDO=2.23
+  C115-205 maxDO=4.61
+step profile: max=22.75 n>25=0 n>=40=0 (licensed=0 stated, so all steps unlicensed-by-default)

@@ -1,0 +1,5 @@
+bags: C=270 SN124=8 SN128=1 SN133=3 -> 279=279 282=282
+ORIG gate pts: 211
+GREEDY-279: greedy=100/279 final=206 jumps=4 at=[(99, 100), (133, 134), (173, 174), (192, 193)]
+GREEDY gate: final=206 gate med=4.3107 <2mm=32.0% gaps5=41 maxstep=67.0 ORIGcov 94/211 uncovered=15 spans=[(32, 37), (46, 50), (96, 97), (165, 165), (173, 173)]
+CONTROL ~= 128 marks (206/4.3107/15/spans): GREEN

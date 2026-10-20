@@ -1,0 +1,8 @@
+bags: G282=282 +SN=10 -> G=292
+GREEDY-292: greedy=126/292 ratio=0.4315 final=126 jumps=0 at=[]
+GREEDY gate: final=126 gate med=4.2746 <2mm=35.7% gaps5=20 maxstep=22.8 ORIGcov 64/211 uncovered=91 spans=[(115, 205)]
+new-dot first-visit seqpos: {282: np.int64(124), 283: np.int64(43), 284: np.int64(42), 285: np.int64(44), 286: np.int64(49), 287: np.int64(48), 288: np.int64(125), 289: np.int64(13), 290: np.int64(14), 291: np.int64(15)}
+new dots visited on-road: 10/10
+first-divergence vs ctrl279 at seqpos=13
+ORIG newly covered vs ctrl279 greedy (DO<2): 16
+BAR: pushes>=206:FAIL(126) uncovered<8:FAIL(91) junk0:PASS(10/10 on-arc) gate<=4.3107:PASS(4.2746)

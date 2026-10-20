@@ -1,0 +1,19 @@
+greedy-phase verbatim: strand 140/314 slot 221 (latch L144 re-confirmed)
+envelope BAND=21.72 (freeze 21.72)
+HALT: nearest road-retreat 34.27 exceeds envelope 21.72 -- walk ends
+M144 walk: seqlen=322 unique=310 retreats=12 forwards=0 guard=183
+  retreat #0 at (153->154) len=5.03
+  retreat #1 at (155->156) len=5.03
+  retreat #2 at (157->158) len=5.03
+  retreat #3 at (159->160) len=5.03
+  retreat #4 at (161->162) len=5.87
+  retreat #5 at (166->167) len=1.86
+  retreat #6 at (168->169) len=21.56
+  retreat #7 at (170->171) len=3.27
+  retreat #8 at (210->211) len=3.86
+  retreat #9 at (252->253) len=1.41
+  retreat #10 at (254->255) len=1.41
+  retreat #11 at (256->257) len=14.68
+M144 gate: seqlen=322 med=3.9736 <2mm=31.7% gaps5=99 maxstep=22.8 ORIGcov 116/211 uncovered=0 spans=[]
+steps>25mm: n=0 []
+BAR: unique>140 True | gate<=3.9851 True | uncovered<15 True | big0(>=40) True | nostep>25 True -> ALL-HOLD

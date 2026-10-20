@@ -1,0 +1,55 @@
+strand slot=221 coord=[ 25.13  66.52 424.99] final=140/314 ratio=0.4459
+greedy strides: n=139 max=21.72 median=2.83 p90=5.56 n>40mm=0
+visited slots=140 unique visited keys=139 key-fresh unvisited=136 (key never sequenced)
+nearest unvisited-by-slot to strand:
+  slot 228 d=0.00 keyfresh=False
+  slot 90 d=6.15 keyfresh=False
+  slot 144 d=6.15 keyfresh=False
+  slot 267 d=16.15 keyfresh=False
+  slot 268 d=16.15 keyfresh=False
+  slot 153 d=18.75 keyfresh=False
+  slot 224 d=19.06 keyfresh=False
+  slot 74 d=19.64 keyfresh=False
+  slot 75 d=19.64 keyfresh=False
+  slot 87 d=19.64 keyfresh=False
+key-fresh count=136 nearest key-fresh d=43.24 (next: [43.24 43.24 43.24 47.65 47.65])
+K-net(34) key-fresh=0 index-unvisited-in-K=7
+314-greedy: ORIGcov 66/211 uncovered 91
+292-greedy: ORIGcov 64/211 uncovered 91
+279-greedy: ORIGcov 94/211 uncovered 15
+newly covered (DO<2) vs 292-greedy: 2 [44, 97]
+newly covered (DO<2) vs 279-greedy: 18 [30, 31, 32, 33, 34, 35, 44, 45, 46, 47, 48, 50, 94, 95, 96, 97, 98, 99]
+slot 282 seqpos=20 minDistRoad=0.00 seat=O94 seatDO=4.12
+slot 283 seqpos=50 minDistRoad=0.00 seat=O46 seatDO=1.14
+slot 284 seqpos=49 minDistRoad=0.00 seat=O48 seatDO=1.19
+slot 285 seqpos=51 minDistRoad=0.00 seat=O45 seatDO=1.13
+slot 286 seqpos=70 minDistRoad=0.00 seat=O34 seatDO=0.88
+slot 287 seqpos=117 minDistRoad=0.00 seat=O36 seatDO=2.18
+slot 288 seqpos=22 minDistRoad=0.00 seat=O96 seatDO=4.79
+slot 289 seqpos=13 minDistRoad=0.00 seat=O98 seatDO=1.07
+slot 290 seqpos=16 minDistRoad=0.00 seat=O96 seatDO=0.96
+slot 291 seqpos=17 minDistRoad=0.00 seat=O94 seatDO=0.95
+slot 292 seqpos=118 minDistRoad=0.00 seat=O38 seatDO=4.00
+slot 293 seqpos=67 minDistRoad=0.00 seat=O36 seatDO=4.37
+slot 294 seqpos=66 minDistRoad=0.00 seat=O37 seatDO=4.21
+slot 295 seqpos=69 minDistRoad=0.00 seat=O34 seatDO=1.72
+slot 296 seqpos=54 minDistRoad=0.00 seat=O44 seatDO=3.63
+slot 297 seqpos=55 minDistRoad=0.00 seat=O45 seatDO=4.30
+slot 298 seqpos=122 minDistRoad=0.00 seat=O46 seatDO=4.99
+slot 299 seqpos=53 minDistRoad=0.00 seat=O44 seatDO=2.60
+slot 300 seqpos=52 minDistRoad=0.00 seat=O44 seatDO=0.79
+slot 301 seqpos=18 minDistRoad=0.00 seat=O94 seatDO=2.93
+slot 302 seqpos=21 minDistRoad=0.00 seat=O96 seatDO=3.36
+slot 303 seqpos=15 minDistRoad=0.00 seat=O97 seatDO=0.94
+slot 304 seqpos=14 minDistRoad=0.00 seat=O97 seatDO=1.20
+slot 305 seqpos=-1 minDistRoad=59.83 seat=O166 seatDO=1.67
+slot 306 seqpos=-1 minDistRoad=61.76 seat=O165 seatDO=0.53
+slot 307 seqpos=-1 minDistRoad=64.28 seat=O165 seatDO=2.88
+slot 308 seqpos=-1 minDistRoad=63.73 seat=O164 seatDO=0.81
+slot 309 seqpos=-1 minDistRoad=65.64 seat=O163 seatDO=2.23
+slot 310 seqpos=-1 minDistRoad=53.35 seat=O175 seatDO=3.12
+slot 311 seqpos=-1 minDistRoad=54.91 seat=O174 seatDO=1.93
+slot 312 seqpos=-1 minDistRoad=57.89 seat=O173 seatDO=3.27
+slot 313 seqpos=19 minDistRoad=0.00 seat=O94 seatDO=2.76
+ORIGcov trajectory every20steps: [11, 19, 29, 35, 47, 47, 47]
+QUOTE stuck (116 Comments s5, read-only): far-arc strand K-window 34/34 visited; nearest fresh=B slots 101.6-102.9mm
