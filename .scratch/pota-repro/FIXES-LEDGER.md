@@ -33,5 +33,9 @@ Owner tickets: 143, 144, 175, 185.
 191 (transfer to G): 3 doubled edges cured with 185 v3, jobs 33484406/07/09 COMPLETED 0:0, G_191 5/7+3/10 x3, +1 sherd over fresh bar (60/39: 4/7+3/10), controls G_orig 7/7+10/10 + A green. Supersedes 83. APPLIED.
 Owner tickets: 180, 186, 191.
 
+## F. Boundary: thin is NOT a blanket default (194)
+Force-applied 185 v3 to Pot B's clean singles: 6/9+5/15 -> 2/9+1/15 x3 (jobs 33485122/29/30, NOT void). Split found one face each (label-flicker only); thin gated clean yet seating collapsed. Thinning is indicated ONLY on a doubling diagnosis (179 census), never blanket.
+Owner ticket: 194.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless), 195 (D harmless), 196 (A control holds), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
