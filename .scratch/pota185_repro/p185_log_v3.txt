@@ -1,0 +1,14 @@
+TRUE n=476
+fine bins: 267 non-empty of 360
+smoothed polygon=367.1mm -> N1=204 (nominal 1.8mm; cap 240)
+centreline: n=204 spacing med=1.79 max=3.23
+seed0 rot=0: n=204 arc=363.6 closure=3.23 med/max=1.79/1.79 gaps5=0 uniqSta=194 skip=194 back=194 Dtok=1 run=203 rimmed=0.6421 cov=203/211 BAND=1.8 
+seed1 rot=164: n=204 arc=365.0 closure=1.79 med/max=1.79/3.23 gaps5=0 uniqSta=194 skip=194 back=194 Dtok=2 run=163 rimmed=0.6421 cov=203/211 BAND=3.2 
+seed2 rot=71: n=204 arc=365.0 closure=1.79 med/max=1.79/3.23 gaps5=0 uniqSta=194 skip=16 back=0 Dtok=2 run=131 rimmed=0.6421 cov=203/211 BAND=3.2 
+seed3 rot=115: n=204 arc=365.0 closure=1.79 med/max=1.79/3.23 gaps5=0 uniqSta=194 skip=194 back=194 Dtok=2 run=114 rimmed=0.6421 cov=203/211 BAND=3.2 
+seed4 rot=34: n=204 arc=365.0 closure=1.79 med/max=1.79/3.23 gaps5=0 uniqSta=194 skip=194 back=194 Dtok=2 run=169 rimmed=0.6421 cov=203/211 BAND=3.2 
+seed5 rot=141: n=204 arc=365.0 closure=1.79 med/max=1.79/3.23 gaps5=0 uniqSta=194 skip=16 back=0 Dtok=2 run=141 rimmed=0.6421 cov=203/211 BAND=3.2 
+PICK seed2 (key-free): n=204 arc=365.0 closure=1.79 gaps5=0
+PICK top3 D-tokens: [(11, 202), (21, 1)] longest-run=131 ntok=2
+PICK rim-truth (CHECK-ONLY): med=0.6421 cov=203/211 uniqSta=194 skip=16 back=0
+renders: p185_01/02/03_v2
