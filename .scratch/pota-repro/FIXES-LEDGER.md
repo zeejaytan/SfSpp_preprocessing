@@ -13,6 +13,7 @@ Recipe (81, anchor on Pot F): slot-exchange S0<->S1 + Bl_0<->Bl_1, same-loop res
 Applied to: D (84: 22/27+49/66 lineage, jobs 33361199/200/201); E (90: 29/31+56/62 best, jobs 33380562/749/751); B (93: pure SXC, min n=70); I (91 census + 94 I27 49->55 resample: 25/27+54/65 x3, jobs 33387455/56/57); J (92: 7/10+13/18 x3, jobs 33387858/59/60; 95 resample-hold equal); C partial (98: C02/C04 SXC, 2/3+1/3 x3 = S24 bar, jobs 33392081/82/83). Pot G's 83 shortfall entry is SUPERSEDED by 191 below.
 Decision: APPLIED to every pot's bundle of record.
 Owner tickets: 81, 84, 90, 91, 92, 93, 94, 95, 98.
+Standing check (2026-10-20, user rule): NEVER blanket-apply the swap. Pot A proved P01 agrees while P02-P08 flip -- per-piece slot verification (fresh-Bl0/Bl1 vs author-Bl0/Bl1 med/coverage, 209 pattern) is required before EVERY future assembly, on every pot and every line. A swap that flips an agreeing piece silently unseats it.
 
 ## C. E_G crash cure (82)
 Symptom: guarded E bundle segfaulted the assembler at launch (bare xyz-only Bl_0, reader data_structure.cpp:245 leaves features empty, ranking_system.cpp:1113).
