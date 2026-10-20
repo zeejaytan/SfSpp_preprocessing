@@ -1411,6 +1411,9 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 	}
     int numberOfClustersCreated = -1;
     int maxIterations = 30;  // Prevent infinite loops
+    // POTA-220 top-down trial: single-shot mode (one threshold per run, no
+    // auto-walk) for threshold->clusters tables. Env-gated; default unchanged.
+    if (const char* sfs_ss = std::getenv("SFS_SINGLE_SHOT")) { if (*sfs_ss && std::string(sfs_ss) != "0") maxIterations = 1; }
     int currentIteration = 0;
     
     while (numberOfClustersCreated < 2 && currentIteration < maxIterations)
