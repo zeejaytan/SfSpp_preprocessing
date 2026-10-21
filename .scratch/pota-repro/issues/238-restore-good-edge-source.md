@@ -1,4 +1,4 @@
-Status: results-in
+Status: done
 
 # Ticket 238: restore working root-edge source to main
 
@@ -20,6 +20,9 @@ Make main's own tree build working edge lanes again. The good reference binary d
 
 ## Acceptance
 - origin/main root edge file md5 = 89ab05b1. Tree-built edge binary yields full lanes (not stubs). Pot A holds. No other files touched.
+
+## Lead verdict (2026-10-22)
+ACCEPT PASS. R6: 4/4 jobs sacct COMPLETED 0:0; tree-built root edge md5 dc472b0e == reference BYTE-IDENTICAL; lanes P22 135/155 + P12 153/158 = REF (no stubs); paperA all 8 = 237 counts, slots straight; seat FRESH 8/8+15/15 ORIG valid, strict 8/8. Main's tree now builds its whole chain. Next: sweep, then Pot D E2E.
 
 ## Required evidence to report
 Restored file md5; edge binary md5 (+ dc472b0e comparison); lane counts P22/P12; Pot A tallies; job IDs + sacct states; verdict in ticket Comments; Status results-in; self-contained completion message to parent agent session-1ca83938-6e86-4736-bb84-2f4e58807e35.
