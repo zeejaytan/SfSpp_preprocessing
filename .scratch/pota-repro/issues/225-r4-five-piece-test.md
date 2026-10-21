@@ -4,7 +4,7 @@ Status: ready-for-agent
 Test the repaired stopping rule (R4, frozen below) on the five 214-MIXED pieces (P12/P15/P22/P25/P27): does it select a stop whose lanes score at bar, with no new segmentation? Controls P16/P01 (existing lanes) must keep their good stops. User order m03448.
 
 ## The rule (R4, FROZEN -- do not retune)
-R4 = the TIGHTEST threshold (descending the existing ladder: ..,12,10,8,4.5[,3,2 where run]) satisfying ALL THREE: (a) third cluster <=8% of cloud; (b) balance 2nd/1st >=0.5; (c) gap-clean: symmetric min S0<->S1 separation >=2mm (222 pattern). The top2>=70% leg is DROPPED (224 verdict: it punishes complex pieces for being complex). First threshold = tightest = check 4.5 (or 3/2 where they exist) first, ascend while legs fail.
+R4 = the LOOSEST threshold (proven search direction, user m03460: start loosest, tighten down) satisfying ALL THREE: (a) third cluster <=8% of cloud; (b) balance 2nd/1st >=0.5; (c) gap-clean: symmetric min S0<->S1 separation >=2mm (222 pattern). Descend the existing ladder from 90 toward 4.5 (continue to 3, 2 only where those stages exist, i.e. P12); FIRST pass wins = the loosest honest stop. The top2>=70% leg is DROPPED (224 verdict: it punishes complex pieces for being complex). Rationale for loose-first (lead): tightest-first risks stopping inside fragmentation -- P12 @3 satisfies gap/balance but its lanes break (Bl1 80.8); loose-first stops at @4.5 by construction and never descends into the fragment zone.
 
 ## Boundary (worker: Spartan experiment copy ONLY, fresh dir sfs-fix-225)
 - NO re-segmentation: reuse the existing ladder surfaces byte-identical (221 ladder + 220 ladder for P01; 224 thr_3/thr_2 for P12 -- verify md5s).
