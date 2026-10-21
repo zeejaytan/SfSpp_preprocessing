@@ -1,4 +1,7 @@
-Status: ready-for-agent
+Status: done
+
+## Lead verdict (2026-10-21)
+OURS-AT-EDGE accepted. R6: numbers EXACT (baseline 1.294, control 41.63/41.47 PASS, line 16.29, disputed 39.22/1.35); Comments + instrument + provenance caveat verified; profile PNG on disk; only this ticket touched among tracked (.scratch/pota229/ + gitignored artifacts/pota229/ new). User's read confirmed with a working instrument: in the disputed stretch ours rides the crease at control level, author sits at smooth-face baseline. Changes: RULER CAVEAT ONLY (author P27-Bl1 locally off-edge in idx 0-13/52-64); lane bar unchanged (cov counts the whole lane; P27 still fails). Provenance: no full-res P27 mesh exists anywhere (Spartan copies all byte-identical _DS); measured on dense ORIG cloud as documented.
 
 ## Goal
 Settle the P27 disputed stretch (user order m03707): the user reads the author's lane as sitting mid-surface and ours at the edge. Test at ORIGINAL mesh density which line sits on the true fracture edge -- a sharpness test along both lines, with a control stretch. Ends at measurement + verdict; changes nothing (no rule, no reseat, no assembly).
@@ -21,3 +24,21 @@ Settle the P27 disputed stretch (user order m03707): the user reads the author's
 
 ## Required evidence to report
 - Bottom line first (one of the three verdicts + the two medians). Then instrument, control, profile picture, mesh provenance (which file, vertex count), script path.
+
+## Comments (worker 229, 2026-10-21 -- measurement only, nothing changed)
+
+**Bottom line: OURS-AT-EDGE.** User confirmed: in the disputed stretch the author lane runs mid-surface, ours rides the true fracture edge. Disputed medians: ours-Bl0 39.2 deg vs author-Bl1 1.4 deg (face baseline 1.3 deg, decision line 16.3 deg).
+
+**Instrument (pre-registered before measuring).** Normal-spread S(p) = deg(acos(|mean unit normal|)) over dense-cloud points within r=2mm of p. Smooth face reads ~0; a fracture crease reads tens of deg. Decision line: control passes iff BOTH lines' median S >= baseline+15 deg, baseline = median S on face-interior cloud points (>6mm from any lane dot); else report BLIND.
+
+**Control: PASS.** Control stretch ours-Bl0 idx 20-45 (max dist to author 0.917mm, lanes coincide): ours med 41.6 deg (n=26), author-Bl1-nearest med 41.5 deg (n=25); baseline 1.3 deg (n=273). Both lines read crease, instrument is not blind.
+
+**Disputed stretch.** 27 ours-Bl0 dots >2mm from nearer author lane (idx 0-13, excursion to 17.7mm; idx 52-64, to 17.3mm; slots fB0<->oB1 swapped per 209 pattern, re-verified EXACT: med 0.83/cov 58.5). Sharpness there: ours med 39.2 deg (n=27, at control level, continuous crease along the whole lane, per-dot 20.3-50.4) vs nearest author dots med 1.4 deg (n=8 unique, at baseline = smooth surface). Author lane locally leaves the edge and crosses the face; ours stays on the crease.
+
+**Picture (eye-checked by worker).** .scratch/pota229/p229_profile.png: top = S along ours-Bl0 arc (blue stays high throughout; gold collapses to baseline in both shaded disputed ends, coincides in control); bottom = plan-view map (blue rides the cloud boundary/rim, gold cuts mid-face). Scheme gold/blue/black only.
+
+**Mesh provenance.** No full-res triangulated P27 mesh beyond _DS exists on Spartan (searched whole project tree; every P27 Mesh.obj is byte-identical to temp_download _DS). Canonical mesh = pota227_edgeP27_12/Temp/Data/Pot_D/Pot_D_Piece_27_Mesh.obj, 5404 verts / 10804 faces, md5 9d83b39feaf19485c68770fa5876e0eb. Measurement run at ORIG sampled density on the dense cloud sfs-potD-214/Dataset_Input/Point/Pot_D/Pot_D_Piece_27_Point.pcd (83374 pts with normals, md5 c3b1bb6975184a29de9d134500e2ba25); both fetched to artifacts/pota229/ (gitignored).
+
+**Script + numbers.** .scratch/pota229/p229_sharpness.py (numpy+matplotlib only; login-node/python equivalent, no sbatch, no clusters), .scratch/pota229/p229_numbers.csv (baseline,ctrl_ours,ctrl_auth,line,ctrl_pass,disputed_ours,disputed_auth), .scratch/pota229/p229_profile.csv (per-dot idx,arc,dist,S_ours,S_auth).
+
+**What this changes.** Ruler caveat only: the P27@12 excursion follows a real crease (author locally wrong), but the lane bar is unchanged -- cov still counts the whole lane, so P27@12 stays below bar on coverage. No rule, no reseat, no assembly change.
