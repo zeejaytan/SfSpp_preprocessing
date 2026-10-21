@@ -26,6 +26,16 @@ def loadobj(p):
 P12='C:/PR/SfSpp_preprocessing/.scratch/pota222/p12/'
 L='C:/PR/SfSpp_preprocessing/.scratch/pota223/lanes/'
 V,F=loadobj(P12+'mesh.obj')
+def loadxyz(p):
+    d=[]
+    f=open(p)
+    for ln in f:
+        s=ln.split()
+        if len(s)>=3:
+            try: d.append([float(x) for x in s[:3]])
+            except ValueError: pass
+    return np.array(d)
+S0=loadxyz(P12+'p12_S0_at4p5.xyz')
 a1=loadpcd(P12+'auth_Bl1.pcd')
 o0=loadpcd(L+'Pot_D_Piece_12_Breakline_0.pcd')
 dd,_=cKDTree(a1).query(o0)
@@ -46,6 +56,7 @@ ax2.add_collection3d(Poly3DCollection(V[F[::6]],facecolor=MESH,edgecolor='none',
 ax2.scatter(a1[:,0],a1[:,1],a1[:,2],s=30,c=AUTH,label='author edge')
 ax2.scatter(good[:,0],good[:,1],good[:,2],s=30,c=OURS,label='our edge on-rim')
 ax2.scatter(bad[:,0],bad[:,1],bad[:,2],s=120,c='k',edgecolors='w',linewidths=1.0,label='our edge off-rim (19)')
+ax2.scatter(S0[::5,0],S0[::5,1],S0[::5,2],s=4,c='#9a9a9a',label='face dots (S0, thinned)',alpha=0.6)
 ax2.set_title('ZOOM on the corner where our walk cut across')
 ax2.legend(markerscale=2,fontsize=10)
 ax2.view_init(elev=18,azim=-62); ax2.set_box_aspect((1,1,1))
