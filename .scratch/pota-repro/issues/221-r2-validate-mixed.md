@@ -74,3 +74,5 @@ Loose thresholds 90/60/45/30/20: all six pieces 1 cluster every step (P12: 49702
 - Spartan: sfs-fix-221 (code+scripts), pota221_ladder (mesh_T*.log + thr_*/), pota221_edgeP{12_10,15_12,16_12,22_12,16_4p5,22_12b}, job logs sfs-fix-221/*221_*.out.
 - Laptop: .scratch/pota221/ (p221_score.py, p221_diag.py, p221_lanedev.py, p221_seq.py, p221_render.py, P12_lanes.png, P15_lanes.png, pota221f/{lanes,author,logs}, pota221f2/{P12,P15 faces+boundary,lanes45}, pota221f3/{true P16@12 lanes}).
 - 214 comparison source: pota214_pipe/mesh_stage.log (cluster counts), 214-fresh P16 lanes/scores per lead R6 on ticket 214.
+## Bridge addendum (lead-measured 2026-10-21, P12@10 surfaces)
+S0-S1 min gap = 0.00 at [10.8, 14.3, 465.0]; p1 1.32, p5 3.63, p50 9.52. Touching dots spread face-wide at 2mm threshold (rim proximity all round), but the ZERO is a single bridge point in the red-lane excursion zone. 221 splitting verdict amended: faces separate cleanly almost everywhere except this bridge (user m03059). P15 min-gap unmeasured (script timed out) -- 222 covers it.
