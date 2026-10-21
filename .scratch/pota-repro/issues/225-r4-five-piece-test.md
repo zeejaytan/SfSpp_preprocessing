@@ -21,5 +21,8 @@ R4 = the LOOSEST threshold (proven search direction, user m03460: start loosest,
 - Controls: P16 (expect @10 or @12, both known-good -- cite 222/220 scores, no new runs) and P01 (expect @8 -- cite 220). If R4 moves a control off its good stop, that is a headline finding, not a footnote.
 - sacct State/ExitCode for any new job; binary/surface/lane md5s.
 
+## Lead note (2026-10-21, user m01642)
+P12 third-share correction: mesh-log 9.29% (not ~6%) -- frozen R4 as written walks past @4.5 to @3. User decision: OPTION 1 -- no mid-run amendment; worker reports all five mechanically (P12 as the book selects it), rule repair (cutoff vs floor vs accept) made once with full evidence.
+
 ## Required evidence to report
 - Per-piece: R4 table (legs per threshold), selected stop, lane scores, verdict class. Bottom line first: on how many of 5 does R4 select a both-at-bar stop (vs R2's record: 1/6 strict, 4/6 splitting-level).
