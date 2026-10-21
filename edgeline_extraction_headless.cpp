@@ -174,71 +174,6 @@ typedef CGAL::Parallel_tag Concurrency_tag;
 typedef CGAL::Sequential_tag Concurrency_tag;
 #endif
 
-// ---- Robust loaders to prevent crashes on malformed files ----
-static bool is_valid_normals(const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud) {
-    if (!cloud || cloud->empty()) return false;
-    size_t good = 0;
-    for (const auto& p : cloud->points) {
-        if (std::isfinite(p.normal_x) && std::isfinite(p.normal_y) && std::isfinite(p.normal_z)) {
-            if (p.normal_x != 0.0f || p.normal_y != 0.0f || p.normal_z != 0.0f) {
-                good++;
-                if (good > 32) return true; // enough evidence
-            }
-        }
-    }
-    return false;
-}
-
-static void estimate_normals_from_xyz(const pcl::PointCloud<pcl::PointXYZ>::Ptr& in,
-                                      pcl::PointCloud<pcl::PointNormal>::Ptr& out,
-                                      int k = 20) {
-    out.reset(new pcl::PointCloud<pcl::PointNormal>());
-    out->points.resize(in->size());
-    pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
-    ne.setInputCloud(in);
-    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
-    ne.setSearchMethod(tree);
-    ne.setKSearch(k);
-    pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
-    ne.compute(*normals);
-    for (size_t i = 0; i < in->points.size(); ++i) {
-        pcl::PointNormal pn;
-        pn.x = in->points[i].x; pn.y = in->points[i].y; pn.z = in->points[i].z;
-        if (i < normals->size()) {
-            pn.normal_x = normals->points[i].normal_x;
-            pn.normal_y = normals->points[i].normal_y;
-            pn.normal_z = normals->points[i].normal_z;
-        } else { pn.normal_x = 0; pn.normal_y = 0; pn.normal_z = 1; }
-        out->points[i] = pn;
-    }
-    out->width = static_cast<uint32_t>(out->points.size());
-    out->height = 1;
-}
-
-static bool load_ply_pointnormals_robust(const std::string& path,
-                                         pcl::PointCloud<pcl::PointNormal>::Ptr& cloud) {
-    cloud.reset(new pcl::PointCloud<pcl::PointNormal>());
-    std::cerr << "[EDGELINE DEBUG] Load PLY normals: " << path << std::endl;
-    if (pcl::io::loadPLYFile<pcl::PointNormal>(path, *cloud) == 0 && is_valid_normals(cloud)) {
-        std::cerr << "[EDGELINE DEBUG] Loaded PointNormal PLY ok, size=" << cloud->size() << std::endl;
-        return true;
-    }
-    // Fallback: load as XYZ and estimate normals
-    pcl::PointCloud<pcl::PointXYZ>::Ptr xyz(new pcl::PointCloud<pcl::PointXYZ>());
-    if (pcl::io::loadPLYFile<pcl::PointXYZ>(path, *xyz) == 0 && !xyz->empty()) {
-        std::cerr << "[EDGELINE DEBUG] Loaded XYZ PLY, estimating normals. size=" << xyz->size() << std::endl;
-        estimate_normals_from_xyz(xyz, cloud, 20);
-        std::cerr << "[EDGELINE DEBUG] Estimated normals size=" << cloud->size() << std::endl;
-        return true;
-    }
-    // Fallback failed
-    cloud->clear();
-    std::cerr << "[EDGELINE DEBUG] Failed to load PLY: " << path << std::endl;
-    return false;
-}
-
-// moved below after data_path.h include where tempEdgeFolder is defined
-
 struct Construct {
 	Surface_mesh& mesh;
 	template < typename PointIterator>
@@ -333,25 +268,6 @@ bool next_step = false;
 
 #include <pcl/io/obj_io.h>
 
-// Helper: load normals from cleaned surface cloud in Temp/Temp_edge if PLY is invalid
-static bool load_pointnormals_from_cleaned_surface(pcl::PointCloud<pcl::PointNormal>::Ptr& cloud) {
-    std::string path = tempEdgeFolder + std::string("cloud_Surface_AllSamples_Cleaned.pcd");
-    pcl::PointCloud<pcl::PointNormal>::Ptr tmp(new pcl::PointCloud<pcl::PointNormal>());
-    if (pcl::io::loadPCDFile<pcl::PointNormal>(path, *tmp) == 0 && !tmp->empty()) {
-        cloud = tmp;
-        std::cerr << "[EDGELINE DEBUG] Loaded cleaned surface normals from " << path << " size=" << cloud->size() << std::endl;
-        return true;
-    }
-    // Try XYZ + estimate
-    pcl::PointCloud<pcl::PointXYZ>::Ptr xyz(new pcl::PointCloud<pcl::PointXYZ>());
-    if (pcl::io::loadPCDFile<pcl::PointXYZ>(path, *xyz) == 0 && !xyz->empty()) {
-        estimate_normals_from_xyz(xyz, cloud, 20);
-        std::cerr << "[EDGELINE DEBUG] Estimated normals from cleaned XYZ, size=" << cloud->size() << std::endl;
-        return true;
-    }
-    std::cerr << "[EDGELINE DEBUG] Failed to load cleaned surface normals at " << path << std::endl;
-    return false;
-}
 // Removed global viewers for headless operation
 
 
@@ -495,9 +411,6 @@ bool Matrix_Rearrange(MatrixXd& src, MatrixXd& src_N)
 	}
 }
 
-// Forward declaration for adaptive densification function
-MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spacing_mm);
-
 vector<Vector3d> FindLineSphereIntersections(Vector3d linePoint0, Vector3d linePoint1, Vector3d circleCenter, double circleRadius)
 {
 	vector<Vector3d> solutionSet;
@@ -559,152 +472,51 @@ vector<Vector3d> FindLineSphereIntersections(Vector3d linePoint0, Vector3d lineP
 }
 
 MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
-	// Calculate adaptive sphere radius based on actual point spacing
-	double avgSpacing = 0.0;
-	int spacingCount = 0;
-	for (int j = 0; j < std::min((int)P.rows() - 1, 20); j++) {
-		Vector3d p1(P(j, 0), P(j, 1), P(j, 2));
-		Vector3d p2(P(j + 1, 0), P(j + 1, 1), P(j + 1, 2));
-		avgSpacing += (p2 - p1).norm();
-		spacingCount++;
-	}
-	avgSpacing /= std::max(spacingCount, 1);
+	Vector3d sphereCenter(3);
+	double sphereRadius = 1.8;
+	sphereCenter << P(0, 0), P(0, 1), P(0, 2);
+	// std::cout << "Initial Sphere Center: " << sphereCenter.transpose() << ", Radius: " << sphereRadius << std::endl;
 
-	// MODIFIED FOR SAMPLE-LIKE VARIATION:
-	// Remove max_radius clamping to allow 5× multiplier to work with large avgSpacing
-	// Previous max_radius (5-15mm) was preventing sphere from growing with sparse input
+	vector<MatrixXd> smoothBreakLineVector;
+	Vector3d smoothedPoint(3);
 
-	// Use 5.0× average spacing to produce sample-like variation (30-194 points)
-	// Larger radius = fewer output points, preserves geometry-based variation
-	// NOTE: Point cloud units are in METERS, so convert mm to meters
-	double sphereRadius = std::max(0.001, avgSpacing * 5.0);  // No max clamp, let it scale naturally
-	std::cout << "[ADAPTIVE SPHERE-MARCHING] Input points: " << P.rows() << ", avgSpacing: " << avgSpacing << "m ("
-	          << (avgSpacing * 1000) << "mm), sphereRadius: "
-	          << sphereRadius << "m (" << (sphereRadius * 1000) << "mm) [5.0× multiplier, no max clamp]" << std::endl;
+	smoothedPoint << P(0, 0), P(0, 1), P(0, 2);
+	smoothBreakLineVector.push_back(smoothedPoint);
 
-	// COMBINATION APPROACH PART 2: Retry with smaller radius if we get too few points
-	MatrixXd smoothedBreakLine;
-	int attempt = 0;
-	int min_required = 15;
+	int i = 0;
+	double distTmp = 0;
+	while (i < P.rows() - 2) {
+		Vector3d nextPointOutsideSphere(3);
+		nextPointOutsideSphere << P(i + 1, 0), P(i + 1, 1), P(i + 1, 2);
 
-	while (attempt < 2) {  // Try twice: original radius and 60% of original
-		Vector3d sphereCenter(3);
-		sphereCenter << P(0, 0), P(0, 1), P(0, 2);
-
-		vector<MatrixXd> smoothBreakLineVector;
-		Vector3d smoothedPoint(3);
-
-		smoothedPoint << P(0, 0), P(0, 1), P(0, 2);
-		smoothBreakLineVector.push_back(smoothedPoint);
-
-		int i = 0;
-		double distTmp = 0;
-		while (i < P.rows() - 2) {
-			Vector3d nextPointOutsideSphere(3);
-			nextPointOutsideSphere << P(i + 1, 0), P(i + 1, 1), P(i + 1, 2);
-
-			distTmp = (nextPointOutsideSphere - sphereCenter).norm();
-			while (distTmp < sphereRadius && i < P.rows() - 2) {
-				i++;
-				nextPointOutsideSphere << P(i + 1, 0), P(i + 1, 1), P(i + 1, 2);
-				distTmp = (nextPointOutsideSphere - sphereCenter).norm();
-			}
-
-			vector<Vector3d> intersectionPointSet = FindLineSphereIntersections(sphereCenter, nextPointOutsideSphere, sphereCenter, sphereRadius);
-
-			if (!intersectionPointSet.empty()) {
-				smoothedPoint = intersectionPointSet[0];
-				for (const auto& pt : intersectionPointSet) {
-					if ((pt - nextPointOutsideSphere).norm() < (smoothedPoint - nextPointOutsideSphere).norm()) {
-						smoothedPoint = pt;
-					}
-				}
-				smoothBreakLineVector.push_back(smoothedPoint);
-				sphereCenter = smoothedPoint;
-			} else {
-				// Fallback: if no intersection found, add midpoint between sphere center and next point
-				smoothedPoint = (sphereCenter + nextPointOutsideSphere) / 2.0;
-				smoothBreakLineVector.push_back(smoothedPoint);
-				sphereCenter = smoothedPoint;
-			}
+		distTmp = (nextPointOutsideSphere - sphereCenter).norm();
+		while (distTmp < sphereRadius && i < P.rows() - 2) {
 			i++;
+			nextPointOutsideSphere << P(i + 1, 0), P(i + 1, 1), P(i + 1, 2);
+			distTmp = (nextPointOutsideSphere - sphereCenter).norm();
 		}
 
-		smoothedBreakLine = MatrixXd(smoothBreakLineVector.size(), 3);
-		std::cout << "[BREAKLINE DEBUG] Smoothed breakline output points: " << smoothedBreakLine.rows() << std::endl;
-		for (int i = 0; i < smoothBreakLineVector.size(); ++i) {
-			smoothedBreakLine.row(i) << smoothBreakLineVector[i](0), smoothBreakLineVector[i](1), smoothBreakLineVector[i](2);
-		}
+		vector<Vector3d> intersectionPointSet = FindLineSphereIntersections(sphereCenter, nextPointOutsideSphere, sphereCenter, sphereRadius);
 
-		// Check if we have enough points
-		if (smoothedBreakLine.rows() >= min_required || attempt == 1) {
-			break;  // Success or last attempt
-		}
-
-		// Retry with smaller radius for denser sampling
-		sphereRadius *= 0.6;
-		attempt++;
-		std::cout << "[ADAPTIVE RETRY] Too few points (" << smoothedBreakLine.rows()
-		          << "), retrying with radius=" << (sphereRadius * 1000) << "mm" << std::endl;
-	}
-
-	// COMBINATION APPROACH PART 3: Linear interpolation as final safety net
-	int min_safe = 10;
-	if (smoothedBreakLine.rows() < min_safe) {
-		if (P.rows() >= 10) {
-			// If original has enough points, use them as input to Integration Point #1
-			std::cerr << "[BREAKLINE WARNING] Sphere marching produced only " << smoothedBreakLine.rows()
-			          << " points from " << P.rows() << " input points. Using original boundary points (proceeding to Integration Point #1)." << std::endl;
-			smoothedBreakLine = P;  // Set smoothedBreakLine to continue to Integration Point #1, not early return
-		} else if (smoothedBreakLine.rows() >= 2) {
-			// Linear interpolation to reach minimum of 10 points
-			int points_to_add = min_safe - smoothedBreakLine.rows();
-			std::cout << "[LINEAR INTERPOLATION] Densifying " << smoothedBreakLine.rows()
-			          << " points to " << min_safe << " by adding " << points_to_add << " interpolated points" << std::endl;
-
-			vector<MatrixXd> densifiedPoints;
-			int points_per_segment = std::max(1, (int)(points_to_add / (smoothedBreakLine.rows() - 1)));
-
-			for (int i = 0; i < smoothedBreakLine.rows() - 1; i++) {
-				// Add original point
-				Vector3d p1(smoothedBreakLine(i, 0), smoothedBreakLine(i, 1), smoothedBreakLine(i, 2));
-				densifiedPoints.push_back(p1);
-
-				// Add interpolated points between i and i+1
-				Vector3d p2(smoothedBreakLine(i + 1, 0), smoothedBreakLine(i + 1, 1), smoothedBreakLine(i + 1, 2));
-				int interp_count = (i == 0) ? points_per_segment + (int)(points_to_add % (smoothedBreakLine.rows() - 1))
-				                             : points_per_segment;
-
-				for (int j = 1; j <= interp_count && (int)densifiedPoints.size() < min_safe - 1; j++) {
-					double t = j / (double)(interp_count + 1);
-					Vector3d interp = (1.0 - t) * p1 + t * p2;
-					densifiedPoints.push_back(interp);
+		if (!intersectionPointSet.empty()) {
+			smoothedPoint = intersectionPointSet[0];
+			for (const auto& pt : intersectionPointSet) {
+				if ((pt - nextPointOutsideSphere).norm() < (smoothedPoint - nextPointOutsideSphere).norm()) {
+					smoothedPoint = pt;
 				}
 			}
-
-			// Add last point
-			Vector3d last(smoothedBreakLine(smoothedBreakLine.rows() - 1, 0),
-			             smoothedBreakLine(smoothedBreakLine.rows() - 1, 1),
-			             smoothedBreakLine(smoothedBreakLine.rows() - 1, 2));
-			densifiedPoints.push_back(last);
-
-			// Convert back to MatrixXd
-			MatrixXd densified(densifiedPoints.size(), 3);
-			for (int i = 0; i < (int)densifiedPoints.size(); i++) {
-				densified.row(i) << densifiedPoints[i](0), densifiedPoints[i](1), densifiedPoints[i](2);
-			}
-
-			std::cout << "[LINEAR INTERPOLATION] Intermediate breakline: " << densified.rows() << " points (proceeding to Integration Point #1)" << std::endl;
-			smoothedBreakLine = densified;  // Set smoothedBreakLine to continue to Integration Point #1, not early return
+			smoothBreakLineVector.push_back(smoothedPoint);
+			sphereCenter = smoothedPoint;
 		}
+		i++;
 	}
 
-	// INTEGRATION POINT #1: ADAPTIVE DENSIFICATION after sphere-marching
-	// DISABLED: Preserve natural geometric variation from 5× sphere-marching
-	std::cout << "[INTEGRATION POINT #1] Natural variation: " << smoothedBreakLine.rows() << " points (densification disabled to match sample)" << std::endl;
-	// smoothedBreakLine = adaptiveDensifyBreakline(smoothedBreakLine, 2.0);
-	// std::cout << "[INTEGRATION POINT #1] Post-densification: " << smoothedBreakLine.rows() << " points" << std::endl;
-
+	MatrixXd smoothedBreakLine(smoothBreakLineVector.size(), 3);
+	// std::cout << "Smoothed Break Line Size: " << smoothedBreakLine.rows() << "x" << smoothedBreakLine.cols() << std::endl;
+	for (int i = 0; i < smoothBreakLineVector.size(); ++i) {
+		smoothedBreakLine.row(i) << smoothBreakLineVector[i](0), smoothBreakLineVector[i](1), smoothBreakLineVector[i](2);
+		// std::cout << "Smoothed Break Line[" << i << "]: " << smoothedBreakLine.row(i) << std::endl;
+	}
 	return smoothedBreakLine;
 }
 
@@ -722,105 +534,10 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 	return ptExists;
 }
 
-// ADAPTIVE DENSIFICATION: Ensure breaklines have sufficient point density for downstream operations
-MatrixXd adaptiveDensifyBreakline(const MatrixXd& breakline, double target_spacing_mm = 2.0) {
-	int num_points = breakline.rows();
-
-	// Safety: Need at least 2 points to densify
-	if (num_points < 2) {
-		std::cerr << "[DENSIFY] Too few points (" << num_points << ") to densify, returning as-is" << std::endl;
-		return breakline;
-	}
-
-	// Calculate perimeter (total arc length) in meters
-	double perimeter_m = 0.0;
-	for (int i = 0; i < num_points - 1; i++) {
-		Eigen::Vector3d p1(breakline(i,0), breakline(i,1), breakline(i,2));
-		Eigen::Vector3d p2(breakline(i+1,0), breakline(i+1,1), breakline(i+1,2));
-		perimeter_m += (p2 - p1).norm();
-	}
-	double perimeter_mm = perimeter_m * 1000.0;
-
-	// Calculate target point count based on perimeter and target spacing
-	double target_spacing_m = target_spacing_mm / 1000.0;
-	int target_count = (int)(perimeter_m / target_spacing_m);
-
-	// Apply bounds: minimum 30 points, maximum 200 points
-	target_count = std::max(30, std::min(200, target_count));
-
-	// If already dense enough (within 20% of target), skip densification
-	if (num_points >= (int)(target_count * 0.8)) {
-		std::cout << "[DENSIFY] Breakline already dense (" << num_points
-		          << " points >= " << (int)(target_count * 0.8) << " target), skipping densification" << std::endl;
-		return breakline;
-	}
-
-	std::cout << "[DENSIFY] Perimeter=" << perimeter_mm << "mm, current="
-	          << num_points << " points, target=" << target_count
-	          << " points (spacing=" << target_spacing_mm << "mm)" << std::endl;
-
-	// Use linear interpolation for densification (simple and preserves geometry)
-	// Calculate uniform arc-length parameter for each target point
-	std::vector<double> cumulative_lengths;
-	cumulative_lengths.push_back(0.0);
-	for (int i = 0; i < num_points - 1; i++) {
-		Eigen::Vector3d p1(breakline(i,0), breakline(i,1), breakline(i,2));
-		Eigen::Vector3d p2(breakline(i+1,0), breakline(i+1,1), breakline(i+1,2));
-		double segment_length = (p2 - p1).norm();
-		cumulative_lengths.push_back(cumulative_lengths.back() + segment_length);
-	}
-
-	// Generate densified points at uniform arc-length intervals
-	MatrixXd densified(target_count, 3);
-	double interval = perimeter_m / (target_count - 1);
-
-	int source_idx = 0;
-	for (int i = 0; i < target_count; i++) {
-		double target_length = i * interval;
-
-		// Find which segment this target length falls into
-		while (source_idx < num_points - 2 && cumulative_lengths[source_idx + 1] < target_length) {
-			source_idx++;
-		}
-
-		// Interpolate within the segment
-		double segment_start = cumulative_lengths[source_idx];
-		double segment_end = cumulative_lengths[source_idx + 1];
-		double segment_length = segment_end - segment_start;
-
-		double t = 0.0;
-		if (segment_length > 1e-10) {
-			t = (target_length - segment_start) / segment_length;
-			t = std::max(0.0, std::min(1.0, t)); // Clamp to [0,1]
-		}
-
-		Eigen::Vector3d p1(breakline(source_idx,0), breakline(source_idx,1), breakline(source_idx,2));
-		Eigen::Vector3d p2(breakline(source_idx+1,0), breakline(source_idx+1,1), breakline(source_idx+1,2));
-		Eigen::Vector3d interpolated = (1.0 - t) * p1 + t * p2;
-
-		densified.row(i) << interpolated(0), interpolated(1), interpolated(2);
-	}
-
-	std::cout << "[DENSIFY] Successfully densified from " << num_points
-	          << " to " << densified.rows() << " points" << std::endl;
-
-	return densified;
-}
-
-// POTA-153 replacement for getPointsInSequence
-// (edgeline_extraction_headless.cpp:806-892 @ 4accb8d).
-// APPLY: replace the whole function body from the signature line
-//   void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, ...)
-// through the lone closing '}' immediately before
-//   void getInitialBoundary_UsingPCL_BoundaryAlgo(...)
-// Signature UNCHANGED -- all callers and downstream file layout intact.
-// Requires <functional>, <map>, <limits>, <algorithm> (added by part1 hunk 0).
-//
-// Split-then-select + forward guard (150 section 3c, 67 section 4):
-// connected components at 5mm gaps, walk each largest-first with a
-// distance-gated half-plane guard (forward cos>=0, 6mm gate). Cross-component
-// steps never teleport: they are recorded as cuts in file order for
-// detectSeparateLineSegments. No ORIG geometry anywhere in this function.
+// POTA-212 PORT NOTE (pristine line): this is the POTA-153 split-walk cure verbatim except this
+// header. Staged anchor was edgeline_extraction_headless.cpp:806-892 @ 4accb8d/main-line;
+// pristine anchor is :533-613 @ b1ed4d1 (pristine walker: seed cloud[0], greedy K=50,
+// dead iterations). Signature UNCHANGED. Requires <functional>, <map>, <limits>, <algorithm>.
 void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
 
@@ -934,6 +651,102 @@ void getPointsInSequence(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCl
 	cloud_sequenced->height = 1;
 }
 
+
+// POTA-213: per-surface loop separation (ORIG-free, Pot-A calibrated).
+// Splits the walk-input bag (boundaryCloud_Improved) into rim vs wall-base
+// step-ring by mesh-observable cylindrical shape about the piece pipeline
+// axis (Dataset/Axes/<Piece>_Axis.xyz, 6-number pipeline product). Rule
+// (stated in ticket 213 BEFORE building): RING iff 20<=r_med<=35 mm AND
+// r_std<2.0 AND h_span<4.0 AND 50<=count<=500. Fallbacks keep 212 whole-bag
+// behavior and are always logged, never silent.
+void writeMatrix_to_XYZ(MatrixXd& src, string fileName, int cols);
+static bool splitRimVsStepRing_213(
+    pcl::PointCloud<pcl::PointXYZ>::Ptr bag,
+    const Eigen::Vector3f& axisC, const Eigen::Vector3f& axisD, bool axisOK,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr rimOut,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr ringOut)
+{
+    rimOut->points.clear(); ringOut->points.clear();
+    size_t n = bag->points.size();
+    if (n == 0) { std::cout << "[LOOP-SELECT] empty bag, nothing to split" << std::endl; return axisOK; }
+    pcl::KdTreeFLANN<pcl::PointXYZ> kd; kd.setInputCloud(bag);
+    const float CGAP = 5.0f;
+    std::vector<int> comp(n, -1);
+    std::vector<std::vector<int> > comps;
+    std::vector<int> stack; std::vector<float> dist; std::vector<int> nbr;
+    for (size_t s = 0; s < n; s++) {
+        if (comp[s] != -1) continue;
+        std::vector<int> members; members.push_back((int)s); comp[s] = (int)comps.size();
+        stack.clear(); stack.push_back((int)s);
+        while (!stack.empty()) {
+            int cur = stack.back(); stack.pop_back();
+            nbr.clear(); dist.clear();
+            if (kd.radiusSearch(bag->points[cur], CGAP, nbr, dist) > 0) {
+                for (size_t k = 0; k < nbr.size(); k++) {
+                    if (comp[nbr[k]] == -1) { comp[nbr[k]] = (int)comps.size(); members.push_back(nbr[k]); stack.push_back(nbr[k]); }
+                }
+            }
+        }
+        comps.push_back(members);
+    }
+    std::sort(comps.begin(), comps.end(), [](const std::vector<int>& a, const std::vector<int>& b){ return a.size() > b.size(); });
+    std::cout << "[LOOP-SELECT] bag=" << n << " comps=" << comps.size();
+    if (!axisOK) std::cout << " axis=MISSING(fallback: whole-bag walk)";
+    std::cout << std::endl;
+    if (!axisOK) { rimOut->points = bag->points; return false; }
+    std::vector<char> isRingComp(comps.size(), 0);
+    size_t ringDots = 0;
+    for (size_t c = 0; c < comps.size(); c++) {
+        const std::vector<int>& m = comps[c];
+        std::vector<float> rr; rr.reserve(m.size());
+        float hmin = 1e30f, hmax = -1e30f;
+        for (size_t k = 0; k < m.size(); k++) {
+            Eigen::Vector3f v = bag->points[m[k]].getVector3fMap() - axisC;
+            float h = v.dot(axisD);
+            Eigen::Vector3f rad = v - h * axisD;
+            rr.push_back(rad.norm());
+            if (h < hmin) hmin = h; if (h > hmax) hmax = h;
+        }
+        size_t mid = rr.size() / 2;
+        std::nth_element(rr.begin(), rr.begin() + mid, rr.end());
+        float rmed = rr[mid];
+        double mean = 0; for (size_t k = 0; k < rr.size(); k++) mean += rr[k];
+        mean /= rr.size();
+        double var = 0; for (size_t k = 0; k < rr.size(); k++) { double d = rr[k] - mean; var += d * d; }
+        float rstd = (float)std::sqrt(var / rr.size());
+        float hspan = hmax - hmin;
+        bool ring = (rmed >= 20.0f && rmed <= 35.0f && rstd < 2.0f && hspan < 4.0f && m.size() >= 50 && m.size() <= 500);
+        isRingComp[c] = ring ? 1 : 0;
+        if (ring) ringDots += m.size();
+        std::cout << "[LOOP-SELECT] comp" << c << " count=" << m.size() << " r_med=" << rmed
+                  << " r_std=" << rstd << " h_span=" << hspan << " -> " << (ring ? "RING" : "RIM") << std::endl;
+    }
+    if (ringDots == 0) {
+        std::cout << "[LOOP-SELECT] no ring found -> whole-bag walk, sidecar empty" << std::endl;
+        rimOut->points = bag->points; return true;
+    }
+    if (ringDots == n) {
+        std::cout << "[LOOP-SELECT] FALLBACK: all-ring bag -> Bl=largest comp, rest sidecar" << std::endl;
+        for (size_t k = 0; k < comps[0].size(); k++) rimOut->points.push_back(bag->points[comps[0][k]]);
+        for (size_t c = 1; c < comps.size(); c++)
+            for (size_t k = 0; k < comps[c].size(); k++) ringOut->points.push_back(bag->points[comps[c][k]]);
+        rimOut->width = (int)rimOut->points.size(); rimOut->height = 1;
+        ringOut->width = (int)ringOut->points.size(); ringOut->height = 1;
+        return true;
+    }
+    for (size_t c = 0; c < comps.size(); c++) {
+        const std::vector<int>& m = comps[c];
+        for (size_t k = 0; k < m.size(); k++) {
+            if (isRingComp[c]) ringOut->points.push_back(bag->points[m[k]]);
+            else rimOut->points.push_back(bag->points[m[k]]);
+        }
+    }
+    rimOut->width = (int)rimOut->points.size(); rimOut->height = 1;
+    ringOut->width = (int)ringOut->points.size(); ringOut->height = 1;
+    std::cout << "[LOOP-SELECT] rim=" << rimOut->points.size() << " ring=" << ringOut->points.size() << std::endl;
+    return true;
+}
+
 void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BorderPointsCombined, string outPath)
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudWithoutNormals(new pcl::PointCloud<pcl::PointXYZ>);
@@ -964,53 +777,55 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	pcl::BoundaryEstimation<pcl::PointXYZ, pcl::Normal, pcl::Boundary> boundary_est;
 	boundary_est.setInputCloud(cloudWithoutNormals);
 	boundary_est.setInputNormals(normals);
-
-	// ADAPTIVE: Compute boundary radius based on point cloud density
-	// For N points distributed over a surface, estimate spacing = sqrt(area/N)
-	// Pottery fragment surfaces typically span 100-1000 mm² (10-30mm characteristic length)
-	// Use 400mm² as representative area (20mm × 20mm surface patch)
-	int num_pts = cloudWithoutNormals->points.size();
-	double estimated_area_mm2 = 400.0;  // Typical surface area for pottery fragment patches
-	double estimated_spacing_mm = std::sqrt(estimated_area_mm2 / std::max(50, num_pts));
-
-	// Boundary radius should be 6x the point spacing to capture local neighborhood
-	double boundary_radius_mm = estimated_spacing_mm * 6.0;
-
-	// Clamp to reasonable range: 3-50mm for pottery fragments
-	// Dense clouds (>2000 pts) → ~3mm radius (fine detail)
-	// Medium clouds (100-500 pts) → 8-12mm radius (standard)
-	// Sparse clouds (<100 pts) → up to 17mm radius (robust to gaps)
-	boundary_radius_mm = std::max(3.0, std::min(50.0, boundary_radius_mm));
-
-	// IMPORTANT: Point cloud coordinates are in MILLIMETERS after coordinate fix (PREPROCESSING_FIXES.md)
-	// PCL BoundaryEstimation expects radius in same units as point coordinates
-	boundary_est.setRadiusSearch(boundary_radius_mm);
-	std::cout << "[ADAPTIVE BOUNDARY EDGE] " << num_pts << " points, spacing≈"
-	          << estimated_spacing_mm << "mm, boundary_r="
-	          << boundary_radius_mm << "mm" << std::endl;
+    // POTA-218 ARM B (radius shrink, compile with -DPOTA218_ARM_B): tightened
+    // adaptive rule 3x-spacing / clamp 1.5-8mm. NOTE the cure-line baseline here
+    // is a FIXED 4mm (main line carries 6x/3-50 adaptive, ~line 968 there); the
+    // arm ports that adaptive form in tightened parameters, below both (P16-S1
+    // N=6134: spacing 0.26 -> 0.77 -> clamped 1.5mm vs 4mm control / 3mm main).
+    // No flag = control: fixed 4mm cure-line behavior, byte-logic unchanged.
+#ifdef POTA218_ARM_B
+	int num_pts218 = (int)cloudWithoutNormals->points.size();
+	double spacing218 = std::sqrt(400.0 / (double)std::max(50, num_pts218));
+	double radius218 = std::max(1.5, std::min(8.0, spacing218 * 3.0));
+	boundary_est.setRadiusSearch(radius218);
+	std::cout << "[ARM-B radius] pts=" << num_pts218 << " spacing~" << spacing218
+	          << "mm r=" << radius218 << "mm" << std::endl;
+#else
+    // Original boundary search radius
+    boundary_est.setRadiusSearch(4);
+#endif
 	//boundary_est.setAngleThreshold(0.6 * M_PI);//M_PI
 	boundary_est.setAngleThreshold(M_PI * 0.6);//M_PI
 	boundary_est.setSearchMethod(pcl::search::KdTree<pcl::PointXYZ>::Ptr(new pcl::search::KdTree<pcl::PointXYZ>));
 	boundary_est.compute(boundary);
 
 
-	//get points which on the boundary form point cloud;
+	//get points which on the boundary form point cloud; guard against size mismatch
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud(new pcl::PointCloud<pcl::PointXYZ>);
-	// POTA-153 mesh-observable face-side veto (no ORIG geometry enters this gate).
-	// The fixed 0.6pi angle gate above admits BOTH lip faces as boundary; the veto
-	// drops outer-lip-face dots here: keep surface-normal-vs-centroid-radial
-	// alignment <= FACE_ALIGN_VETO. surfCentroid is the mean of THIS input surface
-	// cloud (pipeline-native, ORIG-free). Evidence + bars:
-	// .scratch/pota153_repro/p153_vetofield.txt (centroid-radial 181/182 outer
-	// dropped, 88/88 inner kept; bars >=90% / >=95%).
-	const float FACE_ALIGN_VETO = 0.5f;
+	// POTA-213 keep-all veto (no ORIG geometry enters this gate). P01-S1 showed the
+	// centroid-radial alignment does NOT separate lip faces on Pot-A: the 0.5 gate kept
+	// 345/dropped 794 and shattered the true rim to 8 fragments (largest kept 113 < 214
+	// author pts), while veto-off input is already a clean 2-group (808 rim + 331
+	// wall-base step ring at 5mm). Any dropping threshold shatters the rim, so the
+	// principled Pot-A gate keeps the whole bag (align in [-1,1] always passes) and
+	// separation moves downstream to shape, inside this face's bag (175 stands).
+	const float FACE_ALIGN_VETO = 2.0f;
 	Eigen::Vector3f surfCentroid(0.0f, 0.0f, 0.0f);
 	for (const auto &p : cloudWithoutNormals->points) surfCentroid += p.getVector3fMap();
 	if (!cloudWithoutNormals->points.empty()) surfCentroid /= (float)cloudWithoutNormals->points.size();
 	size_t faceVetoKept = 0, faceVetoDropped = 0;
-	for (int i = 0; i < cloud->points.size(); i++)
+#if defined(POTA218_ARM_A) || defined(POTA218_ARM_C)
+	// POTA-218 ARM A/C neighbor field: same-patch dots around each candidate.
+	// (ORIG-free: pipeline input cloud geometry + input normals only.)
+	pcl::KdTreeFLANN<pcl::PointXYZ> armTree218;
+	armTree218.setInputCloud(cloudWithoutNormals);
+	size_t armKept218 = 0, armDropped218 = 0;
+#endif
+	std::size_t N = std::min<std::size_t>(boundary.points.size(), cloudWithoutNormals->points.size());
+	N = std::min<std::size_t>(N, normals->points.size());
+	for (std::size_t i = 0; i < N; i++)
 	{
-		if (boundary[i].boundary_point == 1)
+		if (boundary.points[i].boundary_point == 1)
 		{
 			Eigen::Vector3f rp = cloudWithoutNormals->points[i].getVector3fMap() - surfCentroid;
 			float rl = rp.norm();
@@ -1018,20 +833,125 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 			float align = (rl > 1e-6f) ? nn.dot(rp / rl) : 0.0f;
 			if (align <= FACE_ALIGN_VETO)
 			{
+#ifdef POTA218_ARM_A
+				// ARM A (surround test, -DPOTA218_ARM_A): drop candidate dots fully
+				// surrounded by same-patch dots. K=12 neighbors projected on the
+				// tangent plane (input normal); max angular gap < 120deg means no
+				// void beside the dot => twisted-face interior, not a true edge
+				// (a rim dot on a straight edge sees a ~180deg+ void sector).
+				{
+					const int K218 = 12;
+					std::vector<int> aIdx218(K218);
+					std::vector<float> aDist218(K218);
+					int aFound218 = armTree218.nearestKSearch(cloudWithoutNormals->points[i], K218, aIdx218, aDist218);
+					bool drop218 = false;
+					if (aFound218 >= 6)
+						{
+							Eigen::Vector3f nrm218(nn(0), nn(1), nn(2));
+							if (nrm218.norm() < 1e-9f) nrm218 = Eigen::Vector3f(0, 0, 1);
+							else nrm218.normalize();
+							Eigen::Vector3f help218 = (std::fabs(nrm218(2)) < 0.9f) ? Eigen::Vector3f(0, 0, 1) : Eigen::Vector3f(0, 1, 0);
+							Eigen::Vector3f t1218 = nrm218.cross(help218).normalized();
+							Eigen::Vector3f t2218 = nrm218.cross(t1218).normalized();
+							Eigen::Vector3f pi218 = cloudWithoutNormals->points[i].getVector3fMap();
+							std::vector<double> ang218;
+							for (int kk = 1; kk < aFound218; kk++)
+								{
+									Eigen::Vector3f off218 = cloudWithoutNormals->points[aIdx218[kk]].getVector3fMap() - pi218;
+									double x218 = off218.dot(t1218), y218 = off218.dot(t2218);
+									if (x218 * x218 + y218 * y218 < 1e-12) continue;
+									ang218.push_back(std::atan2(y218, x218));
+								}
+							if (ang218.size() >= 5)
+								{
+									std::sort(ang218.begin(), ang218.end());
+									double maxGap218 = 0.0;
+									for (size_t gg = 0; gg < ang218.size(); gg++)
+										{
+											double g218 = ang218[(gg + 1) % ang218.size()] - ang218[gg];
+											if (g218 < 0) g218 += 2.0 * M_PI;
+											if (g218 > maxGap218) maxGap218 = g218;
+										}
+									if (maxGap218 < 2.094) drop218 = true; // 120deg
+								}
+						}
+					if (drop218) armDropped218++;
+					else { boundaryCloud->points.push_back(cloudWithoutNormals->points[i]); armKept218++; }
+					faceVetoKept++;
+				}
+#else
+#ifdef POTA218_ARM_C
+				// ARM C (normal gate, -DPOTA218_ARM_C): keep only candidates near a
+				// normal discontinuity (face/fracture transition). Max deviation of
+				// the input normals among K=12 same-patch neighbors < 30deg means
+				// coherent face interior => drop. (215 measured face p90 18deg vs
+				// fracture p10 28deg; 30deg sits just above that split.)
+				{
+					const int K218 = 12;
+					std::vector<int> cIdx218(K218);
+					std::vector<float> cDist218(K218);
+					int cFound218 = armTree218.nearestKSearch(cloudWithoutNormals->points[i], K218, cIdx218, cDist218);
+					bool drop218 = false;
+					if (cFound218 >= 6)
+						{
+							Eigen::Vector3f n0218(normals->points[i].normal_x, normals->points[i].normal_y, normals->points[i].normal_z);
+							if (n0218.norm() < 1e-9f) n0218 = Eigen::Vector3f(0, 0, 1);
+							else n0218.normalize();
+							double maxDev218 = 0.0;
+							for (int kk = 1; kk < cFound218; kk++)
+								{
+									Eigen::Vector3f nk218(normals->points[cIdx218[kk]].normal_x, normals->points[cIdx218[kk]].normal_y, normals->points[cIdx218[kk]].normal_z);
+									if (nk218.norm() < 1e-9f) continue;
+									nk218.normalize();
+									double d218 = n0218.dot(nk218);
+									if (d218 > 1.0) d218 = 1.0;
+									if (d218 < -1.0) d218 = -1.0;
+									double dev218 = std::acos(d218);
+									if (dev218 > maxDev218) maxDev218 = dev218;
+								}
+							if (maxDev218 < 0.5236) drop218 = true; // 30deg
+						}
+					if (drop218) armDropped218++;
+					else { boundaryCloud->points.push_back(cloudWithoutNormals->points[i]); armKept218++; }
+					faceVetoKept++;
+				}
+#else
 				boundaryCloud->points.push_back(cloudWithoutNormals->points[i]);
 				faceVetoKept++;
+#endif
+#endif
 			}
 			else faceVetoDropped++;
 		}
 	}
-	boundaryCloud->width = boundaryCloud->points.size();
 	std::cout << "[FACE VETO] boundary kept=" << faceVetoKept << " dropped=" << faceVetoDropped
 	          << " (align<= " << FACE_ALIGN_VETO << ", centroid-observable)" << std::endl;
+	boundaryCloud->width = boundaryCloud->points.size();
 	boundaryCloud->height = 1;
 	boundaryCloud->is_dense = true;
+	std::cout << "[EDGELINE DBG] boundaryCloud size=" << boundaryCloud->points.size() << std::endl;
+
+
 
 	pcl::io::savePCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
 	pcl::io::loadPCDFile(tempEdgeFolder + "boundary.pcd", *boundaryCloud);
+#if defined(POTA218_ARM_A) || defined(POTA218_ARM_B) || defined(POTA218_ARM_C)
+	// POTA-218 diagnostic only (no logic effect): per-face copy of the post-arm
+	// pre-snap dots. The shared tempEdgeFolder keeps ONE face (last writer wins,
+	// 217 gap); scoring needs both faces, so each face saves its own copy here.
+	{
+		std::string armFace218 = "Sx";
+		if (currentFileName.find("Surface_0") != std::string::npos) armFace218 = "S0";
+		else if (currentFileName.find("Surface_1") != std::string::npos) armFace218 = "S1";
+		pcl::io::savePCDFile(tempEdgeFolder + "boundary_" + armFace218 + ".pcd", *boundaryCloud);
+	}
+#endif
+#ifdef POTA218_ARM_A
+	std::cout << "[ARM-A surround] kept=" << armKept218 << " dropped=" << armDropped218 << " (K=12, gap<120deg)" << std::endl;
+#endif
+#ifdef POTA218_ARM_C
+	std::cout << "[ARM-C normalgate] kept=" << armKept218 << " dropped=" << armDropped218 << " (K=12, dev<30deg)" << std::endl;
+#endif
 	pcl::PointCloud<pcl::PointXYZ>::Ptr unclusteredPoints(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr boundaryCloud_Improved(new pcl::PointCloud<pcl::PointXYZ>);
 	
@@ -1062,46 +982,66 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
 	}
 	boundaryCloud_Improved->width = static_cast<int>(boundaryCloud_Improved->points.size());
 	boundaryCloud_Improved->height = 1;
+	std::cout << "[EDGELINE DBG] boundaryCloud_Improved size=" << boundaryCloud_Improved->points.size() << std::endl;
 	pcl::io::savePCDFile(tempEdgeFolder + "boundaryImproved.pcd", *boundaryCloud_Improved);
 	//-----------------------------------------------------------------------------
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
 	// build the filter
 	outrem.setInputCloud(boundaryCloud_Improved);
-
-	// ADAPTIVE: Outlier removal radius based on boundary point density
-	// Use same area-based estimation as boundary detection
-	int num_boundary = boundaryCloud_Improved->points.size();
-	double outlier_area_mm2 = 400.0;  // Same assumption as boundary detection
-	double outlier_spacing_mm = std::sqrt(outlier_area_mm2 / std::max(50, num_boundary));
-
-	// Outlier removal needs slightly larger radius (8x spacing vs 6x for boundary)
-	// This prevents removing valid isolated points near fragment edges
-	double outlier_radius_mm = outlier_spacing_mm * 8.0;
-
-	// Clamp to reasonable range: 4-50mm
-	// Wider range than boundary detection to be more conservative about removing points
-	outlier_radius_mm = std::max(4.0, std::min(50.0, outlier_radius_mm));
-	outrem.setRadiusSearch(outlier_radius_mm);
-
-	// COMBINATION APPROACH PART 1: Relax outlier removal for small boundaries
-	int min_neighbors = (num_boundary < 100) ? 3 : 6;  // Less strict for small boundaries
-	outrem.setMinNeighborsInRadius(min_neighbors);
-	std::cout << "[ADAPTIVE OUTLIER] " << num_boundary << " boundary points, spacing≈"
-	          << outlier_spacing_mm << "mm, outlier_r="
-	          << outlier_radius_mm << "mm, min_neighbors=" << min_neighbors << std::endl;
+	outrem.setRadiusSearch(2.5);
+	outrem.setMinNeighborsInRadius(6);
 	outrem.setKeepOrganized(true);
 	// apply filter
 	outrem.filter(*cloud_filtered);
+	std::cout << "[EDGELINE DBG] cloud_filtered size=" << cloud_filtered->points.size() << std::endl;
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Filtered.pcd", *cloud_filtered);
 
-	// POTA-153: DELETED killer reload-over (was: loadPCDFile(boundary.pcd) into
-	// boundaryCloud_Improved, discarding the filtered/resampled cloud). Sequencing now
-	// consumes boundaryCloud_Improved as built above (face-vetoed, unclustered-
-	// resampled). cloud_Filtered.pcd remains a diagnostic artifact only: per 150
-	// section 2, ROR revival alone is dead-or-harmful, so it must not feed sequencing.
+	// POTA-212 port of POTA-153: DELETED killer reload-over (was: loadPCDFile(boundary.pcd) into
+	// boundaryCloud_Improved, discarding the face-vetoed, unclustered-snapped cloud). Sequencing now
+	// consumes boundaryCloud_Improved as built above. cloud_Filtered.pcd remains a diagnostic
+	// artifact only: ROR revival alone must not feed sequencing.
+	std::cout << "[EDGELINE DBG] boundary improved (no reload) size=" << boundaryCloud_Improved->points.size() << std::endl;
+	// POTA-213 loop separation: classify walk-input components by cylindrical shape
+	// about the piece pipeline axis; walk RIM for the Bl file (B-spline downstream
+	// sees rim only, no rim-ring chord) and sidecar the walked step-ring per face.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced(new pcl::PointCloud<pcl::PointXYZ>);
-	getPointsInSequence(boundaryCloud_Improved, cloud_sequenced);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_rimIn(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ringIn(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		Eigen::Vector3f axC(0,0,0), axD(0,0,1); bool axOK = false;
+		string axPath = axesFolder + fileNameOnly + "_Axis.xyz";
+		MatrixXd axM = readFile(axPath, 6);
+		if (axM.rows() >= 1 && axM.cols() >= 6) {
+			axC = Eigen::Vector3f((float)axM(0,0), (float)axM(0,1), (float)axM(0,2));
+			axD = Eigen::Vector3f((float)axM(0,3), (float)axM(0,4), (float)axM(0,5));
+			float dl = axD.norm(); if (dl > 1e-9f) axD /= dl;
+			axOK = true;
+		}
+		if (!axOK) std::cout << "[LOOP-SELECT] axis missing/unreadable: " << axPath << std::endl;
+		splitRimVsStepRing_213(boundaryCloud_Improved, axC, axD, axOK, cloud_rimIn, cloud_ringIn);
+	}
+	getPointsInSequence(cloud_rimIn, cloud_sequenced);
+	std::cout << "[EDGELINE DBG] cloud_sequenced (rim) size=" << cloud_sequenced->points.size() << std::endl;
+	{
+		string blBase = currentFileName;
+		{ size_t pp = blBase.find("Surface"); if (pp != string::npos) blBase.replace(pp, 7, "Breakline"); }
+		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ringWalked(new pcl::PointCloud<pcl::PointXYZ>);
+		if (!cloud_ringIn->points.empty()) getPointsInSequence(cloud_ringIn, cloud_ringWalked);
+		if (!cloud_ringWalked->points.empty()) {
+			pcl::io::savePCDFileASCII(tempEdgeFolder + "_breakLineFromConcaveHull_ring.pcd", *cloud_ringWalked);
+			pcl::io::savePCDFileASCII(datasetBreaklinesFolder + blBase + "_stepring.pcd", *cloud_ringWalked);
+		}
+		MatrixXd ringM((int)cloud_ringWalked->points.size(), 3);
+		for (int qi = 0; qi < (int)cloud_ringWalked->points.size(); qi++) {
+			ringM(qi,0) = cloud_ringWalked->points[qi].x;
+			ringM(qi,1) = cloud_ringWalked->points[qi].y;
+			ringM(qi,2) = cloud_ringWalked->points[qi].z;
+		}
+		writeMatrix_to_XYZ(ringM, tempEdgeFolder + "_breakLineFromConcaveHull_ring.xyz", 3);
+		writeMatrix_to_XYZ(ringM, datasetBreaklinesFolder + blBase + "_stepring.xyz", 3);
+		std::cout << "[LOOP-SELECT] sidecar " << blBase << "_stepring pts=" << cloud_ringWalked->points.size() << std::endl;
+	}
 
 	std::cout << "[EDGELINE DEBUG] Saving breakLineFromConcaveHull in ASCII mode..." << std::endl;
 	pcl::io::savePLYFile(tempEdgeFolder + "_breakLineFromConcaveHull.ply", *cloud_sequenced, false); // ASCII mode
@@ -1384,6 +1324,79 @@ void writeMatrix_to_XYZ_withNormals(MatrixXd& src, string fileName)
 	}
 }
 
+// Custom PCD writer with segment headers for SFS compatibility
+//-----------------------------------------------------------------------------
+void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::PointCloud<pcl::PointNormal>& cloud)
+{
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filename << " for writing" << std::endl;
+        return;
+    }
+
+    // Read segment files to get segment information
+    std::vector<std::pair<int, int>> segments; // start_index, end_index pairs
+    int totalPoints = 0;
+    
+    // Read segment files from Segments/ directory
+    boost::filesystem::path segDir("Segments/");
+    if (boost::filesystem::exists(segDir)) {
+        std::vector<boost::filesystem::path> segFiles;
+        copy(boost::filesystem::directory_iterator(segDir), 
+             boost::filesystem::directory_iterator(), 
+             back_inserter(segFiles));
+        sort(segFiles.begin(), segFiles.end());
+        
+        for (const auto& segFile : segFiles) {
+            if (segFile.extension() == ".xyz") {
+                MatrixXd segMatrix = readFile(segFile.string(), 6);
+                int segSize = segMatrix.rows();
+                int startIdx = totalPoints + 1; // 1-indexed
+                int endIdx = totalPoints + segSize;
+                segments.push_back({startIdx, endIdx});
+                totalPoints += segSize;
+            }
+        }
+    }
+    
+    // If no segments found, create single segment
+    if (segments.empty()) {
+        segments.push_back({1, (int)cloud.points.size()});
+        totalPoints = cloud.points.size();
+    }
+
+    // Write PCD header with segment information
+    file << "# .PCD v0.7 - Point Cloud Data file format" << std::endl;
+    file << "# " << segments.size() << " " << totalPoints << " 0" << std::endl;
+    
+    // Write segment ranges
+    for (const auto& seg : segments) {
+        file << "# " << seg.first << " " << seg.second << " 0" << std::endl;
+    }
+    
+    // Standard PCD header
+    file << "VERSION 0.7" << std::endl;
+    file << "FIELDS x y z normal_x normal_y normal_z curvature" << std::endl;
+    file << "SIZE 4 4 4 4 4 4 4" << std::endl;
+    file << "TYPE F F F F F F F" << std::endl;
+    file << "COUNT 1 1 1 1 1 1 1" << std::endl;
+    file << "WIDTH " << cloud.points.size() << std::endl;
+    file << "HEIGHT 1" << std::endl;
+    file << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl;
+    file << "POINTS " << cloud.points.size() << std::endl;
+    file << "DATA ascii" << std::endl;
+    
+    // Write point data
+    for (const auto& point : cloud.points) {
+        file << point.x << " " << point.y << " " << point.z << " "
+             << point.normal_x << " " << point.normal_y << " " << point.normal_z << " "
+             << point.curvature << std::endl;
+    }
+    
+    file.close();
+    std::cout << "Saved PCD with " << segments.size() << " segments to: " << filename << std::endl;
+}
+
 // peak detection code//
 //-----------------------------------------------------------------------------
 void diff(vector<float> in, vector<float>& out)
@@ -1435,93 +1448,14 @@ void signVector(vector<float> in, vector<int>& out)
 	}
 }
 
-// Custom PCD writer with segment headers for SFS compatibility
-void writeBreaklinePCDWithSegments(const std::string& filename, const pcl::PointCloud<pcl::PointNormal>& cloud, const std::vector<std::string>& segmentIndex, const std::vector<int>& peakIndices = std::vector<int>(), bool convertToMM = true)
-{
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file " << filename << " for writing" << std::endl;
-        return;
-    }
 
-    int totalPoints = cloud.points.size();
-
-    // Use peak indices for proper segmentation if provided
-    std::vector<std::pair<int, int>> properSegments;
-    if (!peakIndices.empty()) {
-        // Build segments from peak detection results
-        int startIdx = 1; // 1-indexed for PCD format
-        for (size_t i = 0; i < peakIndices.size(); i++) {
-            int endIdx = peakIndices[i] + 1; // Convert to 1-indexed
-            if (endIdx > totalPoints) endIdx = totalPoints;
-            properSegments.push_back({startIdx, endIdx});
-            startIdx = endIdx + 1;
-        }
-        // Add final segment if needed
-        if (startIdx <= totalPoints) {
-            properSegments.push_back({startIdx, totalPoints});
-        }
-    } else {
-        // Fall back to using segmentIndex if no peak data
-        for (const auto& segInfo : segmentIndex) {
-            std::istringstream iss(segInfo);
-            int start, end, flag;
-            if (iss >> start >> end >> flag) {
-                properSegments.push_back({start, end});
-            }
-        }
-    }
-
-    int totalSegments = properSegments.size();
-
-    // Write PCD header with segment information
-    file << "# .PCD v0.7 - Point Cloud Data file format" << std::endl;
-    file << "# " << totalSegments << " " << totalPoints << " 0" << std::endl;
-
-    // Write segment ranges
-    for (const auto& seg : properSegments) {
-        file << "# " << seg.first << " " << seg.second << " 0" << std::endl;
-    }
-
-    // Standard PCD header
-    file << "VERSION 0.7" << std::endl;
-    file << "FIELDS x y z normal_x normal_y normal_z curvature" << std::endl;
-    file << "SIZE 4 4 4 4 4 4 4" << std::endl;
-    file << "TYPE F F F F F F F" << std::endl;
-    file << "COUNT 1 1 1 1 1 1 1" << std::endl;
-    file << "WIDTH " << cloud.points.size() << std::endl;
-    file << "HEIGHT 1" << std::endl;
-    file << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl;
-    file << "POINTS " << cloud.points.size() << std::endl;
-    file << "DATA ascii" << std::endl;
-
-    // Write point data with coordinate unit conversion
-    for (const auto& point : cloud.points) {
-        // Convert coordinates to millimeters, keep normals normalized
-        double x = convertToMM ? point.x * 1000.0 : point.x;
-        double y = convertToMM ? point.y * 1000.0 : point.y;
-        double z = convertToMM ? point.z * 1000.0 : point.z;
-
-        file << x << " " << y << " " << z << " "
-             << point.normal_x << " " << point.normal_y << " " << point.normal_z << " "
-             << point.curvature << std::endl;
-    }
-
-    file.close();
-    std::cout << "Saved PCD with " << totalSegments << " segments to: " << filename << std::endl;
-}
-
-
-void findPeaks(vector<float> x0, vector<int>& peakInds, double sensitivity_divisor = 4.0)
+void findPeaks(vector<float> x0, vector<int>& peakInds)
 {
 
 	int minIdx = distance(x0.begin(), min_element(x0.begin(), x0.end()));
 	int maxIdx = distance(x0.begin(), max_element(x0.begin(), x0.end()));
 
-	// ADAPTIVE: Use provided sensitivity divisor instead of fixed 4.0
-	// Larger divisor = smaller sel = fewer peaks detected (for sparse data)
-	// Smaller divisor = larger sel = more peaks detected (for dense data)
-	float sel = (x0[maxIdx] - x0[minIdx]) / sensitivity_divisor;
+	float sel = (x0[maxIdx] - x0[minIdx]) / 4.0; // 10;// 20.0; //4.0;
 
 	int len0 = x0.size();
 
@@ -1663,42 +1597,8 @@ void findPeaks(vector<float> x0, vector<int>& peakInds, double sensitivity_divis
 #include <pcl/surface/on_nurbs/fitting_curve_pdm.h>
 // Removed global curve fitting viewer for headless operation
 
-std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
+void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 {
-	// Read breakline to determine adaptive parameters
-	MatrixXd b1_check = readFile(b1_FilePath, 3);
-	int num_points = b1_check.rows();
-
-	// ADAPTIVE WINDOW: Scale window size with breakline length
-	int adaptive_len;
-	if (num_points < 30) {
-		// Small breaklines: use 20% window (min 2, max 5)
-		adaptive_len = std::max(2, std::min(5, num_points / 5));
-		std::cout << "[ADAPTIVE WINDOW] Small breakline (" << num_points
-		          << " points) using window len=" << adaptive_len << std::endl;
-	} else if (num_points < 60) {
-		// Medium breaklines: use reduced window
-		adaptive_len = 5;
-		std::cout << "[ADAPTIVE WINDOW] Medium breakline (" << num_points
-		          << " points) using window len=" << adaptive_len << std::endl;
-	} else {
-		// Large breaklines: use original window size
-		adaptive_len = 10;
-	}
-
-	// Override the parameter with adaptive value
-	len = adaptive_len;
-
-	// SAFETY CHECK: Minimum points needed for wraparound buffer
-	int min_required_points = 2 * len + 5;
-
-	if (num_points < min_required_points) {
-		std::cout << "[SEGMENT DETECTION] Breakline has only " << num_points
-		          << " points (< " << min_required_points << " required for segment detection with window=" << len << ")" << std::endl;
-		std::cout << "[SEGMENT DETECTION] Treating entire breakline as single segment" << std::endl;
-		return std::vector<int>();  // Empty vector = single segment
-	}
-
 	//defining Kelly's list of contrast colors
 	vector<int> colorList_R, colorList_G, colorList_B;
 	colorList_R.push_back(197); colorList_G.push_back(90); colorList_B.push_back(17);
@@ -1752,38 +1652,16 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 
 
 	MatrixXd b1, b1_withN;
-    b1 = readFile(b1_FilePath, 3);// 
-    b1_withN = readFile(b1_FilePath, 6);
-    if (b1_withN.cols() != 6 || b1_withN.rows() != b1.rows()) {
-        std::cerr << "[EDGELINE DEBUG] b1_withN not 6 columns or size mismatch; synthesizing normals." << std::endl;
-        // Compute simple tangent-based normals along the curve as fallback
-        MatrixXd b1n(b1.rows(), 6);
-        for (int i = 0; i < b1.rows(); ++i) {
-            b1n(i,0)=b1(i,0); b1n(i,1)=b1(i,1); b1n(i,2)=b1(i,2);
-            // finite differences to estimate tangent
-            int i0 = std::max(0, i-1), i1 = std::min((int)b1.rows()-1, i+1);
-            Vector3d t = (b1.row(i1) - b1.row(i0));
-            if (t.norm() > 1e-9) t.normalize(); else t << 1,0,0;
-            // pick an arbitrary normal orthogonal to tangent
-            Vector3d n = t.cross(Vector3d(0,0,1)); if (n.norm()<1e-6) n = t.cross(Vector3d(0,1,0)); n.normalize();
-            b1n(i,3)=n(0); b1n(i,4)=n(1); b1n(i,5)=n(2);
-        }
-        b1_withN = b1n;
-    }
-    std::cerr << "[EDGELINE DEBUG] b1 rows=" << b1.rows() << " cols=" << b1.cols() << " b1_withN rows=" << b1_withN.rows() << " cols=" << b1_withN.cols() << std::endl;
-    if (b1.rows() == 0 || b1_withN.rows() == 0) {
-        std::cerr << "[EDGELINE DEBUG] Empty breakline data, returning no segments." << std::endl;
-        return std::vector<int>();
-    }
+	b1 = readFile(b1_FilePath, 3);// 
+	b1_withN = readFile(b1_FilePath, 6);
 	//int len = 60;
 	int k = 0;
 	int noOfPossiblePoints = b1.rows() - (2 * len);
 	Vector3d segL, segS, pointClosest, tmp;
 
 
-    MatrixXd dist_scoreB1(b1.rows() + 2 * len, 1);
-    MatrixXd distScoreOriginalLength(b1.rows(), 1);//(len*2 -1)*noOfAvailableSegs, 1);
-    std::cerr << "[EDGELINE DEBUG] dist_scoreB1 size=" << dist_scoreB1.rows() << "x" << dist_scoreB1.cols() << " distScoreOriginalLength size=" << distScoreOriginalLength.rows() << "x" << distScoreOriginalLength.cols() << std::endl;
+	MatrixXd dist_scoreB1(b1.rows() + 2 * len, 1);
+	MatrixXd distScoreOriginalLength(b1.rows(), 1);//(len*2 -1)*noOfAvailableSegs, 1);
 	//MatrixXd angle_scoreB1(noOfPossiblePoints, 1);
 	Vector3d segS_p1, segS_p2, segL_p1, segL_p2, segS_centerPt(3);
 	int t = 0;
@@ -1792,24 +1670,22 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud_b1_ptr(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-    for (size_t i = 0; i < b1.rows() + 2 * len; i++)
-    {
-        if (i >= (size_t)dist_scoreB1.rows()) { std::cerr << "[EDGELINE DEBUG] OOB write dist_scoreB1 i=" << i << std::endl; break; }
-        dist_scoreB1(i, 0) = 0;
-    }
+	for (size_t i = 0; i < b1.rows() + 2 * len; i++)
+	{
+		dist_scoreB1(i, 0) = 0;
+	}
 
 	t = 0;
 	pcl::PointXYZ p1, p2;
 	int pointCount = 0;
 
-    MatrixXd bCombined(b1.rows() + 2 * len, 3);
-    std::cerr << "[EDGELINE DEBUG] bCombined size=" << bCombined.rows() << "x" << bCombined.cols() << std::endl;
-    for (size_t i = 0; i < bCombined.rows(); i++)
-    {
-        bCombined(i, 0) = 0;
-        bCombined(i, 1) = 0;
-        bCombined(i, 2) = 0;
-    }
+	MatrixXd bCombined(b1.rows() + 2 * len, 3);
+	for (size_t i = 0; i < bCombined.rows(); i++)
+	{
+		bCombined(i, 0) = 0;
+		bCombined(i, 1) = 0;
+		bCombined(i, 2) = 0;
+	}
 	int q = len;
 	for (size_t i = 0; i < len; i++)
 	{
@@ -1846,12 +1722,10 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 
 
-    for (size_t i = 0; i < (size_t)distScoreOriginalLength.rows(); i++)
-    {
-        size_t src = i + (size_t)len;
-        if (src >= (size_t)dist_scoreB1.rows()) src = dist_scoreB1.rows() - 1;
-        distScoreOriginalLength(i, 0) = dist_scoreB1(src);
-    }
+	for (size_t i = 0; i < distScoreOriginalLength.rows(); i++)
+	{
+		distScoreOriginalLength(i, 0) = dist_scoreB1(i + 10);
+	}
 
 	// find the peaks and their indexes
 	bool lookingForPeak = true;
@@ -1873,35 +1747,7 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 	vector<int> out;
 
-	// ADAPTIVE PEAK DETECTION SENSITIVITY (restored for sample dataset matching)
-	// This matches the original sample dataset preprocessing parameters
-	// Sparse breaklines need LESS sensitive detection (fewer false peaks from noise)
-	// Dense breaklines can afford MORE sensitive detection (real geometric features)
-	double sensitivity_divisor;
-	if (num_points < 40) {
-		// Very sparse: Use 8.0 (half sensitivity = much fewer peaks detected)
-		sensitivity_divisor = 8.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Sparse breakline (" << num_points
-		          << " points) using low sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else if (num_points < 80) {
-		// Medium sparse: Use 6.0 (reduced sensitivity)
-		sensitivity_divisor = 6.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Medium breakline (" << num_points
-		          << " points) using medium sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	} else {
-		// Dense: Use original 4.0 (standard sensitivity)
-		sensitivity_divisor = 4.0;
-		std::cout << "[ADAPTIVE PEAK DETECTION] Dense breakline (" << num_points
-		          << " points) using standard sensitivity (divisor=" << sensitivity_divisor << ")" << std::endl;
-	}
-
-	findPeaks(in, out, sensitivity_divisor);
-
-	// SAFETY CHECK: Prevent accessing empty vector
-	if (out.empty()) {
-		std::cout << "[BREAKLINE SAFETY] No peaks found in distance score - treating as single segment" << std::endl;
-		return std::vector<int>();
-	}
+	findPeaks(in, out);
 
 	if (out[out.size() - 1] == in.size())
 	{
@@ -1909,7 +1755,7 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	}
 
 	bool specialCase = false;
-	if (out.size() > 0 && out[0] == 0 && out[out.size() - 1] == in.size() - 1)
+	if (out[0] == 0 && out[out.size() - 1] == in.size() - 1)
 	{
 		if (out[0] >= out[out.size() - 1])
 		{
@@ -1990,15 +1836,8 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 				else
 				{
 					int rows = breakLineSeg.rows() - 1;
-					// SEGMENT SIZE FILTER: Only save segments with >= 5 points
-					int min_segment_points = 5;
-					if (breakLineSeg.rows() >= min_segment_points) {
-						writeMatrix_to_XYZ_withNormals(breakLineSeg, outPath + to_string(t + 1) + ".xyz");
-						noOfSegmentsDetected++;
-					} else {
-						std::cout << "[SEGMENT FILTER] Skipping tiny segment with only "
-						          << breakLineSeg.rows() << " points (< " << min_segment_points << " required)" << std::endl;
-					}
+					writeMatrix_to_XYZ_withNormals(breakLineSeg, outPath + to_string(t + 1) + ".xyz");
+					noOfSegmentsDetected++;
 				}
 
 
@@ -2062,15 +1901,7 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 		segMatrix(i, 4) = lastSeg[i].normal_y;
 		segMatrix(i, 5) = lastSeg[i].normal_z;
 	}
-
-	// SEGMENT SIZE FILTER: Only save first segment if >= 5 points
-	int min_segment_points = 5;
-	if (segMatrix.rows() >= min_segment_points) {
-		writeMatrix_to_XYZ_withNormals(segMatrix, outPath + "1.xyz");
-	} else {
-		std::cout << "[SEGMENT FILTER] Skipping tiny first segment with only "
-		          << segMatrix.rows() << " points (< " << min_segment_points << " required)" << std::endl;
-	}
+	writeMatrix_to_XYZ_withNormals(segMatrix, outPath + "1.xyz");
 
 	cloud_b1_ptr->width = static_cast<int>(cloud_b1_ptr->points.size());
 	cloud_b1_ptr->height = 1;
@@ -2096,25 +1927,12 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 	{
 		segmentMatrix = readFile(outPath + to_string(i + 1) + ".xyz", 6);
 
-		// SAFETY: Skip empty or missing segments (filtered out by minimum size)
-		if (segmentMatrix.rows() == 0) {
-			std::cout << "[SEGMENT SAFETY] Skipping empty/missing segment " << (i+1) << std::endl;
-			continue;
-		}
-
 		for (size_t i = 0; i < segmentMatrix.rows(); i++)
 		{
 			smoothedSegment->points.push_back(PointXYZ(segmentMatrix(i, 0), segmentMatrix(i, 1), segmentMatrix(i, 2)));
 		}
 		smoothedSegment->width = smoothedSegment->points.size();
 		smoothedSegment->height = 1;
-
-		// SAFETY: Skip if smoothedSegment is empty (prevents underflow in size()-1)
-		if (smoothedSegment->points.size() < 2) {
-			std::cout << "[SEGMENT SAFETY] Skipping segment " << (i+1) << " with < 2 points" << std::endl;
-			smoothedSegment->points.clear();
-			continue;
-		}
 
 		for (size_t i = 1; i < smoothedSegment->points.size() - 1; i++)
 		{
@@ -2146,10 +1964,7 @@ std::vector<int> detectSeparateLineSegments(string b1_FilePath, int len = 10) //
 
 	}
 
-	// Removed RGB visualization for headless operation
-	
-	// Return peak indices for proper segment header generation
-	return peakData_index;
+	// Headless: disable visualization spinner for breakline preview
 }
 
 void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileName, bool outerSurface, double distThreshold = 2, double distThresholdForMatchingEndpoints = 20)
@@ -2227,7 +2042,7 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 		cloud->points[i].z = matrixPointCloud(i, 2);
 	}
 
-	pcl::io::savePCDFile(tempEdgeFolder + "smoothed.pcd", *cloud);
+    pcl::io::savePCDFile(tempEdgeFolder + "smoothed.pcd", *cloud);
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr projectedCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	fitBSplineSurfaceAndGetNormalsOnProjectedPoints(fileName, cloud, projectedCloudWithNormals);
@@ -2374,15 +2189,17 @@ void cleanSamples(string pointCloudDataFile)
 
 		ss.str(std::string());
 	}
-	cloud_OriginalSurface->height = 1;
-	cloud_OriginalSurface->width = cloud_OriginalSurface->points.size();
+    cloud_OriginalSurface->height = 1;
+    cloud_OriginalSurface->width = cloud_OriginalSurface->points.size();
+    std::cout << "[DEBUG] cleanSamples: input pts=" << cloud_OriginalSurface->points.size() << std::endl;
 
 	
 	pcl::StatisticalOutlierRemoval<pcl::PointNormal> sor;
 	sor.setInputCloud(cloud_OriginalSurface);
-	sor.setMeanK(50);
+    sor.setMeanK(50);
 	sor.setStddevMulThresh(9);
-	sor.filter(*cloud_filteredB);
+    sor.filter(*cloud_filteredB);
+    std::cout << "[DEBUG] cleanSamples: after SOR pts=" << cloud_filteredB->points.size() << std::endl;
 	// pcl::io::savePCDFileASCII("cloud_Surface_AllSamples_Cleaned.pcd", *cloud_filteredB);
 	pcl::io::savePCDFileASCII(tempEdgeFolder + "cloud_Surface_AllSamples_Cleaned.pcd", *cloud_filteredB);
 
@@ -2548,12 +2365,6 @@ double getErrorInPlaneFitting(const pcl::PointCloud<pcl::PointNormal>::Ptr cloud
 
 void clusteringOnNormals(const pcl::PointCloud<pcl::PointNormal>::Ptr cloud_PointNormalsNearBreaklineSeg, double& CV_C1, double& CV_C2, string fragSegPieceNo)
 {
-    // Guard against undersized inputs to k-means
-    if (!cloud_PointNormalsNearBreaklineSeg || cloud_PointNormalsNearBreaklineSeg->points.size() < 10) {
-        CV_C1 = 0; CV_C2 = 0;
-        std::cerr << "[EDGELINE DEBUG] clusteringOnNormals: too few points (" << (cloud_PointNormalsNearBreaklineSeg?cloud_PointNormalsNearBreaklineSeg->points.size():0) << "), skipping." << std::endl;
-        return;
-    }
 	int k = 2; //number of clusters used
 
 	//1. run kmeans clustering on face normals
@@ -2680,13 +2491,6 @@ void clusteringOnNormals(const pcl::PointCloud<pcl::PointNormal>::Ptr cloud_Poin
 }
 void clusteringOnNormalsForDetectingFracturedSurfacePts(const pcl::PointCloud<pcl::PointNormal>::Ptr cloud_PointNormalsNearBreaklineSeg, string fragSegPieceNo, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_DetectedPointsOnSurface, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_DetectedPointsOnIntExtSurface)
 {
-    // Guard against undersized inputs to k-means
-    if (!cloud_PointNormalsNearBreaklineSeg || cloud_PointNormalsNearBreaklineSeg->points.size() < 10) {
-        std::cerr << "[EDGELINE DEBUG] clusteringOnNormalsForDetectingFracturedSurfacePts: too few points, skipping." << std::endl;
-        if (cloud_DetectedPointsOnSurface) cloud_DetectedPointsOnSurface->clear();
-        if (cloud_DetectedPointsOnIntExtSurface) cloud_DetectedPointsOnIntExtSurface->clear();
-        return;
-    }
 	int k = 3; //number of clusters used
 
 	//1. run kmeans clustering on face normals
@@ -2831,18 +2635,8 @@ void clusteringOnNormalsForDetectingFracturedSurfacePts(const pcl::PointCloud<pc
 
 bool isBreaklineSegARim(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLineSeg, string sampledDataWithNormals, int segNo)
 {
-    pcl::PointCloud<PointNormal>::Ptr cloud_PointNormals(new pcl::PointCloud<PointNormal>);
-    if (!load_ply_pointnormals_robust(sampledDataWithNormals, cloud_PointNormals) || cloud_PointNormals->empty()) {
-        std::cerr << "Warning: Failed to load normals from " << sampledDataWithNormals << ", trying cleaned surface..." << std::endl;
-        if (!load_pointnormals_from_cleaned_surface(cloud_PointNormals)) {
-            std::cerr << "Warning: No normals available; skipping rim detection for seg " << segNo << std::endl;
-            return false;
-        }
-    }
-    if (cloud_PointNormals->size() < 10) {
-        std::cerr << "[EDGELINE DEBUG] Normals cloud too small (" << cloud_PointNormals->size() << ") for rim detection; defaulting to not-rim." << std::endl;
-        return false;
-    }
+	pcl::PointCloud<PointNormal>::Ptr cloud_PointNormals(new pcl::PointCloud<PointNormal>);
+	pcl::io::loadPLYFile(sampledDataWithNormals, *cloud_PointNormals);
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPointsOnly(new pcl::PointCloud<pcl::PointXYZ>);
 	for (size_t i = 0; i < cloud_PointNormals->points.size(); i++)
@@ -2862,14 +2656,6 @@ bool isBreaklineSegARim(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLineSeg, 
 	kdtree.setInputCloud(cloudPointsOnly);
 	float radius = 3;// 6;
 	vector<int> all_Indices;
-
-	// SAFETY: Rim detection requires at least 10 points (skip first/last 3 → need 4+ remaining)
-	// After clipping: size - 6 must be >= 4 for meaningful rim detection
-	if (cloud_BreakLineSeg->points.size() < 10) {
-		std::cerr << "[RIM DETECTION SAFETY] Segment too small (" << cloud_BreakLineSeg->points.size()
-		          << " points < 10 required for rim detection), defaulting to not-rim for seg " << segNo << std::endl;
-		return false;
-	}
 
 	//skipping first and last three points from the breakline and splitting the rest in peices of 5 points each
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ClippedBreakLineSeg(new pcl::PointCloud<pcl::PointXYZ>);
@@ -2971,12 +2757,6 @@ bool isBreaklineSegARim(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLineSeg, 
 		}
 	}
 
-	// SAFETY: Check if CV vectors are empty (happens when no nearby points found in any iteration)
-	if (CV_C1.empty() || CV_C2.empty()) {
-		std::cerr << "[RIM DETECTION SAFETY] No curvature values computed (CV vectors empty), defaulting to not-rim for seg " << segNo << std::endl;
-		return false;
-	}
-
 	double sumCV_C1 = std::accumulate(CV_C1.begin(), CV_C1.end(), 0.0);
 	double meanCV_C1 = sumCV_C1 / CV_C1.size();
 
@@ -3043,7 +2823,7 @@ MatrixXd getDistFromAxis(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLineSeg,
 		b1(2, i) = cloud_BreakLineSeg->points[i].z;
 	}
 
-    b1.transposeInPlace();
+	b1 = b1.transpose();
 
 	MatrixXd ptTmp, diTmp;
 	tie(ptTmp, diTmp) = readFileXYZ_WithNormals(b1_axisFilePath); 
@@ -3116,11 +2896,8 @@ void getPointsOnFracturedSurface(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_Break
 
 	//getting pointcloud from the vertices in the mesh
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_FromMeshIndices(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<PointNormal>::Ptr cloud_PointNormals(new pcl::PointCloud<PointNormal>);
-    if (!load_ply_pointnormals_robust(sampledDataWithNormals, cloud_PointNormals) || cloud_PointNormals->empty()) {
-        std::cerr << "Warning: Failed to load normals from " << sampledDataWithNormals << ", fractured surface estimation may be degraded." << std::endl;
-        return; // cannot proceed safely
-    }
+	pcl::PointCloud<PointNormal>::Ptr cloud_PointNormals(new pcl::PointCloud<PointNormal>);
+	pcl::io::loadPLYFile(sampledDataWithNormals, *cloud_PointNormals);
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPointsOnly(new pcl::PointCloud<pcl::PointXYZ>);
 	for (size_t i = 0; i < cloud_PointNormals->points.size(); i++)
@@ -3268,20 +3045,48 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
     currentFileName = fileName;
     currentMeshFile = meshFileName;
 
+    cout << "[DEBUG] processFragmentData: surface=" << surfacePointCloudFilePath
+         << " mesh=" << fragmentMeshFilePath << endl;
     cout << "Fragment: " + fragmentMeshFilePath << endl << endl;
 
     // -------------------- 전처리: 표면 포인트 클라우드 클린업 및 breakline 추출 --------------------
 	cout << "Cleaning surface point cloud..." << endl;
     cleanSamples(surfacePointCloudFilePath); // (표면 포인트 클라우드 클린업 함수)
+    {
+        // Inspect cleaned surface-with-normals cloud
+        pcl::PointCloud<pcl::PointNormal>::Ptr surf_norm(new pcl::PointCloud<pcl::PointNormal>);
+        std::string cleaned = tempEdgeFolder + std::string("cloud_Surface_AllSamples_Cleaned.pcd");
+        if (pcl::io::loadPCDFile(cleaned, *surf_norm) == 0) {
+            cout << "[DEBUG] cleaned surface normals pts=" << surf_norm->points.size() << " (" << cleaned << ")" << endl;
+        } else {
+            cout << "[DEBUG] cleaned surface normals missing: " << cleaned << endl;
+        }
+    }
     cout << "Estimating patch normals and breaklines..." << endl;
-    estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(tempEdgeFolder + "pointCloudFromMesh.xyz", false);
-
-    // NOTE: Integration Point #2 REMOVED - densifying CompleteBreakline breaks segment file format
-    // Densification at Integration Point #1 (after sphere-marching) is sufficient
-
+    estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(tempEdgeFolder + std::string("pointCloudFromMesh.xyz"), false);
+    {
+        // Inspect CompleteBreakline artifacts
+        pcl::PointCloud<pcl::PointXYZ>::Ptr br_xyz(new pcl::PointCloud<pcl::PointXYZ>);
+        if (pcl::io::loadPCDFile(tempEdgeFolder + std::string("CompleteBreakline.pcd"), *br_xyz) == 0) {
+            cout << "[DEBUG] CompleteBreakline.pcd pts=" << br_xyz->points.size() << endl;
+        } else {
+            cout << "[DEBUG] CompleteBreakline.pcd missing" << endl;
+        }
+    }
     cout << "Detecting separate line segments..." << endl;
-    std::vector<int> detectedPeakIndices = detectSeparateLineSegments(tempEdgeFolder + "CompleteBreakline.xyz");
-    std::cerr << "[EDGELINE DEBUG] detectedPeakIndices size=" << detectedPeakIndices.size() << std::endl;
+    detectSeparateLineSegments(tempEdgeFolder + std::string("CompleteBreakline.xyz"));
+    {
+        // Count segment files produced
+        using boost::filesystem::directory_iterator;
+        size_t segCount = 0;
+        boost::filesystem::path segDir("Segments/");
+        if (boost::filesystem::exists(segDir)) {
+            for (auto it = directory_iterator(segDir); it != directory_iterator(); ++it) {
+                if (boost::filesystem::is_regular_file(*it) && it->path().extension() == ".xyz") segCount++;
+            }
+        }
+        cout << "[DEBUG] Segments/*.xyz files=" << segCount << endl;
+    }
 
     MatrixXd matrix_breakLineSeg;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_breakLineSeg(new pcl::PointCloud<pcl::PointXYZ>);
@@ -3322,18 +3127,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         std::cerr << "[DEBUG MATRIX] Segment file " << sTmp << " matrix dimensions: "
                   << matrix_breakLineSeg.rows() << "x" << matrix_breakLineSeg.cols() << std::endl;
 
-        // SAFETY: Skip empty segment files (filtered out by minimum segment size)
-        if (matrix_breakLineSeg.rows() == 0) {
-            std::cout << "[SEGMENT FILTER] Skipping empty segment file: " << sTmp << std::endl;
-            continue;
-        }
-
-        // SAFETY: Verify matrix has 6 columns as expected
-        if (matrix_breakLineSeg.cols() < 6) {
-            std::cerr << "[FATAL ERROR] Segment file " << sTmp << " has only "
-                      << matrix_breakLineSeg.cols() << " columns, expected 6!" << std::endl;
-            continue;  // Skip this segment to avoid crash
-        }
 
         cloud_breakLineSeg->points.clear();
         std::cerr << "[DEBUG LOOP] Starting segment processing loop, rows=" << matrix_breakLineSeg.rows()
@@ -3341,13 +3134,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 
         for (size_t i = 0; i < matrix_breakLineSeg.rows() - 1; i++)
         {
-            // Bounds check before access
-            if (i >= matrix_breakLineSeg.rows() || i < 0) {
-                std::cerr << "[FATAL] Loop index i=" << i << " out of bounds for matrix with "
-                          << matrix_breakLineSeg.rows() << " rows!" << std::endl;
-                break;
-            }
-
             cloud_breakLineSeg->points.push_back(
                 pcl::PointXYZ(matrix_breakLineSeg(i, 0),
                               matrix_breakLineSeg(i, 1),
@@ -3358,35 +3144,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
             tmpPtN.normal_x = matrix_breakLineSeg(i, 3);
             tmpPtN.normal_y = matrix_breakLineSeg(i, 4);
             tmpPtN.normal_z = matrix_breakLineSeg(i, 5);
-            
-            // Compute geometric curvature for breakline point
-            double curvature = 0.0;
-            if (i > 0 && i < matrix_breakLineSeg.rows() - 1) {
-                // Use discrete curvature approximation: |dN/ds| where N is normal, s is arc length
-                Eigen::Vector3d curr_normal(matrix_breakLineSeg(i, 3), matrix_breakLineSeg(i, 4), matrix_breakLineSeg(i, 5));
-                Eigen::Vector3d prev_normal(matrix_breakLineSeg(i-1, 3), matrix_breakLineSeg(i-1, 4), matrix_breakLineSeg(i-1, 5));
-                Eigen::Vector3d next_normal(matrix_breakLineSeg(i+1, 3), matrix_breakLineSeg(i+1, 4), matrix_breakLineSeg(i+1, 5));
-                
-                Eigen::Vector3d curr_pos(matrix_breakLineSeg(i, 0), matrix_breakLineSeg(i, 1), matrix_breakLineSeg(i, 2));
-                Eigen::Vector3d prev_pos(matrix_breakLineSeg(i-1, 0), matrix_breakLineSeg(i-1, 1), matrix_breakLineSeg(i-1, 2));
-                Eigen::Vector3d next_pos(matrix_breakLineSeg(i+1, 0), matrix_breakLineSeg(i+1, 1), matrix_breakLineSeg(i+1, 2));
-                
-                // Central difference for normal derivative
-                Eigen::Vector3d normal_diff = (next_normal - prev_normal);
-                double arc_length = (next_pos - prev_pos).norm();
-                
-                if (arc_length > 1e-6) {
-                    curvature = normal_diff.norm() / arc_length;
-                }
-                
-                // Limit curvature to reasonable values
-                if (curvature > 1.0) curvature = 1.0;
-            } else {
-                // For boundary points, use simpler approximation
-                curvature = 0.01; // Small default value
-            }
-            
-            tmpPtN.curvature = static_cast<float>(curvature);
             cloud_CompleteBreakline->points.push_back(tmpPtN);
             totalPtsCounter++;
         }
@@ -3457,8 +3214,8 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 	string plyFilePath = datasetBreaklinesFolder + breaklineFileName + ".ply";
 	string xyzFilePath = datasetBreaklinesFolder + breaklineFileName + ".xyz";
 
-	// Use custom PCD writer with segment headers for SFS compatibility
-	writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline, index, detectedPeakIndices);
+        // Write with custom PCD writer to include segment header + normals
+        writeBreaklinePCDWithSegments(pcdFilePath, *cloud_CompleteBreakline);
 	std::cout << "[EDGELINE DEBUG] Saving CompleteBreakline PLY in ASCII mode..." << std::endl;
 	pcl::io::savePLYFile(plyFilePath, *cloud_CompleteBreakline, false); // ASCII mode
 	// Fix cross-device filesystem error: use copy+remove instead of rename
@@ -3495,35 +3252,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
             tmpPtN.normal_x = matrix_breakLineSeg(i, 3);
             tmpPtN.normal_y = matrix_breakLineSeg(i, 4);
             tmpPtN.normal_z = matrix_breakLineSeg(i, 5);
-            
-            // Compute geometric curvature for breakline point
-            double curvature = 0.0;
-            if (i > 0 && i < matrix_breakLineSeg.rows() - 1) {
-                // Use discrete curvature approximation: |dN/ds| where N is normal, s is arc length
-                Eigen::Vector3d curr_normal(matrix_breakLineSeg(i, 3), matrix_breakLineSeg(i, 4), matrix_breakLineSeg(i, 5));
-                Eigen::Vector3d prev_normal(matrix_breakLineSeg(i-1, 3), matrix_breakLineSeg(i-1, 4), matrix_breakLineSeg(i-1, 5));
-                Eigen::Vector3d next_normal(matrix_breakLineSeg(i+1, 3), matrix_breakLineSeg(i+1, 4), matrix_breakLineSeg(i+1, 5));
-                
-                Eigen::Vector3d curr_pos(matrix_breakLineSeg(i, 0), matrix_breakLineSeg(i, 1), matrix_breakLineSeg(i, 2));
-                Eigen::Vector3d prev_pos(matrix_breakLineSeg(i-1, 0), matrix_breakLineSeg(i-1, 1), matrix_breakLineSeg(i-1, 2));
-                Eigen::Vector3d next_pos(matrix_breakLineSeg(i+1, 0), matrix_breakLineSeg(i+1, 1), matrix_breakLineSeg(i+1, 2));
-                
-                // Central difference for normal derivative
-                Eigen::Vector3d normal_diff = (next_normal - prev_normal);
-                double arc_length = (next_pos - prev_pos).norm();
-                
-                if (arc_length > 1e-6) {
-                    curvature = normal_diff.norm() / arc_length;
-                }
-                
-                // Limit curvature to reasonable values
-                if (curvature > 1.0) curvature = 1.0;
-            } else {
-                // For boundary points, use simpler approximation
-                curvature = 0.01; // Small default value
-            }
-            
-            tmpPtN.curvature = static_cast<float>(curvature);
             cloud_CompleteBreakline->points.push_back(tmpPtN);
             totalPtsCounter++;
         }
@@ -3534,15 +3262,6 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         string outPathTemp = tempDataPath(potID);
         bool isRim = isBreaklineSegARim(cloud_breakLineSeg, outPathTemp + fileNameOnly + "_SampledWithNormals.ply", segCount);
         index.push_back(to_string(segStartIndex) + " " + to_string(totalPtsCounter) + " " + (isRim ? "1" : "0"));
-
-        // BUG FIX #1: Call getPointsOnFracturedSurface to actually populate fracture surface data
-        // This function was defined but never called, leaving cloud_PointsOnFracturedSurface empty
-        std::cout << "[FRACTURE SURFACE] Extracting fracture surface points for segment " << segCount << std::endl;
-        getPointsOnFracturedSurface(cloud_breakLineSeg, fragmentMeshFilePath,
-                                     outPathTemp + fileNameOnly + "_SampledWithNormals.ply",
-                                     segCount, cloud_PointsOnFracturedSurface,
-                                     cloud_PointsOnIntExtSurfaceNearBreakline);
-
         segStartIndex = totalPtsCounter + 1;
         segCount++;
     }
@@ -3578,33 +3297,7 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
         }
         cloud_PointsOnFracturedSurfaceNoDuplicates->width = cloud_PointsOnFracturedSurfaceNoDuplicates->points.size();
         cloud_PointsOnFracturedSurfaceNoDuplicates->height = 1;
-
-        // BUG FIX #2, #3: Fix output path and filename format
-        // Old: saves to "build/Pot_A_Piece_01_Surface_0_FracturedSurfacePts.pcd"
-        // New: saves to "Dataset/Surfaces/Pot_A/Pot_A_Piece_01_Surface_F.pcd"
-        string fractureSurfaceFileName = currentFileName;
-        size_t posSurface = fractureSurfaceFileName.find("Surface_0");
-        if (posSurface != string::npos) {
-            fractureSurfaceFileName.replace(posSurface, string("Surface_0").length(), "Surface_F");
-        } else {
-            posSurface = fractureSurfaceFileName.find("Surface_1");
-            if (posSurface != string::npos) {
-                fractureSurfaceFileName.replace(posSurface, string("Surface_1").length(), "Surface_F");
-            }
-        }
-
-        // Use same directory structure as surfaces (Dataset/Surfaces/Pot_X/)
-        string surfacesDir = getSurfaceDatasetPath(potID);
-        string fractureSurfaceFilePath = surfacesDir + fractureSurfaceFileName + ".pcd";
-
-        std::cout << "[FRACTURE SURFACE] Saving " << cloud_PointsOnFracturedSurfaceNoDuplicates->points.size()
-                  << " fracture surface points to: " << fractureSurfaceFilePath << std::endl;
-        // Only save if point cloud is not empty (PCL throws error on empty clouds)
-        if (cloud_PointsOnFracturedSurfaceNoDuplicates->points.size() > 0) {
-            pcl::io::savePCDFile(fractureSurfaceFilePath, *cloud_PointsOnFracturedSurfaceNoDuplicates);
-        } else {
-            std::cout << "[FRACTURE SURFACE] Skipping save - empty point cloud" << std::endl;
-        }
+        pcl::io::savePCDFile(currentFileName + "_FracturedSurfacePts.pcd", *cloud_PointsOnFracturedSurfaceNoDuplicates);
         
         pcl::PointCloud<PointNormal>::Ptr cloud_PointsOnIntExtSurfaceNoDuplicates(new pcl::PointCloud<PointNormal>);
         vector<PointNormal> vectorPointNormal2;
@@ -3637,25 +3330,10 @@ void processFragmentData(string surfacePointCloudFilePath, string fragmentMeshFi
 
 void loadOBJ(string objFilePath, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_BreakLine, Eigen::Matrix4f& transform)
 {
-
-	pcl::TextureMesh mesh1;
-	// Use standard PCL OBJ loader instead of VTK-based loadPolygonFileOBJ
-	pcl::io::loadOBJFile(objFilePath, mesh1);
-	// No need for second mesh load since we're using the same function
-	// pcl::TextureMesh mesh2;
-	// pcl::io::loadOBJFile(objFilePath, mesh2);
-	// mesh1.tex_materials = mesh2.tex_materials;
-
-	pcl::PointCloud<pcl::PointXYZ> cloud;
-	pcl::fromPCLPointCloud2(mesh1.cloud, cloud);
-	pcl::transformPointCloud(cloud, cloud, transform);
-	pcl::toPCLPointCloud2(cloud, mesh1.cloud);
-
-
-	// Mesh and breakline visualization removed for headless operation
-
-	pcl::transformPointCloud(*cloud_BreakLine, *cloud_BreakLine, transform);
-	// Final result visualization removed for headless operation
+    // Headless: avoid VTK/texture mesh and visualization. Only transform the breakline points.
+    if (cloud_BreakLine && !cloud_BreakLine->empty()) {
+        pcl::transformPointCloud(*cloud_BreakLine, *cloud_BreakLine, transform);
+    }
 }
 
 namespace fs = std::experimental::filesystem;
@@ -3682,7 +3360,7 @@ int main()
 
     if (!myfile.is_open()) {
         std::cerr << "Could not open breaklineExtractionTimes.txt\n";
-        // Continue processing even if timing file can't be opened
+        return 1;
     }
 
     try {
