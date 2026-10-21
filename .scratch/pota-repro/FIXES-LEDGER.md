@@ -56,5 +56,8 @@ What seated it: per-piece B-swap only (210: P02-P08 Bl0<->Bl1, job 33510738 COMP
 Decision: RECORDED as the Pot A recipe; 214 proves it on D.
 Owner tickets: 207, 209, 210, 211, 213.
 
+## I. Splitter stopping rule R6 (FROZEN 2026-10-21, user + lead from the commonality table)
+Rule: descend the tightness ladder loosest-first; FIRST stop satisfying ALL THREE wins: (a) balance 2nd/1st >= 0.5 (rejects one-giant); (b) gap-clean, symmetric min face separation >= 2mm (rejects bridged false joins); (c) UN share <= 12% of cloud (rejects fragmented; UN grows with fragmentation: P12 5.3->9.8->18.4%). Dropped legs: top2>=70% (punishes complex pieces), third<=8% (perverse: shrinks as pieces shatter 9.29->6.79; sole solo action in 5 pieces was wrongly rejecting P12@4.5). Record on 7 pieces: P15@8/P16@10/P01@8 GOOD, P12@4.5 near-miss (Bl0 0.63/89.0 corner excursion accepted as cosmetic -- @3 alternative strictly worse, 224), P27 needs 4th leg (clean on all three at @12/@8/@4.5 yet lanes wander: 228), P22/P25 NONE (bridge class, correct). Good-stop gaps cluster ~5mm (wall scale; necessary not sufficient). Owner tickets: 220, 221, 222, 223, 224, 225, 226, 227.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
