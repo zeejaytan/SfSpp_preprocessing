@@ -1,4 +1,7 @@
-Status: results-in
+Status: done
+
+## Lead verdict (2026-10-21)
+RESCORED-NEAR-MISS accepted. R6: repro bit-identical to 229 (baseline 1.294, control 41.63/41.47, line 16.29, disputed 39.22/1.35); rescore new==old (Bl0 0.83/58.5 excl 22.4%, Bl1 0.91/68.9 excl 16.7%) -- meaningful (<50% excluded); Step 3 our dots in excluded zones ride the crease (22/22 + 12/13 on-edge); evidence on disk (script, 4 csvs, eye-checked PNG); only this ticket touched among tracked. Meaning change, not number change: the coverage shortfall now provably punishes exactly the dots where ours rides the edge and the author sits mid-surface (229). P27 grade: still below bar; the bar's local blindness is recorded, not repaired -- repairing it (e.g. crease-credit) is a rule change for the user, not this ticket.
 
 ## Goal
 Rescore P27's lanes with the ruler repaired where 229 proved the reference wrong (user challenge m03812). Rule: an author segment proven off-edge by the sharpness instrument stops being scored by proximity; coverage counts only against author segments verified on-edge. Ends at rescored numbers + verdict; changes no lanes, no code, no bar values.
