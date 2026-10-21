@@ -19,6 +19,9 @@ Run the landed paper-arm binary (mesh v3 d72979aa, build 33616944 -- rebuild fro
 ## Acceptance
 Per-piece table (P15/P25/P27/P16/P01): post-merge top2 share, merges fired + which clusters, classify vote, both lane scores straight+matched, pinch/dupe watch numbers. Verdict line per piece: AT-BAR / NEAR-MISS / FAIL + whether the piece is resolved. sacct COMPLETED for every job; binaries md5 cited.
 
+## Lead regrade (2026-10-22, user correction m04205)
+P27 is a WIN, not a disease. 229 proved OURS-AT-EDGE (disputed 27 dots: ours 39.2deg vs author 1.4deg against the sharpness baseline); 230 kept the author-ruler score on record with the blindness noted. The 58-69% vs author measures the ruler, not the lane. P27 counts as resolved (true-edge win); the author-ruler number stays as evidence of where the author runs off-edge. The 4th-leg work (228 line) is therefore not 'fix P27's lanes' but 'tell true-edge-wins from real wanders author-free'.
+
 ## Lead verdict (2026-10-22)
 ACCEPT: 5/7 resolved (P22/P12/P15/P25 + P16 control reproduces cure, P01 holds), P27 near-miss = known wandering-lane limitation (fits 229/230 ruler caveat). R6: 6/6 jobs sacct COMPLETED 0:0; binary byte-identical to 234 evidence binary (same-source check); lane numbers read verbatim; slots STRAIGHT + votes clean on all five (swap cured everywhere); merges only non-face tails; dupes 0. UN-share measurement note recorded (PLY headers, info-only). Merge decision put to user as numbered options.
 
