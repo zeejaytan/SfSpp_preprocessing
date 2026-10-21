@@ -76,3 +76,7 @@ ACCEPT. R6: 6/6 sacct COMPLETED 0:0; P12 bridge cross-checked against lead measu
   - source 1b1cf0057931ff9c37cd21bda78f31bc Pot_D_Piece_16_Breakline_0.xyz == fetched 1b1cf0057931ff9c37cd21bda78f31bc (7816 B, 145 pts)
   - source c6cc3b332ade9f3840b7900d5d2e7ad8 Pot_D_Piece_16_Breakline_1.xyz == fetched c6cc3b332ade9f3840b7900d5d2e7ad8 (7205 B, 134 pts)
 - Counts match the scored n's (145/124/145/134). Stepring sidecars are 0-byte on source (d41d8cd9...) and were not fetched.
+### Correction (lead, 2026-10-21, user m03281)
+- 'Shatter' was the wrong word: @4.5 did not destroy the piece, it refused the false @8 bridge join. The surviving @4.5 faces fit the author lanes 100% (med 0.24/0.25, lead-measured) -- identical to @8. Fit is about surviving dots, not missing ones.
+- Consequence: 222's R3-NONE verdict for P12 and R1's balance gate (top2>=70%) are UNDER REVIEW, not settled. If 223's @4.5 trace scores at bar, the balance gate is the artifact and the rule needs repair (gap-clean alone, or per-face accounting). If it fails, 222 stands with the failure mode named.
+
