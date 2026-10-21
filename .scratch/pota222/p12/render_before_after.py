@@ -15,7 +15,24 @@ def load(p):
                 except ValueError: pass
     return np.array(d)
 
+def loadpcd(p):
+    d = []
+    with open(p) as f:
+        data = False
+        for ln in f:
+            if data:
+                s = ln.split()
+                if len(s) >= 3:
+                    try: d.append([float(x) for x in s[:3]])
+                    except ValueError: pass
+            elif ln.startswith('DATA'):
+                data = True
+    return np.array(d)
+
 D = 'C:/PR/SfSpp_preprocessing/.scratch/pota222/p12/'
+a0 = loadpcd(D + 'auth_Bl0.pcd')
+a1 = loadpcd(D + 'auth_Bl1.pcd')
+print('author', len(a0), len(a1), flush=True)
 fig = plt.figure(figsize=(16, 7))
 for i, (tag, t) in enumerate([('at8', 'just before shatter (@8: bridged, min gap 0.67mm)'), ('at4p5', 'after shatter (@4.5: gap clean, faces fragmented)')]):
     s0 = load(D + 'p12_S0_%s.xyz' % tag)
@@ -28,6 +45,8 @@ for i, (tag, t) in enumerate([('at8', 'just before shatter (@8: bridged, min gap
     ax.scatter(s0[::6, 0], s0[::6, 1], s0[::6, 2], s=0.4, c='#c96a2e', label='outer face S0 (%d pts)' % len(s0))
     ax.scatter(s1[::6, 0], s1[::6, 1], s1[::6, 2], s=0.4, c='#2e6fc9', label='inner face S1 (%d pts)' % len(s1))
     if len(c0): ax.scatter(c0[:, 0], c0[:, 1], c0[:, 2], s=3, c='k', label='touching (<2mm: %d+%d)' % (len(c0), len(c1)))
+    ax.scatter(a0[:, 0], a0[:, 1], a0[:, 2], s=14, c='#00c853', label='author Bl0 (%d pts)' % len(a0))
+    ax.scatter(a1[:, 0], a1[:, 1], a1[:, 2], s=14, c='#d500f9', label='author Bl1 (%d pts)' % len(a1))
     ax.set_title(t)
     ax.legend(markerscale=4, fontsize=8)
     ax.view_init(elev=18, azim=-62)
