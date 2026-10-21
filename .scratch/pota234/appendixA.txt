@@ -1,0 +1,202 @@
+ I Appendix A - Cluster merging 
+
+ TABLE I: Parameters used in cluster merging algorithm. 
+
+ Parameter 
+ Value 
+ Description 
+
+ k 1 k_{1} 
+ 10 
+ Neighbors for boundary evaluation 
+
+ k 2 k_{2} 
+ 30 
+ Neighbors for normal estimation 
+
+ ρ d \rho_{d} 
+ 1.0 
+ Distance threshold for boundary pairs 
+
+ ρ n \rho_{n} 
+ 0.95 
+ Normal sim. threshold 
+
+ ρ c \rho_{c} 
+ 0.1 
+ Curvature diff. threshold 
+
+ ρ i ​ n , n \rho_{in,n} 
+ 0.75 
+ Normal sim. threshold (internal) 
+
+ ρ i ​ n , c \rho_{in,c} 
+ 0.25 
+ Curvature diff. threshold (internal) 
+
+ After applying the region growing algorithm, a single continuous surface may become over-segmented into multiple clusters.
+To address this issue, we employ a cluster merging algorithm.
+In this algorithm, we first define a cluster pair ( C i , C j ) (C_{i},C_{j}) , which consists of two distinct clusters.
+The purpose of defining such a pair is to assess whether the clusters belong to the same continuous surface by examining adjacent boundary points between them. 
+
+ For each cluster pair, boundary point pairs are detected within the specified distance threshold ρ d \rho_{d} as described in Alg. 1 (Step 1).
+In this step, the boundary status of each point is evaluated by considering k 1 k_{1} neighboring points and at least three boundary point pairs must be detected.
+If the number of boundary point pairs is less than three, the cluster pair is considered to contain noisy or unstable boundary information and is excluded from merging.
+Next, for each boundary point, an average normal is computed using k 2 k_{2} neighbors to estimate the local surface normal vector.
+If the dot product between the average normal vectors is at least ρ n \rho_{n} , and the difference in mean curvature is below ρ c \rho_{c} , the boundary points are deemed similar, indicating that the boundaries of the two clusters likely belong to the same continuous surface (Alg. 1 , Step 2). 
+
+ Since boundary conditions alone may not fully overcome noise or inaccuracies near the boundaries, additional reliable internal information is incorporated.
+As shown in Alg. 1 (Step 3), each cluster selects a representative internal point p i in p_{i}^{\mathrm{in}} , which is the median point sorted by perpendicular distance to the principal axis, and the normals and curvatures of these internal points are compared using thresholds ρ i ​ n , n \rho_{in,n} for normals and ρ i ​ n , c \rho_{in,c} for curvatures.
+The clusters are merged only if both the boundary and internal conditions are satisfied.
+Once the conditions are met, cluster C j C_{j} is merged into C i C_{i} (Alg. 1 , Step 4), and this process is repeated until no further mergers can be performed (Alg. 1 , Line 28). 
+
+ Algorithm 1 Cluster merging algorithm 
+
+ 1: 
+
+Clusters { C 1 , … , C n } \{C_{1},\ldots,C_{n}\} ; 
+
+ 2: 
+
+ Point cloud with normals; 
+
+ 3: 
+
+ Thresholds: ρ d , ρ n , ρ c , ρ in , n , ρ in , c \rho_{d},\rho_{n},\rho_{c},\rho_{\mathrm{in},n},\rho_{\mathrm{in},c} ; 
+
+ 4: 
+
+ KNN sizes: k 1 , k 2 k_{1},k_{2} .
+
+ 5: 
+
+ Merged clusters { C 1 ′ , … , C m ′ } \{C^{\prime}_{1},\ldots,C^{\prime}_{m}\} .
+
+ 6: 
+
+ repeat 
+
+ 7: 
+
+   for i ← 1 i\leftarrow 1 to n − 1 n-1 do 
+
+ 8: 
+
+    for j ← i + 1 j\leftarrow i+1 to n n do 
+
+ 9: 
+
+     if C j C_{j} is merged then 
+
+ 10: 
+
+      continue 
+
+ 11: 
+
+     end if 
+
+ 12: 
+
+ ⊳ \triangleright Step 1: Boundary pairs below distance ρ d \rho_{d} 
+
+ 13: 
+
+     B ← FindBoundaryPairs ⁡ ( C i , C j , ρ d ) B\leftarrow\mathrm{FindBoundaryPairs}(C_{i},C_{j},\rho_{d}) 
+
+ 14: 
+
+     if | B | &lt; 3 |B|&lt;3 then 
+
+ 15: 
+
+      continue ⊳ \triangleright Not enough boundary points
+
+ 16: 
+
+     end if 
+
+ 17: 
+
+ ⊳ \triangleright Step 2: Normal similarity and curvature 
+
+ 18: 
+
+     𝑛𝑜𝑟𝑚𝑎𝑙𝑂𝐾 ← CheckNormalSimilarity ⁡ ( B , ρ n ) \mathit{normalOK}\leftarrow\mathrm{CheckNormalSimilarity}(B,\rho_{n}) 
+
+ 19: 
+
+     𝑐𝑢𝑟𝑣𝑂𝐾 ← CheckCurvature ⁡ ( B , ρ c ) \mathit{curvOK}\leftarrow\mathrm{CheckCurvature}(B,\rho_{c}) 
+
+ 20: 
+
+     if not ( 𝑛𝑜𝑟𝑚𝑎𝑙𝑂𝐾 ∧ 𝑐𝑢𝑟𝑣𝑂𝐾 \mathit{normalOK}\wedge\mathit{curvOK} ) then 
+
+ 21: 
+
+      continue 
+
+ 22: 
+
+     end if 
+
+ 23: 
+
+ ⊳ \triangleright Step 3: Inner point verification 
+
+ 24: 
+
+     p i in ← SelectInnerPoint ⁡ ( C i ) p_{i}^{\mathrm{in}}\leftarrow\mathrm{SelectInnerPoint}(C_{i}) 
+
+ 25: 
+
+     p j in ← SelectInnerPoint ⁡ ( C j ) p_{j}^{\mathrm{in}}\leftarrow\mathrm{SelectInnerPoint}(C_{j}) 
+
+ 26: 
+
+     if not VerifyMerge ⁡ ( p i in , p j in , ρ in , n , ρ in , c ) \mathrm{VerifyMerge}(p_{i}^{\mathrm{in}},p_{j}^{\mathrm{in}},\rho_{\mathrm{in},n},\rho_{\mathrm{in},c}) then 
+
+ 27: 
+
+      continue 
+
+ 28: 
+
+     end if 
+
+ 29: 
+
+ ⊳ \triangleright Step 4: Merge C j C_{j} into C i C_{i} 
+
+ 30: 
+
+     C i ← C i ∪ C j C_{i}\leftarrow C_{i}\cup C_{j} 
+
+ 31: 
+
+     Clear C j C_{j} ; Mark C j C_{j} as merged
+
+ 32: 
+
+    end for 
+
+ 33: 
+
+   end for 
+
+ 34: 
+
+ until no more merges can be made 
+
+ 35: 
+
+ ⊳ \triangleright Remove empty clusters
+
+ 36: 
+
+ Remove all C k C_{k} where C k = ∅ C_{k}=\emptyset 
+
+ 37: 
+
+ return { C 1 ′ , … , C m ′ } \{C^{\prime}_{1},\ldots,C^{\prime}_{m}\} 
+

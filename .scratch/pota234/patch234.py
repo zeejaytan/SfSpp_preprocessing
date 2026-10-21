@@ -1,0 +1,195 @@
+import sys
+
+SRC = "C:/PR/SfSpp_preprocessing/mesh_processing_headless.cpp"
+DST = "C:/PR/SfSpp_preprocessing/.scratch/pota234/mesh_processing_headless.cpp"
+
+with open(SRC, "rb") as f:
+    raw = f.read()
+# normalize CRLF -> LF; keep non-UTF8 bytes (EUC-KR comments) intact
+raw = raw.replace(b"\r\n", b"\n")
+txt = raw.decode("utf-8", errors="surrogateescape")
+
+def once(old, new):
+    global txt
+    n = txt.count(old)
+    assert n == 1, f"anchor x{n}: {old[:70]!r}"
+    txt = txt.replace(old, new)
+
+# 1. cstdlib for getenv
+once("#include <stdio.h>", "#include <stdio.h>\n#include <cstdlib>  // TICKET 234: getenv")
+
+# 2. insert grower functions before surfaceSegmentation definition
+GROWER = '''// ============================================================================
+// TICKET 234 -- plane-continuity split rule (user-specified, 2026-10-22).
+// A dot joins the region iff it agrees with the region's fitted plane: the
+// reference is the plane fit over the last `planeWindow` accepted dots
+// (sliding window, refit on every accept, normal oriented to the seed), so
+// accumulated twist stays inside tolerance. A sharp departure (angle to the
+// window plane > joinDeg, or point-to-plane distance > distMM) is left
+// unfiled and seeds a new face later. The fit is LOCAL: a full 360deg
+// annulus tracks itself and does not self-split at closure (ring control).
+// ============================================================================
+static bool fitPlaneWindow234(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+    const std::vector<int>& region, int planeWindow,
+    const Eigen::Vector3f& refNormal,
+    Eigen::Vector3f& outNormal, Eigen::Vector3f& outPoint)
+{
+    int n = static_cast<int>(region.size());
+    int w = std::min(planeWindow, n);
+    if (w < 3) {
+        int s = region.back();
+        outPoint = cloud->points[s].getVector3fMap();
+        outNormal = refNormal;
+        return true;
+    }
+    Eigen::Vector3f mean(0.0f, 0.0f, 0.0f);
+    for (int i = n - w; i < n; ++i) mean += cloud->points[region[i]].getVector3fMap();
+    mean /= static_cast<float>(w);
+    Eigen::Matrix3f cov = Eigen::Matrix3f::Zero();
+    for (int i = n - w; i < n; ++i) {
+        Eigen::Vector3f d = cloud->points[region[i]].getVector3fMap() - mean;
+        cov += d * d.transpose();
+    }
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es(cov);
+    Eigen::Vector3f normal = es.eigenvectors().col(0);
+    if (normal.dot(refNormal) < 0.0f) normal = -normal;
+    outNormal = normal;
+    outPoint = mean;
+    return true;
+}
+
+static double angleToPlaneNormal234(const Eigen::Vector3f& n, const Eigen::Vector3f& planeN)
+{
+    Eigen::Vector4f a(n(0), n(1), n(2), 0.0f);
+    Eigen::Vector4f b(planeN(0), planeN(1), planeN(2), 0.0f);
+    return pcl::getAngle3D(a, b, true);
+}
+
+static std::vector<pcl::PointIndices> growRegionsPlaneContinuity234(
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+    pcl::PointCloud<pcl::Normal>::Ptr normals,
+    int minClusterSize, int numberOfNeighbours,
+    double joinDeg, double distMM, int planeWindow,
+    double curvatureSeedThresh)
+{
+    std::vector<pcl::PointIndices> clusters;
+    const int N = static_cast<int>(cloud->points.size());
+    if (N == 0) return clusters;
+    std::vector<char> taken(N, 0);
+    std::vector<int> order(N);
+    for (int i = 0; i < N; ++i) order[i] = i;
+    std::sort(order.begin(), order.end(), [&](int a, int b) {
+        return normals->points[a].curvature < normals->points[b].curvature;
+    });
+    pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
+    kdtree.setInputCloud(cloud);
+    std::vector<int> nbrs;
+    std::vector<float> dists;
+    std::vector<int> queue;
+    std::vector<int> region;
+    queue.reserve(2048);  // NOTE: frontier index is `fh`: qhull headers + -Dqh_QHpointer hijack the name `qh`
+    region.reserve(8192);
+    for (int s = 0; s < N; ++s) {
+        int seed = order[s];
+        if (taken[seed]) continue;
+        if (normals->points[seed].curvature > curvatureSeedThresh) continue;
+        region.clear();
+        region.push_back(seed);
+        taken[seed] = 1;
+        Eigen::Vector3f seedN(normals->points[seed].normal_x,
+                              normals->points[seed].normal_y,
+                              normals->points[seed].normal_z);
+        Eigen::Vector3f planeN, planeP;
+        fitPlaneWindow234(cloud, region, planeWindow, seedN, planeN, planeP);
+        queue.clear();
+        queue.push_back(seed);
+        size_t fh = 0;
+        while (fh < queue.size()) {
+            int cur = queue[fh++];
+            nbrs.clear(); dists.clear();
+            if (kdtree.nearestKSearch(cloud->points[cur], numberOfNeighbours + 1, nbrs, dists) <= 0) continue;
+            for (size_t k = 0; k < nbrs.size(); ++k) {
+                int nb = nbrs[k];
+                if (nb == cur || taken[nb]) continue;
+                Eigen::Vector3f nn(normals->points[nb].normal_x,
+                                   normals->points[nb].normal_y,
+                                   normals->points[nb].normal_z);
+                double ang = angleToPlaneNormal234(nn, planeN);
+                Eigen::Vector3f pp = cloud->points[nb].getVector3fMap();
+                double dd = std::fabs((pp - planeP).dot(planeN));
+                if (ang <= joinDeg && dd <= distMM) {
+                    taken[nb] = 1;
+                    region.push_back(nb);
+                    queue.push_back(nb);
+                    fitPlaneWindow234(cloud, region, planeWindow, seedN, planeN, planeP);
+                }
+            }
+        }
+        if (static_cast<int>(region.size()) >= minClusterSize) {
+            pcl::PointIndices pi;
+            pi.indices = region;
+            clusters.push_back(pi);
+        }
+    }
+    return clusters;
+}
+
+void surfaceSegmentation(std::string filePath,'''
+
+once("void surfaceSegmentation(std::string filePath,", GROWER)
+
+# 3. SINGLE_SHOT harness
+once(
+ "    double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration",
+ "    double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration\n"
+ "    if (const char* sfs_ss = std::getenv(\"SFS_SINGLE_SHOT\")) { if (*sfs_ss && std::string(sfs_ss) != \"0\") maxIterations = 1; }  // TICKET 234: ported ladder harness",
+)
+
+# 4. signature: add plane-rule params with defaults
+once(
+ "void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold)",
+ "void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold,\n        bool planeRule = false, double planeJoinDeg = 60.0, double planeDistMM = 2.0, int planeWindow = 100)",
+)
+
+# 5. branch the PCL block
+once(
+ "        pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;",
+ "        std::vector<pcl::PointIndices> clusters;\n"
+ "        if (planeRule) {\n"
+ "            std::cout << \"[PLANE-234] windowed-plane gate: joinDeg=\" << planeJoinDeg\n"
+ "                      << \" distMM=\" << planeDistMM << \" window=\" << planeWindow << std::endl;\n"
+ "            clusters = growRegionsPlaneContinuity234(cloud, normals, dynMinCluster, dynK,\n"
+ "                planeJoinDeg, planeDistMM, planeWindow, curvatureThreshold);\n"
+ "        } else {\n"
+ "        pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;",
+)
+once(
+ "        std::vector<pcl::PointIndices> clusters;\n        reg.extract(clusters);",
+ "        reg.extract(clusters);\n        }",
+)
+
+# 6. call site: env knobs + dispatch
+once(
+ "        int minCluster = 50, noOfNeighbours = 10;\n        double smoothnessAngleThreshold = 4.5, curvatureThreshold = 1.5;\n        std::cout << \"Starting surface segmentation on: \" << downsampledFilePath << std::endl;\n        surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold);",
+ "        int minCluster = 50, noOfNeighbours = 10;\n"
+ "        double smoothnessAngleThreshold = 4.5, curvatureThreshold = 1.5;\n"
+ "        if (const char* sfs_s = std::getenv(\"SFS_SMOOTHNESS_DEG\")) { if (*sfs_s) smoothnessAngleThreshold = std::stod(sfs_s); }\n"
+ "        if (const char* sfs_c = std::getenv(\"SFS_CURVATURE_THRESH\")) { if (*sfs_c) curvatureThreshold = std::stod(sfs_c); }\n"
+ "        double planeJoinDeg = 60.0, planeDistMM = 2.0;\n"
+ "        int planeWindow = 100;\n"
+ "        if (const char* e = std::getenv(\"SFS_PLANE_JOIN_DEG\")) { if (*e) planeJoinDeg = std::stod(e); }\n"
+ "        if (const char* e = std::getenv(\"SFS_PLANE_DIST_MM\")) { if (*e) planeDistMM = std::stod(e); }\n"
+ "        if (const char* e = std::getenv(\"SFS_PLANE_WINDOW\")) { if (*e) planeWindow = std::stoi(e); }\n"
+ "        bool planeRule = false;\n"
+ "        if (const char* e = std::getenv(\"SFS_PLANE_RULE\")) { if (*e && std::string(e) != \"0\") planeRule = true; }\n"
+ "        std::cout << \"Starting surface segmentation on: \" << downsampledFilePath << std::endl;\n"
+ "        std::cout << \"[SPLITTER-234] rule=\" << (planeRule ? \"PLANE-CONTINUITY\" : \"PCL-REGION-GROWING\")\n"
+ "                  << \" smoothDeg=\" << smoothnessAngleThreshold << \" curv=\" << curvatureThreshold\n"
+ "                  << \" joinDeg=\" << planeJoinDeg << \" distMM=\" << planeDistMM << \" window=\" << planeWindow << std::endl;\n"
+ "        surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold,\n"
+ "            planeRule, planeJoinDeg, planeDistMM, planeWindow);",
+)
+
+with open(DST, "wb") as f:
+    f.write(txt.encode("utf-8", errors="surrogateescape"))
+print("patched OK, bytes:", len(txt))
