@@ -65,3 +65,13 @@ UN (info only, rule retired): P22 5125, P12 3640, Jug 5971 (small-region drops +
 **Which step carried P22.** Grow-reference fix (55 → 11 clusters; fixed-seed v1 shattered, current-front follows twist) + classify (100/0 vote → Surface_0=interior → straight slots, swap disease cured). Merge fired zero times on P22 — grow already separated cleanly; Appendix-A merge validated on P12 (1 merge, no face contamination).
 
 **Verdict: SPLIT-CLEAN (paper arm).** Caveats: P22 Bl0 cov 85.2 below bar (fork-adjacent stretch); P22 0.27mm edge pinch 14mm from fork (watch in assembly); Jug filed-face overlap is a resample artifact (cluster level clean).
+
+### 2026-10-22 — T234 follow-up report: paper arm on branch
+
+Branch **`paper-split-chain`** off origin/main, pushed to origin (zeejaytan fork). Change: `mesh_processing_headless.cpp` +497/-3 (the 3 replaced lines = `surfaceSegmentation` signature + its two call sites, extended with defaulted params). Branch blob md5 `556ef97aacedddadd4df283ccff01d15` == chaincheck-verified v3 source == file that built the SPLIT-CLEAN evidence binary.
+
+Built in new worktree `C:/PR/SfSpp_preprocessing-paper` (main worktree + other worktrees untouched): pristine blob md5 `22264da5` confirmed LF-only; patch chain (patch234.py/b/c/d, path-adapted, no content change) replayed onto the worktree file → byte-match `556ef97a` TRUE.
+
+Flags: paper arm behind `SFS_PAPER_CHAIN` (default off); plane code parked behind `SFS_PLANE_RULE` (default off); dispatch paper → plane → original PCL, so the default path is unchanged.
+
+Build-check (Spartan container only, no runs): fresh dir `sfs-branch-234` (copy of sfs-fix-234 minus build dirs; sfs-fix-234 untouched), in-tree source md5 `556ef97a` == branch blob, job **33617493 COMPLETED 0:0** (56s), binary md5 `d72979aaa0055885a4dc88bb51a172e7` — identical to the v3 evidence binary (build 33616944).
