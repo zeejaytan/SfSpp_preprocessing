@@ -18,5 +18,8 @@ Compare against the region plane, not the last dot (else the twist re-shatters -
 - [ ] Control P12@4.5 still selects (no regression on the honest stop)
 - [ ] Verdict line: SPLIT-CLEAN / HONEST-NEGATIVE-<tradeoff>
 
+## Lead redirect (2026-10-22, user order -- overrides the plane-continuity spec above)
+Park the plane-continuity code on your branch (do not delete). Implement the paper chain (SfS++ Sec IV-B1, lead-read verbatim): (1) region growing from the min-curvature point, n_b=10 neighbours, curvature < tau_kappa=1, normal angle < tau_theta=4deg -- separates interior/exterior/fractured; (2) cluster merging to fixpoint: kNN close pairs between clusters, patch-average normal similarity + boundary-point curvature comparison + internal-point verification, merge all passing pairs, repeat; then B-spline boundary refine + resample; then TWO LARGEST clusters = inner/outer; (3) axis-ray classification: per point, ray along normal to the symmetry axis; intersection on the positive normal side = interior; try both assignments, keep the one with most points satisfying. The paper's own over-segmentation answer is merging, not looser angles. The missing classification IS the swap disease: slot 0 must be interior (assembler reads only slot 0); the fork files surfaces arbitrarily. Acceptance amends: P22 fork single-face + classification labels P22 faces interior/exterior with the majority-vote count + ring control (annulus inner/outer stay the two largest, unmerged). Report which of the three steps carried P22.
+
 ## Required evidence to report
 sacct COMPLETED for every Slurm job; binaries md5; the cutoff + window; gap table + UN/top2; control numbers; verdict in ticket Comments; leave Status for the lead.
