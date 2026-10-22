@@ -1,4 +1,6 @@
-Status: results-in
+Status: done
+
+Lead verdict (R6 2026-10-22): PASS. Jobs 33666465 + 33667102 COMPLETED 0:0. Binary byte-identical to 244 (b8eb3759) on the same node. P03 spot: S0 107304 (+0.18% thread-noise), cut 2396 EXACT, Bl0 0.72/97.8 same class as 244 (0.71/100.0); Bl1 tracer caveat reproduced. Merge 93c33bc on origin/main; decision recorded in message. Restored density is now the main-line default.
 
 # Ticket 245: merge the 244 density restore to main
 
