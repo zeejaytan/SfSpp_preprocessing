@@ -2036,7 +2036,7 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
 
 void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold,
         bool planeRule = false, double planeJoinDeg = 60.0, double planeDistMM = 2.0, int planeWindow = 100,
-        bool paperChain = false, double paperTheta = 4.0, double paperKappa = 1.0, int paperNB = 10,
+        bool paperChain = true, double paperTheta = 4.0, double paperKappa = 1.0, int paperNB = 10,
         double paperRhoD = 1.0, double paperRhoN = 0.95, double paperRhoC = 0.1, double paperRhoInN = 0.75, double paperRhoInC = 0.25)
 {
     // std::string tmp_path = filePath;
@@ -2554,8 +2554,8 @@ int main(int argc, char** argv) {
         if (const char* e = std::getenv("SFS_PLANE_WINDOW")) { if (*e) planeWindow = std::stoi(e); }
         bool planeRule = false;
         if (const char* e = std::getenv("SFS_PLANE_RULE")) { if (*e && std::string(e) != "0") planeRule = true; }
-        bool paperChain = false;
-        if (const char* e = std::getenv("SFS_PAPER_CHAIN")) { if (*e && std::string(e) != "0") paperChain = true; }
+        bool paperChain = true;
+        if (const char* e = std::getenv("SFS_PAPER_CHAIN")) { if (*e && std::string(e) != "0") paperChain = true; else paperChain = false; }
         double paperTheta = 4.0, paperKappa = 1.0, paperRhoD = 1.0, paperRhoN = 0.95, paperRhoC = 0.1, paperRhoInN = 0.75, paperRhoInC = 0.25;
         int paperNB = 10;
         if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) paperTheta = std::stod(e); }
