@@ -566,9 +566,11 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr downsampledCloudPoints(new pcl::PointCloud<p
 pcl::PointCloud<pcl::PointNormal>::Ptr downsampledCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 std::string outputFile = "";
 
-// Auto-tunes sampling radius based on scene scale; aims for ~targetSamples (default 10000)
-// If targetSamples <= 0, skips downsampling and uses raw point cloud instead
-std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 10000) {
+// POTA-244: targetSamples == 0 restores the pre-48fb588 fixed-radius path
+// (pristine-splitwalk: UniformSampling at samplingRadius, no target loop);
+// targetSamples < 0 skips downsampling (raw cloud, 48fb588); > 0 auto-tunes to target (48fb588).
+// Default 0 = restored density. SFS_DOWNSAMPLE_TARGET=N overrides (19000 = current behavior).
+std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 0) {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr originalPointCloudXYZ(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalPointCloud(new pcl::PointCloud<pcl::PointNormal>);
 
@@ -583,8 +585,8 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 	pcl::PointCloud<pcl::PointNormal>::Ptr originalCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	pcl::copyPointCloud(*originalPointCloud, *originalCloudWithNormals);
 
-	// SPECIAL CASE: If targetSamples <= 0, skip downsampling and use raw cloud
-	if (targetSamples <= 0) {
+	// SPECIAL CASE: If targetSamples < 0, skip downsampling and use raw cloud
+	if (targetSamples < 0) {
 		std::cout << "[NO DOWNSAMPLING] Using raw point cloud with " << originalCloudWithNormals->size() << " points" << std::endl;
 		// Use raw cloud directly - copy to downsampledCloud
 		pcl::copyPointCloud(*originalCloudWithNormals, *downsampledCloud);
@@ -598,6 +600,14 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 		return outputFile;
 	}
 
+	// POTA-244 RESTORE (targetSamples == 0): fixed-radius path, pre-48fb588 behavior.
+	if (targetSamples == 0) {
+		uniformSampler.setInputCloud(originalCloudWithNormals);
+		uniformSampler.setRadiusSearch(samplingRadius);
+		uniformSampler.filter(*downsampledCloud);
+		std::cout << "[DOWNSAMPLING RESTORE-244] Fixed radius=" << std::fixed << std::setprecision(5) << samplingRadius
+		          << ", input=" << originalCloudWithNormals->size() << " points, Result=" << downsampledCloud->size() << " points" << std::endl;
+	} else {
 	pcl::KdTreeFLANN<pcl::PointNormal> kdTree;
 	kdTree.setInputCloud(originalCloudWithNormals);
 
@@ -652,6 +662,7 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
               << "Bounds=[" << lowerBound << "-" << upperBound << "], "
               << "Result=" << downsampledCloud->size() << " points, "
               << "Radius(leaf)=" << std::fixed << std::setprecision(5) << leaf << std::endl;
+	} // end POTA-244 adaptive branch (targetSamples > 0)
 
 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
     getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
@@ -2517,8 +2528,11 @@ int main(int argc, char** argv) {
         }
         
         setInputFile(inputFilePath, dataPath);
-        // FINAL: Target 19,000 points - optimized for sample dataset matching (~19K output)
-        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, 19000);
+        // POTA-244: default restores pre-48fb588 fixed 0.6mm radius (no target loop).
+        // SFS_DOWNSAMPLE_TARGET=N overrides: 19000 = 48fb588 adaptive, <0 = skip (raw cloud).
+        int dsTarget244 = 0;
+        if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) { if (*e) dsTarget244 = std::stoi(e); }
+        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, dsTarget244);
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
         
