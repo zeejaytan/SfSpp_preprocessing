@@ -824,7 +824,6 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
 	}
 	std::cout << "[VOTE-247] resampled=" << MR << " (L=" << L << "mm) corners=" << corners
 	          << " thr=" << thr << " med=" << med << " idx=[" << cidx << "]" << std::endl;
-	gateDiag_turnSum = turnSum; gateDiag_L = L; gateDiag_corners = corners;
 	for (size_t i = 0; i < MR; i++)
 		cloud_sequenced->points.push_back(pcl::PointXYZ(res[i](0), res[i](1), res[i](2)));
 	cloud_sequenced->width = cloud_sequenced->points.size();
