@@ -2236,14 +2236,18 @@ void detectSeparateLineSegments(string b1_FilePath, int len = 10) //len = 10
 
 		for (size_t i = 1; i < smoothedSegment->points.size() - 1; i++)
 		{
-			tree_->nearestKSearch(smoothedSegment->points[i], 20, nn_indices, nn_dists);
-			for (size_t i = 0; i < 20; i++)
+			// POTA-274: nearestKSearch clamps k to the cloud size and shrinks both
+			// result vectors (PCL 1.9 kdtree_flann.hpp:139-143). Walk only what came
+			// back: reading the k=20 slots regardless indexed a short chain's heap
+			// tail and segfaulted at :2257 (garbage dist <= 1.8 -> garbage index).
+			const int nnFound274 = tree_->nearestKSearch(smoothedSegment->points[i], 20, nn_indices, nn_dists);
+			for (int j = 0; j < nnFound274; j++)
 			{
-				if (nn_dists[i] <= 1.8)
+				if (nn_dists[j] <= 1.8)
 				{
-					nn_indicesAll.push_back(nn_indices[i]);
+					nn_indicesAll.push_back(nn_indices[j]);
 				}
-				//rawBreaklinePtsInSegment->points.push_back(rawBreaklinePts->points[nn_indices[i]]);
+				//rawBreaklinePtsInSegment->points.push_back(rawBreaklinePts->points[nn_indices[j]]);
 			}
 		}
 
