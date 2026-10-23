@@ -273,10 +273,17 @@ matrix it was written against shows the letter is the wrong test. Three reasons,
   is 12.6 / 54.6 / 16.2 mm away — so the stop rule ends the walk, correctly, on the wrong structure. With the
   rule off the same walk leaps that gap and drags the debris field into the line, which is where the
   61-101 mm steps come from.
-- On P03 Bl1 the largest component is 1045 of 1121 dots (93%) and it is a double-cover braid. Keeping it and
-  clock-sorting it is what explodes (F0: 18255 dots, cov 5.74, 86 jumps); there the no-discard walk is the
-  only thing that holds (D: 339 / 0.523 / 99.12).
-- P22 is a single component (492 and 425 dots) and braid-like: D holds Bl1 at 96.5, F0 wrecks it (2176 / 4.83).
+- On P03 Bl1 the bag is **1122 dots in ONE component** at the shipped theta=3.4 — the 1121-dot
+  two-row bag (1045 + a 76-dot satellite) of the theta=4 era is gone, because the 3.4 trim severs the
+  roll-over lip (ticket 271). So "keep the largest component" keeps everything there and the damage is
+  **the angular sort itself**, not a braid: F0 explodes (18255 dots, cov 5.74, 86 jumps = ~35 m of path
+  at 1.9 mm spacing for a ~600 mm rim) while V0, which walks dot to dot, is fine (350 / 0.521 / 98.00).
+  The no-discard walk holds (D: 339 / 0.523 / 99.12).
+  CORRECTION (2026-10-24, lead): an earlier version of this bullet called that bag a double-cover braid.
+  That was measured on the theta=4 sheets and does not describe the shipped bag; the log line that
+  settles it is `[FULL-263] no-discard kept 1122/1122 (1 comps @ 5mm)`.
+- P22 is a single component (492 and 425 dots): D holds Bl1 at 96.5, F0 wrecks it (2176 / 4.83). The same
+  angular-sort defect, not a doubling.
 
 So the answer is neither a global switch nor a retune. It is: **choose the walker per lane from the shape of
 the largest component.** Ticket 275 carries that, with a Phase 1 that must show the criterion separates the
