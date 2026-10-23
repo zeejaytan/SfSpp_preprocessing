@@ -536,83 +536,6 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 }
 
 
-// POTA-263: loop-ness scorer for strand SELECTION (one knob, stated assumption).
-// Scores one connected component's point set as a single closed loop: PCA-plane
-// angular sort about its own centroid, signed turn sum, closed length L, mean
-// radius R (mean distance to centroid). Score = | |turn|-2pi |/(2pi) +
-// | L/(2pi*R) - 1 | (equal weights, dimensionless). Corners use the same
-// chord-deviation rule as the vote lane (W = min(8, n/4)) but are LOGGED ONLY,
-// not scored -- one knob at a time. Tiny comps (n<8 or degenerate plane) score
-// INF and are excluded from selection.
-struct LoopScore263 { double turnSum; float L; float R; size_t corners; double score; size_t n; };
-static LoopScore263 scoreLoop263(const std::vector<Eigen::Vector3f>& pts) {
-	LoopScore263 s; s.n = pts.size(); s.turnSum = 0.0; s.L = 0.0f; s.R = 0.0f; s.corners = 0; s.score = 1e100;
-	if (pts.size() < 8) return s;
-	Eigen::Vector3f mean(0,0,0);
-	for (size_t i = 0; i < pts.size(); i++) mean += pts[i];
-	mean /= (float)pts.size();
-	double rsum = 0.0;
-	for (size_t i = 0; i < pts.size(); i++) rsum += (pts[i] - mean).norm();
-	float R = (float)(rsum / (double)pts.size());
-	if (!(R > 1e-6f)) return s;
-	Eigen::Matrix3f cov = Eigen::Matrix3f::Zero();
-	for (size_t i = 0; i < pts.size(); i++) { Eigen::Vector3f d = pts[i] - mean; cov += d * d.transpose(); }
-	Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es(cov);
-	Eigen::Vector3f un = es.eigenvectors().col(0);
-	if (un.norm() < 1e-9f) return s;
-	Eigen::Vector3f u = Eigen::Vector3f::Zero(); bool haveU = false;
-	for (size_t i = 0; i < pts.size() && !haveU; i++) {
-		Eigen::Vector3f cand = pts[i] - mean; cand -= un * cand.dot(un);
-		if (cand.norm() > 1e-6f) { u = cand; u.normalize(); haveU = true; }
-	}
-	if (!haveU) return s;
-	Eigen::Vector3f v = un.cross(u);
-	std::vector<std::pair<float, Eigen::Vector3f> > keyed; keyed.reserve(pts.size());
-	for (size_t i = 0; i < pts.size(); i++) {
-		Eigen::Vector3f d = pts[i] - mean;
-		keyed.push_back(std::make_pair(std::atan2(d.dot(v), d.dot(u)), pts[i]));
-	}
-	std::sort(keyed.begin(), keyed.end(),
-		[](const std::pair<float, Eigen::Vector3f>& a, const std::pair<float, Eigen::Vector3f>& b){ return a.first < b.first; });
-	size_t M = keyed.size();
-	std::vector<Eigen::Vector3f> loop; loop.reserve(M);
-	for (size_t i = 0; i < M; i++) loop.push_back(keyed[i].second);
-	double turn = 0.0;
-	for (size_t i = 0; i < M; i++) {
-		Eigen::Vector3f a = loop[(i + 1) % M] - loop[i];
-		Eigen::Vector3f b = loop[(i + 2) % M] - loop[(i + 1) % M];
-		Eigen::Vector3f an = a - un * a.dot(un), bn = b - un * b.dot(un);
-		if (an.norm() < 1e-9f || bn.norm() < 1e-9f) continue;
-		an.normalize(); bn.normalize();
-		turn += std::atan2(un.dot(an.cross(bn)), an.dot(bn));
-	}
-	float L = 0.0f;
-	for (size_t i = 0; i < M; i++) L += (loop[(i+1)%M] - loop[i]).norm();
-	int W = (int)std::min<size_t>(8, M / 4);
-	if (W < 1) W = 1;
-	std::vector<float> sc(M, 0.0f);
-	for (size_t i = 0; i < M; i++) {
-		Eigen::Vector3f a = loop[(i + M - W) % M], b = loop[(i + W) % M];
-		Eigen::Vector3f ab = b - a; float abl = ab.norm();
-		if (abl < 1e-9f) { sc[i] = 0.0f; continue; }
-		Eigen::Vector3f ap = loop[i] - a;
-		sc[i] = (ap - ab * (ap.dot(ab) / (abl * abl))).norm();
-	}
-	std::vector<float> srt = sc; std::sort(srt.begin(), srt.end());
-	float med = srt[srt.size()/2];
-	float thr = std::max(2.0f, 3.0f * med);
-	size_t corners = 0;
-	for (size_t i = 0; i < M; i++) {
-		bool peak = true;
-		for (int k = 1; k <= W; k++)
-			if (sc[(i + k) % M] > sc[i] || sc[(i + M - k) % M] > sc[i]) { peak = false; break; }
-		if (peak && sc[i] > thr) corners++;
-	}
-	double turnTerm = std::fabs(std::fabs(turn) - 2.0 * M_PI) / (2.0 * M_PI);
-	double lenTerm = std::fabs((double)L / (2.0 * M_PI * (double)R) - 1.0);
-	s.turnSum = turn; s.L = L; s.R = R; s.corners = corners; s.score = turnTerm + lenTerm;
-	return s;
-}
 
 // POTA-247: paper vote-ordered loop port (SfSpp § "edge line": K-D tree filter,
 // resample equidistant d=1.9mm, reorder CCW by normals+voting, corner segmentation
@@ -633,129 +556,6 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
 	const float RESAMPLE_D_MM = 1.9f; // paper constant
 	size_t n = cloud->points.size();
 	if (n == 0) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
-	// POTA-248: paper K-D tree outlier-removal stage, ported in FRONT of the
-	// vote order (B-spline -> filter -> resample d=1.9 -> CCW vote). The paper
-	// gives NO numeric gate, so this reuses the repo's own committed filter
-	// (RadiusOutlierRemoval r=2.5mm/minNeighbors 6, same values as the
-	// diagnostic-only filter below) on the vote input. STATED SUBSTITUTE, not
-	// the paper. BEHIND SFS_KD_FILTER ONLY (requires the vote arm: harmless if
-	// the greedy path ever called this fn, but only the vote call site does);
-	// greedy split-walk untouched; default OFF.
-	// POTA-261 retune knobs (lead steer 2026-10-22): ROR radius/min and COMP gap
-	// are env-tunable so one build sweeps many points. Defaults replicate 248 KDF
-	// exactly (2.5mm/6, gap 5.0mm, largest-comp). SFS_KD_FILTER=1 enables the stage.
-	// Crash guard: if ROR keeps <25% or <50 pts, fall back to the pre-ROR cloud
-	// (P01-Bl0 kept 20/435 then segfaulted downstream on the 17-pt lane).
-	// POTA-261 gate (lead steer 2026-10-22 retune verdict: no single ROR/gap point
-	// holds both bars, so the filter must fire ONLY on braid lanes). When
-	// SFS_KD_GATE=1, clean lanes (VOTE turnSum/L/corners) re-emit the unfiltered
-	// vote path byte-identically via one guarded recursion; braid lanes keep the
-	// aggressive S0 filter. VOTE arm (KDF=0) never enters.
-	static int gateDepth = 0;
-	bool gateOn = false;
-	if (const char* ge = std::getenv("SFS_KD_GATE")) { if (*ge && std::string(ge) != "0") gateOn = true; }
-	static double gateDiag_turnSum = 0.0; static float gateDiag_L = 0.0f; static size_t gateDiag_corners = 0;
-	if (gateOn && gateDepth == 0) {
-		if (const char* kdf0 = std::getenv("SFS_KD_FILTER")) {
-			if (*kdf0 && std::string(kdf0) != "0" && n >= 8) {
-				pcl::PointCloud<pcl::PointXYZ>::Ptr voteOut(new pcl::PointCloud<pcl::PointXYZ>);
-				gateDepth = 1;
-				std::string oldKdf = kdf0;
-				unsetenv("SFS_KD_FILTER");
-				// POTA-263: temp run must stay VOTE-equivalent (261 diagnostic), so also
-				// disable LOOP_SELECT here; the real path applies it after the gate decision.
-				const char* oldLoop263 = std::getenv("SFS_LOOP_SELECT");
-				std::string oldLoopStr263 = oldLoop263 ? oldLoop263 : "";
-				bool hadLoop263 = (oldLoop263 && std::string(oldLoop263) != "0");
-				if (hadLoop263) unsetenv("SFS_LOOP_SELECT");
-				getPointsInSequence_Vote247(cloud, voteOut);
-				setenv("SFS_KD_FILTER", oldKdf.c_str(), 1);
-				if (hadLoop263) setenv("SFS_LOOP_SELECT", oldLoopStr263.c_str(), 1);
-				gateDepth = 0;
-				bool cleanLane = (std::fabs(gateDiag_turnSum) < 20.0 && gateDiag_L < 1500.0f && gateDiag_corners <= 30);
-				if (cleanLane) {
-					std::cout << "[KD-GATE] BYPASS clean lane (turnSum=" << gateDiag_turnSum << " L=" << gateDiag_L << " corners=" << gateDiag_corners << " n=" << n << ")" << std::endl;
-					for (size_t bi = 0; bi < voteOut->points.size(); bi++) cloud_sequenced->points.push_back(voteOut->points[bi]);
-					cloud_sequenced->width = cloud_sequenced->points.size();
-					cloud_sequenced->height = 1;
-					return;
-				}
-				std::cout << "[KD-GATE] BRAID lane (turnSum=" << gateDiag_turnSum << " L=" << gateDiag_L << " corners=" << gateDiag_corners << " n=" << n << "): applying filter" << std::endl;
-			}
-		}
-	}
-	// POTA-264: paper GUIDED K-D filter (port of section IV-B edge-line filtering). Replaces blind density ROR with distance-to-fitted-edge-line: the reference line is the VOTE-ordered resampled loop of the largest 5mm-comp (built by one guarded recursion with GUIDED/FULL/KDF/LOOP/COMP_KEEP/GATE off, so the reference excludes the satellite that raw largest-comp already separates on braid bags); a K-D tree on the reference keeps input points within SFS_GUIDED_DIST (mm). STATED SUBSTITUTE: the paper slots the reference as the B-spline-surface-smoothed edge line; calling fitBSplineSurfaceAndGetNormalsOnProjectedPoints per rim bag is infeasible here (it fits a NURBS surface to a mesh xyz file plus 10k random sample over 8 iterations, writes tempEdgeFolder files, and operates on surface points, not rim bags), so the vote-ordered resampled loop (the paper downstream edge line at d=1.9mm) is the reference proxy. No new smoother is written; greedy split-walk untouched; default OFF. No strand selection: every point near the line is kept (both braid strands), only off-line strays and satellites drop.
-	static int guidedDepth264 = 0;
-	if (const char* gf = std::getenv("SFS_GUIDED_FILTER")) {
-		if (*gf && std::string(gf) != "0" && n >= 8 && guidedDepth264 == 0) {
-			float gdist = 5.0f;
-			if (const char* e = std::getenv("SFS_GUIDED_DIST")) { float v = std::atof(e); if (v > 0.5f && v < 50.0f) gdist = v; }
-			double gg = 5.0;
-			if (const char* e = std::getenv("SFS_COMP_GAP")) { double v = std::atof(e); if (v > 0.5 && v < 50.0) gg = v; }
-			pcl::KdTreeFLANN<pcl::PointXYZ> gkt; gkt.setInputCloud(cloud);
-			std::vector<int> gcomp(n, -1); int gnc = 0; int gbig = 0; size_t gbigSz = 0;
-			std::vector<int> gst; std::vector<int> gnb; std::vector<float> gnd;
-			for (size_t s = 0; s < n; s++) if (gcomp[s] < 0) {
-				size_t sz = 0; gst.clear(); gst.push_back((int)s); gcomp[s] = gnc;
-				while (!gst.empty()) { int u = gst.back(); gst.pop_back(); sz++;
-					int nn = gkt.radiusSearch(cloud->points[u], gg, gnb, gnd);
-					for (int k = 0; k < nn; k++) { int w = gnb[k]; if (w < 0 || (size_t)w >= n || gcomp[w] >= 0) continue; gcomp[w] = gnc; gst.push_back(w); } }
-				if (sz > gbigSz) { gbigSz = sz; gbig = gnc; } gnc++;
-			}
-			pcl::PointCloud<pcl::PointXYZ>::Ptr gbigCloud(new pcl::PointCloud<pcl::PointXYZ>);
-			for (size_t i = 0; i < n; i++) if (gcomp[i] == gbig) gbigCloud->points.push_back(cloud->points[i]);
-			gbigCloud->width = gbigCloud->points.size(); gbigCloud->height = 1;
-			const char* oGF = std::getenv("SFS_GUIDED_FILTER"); std::string oGFs = oGF ? oGF : "";
-			const char* oFW = std::getenv("SFS_FULL_WALK"); std::string oFWs = oFW ? oFW : ""; bool hFW = (oFW && std::string(oFW) != "0");
-			const char* oKDF = std::getenv("SFS_KD_FILTER"); std::string oKDFs = oKDF ? oKDF : ""; bool hKDF = (oKDF && std::string(oKDF) != "0");
-			const char* oLS = std::getenv("SFS_LOOP_SELECT"); std::string oLSs = oLS ? oLS : ""; bool hLS = (oLS && std::string(oLS) != "0");
-			const char* oCK = std::getenv("SFS_COMP_KEEP"); std::string oCKs = oCK ? oCK : ""; bool hCK = (oCK && (std::string(oCK) == "all" || std::string(oCK) == "ALL"));
-			const char* oGT = std::getenv("SFS_KD_GATE"); std::string oGTs = oGT ? oGT : ""; bool hGT = (oGT && std::string(oGT) != "0");
-			unsetenv("SFS_GUIDED_FILTER"); if (hFW) unsetenv("SFS_FULL_WALK"); if (hKDF) unsetenv("SFS_KD_FILTER");
-			if (hLS) unsetenv("SFS_LOOP_SELECT"); if (hCK) unsetenv("SFS_COMP_KEEP"); if (hGT) unsetenv("SFS_KD_GATE");
-			pcl::PointCloud<pcl::PointXYZ>::Ptr gref(new pcl::PointCloud<pcl::PointXYZ>);
-			guidedDepth264 = 1;
-			getPointsInSequence_Vote247(gbigCloud, gref);
-			guidedDepth264 = 0;
-			setenv("SFS_GUIDED_FILTER", oGFs.c_str(), 1); if (hFW) setenv("SFS_FULL_WALK", oFWs.c_str(), 1);
-			if (hKDF) setenv("SFS_KD_FILTER", oKDFs.c_str(), 1); if (hLS) setenv("SFS_LOOP_SELECT", oLSs.c_str(), 1);
-			if (hCK) setenv("SFS_COMP_KEEP", oCKs.c_str(), 1); if (hGT) setenv("SFS_KD_GATE", oGTs.c_str(), 1);
-			if (gref->points.size() >= 8) {
-				pcl::KdTreeFLANN<pcl::PointXYZ> grt; grt.setInputCloud(gref);
-				pcl::PointCloud<pcl::PointXYZ>::Ptr gkept(new pcl::PointCloud<pcl::PointXYZ>);
-				std::vector<int> g1; std::vector<float> gd1;
-				for (size_t i = 0; i < n; i++) {
-					g1.clear(); gd1.clear();
-					int f = grt.nearestKSearch(cloud->points[i], 1, g1, gd1);
-					float d = (f > 0 && !gd1.empty()) ? std::sqrt(gd1[0]) : 1e9f;
-					if (d <= gdist) gkept->points.push_back(cloud->points[i]);
-				}
-				std::cout << "[GUIDED-264] dist<=" << gdist << "mm kept " << gkept->points.size() << "/" << n
-				          << " (ref loop " << gref->points.size() << " from largest " << gbigSz << "/" << n << ")" << std::endl;
-				if (!gkept->points.empty() && gkept->points.size() >= 50 && gkept->points.size() * 4 >= n) { cloud = gkept; n = cloud->points.size(); }
-				else if (!gkept->points.empty()) { std::cout << "[GUIDED-264] FALLBACK to pre-filter cloud (kept " << gkept->points.size() << "/" << n << ")" << std::endl; }
-			} else {
-				std::cout << "[GUIDED-264] SKIP tiny reference (" << gref->points.size() << " pts)" << std::endl;
-			}
-		}
-	}
-	if (const char* kdf = std::getenv("SFS_KD_FILTER")) {
-		if (*kdf && std::string(kdf) != "0" && n >= 8) {
-			float rorR = 2.5f; int rorK = 6;
-			if (const char* e = std::getenv("SFS_ROR_RADIUS")) { float v = std::atof(e); if (v > 0.1f && v < 50.0f) rorR = v; }
-			if (const char* e = std::getenv("SFS_ROR_MIN")) { int v = std::atoi(e); if (v >= 1 && v <= 100) rorK = v; }
-			pcl::PointCloud<pcl::PointXYZ>::Ptr kdCloud(new pcl::PointCloud<pcl::PointXYZ>);
-			pcl::RadiusOutlierRemoval<pcl::PointXYZ> ror;
-			ror.setInputCloud(cloud);
-			ror.setRadiusSearch(rorR);
-			ror.setMinNeighborsInRadius(rorK);
-			ror.filter(*kdCloud);
-			std::cout << "[KD-261] ROR(" << rorR << "mm/" << rorK << ") kept " << kdCloud->points.size()
-			          << "/" << n << std::endl;
-			if (!kdCloud->points.empty() && (kdCloud->points.size() >= 50) && (kdCloud->points.size() * 4 >= n)) { cloud = kdCloud; n = cloud->points.size(); }
-			else if (!kdCloud->points.empty()) { std::cout << "[KD-261] FALLBACK to pre-ROR cloud (kept " << kdCloud->points.size() << "/" << n << ")" << std::endl; }
-		}
-	}
 	if (n < 8) { // too few for plane/vote statistics: pass through (logged)
 		std::cout << "[VOTE-247] passthrough n=" << n << std::endl;
 		for (size_t i = 0; i < n; i++) cloud_sequenced->points.push_back(cloud->points[i]);
@@ -821,34 +621,7 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
 	size_t keptN = 0;
 	if (fullWalk263) { keptN = n; std::cout << "[FULL-263] no-discard kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
 	else if (compKeepAll) { keptN = n; std::cout << "[VOTE-247] comp-filter SKIPPED (SFS_COMP_KEEP=all) kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
-	// POTA-263: strand SELECTION by loop-ness (SFS_LOOP_SELECT=1). Replaces largest-comp
-	// with best-loop-comp (min turn+length score). Default OFF so VOTE/GATED replicate.
-	bool loopSelect263 = false;
-	if (const char* e = std::getenv("SFS_LOOP_SELECT")) { if (*e && std::string(e) != "0") loopSelect263 = true; }
-	if (!compKeepAll && !fullWalk263 && loopSelect263 && ncomp >= 1) {
-		std::vector<std::vector<Eigen::Vector3f> > compPts263(ncomp);
-		for (size_t i = 0; i < n; i++) if (comp[i] >= 0 && comp[i] < ncomp) compPts263[comp[i]].push_back(Eigen::Vector3f(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z));
-		int best263 = -1; double bestScore263 = 1e100;
-		std::vector<LoopScore263> compScore263(ncomp);
-		for (int c = 0; c < ncomp; c++) {
-			compScore263[c] = scoreLoop263(compPts263[c]);
-			if (compScore263[c].score < bestScore263) { bestScore263 = compScore263[c].score; best263 = c; }
-		}
-		if (best263 < 0) { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
-			std::cout << "[LOOP-263] FALLBACK to largest (no scored comp) kept " << keptN << "/" << n << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
-		// POTA-263 crash guard (261 ROR-FALLBACK precedent: 50pts/25%): a tiny best-loop
-		// comp (round satellite) segfaults the downstream B-spline (3-pt lane); fall back.
-		else if (compScore263[best263].n < 50 || compScore263[best263].n * 4 < n) { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
-			std::cout << "[LOOP-263] FALLBACK-TO-LARGEST tiny best comp " << best263 << " n=" << compScore263[best263].n << " score=" << compScore263[best263].score << " kept " << keptN << "/" << n << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
-		else {
-			for (size_t i = 0; i < n; i++) { if (comp[i] != best263) used[i] = 1; else keptN++; }
-			for (int c = 0; c < ncomp; c++) {
-				std::cout << "[LOOP-263] comp " << c << " n=" << compScore263[c].n << " L=" << compScore263[c].L << " turnSum=" << compScore263[c].turnSum << " corners=" << compScore263[c].corners << " R=" << compScore263[c].R << " score=" << compScore263[c].score << ((c == best263) ? " KEPT" : " dropped") << std::endl;
-			}
-			std::cout << "[LOOP-263] selected comp " << best263 << " kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm; largest was comp " << biggest << " n=" << biggestSize << ")" << std::endl;
-		}
-	}
-	else if (!compKeepAll && !fullWalk263) { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
+	else { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
 	std::cout << "[VOTE-247] comp-filter kept " << keptN << "/" << n
 	          << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
 	// Deterministic seed: kept-component centroid-nearest (no cloud[0] order dependence).
@@ -1006,35 +779,6 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
 	if (!ccw) std::reverse(loop.begin(), loop.end());
 	std::cout << "[VOTE-247] chain=" << chain.size() << " turnSum=" << turnSum
 	          << (ccw ? " CCW-kept" : " CW-reversed-to-CCW") << std::endl;
-	// POTA-262: order-of-visit repair (ONE mechanism: angular-sort chord fix).
-	// Behind SFS_VOTE_REPAIR ONLY; default OFF so CTL/VOTE/GATED replicate exactly.
-	// Closed-loop 2-opt (best-improvement, <=20 passes) on loop[] BEFORE resample:
-	// uncrossing chords always shortens L, so this repairs angular-sort radial
-	// misorders without changing population (ROR/comp), ballot (CCW vote), or
-	// resample d=1.9. Logged L/max-gap before->after + repairs.
-	bool repairOn262 = false;
-	if (const char* erv = std::getenv("SFS_VOTE_REPAIR")) { if (*erv && std::string(erv) != "0") repairOn262 = true; }
-	float loopL0_262 = 0.0f, loopMax0_262 = 0.0f;
-	for (size_t ii262 = 0; ii262 < M0; ii262++) { float dd262 = (loop[(ii262+1)%M0]-loop[ii262]).norm(); loopL0_262 += dd262; if (dd262 > loopMax0_262) loopMax0_262 = dd262; }
-	size_t repairs262 = 0;
-	if (repairOn262 && M0 >= 8) {
-		for (int pass262 = 0; pass262 < 20; pass262++) {
-			double bestDelta262 = 0.0; size_t bi262 = 0, bj262 = 0;
-			for (size_t ii262 = 0; ii262 < M0; ii262++) for (size_t jj262 = ii262+2; jj262 < M0; jj262++) {
-				if (ii262 == 0 && jj262 == M0-1) continue;
-				Eigen::Vector3f aa262 = loop[ii262], bb262 = loop[(ii262+1)%M0], cc262 = loop[jj262], dd262 = loop[(jj262+1)%M0];
-				double before262 = (bb262-aa262).norm() + (dd262-cc262).norm();
-				double after262 = (cc262-aa262).norm() + (dd262-bb262).norm();
-				double delta262 = after262 - before262;
-				if (delta262 < bestDelta262 - 1e-6) { bestDelta262 = delta262; bi262 = ii262; bj262 = jj262; }
-			}
-			if (bestDelta262 < -1e-6) { std::reverse(loop.begin()+bi262+1, loop.begin()+bj262+1); repairs262++; }
-			else break;
-		}
-		float loopL1_262 = 0.0f, loopMax1_262 = 0.0f;
-		for (size_t ii262 = 0; ii262 < M0; ii262++) { float dd262 = (loop[(ii262+1)%M0]-loop[ii262]).norm(); loopL1_262 += dd262; if (dd262 > loopMax1_262) loopMax1_262 = dd262; }
-		std::cout << "[VOTE-262] 2opt repairs=" << repairs262 << " L " << loopL0_262 << "->" << loopL1_262 << " max " << loopMax0_262 << "->" << loopMax1_262 << std::endl;
-	}
 	// 4. Closed-loop arc-length resample at d=1.9mm (paper constant).
 	std::vector<float> cum(M0 + 1, 0.0f);
 	for (size_t i = 0; i < M0; i++) cum[i+1] = cum[i] + (loop[(i+1) % M0] - loop[i]).norm();
