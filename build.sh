@@ -186,7 +186,9 @@ if(NOT EIGEN_INCLUDE_DIR)
   message(FATAL_ERROR "Eigen not found (looked in /usr/include/eigen3, /usr/local/include/eigen3)")
 endif()
 include_directories(\${EIGEN_INCLUDE_DIR})
-add_executable(AxisExtractionHeadless $(shellq "$2"))
+# CMake has no single-quote quoting: a 'path' keeps the quotes in the filename and
+# cmake reports the source as missing. The path must be in double quotes.
+add_executable(AxisExtractionHeadless "$2")
 EOF
 }
 
