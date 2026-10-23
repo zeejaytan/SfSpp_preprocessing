@@ -76,3 +76,6 @@ ACCEPT. R6: jobs 33590867/33590967/33591273 all COMPLETED 0:0; local re-score @3
 
 ## Required evidence to report
 - Mesh + edge job IDs + sacct; per-stage stats table; lane scores; overshoot counts; one paragraph: what changed in the corner vs @4.5 (trimmed toward the line, or new holes, with dot counts).
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

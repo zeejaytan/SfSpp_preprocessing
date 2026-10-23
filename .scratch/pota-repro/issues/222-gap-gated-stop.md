@@ -80,3 +80,6 @@ ACCEPT. R6: 6/6 sacct COMPLETED 0:0; P12 bridge cross-checked against lead measu
 - 'Shatter' was the wrong word: @4.5 did not destroy the piece, it refused the false @8 bridge join. The surviving @4.5 faces fit the author lanes 100% (med 0.24/0.25, lead-measured) -- identical to @8. Fit is about surviving dots, not missing ones.
 - Consequence: 222's R3-NONE verdict for P12 and R1's balance gate (top2>=70%) are UNDER REVIEW, not settled. If 223's @4.5 trace scores at bar, the balance gate is the artifact and the rule needs repair (gap-clean alone, or per-face accounting). If it fails, 222 stands with the failure mode named.
 
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

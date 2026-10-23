@@ -36,3 +36,6 @@ GOAL: FIND WHY THE POT C ASSEMBLY DOES NOT SEAT WITH A CORRECT RIM, AND FIX IT.
 **6. Lead P1 check (2026-10-20, Spartan stage).** slurm-33449864.out C_176 block: Total number 40 / pruned 8 vs P1's 45/8 -- survivors EXACT (8/8), total off by 5 (rim change removed 5 generated hypotheses, none survived pruning anyway). Mechanism stands: no C01 placement reaches scoring either way.
 
 **5. Evidence.** .scratch/pota177_repro/ (inputs/ 9 ferried files + pose_compare.py + fetch145/ extraction of pota145_fetch_33398092.tgz) + artifacts/pota145/ (P-files, GT_C, CSXC rims). Dataset read-only; tickets 39-176 untouched; nothing committed. No renders: no geometry moved (numeric analysis only), nothing to eye-check under AGENTS.md.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

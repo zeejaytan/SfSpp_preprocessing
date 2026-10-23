@@ -40,3 +40,6 @@ Rescore P27's lanes with the ruler repaired where 229 proved the reference wrong
 
 ## Required evidence to report
 - Bottom line first (verdict + new med/cov). Then repro check, exclusion shares, sharpness numbers, picture (gold author with excluded segments marked + blue ours), script path.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

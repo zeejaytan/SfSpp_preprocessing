@@ -42,3 +42,6 @@ Settle the P27 disputed stretch (user order m03707): the user reads the author's
 **Script + numbers.** .scratch/pota229/p229_sharpness.py (numpy+matplotlib only; login-node/python equivalent, no sbatch, no clusters), .scratch/pota229/p229_numbers.csv (baseline,ctrl_ours,ctrl_auth,line,ctrl_pass,disputed_ours,disputed_auth), .scratch/pota229/p229_profile.csv (per-dot idx,arc,dist,S_ours,S_auth).
 
 **What this changes.** Ruler caveat only: the P27@12 excursion follows a real crease (author locally wrong), but the lane bar is unchanged -- cov still counts the whole lane, so P27@12 stays below bar on coverage. No rule, no reseat, no assembly change.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

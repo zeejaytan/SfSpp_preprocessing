@@ -78,3 +78,6 @@ Sacct COMPLETED for any Slurm; face/cloud md5s or paths; the triple numbers; the
 - Fetched (md5-verified where dual-checked): artifacts/pota232/ (cloud 10.7MB, S0/S1 @12/@14/@10, UN @12/@14/@10, boundary, segs). Scripts: .scratch/pota232/{slot_div,coords,q1q2,q2b,q2c,q2d,final_nums,render232}.py.
 - No Slurm submitted (all compute local numpy/scipy on fetched copies) -- no sacct to report.
 
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

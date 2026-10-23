@@ -44,3 +44,6 @@ Find the 4th leg (lane rim-adherence, author-free): a measure computed WITHOUT a
 
 ## Required evidence to report
 - Bottom line first: nominated leg + line, or no-separation with the closest candidate's overlap. Then table, pictures, scripts, scorer numbers.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

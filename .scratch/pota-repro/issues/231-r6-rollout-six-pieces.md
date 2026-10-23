@@ -71,3 +71,6 @@ unrelated 147-parity). Repo record says P25 fresh = slid (7.07/0.0 + 6.96/0.0).
 If 85.9/91.2 came from the live session, source it into the record; until then
 the P25 lane state stands as slid.
 
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

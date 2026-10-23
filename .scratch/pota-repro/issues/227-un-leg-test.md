@@ -61,3 +61,6 @@ R6-DROP as a complete rule, R6-KEPT as the stopping rule. R6: job 33593416 COMPL
 - Spartan: sfs-fix-227 (run_227_edge.sbatch), pota227_edgeP27_12 (run script, edge_12.log, edge227_33593416.out/.err, Dataset/Breaklines lanes).
 - Laptop: .scratch/pota227/ (lanes/4 P27 files, rescore227.py, reverify227.py). sacct: 33593416 COMPLETED 0:0.
 
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

@@ -76,3 +76,6 @@ Loose thresholds 90/60/45/30/20: all six pieces 1 cluster every step (P12: 49702
 - 214 comparison source: pota214_pipe/mesh_stage.log (cluster counts), 214-fresh P16 lanes/scores per lead R6 on ticket 214.
 ## Bridge addendum (lead-measured 2026-10-21, P12@10 surfaces)
 S0-S1 min gap = 0.00 at [10.8, 14.3, 465.0]; p1 1.32, p5 3.63, p50 9.52. Touching dots spread face-wide at 2mm threshold (rim proximity all round), but the ZERO is a single bridge point in the red-lane excursion zone. 221 splitting verdict amended: faces separate cleanly almost everywhere except this bridge (user m03059). P15 min-gap unmeasured (script timed out) -- 222 covers it.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

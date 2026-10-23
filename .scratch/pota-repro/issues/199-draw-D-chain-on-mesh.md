@@ -44,3 +44,6 @@ Panels (mesh = temp_download/Mesh/Pot_C/Pot_C_Piece_01_Mesh_DS.obj, 11875v/23114
 Frames: (a)/(b)/(c)/(d)/(e)/(f) seated (Vg=V@R.T+t); (d2)/(g) mesh frame (V as-shipped, G314 native). Same geometry up to the rigid T; same relative camera throughout.
 
 Honest gaps: NONE drawable missing. 143's Pool-A/Pool-B admit lists and 144's latch/firing record are start-state diagnostics, not geometry -- nothing to overlay. 144's walk is on the older 314-bag generation (branch), NOT the parent of AFTER: AFTER's order already IS a verbatim walk_m144 product on the thinned centreline (185 ticket), so thin+M144 are jointly embodied in panel (b); panel (g) shows the 144-branch recovery separately. No intermediates faked; nothing recomputed (all loops byte-identical to staged artifacts); tracked diff = this Comments section only.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

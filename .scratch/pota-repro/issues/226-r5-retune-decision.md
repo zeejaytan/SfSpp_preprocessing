@@ -57,3 +57,6 @@ R5-DROP. R6: gap 33592717 + edge 33592730 COMPLETED 0:0; P27@8 re-scored EXACT (
 - Spartan: sfs-fix-226 (gap226sym.py, gap226.sbatch, gap226_33592717.out/.err, run_226_edge.sbatch), pota226_edgeP27_8 (run_226_edge.sbatch, edge_8.log, edge226_33592730.out/.err, Dataset/Breaklines lanes).
 - Laptop: .scratch/pota226/ (gap226sym.py, gap226.sbatch, run_226_edge.sbatch, rescore226.py, lanes/4 P27 files).
 - Main worktree, .wt-*, other branches/stashes/bundles untouched. Author lanes ruler ONLY (scorer-side). No pull needed (fresh dirs, no .git); divergence N/A.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

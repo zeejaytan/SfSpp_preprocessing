@@ -67,3 +67,6 @@ ACCEPT. R6: gap job 33592310 + edge job 33592413 both COMPLETED 0:0; P27 lanes r
 ### Paths
 - Spartan: sfs-fix-225 (gap225sym.py, gap225.sbatch, gap225_33592310.out/.err), pota225_edgeP27_4p5 (run_225_edge.sbatch, edge_45.log, edge225_33592413.out/.err, Dataset/Breaklines lanes).
 - Laptop: .scratch/pota225/ (lanes/4 P27 files, P27 author pair, rescore225.py). sacct: 33592310 + 33592413 both COMPLETED 0:0.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.

@@ -48,3 +48,6 @@ ACCEPT with strict-FAIL recorded. R6: job 33589544 sacct COMPLETED 0:0; local re
 ### Verdict sentence
 - STRICT verdict: @4.5 does NOT clear the bar (Bl0 cov 89.0 < 90 by 1.0pp; Bl1 at bar) -- 222's R3-NONE stands on the letter of the bar, failure mode = 19-dot corner excursion above (not an interior shortcut, not the @8 bridge).
 - Material caveat for the lead's repair decision: the R1-rejected @4.5 split (top2 62.5%) puts one sub-mm-median lane on EACH author lane (0.63/0.77), while the R2-accepted @10 stop orphaned a whole lane (Bl0 7.06, interior shortcut). Plane-correct nearly gives trace-correct here -- the balance gate, not the splitter, looks like the artifact on this piece.
+
+
+**Evidence-path note (2026-10-23):** paths under .scratch/pota1xx_repro/ and .scratch/pota22x/ cited above were removed by the scratch cleanup of this date (untracked intermediates; not recoverable). The numbers, quotes and verdicts in this ticket stand as recorded -- do not chase those paths or re-derive from them.
