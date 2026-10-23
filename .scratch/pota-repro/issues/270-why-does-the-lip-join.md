@@ -480,3 +480,67 @@ Two consequences recorded for whoever cuts the next ticket:
 
 No C++ change, no build, no job. Ticket only.
 
+---
+
+### 8. Addendum — the curvature gate, settled with numbers (answers the two questions raised in the verdict above)
+
+**(a) The gate at mesh_processing_headless.cpp:1766 (paperKappa = 1.0, default :2040, env
+SFS_PAPER_KAPPA) is INERT — exactly zero rejections, so the "same defect class as the align veto"
+suspicion is confirmed.** PCL surface variation is lambda0/(lambda0+lambda1+lambda2) <= 1/3, and these
+clouds never even reach that bound: max curvature is 0.160567 on P03 (164403 pts), 0.273288 on P22
+(18378), 0.158588 on P01 (21125); points with curvature >= 1/3, >= 0.9 or >= 1.0: **0 in all three**.
+Inside P03's replay: of 1,644,030 10-NN pairs, 1,448,262 pass the angle gate, **0 are rejected by the
+curvature gate**, and the edges it actually costs (angle OK, curvature >= 1.0) are **0**; growing at
+kappa = 1.0 and at kappa = 1e12 gives identical labels and identical sizes (56438, 54081, 35179,
+3153). The paper's curvature criterion has therefore never been active in any run we have scored - it
+is a no-op, not a tuned parameter, and there is no dormant curvature path to switch on.
+
+**(b) Curvature by band (kept exterior cluster, points within 8 mm of the author lane).**
+
+| piece / window | band | n | p10 | p50 | p90 | p99 | max |
+|---|---|---|---|---|---|---|---|
+| P03 whole-lane | face s<=0 | 16142 | 0.00000 | 0.00070 | 0.01782 | 0.03935 | 0.08585 |
+| P03 whole-lane | crest 0<s<=+2 | 1925 | 0.00000 | 0.00412 | 0.02608 | 0.06360 | 0.11943 |
+| P03 whole-lane | flank +2<s<=+5.0 | 1724 | 0.00000 | 0.00222 | 0.02126 | 0.05696 | 0.09293 |
+| P03 stretch | face s<=0 | 7264 | 0.00000 | 0.00086 | 0.01658 | 0.03773 | 0.08422 |
+| P03 stretch | crest 0<s<=+2 | 1902 | 0.00000 | 0.00406 | 0.02559 | 0.06069 | 0.11943 |
+| P03 stretch | flank +2<s<=+5.0 | 1717 | 0.00000 | 0.00218 | 0.02129 | 0.05700 | 0.09293 |
+| P22 whole-lane | face s<=0 | 4300 | 0.00000 | 0.00114 | 0.01086 | 0.03702 | 0.17549 |
+| P22 whole-lane | crest 0<s<=+2 | 1210 | 0.00000 | 0.00481 | 0.02655 | 0.06221 | 0.14582 |
+| P22 whole-lane | flank +2<s<=+6.1 | 621 | 0.00000 | 0.00464 | 0.02739 | 0.05159 | 0.06585 |
+| P01 whole-lane | face s<=0 | 1625 | 0.00000 | 0.00144 | 0.03738 | 0.06664 | 0.09327 |
+| P01 whole-lane | flank +2<s<=+8.0 | 183 | 0.00000 | 0.00090 | 0.03869 | 0.06541 | 0.06894 |
+
+(the P01 crest band has n = 8 and is not reported). Rejection fractions a curvature threshold would
+actually produce on P03:
+
+| kappa | face s<=0 | crest 0<s<=+2 | flank +2<s<=+5 | flank - face |
+|---|---|---|---|---|
+| 0.002 | 43.3% | 63.9% | 51.1% | +7.8 pt |
+| 0.005 | 33.4% | 46.3% | 41.1% | +7.7 pt |
+| 0.010 | 21.5% | 28.2% | 27.1% | +5.7 pt |
+| 0.020 | 7.9% | 13.7% | 11.5% | +3.6 pt |
+| 0.040 | 0.9% | 4.6% | 3.1% | +2.2 pt |
+
+**Answer: the flank is NOT systematically higher-curvature than the face.** The p50 ratio looks large
+(x3.17 flank/face on P03 whole-lane, x2.53 in the stretch, x4.07 on P22) but the absolute values are
+0.001-0.005, an order of magnitude below the face's own p99 (0.03935), so the distributions overlap
+almost entirely: the best separation any curvature threshold achieves on P03 is **7.8 points**
+(51.1% vs 43.3%) at kappa = 0.002, bought by deleting half of the whole surface; P22's best is 25.9 pt
+at 0.005; P01's best is 2.0 pt at 0.020 and at the low end it is **negative** (its flank is LESS
+curved than its face, x0.62). Two clinchers: the crest band is the highest-curvature of the three on
+both pieces that matter (P03 p50 0.00412 vs flank 0.00222 vs face 0.00070; same ordering on P22), so
+any curvature cut eats the crest first — exactly where the author's line runs — and the guard P01 does
+not even rank the right way. The curvature route cannot sever the lip; tau_theta (:1770) remains the
+only lever, which is consistent with (a): we cannot switch on the paper's curvature path as an
+alternative either, since at its own tau_kappa = 1 it is a no-op and at any value that does something
+it would cut the face and the crest.
+
+New files: pota270_curv.py (md5 7076c401ffad2abfb892257c48e8e18c), pota270_curv2.py
+(bdb17c31ff390b9d431c6ac93b5a2780), artifacts/pota270/pota270_curv.json
+(d8dca34732ad633ba2bbd2145d51ca6e), artifacts/pota270/pota270_curv_sep.json
+(3c4d4b9ffc57f2266b3d5c110d3db604). Inputs: the same three SampledWithNormals.ply clouds, the same
+pota270_lab_P{03,22,01}.npy labels and the same author lanes as section 7. No build, no C++ edit, no
+sweep, no job.
+
+
