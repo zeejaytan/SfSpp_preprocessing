@@ -67,3 +67,10 @@ graphify-out/
 /Pot_A_Piece_*_Surface_*
 /segmentationStats.txt
 /large_files_to_remove.txt
+
+# Committed archival snapshots and compiled output, untracked 2026-10-24.
+# Together they were 1,361 MB of the 1,532 MB a fresh worktree unpacked, for
+# files that are outputs, not source. They stay on disk in existing checkouts.
+archive_old_datasets/
+temp_download/
+build_new/
