@@ -151,13 +151,34 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
-Our break-line tracing passes all 15 checks on the reference pot (Pot A). On the Juglet,
-none of the 5 touching pairs that can be measured passes, and 5 more cannot be measured.
-Sherds 3 and 9 produce no usable break surfaces at all, and loosening the settings did
-not bring them back. This looks like the tracing failing on this pot, not SfS++.
+The break-line chain seats the reference pot (Pot A) at the authors' own level. After the
+paper splitter was merged to `main` (`e31be21`) and the tree was given back the edge source
+it needs to build its own lanes (`885f433`, producing a binary byte-identical to the
+reference `dc472b0e`), Pot A comes out 8/8 sherds + 15/15 edges fresh — the same as the
+untouched ORIG control in the same job — with strict single-lane 8/8, or 7/8 in the
+density-restore run where the ORIG control itself scored 6/8 (a ±2 mm wobble around the
+10 mm line, not a regression). Pot C sits at its earlier bar: 2/4 + 1/5, with ORIG 4/4 + 5/5.
 
-Weight: one reference pot passing, one real pot failing.
-Next: the end-to-end run (ticket 07), then why sherds 3 and 9 give nothing.
+Generalisation is the open part, and it is no longer a mystery. On Pot D (29 pieces) the
+merged chain places **20/29 sherds + 36/69 edges** against an ORIG control of 22/28 + 53/66
+in the same job: most pieces seat, a named minority do not. Each remaining failure now has a
+mechanism rather than a symptom. P03 was starved, not mis-assembled: a 19k-point uniform
+downsample introduced at `48fb588` collapsed its S0 surface from 164,403 to 17,045 points
+(9.65x), and restoring the pre-`48fb588` fixed 0.6 mm spacing brings it back to 107,109
+(bar 106,842) with lane P03-Bl0 at 0.71 mm and 100% coverage — live on `main` (`93c33bc`),
+binary byte-identical to the run that proved it. The residue is the braid-bag class:
+over-joining across twisted faces (P03-Bl1, P22), where the paper's vote-ordering improves
+clean loops and fails braids, because its K-D tree filter was never ported. The Juglet
+result of September still stands and is still unexplained: 0 of the 5 measurable touching
+pairs pass, and no fix that worked on the pots has moved it.
+
+Weight: one reference pot at the bar in two arms, one real 29-piece pot at 20/29, one further
+pot at its earlier bar — three pots, single runs each. That is a lead about a class of
+failures, not a claim that the method works on pottery.
+Next: re-roll the seven pots at `SFS_PAPER_THETA=3.4` (P03-Bl1 0.85 -> 0.49 mm, coverage
+57.5% -> 99.0% on the exam lane); port the K-D tree filter; seed
+`mesh_processing_headless.cpp:1526-1527`, which draws from an unseeded `std::random_device`
+and puts a ±0.1 mm band on P03's medians from run to run.
 
 **2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
 preprocessing does not regenerate the authors' own Pot A inputs.**
@@ -1769,3 +1790,123 @@ Assembly ticket 06 and `intent/S1` in `../structure-from-sherds-pp`
 ## 2026-10-20 — 208 pristine-line E2E: chain proven, fresh seats 7/8+9/15 (below bar)
 
 Pristine line (6da985d + 207 live reverts + vendored-dir deletion + D-evidence) compiles clean in the container and runs Pot A end to end. ORIG control 8/8+15/15 (ruler + reference hold). Fresh: 7/8 fragments, 9/15 joins; strict 4/8; p1 misplaced ~112 deg / ~271 mm, pieces 2-8 within ~3.4 deg / 13 mm; render shows a coherent vessel. Gap is search/selection on the denser fresh forest (253 vs 124), not rim fidelity (author parity) -- claim 1 (method-side), honestly below bar, no collapse vs 06. Weight: one full E2E on the clean line, control green. Next: restore-or-drop the 2 shelved Spartan stashes; debug ticket on assembler search (why the denser forest seats worse) before any rim retune.
+
+## 2026-10-24 — twenty-six tickets from 21–23 October, written back
+
+Why this section exists: sixteen tickets closed between 21 and 23 October while this file had
+not moved since \`c26c7a3\` (2026-10-20), so the intent gate flagged every one of them. Their
+results follow; each number names the ticket that holds the table it came from.
+
+### The Pot A spine — settled, and why it took four tickets
+
+- **210** — the fresh \`Bl1\` slot was carrying breaklines in the authors' opposite convention.
+  Swapping \`Breakline_0\`/\`Breakline_1\` on P02–P08 (P01 untouched) took the paper-path fresh
+  arm from 7/8 + 9/15 to **8/8 + 15/15**, level with ORIG; strict 4/8 -> 7/8, only P5 failing,
+  at 11.19 mm against a 10 mm line. Job 33510738 COMPLETED 0:0.
+- **236** — the +22-line "27-skip" was **dead code**: it compiled only in the subdirectory
+  build, and every production end-to-end builds the root \`CMakeLists\`. Removing it is a
+  byte-identical no-op on the P22 and P12 lanes, and Pot A stays 8/8 + 15/15, strict 8/8.
+- **237** — the paper splitter merged to \`origin/main\` as \`e31be21\` (+497/−3 paper code,
+  −22 skip), old path intact. Pot A 8/8 + 15/15, strict 8/8, but one defect was accepted on
+  record: main's own root edge file built **stub lanes**, so the good lanes came from a stale
+  binary whose source differed from main's file.
+- **238** — that defect closed: restoring the root edge source from \`exp-218\` \`885f433\`
+  (blob md5 \`89ab05b1\`) makes the tree-built binary byte-identical to the reference
+  \`dc472b0e\`, and lanes come back full (P22 135/155, P12 153/158, both = REF). Main can now
+  build its own chain, which is why 246's end-to-end result counts.
+
+### The Pot D end-to-end, and the P03 regression traced to a downsample
+
+- **239** — full Pot D on merged main: fresh **20/29 sherds + 36/69 edges**, ORIG 22/28 +
+  53/66. Lane pattern 25 AGREE / 0 SWAP / 4 MIXED. P03-Bl0 had **regressed 0.70/99.1 ->
+  2.43/45.5**, P22 and P27 persisted, P24 marginal. Rebuilds are byte-identical only with the
+  build node pinned: \`-march=native\` differs per node.
+- **240** — the edge code is innocent: the 124-line \`e962159..885f433\` diff compiles to
+  **zero bytes**, V0 = VALL = \`dc472b0e\` byte-identical, and the good source still yields
+  2.43/45.5 on 239's inputs. Arms VA 2.28/47.1, VB 15.43/31.3, VC 8.12/37.9.
+- **241** — the mesh stage carries it. The paper splitter guts P03's S0 from **106,842 to 6,693
+  points (6.3%)**; cut-region occupancy within 10 mm falls 2,391 -> 129 (18.5x) and unclustered
+  fragments go 7 -> 61. Same binary \`dc472b0e\`: the old mesh traces 0.53/97.3, the paper mesh
+  2.43/45.5.
+- **242** — the merge gate is innocent too. All 28 P03 pairs die at Step 1; opening it to
+  rhoD = 50 merges one pair, leaves S0 at 6,567 and **regresses Bl0 to 30.31/13.4**. The face
+  cores are verified opposite faces (dot 0.9266 < 0.95), so Step 2 must keep rejecting them.
+- **243** — the scale killer is the **19k downsample**: 164,403 -> 17,045 points, a 9.65x
+  collapse, introduced at \`48fb588\` *before* the paper chain and shared with the old path. At
+  17k even the old PCL path shatters, B-spline densify recovers only ~1.3x, so the cut-region
+  ceiling at 17k is ~490 against the 2,391 bar. theta = 12 joins P03 but over-joins it into one
+  face and closes P22's fork (11 -> 1 cluster).
+- **244** — restoring the pre-\`48fb588\` **fixed 0.6 mm** downsample cures P03 with the paper's
+  own numbers: S0 **107,109** (old 106,842), cut-region **2,396** (bar 2,391), Bl0
+  **0.71/100.0** with 0 jumps, P22's fork intact. A raised uniform 164k target is refuted (it
+  oversamples small pieces and degrades P22). Costs on record: sample-dataset match knowingly
+  broken 3.4–3.6x, peak RSS 947 MB, and 0.97/52.7 on P03-\`Bl1\` with a 47 mm concatenation
+  jump, where the author's lane sits on the surface at 0.25 mm median.
+- **245** — the restore is **live on \`main\`** (\`93c33bc\`), rebuilt binary byte-identical to
+  244 (\`b8eb3759\`); P03 spot-check reproduces S0 107,304, cut-region 2,396 exact, Bl0 0.72/97.8.
+- **246** — it holds whole pots end to end on main: Pot A fresh 8/8 + 15/15 (== bar == ORIG),
+  Pot C fresh 2/4 + 1/5 (== its earlier bar) with ORIG 4/4 + 5/5 valid.
+
+### The braid bags — where the residue actually is
+
+- **247** — the paper's vote-ordering is a **split, not a cure**: clean loops improve
+  (P03-Bl0 0.58/100.0; P01 both lanes match or better), braid bags collapse (P03-Bl1 4,328
+  points, median 8.69, coverage 11.0, 21 jumps; P22 4.79/14.4 and 4.43/15.8). The conviction
+  measure separates them cleanly — NN-chain turnSum 4.5–9.0 rad on clean loops against
+  44.8–64.5 rad on braid bags — and the missing stage is the paper's K-D tree filter, which was
+  never ported. Not merged; the arm stays off by default.
+- **271** — \`SFS_PAPER_THETA=3.4\` fixes the exam lane: P03-Bl1 median 0.85 -> **0.49 mm**,
+  coverage **57.5 -> 99.0%**, 0 jumps over three draws; P03-Bl0 holds 216 dots at 100.0%. The
+  mechanism is mechanical: at tau = 4 the exported exterior face runs **+5.04 mm** past the
+  author's line with 822 points above +3 mm; at 3.4 the whole-surface maximum is 1.29 mm and
+  those points go to 0. One bar crossing recorded (P01 Bl1 0.98 -> 1.01). The seven-pot
+  re-rollout at 3.4 is still open.
+
+### What was tested and did not work — kept, so it is not retried
+
+- **211** — P01's fresh \`Bl1\` (92 points) is not a fracture rim but the **full-circle wall-base
+  step**: radius median 26.25 mm (std 0.71), height span 1.8 mm, 355.2° coverage. The walker
+  seeded on it, consumed 287 of 1,139 boundary points, and the true second rim (median
+  28.33 mm away, 0/92 points within 2 mm) was never walked. Diagnosis only.
+- **212** — the 154 split-walk cure ports cleanly and leaves \`Bl0\` untouched (0.52/100%), but
+  fails the \`Bl1\` bar: the Pot-C-calibrated face veto keeps 113 points against the author's
+  214; with the veto off the rim is walked whole (214/214 contiguous, median 0.81 mm) but the
+  single slot then carries rim + step ring and forward coverage is 66.7%.
+- **213** — veto keep-all plus a shape-based rim/ring split **meets the bar on both lanes**:
+  P01 \`Bl1\` 224 points, median **0.67 mm, coverage 97.32%**; \`Bl0\` unchanged 0.50/100%. The
+  step ring (r_med 26.29, std 0.72, h_span 1.99) is a P01-S1-only feature, now written to a
+  sidecar.
+- **215** — Pot D piece 16: both true rims lie in the **unclustered** cloud (m0 0.28 mm, m1
+  0.23 mm), and the K=1 snap is a no-op (displacement median 0.00), so the walk ran on the
+  patch's own eroded edge, 9–43 mm from the true rim. Feeding strip-only unclustered clouds
+  fixed \`Bl0\` (0.80/76.2 -> 0.56/97.4, at bar); \`Bl1\` reached only 0.62/78.7, honestly, because
+  the patch spans 235–273° while the rim sector is 230–308° — the corner has no inner face.
+- **216** — that strip recipe does **not generalise: 0 of 5 fixed** (P12, P15, P22, P25, P27).
+  Three no-change, P22 degraded (0.77/89.7 -> 3.37/44.1, and a segfault twice on a 10-point
+  walk), P15 worse (8.49 -> 9.39 plus a new 45.1 mm interior jump). On all five the C-locus
+  passes through the dots' own neighbourhood, so the snap stays local and reproduces the slid
+  lane. Lead gate: HOLD on blanket strip.
+- **217** — 89 of 230 P16-S1 pre-snap dots (**38.7%**) sit on the twisted face interior, more
+  than 2 mm from any true rim; 141/230 (61.3%) are within 2 mm at median 0.87 mm. Since the
+  snap is a proven no-op, those 89 flowed straight into the walk. The \`Bl0\` half is untested:
+  its pre-dots were overwritten by the last-writer-wins \`Temp_edge\`.
+- **218** — **no face-metric arm wins.** Control 1.45/51.8 with \`Bl0\` 0.80/76.2; ARM A
+  1.17/51.8, ARM B 1.72/51.2, ARM C best median 0.86 at only 68.0% coverage while degrading
+  \`Bl0\` to 1.63/55.7. ARM C drove face dots 89 -> 0 but halved the rim riders 141 -> 67. All
+  three left uncommitted on branch \`exp-218\`; nothing landed.
+- **219** — a flat screening of every local signal. Flatten + gap is the best single rule so
+  far (137 of 141 rim dots kept, against 218-C's 67), but no cutoff reaches "89 face dots to
+  ~0 and 130+ rim kept": the best smoothness trade is 125/51. Structural lesson: near-rim
+  riders are locally identical to face-interior dots, so the separator must be global or
+  walk-contextual. Unbending first changes nothing (curved rim p50 163 / face 169 against flat
+  162 / 167).
+
+### Defects on record, not yet fixed
+
+- \`mesh_processing_headless.cpp:1526-1527\` seeds from an **unseeded \`std::random_device\`**, so
+  P03's sheets differ run to run and its medians carry a ±0.1 mm band (271).
+- Builds are reproducible only with the build node pinned, because \`-march=native\` differs per
+  node (239).
+- The paper's **K-D tree filter** is still unported; every braid-bag failure above points at it
+  (247).
+
