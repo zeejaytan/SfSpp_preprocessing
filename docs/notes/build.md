@@ -153,3 +153,40 @@ git status --porcelain                # must be unchanged by the above
 The acceptance run for the script itself is: fresh worktree, `git status --porcelain` empty,
 build in a compute-node job, `git status --porcelain` still empty, and the binary compared
 against the legacy script's output.
+## What the first cluster runs showed (2026-10-24)
+
+Two compute-node runs on fresh worktrees: job `33733032` (spartan-bm171, first attempt,
+failed on axis) and job `33733113` (spartan-bm169, after the axis quoting fix; every number
+below is from this one). Both used the worktree
+`/data/gpfs/projects/punim2657/sfs_preprocessing.wt/buildsh-20261024`.
+
+- **The image is not inside a worktree.** `pcl_191_nurbs.sif` is gitignored, so a fresh
+  worktree has no image at all: pass
+  `--container /data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif`.
+  Copying 312 MB into every worktree is not worth it.
+- **mesh is byte-identical to the legacy script.** `build_mesh.sh` (a staged copy with ROOT
+  repointed at the worktree) produced sha256
+  `2f27e110a3947c3527ef6ebf06f2d22f258d99d8b2dc1c6e82e9b2fceebd206c`, 5 721 408 bytes;
+  `./build.sh --target mesh --variant default` produced the same hash, the same size and the
+  same link line (`cmp` silent). Both compile the same source directory with the same flags
+  (`-std=gnu++17 -Wno-old-style-cast -march=native -msse4.2 -mfpmath=sse -frounding-math`),
+  and a binary does not record which directory it was built in.
+- **nurbs needs `alglib/` provisioned once** (see above), then builds:
+  `EdgeLineExtractionHeadless`, 11 490 848 bytes, sha256
+  `7c4b87aa9d3ab57dd926350527182d3518531c68bb01a08062f80fc4a51f5390`.
+- **`--target axis` cannot build today, and the reason is the source, not the script.** The
+  project file is generated and configures cleanly -- that part works, which is what the flag
+  proves -- and then the compile stops at
+  `axis_extraction_cpp.cpp:21: error: 'Vector6d' in namespace 'Eigen' does not name a type`.
+  Eigen has no `Vector6d` (its fixed sizes stop at 4) and the identifier appears 11 times in
+  the file; it arrived with `ff40fc9`. No `AxisExtractionHeadless` binary exists in either
+  build directory on the cluster, so it has never compiled there -- which fits commit
+  `e34db86` removing the target as "incorrect". Fixing it means editing the pipeline source
+  (a local `typedef Eigen::Matrix<double,6,1> Vector6d;`, or `VectorXd`), a change this
+  script must not make on the way past. Open a ticket against the file; the `axis` flag
+  stays because the interface names it.
+- **Neither build dirtied the tree.** `git status --porcelain` had 0 lines before and 0
+  after (the two files identical), with `build/`,
+  `original_nurbs_preprocessing/build/` and `original_nurbs_preprocessing/alglib/` appearing
+  only as ignored (`!!`). The three target directories held 293 files / 28 MB in total.
+
