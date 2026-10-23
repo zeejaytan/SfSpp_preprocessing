@@ -31,6 +31,16 @@ flag, does everything right, and then dies in a header-less type. Worse is the a
 that the axis stage is half-portable and one typedef from working — because the C++ in that file has
 never been executed by anyone.
 
+## Decision (2026-10-24)
+
+Keep the target in the interface and make it fail loudly. `build.sh --target axis` now refuses at
+preflight, before it looks for the image or runs cmake: it prints why the stage cannot compile,
+names this ticket's path, and exits **4** — a code a caller can tell apart from a compile failure
+(`2`, say). Nothing is built, the source, the tracked `CMakeLists.txt` and the other targets are
+untouched, and `--dry-run` is refused the same way. The refusal is one small function in
+`build.sh` beside the target validation, with a comment naming this ticket, so a future porter
+knows exactly what to delete. This ticket stays open and is the record of the gap.
+
 ## Done when
 
 Either

@@ -106,6 +106,38 @@ if [ -n "$BUILD_DIR" ] && [ "${#TARGETS[@]}" -gt 1 ]; then
     die "--build-dir names one directory, so it needs exactly one --target"
 fi
 
+# ---- the axis target is refused here, by decision (ticket 277) -------------
+# Ticket 277: --target axis has NEVER compiled. axis_extraction_cpp.cpp asks for
+# Eigen::Vector6d at lines 21, 159 and 193, a type this Eigen does not have, and
+# no tracked CMakeLists carries an AxisExtractionHeadless target: 3bd5c10 added
+# it, e34db86 removed it ("axis extraction runs via MATLAB"). The interface keeps
+# the target, so the caller meets the decision here instead of a compiler error
+# inside the container. Nothing is configured, nothing is built.
+# DELETE THIS FUNCTION AND ITS CALL once the port actually compiles.
+refuse_unbuilt_axis() {
+    case "$1" in
+        axis) ;;
+        *) return 0 ;;
+    esac
+    cat >&2 <<'EOF'
+build.sh: --target axis is refused: this target has never compiled.
+
+  The source asks for a type the toolchain does not have -- Eigen::Vector6d, at
+  axis_extraction_cpp.cpp:21, :159 and :193 -- and no CMake or CI build target
+  for AxisExtractionHeadless exists: commit 3bd5c10 added it, e34db86 removed it
+  because axis extraction runs via MATLAB.
+
+  The reason is recorded in ticket 277:
+    .scratch/pota-repro/issues/277-axis-target-does-not-compile.md
+
+  Nothing was built, and cmake was never run. Exit 4 means "not buildable by
+  decision", which a caller can tell apart from a compile failure.
+EOF
+    exit 4
+}
+
+for _t in "${TARGETS[@]}"; do refuse_unbuilt_axis "$_t"; done
+
 # ---- variants: image + cmake arguments -------------------------------------
 # A variant is a configuration, not a copy of the tree. The image can still be
 # overridden with --container, which is how a candidate image is tried without

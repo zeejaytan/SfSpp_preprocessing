@@ -49,6 +49,13 @@ by `.gitignore:4`; no ignore edit was needed.
 | `nurbs` | `EdgeLineExtractionHeadless` | `original_nurbs_preprocessing/` (needs `alglib/`, gitignored) |
 | `axis` | `AxisExtractionHeadless` | repo root: `axis_extraction_cpp.cpp` |
 
+`--target axis` is accepted by the interface and **refused at preflight**: the stage has never
+compiled (the source asks for `Eigen::Vector6d`, which Eigen does not have, and no tracked
+`CMakeLists.txt` carries `AxisExtractionHeadless`). `build.sh` prints why and exits **4**
+before looking for the image or running cmake, so a caller can tell "not buildable by decision"
+apart from a compile failure. The record is ticket 277,
+`.scratch/pota-repro/issues/277-axis-target-does-not-compile.md`.
+
 `--container PATH` overrides the variant's image, which is how a freshly provisioned image is
 tried without inventing a variant name for it.
 
