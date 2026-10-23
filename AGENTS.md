@@ -27,6 +27,32 @@ On the Spartan checkout, **165 tracked data files** (`Segments/*.xyz`, `Segments
 
 Heavy untracked data (datasets, `.sif` containers, logs, `axis_output/`) stays on Spartan; `artifacts/` is the local rsync landing zone.
 
+## Runs, worktrees and the attic
+
+**The canonical checkout is `/data/gpfs/projects/punim2657/sfs_preprocessing`.** Worktrees
+hang off it, one per ticket, under `sfs_preprocessing.wt/<ticket>`, e.g.
+`/data/gpfs/projects/punim2657/sfs_preprocessing.wt/273`. There are no numbered copies of the
+tree beside it, and a parameter is never varied by copying the tree.
+
+A run records itself as a directory under the shared run root:
+
+```
+/data/gpfs/projects/punim2657/SfSpp/runs/<YYYYMMDD-HHMM>_<git7>_<tag>/
+    run.json        parameters, inputs, the commit and tag in the directory name
+    submit.sbatch   the exact batch script submitted
+    logs/           Slurm output and the job's own logs
+    out/            whatever the run produced
+```
+
+- The append-only index is `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv`, header
+  exactly `runid\tjobid\tcommit\ttag\tverdict\thuman_note` (tab-separated). `verdict` and
+  `human_note` are written by a person or the coordinating session, never by the job.
+- `logs/` and `out/` are pruned after **90 days**; `run.json` and the index row stay forever.
+- Removed trees live in `/data/gpfs/projects/punim2657/SfSpp/attic/` -- one directory per
+  tree, each with `manifest-path-size.txt.gz` and `skipped.txt`, plus a tarball where one was
+  made. `/data/gpfs/projects/punim2657/SfSpp/bundles/` holds only `README.txt`.
+- **The run directory is the unit of record, not the variation.**
+
 ## Agent skills
 
 Configured here so this repo works when opened on its own, not only from the `C:\PR`
