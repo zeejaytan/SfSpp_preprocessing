@@ -43,6 +43,37 @@ Phase 1 justifies, keep the better one, and continue through the existing resamp
 lane: `[WALK-275] chose=<arm> turn=<> Lr=<> gap=<> maxjump=<>`. The selector is code, not a new global
 env switch.
 
+## Phase 0 (added by the lead, 2026-10-24) — the five lanes are not comparable yet
+
+The 273 matrix's five frozen sheet pairs were not all built at the same theta:
+
+| lane | tree | mesh log says |
+|---|---|---|
+| Pot C 01 | `pota251_paper_Pot_C_01` | `thetaDeg=4.00000` |
+| Pot J 01 | `pota259_paper_Pot_J_01` | `thetaDeg=4.00000` |
+| Pot D 03 / 22 / 01 | `pota271T1_*` | `thetaDeg=3.40000` (T1 sheets; the older `mesh.log` in those trees holds the 4.0 run) |
+
+So the four "collapsed" lanes are on the **old** sheets and the guards on the new ones. Bracket the
+comparison before drawing anything from it: rebuild the mesh for Pot C piece 01 and Pot J piece 01 at the
+shipped theta (3.4), then re-run the same four configs on those sheets. If the collapse survives on 3.4
+sheets, the walker comparison stands; if it does not, the walker question shrinks and the finding is that
+theta had a second effect.
+
+**Mechanism already measured on the 4.0 sheets** (lead, from the two bags in `Temp/Temp_edge/`, 5 mm
+components, seed = dot nearest the cloud centroid):
+
+- Pot C 01 Bl1: 1,074 dots in 2 lumps, **815 (rim) + 259 (satellite)**. The seed lands in the **259-dot
+  satellite**, 27.19 mm from the rim. The walk consumed exactly those 259 dots and stopped — the log's
+  `step=258` and `left=815` match this to the dot.
+- Pot J 01 Bl0: 844 dots in 4 lumps, **586 / 130 / 76 / 52**. The seed lands in the **130-dot lump**,
+  26.10 mm from the rim and 16.21 mm from the 76-dot lump. The log says `step=129`, `left=714`,
+  nearest fresh **16.206 mm** — the same 16.21 mm, measured independently.
+
+So on these two pieces the walk is not stopping "early on the rim": it never reaches the rim at all,
+because the seed chooses a debris lump that happens to sit nearer the centroid. Phase 1 must therefore
+report **which lump the seed lands in** and that lump's distance to the largest lump, per lane — a
+selector that cannot see that will keep choosing the wrong arm for the same reason.
+
 ## Pre-registered acceptance
 
 Phase 2 is accepted only if ALL of:
