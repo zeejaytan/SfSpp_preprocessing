@@ -4,7 +4,7 @@ Lead verdict (R6 2026-10-22): PASS -- Pot A 8/8+15/15 (strict 7/8, P5 +1.9mm thr
 
 # Ticket 246: full E2E Pot A + Pot C on the restored-density main
 
-Answers: whether the density restore holds whole pots end to end.
+Answers: E1 — whether density restore holds whole pots E2E.
 Needs-eye: no.
 
 ## Goal

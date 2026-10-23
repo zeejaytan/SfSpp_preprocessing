@@ -4,7 +4,7 @@ Lead verdict (R6 2026-10-22): PASS. Jobs 33663646/33663702/33663893/33663998 COM
 
 # Ticket 244: density restore -- feed the paper grower 164k-scale input (owns the 19k downsample)
 
-Answers: whether restoring input density cures P03 with the paper's own numbers.
+Answers: E1 — whether restoring input density cures piece 3 with the paper's own numbers.
 Needs-eye: no.
 
 ## Goal

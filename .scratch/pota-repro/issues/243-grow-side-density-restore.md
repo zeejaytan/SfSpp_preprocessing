@@ -2,7 +2,7 @@ Status: done
 
 # Ticket 243: grow-side density restore (P03 must join, P22 must stay split)
 
-Answers: why the paper grower shatters P03 + correction that keeps P22's fork open.
+Answers: E1 — why the paper grower shatters piece 3, and the correction that keeps piece 22 fork open.
 Needs-eye: no.
 
 ## Goal

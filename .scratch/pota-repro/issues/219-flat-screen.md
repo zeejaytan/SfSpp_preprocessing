@@ -1,7 +1,7 @@
 # 219 - Flat-screen of the face-vs-edge fixes (user flatten idea, run BY LEAD)
 
 Status: done
-Answers: E1-do-our-breaklines-let-sfs-find-sjoins
+Answers: E1-do-our-breaklines-let-sfs-find-joins
 
 NOTE: Answers line has a typo (sjoins); accepted as-is, meaning E1.
 

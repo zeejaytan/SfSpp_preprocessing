@@ -4,7 +4,7 @@ Lead verdict (R6 2026-10-22): SPLIT stands. 4/4 jobs COMPLETED 0:0. CTL reproduc
 
 # Ticket 247: port the paper's vote-ordered edge lines (kill the greedy-walk seed)
 
-Answers: whether vote-ordering cures P03-Bl1 with the paper's own method.
+Answers: E1 — whether vote-ordering cures piece 3 Bl1 with the paper's own method.
 Needs-eye: no.
 
 ## Goal

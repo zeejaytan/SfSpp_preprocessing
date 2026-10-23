@@ -2,7 +2,7 @@ Status: done
 
 # Ticket 242: instrument the merge gate, then correct it (P03)
 
-Answers: merge-gate correction for the paper chain (follows 241 mesh-verdict + Appendix A audit m04671).
+Answers: E1 — merge gate correction for the paper chain (follows the 241 mesh verdict and the Appendix A audit m04671).
 Needs-eye: no.
 
 ## Goal

@@ -4,7 +4,7 @@ Lead verdict (R6 2026-10-22): PASS. Jobs 33666465 + 33667102 COMPLETED 0:0. Bina
 
 # Ticket 245: merge the 244 density restore to main
 
-Answers: whether the restored-density default is live on main with a verified binary.
+Answers: E1 — whether restored-density default is live on main with verified binary.
 Needs-eye: no.
 
 ## Goal

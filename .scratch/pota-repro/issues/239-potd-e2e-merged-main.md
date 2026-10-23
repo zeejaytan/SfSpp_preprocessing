@@ -2,7 +2,7 @@ Status: done
 
 # Ticket 239: full Pot D E2E on merged main (paper path, tree-built chain)
 
-Answers: E2E proof for Pot D (29 pieces) on the chain main now builds itself.
+Answers: E1 — Pot D end to end on the chain main builds itself.
 Needs-eye: no.
 
 ## Goal

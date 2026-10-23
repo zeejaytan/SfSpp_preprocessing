@@ -2,7 +2,7 @@ Status: done
 
 # Ticket 241: mesh-stage bisection for P03-Bl0 flip
 
-Answers: E1 (P03-Bl0 walk regression; 240 cleared the edge code, mesh stage stands).
+Answers: E1 — the piece-3 Bl0 walk regression; 240 cleared the edge code, the mesh stage stands.
 Needs-eye: no.
 
 ## Goal

@@ -2,7 +2,7 @@ Status: done
 
 # Ticket 240: bisect edge-source change that broke P03-Bl0
 
-Answers: E1 (P03-Bl0 walk regression 0.70/99.1 -> 2.43/45.5).
+Answers: E1 — the piece-3 Bl0 walk regression 0.70/99.1 -> 2.43/45.5.
 Needs-eye: no.
 
 ## Goal
