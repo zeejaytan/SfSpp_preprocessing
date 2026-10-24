@@ -1,0 +1,318 @@
+diff --git a/mesh_processing_headless.cpp b/mesh_processing_headless.cpp
+index 939c33a..25fcedc 100644
+--- a/mesh_processing_headless.cpp
++++ b/mesh_processing_headless.cpp
+@@ -1855,6 +1855,31 @@ static Eigen::Vector3f k2AvgNormal234(pcl::KdTreeFLANN<pcl::PointXYZ>& ctree,
+ }
+ 
+ 
++// ---- ticket 276 Phase 2: per-cluster-pair test values (SFS_MERGE_PAIRS=1) ----
++// Diagnostic only: prints every Appendix-A test quantity for every cluster pair
++// examined, in every pass. Inert when the switch is unset (no output, no work).
++static bool gPairs276 = false;
++
++static void pairPrefix276(int pass, int ci, int cj, size_t nA, size_t nB,
++    size_t bA, size_t bB, size_t scanned, size_t smallTot,
++    size_t npairs, bool cap, const std::vector<double>& pd)
++{
++    double dmin = 0.0, dmed = 0.0;
++    if (!pd.empty()) {
++        std::vector<double> v = pd;
++        std::sort(v.begin(), v.end());
++        dmin = v.front();
++        dmed = v[v.size() / 2];
++    }
++    std::cout << "[PAIR-276] pass=" << pass << " c" << ci << "-c" << cj
++              << " nA=" << nA << " nB=" << nB
++              << " bnd=" << bA << "/" << bB
++              << " scan=" << scanned << "/" << smallTot
++              << " cut=" << (smallTot - scanned)
++              << " pairs=" << npairs << " cap=" << (cap ? 1 : 0)
++              << " dmin=" << dmin << " dmed=" << dmed;
++}
++
+ // One merge verdict for a cluster pair. All thresholds are the paper-arm
+ // operating point (logged by the caller).
+ // Appendix-A-normative pair verdict (provenance in patch234d.py header).
+@@ -1863,14 +1888,21 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     const std::vector<int>& A, const std::vector<int>& B,
+     const std::vector<char>& isBnd,
+     const Eigen::Vector3f& axisA, const Eigen::Vector3f& axisB,
+-    double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k2)
++    double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k2,
++    int ci = -1, int cj = -1, int pass = 0)
+ {
+     if (A.empty() || B.empty()) return false;
+     // ---- Step 1: boundary subsets, pairs within rhoD, need >= 3 ----
+     std::vector<int> bA, bB;
+     for (int id : A) if (isBnd[id]) bA.push_back(id);
+     for (int id : B) if (isBnd[id]) bB.push_back(id);
+-    if (bA.empty() || bB.empty()) return false;
++    if (bA.empty() || bB.empty()) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), 0, 0, 0, false, std::vector<double>());
++            std::cout << " verdict=REJECT:empty-boundary" << std::endl;
++        }
++        return false;
++    }
+     const std::vector<int> *sP = &bA, *lP = &bB;
+     bool sIsA = true;
+     if (bA.size() > bB.size()) { sP = &bB; lP = &bA; sIsA = false; }
+@@ -1881,7 +1913,10 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     lT.setInputCloud(lC);
+     std::vector<std::pair<int,int> > pairs;
+     std::vector<int> oneI; std::vector<float> oneD;
++    std::vector<double> pd276;
++    size_t scanned276 = 0;
+     for (size_t i = 0; i < sP->size() && pairs.size() < 200; ++i) {
++        ++scanned276;
+         int sid = (*sP)[i];
+         oneI.clear(); oneD.clear();
+         if (lT.nearestKSearch(pcloud->points[sid], 1, oneI, oneD) <= 0) continue;
+@@ -1889,9 +1924,17 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+             int a = sIsA ? sid : (*lP)[oneI[0]];
+             int b = sIsA ? (*lP)[oneI[0]] : sid;
+             pairs.push_back(std::make_pair(a, b));
++            if (gPairs276) pd276.push_back(std::sqrt(static_cast<double>(oneD[0])));
+         }
+     }
+-    if (pairs.size() < 3) return false;
++    const bool cap276 = (pairs.size() >= 200) && (scanned276 < sP->size());
++    if (pairs.size() < 3) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " rhoD2=" << rhoD * rhoD << " verdict=REJECT:pairs<3" << std::endl;
++        }
++        return false;
++    }
+     // ---- Step 2: k2-average normals + mean curvature over pair members ----
+     pcl::PointCloud<pcl::PointXYZ>::Ptr cA(new pcl::PointCloud<pcl::PointXYZ>), cB(new pcl::PointCloud<pcl::PointXYZ>);
+     for (int id : A) cA->points.push_back(pcloud->points[id]);
+@@ -1909,10 +1952,30 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+         sCB += static_cast<double>(pnormals->points[pairs[i].second].curvature);
+     }
+     float nA = sNA.norm(), nB = sNB.norm();
+-    if (nA < 1e-9f || nB < 1e-9f) return false;
++    if (nA < 1e-9f || nB < 1e-9f) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " verdict=REJECT:normal-zero" << std::endl;
++        }
++        return false;
++    }
+     sNA /= nA; sNB /= nB;
+-    if (sNA.dot(sNB) < rhoN) return false;
+-    if (std::fabs(sCA / pairs.size() - sCB / pairs.size()) >= rhoC) return false;
++    const double nrm276 = static_cast<double>(sNA.dot(sNB));
++    const double cuv276 = std::fabs(sCA / pairs.size() - sCB / pairs.size());
++    if (nrm276 < rhoN) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " nrm=" << nrm276 << " curv=" << cuv276 << " rhoN=" << rhoN << " rhoC=" << rhoC << " verdict=REJECT:rhoN" << std::endl;
++        }
++        return false;
++    }
++    if (cuv276 >= rhoC) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " nrm=" << nrm276 << " curv=" << cuv276 << " rhoN=" << rhoN << " rhoC=" << rhoC << " verdict=REJECT:rhoC" << std::endl;
++        }
++        return false;
++    }
+     // ---- Step 3: internal median-point verification ----
+     int ia = medianInternal234(pcloud, A, axisA);
+     int ib = medianInternal234(pcloud, B, axisB);
+@@ -1921,8 +1984,26 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     Eigen::Vector3f nb(pnormals->points[ib].normal_x, pnormals->points[ib].normal_y, pnormals->points[ib].normal_z);
+     float la = na.norm(), lb = nb.norm();
+     if (la < 1e-9f || lb < 1e-9f) return false;
+-    if (na.dot(nb) / (la * lb) < rhoInN) return false;
+-    if (std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature)) >= rhoInC) return false;
++    const double inn276 = static_cast<double>(na.dot(nb) / (la * lb));
++    const double icuv276 = std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature));
++    if (inn276 < rhoInN) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " nrm=" << nrm276 << " curv=" << cuv276 << " inner=" << inn276 << " icurv=" << icuv276 << " verdict=REJECT:rhoInN" << std::endl;
++        }
++        return false;
++    }
++    if (icuv276 >= rhoInC) {
++        if (gPairs276) {
++            pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++            std::cout << " nrm=" << nrm276 << " curv=" << cuv276 << " inner=" << inn276 << " icurv=" << icuv276 << " verdict=REJECT:rhoInC" << std::endl;
++        }
++        return false;
++    }
++    if (gPairs276) {
++        pairPrefix276(pass, ci, cj, A.size(), B.size(), bA.size(), bB.size(), scanned276, sP->size(), pairs.size(), cap276, pd276);
++        std::cout << " nrm=" << nrm276 << " curv=" << cuv276 << " inner=" << inn276 << " icurv=" << icuv276 << " verdict=ACCEPT" << std::endl;
++    }
+     return true;
+ }
+ 
+@@ -1931,6 +2012,9 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     std::vector<pcl::PointIndices>& pclusters,
+     double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k1, int k2)
+ {
++    gPairs276 = false;
++    if (const char* e276 = std::getenv("SFS_MERGE_PAIRS")) gPairs276 = (*e276 && std::string(e276) != "0");
++    if (gPairs276) std::cout << "[PAIR-276] enabled: printing every cluster pair's test values" << std::endl;
+     std::cout << "[PAPER-234] appendix-A merge: rhoD=" << rhoD << " rhoN=" << rhoN << " rhoC=" << rhoC
+               << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2 << std::endl;
+     const int NP = static_cast<int>(pcloud->points.size());
+@@ -1965,7 +2049,8 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+             for (size_t j = i + 1; j < pclusters.size(); ++j) {
+                 if (dead[j]) continue;
+                 if (tryMergePair234(pcloud, pnormals, pclusters[i].indices, pclusters[j].indices, isBnd,
+-                        axes[i], axes[j], rhoD, rhoN, rhoC, rhoInN, rhoInC, k2)) {
++                        axes[i], axes[j], rhoD, rhoN, rhoC, rhoInN, rhoInC, k2,
++                        static_cast<int>(i), static_cast<int>(j), pass)) {
+                     std::cout << "[PAPER-234] pass " << pass << ": merge " << pclusters[j].indices.size() << " into " << pclusters[i].indices.size() << std::endl;
+                     pclusters[i].indices.insert(pclusters[i].indices.end(), pclusters[j].indices.begin(), pclusters[j].indices.end());
+                     dead[j] = 1;
+@@ -2034,6 +2119,126 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     }
+ }
+ 
++
++// ======================= TICKET 276: merge diagnostics =======================
++// SFS_MERGE_DIAG reads once per piece:
++//   unset / empty / "0" -> every function below is skipped (inert)
++//   "1"                 -> dump per-point post-merge cluster labels
++//   "split"             -> also split the largest cluster in two by a plane
++//                          through its centroid (normal = its PCA axis) BEFORE
++//                          merging, then report whether the halves are rejoined.
++// The dump labels every point of the segmented cloud: cluster 0 = Surface_0,
++// cluster 1 = Surface_1, cluster >= 2 = dropped, -1 = in no cluster.
++static std::string mergeDiagMode276()
++{
++    const char* e = std::getenv("SFS_MERGE_DIAG");
++    if (!e || !*e || std::string(e) == "0") return std::string();
++    return std::string(e);
++}
++
++static void splitLargestCluster276(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
++    std::vector<pcl::PointIndices>& pclusters, std::vector<char>& half276)
++{
++    if (pclusters.empty()) return;
++    size_t rank276 = 0;
++    if (const char* e276 = std::getenv("SFS_MERGE_SPLIT_RANK"))
++    {
++        int r276 = std::atoi(e276);
++        if (r276 > 0) rank276 = static_cast<size_t>(r276);
++    }
++    std::vector<size_t> order276(pclusters.size());
++    for (size_t c276 = 0; c276 < order276.size(); ++c276) order276[c276] = c276;
++    std::sort(order276.begin(), order276.end(), [&pclusters](size_t a276, size_t b276) {
++        return pclusters[a276].indices.size() > pclusters[b276].indices.size();
++    });
++    if (rank276 >= order276.size()) rank276 = 0;
++    size_t big = order276[rank276];
++    const std::vector<int> src = pclusters[big].indices;
++    if (src.size() < 2) return;
++    Eigen::Vector3f ax = pcaAxis234(pcloud, src);
++    Eigen::Vector3f c0(0.0f, 0.0f, 0.0f);
++    for (int id : src) c0 += pcloud->points[id].getVector3fMap();
++    c0 /= static_cast<float>(src.size());
++    half276.assign(pcloud->points.size(), static_cast<char>(2));
++    std::vector<int> ha, hb;
++    for (int id : src) {
++        Eigen::Vector3f p = pcloud->points[id].getVector3fMap();
++        if ((p - c0).dot(ax) >= 0.0f) { ha.push_back(id); half276[id] = 0; }
++        else { hb.push_back(id); half276[id] = 1; }
++    }
++    std::cout << "[MERGE-DIAG-276] split: rank=" << rank276 << " cluster " << big << " n=" << src.size()
++              << " -> halfA=" << ha.size() << " halfB=" << hb.size()
++              << " plane n=(" << ax.x() << "," << ax.y() << "," << ax.z() << ")"
++              << " c=(" << c0.x() << "," << c0.y() << "," << c0.z() << ")" << std::endl;
++    pcl::PointIndices pa, pb;
++    pa.indices = ha;
++    pb.indices = hb;
++    pclusters[big] = pa;
++    pclusters.push_back(pb);
++}
++
++static void reportSplit276(const std::vector<char>& half276,
++    const std::vector<pcl::PointIndices>& pclusters, int nBefore)
++{
++    std::map<int, long> h0, h1;
++    for (size_t c = 0; c < pclusters.size(); ++c)
++        for (int id : pclusters[c].indices) {
++            if (static_cast<size_t>(id) >= half276.size()) continue;
++            if (half276[id] == 0) h0[static_cast<int>(c)]++;
++            else if (half276[id] == 1) h1[static_cast<int>(c)]++;
++        }
++    long n0 = 0, n1 = 0;
++    int d0 = -1, d1 = -1;
++    for (auto& kv : h0) if (kv.second > n0) { n0 = kv.second; d0 = kv.first; }
++    for (auto& kv : h1) if (kv.second > n1) { n1 = kv.second; d1 = kv.first; }
++    std::cout << "[MERGE-DIAG-276] split-check: halfA -> cluster " << d0 << " (" << n0
++              << " pts), halfB -> cluster " << d1 << " (" << n1 << " pts), rejoined="
++              << ((d0 == d1 && d0 >= 0) ? "YES" : "NO")
++              << ", clusters before-split=" << nBefore << " after-split=" << (nBefore + 1)
++              << " after-merge=" << pclusters.size() << std::endl;
++}
++
++static void dumpMergeDiag276(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
++    const std::vector<pcl::PointIndices>& pclusters, double theta,
++    const std::vector<char>& half276)
++{
++    const std::string dumpName = "mergeDiag276_" + fileNameOnly + ".txt";
++    std::ofstream f(dumpName.c_str());
++    if (!f.is_open()) {
++        std::cout << "[MERGE-DIAG-276] cannot open " << dumpName << std::endl;
++        return;
++    }
++    std::vector<int> lab(pcloud->points.size(), -1);
++    for (size_t c = 0; c < pclusters.size(); ++c)
++        for (int id : pclusters[c].indices)
++            if (static_cast<size_t>(id) < lab.size()) lab[id] = static_cast<int>(c);
++    long s0 = pclusters.size() > 0 ? static_cast<long>(pclusters[0].indices.size()) : 0;
++    long s1 = pclusters.size() > 1 ? static_cast<long>(pclusters[1].indices.size()) : 0;
++    long dropped = 0, unclustered = 0;
++    for (size_t i = 0; i < lab.size(); ++i) {
++        if (lab[i] < 0) ++unclustered;
++        else if (lab[i] >= 2) ++dropped;
++    }
++    f << std::setprecision(7);
++    f << "# npoints " << pcloud->points.size() << " nclusters " << pclusters.size()
++      << " thetaDeg " << theta << " split " << (half276.empty() ? 0 : 1) << "\n";
++    for (size_t c = 0; c < pclusters.size(); ++c)
++        f << "# cluster " << c << " size " << pclusters[c].indices.size()
++          << " surface " << ((c < 2) ? 1 : 0) << "\n";
++    f << "# columns: index cluster x y z half\n";
++    for (size_t i = 0; i < pcloud->points.size(); ++i) {
++        int hv = (half276.empty() || i >= half276.size()) ? -1 : static_cast<int>(half276[i]);
++        f << i << " " << lab[i] << " " << pcloud->points[i].x << " "
++          << pcloud->points[i].y << " " << pcloud->points[i].z << " " << hv << "\n";
++    }
++    f.close();
++    std::cout << "[MERGE-DIAG-276] labels: npoints=" << pcloud->points.size()
++              << " nclusters=" << pclusters.size() << " surface0=" << s0 << " surface1=" << s1
++              << " dropped=" << dropped << " unclustered=" << unclustered
++              << " -> " << dumpName << std::endl;
++}
++
++
+ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold,
+         bool planeRule = false, double planeJoinDeg = 60.0, double planeDistMM = 2.0, int planeWindow = 100,
+         bool paperChain = true, double paperTheta = 3.4, double paperKappa = 1.0, int paperNB = 10,
+@@ -2173,9 +2378,17 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
+         // 병합 함수 호출
+         if (paperChain) {
+             std::cout << "Calling mergePaper234 function." << std::endl;
++            // TICKET 276: SFS_MERGE_DIAG unset/0 -> mdiag276 is empty and nothing below runs.
++            const std::string mdiag276 = mergeDiagMode276();
++            const bool split276 = (mdiag276 == "split");
++            const int nBeforeSplit276 = static_cast<int>(clusters.size());
++            std::vector<char> half276;
++            if (split276) splitLargestCluster276(cloud, clusters, half276);
+             mergePaper234(cloud, normals, clusters, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC, 10, 30);
+             std::sort(clusters.begin(), clusters.end(), myobject3);
+             classifyAndOrderPaper234(cloud, normals, clusters);
++            if (split276) reportSplit276(half276, clusters, nBeforeSplit276);
++            if (!mdiag276.empty()) dumpMergeDiag276(cloud, clusters, paperTheta, half276);
+         } else {
+         std::cout << "Calling mergeClusters function." << std::endl;
+         mergeClusters(cloudWithNormals, clusters);
