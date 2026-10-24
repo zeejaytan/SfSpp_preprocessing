@@ -175,7 +175,7 @@ pairs pass, and no fix that worked on the pots has moved it.
 Weight: one reference pot at the bar in two arms, one real 29-piece pot at 20/29, one further
 pot at its earlier bar — three pots, single runs each. That is a lead about a class of
 failures, not a claim that the method works on pottery.
-Next: re-score the frozen corpus with the shipped binary at `SFS_PAPER_THETA=3.4` -- the 265-of-294 tally was measured on clouds that no longer exist (ticket 284) and `original_samples/SfS_pp/Point/` now holds all 148 of them (290) -- as a streaming job that derives and deletes geometry per piece; then decide whether to seed `mesh_processing_headless.cpp:1526-1527`, which draws from an unseeded `std::random_device` and puts a 0.1 mm band on P03 medians from run to run.
+Next: name the two remaining extraction families (Pot I 25's contour, ticket 293; the nine-lane extent family) and then measure the join-level question this entry asks -- no run since the strip has measured whether the 96% of lanes that now match the authors' lines actually produce correct rejoins.
 
 **2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
 preprocessing does not regenerate the authors' own Pot A inputs.**
@@ -1933,3 +1933,25 @@ So the tally above (265 of 294 valid lanes, Pot J 09 excluded by the conservator
 is history: it was measured at theta 4.0 on a binary that has since been stripped and reseeded.
 Re-measuring it is a streaming job at the shipped defaults, geometry derived and deleted inside each
 job. That decision is the one now open.
+
+
+**2026-10-25 — the corpus re-score is done: 281 of 292 sound lanes at bar (ticket 292).**
+One array job, 148 pieces, the frozen corpus staged by symlink, the shipped defaults with no `SFS_*`
+override, theta 3.4, and the fixed scorer. Measured 283/296, valid 283/294, sound **281/292 = 96.2%**.
+Per pot: A 16/16, B 18/18, C 6/7, D 55/58, E 61/62, F 14/14, G 14/14, H 20/22, I 56/60, J 21/21.
+This measures **breakline extraction against the authors' own lines**, not joins: it says the edge we
+hand to SfS++ is now the authors' edge on 96% of sound lanes, and says nothing yet about whether those
+lanes produce correct rejoins.
+
+The eleven sound misses are not blindness. Nine sit at median 0.67-0.88 mm with total length within
+5% of the reference and differ over one stretch (D22 Bl0, D27 Bl0+Bl1, E16 Bl0, H02 Bl1, H10 Bl1,
+I06 Bl1, I13 Bl1) -- ticket 286's "our kept region spans a fold the reference turns into", now with
+nine members. Two are different contours: Pot C 03 Bl1 (the known base-band partition mismatch) and
+Pot I 25 both lanes, new. One 37.7 mm jump survives on Pot C 02 Bl1 at a 0.53 mm median, at bar.
+
+Weight: one draw per piece, one binary, one commit, no repeat runs; the mesh stage is
+piece-dependently non-deterministic, so a lane within about 1 mm of the bar (D22 Bl0 at 86.40%
+coverage against 90) must not be quoted as clearing or missing it on this run alone.
+Next: name the two remaining families -- Pot I 25's contour (ticket 293) and the nine-lane extent
+family -- and then take the extraction result to the join-level question this entry actually asks,
+which no run since the strip has measured.

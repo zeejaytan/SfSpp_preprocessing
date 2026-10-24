@@ -218,5 +218,42 @@ Pot J 12**.
 - Corpus root and manifests: `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/`
   (`MANIFEST_released.tsv`, `MANIFEST_derived.tsv`, `README.md`).
 
+
+## P. The baseline at the shipped defaults (2026-10-25, ticket 292)
+
+**281 of 292 sound lanes at bar (96.2%)** -- 283/294 valid, 283/296 measured. This is the number to
+quote. It is not comparable with the 265-of-294 figure that stands elsewhere in this ledger: that one
+was measured at theta 4.0 on the pre-strip binary, on point clouds that can no longer be regenerated.
+
+How it was measured (run `20261025-0134_787c149_p292-rescore`, commit `787c149`, 148 array elements,
+all COMPLETED 0:0): the 148 frozen corpus clouds (ticket 290), staged by symlink only (ticket 291),
+the shipped defaults with no `SFS_*` override, theta 3.4, and `score292.py` -- the fixed scorer in
+`.scratch/pota-repro/292/`. Bar = median <= 2.0 mm AND coverage >= 90; jumps reported beside it.
+
+Exclusions, fixed before the count: Pot J 09 both lanes (reference ruled wrong, ticket 289 ->
+294 valid); Pot C 01 and Pot J 01 lane 0 (interior surface defective, ticket 285 -> 292 sound);
+the five pieces the authors removed (F07, I28, I29, I30, J12) scored, listed, never compared with
+the paper (section O).
+
+Per pot, sound lanes at bar: A 16/16, B 18/18, C 6/7, D 55/58, E 61/62, F 14/14, G 14/14,
+H 20/22, I 56/60, J 21/21.
+
+The eleven sound misses fall in two groups and neither is blindness:
+
+- **Nine are the extent/contour family** (D22 Bl0, D27 Bl0+Bl1, E16 Bl0, H02 Bl1, H10 Bl1, I06 Bl1,
+  I13 Bl1): median 0.67-0.88 mm, total length within 5% of the reference, one stretch beyond 2 mm.
+  This is ticket 286's mechanism (our kept region spans a fold the reference turns into) with nine
+  members now, and `Pot_D_Piece_27` is the clearest -- 1.2x the reference length at 0.73 mm median.
+- **Two are different contours**: `Pot_C_Piece_03` Bl1 (the known base-band partition mismatch of
+  tickets 278/279) and `Pot_I_Piece_25` both lanes (new, ticket 293).
+
+One jump survives in the shipped code: `Pot_C_Piece_02` Bl1, a single 37.712 mm step at median
+0.530 mm -- at bar, recorded, not diagnosed.
+
+Weight: one draw per piece, one binary, one commit, no repeat runs. The mesh stage is
+piece-dependently non-deterministic (ticket 291: 0.867 mm on Pot H 02), so a lane within about 1 mm
+of the bar must not be quoted as clearing or missing it on this run alone -- the nearest case is
+`Pot_D_Piece_22` Bl0 at 86.40% coverage against a 90% bar.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
