@@ -175,10 +175,7 @@ pairs pass, and no fix that worked on the pots has moved it.
 Weight: one reference pot at the bar in two arms, one real 29-piece pot at 20/29, one further
 pot at its earlier bar — three pots, single runs each. That is a lead about a class of
 failures, not a claim that the method works on pottery.
-Next: re-roll the seven pots at `SFS_PAPER_THETA=3.4` (P03-Bl1 0.85 -> 0.49 mm, coverage
-57.5% -> 99.0% on the exam lane); port the K-D tree filter; seed
-`mesh_processing_headless.cpp:1526-1527`, which draws from an unseeded `std::random_device`
-and puts a ±0.1 mm band on P03's medians from run to run.
+Next: re-score the frozen corpus with the shipped binary at `SFS_PAPER_THETA=3.4` -- the 265-of-294 tally was measured on clouds that no longer exist (ticket 284) and `original_samples/SfS_pp/Point/` now holds all 148 of them (290) -- as a streaming job that derives and deletes geometry per piece; then decide whether to seed `mesh_processing_headless.cpp:1526-1527`, which draws from an unseeded `std::random_device` and puts a 0.1 mm band on P03 medians from run to run.
 
 **2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
 preprocessing does not regenerate the authors' own Pot A inputs.**
@@ -1910,3 +1907,29 @@ results follow; each number names the ticket that holds the table it came from.
 - The paper's **K-D tree filter** is still unported; every braid-bag failure above points at it
   (247).
 
+
+
+## 2026-10-25 -- pota-repro 290 and 291: the input corpus is frozen, and a run stages no geometry
+
+Two changes affect what a lane score in this file can mean. Neither rules anything out about joins.
+
+The clouds every lane was scored on can no longer be regenerated: the mesh stage samples its cloud
+from the OBJ with CloudCompare's unseeded sampler (Pot A 01 gave 843,433 / 843,282 / 843,252 points
+over three draws), so ticket 284 had to report that 2 of 148 scored clouds survived. The authors'
+release closes that gap. `Mesh.zip` and `Point.zip` (Table V: A8 B9 C4 D29 E31 F6 G7 H11 I27 J11 =
+143 pieces) are unpacked at `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/`,
+and the five pieces the authors excluded are derived from our own meshes in the pipeline's own
+format: 148 clouds, each with a manifest row (md5, point count, header check). Five scored pieces
+(F07, I28, I29, I30, J12) are therefore outside the authors' evaluation set and are never compared
+with the paper's numbers.
+
+Staging follows `scripts/stage_piece.sh`: mesh and cloud are symlinked in from that corpus and only
+the 108-byte axis is copied, so a run adds no geometry (10 K staged against 17 M) and the inputs are
+byte-identical to what any other run of the same piece would use. That the mesh stage is not
+deterministic on every piece (Pot J 09 identical across four runs, Pot H 02 differing by 0.867 mm
+between two runs of the same bytes) is now written into the project AGENTS.md as the identity rule.
+
+So the tally above (265 of 294 valid lanes, Pot J 09 excluded by the conservator's reference ruling)
+is history: it was measured at theta 4.0 on a binary that has since been stripped and reseeded.
+Re-measuring it is a streaming job at the shipped defaults, geometry derived and deleted inside each
+job. That decision is the one now open.
