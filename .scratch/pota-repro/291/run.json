@@ -1,0 +1,162 @@
+{
+  "runid": "20261024-2351_3888318_p291-gate",
+  "jobid": "33748798",
+  "followup_jobs": [
+    "33748866",
+    "33749499"
+  ],
+  "failed_attempts": {
+    "33749485": "first GATE3 re-check: the staging call passed 'Piece_09' instead of the full stem, so the script refused both pieces; nothing staged, nothing measured"
+  },
+  "commit": "3888318",
+  "tag": "p291-gate",
+  "ticket": ".scratch/pota-repro/issues/291-symlink-staging.md",
+  "question": "Does a piece staged by symlink into the frozen corpus behave identically to one staged by copy, and does it stage no geometry of its own?",
+  "host": "spartan (Slurm, cascade partition), apptainer pcl_191_nurbs.sif",
+  "created": "2026-10-24 23:51 (Spartan local)",
+  "parameters": {
+    "pieces": [
+      "Pot_J_Piece_09",
+      "Pot_H_Piece_02"
+    ],
+    "arms": {
+      "A": "inputs copied with cp (the old way)",
+      "B": "inputs staged by scripts/stage_piece.sh (symlinks)"
+    },
+    "pipeline": "shipped defaults; no env switch set except POT_NAME and SFS_AXIS_FILE",
+    "scripts": {
+      "stage_piece_under_test_md5": "585955252cc84fe1a49e6dac8cef892e",
+      "note": "the tested script is the worktree copy at commit 3888318, uncommitted; the job ran the uploaded bytes with this md5",
+      "submit_sbatch_md5": "4d152aadec006028a2a3701f1b31cefb",
+      "cmp291_py_md5": "4c47d5e96b5e28cc2bfc223d5a1311ea",
+      "submit2_sbatch_md5": "92612fd8ac5e799a7130b68c5fe552ee",
+      "cmp2_py_md5": "565616eb2abf8b7a595891172d77c334",
+      "gate3fix2_py_md5": "71a20951ce631cca59999f86056bc858",
+      "submit3_sbatch_md5": "eeefb4308f9194a83502a46b874d51d9"
+    }
+  },
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (frozen: 143 released + 5 derived clouds; Mesh/ is flat)",
+    "binaries": {
+      "edge": "a28d10afab2b50bbe750d599ee2b7214 (copied from the p290 run's bin/, ticket 288/290 binary; md5-identical to the shipped 287/288/289 one)",
+      "mesh": "0171f471d0558d2676df7c4b113c1e9d (same source commit 8e1e514 recipe)"
+    },
+    "authors_lanes": "corpus Breaklines/<piece>_Breakline_{0,1}.pcd"
+  },
+  "steps": [
+    "record binary md5s and the script under test; md5 the six corpus inputs",
+    "per piece: stage A by cp, stage B by stage_piece.sh; pre-run census of both",
+    "per arm: mesh stage (SFS_AXIS_FILE set, classify lines quoted), then edge stage",
+    "corpus md5 re-check; cmp291.py identity + scores + provenance + census verdicts",
+    "delete both stage trees, write out/GEOMETRY_DELETED.txt",
+    "job 33748866: four mesh-stage runs on the same bytes (A2/A3 cp, B2/B3 symlink) + edge stage on all four, to attribute the Pot H 02 difference",
+    "job 33749499: re-stage both pieces and judge GATE3 with the corrected rule (symlink into corpus / axis a copy), then delete the trees"
+  ],
+  "acceptance_gate": {
+    "1_identity": "n equal and max|dxyz| = 0.000000 between the A and B exports, else the gate fails and the ticket stops",
+    "2_no_geometry_in_B": "no regular file larger than 1 MiB in the symlinked stage, exactly 2 symlinks per piece, du reported for both stages",
+    "3_provenance": "every staged input resolves into the corpus and its md5 matches MANIFEST_released.tsv / MANIFEST_derived.tsv",
+    "4_scores": "reported for both arms, not gated against older runs"
+  },
+  "results": {
+    "identity": {
+      "Pot_J_Piece_09 Bl0": "n 79/79 max_abs_dxyz 0.000000 IDENTICAL",
+      "Pot_J_Piece_09 Bl1": "n 91/91 max_abs_dxyz 0.000000 IDENTICAL",
+      "Pot_H_Piece_02 Bl0": "n 152/152 max 0.716773 mean 0.203735 DIFFERS",
+      "Pot_H_Piece_02 Bl1": "n 138/138 max 0.418649 mean 0.066255 DIFFERS"
+    },
+    "determinism_probe": {
+      "design": "four mesh-stage runs on the same frozen input bytes (A2, A3 by cp; B2, B3 by stage_piece.sh), edge stage on all four",
+      "cp_vs_cp_max": 0.866718,
+      "sym_vs_sym_max": 0.234607,
+      "cp_vs_symlink_max": 0.718929,
+      "verdict": "the spread is the pipeline's, not the staging method's: two cp runs differ more than cp-vs-symlink",
+      "partition_identical_across_all_four": "face0 n=17678 interior_frac=0.9996 face1 n=14614 interior_frac=0.0000 satA=32285.0000 satB=7.0000; kept -> Surface_0=interior",
+      "sheet_rows": {
+        "Surface_0": [
+          36215,
+          36213,
+          36213,
+          36213
+        ],
+        "Surface_1": [
+          30479,
+          30480,
+          30482,
+          30481
+        ]
+      },
+      "sheet_maxima": {
+        "S0 A2-A3": 0.226637,
+        "S0 B2-B3": 0,
+        "S0 A2-B2": 0.226637,
+        "S1 A2-A3": 0.593066,
+        "S1 B2-B3": 0.234607,
+        "S1 A2-B2": 0.424697
+      },
+      "export_maxima": {
+        "Bl0 A2-A3": 0.718929,
+        "Bl0 A2-B2": 0.718929,
+        "Bl0 B2-B3": 0,
+        "Bl1 A2-A3": 0.866718,
+        "Bl1 A2-B2": 0.161572,
+        "Bl1 B2-B3": 0.218536
+      }
+    },
+    "no_geometry_in_B": {
+      "Pot_J_Piece_09": "files>1MiB=0 symlinks=2 du=10K files=3",
+      "Pot_H_Piece_02": "files>1MiB=0 symlinks=2 du=10K files=3",
+      "A_stage": "files>1MiB=2 symlinks=0 du=17M files=3",
+      "recheck_job_33749499": "both trees 0 / 2 / 10K"
+    },
+    "provenance": {
+      "first_verdict": "FAIL — checker bug: it resolved rows through inputs.md5's realpath column, so a symlink row could never read as a symlink and the axis (a copy by contract) could never resolve into the corpus",
+      "corrected_verdict": "PASS — 6 rows, 0 failed; mesh and cloud are symlinks landing in the corpus with md5 equal to the manifest, the axis is a regular copy equal to the corpus axis",
+      "stage_summary_line": "[STAGE-291] pieces=1 pot=Pot_J symlinks=2 copied_files=1 copied_bytes=108"
+    },
+    "scores": {
+      "Pot_J_Piece_09 Bl0": {
+        "A": "79 1.079 70.89 75.68 0 4.999 145.40",
+        "B": "79 1.079 70.89 75.68 0 4.999 145.40"
+      },
+      "Pot_J_Piece_09 Bl1": {
+        "A": "91 1.913 50.55 63.77 0 4.890 166.89",
+        "B": "91 1.913 50.55 63.77 0 4.890 166.89"
+      },
+      "Pot_H_Piece_02 Bl0": {
+        "A": "152 0.504 100.00 100.00 0 4.000 275.80",
+        "B": "152 0.541 100.00 100.00 0 4.202 276.00"
+      },
+      "Pot_H_Piece_02 Bl1": {
+        "A": "138 0.662 72.46 74.45 0 3.682 250.28",
+        "B": "138 0.681 72.46 74.45 0 3.388 249.99"
+      },
+      "columns": "n median_mm cov_ours_to_author cov_author_to_ours jumps max_step_mm length_mm"
+    },
+    "sheets_md5": {
+      "Pot_J_Piece_09": "identical between arms",
+      "Pot_H_Piece_02_A": [
+        "6bea8964358d86e2324e027e57ceef84",
+        "acc44cb5085b751202de702de1a7e9c2"
+      ],
+      "Pot_H_Piece_02_B": [
+        "2534cd866c809b7a258fe3bba2953e1d",
+        "14ff0c76eb86d657602f392dd6b046d9"
+      ]
+    },
+    "corpus_unchanged": "YES (corpus_before.md5 == corpus_after.md5)"
+  },
+  "verdict": {
+    "overall": "FAIL as pre-registered (item 1), because the mesh stage is not reproducible on Pot H 02",
+    "item1": "FAIL as written; PASS on Pot J 09 (both lanes 0.000000), FAIL on Pot H 02 (0.716773 / 0.418649); the cause is cp-vs-cp 0.866718 > cp-vs-symlink 0.718929, i.e. the pipeline's spread, not the staging method",
+    "item2": "PASS",
+    "item3": "PASS after the checker was corrected",
+    "item4": "PASS (reported; Pot J 09 identical, Pot H 02 <= 0.037 mm apart)",
+    "consequence": "the gate rule needs restating before it is applied to another piece: identity where the pipeline is deterministic, the cp-vs-cp spread where it is not. Decision for the lead."
+  },
+  "geometry": {
+    "deleted_by_the_jobs": "stageA/stageB trees (job 1), repeat trees (job 2), gate3fix trees (job 3); GEOMETRY_DELETED{,2,3}.txt",
+    "still_present_at_close": "out/A_*.pcd and out/B_*.pcd (8 lane exports, ~50 KB) — must be deleted when the ticket closes"
+  },
+  "status": "results-in; ticket written in the main clone, uncommitted"
+}

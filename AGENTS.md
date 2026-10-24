@@ -129,6 +129,10 @@ A run records itself as a directory under the shared run root:
   tree, each with `manifest-path-size.txt.gz` and `skipped.txt`, plus a tarball where one was
   made. `/data/gpfs/projects/punim2657/SfSpp/bundles/` holds only `README.txt`.
 - **The run directory is the unit of record, not the variation.**
+- **Inputs are staged by symlink into the frozen corpus; a job copies no geometry.**
+  `scripts/stage_piece.sh <stage> <Pot_X> <Piece...>` links the mesh and the cloud to
+  `original_samples/`, copies only the 7 KB axis file, and records every resolved path, md5 and
+  point count in the stage's `inputs.md5`.
 - **Tidying this repo follows one written procedure:** `../docs/agents/workspace-hygiene.md`
   (scan, classify, prove provenance against this canonical checkout, harvest by named
   classes, prove the harvest, delete in guarded passes, record in the attic). Deletion

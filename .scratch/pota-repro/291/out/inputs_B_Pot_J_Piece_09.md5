@@ -1,0 +1,4 @@
+md5	realpath	points	staged
+810009272d4ff937876b52fa5d781fcf	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_J_Piece_09_Mesh_DS.obj	-	/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Mesh/Pot_J/Pot_J_Piece_09_Mesh.obj
+c01b8a7c3ead9f9e0998097657fe6075	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_J/Pot_J_Piece_09_Point.pcd	1000037	/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Point/Pot_J/Pot_J_Piece_09_Point.pcd
+5ef4dd54995c95410ea143da29b85b0d	/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Axes/Pot_J_Piece_09_Axis.xyz	-	/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Axes/Pot_J_Piece_09_Axis.xyz

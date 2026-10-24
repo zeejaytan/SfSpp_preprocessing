@@ -1,0 +1,16 @@
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=4.50000 curv=1.50000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[PAPER-234] classify: face0 n=4089 interior_frac=0.0000 face1 n=2880 interior_frac=1.0000 satA=0.0000 satB=6969.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=4.50000 curv=1.50000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[PAPER-234] classify: face0 n=4089 interior_frac=0.0000 face1 n=2880 interior_frac=1.0000 satA=0.0000 satB=6969.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=4.50000 curv=1.50000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[PAPER-234] classify: face0 n=17678 interior_frac=0.9996 face1 n=14614 interior_frac=0.0000 satA=32285.0000 satB=7.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=4.50000 curv=1.50000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[PAPER-234] classify: face0 n=17678 interior_frac=0.9996 face1 n=14614 interior_frac=0.0000 satA=32285.0000 satB=7.0000
+[PAPER-234] classify: kept -> Surface_0=interior

@@ -1,0 +1,36 @@
+[FULL-263] no-discard kept 276/276 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=276/276 seed=31.1847 15.6651 473.543
+[STOP-267] CHAIN-END step=274 of 276: nearest fresh dot 22.4362mm > R=12mm ; refusing it ; left=1 dots unvisited
+[FULL-263] chain=275 maxjump=2.69915mm
+[FULL-263] kept chain order n=275 (clock sort skipped)
+[FULL-263] no-discard kept 306/306 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=306/306 seed=31.0263 14.3209 474.594
+[FULL-263] chain=306 maxjump=9.62677mm
+[FULL-263] kept chain order n=306 (clock sort skipped)
+[FULL-263] no-discard kept 276/276 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=276/276 seed=31.1847 15.6651 473.543
+[STOP-267] CHAIN-END step=274 of 276: nearest fresh dot 22.4362mm > R=12mm ; refusing it ; left=1 dots unvisited
+[FULL-263] chain=275 maxjump=2.69915mm
+[FULL-263] kept chain order n=275 (clock sort skipped)
+[FULL-263] no-discard kept 306/306 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=306/306 seed=31.0263 14.3209 474.594
+[FULL-263] chain=306 maxjump=9.62677mm
+[FULL-263] kept chain order n=306 (clock sort skipped)
+[FULL-263] no-discard kept 484/484 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=484/484 seed=35.955 4.19297 509.698
+[STOP-267] CHAIN-END step=478 of 484: nearest fresh dot 46.9348mm > R=12mm ; refusing it ; left=5 dots unvisited
+[FULL-263] chain=479 maxjump=2.22346mm
+[FULL-263] kept chain order n=479 (clock sort skipped)
+[FULL-263] no-discard kept 502/502 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=502/502 seed=10.5327 12.0613 528.533
+[FULL-263] chain=502 maxjump=1.49827mm
+[FULL-263] kept chain order n=502 (clock sort skipped)
+[FULL-263] no-discard kept 486/486 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=486/486 seed=35.955 4.19297 509.698
+[STOP-267] CHAIN-END step=480 of 486: nearest fresh dot 46.9348mm > R=12mm ; refusing it ; left=5 dots unvisited
+[FULL-263] chain=481 maxjump=2.22346mm
+[FULL-263] kept chain order n=481 (clock sort skipped)
+[FULL-263] no-discard kept 497/497 (1 comps @ 5mm)
+[SEED-287] ncomp=1 biggest=0 size=497/497 seed=10.5327 12.0613 528.533
+[FULL-263] chain=497 maxjump=1.49827mm
+[FULL-263] kept chain order n=497 (clock sort skipped)
