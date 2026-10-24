@@ -58,10 +58,39 @@ apart, J 01's stub is not evidence for a seed change either — which leaves **P
 126 dots / 26.351 mm / cov 0.00, the 275 selector reaching 307 / 0.661 / 97.39) as the only sound
 piece still carrying that evidence.
 
+## Which surface carries the gap (added 2026-10-24)
+
+Conservator, same day, refining the statement: **"it's the interior mesh that is broken, exterior
+should be fine" — for both pieces.** That splits the consequences cleanly, and it restores the
+evidence the previous note had withdrawn.
+
+The lane-to-surface mapping is measured, not assumed: ticket 279 Phase 0 matched the authors' own
+reference lines against our surfaces on all 163 pieces — lane 0 to `Surface_0`, lane 1 to
+`Surface_1` — and the authors' lane 0 is the interior line (paper `:145`, edges estimated from the
+interior surface). So here `Surface_0` is the interior and `Surface_1` the exterior.
+
+- **Interior lanes (Bl0) — compromised.** Pot C 01 25 dots / 51.62 mm / cov 0.0; Pot J 01 47 / 29.27
+  on the theta-3.4 rebuild (25 / 32.05 shipped). A fabricated edge is exactly what makes a stub or an
+  extra contour, so these may not be cited either way.
+- **Exterior lanes (Bl1) — still evidence.** Pot C 01 81 dots / 41.06 mm / cov 0.0; Pot J 01 82 /
+  23.31. The gap does not explain these; what they show is the walk-seed failure of ticket 275 — the
+  boundary bag splits into lumps and the walk starts in the wrong one (C01 Bl0 986 in 4, J01 Bl0 832
+  in 4; the exterior bags split too, 1090 in 2 and 883 in 2).
+
+With the held 275 selector those two exterior lanes go to **C01 Bl1 226 dots / 0.527 mm / cov 100.00**
+(author-side 99.57) and **J01 Bl1 184 / 0.596 / cov 100.00 / 100.00**, against 81 and 82 dots. Together
+with **Pot B 01** (B01 Bl1 126 / 26.351 / 0.00 -> 307 / 0.661 / 97.39) that is **three intact exterior
+lanes, on three pieces of three different pots**, where the largest-lump seed turns a 23-41 mm stub
+into a 100 % line.
+
+What this does not establish: that the interior stubs are cured in a way that means anything — they
+are (C01 Bl0 208 / 0.649 / 98.56, J01 Bl0 170 / 0.558 / 100.00), but on an interior lane that is a
+bonus, never a proof. And it says nothing about the gap, which remains unlocated.
+
 ## What must not be concluded
 
-- That the C01 52.6 mm stub, or the J01 29.3 mm stub, is a walk defect. Each may be a correct
-  trace of a hole.
+- That the interior stubs (C01 25 dots / 51.62 mm, J01 47 / 29.27) are a walk defect. Each may be a
+  correct trace of a hole.
 - That any change which "fixes C01" has improved the method, unless it is shown to leave the
   other lanes untouched AND the gap is shown not to be what moved.
 - That the fragment-count of C01's bag (4 components) is debris only. The gap is an equally good
@@ -71,8 +100,9 @@ piece still carrying that evidence.
 
 - Where each gap is: locate the surface hole on Pot C 01 and on Pot J 01, its width, and whether it
   reaches the break face.
-- Which lane each gap manufactures: does it account for C01's 259-dot lump and J01's 130-dot lump,
-  and for the stubs that follow them?
+- Which lane each gap manufactures: the interior lane is the one to test — does the gap account for
+  C01's 259-dot lump and J01's 130-dot lump, and for the stubs that follow them? (The exterior lanes
+  are not explained by a gap in the interior mesh, so they are not part of this question.)
 - Whether the authors' own reference lines cross either gap (if they do, their pipeline had the same
   artefact; if they do not, ours invented it).
 

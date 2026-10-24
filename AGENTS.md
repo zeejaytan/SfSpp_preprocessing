@@ -16,19 +16,21 @@ This is the **preprocessing** stage (axis extraction, breaklines, NURBS surfaces
 
 ## Corpus caveats — read before scoring
 
-The conservator reports two pieces that are not watertight. On each, the scan left a gap in the
-surface mesh and the pipeline reads that gap as **a second broken edge the sherd does not have**.
-Any lane on these pieces is therefore measured against a reference that includes an edge we invent:
-its scores are evidence about the input, not about the method, and it can neither convict nor
-exonerate a change.
+The conservator reports two pieces that are not watertight, and on both the gap is in the
+**interior** surface only — the exterior is intact. The pipeline reads that gap as **a second broken
+edge the sherd does not have**, so lanes derived from the interior surface (Bl0) are measured against
+a reference that includes an edge we invent: their scores are evidence about the input, not about the
+method, and they can neither convict nor exonerate a change. Lanes derived from the exterior surface
+(Bl1) are not explained by the gap and stay usable.
 
-- **Pot C 01** — Bl0 25 dots / 51.62 mm / cov 0.0 at the shipped defaults; its 986-dot bag sits in
-  four pieces.
-- **Pot J 01** — Bl0 47 dots / 29.27 mm on the theta-3.4 rebuild (25 / 32.05 shipped); its 832-dot
-  bag sits in four pieces (580 / 127 / 75 / 50).
+- **Pot C 01** — interior Bl0 25 dots / 51.62 mm / cov 0.0 at the shipped defaults, its 986-dot bag
+  in four pieces; exterior Bl1 81 dots / 41.06 mm / cov 0.0.
+- **Pot J 01** — interior Bl0 47 dots / 29.27 mm on the theta-3.4 rebuild (25 / 32.05 shipped), its
+  832-dot bag in four pieces (580 / 127 / 75 / 50); exterior Bl1 82 dots / 23.31 mm.
 
-Recorded from the conservator, 2026-10-24. Details, the two competing causes on each piece (the walk
-seed landing in a debris lump, ticket 275, and the scan gap) and the open measurements are in
+Both exterior lanes are stub failures on intact input, so they remain evidence for the walk-seed
+change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-24; the full record,
+the competing causes and the open measurements are in
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
 ## Repo history note (2026-07-19 migration)
