@@ -247,6 +247,23 @@ The eleven sound misses fall in two groups and neither is blindness:
 - **Three lanes are different contours**: `Pot_C_Piece_03` Bl1 (the known base-band partition mismatch of
   tickets 278/279) and `Pot_I_Piece_25` both lanes (new, ticket 293).
 
+
+**What the eleven look like** (ticket 294, 2026-10-25 -- eleven figures, each with the shaded mesh above
+and the extracted surface below, our line green and the authors' black). In **all eleven**, our line is
+the boundary of the surface we kept and the reference is the boundary of the surface the authors kept --
+section K's rule, now seen rather than inferred. **Eight lanes are the same face with a different reading
+of one stretch** (18-65 mm): on `Pot_D_Piece_22` Bl0 **the reference is the one drawing the chord** (18 mm
+straight across the notch, mean gap 4.33 mm) while our line follows the material round it, and on
+`Pot_H_Piece_10` Bl1 the reference steps 4.42 mm inside our face for 39.6 mm. **Three lanes are a
+different partition**: `Pot_C_Piece_03` Bl1 our outer rim (607 mm of edge) against their closed ring on the
+flat, 274 mm round and about 11 mm inside; `Pot_I_Piece_25` both lanes our small closed triangle
+(105 / 121 mm) against their larger loop (124 / 106 mm), 6.9 mm apart in 3D. Every reference line here was
+measured against the authors' own DS mesh by exact point-to-triangle distance: 18 of 18 rows, median
+0.007-0.024 mm, p95 <= 0.115 mm, max 1.386 mm, **0.00% beyond 2 mm** -- so no disagreement in this set is
+a reference that left its part, and the eight are a **convention difference about where the edge is
+taken**, not a tracing error. Reading trap worth keeping: `Pot_I_Piece_25`'s lines cross in X-Y and are
+6.9 mm apart in 3D -- a crossing in one projection is not contact.
+
 One jump survives in the shipped code: `Pot_C_Piece_02` Bl1, a single 37.712 mm step at median
 0.530 mm -- at bar, recorded, not diagnosed.
 

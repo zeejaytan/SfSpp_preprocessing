@@ -90,3 +90,33 @@ Pieces to mesh: Pot_D 22, 27, Pot_E 16, Pot_H 02, 10, Pot_I 06, 13 -- seven piec
 2. One answer to "one mechanism or several" for the eight-lane family, with the split by class.
 3. Pot I 25's case stated precisely enough for the conservator to rule on the reference.
 4. Pictures for at least both Pot I 25 lanes and one member of each class found in Phase B.
+
+## Amendment (lead, 2026-10-25) -- ticket 294 answered most of Phase A and B
+
+The eleven pictures (ticket 294, `artifacts/pota294/png/`) settle the "what", so this ticket is narrowed
+to the "why". Do not re-measure the geometry that is already established:
+
+- **Established by 294, do not re-derive**: our line is the boundary of the surface we kept, the
+  reference is the boundary of the surface the authors kept, in all eleven lanes. Eight lanes are the
+  same face with a different reading of one stretch (18-65 mm; on `Pot_D_Piece_22` Bl0 **the reference
+  is the one drawing a chord** -- 18 mm across the notch, mean gap 4.33 mm; on `Pot_H_Piece_10` Bl1 the
+  reference steps 4.42 mm inside our face for 39.6 mm). Three lanes are a different partition
+  (`Pot_C_Piece_03` Bl1: our outer rim 607 mm vs their inner ring 274 mm; `Pot_I_Piece_25` both lanes:
+  our small closed triangle 105 / 121 mm vs their larger loop 124 / 106 mm, 6.9 mm apart in 3D and
+  crossing only in projection). Every reference line sits on the authors' own DS mesh (18/18 rows,
+  median 0.007-0.024 mm, max 1.386 mm, 0.00% beyond 2 mm).
+- **Phase A, what remains**: for `Pot_I_Piece_25` both lanes, name the closed edge each line follows --
+  which face, which boundary, and whether a second closed edge exists in the same kept surface. A
+  picture exists; what is missing is the cluster/face census behind it (one run, three pieces with
+  `Pot_C_Piece_03`, geometry deleted after).
+- **Phase B, what remains**: why the walk chose the boundary of the whole face rather than turning where
+  the reference turns. The candidates are now specific: (i) the reference is not a boundary at all in
+  that stretch (it is a chord over a notch -- D22 Bl0 shows this directly), (ii) the reference follows a
+  crease inside the face (H10 Bl1), (iii) our kept region spans a fold the reference turns into (H02 Bl1,
+  ticket 286). Decide which of the eight each lane is, from the surfaces, and say which of the three the
+  walk could ever know about from the boundary set alone.
+- **Still the conservator's, not the worker's**: whether `Pot_C_Piece_03` Bl1 and `Pot_I_Piece_25`'s
+  lines should count as references at all. State the case; do not close it.
+
+Everything else in the ticket stands: no code change, frozen corpus by symlink, geometry deleted, run
+directory and index row, results written into the ticket for the lead to commit.
