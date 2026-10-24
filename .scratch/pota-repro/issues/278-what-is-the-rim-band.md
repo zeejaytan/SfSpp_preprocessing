@@ -65,3 +65,43 @@ which stage owns the defect.
 - the orientation and shape table, with the band and the face identified by cluster size
 - the gap census (unclustered points in the slab; where contact occurs, if anywhere)
 - the one-line verdict, plus the single measurement that would overturn it
+
+## Lead verdict (2026-10-24)
+
+**Accepted.** The identification stands on four independent measurements that agree
+(orientation vs the two kept faces, disc-shaped PCA, closed near-constant outer radius, and
+the author's own dots sitting 0.96 mm inside the outer boundary). The overturning
+measurement was named in advance and came back the other way, so this is not a
+post-hoc story.
+
+**What it changes.** The Pot C 03 lane is no longer an edge-stage question at all. The edge
+stage is never given the face the reference line is drawn on: 119 of 120 reference dots sit
+on a cluster that the two-largest rule cannot select (13265 points, third by size), and the
+corner ring that would let it join anything is unlabelled (1175 points, all 36 bins,
+mutual spacing 0.3556 mm, 0 of them within 1 mm of both sides). The 2.4872 mm distance is
+not a hole in the cloud, it is a hole in the labelling.
+
+**Why this is not a parameter.** rho_d would have to triple (1.0 -> ~3.0 mm = ten sampling
+spacings) to reach it, and the band is still third by size, so no rho_d value both keeps
+Appendix A honest and selects the base. Recorded as closed: merge, classify order, theta,
+rho_d and the two-largest ordering are each innocent of *this* lane, and three of them are
+innocent by measurement rather than by argument.
+
+**What the paper says that we do not implement.** C:/PR/papers/text/sfspp-2502.13986v1.md:279
+(Fig. 11) names base fragments as a distinct class with "a flat surface or a sharp
+transition from the base to the side surface"; :313 tabulates base sherds detected per pot
+(Pot C 1/1), so their pipeline does identify base sherds; :275 says graph merging exists
+precisely because base features used to be relied on. A grep of
+C:/PR/SfSpp_preprocessing/mesh_processing_headless.cpp for base returns only the CGAL
+Alpha_shape base classes (:90-91), basePath arguments (:1567-1577) and baseName (:2505-2507):
+our port has no base-sherd handling of any kind. That gap is now the leading explanation for
+why their kept surface reaches the base rim on this piece and ours cannot.
+
+**Pot H 10 kept separate.** Its dropped clusters are genuine break faces (0.07-0.12 against
+both kept faces, thin ribbons) and the line is drawn on the fracture instead of at its edge:
+an edge-stage placement question. Only c5 (a 0.3191 mm split-off fragment of the exterior
+face, fifth by size, 21 of 88 Bl1 dots) is a partition element, and it is small enough to
+leave for later.
+
+**Not done here, deliberately:** no third-surface support, no relabelling of the corner
+ring, no rho_d tuning, no code change. Each is a design decision larger than this ticket.
