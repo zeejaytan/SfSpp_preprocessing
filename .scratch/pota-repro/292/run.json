@@ -1,0 +1,118 @@
+{
+ "runid": "20261025-0134_787c149_p292-rescore",
+ "tag": "p292-rescore",
+ "commit": "787c149a3e5b8e4b23093746677b7842452e9316",
+ "created": "2026-10-25T01:34+11:00",
+ "host": "laptop C:/PR/worktrees/sfs/292 (branch 292-corpus-rescore)",
+ "question": "At the shipped defaults, on the frozen corpus, how many of the 294 valid lanes are at bar? Ticket 292.",
+ "parameters": {
+  "defaults_only": true,
+  "sfs_variables_set": "none in either stage; SFS_AXIS_FILE is the staged axis input path, POT_NAME the pot",
+  "nurbs_output_base": "unset in every element (data_path.h:65 would otherwise redirect the exports out of the stage)",
+  "array": "0-147%10, --cpus-per-task=8 --mem=24G --time=00:40:00",
+  "scorer": ".scratch/pota-repro/292/score292.py (committed at 787c149); bar = median <= 2.0 mm AND cov_ours >= 90",
+  "staging": "scripts/stage_piece.sh (committed at 787c149): mesh and cloud by symlink into the frozen corpus, axis copied"
+ },
+ "inputs": {
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+  "clouds": "148 (143 released binary + 5 derived ascii), Point/<Pot>/<Piece>_Point.pcd",
+  "meshes": "Mesh/ flat, 164 files, <Piece>_Mesh.obj or <Piece>_Mesh_DS.obj",
+  "axes": "Axes/<Piece>_Axis.xyz",
+  "authors_breaklines": "Breaklines/<Piece>_Breakline_{0,1}.pcd (flat, 326 files)",
+  "manifests": "Point/MANIFEST_released.tsv, Point/MANIFEST_derived.tsv",
+  "corpus_is_input": "nothing under the corpus is written; cloud md5s snapshotted before the array and re-checked after"
+ },
+ "steps": [
+  "job A p292build: git archive 787c149 into a node-local tree, cmake+make both binaries in the pcl_191_nurbs.sif container, record md5s, write out/pieces.tsv (148), out/precheck.txt, out/corpus_before.md5",
+  "job B p292rescore (array 0-147%10): stage by symlink, mesh stage with the corpus axis (classify line required), edge stage at defaults, score both lanes lane-k against author lane-k, thumbnail every lane and a two-panel picture for every miss, recompute 4 lanes by hand, delete the stage tree",
+  "job C p292collect (afterany): corpus md5 re-check, geometry assertion, GEOMETRY_DELETED, out/lanes.tsv, out/summary.md, per-pot montages"
+ ],
+ "exclusions": [
+  "Pot J 09 both lanes: reference ruled wrong (ticket 289); measured and reported, never counted",
+  "Pot C 01 and Pot J 01 lane 0: interior surface defective (ticket 285); reported, excluded from the headline",
+  "F07, I28, I29, I30, J12: outside the authors' evaluation set; scored and listed, never compared with the paper (ledger O)"
+ ],
+ "headline_expected": {
+  "measured": 296,
+  "valid": 294,
+  "sound": 292
+ },
+ "status": "results-in; ticket written in the main clone, uncommitted",
+ "jobs": {
+  "build": {
+   "id": 33751053,
+   "name": "p292build",
+   "state": "COMPLETED 0:0",
+   "elapsed": "2:01"
+  },
+  "array": {
+   "id": 33751693,
+   "name": "p292rescore",
+   "state": "COMPLETED 0:0",
+   "elements": "148 of 148",
+   "shape": "0-147%10"
+  },
+  "collect": {
+   "id": 33751725,
+   "name": "p292collect",
+   "state": "COMPLETED 0:0",
+   "elapsed": "0:03"
+  },
+  "failed_attempts": [
+   {
+    "id": 33751054,
+    "why": "status variables stayed '-', so no stage ran"
+   },
+   {
+    "id": 33751332,
+    "why": "scorer called from the run root instead of RUN/scripts (exit 2 per lane)"
+   },
+   {
+    "id": 33751563,
+    "why": "stale array copy at the run root re-ran the old scorer path; plus the first SIGPIPE staging failure"
+   }
+  ]
+ },
+ "results": {
+  "headline": {
+   "measured": 296,
+   "valid": 294,
+   "sound": 292,
+   "at_bar_measured": "283/296",
+   "at_bar_valid": "283/294",
+   "at_bar_sound": "281/292",
+   "lanes_with_jumps_sound": 1,
+   "largest_step_mm": 37.712,
+   "largest_step_lane": "Pot_C_Piece_02 lane 1"
+  },
+  "per_pot_sound_at_bar": {
+   "Pot_A": "16/16",
+   "Pot_B": "18/18",
+   "Pot_C": "6/7",
+   "Pot_D": "55/58",
+   "Pot_E": "61/62",
+   "Pot_F": "14/14",
+   "Pot_G": "14/14",
+   "Pot_H": "20/22",
+   "Pot_I": "56/60",
+   "Pot_J": "21/21"
+  },
+  "below_bar_lanes": 13,
+  "below_bar_sound": 11,
+  "errors": 0,
+  "corpus_unchanged": "YES, 148/148 cloud md5s",
+  "geometry": "0 files over 1 MiB outside bin/; 597 lines in GEOMETRY_DELETED.txt; 148 of 148 stage trees deleted",
+  "recompute": "4 of 4 PASS (independent parser, medians 0.0002-0.0004 mm apart)",
+  "pictures": {
+   "lane_png": 13,
+   "pot_png": 10,
+   "laptop": "C:/PR/SfSpp_preprocessing/artifacts/pota292/png/"
+  }
+ },
+ "findings": [
+  "stage_piece.sh:50 has a SIGPIPE race (head -20 | awk) under set -o pipefail; 22 of 148 elements needed a second staging attempt. Not fixed here (ticket forbids code changes). Fix: drop head, let awk read the file.",
+  "Re-running a lane gives a different export file md5 (curvature column, ticket 290) with identical scores; compare scores or point sets, never md5.",
+  "Pot_H_Piece_02 lane 1: 0.688/72.46/74.45 here vs 0.662/72.46/74.45 in ticket 291 cp arm; inside that piece's own run-to-run spread (0.867 mm, ticket 291)."
+ ],
+ "ticket_path": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/issues/292-corpus-rescore.md"
+}
