@@ -18,9 +18,9 @@ This is the **preprocessing** stage (axis extraction, breaklines, NURBS surfaces
 
 The conservator reports two pieces that are not watertight, and on both the gap is in the
 **interior** surface only — the exterior is intact. The pipeline reads that gap as **a second broken
-edge the sherd does not have**, so lanes derived from the interior surface (Bl0) are measured against
+edge the sherd does not have**, so edgelines derived from the interior surface (Bl0) are measured against
 a reference that includes an edge we invent: their scores are evidence about the input, not about the
-method, and they can neither convict nor exonerate a change. Lanes derived from the exterior surface
+method, and they can neither convict nor exonerate a change. Edgelines derived from the exterior surface
 (Bl1) are not explained by the gap and stay usable.
 
 - **Pot C 01** — interior Bl0 25 dots / 51.62 mm / cov 0.0 at the shipped defaults, its 986-dot bag
@@ -28,7 +28,7 @@ method, and they can neither convict nor exonerate a change. Lanes derived from 
 - **Pot J 01** — interior Bl0 47 dots / 29.27 mm on the theta-3.4 rebuild (25 / 32.05 shipped), its
   832-dot bag in four pieces (580 / 127 / 75 / 50); exterior Bl1 82 dots / 23.31 mm.
 
-Both exterior lanes are stub failures on intact input, so they remain evidence for the walk-seed
+Both exterior edgelines are stub failures on intact input, so they remain evidence for the walk-seed
 change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-24; the full record,
 the competing causes and the open measurements are in
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
@@ -38,13 +38,13 @@ the competing causes and the open measurements are in
 **Pot J 09 — do not score against the authors' breaklines on this piece** (conservator's ruling, 2026-10-24,
 ticket 289). Their interior line runs 1-2 mm inside the sherd's real edge; their exterior line leaves the
 edge for about 41 mm and crosses the flat of the face, up to 10.4 mm from ours. Both of our lines follow the
-broken edge, read on an on-mesh overlay against `Pot_J_Piece_09_Mesh_DS.obj`. Both lanes are **excluded
-from the bar tally**: the piece is neither a pass nor a miss. Pot J is 20 of 22 valid lanes at bar; the
+broken edge, read on an on-mesh overlay against `Pot_J_Piece_09_Mesh_DS.obj`. Both edgelines are **excluded
+from the bar tally**: the piece is neither a pass nor a miss. Pot J is 20 of 22 valid edgelines at bar; the
 corpus is 265 of 294.
 
 This is the third of the workspace's three kinds of claim — the reference is wrong — and it is not a licence
 to explain away misses: ticket 279 measured that on 163 of 163 pieces a reference line is the boundary of
-the authors' own kept surface, and 265 lanes sit within 2 mm of these references, so one piece is wrong, not
+the authors' own kept surface, and 265 edgelines sit within 2 mm of these references, so one piece is wrong, not
 the standard.
 
 ### Which pieces are in the corpus, and which the authors left out
