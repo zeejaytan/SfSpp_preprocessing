@@ -1,0 +1,546 @@
+{
+  "runid": "20261024-2046_edf679c_p287-seed",
+  "commit": "edf679c890cf48475ff521ad8493073f0d63a3dd",
+  "tag": "p287-seed",
+  "branches": [
+    "origin/main"
+  ],
+  "canonical": "/data/gpfs/projects/punim2657/sfs_preprocessing",
+  "question": "Ticket 287: does seeding the one full walk on the largest 5 mm lump (instead of the dot nearest the whole-bag centre) recover the full rim loop on the four multi-lump bags, leaving single-lump lanes byte-identical?",
+  "gate": "reduced: before/after on 8 reachable lanes; 4 Pot D and 2 Pot H lanes of the ten-lane set have no sheets",
+  "change": {
+    "file": "edgeline_extraction_headless.cpp",
+    "function": "getPointsInSequence_Vote247",
+    "what": "centroid AND seed restricted to !used[i] && comp[i]==biggest",
+    "patch": "C:/PR/worktrees/sfs/287/.scratch/pota-repro/patches/287-largest-lump-seed.patch",
+    "patch_md5": "0562edf4aab59d4ed371babf0ce4fa66",
+    "patch_lines": 37,
+    "diffstat": "1 file changed, 17 insertions(+), 3 deletions(-)",
+    "committed": false
+  },
+  "arms": {
+    "before": {
+      "source_md5_lf": "8264da3647d048e67d983edfe810b59d",
+      "source_md5_raw": "8264da3647d048e67d983edfe810b59d",
+      "source_lines": 3725,
+      "se247_seed_strings": 0,
+      "build_exit": 0,
+      "binary_md5": "62ddd28f4476e9cdf5b27cf0ee01c2f0",
+      "binary_note": "identical to the p280 binary -> edge source unchanged d1b61cb..edf679c"
+    },
+    "after": {
+      "source_md5_lf": "f0dbfe7032d90a04412d15bd1699a703",
+      "source_md5_raw": "dc614d88571b081ee9352beaecb0fdf7",
+      "source_lines": 3739,
+      "se247_seed_strings": 1,
+      "build_exit": 0,
+      "binary_md5": "a28d10afab2b50bbe750d599ee2b7214"
+    }
+  },
+  "build": {
+    "method": "git archive edf679c into a node-build tree on the shared filesystem, cmake+make inside apptainer",
+    "build_tree": "/data/gpfs/projects/punim2657/sfs-vote-248/p287-build-<SLURM_JOB_ID>",
+    "sif": "/data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif",
+    "sif_bytes": 312520704,
+    "cxx": "/usr/bin/c++",
+    "cxx_flags": "",
+    "cmake": "-DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+    "make": "make -j8 EdgeLineExtractionHeadless",
+    "compile_cmd_logs": [
+      "logs/compile_cmd_before.txt",
+      "logs/compile_cmd_after.txt"
+    ],
+    "strings_counts_before": {
+      "STOP-267": 4,
+      "FULL-263": 3,
+      "VOTE-247": 6,
+      "SEED-287": 0
+    },
+    "strings_counts_after": {
+      "STOP-267": 4,
+      "FULL-263": 3,
+      "VOTE-247": 6,
+      "SEED-287": 1
+    }
+  },
+  "jobs": [
+    {
+      "jobid": "33746239",
+      "name": "p287seed",
+      "did": "build both arms, 8 lanes, score",
+      "state": "COMPLETED",
+      "exit": "0:0",
+      "ended": "2026-10-24T20:50:05"
+    },
+    {
+      "jobid": "33746280",
+      "name": "p287fix",
+      "did": "H02/before only after the stage-tree mkdir bug, then re-score",
+      "state": "COMPLETED",
+      "exit": "0:0"
+    },
+    {
+      "jobid": "33746344",
+      "name": "p287auth",
+      "did": "authors'-sheets identity probe D03+B01",
+      "state": "COMPLETED",
+      "exit": "0:0",
+      "outcome": "both pieces failed; see blockers"
+    },
+    {
+      "jobid": "33746350",
+      "name": "p287cmp",
+      "did": "compare our exports against the p275 _full selector arms",
+      "state": "COMPLETED",
+      "exit": "0:0"
+    },
+    {
+      "jobid": "33746383",
+      "name": "p287cmp",
+      "did": "same comparison, adding the p275 _247 arms",
+      "state": "COMPLETED",
+      "exit": "0:0"
+    }
+  ],
+  "sheets": {
+    "note": "md5 unchanged before and after in every lane; no mesh ran",
+    "source_stage_trees": [
+      "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1604_d1b61cb_p280-extent/stage/H02_norm",
+      "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1604_d1b61cb_p280-extent/stage/H10_norm",
+      "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0408_1308298_p275-phase0/phase0/Pot_C_Piece_01",
+      "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0408_1308298_p275-phase0/phase0/Pot_J_Piece_01"
+    ],
+    "C01": [
+      "6632718baf1a8e41eee3303d97063d87",
+      "9ebf2f01644869c5e470e8b29b255ca8"
+    ],
+    "J01": [
+      "abd83ca2497d97a9c85ab385bb8a9d4f",
+      "19641b791a295f0d22755086a72a4a9d"
+    ],
+    "H02": [
+      "9de492c98873204572919961b7d7dba8",
+      "638a22194203c6b356e52a066c656ab3"
+    ],
+    "H10": [
+      "07ba2430d3ed975b8df20d29569dbe03",
+      "ee79326ee6c6ef45ca1447b4d3a7699f"
+    ]
+  },
+  "results": {
+    "scorer": "score287.py: imports the project's own score275.py readpts/lane, adds pointwise identity rows",
+    "lane_format": "lane stamp arm n median_mm cov_ours_to_author cov_author_to_ours jumps max_step bar",
+    "rows": [
+      [
+        "H02",
+        0,
+        "before",
+        152,
+        0.582,
+        100,
+        100,
+        0,
+        3.569,
+        "PASS"
+      ],
+      [
+        "H02",
+        0,
+        "after",
+        152,
+        0.582,
+        100,
+        100,
+        0,
+        3.569,
+        "PASS"
+      ],
+      [
+        "H02",
+        1,
+        "before",
+        138,
+        0.867,
+        73.19,
+        74.45,
+        0,
+        3.736,
+        "below"
+      ],
+      [
+        "H02",
+        1,
+        "after",
+        138,
+        0.867,
+        73.19,
+        74.45,
+        0,
+        3.736,
+        "below"
+      ],
+      [
+        "H10",
+        0,
+        "before",
+        98,
+        0.664,
+        100,
+        100,
+        0,
+        3.633,
+        "PASS"
+      ],
+      [
+        "H10",
+        0,
+        "after",
+        98,
+        0.664,
+        100,
+        100,
+        0,
+        3.633,
+        "PASS"
+      ],
+      [
+        "H10",
+        1,
+        "before",
+        92,
+        0.642,
+        72.83,
+        77.27,
+        0,
+        4.571,
+        "below"
+      ],
+      [
+        "H10",
+        1,
+        "after",
+        92,
+        0.642,
+        72.83,
+        77.27,
+        0,
+        4.571,
+        "below"
+      ],
+      [
+        "C01",
+        0,
+        "before",
+        25,
+        51.62,
+        0,
+        0,
+        0,
+        5.637,
+        "below"
+      ],
+      [
+        "C01",
+        0,
+        "after",
+        207,
+        0.682,
+        98.55,
+        98.58,
+        0,
+        4.46,
+        "PASS"
+      ],
+      [
+        "C01",
+        1,
+        "before",
+        81,
+        41.055,
+        0,
+        0,
+        0,
+        4.551,
+        "below"
+      ],
+      [
+        "C01",
+        1,
+        "after",
+        226,
+        0.575,
+        100,
+        99.57,
+        0,
+        5.028,
+        "PASS"
+      ],
+      [
+        "J01",
+        0,
+        "before",
+        47,
+        29.268,
+        0,
+        0,
+        0,
+        5.632,
+        "below"
+      ],
+      [
+        "J01",
+        0,
+        "after",
+        170,
+        0.582,
+        100,
+        100,
+        0,
+        4.224,
+        "PASS"
+      ],
+      [
+        "J01",
+        1,
+        "before",
+        82,
+        23.306,
+        0,
+        0,
+        0,
+        4.654,
+        "below"
+      ],
+      [
+        "J01",
+        1,
+        "after",
+        184,
+        0.601,
+        100,
+        99.47,
+        0,
+        4.031,
+        "PASS"
+      ]
+    ],
+    "identity": [
+      [
+        "H02",
+        0,
+        152,
+        152,
+        0,
+        "identical"
+      ],
+      [
+        "H02",
+        1,
+        138,
+        138,
+        0,
+        "identical"
+      ],
+      [
+        "H10",
+        0,
+        98,
+        98,
+        0,
+        "identical"
+      ],
+      [
+        "H10",
+        1,
+        92,
+        92,
+        0,
+        "identical"
+      ],
+      [
+        "C01",
+        0,
+        25,
+        207,
+        null,
+        "differs (multi-lump, expected)"
+      ],
+      [
+        "C01",
+        1,
+        81,
+        226,
+        null,
+        "differs (multi-lump, expected)"
+      ],
+      [
+        "J01",
+        0,
+        47,
+        170,
+        null,
+        "differs (multi-lump, expected)"
+      ],
+      [
+        "J01",
+        1,
+        82,
+        184,
+        null,
+        "differs (multi-lump, expected)"
+      ]
+    ],
+    "lump_census_after": [
+      {
+        "lane": "C01",
+        "stamp": 0,
+        "ncomp": 4,
+        "lumps": [
+          716,
+          114,
+          79,
+          77
+        ],
+        "chosen": 716,
+        "seed": [
+          -5.85638,
+          -27.3575,
+          403.765
+        ],
+        "old_seed_lump": "77",
+        "old_seed_to_largest_mm": 54.1993
+      },
+      {
+        "lane": "C01",
+        "stamp": 1,
+        "ncomp": 2,
+        "lumps": [
+          825,
+          265
+        ],
+        "chosen": 825,
+        "seed": [
+          -12.6057,
+          -29.6216,
+          404.988
+        ],
+        "old_seed_lump": "265",
+        "old_seed_to_largest_mm": 49.3551
+      },
+      {
+        "lane": "J01",
+        "stamp": 0,
+        "ncomp": 4,
+        "lumps": [
+          580,
+          127,
+          75,
+          50
+        ],
+        "chosen": 580,
+        "seed": [
+          55.1673,
+          10.7026,
+          472.957
+        ],
+        "old_seed_lump": "127",
+        "old_seed_to_largest_mm": 36.7165
+      },
+      {
+        "lane": "J01",
+        "stamp": 1,
+        "ncomp": 2,
+        "lumps": [
+          600,
+          283
+        ],
+        "chosen": 600,
+        "seed": [
+          57.7673,
+          17.4733,
+          474.449
+        ],
+        "old_seed_lump": "283",
+        "old_seed_to_largest_mm": 32.4714
+      },
+      {
+        "lane": "B01",
+        "stamp": 1,
+        "ncomp": 2,
+        "lumps": [
+          752,
+          398
+        ],
+        "chosen": null,
+        "seed": null,
+        "note": "no sheets - not in this gate"
+      }
+    ],
+    "same_loop_vs_p275": {
+      "script": "compare275_287.py",
+      "p275_run": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0329_1308298_p275-walker",
+      "arms": "p275 holds _247 (selector in the vote-247 host) and _full (selector in the full walk)",
+      "C01_bl1_vs_247": {
+        "n_ours": 226,
+        "n_p275": 226,
+        "set_max_mm": 1.5383,
+        "set_mean_mm": 0.4327,
+        "seed_ours": [
+          -15.602,
+          -27.158,
+          402.709
+        ],
+        "seed_p275": [
+          51.443,
+          46.457,
+          435.781
+        ]
+      },
+      "J01_bl1_vs_full": {
+        "n_ours": 184,
+        "n_p275": 184,
+        "ordered_max_mm": 1.38318,
+        "set_max_mm": 1.4694,
+        "set_mean_mm": 0.8258,
+        "seed_ours": [
+          6.944,
+          31.036,
+          513.769
+        ],
+        "seed_p275": [
+          6.283,
+          31.403,
+          512.851
+        ]
+      },
+      "J01_bl1_vs_247": {
+        "n_ours": 184,
+        "n_p275": 184,
+        "set_max_mm": 1.8029,
+        "set_mean_mm": 0.4866
+      },
+      "note": "same loop on both bar lanes (point sets agree to <=1.9 mm); start dot a few mm (J01 Bl1 vs _full) to tens of mm (vs _247) away, so the export is rotated as the ticket warned"
+    }
+  },
+  "blockers": [
+    {
+      "what": "6 of the 10 lanes (Pot D 03, 22, 01; Pot B 01) have no stage inputs",
+      "detail": "the Surface_*.xyz sheets were deleted from a scratch tree on 2026-10-24 (class-G deletion, 2,468 files); they are recorded in the attic manifest, not present anywhere on the cluster",
+      "manifest": "/data/gpfs/projects/punim2657/SfSpp/attic/pota-wave1-deleted-manifest-20261024.tsv.gz",
+      "example_file": "pota240_P03_V0R/Dataset/Surfaces/Pot_D/Pot_D_Piece_03_Surface_0.xyz",
+      "example_sha256": "7dcf6e1acb013e6f0b8d671e9c0103c7af550a7558551dea7c25992ad0de1544",
+      "example_bytes": 356285,
+      "consequence": "acceptance item 1 is measurable on 4 of 10 lanes (Pot H only); item 2 on 2 of 3 (Pot B 01 untested). Pot D's question stays open."
+    },
+    {
+      "what": "authors'-sheets identity probe cannot run without a mesh",
+      "detail": "the edge stage reads Temp/Data/<POT>/<piece>_unclustered.ply, a mesh-stage product; D03 died EDGE_EXIT=139 with 'parse error: couldn't read the magic string' on that missing file. The authors' bundle ships Surfaces/Axes/Breaklines/Mesh_DS.obj, no unclustered.ply, and re-meshing is excluded.",
+      "second_blocker": "B01 ships Pot_B_Piece_01_Mesh.obj (24,314,852 bytes), no _DS variant, so the name the stage needs cannot be produced from it either",
+      "consequence": "no identity rows from the authors' own surfaces; identity evidence rests on the 4 Pot H lanes"
+    }
+  ],
+  "created": "2026-10-24T09:46:08Z",
+  "updated": "2026-10-24T21:05:00Z",
+  "host": "spartan-login1.hpc.unimelb.edu.au",
+  "user": "zhuojiat"
+}
