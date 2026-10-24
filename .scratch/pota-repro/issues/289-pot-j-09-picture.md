@@ -1,6 +1,6 @@
 # 289 — Pot J 09: show the surface, our edge line and the authors' edge line
 
-Status: done ((S)/(S) recorded; the extent test is unrun)
+Status: done -- (S)/(S) recorded; the extent test is unrun
 Answers: none
 Working in: C:/PR/worktrees/sfs/289
 
