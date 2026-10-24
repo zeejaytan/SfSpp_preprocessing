@@ -47,6 +47,38 @@ to explain away misses: ticket 279 measured that on 163 of 163 pieces a referenc
 the authors' own kept surface, and 265 lanes sit within 2 mm of these references, so one piece is wrong, not
 the standard.
 
+### Which pieces are in the corpus, and which the authors left out
+
+The released datasets carry **exactly the pieces the paper reports** (Table V) — A 8, B 9, C 4,
+D 29, E 31, F 6, G 7, H 11, I 27, J 11 = **143** — while the samples tree on Spartan holds **164
+meshes and 163 pieces with breaklines**. The 21 extra pieces are not lost data; they are the ones the
+authors excluded on purpose (`C:/PR/papers/text/sfspp-2502.13986v1.md:329`): "we exclude very small
+fragments comprising fewer than 50 points in the respective surface edge lines (with a perimeter of
+approximately 9cm) and special parts such as the handle, nose, or ornament. This results in removing
+1 piece from pot C, 2 pieces from pot D, 4 pieces from pot E, 2 pieces from pot F, 3 pieces from pot I,
+and 8 pieces from pot J." That is 20 removals and our tree reproduces the total exactly — 20 pieces
+carry the authors' own breaklines, axis and both surfaces but have no released cloud. Their per-pot
+split differs from ours by one on C, D, E and F, so treat the paper's list as approximate and the total
+as the reliable figure.
+
+Consequences before quoting a score:
+
+- **Five scored pieces were excluded by the authors**: Pot F 07, Pot I 28, Pot I 29, Pot I 30, Pot J 12.
+  Their scores are ours alone and cannot be set against the paper's evaluation.
+- **Pot C 07** has no author artefacts at all — a mesh only. It was never processed.
+- The frozen clouds live in `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/`:
+  143 released (binary, ~1,000,000 points each) plus 5 derived from the mesh (ASCII, ~841,000), with
+  `MANIFEST_released.tsv` and `MANIFEST_derived.tsv` beside them.
+
+**A derived cloud is not a second-class one — measured, not assumed** (Pot C 01, the one piece that has
+both): nearest-neighbour distance to the released cloud median **0.091 mm** ours→release and **0.110 mm**
+release→ours (p99 0.23 / 0.36, max 0.39 / 0.94); signed offset along the released normal median
+**0.000 mm** (p5 -0.010, p95 +0.009); normals agree at |dot| **0.999** median (p5 0.987); point spacing
+0.084 mm against their 0.092. Ours carries 16% fewer points (840,835 against 1,000,026) because
+`cc_mesh_to_pcd.sh` applies a statistical outlier removal the release does not. The only real
+difference is that the sampler is unseeded, so a rebuild is a different draw of the same surface — the
+spread measured between two draws is 0.14-0.16 mm on the median, about one sample spacing.
+
 ## Repo history note (2026-07-19 migration)
 
 The pre-migration fork on GitHub and the cluster checkout had **unrelated histories**: the cluster repo re-created upstream's commits with different hashes, then added ~20 research commits. Migration merged the fork lineage into the cluster lineage with `-s ours` (fork content was verified byte-identical to its cluster mirror commit `ad6f415`, so nothing was lost). History contains ~1GB of committed Pot A dataset revisions — cloning is slow; that is expected.
