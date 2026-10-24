@@ -62,10 +62,46 @@ Pot D P25 (2026-10-21, 231 amendment): fresh pipe lanes SWAPPED -- straight slot
 
 ## J. Paper-arm default ON + 10-pot preprocessing rollout (2026-10-23) -- ALL BELOW IS PAPER-ARM, not legacy chain
 Arm flip: paperChain false->true x2 in mesh_processing_headless.cpp (:2039, :2557), committed 1a7c68d; SFS_PAPER_CHAIN=0 still opts out. Binary record (bm172 rebuild, jobs 33690135/33690569 COMPLETED): mesh a51e7c1c385a2039c7932780a837c19f, edge dc472b0e87c934b6c487ff8637209864 (edge byte-identical to pre-flip; source unchanged since for both files).
-What the arm INCLUDES (paper-exact, was parked behind SFS_PAPER_CHAIN): mergeClusters theta=4/kappa=1/nb=10 multi-pass (:1384), B-spline lane smoother (:810), inside/outside vote classifyAndOrder (:1990), axis-ray face marching, PotSAC top-10/prune 0.9848/refine, rim 1.0/0.1/20/steadiest. What is NOT in this binary (still worktree patches only, vote247.diff + 248-filter diff): vote-order lane selection, K-D tree clean-up filter, 1.9mm resample. All scores below are default-env runs (no SFS_* set, 7x paper=PAPER-CHAIN in every pipe log).
+What the arm INCLUDES (paper-exact, was parked behind SFS_PAPER_CHAIN): mergeClusters theta=4/kappa=1/nb=10 multi-pass (:1384), B-spline lane smoother (:810), inside/outside vote classifyAndOrder (:1990), axis-ray face marching, PotSAC top-10/prune 0.9848/refine, rim 1.0/0.1/20/steadiest. What is NOT in this binary (still worktree patches only, vote247.diff + 248-filter diff): vote-order lane selection, K-D tree clean-up filter, 1.9mm resample.
+  SUPERSEDED 2026-10-24 (main = 67ff3d7 = b289e87 + the strip): the shipped default now IS the no-discard full walk (SFS_FULL_WALK=0 restores largest-comp + clock sort), with the 12mm stop-at-the-weld rule (SFS_STOP_NOFRESH, 0 disables), the vote-order host including the 1.9mm resample, theta default 3.4 (SFS_PAPER_THETA) and the 274 neighbour clamp. The blind density filter, braid gate, guided filter, loop-select and vote repair were REJECTED and deleted (538357c + 67ff3d7), so the 'still worktree patches' sentence above no longer describes main. The walk selector of ticket 275 is measured but HELD on the conservator's order: patch at .scratch/pota-repro/patches/275-walk-selector.patch. Every score in section J was collected at theta 4.0 on the pre-strip binary: section J is history, not the current binary's behaviour, and the 214 lanes still need re-scoring. All scores below are default-env runs (no SFS_* set, 7x paper=PAPER-CHAIN in every pipe log).
 Scores vs author edges (bar = med<2mm + cov>=90, matched slot): A 16/16 PASS (250, 87e5c38); C no-drift vs 249 diagnosis (251, e66890e); D 51/58 (252, 0650111); B 17/18, P01-Bl1 1.89x tail (253, d5427ea; ticket-41 teleport mode GONE with no T42 fix); E 60/62, P13/P16 single-lane near-miss (254, 7db8cd3); F 12/14, 0 miss, 0 jumps>10 (255, caecb92); G 12/14, P07 near (256, a3e15d3); H 18/22, 4x Bl1 single-lane (257, 9f1bb3c); I 55/60, 0 miss (258, 1a64da0); J 20/24, P01 both-lane 1.64/1.65x tails + P09 whole-piece both-lane miss rev 39/52 (259, c48966e). New-pot total 194/214 at bar (~91%). Naming offset (pipeline Bl0/Bl1 vs author convention) on D/E/F/G/I, unambiguous on cross-check; B/H/J straight. Miss family: tracer leaves rim (tails, chord cuts, parallel ridge, one wander, one whole piece); never the ruler (reverse coverage decides every case).
 Decision: APPLIED as the default preprocessing arm for all pots; misses recorded as known-single-lane (J-P09 whole-piece flagged for its own call).
 Owner tickets: 250, 251, 252, 253, 254, 255, 256, 257, 258, 259.
+
+## K. Failure classes that are NOT tracing failures (2026-10-24, tickets 276/278/279)
+
+Rule, measured on the authors' own outputs, not inferred: **a reference breakline is always the boundary curve
+of the surface they kept.** Corpus-wide (163 pieces x 2 lanes = 326 lanes), every reference line sits a median
+0.27 mm from its own Surface_0/Surface_1, 326/326 within 1 mm, lane 0 -> Surface_0 and lane 1 -> Surface_1 on all
+163 pieces, and the largest angular gap around the nearest surface point is 164.9 deg (lane 0) / 167.6 deg
+(lane 1), minimum over the corpus 140.0 deg. No reference line is ever drawn on a region their surfaces exclude
+(ticket 279, run 20261024-1417_dc869d4_p279-basefaces).
+
+Consequence: **partition mismatch** is its own class. When our surface stage keeps a different face than theirs,
+our boundary and their boundary are different real edges on the same sherd, and no walking, resampling or
+threshold change can close the gap.
+
+Confirmed member: **Pot C 03 Breakline_1** (the piece is a base sherd). Their Surface_1 (8150 pts) is the base
+disc; our equivalent cluster c2 (13265 pts, complete disc, |n.axis| 1.000, 36/36 bins, edge_cv 0.025) sits
+0.295 mm from it and is DROPPED (third by size). Our second surface is an exterior wall of 17245 pts that is in
+NEITHER of their surfaces (5.992/8.083/10.472 mm to their S0, 14.456 mm to their S1). Their line rides the base
+rim (0.276 mm median, 73.3% of dots within 1 mm of r95 33.17 mm); ours follows the wall's fracture edge.
+
+Scope, so this does not grow: a complete base disc appears on 3 pieces of 163 (Pot A 01, Pot C 03, Pot J 03) and
+the detector is flat across its parameter range (edge_cv 0.10-0.15 -> 3, 0.25 -> 4; nsel 150-600 and l3/l1
+0.01-0.05 change nothing). On our side the only complete disc among the four meshed pieces is C03's, and we drop
+it. Nothing was built for this and nothing is planned to be: the fix would be third-surface support or a growth
+change, and the class explains one lane of the 214 scored.
+
+Also closed by the same work, each by measurement rather than argument: the cluster merge (fires correctly on a
+deliberately split surface; the refusing test is the paper's Appendix A step 3, refusing for a legitimate
+geometric reason), theta (re-meshed at 3.4, the base still dropped), rho_d (reaching it would need ~3 mm = ten
+sampling spacings and the base is still third by size), and the two-largest ordering itself (not the difference:
+each pipeline kept a different second face). The gap is a labelling gap, not a hole: 1175 unclustered points form
+the base-to-wall corner ring at 0.3556 mm mutual spacing in all 36 bins, and 0 of them lie within 1 mm of either
+side, so the base's nearest kept point is 2.4872 mm = 2.5x rho_d and no Appendix A pair can form.
+
+Owner tickets: 276, 278, 279.
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
