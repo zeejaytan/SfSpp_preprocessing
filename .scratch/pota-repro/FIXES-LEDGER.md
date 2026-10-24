@@ -105,6 +105,11 @@ Owner tickets: 276, 278, 279.
 
 ## L. Known-defective input pieces (read before scoring)
 
+**Pot J 01 — not watertight.** Same defect as Pot C 01 (conservator, 2026-10-24). Its lanes run
+Bl0 25 dots / 32.05 mm / cov 0.0 shipped (47 / 29.27 on a theta-3.4 rebuild) against an 832-dot bag
+in four components, with the walk seed in the 127-dot lump 36.72 mm from the largest. This removes
+one of the last two pieces of evidence for a walk-seed change — only Pot B 01 remains sound.
+
 **Pot C 01 — not watertight.** The scan left a gap in the surface mesh; the pipeline reads it as
 a second broken edge the sherd does not have. Its lanes (Bl0 25 dots / 51.62 mm / cov 0.0 at the
 shipped defaults; 986-dot bag in 4 components) measure the input, not the method. Two candidate

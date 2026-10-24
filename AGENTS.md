@@ -16,12 +16,20 @@ This is the **preprocessing** stage (axis extraction, breaklines, NURBS surfaces
 
 ## Corpus caveats — read before scoring
 
-**Pot C 01 is not watertight.** The scan left a gap in the surface mesh, and the pipeline reads
-that gap as **a second broken edge the sherd does not have**. Any lane on Pot C 01 (Bl0/Bl1) is
-therefore measured against a reference that includes an edge we invent: its scores are evidence
-about the input, not about the method, and it can neither convict nor exonerate a change.
-Recorded from the conservator, 2026-10-24; details, the two competing causes and the open
-measurements are in `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
+The conservator reports two pieces that are not watertight. On each, the scan left a gap in the
+surface mesh and the pipeline reads that gap as **a second broken edge the sherd does not have**.
+Any lane on these pieces is therefore measured against a reference that includes an edge we invent:
+its scores are evidence about the input, not about the method, and it can neither convict nor
+exonerate a change.
+
+- **Pot C 01** — Bl0 25 dots / 51.62 mm / cov 0.0 at the shipped defaults; its 986-dot bag sits in
+  four pieces.
+- **Pot J 01** — Bl0 47 dots / 29.27 mm on the theta-3.4 rebuild (25 / 32.05 shipped); its 832-dot
+  bag sits in four pieces (580 / 127 / 75 / 50).
+
+Recorded from the conservator, 2026-10-24. Details, the two competing causes on each piece (the walk
+seed landing in a debris lump, ticket 275, and the scan gap) and the open measurements are in
+`.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
 ## Repo history note (2026-07-19 migration)
 
