@@ -190,5 +190,33 @@ pieces a reference line is the boundary of the authors' own kept surface, and 26
 these references. What would overturn the ruling: their surface being trimmed exactly where ours is not, by
 an identifiable rule -- then theirs would be consistent and ours the outlier here. Nothing in hand shows it.
 
+## O. Pieces outside the authors' evaluation set (read before comparing to the paper)
+
+**Five pieces we score were never evaluated by the authors, so their numbers are ours alone**
+(2026-10-24, measured against the released archives): **Pot F 07, Pot I 28, Pot I 29, Pot I 30,
+Pot J 12**.
+
+- The paper excludes pieces by rule — "very small fragments comprising fewer than 50 points in the
+  respective surface edge lines (with a perimeter of approximately 9cm) and special parts such as the
+  handle, nose, or ornament", removing 1 from C, 2 from D, 4 from E, 2 from F, 3 from I, 8 from J = 20
+  (`C:/PR/papers/text/sfspp-2502.13986v1.md:329`). The samples tree reproduces that total exactly:
+  20 pieces carry the authors' breaklines, axis and both surfaces but no released cloud (a 21st,
+  Pot C 07, has no author artefacts at all). The per-pot split in the paper is off by one on C, D, E
+  and F against ours; the total is the reliable figure.
+- **The release is the evaluation set, not a lost subset.** `Mesh.zip` and `Point.zip` carry exactly
+  Table V's counts — A 8, B 9, C 4, D 29, E 31, F 6, G 7, H 11, I 27, J 11 = **143** — and all 143
+  meshes are byte-equivalent in vertex and face counts to ours.
+- **How to use them**: score them against the authors' breaklines as usual (the reference is a real
+  author line), report them with the corpus, and **never set their scores beside the paper's**. Pot J
+  and the pot subtotals must state which of their lanes are inside the evaluation set.
+- **The derived clouds are not second-class** — measured on Pot C 01, the one piece that has both:
+  nearest-neighbour median 0.091 mm derived→released and 0.110 mm released→derived (p99 0.23 / 0.36),
+  offset along the released normal median 0.000 mm, normals |dot| 0.999, own spacing 0.084 against
+  0.092 mm. Ours carries 16% fewer points because `cc_mesh_to_pcd.sh` applies a statistical outlier
+  removal the release does not. The one real difference is that the sampler is unseeded, worth
+  0.14-0.16 mm on a lane median (ticket 289).
+- Corpus root and manifests: `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/`
+  (`MANIFEST_released.tsv`, `MANIFEST_derived.tsv`, `README.md`).
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
