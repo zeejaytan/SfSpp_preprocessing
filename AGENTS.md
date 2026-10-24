@@ -33,6 +33,20 @@ change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-
 the competing causes and the open measurements are in
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
+### A reference can be the broken thing (read this before quoting any score)
+
+**Pot J 09 — do not score against the authors' breaklines on this piece** (conservator's ruling, 2026-10-24,
+ticket 289). Their interior line runs 1-2 mm inside the sherd's real edge; their exterior line leaves the
+edge for about 41 mm and crosses the flat of the face, up to 10.4 mm from ours. Both of our lines follow the
+broken edge, read on an on-mesh overlay against `Pot_J_Piece_09_Mesh_DS.obj`. Both lanes are **excluded
+from the bar tally**: the piece is neither a pass nor a miss. Pot J is 20 of 22 valid lanes at bar; the
+corpus is 265 of 294.
+
+This is the third of the workspace's three kinds of claim — the reference is wrong — and it is not a licence
+to explain away misses: ticket 279 measured that on 163 of 163 pieces a reference line is the boundary of
+the authors' own kept surface, and 265 lanes sit within 2 mm of these references, so one piece is wrong, not
+the standard.
+
 ## Repo history note (2026-07-19 migration)
 
 The pre-migration fork on GitHub and the cluster checkout had **unrelated histories**: the cluster repo re-created upstream's commits with different hashes, then added ~20 research commits. Migration merged the fork lineage into the cluster lineage with `-s ours` (fork content was verified byte-identical to its cluster mirror commit `ad6f415`, so nothing was lost). History contains ~1GB of committed Pot A dataset revisions — cloning is slow; that is expected.

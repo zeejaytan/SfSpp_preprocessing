@@ -1,6 +1,6 @@
 # 289 — Pot J 09: show the surface, our edge line and the authors' edge line
 
-Status: done -- (S)/(S) recorded; the extent test is unrun
+Status: done -- reference defect recorded, J09 unscorable (both lanes excluded from the bar)
 Answers: none
 Working in: C:/PR/worktrees/sfs/289
 
@@ -351,3 +351,37 @@ and median 27.0 / p90 43.3 / max 89.3 deg on 500 RANDOM mesh points. A 5,633-ver
 much normal noise everywhere, so curvature cannot separate the two contours here. The question stays a
 visual one, and the picture above is the answer: both lines are on the same face, and theirs is the one
 that leaves the edge.
+
+
+## Reference verdict — this piece's author line is not a valid standard (conservator, 2026-10-24)
+
+The conservator's instruction (m02455): "J09 both edgeline, our edgeline is better than author's, so don't
+use author's edgeline as measure standard for this piece."
+
+Recorded as a **reference defect**, the third of the workspace's three kinds of claim (method failed /
+measurement broken / reference wrong) and the same class as the Juglet benchmark. It rests on the on-mesh
+overlay above, read by the conservator: on both lanes our line follows the sherd's actual broken edge,
+while the authors' line runs 1-2 mm inside it on the interior lane and leaves the edge entirely for about
+41 mm of the exterior lane, crossing the flat of the face. Their line is therefore not a trace of the break
+on this piece, and a score against it measures the distance between two different definitions, not our error.
+
+**Consequences, applied:**
+
+- Pot J 09's two lanes are **excluded from the bar tally**, and the piece is neither a pass nor a miss.
+  Pot J's rollout line becomes **20 of 22 valid lanes at bar** (was 20 of 24, counting P09's two lanes as
+  misses; P01's two tail lanes remain misses); the corpus line becomes **265 of 294 valid lanes**.
+- The ticket keeps the raw numbers in the table above: they are still the measurement, they are simply not
+  an acceptance criterion for this piece.
+- Tickets 259 and 289's earlier phrasing ("the only whole-piece failure of the rollout") no longer stands as
+  a failure; it stands as a piece we cannot score.
+
+**What this does not claim.** It does not say our line is correct in absolute terms — our line is the
+boundary of our own surface, so if that surface were wrongly extended our line would be wrong with it. The
+conservator has judged it against the mesh, which is the strongest evidence available on this piece and the
+right authority for it. It also does not generalise: the reference lines were validated as the boundaries of
+the authors' own surfaces on 163 of 163 pieces (ticket 279), and 265 lanes sit within 2 mm of them, so this
+is one piece's reference that is wrong, not a doubt cast on the rest.
+
+**Overturning evidence**, if it ever appears: their surface turning out to be trimmed exactly where ours is
+not, by a rule we could identify and apply — then their line would be the consistent one and ours the
+outlier on this piece. Nothing in hand supports that.

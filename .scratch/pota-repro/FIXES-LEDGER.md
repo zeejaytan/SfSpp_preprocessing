@@ -171,5 +171,24 @@ in for them because the edge stage also needs the mesh-stage product. H02/H10 ar
 corpus cannot be re-scored (ticket 284). Ticket 275's walk selector stays HELD and is now redundant in
 purpose: this change seeds the single full walk instead of adding a fallback path.
 
+
+## N. Known-defective reference lines (read before scoring)
+
+**Pot J 09 — the authors' breaklines are not a valid standard on this piece** (conservator's ruling,
+2026-10-24, ticket 289). Their interior line runs 1-2 mm inside the sherd's actual edge; their exterior
+line leaves the edge altogether for about 41 mm and crosses the flat of the face, up to 10.4 mm from ours.
+Our line follows the broken edge on both lanes, read on an on-mesh overlay of both lines against
+`Pot_J_Piece_09_Mesh_DS.obj`.
+
+Applied: **both J 09 lanes are excluded from the bar tally**, so the piece is neither pass nor miss. Pot J
+is **20 of 22 valid lanes at bar** (was 20 of 24 with P09 counted as two misses; P01's two tail lanes remain
+misses) and the corpus is **265 of 294 valid lanes**. The raw numbers stay in ticket 289: they are the
+measurement, not an acceptance criterion.
+
+This is one reference that is wrong, not a doubt about the rest: ticket 279 measured that on 163 of 163
+pieces a reference line is the boundary of the authors' own kept surface, and 265 lanes sit within 2 mm of
+these references. What would overturn the ruling: their surface being trimmed exactly where ours is not, by
+an identifiable rule -- then theirs would be consistent and ours the outlier here. Nothing in hand shows it.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
