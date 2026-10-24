@@ -1,0 +1,769 @@
+--- mesh_processing_headless.cpp	2026-10-24 00:54:44.511375800 +1100
++++ .scratch/pota-repro/ticket278_files/mesh_processing_headless.cpp	2026-10-24 11:23:32.761511500 +1100
+@@ -31,7 +31,6 @@
+ #include <string>
+ #include <filesystem>
+ #include <stdio.h>
+-#include <cstdlib>  // TICKET 234: getenv
+ #include <pcl/filters/uniform_sampling.h>
+ 
+ #include <chrono>
+@@ -272,6 +271,88 @@
+ 
+ #include <pcl/surface/mls.h>
+ 
++// ============================================================================
++// DENSITY-BASED ADAPTIVE PARAMETERS
++// ============================================================================
++// Reference values (tuned for sample dataset with ~1mm spacing):
++//   CGAL nb_neighbors = 5
++//   Region growing K = 10
++//   minCluster = 50
++// These scale based on actual point spacing to maintain consistent geometric behavior
++// ============================================================================
++
++// Estimate average point spacing using k-nearest neighbors
++template<typename PointT>
++double estimatePointSpacing(typename pcl::PointCloud<PointT>::Ptr cloud, int k = 5) {
++    if (cloud->points.size() < k + 1) {
++        return 1.0;  // Default to 1mm if too few points
++    }
++
++    pcl::KdTreeFLANN<PointT> kdtree;
++    kdtree.setInputCloud(cloud);
++
++    double totalSpacing = 0.0;
++    int sampleCount = std::min(500, (int)cloud->points.size());  // Sample up to 500 points
++    int step = std::max(1, (int)cloud->points.size() / sampleCount);
++    int validSamples = 0;
++
++    for (size_t i = 0; i < cloud->points.size() && validSamples < sampleCount; i += step) {
++        std::vector<int> indices(k + 1);
++        std::vector<float> distances(k + 1);
++
++        if (kdtree.nearestKSearch(cloud->points[i], k + 1, indices, distances) > 0) {
++            // Average distance to k nearest neighbors (skip self at index 0)
++            double avgDist = 0.0;
++            for (int j = 1; j <= k; j++) {
++                avgDist += std::sqrt(distances[j]);
++            }
++            avgDist /= k;
++            totalSpacing += avgDist;
++            validSamples++;
++        }
++    }
++
++    double spacing = (validSamples > 0) ? totalSpacing / validSamples : 1.0;
++    return std::max(0.1, std::min(10.0, spacing));  // Clamp to reasonable range (0.1mm - 10mm)
++}
++
++// Compute adaptive CGAL neighbors based on point spacing
++// Reference: 5 neighbors for 1.0mm spacing
++int adaptiveCGALNeighbors(double spacing) {
++    const double refSpacing = 1.0;  // mm
++    const int refNeighbors = 5;
++
++    // Scale inversely with spacing: denser mesh needs more neighbors
++    // But clamp to reasonable range [5, 12]
++    int neighbors = (int)(refNeighbors * (refSpacing / spacing));
++    return std::max(5, std::min(12, neighbors));
++}
++
++// Compute adaptive region growing K based on point spacing
++// Reference: K=10 for 1.0mm spacing
++int adaptiveRegionGrowingK(double spacing) {
++    const double refSpacing = 1.0;  // mm
++    const int refK = 10;
++
++    // Scale inversely with spacing: denser mesh needs more neighbors for same physical region
++    // Clamp to [8, 15] to avoid extreme values
++    int K = (int)(refK * (refSpacing / spacing));
++    return std::max(8, std::min(15, K));
++}
++
++// Compute adaptive minCluster based on point spacing
++// Reference: minCluster=50 for 1.0mm spacing (~50mm² minimum feature)
++int adaptiveMinCluster(double spacing, int defaultMin = 50) {
++    const double refSpacing = 1.0;  // mm
++    const int refMinCluster = 50;
++
++    // Scale with inverse square of spacing: denser mesh has more points per area
++    // minCluster represents minimum feature SIZE, which scales with point density
++    double scale = (refSpacing / spacing) * (refSpacing / spacing);
++    int minCluster = (int)(refMinCluster * scale);
++    return std::max(defaultMin, std::min(500, minCluster));  // Clamp to [defaultMin, 500]
++}
++
+ void uniformSampling(string cloudPath, string cloudOutPath, double cloud_res = 0.1F)
+ {
+ 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud(new pcl::PointCloud<pcl::PointNormal>);
+@@ -416,10 +497,22 @@
+ 	}
+ 	std::cout << "[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: " << points.size() << std::endl;
+ 
+-	// ADAPTIVE: Scale K neighbors with density (5 for dense, 15-20 for sparse)
+-	int nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000));
+-	std::cout << "[ADAPTIVE CGAL] Using " << nb_neighbors << " neighbors for "
+-	          << points.size() << " points (density-aware)" << std::endl;
++	// DENSITY-BASED ADAPTIVE CGAL: Estimate spacing from bounding box
++	// Reference: 5 neighbors for 1.0mm spacing
++	double minX = std::numeric_limits<double>::max(), maxX = std::numeric_limits<double>::lowest();
++	double minY = std::numeric_limits<double>::max(), maxY = std::numeric_limits<double>::lowest();
++	double minZ = std::numeric_limits<double>::max(), maxZ = std::numeric_limits<double>::lowest();
++	for (const auto& p : points) {
++		minX = std::min(minX, p.first.x()); maxX = std::max(maxX, p.first.x());
++		minY = std::min(minY, p.first.y()); maxY = std::max(maxY, p.first.y());
++		minZ = std::min(minZ, p.first.z()); maxZ = std::max(maxZ, p.first.z());
++	}
++	double diagonal = std::sqrt((maxX-minX)*(maxX-minX) + (maxY-minY)*(maxY-minY) + (maxZ-minZ)*(maxZ-minZ));
++	double cgalSpacing = diagonal / std::sqrt((double)points.size());  // Approximate average spacing
++	cgalSpacing = std::max(0.1, std::min(10.0, cgalSpacing));  // Clamp to reasonable range
++	int nb_neighbors = adaptiveCGALNeighbors(cgalSpacing);
++	std::cout << "[DENSITY-ADAPTIVE CGAL] " << points.size() << " points, spacing≈"
++	          << std::fixed << std::setprecision(2) << cgalSpacing << "mm, nb_neighbors=" << nb_neighbors << std::endl;
+ 
+ 	// Estimates normals direction.
+ 	CGAL::pca_estimate_normals<Concurrency_tag>
+@@ -566,11 +659,10 @@
+ pcl::PointCloud<pcl::PointNormal>::Ptr downsampledCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
+ std::string outputFile = "";
+ 
+-// POTA-244: targetSamples == 0 restores the pre-48fb588 fixed-radius path
+-// (pristine-splitwalk: UniformSampling at samplingRadius, no target loop);
+-// targetSamples < 0 skips downsampling (raw cloud, 48fb588); > 0 auto-tunes to target (48fb588).
+-// Default 0 = restored density. SFS_DOWNSAMPLE_TARGET=N overrides (19000 = current behavior).
+-std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 0) {
++// Auto-tunes sampling radius based on scene scale; aims for ~targetSamples (default 10000)
++// If targetSamples == 0 or -1, skips downsampling and uses raw point cloud instead
++// If targetSamples == -2, uses FIXED samplingRadius without iterative adjustment (matches original behavior)
++std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius = 0.6F, int targetSamples = 10000) {
+ 	pcl::PointCloud<pcl::PointXYZ>::Ptr originalPointCloudXYZ(new pcl::PointCloud<pcl::PointXYZ>);
+ 	pcl::PointCloud<pcl::PointNormal>::Ptr originalPointCloud(new pcl::PointCloud<pcl::PointNormal>);
+ 
+@@ -585,8 +677,8 @@
+ 	pcl::PointCloud<pcl::PointNormal>::Ptr originalCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
+ 	pcl::copyPointCloud(*originalPointCloud, *originalCloudWithNormals);
+ 
+-	// SPECIAL CASE: If targetSamples < 0, skip downsampling and use raw cloud
+-	if (targetSamples < 0) {
++	// SPECIAL CASE: If targetSamples == 0 or -1, skip downsampling and use raw cloud
++	if (targetSamples == 0 || targetSamples == -1) {
+ 		std::cout << "[NO DOWNSAMPLING] Using raw point cloud with " << originalCloudWithNormals->size() << " points" << std::endl;
+ 		// Use raw cloud directly - copy to downsampledCloud
+ 		pcl::copyPointCloud(*originalCloudWithNormals, *downsampledCloud);
+@@ -600,14 +692,26 @@
+ 		return outputFile;
+ 	}
+ 
+-	// POTA-244 RESTORE (targetSamples == 0): fixed-radius path, pre-48fb588 behavior.
+-	if (targetSamples == 0) {
++	// RADIUS-ONLY MODE: If targetSamples == -2, use fixed samplingRadius without iteration
++	// This matches the original SfSpp_preprocessing behavior for sample-like density scaling
++	if (targetSamples == -2) {
++		std::cout << "[RADIUS-ONLY MODE] Using fixed radius=" << samplingRadius << " (no target adjustment)" << std::endl;
+ 		uniformSampler.setInputCloud(originalCloudWithNormals);
+ 		uniformSampler.setRadiusSearch(samplingRadius);
+ 		uniformSampler.filter(*downsampledCloud);
+-		std::cout << "[DOWNSAMPLING RESTORE-244] Fixed radius=" << std::fixed << std::setprecision(5) << samplingRadius
+-		          << ", input=" << originalCloudWithNormals->size() << " points, Result=" << downsampledCloud->size() << " points" << std::endl;
+-	} else {
++		std::cout << "[RADIUS-ONLY RESULT] Input=" << originalCloudWithNormals->size()
++		          << " points, Output=" << downsampledCloud->size() << " points" << std::endl;
++
++		pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
++		getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
++
++		pcl::PLYWriter writer;
++		outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
++		std::cout << "[RADIUS-ONLY MODE] Saving PLY with normals..." << std::endl;
++		writer.write<pcl::PointNormal>(outputFile, *downsampledCloudWithNormals, false);
++		return outputFile;
++	}
++
+ 	pcl::KdTreeFLANN<pcl::PointNormal> kdTree;
+ 	kdTree.setInputCloud(originalCloudWithNormals);
+ 
+@@ -662,7 +766,6 @@
+               << "Bounds=[" << lowerBound << "-" << upperBound << "], "
+               << "Result=" << downsampledCloud->size() << " points, "
+               << "Radius(leaf)=" << std::fixed << std::setprecision(5) << leaf << std::endl;
+-	} // end POTA-244 adaptive branch (targetSamples > 0)
+ 
+ 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
+     getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+@@ -1589,455 +1692,7 @@
+ 	writeMatrix_to_XYZ(pointCloudMatrix, outFile, 6, convertToMM);
+ }
+ 
+-// ============================================================================
+-// TICKET 234 -- plane-continuity split rule (user-specified, 2026-10-22).
+-// A dot joins the region iff it agrees with the region's fitted plane: the
+-// reference is the plane fit over the last `planeWindow` accepted dots
+-// (sliding window, refit on every accept, normal oriented to the seed), so
+-// accumulated twist stays inside tolerance. A sharp departure (angle to the
+-// window plane > joinDeg, or point-to-plane distance > distMM) is left
+-// unfiled and seeds a new face later. The fit is LOCAL: a full 360deg
+-// annulus tracks itself and does not self-split at closure (ring control).
+-// ============================================================================
+-static bool fitPlaneWindow234(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+-    const std::vector<int>& region, int planeWindow,
+-    const Eigen::Vector3f& refNormal,
+-    Eigen::Vector3f& outNormal, Eigen::Vector3f& outPoint)
+-{
+-    int n = static_cast<int>(region.size());
+-    int w = std::min(planeWindow, n);
+-    if (w < 3) {
+-        int s = region.back();
+-        outPoint = cloud->points[s].getVector3fMap();
+-        outNormal = refNormal;
+-        return true;
+-    }
+-    Eigen::Vector3f mean(0.0f, 0.0f, 0.0f);
+-    for (int i = n - w; i < n; ++i) mean += cloud->points[region[i]].getVector3fMap();
+-    mean /= static_cast<float>(w);
+-    Eigen::Matrix3f cov = Eigen::Matrix3f::Zero();
+-    for (int i = n - w; i < n; ++i) {
+-        Eigen::Vector3f d = cloud->points[region[i]].getVector3fMap() - mean;
+-        cov += d * d.transpose();
+-    }
+-    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es(cov);
+-    Eigen::Vector3f normal = es.eigenvectors().col(0);
+-    if (normal.dot(refNormal) < 0.0f) normal = -normal;
+-    outNormal = normal;
+-    outPoint = mean;
+-    return true;
+-}
+-
+-static double angleToPlaneNormal234(const Eigen::Vector3f& n, const Eigen::Vector3f& planeN)
+-{
+-    Eigen::Vector4f a(n(0), n(1), n(2), 0.0f);
+-    Eigen::Vector4f b(planeN(0), planeN(1), planeN(2), 0.0f);
+-    return pcl::getAngle3D(a, b, true);
+-}
+-
+-static std::vector<pcl::PointIndices> growRegionsPlaneContinuity234(
+-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr normals,
+-    int minClusterSize, int numberOfNeighbours,
+-    double joinDeg, double distMM, int planeWindow,
+-    double curvatureSeedThresh)
+-{
+-    std::vector<pcl::PointIndices> clusters;
+-    const int N = static_cast<int>(cloud->points.size());
+-    if (N == 0) return clusters;
+-    std::vector<char> taken(N, 0);
+-    std::vector<int> order(N);
+-    for (int i = 0; i < N; ++i) order[i] = i;
+-    std::sort(order.begin(), order.end(), [&](int a, int b) {
+-        return normals->points[a].curvature < normals->points[b].curvature;
+-    });
+-    pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
+-    kdtree.setInputCloud(cloud);
+-    std::vector<int> nbrs;
+-    std::vector<float> dists;
+-    std::vector<int> queue;
+-    std::vector<int> region;
+-    queue.reserve(2048);  // NOTE: frontier index is `fh`: qhull headers + -Dqh_QHpointer hijack the name `qh`
+-    region.reserve(8192);
+-    for (int s = 0; s < N; ++s) {
+-        int seed = order[s];
+-        if (taken[seed]) continue;
+-        if (normals->points[seed].curvature > curvatureSeedThresh) continue;
+-        region.clear();
+-        region.push_back(seed);
+-        taken[seed] = 1;
+-        Eigen::Vector3f seedN(normals->points[seed].normal_x,
+-                              normals->points[seed].normal_y,
+-                              normals->points[seed].normal_z);
+-        Eigen::Vector3f planeN, planeP;
+-        fitPlaneWindow234(cloud, region, planeWindow, seedN, planeN, planeP);
+-        queue.clear();
+-        queue.push_back(seed);
+-        size_t fh = 0;
+-        while (fh < queue.size()) {
+-            int cur = queue[fh++];
+-            nbrs.clear(); dists.clear();
+-            if (kdtree.nearestKSearch(cloud->points[cur], numberOfNeighbours + 1, nbrs, dists) <= 0) continue;
+-            for (size_t k = 0; k < nbrs.size(); ++k) {
+-                int nb = nbrs[k];
+-                if (nb == cur || taken[nb]) continue;
+-                Eigen::Vector3f nn(normals->points[nb].normal_x,
+-                                   normals->points[nb].normal_y,
+-                                   normals->points[nb].normal_z);
+-                double ang = angleToPlaneNormal234(nn, planeN);
+-                Eigen::Vector3f pp = cloud->points[nb].getVector3fMap();
+-                double dd = std::fabs((pp - planeP).dot(planeN));
+-                if (ang <= joinDeg && dd <= distMM) {
+-                    taken[nb] = 1;
+-                    region.push_back(nb);
+-                    queue.push_back(nb);
+-                    fitPlaneWindow234(cloud, region, planeWindow, seedN, planeN, planeP);
+-                }
+-            }
+-        }
+-        if (static_cast<int>(region.size()) >= minClusterSize) {
+-            pcl::PointIndices pi;
+-            pi.indices = region;
+-            clusters.push_back(pi);
+-        }
+-    }
+-    return clusters;
+-}
+-
+-// ============================================================================
+-// TICKET 234 PAPER ARM (lead redirect 2026-10-22, SfS++ Sec IV-B1 verbatim).
+-// (1) region growing from the min-curvature point: n_b neighbours, join iff
+-// curvature < tau_kappa AND normal angle to the CURRENT front-point normal
+-// < tau_theta (Rabbani [35] / PCL semantics: the reference drifts with the
+-// front, so gradual twist is followed and only sharp turns split; a fixed
+-// seed reference over-segments -- verified v1 vs v2).
+-// (2) cluster merging to fixpoint (paper criteria, numeric choices reported
+-// at the call site): kNN close pairs between clusters (dist <= closeMM),
+-// patch-average normal similarity (<= patchDeg), boundary-point curvature
+-// comparison (rel diff <= curvRel), internal-point normal+curvature
+-// verification (same gates); merge all passing pairs, repeat to fixpoint.
+-// B-spline boundary refine + resample is the existing postamble
+-// (improveSurfaceBoundaryByFittingBSplineSurface) -- not duplicated here.
+-// (3) axis-ray classification (below): Surface_0 = interior.
+-// NOTE: no local named `qh` (qhull -Dqh_QHpointer hijacks it) and no `queue`
+-// shadowing games -- names below are collision-checked against this TU.
+-// ============================================================================
+-static std::vector<pcl::PointIndices> growPaper234(
+-    pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals,
+-    int minClusterSize, int nb, double thetaDeg, double kappaThresh)
+-{
+-    std::vector<pcl::PointIndices> pclusters;
+-    const int NP = static_cast<int>(pcloud->points.size());
+-    if (NP == 0) return pclusters;
+-    std::vector<int> seedOrder(NP);
+-    for (int i = 0; i < NP; ++i) seedOrder[i] = i;
+-    std::sort(seedOrder.begin(), seedOrder.end(), [&](int a, int b) {
+-        return pnormals->points[a].curvature < pnormals->points[b].curvature;
+-    });
+-    pcl::KdTreeFLANN<pcl::PointXYZ> pkdtree;
+-    pkdtree.setInputCloud(pcloud);
+-    std::vector<int> pnb;
+-    std::vector<float> pdist;
+-    std::vector<int> pfront;
+-    std::vector<int> preg;
+-    std::vector<char> pclaimed(NP, 0);
+-    pfront.reserve(2048);
+-    preg.reserve(8192);
+-    for (int s = 0; s < NP; ++s) {
+-        int sd = seedOrder[s];
+-        if (pclaimed[sd]) continue;
+-        preg.clear();
+-        preg.push_back(sd);
+-        pclaimed[sd] = 1;
+-        pfront.clear();
+-        pfront.push_back(sd);
+-        size_t fh2 = 0;
+-        while (fh2 < pfront.size()) {
+-            int cf = pfront[fh2++];
+-            Eigen::Vector4f curN4(pnormals->points[cf].normal_x,
+-                                  pnormals->points[cf].normal_y,
+-                                  pnormals->points[cf].normal_z, 0.0f);
+-            pnb.clear(); pdist.clear();
+-            if (pkdtree.nearestKSearch(pcloud->points[cf], nb + 1, pnb, pdist) <= 0) continue;
+-            for (size_t k = 0; k < pnb.size(); ++k) {
+-                int cand = pnb[k];
+-                if (cand == cf || pclaimed[cand]) continue;
+-                if (pnormals->points[cand].curvature >= kappaThresh) continue;
+-                Eigen::Vector4f nn4(pnormals->points[cand].normal_x,
+-                                    pnormals->points[cand].normal_y,
+-                                    pnormals->points[cand].normal_z, 0.0f);
+-                if (pcl::getAngle3D(curN4, nn4, true) > thetaDeg) continue;
+-                pclaimed[cand] = 1;
+-                preg.push_back(cand);
+-                pfront.push_back(cand);
+-            }
+-        }
+-        if (static_cast<int>(preg.size()) >= minClusterSize) {
+-            pcl::PointIndices pi;
+-            pi.indices = preg;
+-            pclusters.push_back(pi);
+-        }
+-    }
+-    return pclusters;
+-}
+-
+-static Eigen::Vector3f meanNormal234(const std::vector<int>& idx,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals)
+-{
+-    Eigen::Vector3f m(0.0f, 0.0f, 0.0f);
+-    for (int id : idx) m += Eigen::Vector3f(pnormals->points[id].normal_x, pnormals->points[id].normal_y, pnormals->points[id].normal_z);
+-    float n = m.norm();
+-    if (n > 1e-9f) m /= n;
+-    else m = Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+-    return m;
+-}
+-
+-static double meanCurv234(const std::vector<int>& idx,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals)
+-{
+-    if (idx.empty()) return 0.0;
+-    double s = 0.0;
+-    for (int id : idx) s += static_cast<double>(pnormals->points[id].curvature);
+-    return s / static_cast<double>(idx.size());
+-}
+-
+-static Eigen::Vector3f pcaAxis234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    const std::vector<int>& idx)
+-{
+-    Eigen::Vector3f m(0.0f, 0.0f, 0.0f);
+-    for (int id : idx) m += pcloud->points[id].getVector3fMap();
+-    if (!idx.empty()) m /= static_cast<float>(idx.size());
+-    Eigen::Matrix3f cov = Eigen::Matrix3f::Zero();
+-    for (int id : idx) { Eigen::Vector3f d = pcloud->points[id].getVector3fMap() - m; cov += d * d.transpose(); }
+-    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es(cov);
+-    return es.eigenvectors().col(2);
+-}
+-
+-static int medianInternal234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    const std::vector<int>& idx, const Eigen::Vector3f& axis)
+-{
+-    if (idx.empty()) return -1;
+-    Eigen::Vector3f m(0.0f, 0.0f, 0.0f);
+-    for (int id : idx) m += pcloud->points[id].getVector3fMap();
+-    m /= static_cast<float>(idx.size());
+-    Eigen::Vector3f an = axis.norm() > 1e-9f ? axis.normalized() : Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+-    std::vector<std::pair<float,int> > dv;
+-    dv.reserve(idx.size());
+-    for (int id : idx) {
+-        Eigen::Vector3f w = pcloud->points[id].getVector3fMap() - m;
+-        float along = w.dot(an);
+-        float perp = (w - along * an).norm();
+-        dv.push_back(std::make_pair(perp, id));
+-    }
+-    std::nth_element(dv.begin(), dv.begin() + dv.size() / 2, dv.end());
+-    return dv[dv.size() / 2].second;
+-}
+-
+-static Eigen::Vector3f k2AvgNormal234(pcl::KdTreeFLANN<pcl::PointXYZ>& ctree,
+-    const std::vector<int>& cidx,
+-    pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals, int qid, int k2)
+-{
+-    Eigen::Vector3f m(0.0f, 0.0f, 0.0f);
+-    if (cidx.empty() || k2 <= 0) return Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+-    std::vector<int> rr; std::vector<float> dd;
+-    int K = std::min<int>(k2, static_cast<int>(cidx.size()));
+-    if (ctree.nearestKSearch(pcloud->points[qid], K, rr, dd) <= 0) return Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+-    for (int r : rr) {
+-        int gid = cidx[r];
+-        m += Eigen::Vector3f(pnormals->points[gid].normal_x, pnormals->points[gid].normal_y, pnormals->points[gid].normal_z);
+-    }
+-    float n = m.norm();
+-    if (n > 1e-9f) m /= n;
+-    else m = Eigen::Vector3f(0.0f, 0.0f, 1.0f);
+-    return m;
+-}
+-
+-
+-// One merge verdict for a cluster pair. All thresholds are the paper-arm
+-// operating point (logged by the caller).
+-// Appendix-A-normative pair verdict (provenance in patch234d.py header).
+-static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals,
+-    const std::vector<int>& A, const std::vector<int>& B,
+-    const std::vector<char>& isBnd,
+-    const Eigen::Vector3f& axisA, const Eigen::Vector3f& axisB,
+-    double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k2)
+-{
+-    if (A.empty() || B.empty()) return false;
+-    // ---- Step 1: boundary subsets, pairs within rhoD, need >= 3 ----
+-    std::vector<int> bA, bB;
+-    for (int id : A) if (isBnd[id]) bA.push_back(id);
+-    for (int id : B) if (isBnd[id]) bB.push_back(id);
+-    if (bA.empty() || bB.empty()) return false;
+-    const std::vector<int> *sP = &bA, *lP = &bB;
+-    bool sIsA = true;
+-    if (bA.size() > bB.size()) { sP = &bB; lP = &bA; sIsA = false; }
+-    pcl::PointCloud<pcl::PointXYZ>::Ptr lC(new pcl::PointCloud<pcl::PointXYZ>);
+-    for (int id : *lP) lC->points.push_back(pcloud->points[id]);
+-    lC->width = lC->points.size(); lC->height = 1;
+-    pcl::KdTreeFLANN<pcl::PointXYZ> lT;
+-    lT.setInputCloud(lC);
+-    std::vector<std::pair<int,int> > pairs;
+-    std::vector<int> oneI; std::vector<float> oneD;
+-    for (size_t i = 0; i < sP->size() && pairs.size() < 200; ++i) {
+-        int sid = (*sP)[i];
+-        oneI.clear(); oneD.clear();
+-        if (lT.nearestKSearch(pcloud->points[sid], 1, oneI, oneD) <= 0) continue;
+-        if (oneD[0] <= rhoD * rhoD) {
+-            int a = sIsA ? sid : (*lP)[oneI[0]];
+-            int b = sIsA ? (*lP)[oneI[0]] : sid;
+-            pairs.push_back(std::make_pair(a, b));
+-        }
+-    }
+-    if (pairs.size() < 3) return false;
+-    // ---- Step 2: k2-average normals + mean curvature over pair members ----
+-    pcl::PointCloud<pcl::PointXYZ>::Ptr cA(new pcl::PointCloud<pcl::PointXYZ>), cB(new pcl::PointCloud<pcl::PointXYZ>);
+-    for (int id : A) cA->points.push_back(pcloud->points[id]);
+-    for (int id : B) cB->points.push_back(pcloud->points[id]);
+-    cA->width = cA->points.size(); cA->height = 1;
+-    cB->width = cB->points.size(); cB->height = 1;
+-    pcl::KdTreeFLANN<pcl::PointXYZ> tA, tB;
+-    tA.setInputCloud(cA); tB.setInputCloud(cB);
+-    Eigen::Vector3f sNA(0,0,0), sNB(0,0,0);
+-    double sCA = 0.0, sCB = 0.0;
+-    for (size_t i = 0; i < pairs.size(); ++i) {
+-        sNA += k2AvgNormal234(tA, A, pcloud, pnormals, pairs[i].first, k2);
+-        sNB += k2AvgNormal234(tB, B, pcloud, pnormals, pairs[i].second, k2);
+-        sCA += static_cast<double>(pnormals->points[pairs[i].first].curvature);
+-        sCB += static_cast<double>(pnormals->points[pairs[i].second].curvature);
+-    }
+-    float nA = sNA.norm(), nB = sNB.norm();
+-    if (nA < 1e-9f || nB < 1e-9f) return false;
+-    sNA /= nA; sNB /= nB;
+-    if (sNA.dot(sNB) < rhoN) return false;
+-    if (std::fabs(sCA / pairs.size() - sCB / pairs.size()) >= rhoC) return false;
+-    // ---- Step 3: internal median-point verification ----
+-    int ia = medianInternal234(pcloud, A, axisA);
+-    int ib = medianInternal234(pcloud, B, axisB);
+-    if (ia < 0 || ib < 0) return false;
+-    Eigen::Vector3f na(pnormals->points[ia].normal_x, pnormals->points[ia].normal_y, pnormals->points[ia].normal_z);
+-    Eigen::Vector3f nb(pnormals->points[ib].normal_x, pnormals->points[ib].normal_y, pnormals->points[ib].normal_z);
+-    float la = na.norm(), lb = nb.norm();
+-    if (la < 1e-9f || lb < 1e-9f) return false;
+-    if (na.dot(nb) / (la * lb) < rhoInN) return false;
+-    if (std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature)) >= rhoInC) return false;
+-    return true;
+-}
+-
+-static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals,
+-    std::vector<pcl::PointIndices>& pclusters,
+-    double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k1, int k2)
+-{
+-    std::cout << "[PAPER-234] appendix-A merge: rhoD=" << rhoD << " rhoN=" << rhoN << " rhoC=" << rhoC
+-              << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2 << std::endl;
+-    const int NP = static_cast<int>(pcloud->points.size());
+-    pcl::KdTreeFLANN<pcl::PointXYZ> allTree;
+-    allTree.setInputCloud(pcloud);
+-    std::vector<int> rr; std::vector<float> dd;
+-    int pass = 0;
+-    bool any = true;
+-    while (any) {
+-        any = false;
+-        ++pass;
+-        std::vector<int> memberOf(NP, -1);
+-        for (size_t c = 0; c < pclusters.size(); ++c)
+-            for (int id : pclusters[c].indices) memberOf[id] = static_cast<int>(c);
+-        // boundary status via k1 neighbours (Alg 1 Step 1)
+-        std::vector<char> isBnd(NP, 0);
+-        for (int p = 0; p < NP; ++p) {
+-            if (memberOf[p] < 0) continue;
+-            rr.clear(); dd.clear();
+-            int K = std::min(k1 + 1, NP);
+-            if (allTree.nearestKSearch(pcloud->points[p], K, rr, dd) <= 0) continue;
+-            for (size_t i = 0; i < rr.size(); ++i) {
+-                if (rr[i] == p) continue;
+-                if (memberOf[rr[i]] != memberOf[p]) { isBnd[p] = 1; break; }
+-            }
+-        }
+-        std::vector<Eigen::Vector3f> axes(pclusters.size());
+-        for (size_t c = 0; c < pclusters.size(); ++c) axes[c] = pcaAxis234(pcloud, pclusters[c].indices);
+-        std::vector<char> dead(pclusters.size(), 0);
+-        for (size_t i = 0; i < pclusters.size(); ++i) {
+-            if (dead[i]) continue;
+-            for (size_t j = i + 1; j < pclusters.size(); ++j) {
+-                if (dead[j]) continue;
+-                if (tryMergePair234(pcloud, pnormals, pclusters[i].indices, pclusters[j].indices, isBnd,
+-                        axes[i], axes[j], rhoD, rhoN, rhoC, rhoInN, rhoInC, k2)) {
+-                    std::cout << "[PAPER-234] pass " << pass << ": merge " << pclusters[j].indices.size() << " into " << pclusters[i].indices.size() << std::endl;
+-                    pclusters[i].indices.insert(pclusters[i].indices.end(), pclusters[j].indices.begin(), pclusters[j].indices.end());
+-                    dead[j] = 1;
+-                    any = true;
+-                }
+-            }
+-        }
+-        if (any) {
+-            std::vector<pcl::PointIndices> kept;
+-            for (size_t i = 0; i < pclusters.size(); ++i) if (!dead[i]) kept.push_back(pclusters[i]);
+-            pclusters.swap(kept);
+-        }
+-        std::cout << "[PAPER-234] pass " << pass << " done: " << pclusters.size() << " clusters" << std::endl;
+-        if (pass > 25) break;
+-    }
+-}
+-
+-// Axis-ray classification (paper Sec IV-B1): ray along the point normal meets
+-// the symmetry axis; intersection on the positive normal side = interior.
+-// Both assignments tried; the one with more satisfying points wins; the
+-// interior face is moved to clusters[0] so Surface_0 = interior (redirect).
+-static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+-    pcl::PointCloud<pcl::Normal>::Ptr pnormals,
+-    std::vector<pcl::PointIndices>& pclusters)
+-{
+-    if (pclusters.size() < 2) return;
+-    const char* axPath = std::getenv("SFS_AXIS_FILE");
+-    if (!axPath || !*axPath) { std::cout << "[PAPER-234] classify: no SFS_AXIS_FILE, keep size order" << std::endl; return; }
+-    std::ifstream axf(axPath);
+-    if (!axf.is_open()) { std::cout << "[PAPER-234] classify: cannot open axis file, keep size order" << std::endl; return; }
+-    double ax, ay, az, dx, dy, dz;
+-    axf >> ax >> ay >> az >> dx >> dy >> dz;
+-    if (axf.fail()) { std::cout << "[PAPER-234] classify: bad axis parse, keep size order" << std::endl; return; }
+-    Eigen::Vector3f axPt(static_cast<float>(ax), static_cast<float>(ay), static_cast<float>(az));
+-    Eigen::Vector3f axDir(static_cast<float>(dx), static_cast<float>(dy), static_cast<float>(dz));
+-    float dl = axDir.norm();
+-    if (dl < 1e-9f) { std::cout << "[PAPER-234] classify: zero axis dir, keep size order" << std::endl; return; }
+-    axDir /= dl;
+-    double inFrac[2] = {0.0, 0.0};
+-    for (int f = 0; f < 2; ++f) {
+-        long inN = 0;
+-        for (int id : pclusters[f].indices) {
+-            Eigen::Vector3f pp = pcloud->points[id].getVector3fMap();
+-            Eigen::Vector3f nn(pnormals->points[id].normal_x, pnormals->points[id].normal_y, pnormals->points[id].normal_z);
+-            Eigen::Vector3f w = pp - axPt;
+-            float t = w.dot(axDir);
+-            Eigen::Vector3f cp = axPt + t * axDir;
+-            Eigen::Vector3f v = cp - pp;
+-            if (v.dot(nn) > 0.0f) ++inN;
+-        }
+-        inFrac[f] = pclusters[f].indices.empty() ? 0.0 : static_cast<double>(inN) / static_cast<double>(pclusters[f].indices.size());
+-    }
+-    double n0 = static_cast<double>(pclusters[0].indices.size()), n1 = static_cast<double>(pclusters[1].indices.size());
+-    double satA = inFrac[0] * n0 + (1.0 - inFrac[1]) * n1; // [0]=interior
+-    double satB = (1.0 - inFrac[0]) * n0 + inFrac[1] * n1; // [1]=interior
+-    std::cout << "[PAPER-234] classify: face0 n=" << pclusters[0].indices.size() << " interior_frac=" << inFrac[0]
+-              << " face1 n=" << pclusters[1].indices.size() << " interior_frac=" << inFrac[1]
+-              << " satA=" << satA << " satB=" << satB << std::endl;
+-    if (satB > satA) {
+-        pcl::PointIndices tmp = pclusters[0];
+-        pclusters[0] = pclusters[1];
+-        pclusters[1] = tmp;
+-        std::cout << "[PAPER-234] classify: swapped -> Surface_0=interior" << std::endl;
+-    } else {
+-        std::cout << "[PAPER-234] classify: kept -> Surface_0=interior" << std::endl;
+-    }
+-}
+-
+-void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold,
+-        bool planeRule = false, double planeJoinDeg = 60.0, double planeDistMM = 2.0, int planeWindow = 100,
+-        bool paperChain = true, double paperTheta = 3.4, double paperKappa = 1.0, int paperNB = 10,
+-        double paperRhoD = 1.0, double paperRhoN = 0.95, double paperRhoC = 0.1, double paperRhoInN = 0.75, double paperRhoInC = 0.25)
++void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold)
+ {
+     // std::string tmp_path = filePath;
+ 	std::string tmp_path = intermediatePath_global;
+@@ -2048,7 +1703,6 @@
+     int maxIterations = 30;  // Prevent infinite loops
+     int currentIteration = 0;
+     double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration
+-    if (const char* sfs_ss = std::getenv("SFS_SINGLE_SHOT")) { if (*sfs_ss && std::string(sfs_ss) != "0") maxIterations = 1; }  // TICKET 234: ported ladder harness
+     
+     while (numberOfClustersCreated < 2 && currentIteration < maxIterations)
+     {
+@@ -2117,21 +1771,18 @@
+         pass.setFilterLimits(0.0, 1.0);
+         pass.filter(*indices);
+ 
+-        // Tune parameters based on current cloud size to handle scale differences robustly
++        // DENSITY-BASED ADAPTIVE region growing
++        // Reference values (for ~1mm spacing): minCluster=50, K=10
++        // Scale based on actual point spacing to maintain consistent geometric behavior
+         int Npts = static_cast<int>(cloud->points.size());
+-        int dynMinCluster = std::max(minCluster, std::max(30, Npts / 500));          // ~0.2% of points, min 30
+-        int dynK          = std::max(noOfNeighbours, std::min(40, std::max(15, Npts / 500))); // 15..40 range
++        double rgSpacing = estimatePointSpacing<pcl::PointXYZ>(cloud);
++        int dynK = adaptiveRegionGrowingK(rgSpacing);
++        int dynMinCluster = adaptiveMinCluster(rgSpacing, minCluster);
++
++        std::cout << "[DENSITY-ADAPTIVE REGION GROWING] N=" << Npts << ", spacing≈"
++                  << std::fixed << std::setprecision(2) << rgSpacing << "mm"
++                  << ", K=" << dynK << ", minCluster=" << dynMinCluster << std::endl;
+ 
+-        std::vector<pcl::PointIndices> clusters;
+-        if (paperChain) {
+-            std::cout << "[PAPER-234] paper grow: thetaDeg=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
+-            clusters = growPaper234(cloud, normals, dynMinCluster, paperNB, paperTheta, paperKappa);
+-        } else if (planeRule) {
+-            std::cout << "[PLANE-234] windowed-plane gate: joinDeg=" << planeJoinDeg
+-                      << " distMM=" << planeDistMM << " window=" << planeWindow << std::endl;
+-            clusters = growRegionsPlaneContinuity234(cloud, normals, dynMinCluster, dynK,
+-                planeJoinDeg, planeDistMM, planeWindow, curvatureThreshold);
+-        } else {
+         pcl::RegionGrowing<pcl::PointXYZ, pcl::Normal> reg;
+         reg.setMinClusterSize(dynMinCluster);
+         reg.setMaxClusterSize(1000000);
+@@ -2142,8 +1793,8 @@
+         reg.setSmoothnessThreshold(smoothnessAngleThreshold / 180.0 * M_PI);
+         reg.setCurvatureThreshold(curvatureThreshold);
+ 
++        std::vector<pcl::PointIndices> clusters;
+         reg.extract(clusters);
+-        }
+ 
+         std::cout << "\nTotal points: " << cloud->points.size() << std::endl;
+         std::cout << "Number of clusters is equal to " << clusters.size() << std::endl;
+@@ -2171,15 +1822,8 @@
+         }
+ 
+         // 병합 함수 호출
+-        if (paperChain) {
+-            std::cout << "Calling mergePaper234 function." << std::endl;
+-            mergePaper234(cloud, normals, clusters, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC, 10, 30);
+-            std::sort(clusters.begin(), clusters.end(), myobject3);
+-            classifyAndOrderPaper234(cloud, normals, clusters);
+-        } else {
+         std::cout << "Calling mergeClusters function." << std::endl;
+         mergeClusters(cloudWithNormals, clusters);
+-        }
+ 
+         numberOfClustersCreated = clusters.size();
+ 
+@@ -2528,11 +2172,10 @@
+         }
+         
+         setInputFile(inputFilePath, dataPath);
+-        // POTA-244: default restores pre-48fb588 fixed 0.6mm radius (no target loop).
+-        // SFS_DOWNSAMPLE_TARGET=N overrides: 19000 = 48fb588 adaptive, <0 = skip (raw cloud).
+-        int dsTarget244 = 0;
+-        if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) { if (*e) dsTarget244 = std::stoi(e); }
+-        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, dsTarget244);
++        // FINAL: Target 19,000 points - optimized for sample dataset matching (~19K output)
++        // Use RADIUS-ONLY mode (-2) to match sample dataset's natural density scaling
++        // Testing: radius 1.1 to get ~3.5x fewer points to match sample density
++        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 1.1F, -2);
+         
+         std::cout << "Starting processing on: " << inputFilePath << std::endl;
+         
+@@ -2545,35 +2188,8 @@
+         
+         int minCluster = 50, noOfNeighbours = 10;
+         double smoothnessAngleThreshold = 4.5, curvatureThreshold = 1.5;
+-        if (const char* sfs_s = std::getenv("SFS_SMOOTHNESS_DEG")) { if (*sfs_s) smoothnessAngleThreshold = std::stod(sfs_s); }
+-        if (const char* sfs_c = std::getenv("SFS_CURVATURE_THRESH")) { if (*sfs_c) curvatureThreshold = std::stod(sfs_c); }
+-        double planeJoinDeg = 60.0, planeDistMM = 2.0;
+-        int planeWindow = 100;
+-        if (const char* e = std::getenv("SFS_PLANE_JOIN_DEG")) { if (*e) planeJoinDeg = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PLANE_DIST_MM")) { if (*e) planeDistMM = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PLANE_WINDOW")) { if (*e) planeWindow = std::stoi(e); }
+-        bool planeRule = false;
+-        if (const char* e = std::getenv("SFS_PLANE_RULE")) { if (*e && std::string(e) != "0") planeRule = true; }
+-        bool paperChain = true;
+-        if (const char* e = std::getenv("SFS_PAPER_CHAIN")) { if (*e && std::string(e) != "0") paperChain = true; else paperChain = false; }
+-        double paperTheta = 3.4, paperKappa = 1.0, paperRhoD = 1.0, paperRhoN = 0.95, paperRhoC = 0.1, paperRhoInN = 0.75, paperRhoInC = 0.25;
+-        int paperNB = 10;
+-        if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) paperTheta = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_KAPPA")) { if (*e) paperKappa = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_NB")) { if (*e) paperNB = std::stoi(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_RHOD")) { if (*e) paperRhoD = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_RHON")) { if (*e) paperRhoN = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_RHOC")) { if (*e) paperRhoC = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_RHOINN")) { if (*e) paperRhoInN = std::stod(e); }
+-        if (const char* e = std::getenv("SFS_PAPER_RHOINC")) { if (*e) paperRhoInC = std::stod(e); }
+         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;
+-        std::cout << "[SPLITTER-234] rule=" << (planeRule ? "PLANE-CONTINUITY" : "PCL-REGION-GROWING")
+-                  << " smoothDeg=" << smoothnessAngleThreshold << " curv=" << curvatureThreshold
+-                  << " joinDeg=" << planeJoinDeg << " distMM=" << planeDistMM << " window=" << planeWindow
+-                  << " paper=" << (paperChain ? "PAPER-CHAIN" : "off") << " theta=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
+-        surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold,
+-            planeRule, planeJoinDeg, planeDistMM, planeWindow,
+-            paperChain, paperTheta, paperKappa, paperNB, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC);
++        surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold);
+ 
+ 		std::string tempFileName0 = intermediatePath + "tmpSurfaceCluster_Improved_0.ply";
+ 		std::string tempFileName1 = intermediatePath + "tmpSurfaceCluster_Improved_1.ply";
