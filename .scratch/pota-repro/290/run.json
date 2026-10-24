@@ -1,0 +1,44 @@
+{
+  "runid": "20261024-2328_d36a33e_p290-corpus",
+  "jobid": "33748526",
+  "tag": "p290-corpus",
+  "commit": "d36a33e58bbbdcfa52daf41689ae902fa51266d1",
+  "ticket": "290-frozen-corpus",
+  "question": "Is the frozen released input corpus complete, and does the shipped pipeline run on it unchanged?",
+  "created": "2026-10-24T23:28+10:00",
+  "host": "spartan (Slurm batch, 1 node, 8 cpus, 48G)",
+  "canonical_checkout": "/data/gpfs/projects/punim2657/sfs_preprocessing",
+  "build": {
+    "method": "git archive of the pushed commit, extracted to node-local scratch, cmake -DCMAKE_BUILD_TYPE=Release inside the apptainer container",
+    "source_commit": "d36a33e58bbbdcfa52daf41689ae902fa51266d1",
+    "edge_source_md5_lf": "f0dbfe7032d90a04412d15bd1699a703",
+    "note": "the same edge source and recipe as ticket 288's from-commit build; the binary md5 is compared against a28d10afab2b50bbe750d599ee2b7214 (ticket 287/288/289 binary)"
+  },
+  "input": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point",
+    "clouds": 148,
+    "manifests": [
+      "MANIFEST_released.tsv (143 rows: pot, piece, points, bytes, md5, header_ok)",
+      "MANIFEST_derived.tsv (5 rows: piece, source_mesh, mesh_md5, points, pcd_md5, bytes)"
+    ],
+    "test_piece": "Pot_J_Piece_09",
+    "test_cloud": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_J/Pot_J_Piece_09_Point.pcd",
+    "mesh": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_J_Piece_09_Mesh_DS.obj",
+    "axis": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes/Pot_J_Piece_09_Axis.xyz",
+    "no_sampling": "no CloudCompare run: the cloud is taken as released, so this run's lanes are not a new draw"
+  },
+  "steps": [
+    "inv290.py: every released md5/points/bytes and every derived md5/points/bytes/source-mesh md5 against the manifests; coverage of the 148-piece scored corpus against ticket 284's phase0-table.tsv; ascii vs binary and FIELDS per class",
+    "build both binaries from the commit",
+    "probe: Dataset/Point as a directory symlink to the whole corpus, POT_NAME=Pot_A, 25 s bounded, to see whether the stage reads through a symlink (and therefore would process all 148)",
+    "real run: Dataset/Point/Pot_J/<piece>_Point.pcd as a FILE-level symlink into the corpus; mesh stage with SFS_AXIS_FILE set; edge stage on the shipped defaults",
+    "determinism: the same Temp/Data inputs and the same edge binary again in a clean tree, exports compared by md5",
+    "score290.py: both lanes against the authors' reference with the project scorer, ticket 289's exports re-scored on the same basis, nearest-neighbour spread between the two runs' lines, lengths, and the overlay picture",
+    "geometry deleted: exports, kept faces, staging trees, node-local build tree; out/GEOMETRY_DELETED.txt written"
+  ],
+  "parameters": "shipped defaults only; no SFS_* switch set except SFS_AXIS_FILE (required by ticket 277); no threshold, default or code change",
+  "bar": "median <= 2.0 mm and coverage(ours -> authors) >= 90 against the authors' breaklines",
+  "authors_rule": "Pot J Piece 09's reference lines are ruled wrong (ticket 289), so the lane rows are a drop-in comparison against ticket 289, not a bar tally",
+  "status": "submitted",
+  "results": null
+}

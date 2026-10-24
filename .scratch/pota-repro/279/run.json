@@ -1,0 +1,50 @@
+{
+  "run": "20261024-1417_dc869d4_p279-basefaces",
+  "ticket": "279",
+  "phase": "0-3",
+  "mode": "read-only analysis: no build, no pipeline run, no mesh rebuild, no C++ change",
+  "question": "Is the authors' base face one of their two surfaces, or do they exclude it and still draw a breakline on its rim?",
+  "commit": "dc869d4",
+  "worktree": "C:/PR/worktrees/sfs/279",
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (Surfaces 326 files = 163 pieces x 2, Breaklines 326, Axes 163, Mesh 164)",
+  "corpus_note": "read in place on Spartan; nothing copied to the laptop, only derived tables were read back",
+  "scripts": [
+    "p279_p0.py - Phase 0 reachability census (326 lanes)",
+    "p279_p1.py - Phase 1 surface scan, 34 columns per surface",
+    "a279_p1t.py - threshold sensitivity sweep (nsel / edge_cv / l3l1)",
+    "a279_p1n.py - per-pot base counts against the paper's TABLE III row",
+    "a279_c03_probe.py - Pot C 03: our 276 clusters against their two surfaces",
+    "a279_our.py - our-side control for the four meshed pieces, from the 276 Phase 3a dumps",
+    "a279_edge.py - where the reference dots sit on their own surface (radius and distance)",
+    "a279_rad.py - dot radius distribution against the surface's r95",
+    "a279_boundary.py - corpus-wide boundary test: is every reference line a surface boundary?",
+    "a279_bsum.py - boundary test aggregate"
+  ],
+  "outputs": [
+    "phase0_reachability.tsv (326 rows)",
+    "phase1_scan.tsv (326 rows)",
+    "p1_table.txt",
+    "edge_check.txt",
+    "rad_check.txt",
+    "our_side.txt",
+    "boundary_test.tsv",
+    "boundary_summary.txt",
+    "phase0.log/err",
+    "phase1.log/err",
+    "boundary.log"
+  ],
+  "verdict": "(i) their surfaces contain the base; fix is in growth/merge, the two-largest rule stands",
+  "key_numbers": {
+    "c03_their_S1_vs_our_dropped_band": "median 0.295 mm, p90 0.463, max 0.832, 100% within 1 mm (n=13265)",
+    "c03_reference_line_vs_their_S1": "median 0.276 mm; dot radii p5/p50/p95 32.58/33.83/34.91 mm; 73.3% within 1 mm of the surface r95",
+    "boundary_test": "326/326 matched (surface, lane) pairs boundary-like; median max angular gap 164.9 (lane0->S0) / 167.6 (lane1->S1) deg"
+  },
+  "overturning_measurement": "a reference breakline tracing a base region that is not one of its piece's two surfaces (dots neither within 1 mm of a surface nor on its boundary); the boundary test over all 326 lanes found none",
+  "constraints": [
+    "read-only: no build, no pipeline run, no mesh rebuild, no C++ change",
+    "did not touch C:/PR/worktrees/sfs/275 or 276",
+    "no corpus copied to the laptop",
+    "index row appended with verdict filled and human_note blank"
+  ],
+  "notes": "Sheet/cluster structures reused from ticket 276's Phase 3a dumps; no mesh run in this ticket."
+}

@@ -1,0 +1,25 @@
+{
+  "runid": "20261024-2151_8e1e514_p289-p09",
+  "tag": "p289-p09",
+  "ticket": "289",
+  "title": "Pot J 09: surface, our edge line and the authors' edge line, on the shipped binary",
+  "created": "2026-10-24T10:51:02.470Z",
+  "commit": "8e1e5147da4f8ad065704462e2a464eb2953f466",
+  "question": "Does Pot J 09 still miss on the shipped binary, where is the excess length made, and what does the conservator need to see?",
+  "binary": {
+    "edge": "reused, not rebuilt: /data/gpfs/projects/punim2657/sfs-vote-248/p288-build-33746506/src/build/edge-release/EdgeLineExtractionHeadless, expected md5 a28d10afab2b50bbe750d599ee2b7214",
+    "mesh": "built in this job from git archive of the same commit (target MeshPreprocessingHeadless)"
+  },
+  "inputs": {
+    "mesh": "/data/gpfs/projects/punim2657/sfs_main/original_samples_backup/SfS_pp/Mesh/Pot_J_Piece_09_Mesh_DS.obj md5 810009272d4ff937876b52fa5d781fcf (DS only - the full mesh is gone)",
+    "axis": "/data/gpfs/projects/punim2657/sfs_main/original_samples_backup/SfS_pp/Axes/Pot_J_Piece_09_Axis.xyz md5 5ef4dd54995c95410ea143da29b85b0d",
+    "authors": [
+      ".../Breaklines/Pot_J_Piece_09_Breakline_0.pcd md5 ac745d3a07936a856170e1f4ce9ab2e4 n=74",
+      ".../Breaklines/Pot_J_Piece_09_Breakline_1.pcd md5 485b7c19544b4a2b754d278d845e8773 n=69"
+    ],
+    "cloud": "derived in this job with cc_mesh_to_pcd.sh (CloudCompare sampler is unseeded: a NEW draw, not the cloud ticket 259 scored)"
+  },
+  "defaults": "shipped: theta 3.4, 12 mm stop rule, short-chain clamp, largest-lump seed; no SFS_* switch set anywhere; the one variable is POT_NAME, plus SFS_AXIS_FILE for the mesh stage as ticket 277 requires",
+  "jobs": [],
+  "status": "submitted"
+}

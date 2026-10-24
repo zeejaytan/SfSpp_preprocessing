@@ -1,0 +1,28 @@
+{
+  "runid": "20261024-1243_0ab0935_p278-band",
+  "ticket": 278,
+  "commit": "0ab0935",
+  "worktree": "/data/gpfs/projects/punim2657/sfs_preprocessing.wt/276",
+  "type": "analysis only (no mesh run, no C++ change)",
+  "inputs_from_run": "20261024-1223_0ab0935_p276-phase3a",
+  "dumps": {
+    "Pot_C_03": {
+      "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1223_0ab0935_p276-phase3a/out/C03_diag/mergeDiag276_Pot_C_Piece_03.txt",
+      "md5": "e9b05214c43e2c48903fac224d619ff4",
+      "npoints": 69666
+    },
+    "Pot_H_10": {
+      "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1223_0ab0935_p276-phase3a/out/H10_diag/mergeDiag276_Pot_H_Piece_10.txt",
+      "md5": "38b62daff15f9eb7a300c76604e998a7",
+      "npoints": 16387
+    }
+  },
+  "scripts": [
+    "a278.py",
+    "a278b.py",
+    "a278d.py",
+    "a278f.py",
+    "a278g.py"
+  ],
+  "superseded": "a278c.py (IndexError: indexed the global label array with subset indices); replaced by a278d.py"
+}
