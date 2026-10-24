@@ -431,3 +431,48 @@ ship.
   against the cloud's median nearest-neighbour spacing. That decides whether `rho_d = 1.0` suits
   our sampling — a question about a parameter, not about the paper's tests.
 - Phase 3 proper (any C++ change) stays held until 3a reports.
+
+
+## Lead verdict (2026-10-24) — Phase 3a accepted; the merge line closes, the partition question opens
+
+**Both explanations I had are dead, and the ticket is better for it.**
+
+- **Theta is not the cause.** At `SFS_PAPER_THETA=3.4` the band still carries 119 of Bl1's 120 author
+  dots and `kept = 0.00%`, unchanged from 4.0. Every log reads `thetaDeg=3.40000`, every run prints
+  the axis `classify:` line, and the inputs are byte-identical copies of the 4.0 trees, so theta was
+  the only variable.
+- **My lip story is dead too**, and by its own number: at 4.0 that band already stood **1.9306 mm**
+  clear of the kept pair. A welded lip sits at contact distance. This band was never part of the face
+  at either angle.
+
+**`rho_d` is answered and must not be tuned.** Sampling spacing on these pieces is 0.29-0.37 mm, so
+`rho_d = 1.0` is already 3-3.5 spacings. The dropped bands that carry author dots sit **1.2-2.5 mm**
+away — 4-8 spacings — with essentially nothing inside 1 mm. Reaching C03's band would take a threshold
+of about 3 mm, ten spacings: that is a different regime, not a correction. The one exception in four
+pieces is H10's c5 (629 pts, 21 Bl1 dots, 0.3191 mm gap, 35 points inside 1 mm), the only dropped
+cluster where boundary pairs can form at the shipped threshold — and the merge still refused it. One
+counter-example is not a rule; Step 3 remains the only refusing test we have caught in the act.
+
+**What actually decides it, and it is not in the merge at all.** `classifyAndOrderPaper234` compares
+`pclusters[0]` and `pclusters[1]` — the two largest after merging
+(`mesh_processing_headless.cpp:2105-2118`), which is the paper's own rule ("we consider the two
+largest clusters as the inner and outer surfaces", `C:/PR/papers/text/sfspp-2502.13986v1.md:155`).
+On C03 the band carrying **every one** of Bl1's reference dots is the **third** cluster by size
+(13265 against 17245), so it was never a candidate for a surface slot at either angle.
+
+Now put that together with where the reference came from: these breaklines are the authors' own
+pipeline output, produced under the same two-largest rule. So in their run a kept surface reached the
+rim. Ours partitions the rim off into a third cluster. **The merge and the classify are both faithful;
+what differs is the partition itself** — how region growing splits this piece. That moves the question
+upstream, to the growing stage and the cloud it runs on, not to Appendix A.
+
+**Two precisions carried forward, both the worker's own.**
+1. Phase 0b's "kept Surface_1 carries 5 of 120" was measured against the written sheet; on cluster
+   membership the count is 0 of 120. The cluster metric is the one that decides surfacing, and it is
+   the one quoted from here on.
+2. Theta 3.4 is **not free**: Pot H 10 Bl1 falls from 96.59% to 79.55% kept because its cluster
+   structure moves the reference rim onto small dropped clusters, while C01 and H02 improve slightly
+   (Bl1 93.48 -> 97.39, 94.89 -> 96.35). Any default decision must weigh that.
+
+**Status: closed.** No C++ change, no default change, no Step 3 deviation. Ticket 278 takes the next
+question — what that band physically is.
