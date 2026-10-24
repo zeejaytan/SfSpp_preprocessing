@@ -380,3 +380,54 @@ just the failures. Phase 3 stays held.
 Main's `mesh_processing_headless.cpp` remains pristine (md5 `b2b1b7088e75a9c3340ca484bf8d38ac`). Reason:
 the 275 precedent — five rejected arms are still being paid for in a file they no longer serve — so
 scaffolding lands with the fix, or not at all.
+
+
+## Lead addendum (2026-10-24, after Phase 2) — hypothesis dead, paper rule exonerated, and one confound to settle first
+
+**Phase 2 accepted.** The pair cap is innocent and the pre-registered hypothesis is dead; the
+worker reported the overturn in the terms it was asked to, including the one precision that
+matters (the rejecting test is Step 3 `rhoInN`, not `rhoN`/`rhoC`). The recorded numbers are
+enough to rebuild the argument without the run: C03 r0 refuses at `inner=-0.0142` with
+`nrm=1.0000` and `curv=0.0024`; C01 r0 refuses at `inner=-0.1481` with `nrm=0.9997`; the two
+PASS contrasts score `inner=0.9796` and `0.9922`. The cap engaged once in the whole batch
+(C01 c0-c9, 200 pairs, 634 of 940 boundary points cut) and the loop can only stop at 200
+*qualified* pairs, so it can bias which pairs feed the averages but cannot starve the >=3 rule.
+
+**No Step 3 fix is authorised, for two reasons.**
+
+1. **Step 3 as coded is the paper's rule, not a mis-port.** Appendix A at
+   `C:/PR/papers/text/sfspp-2502.13986v1.md:479`: each cluster selects "a representative
+   internal point ... the median point sorted by perpendicular distance to the principal axis",
+   and the decision compares "the normals and curvatures of these internal points" at
+   `rho_in,n = 0.75` / `rho_in,c = 0.25`. That is exactly
+   `medianInternal234` + the dot product at `mesh_processing_headless.cpp:1916-1925`.
+2. **The obvious "fix" is Step 2 wearing a hat.** Comparing normals at the pair members is
+   precisely what Step 2 already does (`nrm = 1.0000` / `0.9997` on the two FAIL lanes), so
+   adopting it would silently delete Step 3 — the paper added Step 3 *because* "boundary
+   conditions alone may not fully overcome noise or inaccuracies near the boundaries". A
+   deviation of that size needs a stated reason and a measured gain, and we have neither.
+
+What Phase 2 actually establishes is a limit: Step 3 compares two points tens of millimetres
+apart on one surface, so on a strongly curved face their normals legitimately differ by ~91-98
+degrees. It passes on gentle patches, which is the exact PASS/FAIL split measured. The threshold
+is not the problem — no value of `rho_in,n` between 0 and 1 both admits a 91-degree pair and
+still means anything.
+
+**The confound that outranks it.** Every theta line in the Phase 0b, Phase 1 and Phase 2 run
+directory reads `thetaDeg=4.00000` (6 of 6; `grep -c 'thetaDeg=3.4'` = 0). Phase 0b therefore
+measured Pot C 03's lost rim at the growth angle ticket 271 removed, whose signature is exactly
+a lip welded into the face. The 13474-point cluster carrying 119 of that lane's 120 author dots
+may be that lip rather than a piece of the wall. Until the same measurement is repeated at 3.4,
+the phrase "the rim is lost in the mesh stage" is not a finding about the setting we intend to
+ship.
+
+**Phase 3a (lead-added, dispatched), pre-registered read:**
+- Re-mesh the four Phase 0b pieces at `SFS_PAPER_THETA=3.4` from the same `inputs/` copies, with
+  `SFS_AXIS_FILE` set and the classify line confirmed, then repeat the cluster/surface mapping.
+- **If the author's Bl1 dots land on a KEPT surface at 3.4** where they did not at 4.0, the mesh
+  loss was a theta artifact: nothing to fix in the merge, and ticket 276 closes with that.
+- **If they still land on a DROPPED cluster**, the next measurement is the true gap between that
+  cluster and the face (minimum distance, and how many point pairs fall within 1 / 1.5 / 2 / 3 mm)
+  against the cloud's median nearest-neighbour spacing. That decides whether `rho_d = 1.0` suits
+  our sampling — a question about a parameter, not about the paper's tests.
+- Phase 3 proper (any C++ change) stays held until 3a reports.
