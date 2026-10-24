@@ -12,3 +12,7 @@ data out of git (C2), then the root tidy (2.1, 2.2) and log paths (2.3) as later
 ## Tickets
 
 - `issues/01-live-data-out-of-git.md` — amendment C2.
+- `issues/02-tidy-the-root.md` — One CMakeLists and one build script; root batch scripts and notes into folders.
+- `issues/03-log-paths.md` — Slurm logs go to the run directory, never the checkout.
+- `issues/04-review-unmerged-branches.md` — Decide each of the 22 unmerged branches: merge, keep as a named rescue, or delete.
+- `issues/05-retire-spartan-worktrees.md` — Retire the three worktrees on Spartan once their tickets close.
