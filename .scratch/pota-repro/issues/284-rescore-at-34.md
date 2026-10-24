@@ -78,3 +78,64 @@ fail with their family from the ledger (growth / dropped cluster / partition / u
 - the per-lane score table with both coverage directions
 - the entered/left lists with numbers
 - binary and source md5s, and the marker check output
+
+## Phase 0 result (lead-recorded 2026-10-24 from the worker's report; source run dir
+/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1851_ee5f4dc_p284-rescore/ — REPORT.md and
+phase0-table.tsv hold the full tables)
+
+**NO-GO, for a provenance reason that no amount of compute can repair.** The mesh stage never
+sees the authors' mesh: it consumes a CloudCompare-sampled cloud made by cc_mesh_to_pcd.sh with
+-SAMPLE_MESH POINTS 1000000, and **that sampling is unseeded**. Proven on one author mesh
+(Pot_A_Piece_01_Mesh.obj, sha256 63f248c5...): three draws give 843,433 / 843,282 / 843,252
+points, all different bytes. So the 4.0-era input clouds cannot be regenerated, and a fresh draw
+would confound "3.4 versus 4.0" with "a different point set".
+
+Of 148 scored pieces, **exactly two input clouds survive** — Pot C 01 (844035fe..., 82,505,766 B)
+and Pot C 03 (1d01ad63..., 42,013,121 B), both md5-matching what ticket 251 recorded. No 4.0-era
+surface or lane output survives: the pruned pota* trees became attic tarballs that exclude
+*.pcd / *.obj / *.xyz by suffix.
+
+**Corpus arithmetic — this ticket's own line was wrong.** The scored corpus is **296 lanes over
+148 pieces**, and **265 were at bar at 4.0**: A 16/16, B 17/18, C 4/8, D 51/58, E 60/62, F 12/14,
+G 12/14, H 18/22, I 55/60, J 20/24. The figure 214 is the seven-pot subtotal B+E+F+G+H+I+J, not
+the corpus. Meshes: 17 plain (all of Pot A and B), 131 downsampled (_Mesh_DS, confined to C-J).
+Every scored piece still has both author breaklines, an axis and a mesh.
+
+**The four reproducible lanes at the shipped defaults** (job 33744771; mesh env POT_NAME +
+SFS_AXIS_FILE, edge env POT_NAME only; paper=PAPER-CHAIN theta=3.40000; classify lines confirm the
+axis was used):
+
+| lane | pts ours/auth | med | cov | rev cov | 4.0 baseline (med / cov) |
+|---|---|---|---|---|---|
+| C01 Bl0 | 25/211 | 51.62 | 0.0 | 0.0 | 0.76 / 67.2 |
+| C01 Bl1 | 81/230 | 41.06 | 0.0 | 0.0 | 0.71 / 64.3 |
+| C03 Bl0 | 187/191 | 0.42 | 99.5 | 100.0 | 0.55 / 93.1 |
+| C03 Bl1 | 124/120 | 2.02 | 49.2 | 50.0 | 12.21 / 13.6 |
+
+At bar before 1/4, after 1/4; entered 0, left 0. C03 improves markedly (Bl1 med 12.21 -> 2.02,
+cov 13.6 -> 49.2) but still misses on coverage. **C01 collapses to a 52.6 mm stub**: the edge log
+reads [LOOP-SELECT] bag=975 comps=4 -> "no ring found -> whole-bag walk" -> [VOTE-247]
+resampled=28 (L=52.6 mm) against a 378 mm reference rim.
+
+**The C01 collapse is NOT a theta effect.** Job 33744872 re-ran the same bytes at
+SFS_PAPER_THETA=4.0 on the same binaries: 11/82 points, med 54.9/41.1, cov 0.0/0.0. Theta moved
+the mesh split only marginally (100,224/115,444 -> 100,471/115,652 points), and
+SFS_PAPER_THETA is read by mesh_processing_headless.cpp:2559-2561 only — the edge stage never
+reads it. So the 4.0 baseline is not a like-for-like comparison for C01: the difference belongs to
+the merged edge code, not to the growth angle.
+
+**Lead note — this is not a new unknown.** Ticket 273's matrix already measured the same collapse
+in shipped code (C01 Bl0 11 dots / 54.922 / cov 0.0; stop rule off 309 / 0.785 / 67.64; full walk
+off 208 / 0.537 / 100) and ticket 275 diagnosed it: the full walk seeds at the dot nearest the
+cloud centroid, which on these bags lands in a debris lump 26-54 mm from the rim, walks the lump,
+and the 12 mm stop rule then ends the walk correctly on the wrong structure.
+
+**Corrections accepted:** (1) the corpus is 296/265, not 214 — corrected in the ledger; (2)
+scripts/run_from_commit.sh does not exist at any commit (verified: zero hits in git log --all),
+so the AGENTS.md reference to it is wrong and the build recipe used here (archive + cmake + sbatch,
+recorded in run.json) is the real one; (3) the three-marker proof can only be satisfied by the edge
+binary — the mesh binary (fb3fd055d30fb08ccce48dba7d49a879) carries none of them, and asking for it
+there was my error; (4) Phase 2's at-bar counts can only be produced over the four surviving lanes.
+
+**Ledger deliberately left untouched**, as the worker insisted: a supersession resting on four
+lanes would be worse than the stale number it replaced. Correct.
