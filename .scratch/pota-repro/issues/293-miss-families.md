@@ -1,8 +1,9 @@
 # 293 — The two miss families the corpus re-score exposed
 
-Status: ready-for-agent
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-25)
+Branch: 293-miss-families, in /c/PR/worktrees/sfs/293
 Answers: E1
-Working in: unassigned (open with `scripts/ticket_start.sh SfSpp_preprocessing .scratch/pota-repro/issues/293-miss-families.md`)
 Created: 2026-10-25
 Follows: 292 (the baseline: 281/292 sound lanes at bar), 286 (H02/H10 mechanism), 278/279 (base-band partition)
 
