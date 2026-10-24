@@ -1,0 +1,344 @@
+diff --git a/edgeline_extraction_headless.cpp b/edgeline_extraction_headless.cpp
+index 7ebc369..88b866a 100644
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
+@@ -617,128 +617,193 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
+ 	bool stopOn267 = (stopR267 > 0.0f);
+ 	bool diagStop267 = false;
+ 	if (const char* e = std::getenv("SFS_STOP_NOFRESH_DIAG")) { if (*e && std::string(e) != "0") diagStop267 = true; }
+-	std::vector<float> dall267;
+-	size_t keptN = 0;
+-	if (fullWalk263) { keptN = n; std::cout << "[FULL-263] no-discard kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
+-	else if (compKeepAll) { keptN = n; std::cout << "[VOTE-247] comp-filter SKIPPED (SFS_COMP_KEEP=all) kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
+-	else { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
+-	std::cout << "[VOTE-247] comp-filter kept " << keptN << "/" << n
+-	          << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
+-	// Deterministic seed: kept-component centroid-nearest (no cloud[0] order dependence).
+-	Eigen::Vector3f cent(0,0,0);
+-	for (size_t i = 0; i < n; i++) if (!used[i])
+-		cent += Eigen::Vector3f(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
+-	cent /= (float)keptN;
+-	size_t seed = 0; float seedD2 = std::numeric_limits<float>::max();
+-	for (size_t i = 0; i < n; i++) if (!used[i]) {
+-		Eigen::Vector3f d(cloud->points[i].x - cent(0), cloud->points[i].y - cent(1), cloud->points[i].z - cent(2));
+-		if (d.squaredNorm() < seedD2) { seedD2 = d.squaredNorm(); seed = i; }
+-	}
++	bool lumpProbe275 = false; // POTA-275 evidence: bag lump census, print-only
++	if (const char* e = std::getenv("SFS_LUMP_PROBE")) { if (*e && std::string(e) != "0") lumpProbe275 = true; }
+ 	std::vector<Eigen::Vector3f> chain; chain.reserve(n);
+-	size_t cur = seed;
+-	if (diagStop267) {
+-		std::cout << "[STOP-267] BEGIN bag=" << n << " seed=" << cloud->points[seed].x << " " << cloud->points[seed].y << " " << cloud->points[seed].z
+-		          << " R=" << stopR267 << " rule=" << (stopOn267 ? "ON" : "OFF") << std::endl;
+-	}
+-	for (size_t done = 0; done < n; done++) {
+-		chain.push_back(Eigen::Vector3f(cloud->points[cur].x, cloud->points[cur].y, cloud->points[cur].z));
+-		used[cur] = 1;
+-		if (done + 1 == n) break;
+-		// nearest unvisited: KNN probe first, exhaustive fallback (chain must cover all n)
+-		std::vector<int> idx(50); std::vector<float> dist(50);
+-		int found = kdtree.nearestKSearch(cloud->points[cur], 50, idx, dist);
+-		int best = -1; float bestD2 = std::numeric_limits<float>::max();
+-		// POTA-263 FULL_WALK cross-jump fix: heading-guarded pick among K=50 nearest
+-		// unvisited (score = dist*(1+2*(1-cos)), alpha=2 stated knob); first 2 points
+-		// and degenerate headings fall through to pure NN below.
+-		if (fullWalk263 && chain.size() >= 2) {
+-			Eigen::Vector3f hh263 = chain.back() - chain[chain.size()-2];
+-			float hl263 = hh263.norm();
+-			if (hl263 > 1e-9f) {
+-				hh263 /= hl263;
+-				double bestS263 = 1e100; int bestH263 = -1;
+-				for (int k = 0; k < found; k++) {
+-					int cand = idx[k];
+-					if (cand < 0 || (size_t)cand >= n || used[cand]) continue;
+-					Eigen::Vector3f dc263(cloud->points[cand].x - chain.back()(0), cloud->points[cand].y - chain.back()(1), cloud->points[cand].z - chain.back()(2));
+-					float dl263 = dc263.norm();
+-					if (dl263 < 1e-9f) continue;
+-					double cos263 = dc263.dot(hh263) / dl263;
+-					if (cos263 > 1.0) cos263 = 1.0; if (cos263 < -1.0) cos263 = -1.0;
+-					double s263 = (double)dl263 * (1.0 + 2.0 * (1.0 - cos263));
+-					if (s263 < bestS263) { bestS263 = s263; bestH263 = cand; }
+-				}
+-				if (bestH263 < 0) for (size_t i = 0; i < n; i++) if (!used[i]) {
+-					Eigen::Vector3f dc263(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
+-					float dl263 = dc263.norm();
+-					if (dl263 < 1e-9f) continue;
+-					double cos263 = dc263.dot(hh263) / dl263;
+-					if (cos263 > 1.0) cos263 = 1.0; if (cos263 < -1.0) cos263 = -1.0;
+-					double s263 = (double)dl263 * (1.0 + 2.0 * (1.0 - cos263));
+-					if (s263 < bestS263) { bestS263 = s263; bestH263 = (int)i; }
++	bool stopFired275 = false;
++	size_t stopLeft275 = 0;
++	auto walkOnce275 = [&]() {
++		std::vector<float> dall267;
++		size_t keptN = 0;
++		std::fill(used.begin(), used.end(), 0);
++		chain.clear(); // POTA-275: a second pass must not append to the arm it replaces
++		if (fullWalk263) { keptN = n; std::cout << "[FULL-263] no-discard kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
++		else if (compKeepAll) { keptN = n; std::cout << "[VOTE-247] comp-filter SKIPPED (SFS_COMP_KEEP=all) kept " << keptN << "/" << n << " (" << ncomp << " comps @ " << COMP_GAP_MM << "mm)" << std::endl; }
++		else { for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
++		std::cout << "[VOTE-247] comp-filter kept " << keptN << "/" << n
++		          << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
++		// Deterministic seed: kept-component centroid-nearest (no cloud[0] order dependence).
++		Eigen::Vector3f cent(0,0,0);
++		for (size_t i = 0; i < n; i++) if (!used[i])
++			cent += Eigen::Vector3f(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
++		cent /= (float)keptN;
++		size_t seed = 0; float seedD2 = std::numeric_limits<float>::max();
++		for (size_t i = 0; i < n; i++) if (!used[i]) {
++			Eigen::Vector3f d(cloud->points[i].x - cent(0), cloud->points[i].y - cent(1), cloud->points[i].z - cent(2));
++			if (d.squaredNorm() < seedD2) { seedD2 = d.squaredNorm(); seed = i; }
++		}
++		// POTA-275 Phase-1 addendum (lead steer): which lump the seed lands in, its size,
++		// and how far it is from the largest lump. Print-only, SFS_LUMP_PROBE=1.
++		if (lumpProbe275 && fullWalk263) {
++		  std::vector<size_t> lsz(ncomp, 0); std::vector<size_t> lrep(ncomp, 0);
++		  for (size_t i = 0; i < n; i++) { lsz[comp[i]]++; if (lsz[comp[i]] == 1) lrep[comp[i]] = i; }
++		  std::vector<std::pair<size_t,int> > ord;
++		  for (int c = 0; c < ncomp; c++) ord.push_back(std::make_pair(lsz[c], c));
++		  std::sort(ord.begin(), ord.end(), std::greater<std::pair<size_t,int> >());
++		  std::cout << "[WALK-275] lumps bag=" << n << " ncomp=" << ncomp << " sizes=";
++		  for (size_t k = 0; k < ord.size() && k < 8; k++) { if (k) std::cout << ","; std::cout << ord[k].first; }
++		  int seedLump = (seed < n ? comp[seed] : -1);
++		  float s2b = -1.0f;
++		  if (seedLump >= 0 && seedLump != biggest) {
++		    s2b = std::numeric_limits<float>::max();
++		    for (size_t i = 0; i < n; i++) if (comp[i] == biggest) {
++		      Eigen::Vector3f d = Eigen::Vector3f(cloud->points[i].x - cloud->points[seed].x, cloud->points[i].y - cloud->points[seed].y, cloud->points[i].z - cloud->points[seed].z);
++		      float dl = d.norm(); if (dl < s2b) s2b = dl;
++		    }
++		  } else if (seedLump >= 0) s2b = 0.0f;
++		  std::cout << " seedlump=" << seedLump << "(" << (seedLump >= 0 ? lsz[seedLump] : 0) << ") biggest=" << biggest
++		            << "(" << biggestSize << ") seed2big=" << s2b << " seed=" << seed << std::endl;
++		}
++		size_t cur = seed;
++		if (diagStop267) {
++			std::cout << "[STOP-267] BEGIN bag=" << n << " seed=" << cloud->points[seed].x << " " << cloud->points[seed].y << " " << cloud->points[seed].z
++			          << " R=" << stopR267 << " rule=" << (stopOn267 ? "ON" : "OFF") << std::endl;
++		}
++		for (size_t done = 0; done < n; done++) {
++			chain.push_back(Eigen::Vector3f(cloud->points[cur].x, cloud->points[cur].y, cloud->points[cur].z));
++			used[cur] = 1;
++			if (done + 1 == n) break;
++			// nearest unvisited: KNN probe first, exhaustive fallback (chain must cover all n)
++			std::vector<int> idx(50); std::vector<float> dist(50);
++			int found = kdtree.nearestKSearch(cloud->points[cur], 50, idx, dist);
++			int best = -1; float bestD2 = std::numeric_limits<float>::max();
++			// POTA-263 FULL_WALK cross-jump fix: heading-guarded pick among K=50 nearest
++			// unvisited (score = dist*(1+2*(1-cos)), alpha=2 stated knob); first 2 points
++			// and degenerate headings fall through to pure NN below.
++			if (fullWalk263 && chain.size() >= 2) {
++				Eigen::Vector3f hh263 = chain.back() - chain[chain.size()-2];
++				float hl263 = hh263.norm();
++				if (hl263 > 1e-9f) {
++					hh263 /= hl263;
++					double bestS263 = 1e100; int bestH263 = -1;
++					for (int k = 0; k < found; k++) {
++						int cand = idx[k];
++						if (cand < 0 || (size_t)cand >= n || used[cand]) continue;
++						Eigen::Vector3f dc263(cloud->points[cand].x - chain.back()(0), cloud->points[cand].y - chain.back()(1), cloud->points[cand].z - chain.back()(2));
++						float dl263 = dc263.norm();
++						if (dl263 < 1e-9f) continue;
++						double cos263 = dc263.dot(hh263) / dl263;
++						if (cos263 > 1.0) cos263 = 1.0; if (cos263 < -1.0) cos263 = -1.0;
++						double s263 = (double)dl263 * (1.0 + 2.0 * (1.0 - cos263));
++						if (s263 < bestS263) { bestS263 = s263; bestH263 = cand; }
++					}
++					if (bestH263 < 0) for (size_t i = 0; i < n; i++) if (!used[i]) {
++						Eigen::Vector3f dc263(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
++						float dl263 = dc263.norm();
++						if (dl263 < 1e-9f) continue;
++						double cos263 = dc263.dot(hh263) / dl263;
++						if (cos263 > 1.0) cos263 = 1.0; if (cos263 < -1.0) cos263 = -1.0;
++						double s263 = (double)dl263 * (1.0 + 2.0 * (1.0 - cos263));
++						if (s263 < bestS263) { bestS263 = s263; bestH263 = (int)i; }
++					}
++					best = bestH263;
+ 				}
+-				best = bestH263;
+ 			}
+-		}
+-		// POTA-267 instrument: how many fresh dots the K=50 probe actually offers, and the
+-		// nearest fresh one among them (the pick below is that dot whenever f50267 > 0).
+-		int f50267 = 0; float d50267 = -1.0f;
+-		for (int k = 0; k < found; k++) { int c267 = idx[k]; if (c267 < 0 || (size_t)c267 >= n || used[c267]) continue; f50267++; float dl267 = std::sqrt(dist[k]); if (dl267 > d50267) d50267 = dl267; }
+-		if (f50267 == 0) d50267 = -1.0f;
+-		for (int k = 0; k < found; k++) {
+-			int cand = idx[k];
+-			if (cand < 0 || (size_t)cand >= n || used[cand]) continue;
+-			if (dist[k] < bestD2) { bestD2 = dist[k]; best = cand; }
+-		}
+-		if (best < 0) for (size_t i = 0; i < n; i++) if (!used[i]) {
+-			Eigen::Vector3f d(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
+-			if (d.squaredNorm() < bestD2) { bestD2 = d.squaredNorm(); best = (int)i; }
+-		}
+-		if (stopOn267 || diagStop267) {
+-			// Distance to the nearest FRESH dot anywhere. This is the quantity the exhaustive
+-			// fallback below fetches, so it is the one the stop rule must test (a K-window
+-			// emptiness test alone is R-independent: the 50 nearest points are all taken near the
+-			// weld while a fresh neighbour can still be sub-millimetre away).
+-			float dFresh267 = std::numeric_limits<float>::max();
+-			for (size_t i = 0; i < n; i++) if (!used[i]) {
+-				Eigen::Vector3f d267(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
+-				float dl267 = d267.norm(); if (dl267 < dFresh267) dFresh267 = dl267;
++			// POTA-267 instrument: how many fresh dots the K=50 probe actually offers, and the
++			// nearest fresh one among them (the pick below is that dot whenever f50267 > 0).
++			int f50267 = 0; float d50267 = -1.0f;
++			for (int k = 0; k < found; k++) { int c267 = idx[k]; if (c267 < 0 || (size_t)c267 >= n || used[c267]) continue; f50267++; float dl267 = std::sqrt(dist[k]); if (dl267 > d50267) d50267 = dl267; }
++			if (f50267 == 0) d50267 = -1.0f;
++			for (int k = 0; k < found; k++) {
++				int cand = idx[k];
++				if (cand < 0 || (size_t)cand >= n || used[cand]) continue;
++				if (dist[k] < bestD2) { bestD2 = dist[k]; best = cand; }
+ 			}
+-			float gap267 = -1.0f;
+-			if (best >= 0) { Eigen::Vector3f d267(cloud->points[best].x - chain.back()(0), cloud->points[best].y - chain.back()(1), cloud->points[best].z - chain.back()(2)); gap267 = d267.norm(); }
+-			if (diagStop267) {
+-				dall267.push_back(dFresh267);
+-				std::cout << "[STOP-267] S i=" << (chain.size() - 1) << " gap=" << gap267 << " f50=" << f50267
+-				          << " d50=" << (f50267 > 0 ? d50267 : -1.0f) << " dall=" << dFresh267
+-				          << " src=" << (f50267 > 0 ? "k" : "e");
+-				if (best >= 0) std::cout << " p=" << cloud->points[best].x << " " << cloud->points[best].y << " " << cloud->points[best].z;
+-				std::cout << std::endl;
++			if (best < 0) for (size_t i = 0; i < n; i++) if (!used[i]) {
++				Eigen::Vector3f d(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
++				if (d.squaredNorm() < bestD2) { bestD2 = d.squaredNorm(); best = (int)i; }
++			}
++			if (stopOn267 || diagStop267) {
++				// Distance to the nearest FRESH dot anywhere. This is the quantity the exhaustive
++				// fallback below fetches, so it is the one the stop rule must test (a K-window
++				// emptiness test alone is R-independent: the 50 nearest points are all taken near the
++				// weld while a fresh neighbour can still be sub-millimetre away).
++				float dFresh267 = std::numeric_limits<float>::max();
++				for (size_t i = 0; i < n; i++) if (!used[i]) {
++					Eigen::Vector3f d267(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
++					float dl267 = d267.norm(); if (dl267 < dFresh267) dFresh267 = dl267;
++				}
++				float gap267 = -1.0f;
++				if (best >= 0) { Eigen::Vector3f d267(cloud->points[best].x - chain.back()(0), cloud->points[best].y - chain.back()(1), cloud->points[best].z - chain.back()(2)); gap267 = d267.norm(); }
++				if (diagStop267) {
++					dall267.push_back(dFresh267);
++					std::cout << "[STOP-267] S i=" << (chain.size() - 1) << " gap=" << gap267 << " f50=" << f50267
++					          << " d50=" << (f50267 > 0 ? d50267 : -1.0f) << " dall=" << dFresh267
++					          << " src=" << (f50267 > 0 ? "k" : "e");
++					if (best >= 0) std::cout << " p=" << cloud->points[best].x << " " << cloud->points[best].y << " " << cloud->points[best].z;
++					std::cout << std::endl;
++				}
++				if (stopOn267 && dFresh267 > stopR267) {
++					std::cout << "[STOP-267] CHAIN-END step=" << (chain.size() - 1) << " of " << n
++					          << ": nearest fresh dot " << dFresh267 << "mm > R=" << stopR267 << "mm ; refusing it"
++					          << " ; left=" << (n - chain.size()) << " dots unvisited" << std::endl;
++					if (fullWalk263) { stopFired275 = true; stopLeft275 = n - chain.size(); }
++					break;
++				}
+ 			}
+-			if (stopOn267 && dFresh267 > stopR267) {
+-				std::cout << "[STOP-267] CHAIN-END step=" << (chain.size() - 1) << " of " << n
+-				          << ": nearest fresh dot " << dFresh267 << "mm > R=" << stopR267 << "mm ; refusing it"
+-				          << " ; left=" << (n - chain.size()) << " dots unvisited" << std::endl;
+-				break;
++			if (best < 0) break; // unreachable (all used)
++			cur = (size_t)best;
++		}
++		if (diagStop267 && !dall267.empty()) {
++			const float Rs267[8] = {1.5f, 2.0f, 3.0f, 5.0f, 8.0f, 12.0f, 20.0f, 40.0f};
++			std::cout << "[STOP-267] SUMMARY bag=" << n << " steps=" << dall267.size() << " chain=" << chain.size();
++			for (int r267 = 0; r267 < 8; r267++) {
++				int fires267 = 0; long first267 = -1;
++				for (size_t i = 0; i < dall267.size(); i++) if (dall267[i] > Rs267[r267]) { fires267++; if (first267 < 0) first267 = (long)i; }
++				std::cout << " R=" << Rs267[r267] << ":fires=" << fires267 << ",left=" << (first267 < 0 ? 0L : (long)(n - (size_t)first267 - 1));
+ 			}
++			std::cout << std::endl;
+ 		}
+-		if (best < 0) break; // unreachable (all used)
+-		cur = (size_t)best;
+-	}
+-	if (diagStop267 && !dall267.empty()) {
+-		const float Rs267[8] = {1.5f, 2.0f, 3.0f, 5.0f, 8.0f, 12.0f, 20.0f, 40.0f};
+-		std::cout << "[STOP-267] SUMMARY bag=" << n << " steps=" << dall267.size() << " chain=" << chain.size();
+-		for (int r267 = 0; r267 < 8; r267++) {
+-			int fires267 = 0; long first267 = -1;
+-			for (size_t i = 0; i < dall267.size(); i++) if (dall267[i] > Rs267[r267]) { fires267++; if (first267 < 0) first267 = (long)i; }
+-			std::cout << " R=" << Rs267[r267] << ":fires=" << fires267 << ",left=" << (first267 < 0 ? 0L : (long)(n - (size_t)first267 - 1));
++		if (fullWalk263) {
++			double maxjump263 = 0.0;
++			for (size_t i = 1; i < chain.size(); i++) { double g263 = (chain[i] - chain[i-1]).norm(); if (g263 > maxjump263) maxjump263 = g263; }
++			std::cout << "[FULL-263] chain=" << chain.size() << " maxjump=" << maxjump263 << "mm" << std::endl;
+ 		}
+-		std::cout << std::endl;
+-	}
+-	if (fullWalk263) {
+-		double maxjump263 = 0.0;
+-		for (size_t i = 1; i < chain.size(); i++) { double g263 = (chain[i] - chain[i-1]).norm(); if (g263 > maxjump263) maxjump263 = g263; }
+-		std::cout << "[FULL-263] chain=" << chain.size() << " maxjump=" << maxjump263 << "mm" << std::endl;
+-	}
++	};
++	walkOnce275();
++	// POTA-275 (ticket 275, Phase 1 run 20261024-0329): the two arms fail in opposite directions
++	// and neither failure overlaps the other's working range. The shipped full walk collapses on the
++	// Pot C/J piece-01 rims and ends with 76-91% of the bag unvisited (every lane it does cover:
++	// <= 13%); the 247 arm explodes on the braid bags and shows L/(2*pi*R) 30-97 there against
++	// 1.2-1.3 on the lanes it owns. So keep the shipped walk unless it gave up, take the 247 chain
++	// then, and refuse that chain if it is not loop-like. Nothing moves on a lane the walk covers.
++	// POTA-275: the walker selector is ON by default; SFS_WALK_SEL=0 is the explicit opt-out (pristine walk).
++	bool sel275 = true;
++	if (const char* e = std::getenv("SFS_WALK_SEL")) { sel275 = (*e && std::string(e) != "0"); }
++	bool fell275 = false;
++	double guard275 = 1.0;
++	double frac275 = (n > 0) ? (double)stopLeft275 / (double)n : 0.0;
++	// POTA-275: a single-lump bag can stop early too, and on one the 247 arm is the F0
++	// explosion (P03 Bl1 F0: 18255 dots, 86 jumps, 135.083 mm max step). Require a multi-lump bag.
++	if (sel275 && fullWalk263 && stopFired275 && frac275 > 0.30 && ncomp > 1) {
++		std::vector<Eigen::Vector3f> chainFull275 = chain;
++		fullWalk263 = false;
++		walkOnce275();
++		Eigen::Vector3f m275 = Eigen::Vector3f::Zero();
++		for (size_t i = 0; i < chain.size(); i++) m275 += chain[i];
++		m275 /= (float)chain.size();
++		double rr275 = 0.0;
++		for (size_t i = 0; i < chain.size(); i++) rr275 += (chain[i] - m275).squaredNorm();
++		rr275 = std::sqrt(rr275 / (double)chain.size());
++		double len275 = 0.0;
++		for (size_t i = 0; i < chain.size(); i++) len275 += (chain[(i + 1) % chain.size()] - chain[i]).norm();
++		guard275 = (rr275 > 1e-9) ? len275 / (2.0 * M_PI * rr275) : 1e9;
++		if (guard275 <= 3.0) { fell275 = true; }
++		else { chain = chainFull275; fullWalk263 = true; }
++	}
++	std::cout << "[WALK-275] chose=" << (fullWalk263 ? "full" : "247")
++	          << " stopleft=" << stopLeft275 << "/" << n << " frac=" << frac275
++	          << " guard=" << guard275 << " fallback=" << (fell275 ? 1 : 0) << " ncomp=" << ncomp << " sel=" << (sel275 ? 1 : 0) << std::endl;
+ 	// 2. PCA best-fit plane of the chain (normal surrogate), angular sort about centroid.
+ 	Eigen::Vector3f mean(0,0,0);
+ 	for (size_t i = 0; i < chain.size(); i++) mean += chain[i];
+@@ -824,6 +889,31 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
+ 	}
+ 	std::cout << "[VOTE-247] resampled=" << MR << " (L=" << L << "mm) corners=" << corners
+ 	          << " thr=" << thr << " med=" << med << " idx=[" << cidx << "]" << std::endl;
++	// POTA-275: one line per lane - which arm was chosen and the shape it was chosen on.
++	Eigen::Vector3f c275 = Eigen::Vector3f::Zero();
++	for (size_t i = 0; i < MR; i++) c275 += res[i];
++	c275 /= (float)MR;
++	double R275 = 0.0;
++	for (size_t i = 0; i < MR; i++) R275 += (res[i] - c275).squaredNorm();
++	R275 = std::sqrt(R275 / (double)MR);
++	double ts275 = 0.0;
++	for (size_t i = 0; i < MR; i++) {
++		Eigen::Vector3f a = res[(i + 1) % MR] - res[i];
++		Eigen::Vector3f b = res[(i + 2) % MR] - res[(i + 1) % MR];
++		Eigen::Vector3f an = a - un * a.dot(un), bn = b - un * b.dot(un);
++		if (an.norm() < 1e-9f || bn.norm() < 1e-9f) continue;
++		an.normalize(); bn.normalize();
++		ts275 += std::atan2(un.dot(an.cross(bn)), an.dot(bn));
++	}
++	double gap275 = (MR > 1) ? (res[MR - 1] - res[0]).norm() : 0.0;
++	double mj275 = 0.0;
++	for (size_t i = 1; i < MR; i++) { double g = (res[i] - res[i-1]).norm(); if (g > mj275) mj275 = g; }
++	double lr275 = (R275 > 1e-9) ? ((double)L / (2.0 * M_PI * R275)) : 0.0;
++	std::cout << "[WALK-275] shape arm=" << (fullWalk263 ? "full" : "247")
++	          << " nres=" << MR << " L=" << L << " R=" << R275
++	          << " turn=" << (ts275 / (2.0 * M_PI)) << " Lr=" << lr275
++	          << " gap=" << gap275 << " maxjump=" << mj275
++	          << " chain=" << chain.size() << std::endl;
+ 	for (size_t i = 0; i < MR; i++)
+ 		cloud_sequenced->points.push_back(pcl::PointXYZ(res[i](0), res[i](1), res[i](2)));
+ 	cloud_sequenced->width = cloud_sequenced->points.size();
