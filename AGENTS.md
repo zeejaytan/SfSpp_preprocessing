@@ -44,7 +44,7 @@ On the Spartan checkout, **165 tracked data files** (`Segments/*.xyz`, `Segments
 - If a future pull touches those paths, git will error — resolve by un-flagging (`git update-index --no-skip-worktree <file>`), stashing the data aside, pulling, and deciding which version wins. Do not blind-checkout over them: they may be the live inputs of the current assembly runs.
 - List the flagged files with: `git ls-files -v | grep ^S`
 
-Heavy untracked data (datasets, `.sif` containers, logs, `axis_output/`) stays on Spartan; `artifacts/` is the local rsync landing zone.
+Heavy untracked data (datasets, `.sif` containers, logs, `axis_output/`) stays on Spartan; `artifacts/` is the local rsync landing zone, **not a store**. Where every other kind of output goes, and how long each one lives, is `../docs/agents/workspace-hygiene.md`, "Where each kind of output goes"; check this folder with `python ../scripts/check_artifacts.py .` (exit 0 = still a landing zone).
 
 ## Runs, worktrees and the attic
 
