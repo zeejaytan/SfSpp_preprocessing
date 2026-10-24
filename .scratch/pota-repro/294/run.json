@@ -1,0 +1,341 @@
+{
+  "runid": "20261025-0340_0f8a4a4_p294-pictures",
+  "tag": "p294-pictures",
+  "commit": "0f8a4a417221647e7d6e7f7d031a90109930d44d",
+  "created": "2026-10-25T03:40+11:00",
+  "host": "spartan (compute node, batch)",
+  "ticket": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/issues/294-eleven-pictures.md",
+  "question": "Which contour does our edge line take on each of the eleven below-bar lanes, and where does it part from the authors' line, drawn on the sherd mesh and on the extracted surface?",
+  "parameters": {
+    "sfs_variables_set": [
+      "POT_NAME",
+      "SFS_AXIS_FILE (mesh stage only, ticket 277)"
+    ],
+    "defaults_only": true,
+    "nurbs_output_base": "unset",
+    "theta_expected": "3.4 (printed by [PAPER-234] paper grow, quoted per piece)",
+    "staging": "scripts/stage_piece.sh, symlink into the frozen corpus",
+    "build": "git archive of the commit, cmake + make inside pcl_191_nurbs.sif, never build.sh --target nurbs",
+    "scorer": ".scratch/pota-repro/292/score292.py from the same archive, semantics unchanged",
+    "renderer": ".scratch/pota-repro/294/p294_render.py, generalised from artifacts/pota289/data/onmesh.py"
+  },
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+    "pieces": [
+      "Pot_C_Piece_03",
+      "Pot_D_Piece_22",
+      "Pot_D_Piece_27",
+      "Pot_E_Piece_16",
+      "Pot_H_Piece_02",
+      "Pot_H_Piece_10",
+      "Pot_I_Piece_06",
+      "Pot_I_Piece_13",
+      "Pot_I_Piece_25"
+    ],
+    "lanes": [
+      "Pot_C_Piece_03 Bl1",
+      "Pot_D_Piece_22 Bl0",
+      "Pot_D_Piece_27 Bl0",
+      "Pot_D_Piece_27 Bl1",
+      "Pot_E_Piece_16 Bl0",
+      "Pot_H_Piece_02 Bl1",
+      "Pot_H_Piece_10 Bl1",
+      "Pot_I_Piece_06 Bl1",
+      "Pot_I_Piece_13 Bl1",
+      "Pot_I_Piece_25 Bl0",
+      "Pot_I_Piece_25 Bl1"
+    ],
+    "corpus_is_input": true
+  },
+  "baseline": {
+    "run": "/data/gpfs/projects/punim2657/SfSpp/runs/20261025-0134_787c149_p292-rescore",
+    "file": "out/lanes.tsv",
+    "note": "ticket 292 whole-corpus rows, read not retyped"
+  },
+  "steps": [
+    "job A: build both binaries from the archive, stage 9 pieces by symlink, mesh stage with SFS_AXIS_FILE (classify line required), edge stage at defaults, score all 18 lanes, write out/manifest.json",
+    "job B: render the 11 pictures, delete the stage trees and out/geom geometry, write out/GEOMETRY_DELETED.txt"
+  ],
+  "jobs": {
+    "build_and_run": "33752717 (p294run) COMPLETED 0:0, 6:05",
+    "render_and_delete": "33752744 (p294render) COMPLETED 0:0, 0:30",
+    "reference_to_mesh": "33752858 (p294ref) COMPLETED 0:0, 0:13"
+  },
+  "status": "results-in; ticket written in the main clone, uncommitted",
+  "geometry": "deleted by job B after the pictures exist; the corpus is input and is never touched",
+  "results": {
+    "pieces_run": 9,
+    "lanes_scored": 18,
+    "classify_lines_present": 9,
+    "binaries": {
+      "edge": {
+        "md5": "a28d10afab2b50bbe750d599ee2b7214",
+        "source_md5_lf": "f0dbfe7032d90a04412d15bd1699a703",
+        "lines": 3739
+      },
+      "mesh": {
+        "md5": "0171f471d0558d2676df7c4b113c1e9d",
+        "source_md5_lf": "459dabe145056489829804292710b382",
+        "lines": 2618
+      },
+      "note": "both byte-identical to the 287-292 shipped binaries"
+    },
+    "lanes": [
+      {
+        "lane": "Pot_C_03 Bl1",
+        "fresh": [
+          337,
+          11.327,
+          18.4,
+          50.83
+        ],
+        "baseline_292": [
+          339,
+          11.281,
+          17.99,
+          50
+        ],
+        "d_median": 0.046,
+        "d_cov": 0.41,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_D_22 Bl0",
+        "fresh": [
+          125,
+          0.757,
+          86.4,
+          78.95
+        ],
+        "baseline_292": [
+          125,
+          0.757,
+          86.4,
+          78.95
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_D_27 Bl0",
+        "fresh": [
+          56,
+          0.673,
+          73.21,
+          83.33
+        ],
+        "baseline_292": [
+          56,
+          0.673,
+          73.21,
+          83.33
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_D_27 Bl1",
+        "fresh": [
+          58,
+          0.798,
+          62.07,
+          77.55
+        ],
+        "baseline_292": [
+          58,
+          0.798,
+          62.07,
+          77.55
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_E_16 Bl0",
+        "fresh": [
+          111,
+          0.651,
+          72.97,
+          74.11
+        ],
+        "baseline_292": [
+          111,
+          0.676,
+          72.97,
+          74.11
+        ],
+        "d_median": -0.025,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_H_02 Bl1",
+        "fresh": [
+          138,
+          0.676,
+          72.46,
+          74.45
+        ],
+        "baseline_292": [
+          138,
+          0.688,
+          72.46,
+          74.45
+        ],
+        "d_median": -0.012,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_H_10 Bl1",
+        "fresh": [
+          90,
+          0.728,
+          72.22,
+          77.27
+        ],
+        "baseline_292": [
+          90,
+          0.728,
+          72.22,
+          77.27
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_I_06 Bl1",
+        "fresh": [
+          180,
+          0.867,
+          72.78,
+          73.18
+        ],
+        "baseline_292": [
+          178,
+          0.883,
+          70.22,
+          70.95
+        ],
+        "d_median": -0.016,
+        "d_cov": 2.56,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_I_13 Bl1",
+        "fresh": [
+          160,
+          0.707,
+          83.12,
+          85
+        ],
+        "baseline_292": [
+          161,
+          0.734,
+          82.61,
+          85.62
+        ],
+        "d_median": -0.027,
+        "d_cov": 0.51,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_I_25 Bl0",
+        "fresh": [
+          58,
+          6.91,
+          0,
+          0
+        ],
+        "baseline_292": [
+          58,
+          6.91,
+          0,
+          0
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      },
+      {
+        "lane": "Pot_I_25 Bl1",
+        "fresh": [
+          67,
+          6.951,
+          0,
+          0
+        ],
+        "baseline_292": [
+          67,
+          6.951,
+          0,
+          0
+        ],
+        "d_median": 0,
+        "d_cov": 0,
+        "flagged": false
+      }
+    ],
+    "flag_rule": "|d median| > 0.20 mm or |d cov_ours| > 3.0 pp; 0 of 11 flagged",
+    "reading": {
+      "same_edge_local_offset": [
+        "Pot_D_27 Bl0",
+        "Pot_D_27 Bl1",
+        "Pot_E_16 Bl0",
+        "Pot_H_02 Bl1",
+        "Pot_H_10 Bl1",
+        "Pot_I_06 Bl1",
+        "Pot_I_13 Bl1"
+      ],
+      "chord_instead_of_edge": [
+        "Pot_D_22 Bl0"
+      ],
+      "different_edge": [
+        "Pot_C_03 Bl1",
+        "Pot_I_25 Bl0",
+        "Pot_I_25 Bl1"
+      ],
+      "trap": "a crossing in one projection is not contact: Pot_I_25 crosses in X-Y and is 6.9 mm apart in 3D"
+    },
+    "authors_line_to_own_mesh_mm": {
+      "rows": 18,
+      "median_range": [
+        0.007,
+        0.024
+      ],
+      "p95_max": 0.115,
+      "max": 1.386,
+      "lane_of_max": "Pot_D_Piece_22 lane 0",
+      "share_gt_2mm": 0,
+      "locus": "out/authors_to_mesh.json + out/authors_to_mesh.txt, scripts/mesh_ref.py, job 33752858"
+    },
+    "pngs": {
+      "count": 11,
+      "px": "2300x1340",
+      "dir_run": "out/png/",
+      "dir_laptop": "C:/PR/SfSpp_preprocessing/artifacts/pota294/png/",
+      "md5_table": "out/png.md5"
+    },
+    "geometry": {
+      "stage_files": 508,
+      "geom_files": 36,
+      "remaining": 0,
+      "record": "out/GEOMETRY_DELETED.txt",
+      "corpus_touched": false
+    },
+    "files_over_1MiB_outside_bin": [
+      "out/png/p294_E_16_Bl0.png (1073060 B, the deliverable)",
+      "out/png/p294_I_06_Bl1.png (1067171 B, the deliverable)"
+    ]
+  },
+  "deviations": [
+    "third job 33752858 added after the figures: distance from each authors' line to the authors' own DS mesh (read-only, no geometry)",
+    "manifest294.py called from the run root while it lives in $RUN/scripts - job A's comparison step exited 2 after the lanes were scored; re-ran by hand with the right path (lanes=11 problems=0 flagged=0) and fixed the submitted copy",
+    "renderer fixed twice before the run (plane label index; plane choice now scores the 2D separation of the stretch) and dry-run on a synthetic tree first",
+    "ticket header said Working in: unassigned while the worktree already existed on branch 294-eleven-pictures; corrected in the ticket"
+  ]
+}
