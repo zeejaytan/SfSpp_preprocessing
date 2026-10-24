@@ -101,6 +101,15 @@ builds from the pushed commit in a checkout it makes and deletes itself
 (`../docs/agents/workspace-hygiene.md`, "One ticket, start to finish"). There are no
 numbered copies of the tree, and a parameter is never varied by copying the tree.
 
+**Opening a ticket's worktree is one command, and it names a branch:**
+`git -C C:/PR/SfSpp_preprocessing worktree add C:/PR/worktrees/sfs/<NN> -b <NN>-<slug> origin/main`,
+pushed straight away with `git -C <path> push -u origin <NN>-<slug>`. The branch name is the
+ticket file's name without `.md`, so the directory, the branch and the ticket are one string.
+**Never `worktree add <path> <commit>`:** that leaves a detached HEAD, so the ticket's commits
+are reachable only from that directory's reflog, nothing appears on GitHub, and losing the
+directory loses the work (2026-10-24: eleven laptop worktrees had to be turned into branches
+after the fact).
+
 A run records itself as a directory under the shared run root:
 
 ```
