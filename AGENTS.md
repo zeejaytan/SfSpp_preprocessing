@@ -52,6 +52,11 @@ A run records itself as a directory under the shared run root:
   tree, each with `manifest-path-size.txt.gz` and `skipped.txt`, plus a tarball where one was
   made. `/data/gpfs/projects/punim2657/SfSpp/bundles/` holds only `README.txt`.
 - **The run directory is the unit of record, not the variation.**
+- **Tidying this repo follows one written procedure:** `C:/PR/docs/agents/workspace-hygiene.md`
+  (scan, classify, prove provenance against this canonical checkout, harvest by named
+  classes, prove the harvest, delete in guarded passes, record in the attic). Deletion
+  follows `C:/PR/AGENTS.md` rule 13. Measured 2026-10-24: 44 trees and 17 clones became 3
+  and 1.
 
 ## Agent skills
 
