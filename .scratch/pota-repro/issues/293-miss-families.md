@@ -11,7 +11,7 @@ Follows: 292 (the baseline: 281/292 sound lanes at bar), 286 (H02/H10 mechanism)
 Ticket 292 measured every lane of the frozen corpus at the shipped defaults. Eleven sound lanes are
 below bar and they are not one thing. Nine keep the reference's route and length and differ over one
 stretch; two are different contours. This ticket names both families so a later session does not
-re-measure them, and answers the one question the numbers cannot: **is the nine-lane family one
+re-measure them, and answers the one question the numbers cannot: **is the eight-lane family one
 mechanism or several?**
 
 ## The lanes
@@ -27,7 +27,7 @@ The picture (`C:/PR/SfSpp_preprocessing/artifacts/pota292/png/Pot_I_Piece_25_Bl0
 closed loop crossing outside a smaller closed reference loop. Both are on the piece; they are not the
 same curve.
 
-One-stretch family (median well under the 2 mm bar, coverage 62-86%):
+One-stretch family -- eight lanes (median well under the 2 mm bar, coverage 62-86%):
 
 | piece | lane | median mm | cov ours | len ratio |
 |---|---|---|---|---|
@@ -38,7 +38,7 @@ One-stretch family (median well under the 2 mm bar, coverage 62-86%):
 | Pot_H_Piece_02 | 1 | 0.688 | 72.46 | 1.01 |
 | Pot_H_Piece_10 | 1 | 0.728 | 72.22 | 1.05 |
 | Pot_I_Piece_06 | 1 | 0.883 | 70.22 | 1.01 |
-| Pot_I_Piece_13 | 0.734 | 82.61 | 1.02 | (Bl1) |
+| Pot_I_Piece_13 Bl1 | 0.734 | 82.61 | 1.02 |
 
 (`Pot_H_Piece_02` Bl1 and `Pot_H_Piece_10` Bl1 were already diagnosed in ticket 286 -- (S) same
 face different contour, and (K) partition mismatch -- so they are members with a known reading, not
@@ -87,6 +87,6 @@ Pieces to mesh: Pot_D 22, 27, Pot_E 16, Pot_H 02, 10, Pot_I 06, 13 -- seven piec
 ## Acceptance
 
 1. A table with every lane above and its class, each cell traceable to a file in the run directory.
-2. One answer to "one mechanism or several" for the nine-lane family, with the split by class.
+2. One answer to "one mechanism or several" for the eight-lane family, with the split by class.
 3. Pot I 25's case stated precisely enough for the conservator to rule on the reference.
 4. Pictures for at least both Pot I 25 lanes and one member of each class found in Phase B.
