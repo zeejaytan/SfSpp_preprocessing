@@ -47,7 +47,7 @@ MAN_RELEASED=$CORPUS/Point/MANIFEST_released.tsv
 MAN_DERIVED=$CORPUS/Point/MANIFEST_derived.tsv
 
 pcd_points() { # pcd_points <file> -> POINTS from the PCD header
-  head -20 "$1" | awk '/^POINTS[[:space:]]/{print $2; exit}'
+  awk '/^POINTS[[:space:]]/{print $2; exit}' "$1"
 }
 
 manifest_md5() { # manifest_md5 <piece> -> the corpus cloud md5, empty when listed in neither manifest
