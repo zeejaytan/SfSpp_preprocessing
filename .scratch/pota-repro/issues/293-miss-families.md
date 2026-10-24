@@ -1,7 +1,7 @@
 # 293 — The two miss families the corpus re-score exposed
 
-Status: results-in
-Working in: chat on Thinkbook16 (2026-10-25)
+Status: done (accepted: three partition-mismatch lanes, eight lanes in three causes; no walk fix)
+Working in: main (worktree closed 2026-10-25)
 Branch: 293-miss-families, in /c/PR/worktrees/sfs/293
 Answers: E1
 Created: 2026-10-25
@@ -427,3 +427,61 @@ seven files over 1 MiB outside `bin/` and are the census record, not geometry).
 Pictures are mirrored locally at `C:/PR/SfSpp_preprocessing/artifacts/pota293/png/` and `crosspair.tsv` at
 `C:/PR/SfSpp_preprocessing/artifacts/pota293/`.
 
+
+## Lead verdict (2026-10-25)
+
+**Accepted.** The two families now have their "why", and one of them turns out not to be a family at
+all. Seven points.
+
+1. **Pot I 25 is a label inversion, not a contour difference.** The cross-pairing measurement
+   (`out/crosspair.tsv`) is decisive and I checked it against two numbers that do not depend on the
+   pairing algorithm: our Bl0 is 0.680 mm from their **Bl1** (coverage 100 / 100, max 1.420 mm) and our
+   Bl1 is 0.568 mm from their **Bl0** (100 / 100, max 1.752), while the same-index pairs sit at 6.910
+   and 6.951 mm with zero coverage both ways. The counts (58 against 60, 67 against 69) and the arc
+   lengths (104.79 against 106.28, 120.57 against 124.26) pair **crossed** as well, so the result is not
+   an artefact of the nearest-neighbour scorer. Each side draws both rims; the two lanes are one curve
+   pair counted twice, and whoever's index is inverted, our line is the correct rim.
+2. **Consequence for the tally, recorded and not applied.** If the conservator accepts the reference
+   labels as swapped on this piece, both Pot I 25 lanes are at bar by a wide margin and the corpus moves
+   from **281 of 292 to 283 of 292 (96.2% to 96.9%)**. I have not changed the headline; this is the same
+   class of ruling as Pot J 09 and it is the conservator's call, not mine.
+3. **Pot C 03 Bl1 (K) is confirmed by a route independent of ticket 279.** Our line is the outer rim of
+   the exterior wall we keep (0.700 mm from its p95 rim, 35.1% ring share, 99.41% on a boundary); theirs
+   runs 10.51 mm inside that rim and 3.58 mm in from the band's inner edge, on material the mesh stage
+   left unclustered (90.0%) or dropped (10.0%). That is the same dropped base band 279 identified as the
+   authors' own Surface_1, measured here from cluster membership instead of from surface distance. Two
+   methods, one verdict.
+4. **The eight one-stretch lanes are one mechanism with three surface causes**: (i) one, D 22 Bl0, where
+   the reference draws an 18 mm chord over a notch mouth and its own dots are 8.07 mm from any kept
+   material; (ii) six, D 27 Bl0, D 27 Bl1, E 16 Bl0, H 10 Bl1, I 06 Bl1, I 13 Bl1, where the reference
+   runs inside continuous material of the face we keep (0.208-1.933 mm from it, 0-6% of its dots on a
+   boundary against 94-100% of ours); (iii) one, H 02 Bl1, where our kept region spans the 14.13 deg fold
+   ticket 286 measured and the reference turns at it.
+5. **The load-bearing sentence is the learnability answer, and it closes a question.** Only (i) is
+   visible in a boundary set, and only negatively -- no material under the chord. In the other seven the
+   turning feature lies inside continuous material, so the boundary set carries no trace of it. A
+   boundary-routed change (another walk rule, another stop rule, another seed) therefore cannot close
+   this family; it would need curvature evidence on the kept face, or a merge rule that refuses to join
+   across a fold. Recorded so the next session does not build a walk arm for it.
+6. **Reproduction and the three exceptions.** Six of the eleven lanes reproduce ticket 294 within the
+   pre-set rule; E 16 Bl0 (+0.104 mm), I 06 Bl1 (-1.51 pp) and I 13 Bl1 (-1.64 pp) are outside it, and
+   they are exactly the three whose dot count moved -- the unseeded 30-ray mesh draw, whose piece
+   dependent spread (0.1-0.9 mm) the project already records. Stated rather than reconciled, which is
+   the right handling; a difference that small is the instrument, not a finding.
+7. **Deviations accepted, one ticket line superseded.** The print-only ticket-276 diagnostic patch is
+   acceptable on the evidence given (edge binary byte-identical to 294's, +122/-0 lines, reverse dry-run
+   exit 0, eighteen lanes reproducing); the `angbins` against ticket 286's `bins` definition difference
+   is disclosed and unreconciled (`out/selfcheck286.txt`); C 03 Bl0 has no per-dot table because only
+   the eleven lanes of record were dumped. Ticket line 93 says to leave results uncommitted for the lead
+   to commit -- my dispatch order required a commit on the branch, so **that line is superseded**; the
+   verdict, the index fields and the merge remain mine.
+
+Verified independently before landing: branch clean at `275e47d` and equal to `origin`, run directory
+`20261025-0456_3ada802_p293-census` present with `out` at 21 MB and no geometry left, index row appended
+with verdict and human_note empty, and both figures read at full size -- the Pot I 25 panel shows our green
+loop sitting exactly on the boundary of the surface drawn while the authors' black loop lies outside it, on
+the other face, which is the inversion seen rather than argued.
+
+No code, default, threshold or algorithm changed. Open for the conservator: whether the Pot I 25 reference
+labels are accepted as swapped (which would make the tally 283 of 292), and whether the three (K) lanes stay
+in the bar as references at all.
