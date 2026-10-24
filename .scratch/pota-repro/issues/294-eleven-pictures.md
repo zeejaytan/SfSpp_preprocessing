@@ -65,9 +65,8 @@ Write them to `C:/PR/SfSpp_preprocessing/artifacts/pota294/png/` as
 ## Constraints
 
 - No code change, no default, no threshold, no retune. This is a picture ticket.
-- Run directory under `/data/gfps` -- wrong, see below: run directory under
-  `/data/gpfs/projects/punim2657/SfSpp/runs/<YYYYMMDD-HHMM>_<git7>_p294-pictures/` with `run.json`,
-  and an index row (verdict and human_note left for the lead).
+- Run directory under `/data/gpfs/projects/punim2657/SfSpp/runs/<YYYYMMDD-HHMM>_<git7>_p294-pictures/`
+  with `run.json`, and an index row (verdict and human_note left for the lead).
 - Geometry dies with the ticket: delete stage trees and every `.pcd/.xyz/.obj/.ply` before reporting,
   write `out/GEOMETRY_DELETED.txt`, keep the PNGs, the tables and the scripts.
 - Copy the PNGs to the laptop path above; the run directory keeps the same files.
