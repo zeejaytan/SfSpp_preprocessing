@@ -29,10 +29,12 @@ Heavy untracked data (datasets, `.sif` containers, logs, `axis_output/`) stays o
 
 ## Runs, worktrees and the attic
 
-**The canonical checkout is `/data/gpfs/projects/punim2657/sfs_preprocessing`.** Worktrees
-hang off it, one per ticket, under `sfs_preprocessing.wt/<ticket>`, e.g.
-`/data/gpfs/projects/punim2657/sfs_preprocessing.wt/273`. There are no numbered copies of the
-tree beside it, and a parameter is never varied by copying the tree.
+**The canonical checkout is `/data/gpfs/projects/punim2657/sfs_preprocessing`.** It only
+fetches; nothing is edited or committed on Spartan, and it carries no worktrees. Ticket
+branches live in a laptop worktree (`C:/PR/worktrees/sfs/<ticket>`), are pushed, and a job
+builds from the pushed commit in a checkout it makes and deletes itself
+(`../docs/agents/workspace-hygiene.md`, "One ticket, start to finish"). There are no
+numbered copies of the tree, and a parameter is never varied by copying the tree.
 
 A run records itself as a directory under the shared run root:
 
@@ -52,10 +54,10 @@ A run records itself as a directory under the shared run root:
   tree, each with `manifest-path-size.txt.gz` and `skipped.txt`, plus a tarball where one was
   made. `/data/gpfs/projects/punim2657/SfSpp/bundles/` holds only `README.txt`.
 - **The run directory is the unit of record, not the variation.**
-- **Tidying this repo follows one written procedure:** `C:/PR/docs/agents/workspace-hygiene.md`
+- **Tidying this repo follows one written procedure:** `../docs/agents/workspace-hygiene.md`
   (scan, classify, prove provenance against this canonical checkout, harvest by named
   classes, prove the harvest, delete in guarded passes, record in the attic). Deletion
-  follows `C:/PR/AGENTS.md` rule 13. Measured 2026-10-24: 44 trees and 17 clones became 3
+  follows `../AGENTS.md` rule 13. Measured 2026-10-24: 44 trees and 17 clones became 3
   and 1.
 
 ## Agent skills
