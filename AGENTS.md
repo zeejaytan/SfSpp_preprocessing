@@ -133,6 +133,12 @@ A run records itself as a directory under the shared run root:
   `scripts/stage_piece.sh <stage> <Pot_X> <Piece...>` links the mesh and the cloud to
   `original_samples/`, copies only the 7 KB axis file, and records every resolved path, md5 and
   point count in the stage's `inputs.md5`.
+- **An identity gate only holds where the run is deterministic.** The mesh stage draws 30 random
+  ray-cast points from an unseeded generator (`mesh_processing_headless.cpp:1526-1527`), so on some
+  pieces two runs of the same bytes move the exported line (measured 0.867 mm on Pot H 02) and on
+  others they do not (Pot J 09: 0.000000 across four runs). Compare a change against that piece's own
+  run-to-run spread measured in the same session, never against zero, unless determinism has been
+  shown there; and claim byte-identical staged inputs for what staging actually controls (ticket 291).
 - **Tidying this repo follows one written procedure:** `../docs/agents/workspace-hygiene.md`
   (scan, classify, prove provenance against this canonical checkout, harvest by named
   classes, prove the harvest, delete in guarded passes, record in the attic). Deletion
