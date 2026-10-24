@@ -1,0 +1,208 @@
+{
+  "runid": "20261024-1006_8e1e514_p288-from-commit",
+  "commit": "8e1e514",
+  "commit_resolved": "8e1e5147da4f8ad065704462e2a464eb2953f466",
+  "tag": "p288-from-commit",
+  "branch": "origin/main",
+  "canonical": "/data/gpfs/projects/punim2657/sfs_preprocessing",
+  "question": "Ticket 288: does the edge binary built from the committed seed source (main 8e1e514) reproduce the behaviour that justified the change (ticket 287's after column)?",
+  "change": "none - the build is from the commit with nothing overlaid",
+  "expected_binary_md5": "a28d10afab2b50bbe750d599ee2b7214",
+  "build": {
+    "method": "git archive 8e1e514 into a build tree, cmake+make inside apptainer (the ticket-287 recipe)",
+    "build_tree": "/data/gpfs/projects/punim2657/sfs-vote-248/p288-build-<SLURM_JOB_ID>",
+    "sif": "/data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif",
+    "cmake": "-DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+    "make": "make -j8 EdgeLineExtractionHeadless",
+    "alglib": "copied from the canonical checkout, as in ticket 287"
+  },
+  "lanes": {
+    "pieces": [
+      "Pot_H_Piece_02 (H02)",
+      "Pot_H_Piece_10 (H10)",
+      "Pot_C_Piece_01 (C01)",
+      "Pot_J_Piece_01 (J01)"
+    ],
+    "env": "defaults only, POT_NAME set; no SFS_* variable",
+    "frozen_sheets": {
+      "H02": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1604_d1b61cb_p280-extent/stage/H02_norm",
+      "H10": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-1604_d1b61cb_p280-extent/stage/H10_norm",
+      "C01": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0408_1308298_p275-phase0/phase0/Pot_C_Piece_01",
+      "J01": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0408_1308298_p275-phase0/phase0/Pot_J_Piece_01"
+    },
+    "no_mesh": true,
+    "scorer": "score288.py - project score275.py formulas, plus a check against the 287 run's own after column read from its out/score287.txt",
+    "tolerances": "n exact; median +-0.05 mm; coverage +-1.0; jumps equal"
+  },
+  "reference": {
+    "run": "/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2046_edf679c_p287-seed",
+    "column": "after"
+  },
+  "created": "2026-10-24T10:07:00Z",
+  "host": "spartan-login1.hpc.unimelb.edu.au",
+  "user": "zhuojiat",
+  "commit_subject": "Ship the largest-lump walk seed: four stub lanes become correct loops, guards unchanged to the bit",
+  "jobs": [
+    {
+      "jobid": "33746506",
+      "name": "p288commit",
+      "did": "build from git archive 8e1e514 and run the eight lanes",
+      "state": "COMPLETED",
+      "exit": "0:0",
+      "elapsed": "00:02:02",
+      "ended": "2026-10-24T21:08:53"
+    }
+  ],
+  "build_status": {
+    "build_exit": 0,
+    "source_md5_lf": "f0dbfe7032d90a04412d15bd1699a703",
+    "source_lines": 3739,
+    "source_seed287_strings": 1,
+    "archive_blob_md5_matches": true,
+    "local_edits_in_tree": 0,
+    "binary_md5": "a28d10afab2b50bbe750d599ee2b7214",
+    "bit_identical_to_287_after": true,
+    "cxx": "/usr/bin/c++",
+    "cxx_flags": "",
+    "compile_cmd_chars": 511,
+    "strings": {
+      "STOP-267": 4,
+      "FULL-263": 3,
+      "VOTE-247": 6,
+      "SEED-287": 1
+    }
+  },
+  "results": {
+    "lane_format": "lane stamp n median_mm cov_ours_to_author cov_author_to_ours jumps max_step verdict",
+    "rows": [
+      [
+        "H02",
+        0,
+        152,
+        0.582,
+        100,
+        100,
+        0,
+        3.569,
+        "REPRODUCES"
+      ],
+      [
+        "H02",
+        1,
+        138,
+        0.867,
+        73.19,
+        74.45,
+        0,
+        3.736,
+        "REPRODUCES"
+      ],
+      [
+        "H10",
+        0,
+        98,
+        0.664,
+        100,
+        100,
+        0,
+        3.633,
+        "REPRODUCES"
+      ],
+      [
+        "H10",
+        1,
+        92,
+        0.642,
+        72.83,
+        77.27,
+        0,
+        4.571,
+        "REPRODUCES"
+      ],
+      [
+        "C01",
+        0,
+        207,
+        0.682,
+        98.55,
+        98.58,
+        0,
+        4.46,
+        "REPRODUCES"
+      ],
+      [
+        "C01",
+        1,
+        226,
+        0.575,
+        100,
+        99.57,
+        0,
+        5.028,
+        "REPRODUCES"
+      ],
+      [
+        "J01",
+        0,
+        170,
+        0.582,
+        100,
+        100,
+        0,
+        4.224,
+        "REPRODUCES"
+      ],
+      [
+        "J01",
+        1,
+        184,
+        0.601,
+        100,
+        99.47,
+        0,
+        4.031,
+        "REPRODUCES"
+      ]
+    ],
+    "lanes_reproducing": 8,
+    "lanes_total": 8,
+    "pointwise_vs_287_after": "max_dxyz = 0.000000 on all eight lanes (exports identical)",
+    "seed_lines": [
+      "C01 Bl0 ncomp=4 biggest=0 size=716/986 seed=-5.85638 -27.3575 403.765",
+      "C01 Bl1 ncomp=2 biggest=0 size=825/1090 seed=-12.6057 -29.6216 404.988",
+      "J01 Bl0 ncomp=4 biggest=0 size=580/832 seed=55.1673 10.7026 472.957",
+      "J01 Bl1 ncomp=2 biggest=0 size=600/883 seed=57.7673 17.4733 474.449",
+      "H02 Bl0 ncomp=1 size=462/462 seed=35.7955 4.1832 509.674",
+      "H02 Bl1 ncomp=1 size=484/484 seed=7.0776 13.7992 529.179",
+      "H10 Bl0 ncomp=1 size=374/374 seed=-7.83697 9.45079 482.739",
+      "H10 Bl1 ncomp=1 size=298/298 seed=-7.07469 15.1813 479.289"
+    ],
+    "sheets_unchanged": true,
+    "edge_exit_all_zero": true,
+    "sheets_md5": {
+      "H02": [
+        "9de492c98873204572919961b7d7dba8",
+        "638a22194203c6b356e52a066c656ab3",
+        "f90e8c18f121ab25f7c2b509624e7b26"
+      ],
+      "H10": [
+        "07ba2430d3ed975b8df20d29569dbe03",
+        "ee79326ee6c6ef45ca1447b4d3a7699f",
+        "723002c8925cc7bb4ce1705946d1429b"
+      ],
+      "C01": [
+        "6632718baf1a8e41eee3303d97063d87",
+        "9ebf2f01644869c5e470e8b29b255ca8",
+        "5804e1696f2742ce79b93e070cf7c53d"
+      ],
+      "J01": [
+        "abd83ca2497d97a9c85ab385bb8a9d4f",
+        "19641b791a295f0d22755086a72a4a9d",
+        "5035e44c1c94c2bc4665fb6b5fc0f5ba"
+      ],
+      "note": "identical to the sheets recorded in the 287 run (same frozen files)"
+    },
+    "answer": "YES - the binary built from the committed source reproduces the scored behaviour (8/8 lanes, identical exports)"
+  },
+  "updated": "2026-10-24T21:12:00Z"
+}
