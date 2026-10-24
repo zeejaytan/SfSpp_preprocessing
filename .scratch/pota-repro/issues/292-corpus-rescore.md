@@ -368,13 +368,13 @@ every row; per-pot table reproduced lane for lane; 13 below-bar rows, exactly th
    Bl0 79 / 1.079 / 70.89 / 75.68 and Bl1 91 / 1.913 / 50.55 / 63.77, digit for digit. Two runs, two
    days, the same frozen cloud: the pipeline is deterministic on that piece and the scorer agrees
    with the one used before.
-3. **Ten of the eleven sound misses are not blindness.** Nine sit at median 0.67-0.88 mm with total
+3. **Eight of the eleven sound misses are not blindness.** They sit at median 0.67-0.88 mm with total
    length within 5% of the reference (len ratio 1.01, 1.01, 1.02, 1.05, 1.20, 1.21, 0.92, 1.01,
    1.01; median ratio over all 296 lanes is 0.99). Same route, similar length, one stretch beyond
    2 mm: the extent/contour family already diagnosed on Pot H 02/H 10 in ticket 286, now with nine
    more members across pots D, E, H and I. \`Pot_D_Piece_27\` is the clearest: 1.2x the reference
    length at 0.67-0.80 mm median with 62-73% coverage -- our line runs past the end of theirs.
-4. **Two are genuinely different contours.** \`Pot_C_Piece_03\` lane 1 (11.28 mm, 2.23x the reference
+4. **Three lanes are genuinely different contours.** \`Pot_C_Piece_03\` lane 1 (11.28 mm, 2.23x the reference
    length) is the known base-band partition mismatch of tickets 278/279, unchanged. \`Pot_I_Piece_25\`
    **both lanes** (6.91 / 6.95 mm, zero coverage both ways, our loop crossing outside a smaller
    reference loop in the pictures) is **new and unnamed**; it gets its own ticket, not a line here.
@@ -394,6 +394,6 @@ every row; per-pot table reproduced lane for lane; 13 below-bar rows, exactly th
 8. **Deviations accepted**: three array attempts before the counting run (status variables, scorer
    path, a stale copy) with their output cleared so \`lanes.tsv\` is one run; pot montages built in the
    collect job; \`index.tsv\` jobid is the build job with the array and collect ids in \`run.json\`.
-9. **What this does not settle**: why a stretch of a nine-lane family sits beyond 2 mm while the
+9. **What this does not settle**: why a stretch of an eight-lane family sits beyond 2 mm while the
    route and length agree, and what \`Pot_I_Piece_25\` is. Both are now measurable on inputs that can
    be staged again (tickets 290, 291), which is the difference between this and every earlier tally.

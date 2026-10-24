@@ -240,11 +240,11 @@ H 20/22, I 56/60, J 21/21.
 
 The eleven sound misses fall in two groups and neither is blindness:
 
-- **Nine are the extent/contour family** (D22 Bl0, D27 Bl0+Bl1, E16 Bl0, H02 Bl1, H10 Bl1, I06 Bl1,
+- **Eight are the one-stretch family** (D22 Bl0, D27 Bl0+Bl1, E16 Bl0, H02 Bl1, H10 Bl1, I06 Bl1,
   I13 Bl1): median 0.67-0.88 mm, total length within 5% of the reference, one stretch beyond 2 mm.
   This is ticket 286's mechanism (our kept region spans a fold the reference turns into) with nine
   members now, and `Pot_D_Piece_27` is the clearest -- 1.2x the reference length at 0.73 mm median.
-- **Two are different contours**: `Pot_C_Piece_03` Bl1 (the known base-band partition mismatch of
+- **Three lanes are different contours**: `Pot_C_Piece_03` Bl1 (the known base-band partition mismatch of
   tickets 278/279) and `Pot_I_Piece_25` both lanes (new, ticket 293).
 
 One jump survives in the shipped code: `Pot_C_Piece_02` Bl1, a single 37.712 mm step at median
