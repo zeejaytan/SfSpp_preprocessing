@@ -44,6 +44,34 @@ ask whether the mesh stage is repairing its own segmentation at all.
 Does mergePaper234 join the clusters Appendix A says belong to the same continuous
 surface, and keep apart the ones it says do not?
 
+## Phase 0b (added by the lead, 2026-10-24) — where does the missing 22.5% go?
+
+Read-only, needs no build, and it should run before the phases below.
+
+The mesh logs record that the two classified surfaces hold only 77.49% of the cloud on
+Pot C 01 ("Points in two clusters / Total Points in pointcloud: 77.4892%", face0 56833 +
+face1 49245 of ~136880). The other 22.5% never enters a surface, and the edge stage only
+ever sees the surfaces. Nothing downstream can see what was dropped.
+
+Hypothesis, to verify: part of every "real unreached arc" the edge stage shows is not
+missing because of the walk but because it never became surface. Candidates, all
+single-lump bags with no debris to blame: Pot H 02 Bl1 (73.2% ours / 74.5% author-side),
+Pot H 10 Bl1 (68.8 / 76.1), Pot C C03 Bl1 (47.6 / 47.5).
+
+Test, on those three pieces:
+1. From the mesh run's own cloud, label every point by post-merge cluster and by final
+   surface (Surface_0 / Surface_1 / neither).
+2. Map every dot of the author's Breakline_*.pcd for that piece to its nearest mesh point
+   and record that point's label.
+3. Report, per piece and per lane, the share of author dots landing on a dropped cluster,
+   and whether that share matches the uncovered stretch. Report every dropped cluster's
+   size and its author-dot count.
+
+Verdict rule: if the uncovered stretch is dominated by author dots whose nearest mesh
+point is in a dropped cluster, the missing arc is a mesh-stage loss and the merge is the
+suspect. If those dots land on Surface_0/1 points the walk never reached, the loss is at
+the edge stage after all and this ticket's answer is "merge innocent, extent family".
+
 ## Phase 1 — positive control by deliberate over-segmentation
 
 Nobody has ever handed this code a case where merging is the right answer.
