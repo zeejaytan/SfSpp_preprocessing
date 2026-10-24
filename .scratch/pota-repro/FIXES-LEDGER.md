@@ -63,7 +63,7 @@ Pot D P25 (2026-10-21, 231 amendment): fresh pipe lanes SWAPPED -- straight slot
 ## J. Paper-arm default ON + 10-pot preprocessing rollout (2026-10-23) -- ALL BELOW IS PAPER-ARM, not legacy chain
 Arm flip: paperChain false->true x2 in mesh_processing_headless.cpp (:2039, :2557), committed 1a7c68d; SFS_PAPER_CHAIN=0 still opts out. Binary record (bm172 rebuild, jobs 33690135/33690569 COMPLETED): mesh a51e7c1c385a2039c7932780a837c19f, edge dc472b0e87c934b6c487ff8637209864 (edge byte-identical to pre-flip; source unchanged since for both files).
 What the arm INCLUDES (paper-exact, was parked behind SFS_PAPER_CHAIN): mergeClusters theta=4/kappa=1/nb=10 multi-pass (:1384), B-spline lane smoother (:810), inside/outside vote classifyAndOrder (:1990), axis-ray face marching, PotSAC top-10/prune 0.9848/refine, rim 1.0/0.1/20/steadiest. What is NOT in this binary (still worktree patches only, vote247.diff + 248-filter diff): vote-order lane selection, K-D tree clean-up filter, 1.9mm resample.
-  SUPERSEDED 2026-10-24 (main = 67ff3d7 = b289e87 + the strip): the shipped default now IS the no-discard full walk (SFS_FULL_WALK=0 restores largest-comp + clock sort), with the 12mm stop-at-the-weld rule (SFS_STOP_NOFRESH, 0 disables), the vote-order host including the 1.9mm resample, theta default 3.4 (SFS_PAPER_THETA) and the 274 neighbour clamp. The blind density filter, braid gate, guided filter, loop-select and vote repair were REJECTED and deleted (538357c + 67ff3d7), so the 'still worktree patches' sentence above no longer describes main. The walk selector of ticket 275 is measured but HELD on the conservator's order: patch at .scratch/pota-repro/patches/275-walk-selector.patch. Every score in section J was collected at theta 4.0 on the pre-strip binary: section J is history, not the current binary's behaviour, and the 214 lanes still need re-scoring. All scores below are default-env runs (no SFS_* set, 7x paper=PAPER-CHAIN in every pipe log).
+  SUPERSEDED 2026-10-24 (main = 67ff3d7 = b289e87 + the strip): the shipped default now IS the no-discard full walk (SFS_FULL_WALK=0 restores largest-comp + clock sort), with the 12mm stop-at-the-weld rule (SFS_STOP_NOFRESH, 0 disables), the vote-order host including the 1.9mm resample, theta default 3.4 (SFS_PAPER_THETA) and the 274 neighbour clamp. The blind density filter, braid gate, guided filter, loop-select and vote repair were REJECTED and deleted (538357c + 67ff3d7), so the 'still worktree patches' sentence above no longer describes main. The walk selector of ticket 275 is measured but HELD on the conservator's order: patch at .scratch/pota-repro/patches/275-walk-selector.patch. Every score in section J was collected at theta 4.0 on the pre-strip binary: section J is history, not the current binary's behaviour, and the 214 lanes still need re-scoring -- and were re-scored on 2026-10-25 (tickets 284, 292): the corpus baseline is 281 of 292 sound lanes at bar, section P, with the change set and what each change bought in section Q. All scores below are default-env runs (no SFS_* set, 7x paper=PAPER-CHAIN in every pipe log).
 Scores vs author edges (bar = med<2mm + cov>=90, matched slot): A 16/16 PASS (250, 87e5c38); C no-drift vs 249 diagnosis (251, e66890e); D 51/58 (252, 0650111); B 17/18, P01-Bl1 1.89x tail (253, d5427ea; ticket-41 teleport mode GONE with no T42 fix); E 60/62, P13/P16 single-lane near-miss (254, 7db8cd3); F 12/14, 0 miss, 0 jumps>10 (255, caecb92); G 12/14, P07 near (256, a3e15d3); H 18/22, 4x Bl1 single-lane (257, 9f1bb3c); I 55/60, 0 miss (258, 1a64da0); J 20/24, P01 both-lane 1.64/1.65x tails + P09 whole-piece both-lane miss rev 39/52 (259, c48966e). New-pot total 194/214 at bar (~91%). Naming offset (pipeline Bl0/Bl1 vs author convention) on D/E/F/G/I, unambiguous on cross-check; B/H/J straight. Miss family: tracer leaves rim (tails, chord cuts, parallel ridge, one wander, one whole piece); never the ruler (reverse coverage decides every case).
 Decision: APPLIED as the default preprocessing arm for all pots; misses recorded as known-single-lane (J-P09 whole-piece flagged for its own call).
 Owner tickets: 250, 251, 252, 253, 254, 255, 256, 257, 258, 259.
@@ -254,6 +254,53 @@ Weight: one draw per piece, one binary, one commit, no repeat runs. The mesh sta
 piece-dependently non-deterministic (ticket 291: 0.867 mm on Pot H 02), so a lane within about 1 mm
 of the bar must not be quoted as clearing or missing it on this run alone -- the nearest case is
 `Pot_D_Piece_22` Bl0 at 86.40% coverage against a 90% bar.
+
+## Q. The shipped change set, and what each change bought (2026-10-25)
+
+One place to read what we actually changed in the pipeline and what it bought, so a later session does
+not have to reconstruct it from twenty tickets. Every row is applied in the shipped code; every effect
+was measured on the frozen corpus or on a gate that the corpus score depends on. Diagnoses, negatives
+and shootout losers are NOT rows -- they are in the "removed" list at the end.
+
+| # | change (commit) | what was wrong | what it bought (measured) |
+|---|---|---|---|
+| 1 | paper chain on by default, `SFS_PAPER_CHAIN` (`1a7c68d`) | the paper-exact code sat behind an env default false, so scoring ran the legacy chain | the default arm is now the paper's: merge theta 4/kappa 1/nb 10, B-spline lane smoother, inside/outside vote, axis-ray marching, PotSAC top-10, rim 1.0/0.1/20/steadiest |
+| 2 | neighbour clamp in `detectSeparateLineSegments` (`6194959`, ticket 274) | `nearestKSearch` returns fewer than k on a short chain and the loop still read slots k+1..n -> SIGSEGV | Pot C 01 EXIT 139 -> 0; six guard lanes bit-identical (max&#124;dxyz&#124; 0.000000) |
+| 3 | no-discard full walk as the default (`263`, shipped in `b289e87`/strip) | largest-component + clock sort discarded dots and exploded on multi-strand bags | `P22` Bl1 4.43 mm / 15.8% -> 0.57 / 95.1; `P03` Bl0 0.52 / 100 |
+| 4 | stop at the weld, 12 mm (`267`, `SFS_STOP_NOFRESH`) | at the end of the rim the walk leapt 124.6 mm to a far leftover dot: one 11.1 mm jump in the export | `P03` Bl1 463 / 3.18 / 41.9 / 1 jump -> 333 / 0.90 / 57.4 / 0 jumps, largest step 5.7 mm; five guard lanes digit-identical |
+| 5 | growth gate 4.0 -> 3.4 deg (`271`, `47c7705`, `SFS_PAPER_THETA`) | the exterior surface ran over the crest into the roll-over, so crease and lip came back as two parallel rows 4-5 mm apart | `P03` Bl1 coverage 57.5 -> 99.0 (median 0.85 -> 0.49); `P03` Bl0 holds 100; guards at bar or better |
+| 6 | walk seeds in the largest lump (`287`, `8e1e514`) | the seed was the dot nearest the cloud centroid; on four multi-lump bags that landed in a debris lump 32-54 mm from the rim, so the stop rule correctly ended the walk on the wrong structure | `C01` Bl1 81 / 41.06 / 0 -> 226 / 0.575 / 100; `J01` Bl1 82 / 23.3 / 0 -> 184 / 0.601 / 100; `C01` Bl0 25 / 51.62 / 0 -> 207 / 0.682 / 98.55; `J01` Bl0 47 / 29.27 / 0 -> 170 / 0.582 / 100; zero jumps; single-lump guards bit-identical |
+| 7 | frozen input corpus (ticket 290) | clouds were derived per run and deleted, so no past score could be recomputed or compared | 148 clouds in `original_samples/SfS_pp/Point/` (143 released + 5 derived), with md5 and point-count manifests; the derived five match their mesh bbox to 0.031 mm |
+| 8 | symlink staging (`291`, `acc9943`, `scripts/stage_piece.sh`) | every job copied its cloud and mesh into its stage tree | 108 bytes copied per piece instead of up to 90 MB; the inputs are byte-identical by construction, and identity claims were restated where the pipeline is deterministic |
+| 9 | staging header read without a pipe (`292`, `19b78a7`) | `head -20 "$1" \| awk ... exit` under `set -euo pipefail` could SIGPIPE and abort the stage -- 22 of 148 pieces failed once each, hidden by the retry | fixed and verified against three corpus clouds (999810 / 1000026 / 840964 points as their headers say) |
+| 10 | build from a commit (`288`) | a build could be of any tree, and `build.sh --target nurbs` silently compiles a pre-247 duplicate (ticket 282) | `git archive 8e1e514` reproduces binary `a28d10af...` bit-identically, and the eight-lane gate reproduces the table pointwise (max&#124;dxyz&#124; 0.000000) |
+
+**Removed, because they were measured and they did not work** (all deleted from main in `538357c` and
+`67ff3d7`, gate: the strip is behaviour-identical, max&#124;dxyz&#124; 0.000000 on four lanes): the vote
+repair 2-opt (262), loop-ness selection (263, it picked an 8-point satellite and crashed), the blind
+density filter (261/248 -- it ate 433 of 1082 rim dots and was never the paper's rule, which is a
+distance-to-line filter), the braid pre-filter gate (261), and the guided distance filter (264 -- it
+removed the far arc exactly and moved no score). The paper's actual K-D idea (keep dots near the fitted
+edge line, delete scatter) remains UNPORTED and untested.
+
+**The result, in one line**: **281 of 292 sound lanes at bar (96.2%)** -- 283/294 valid, 283/296
+measured -- at the shipped defaults, theta 3.4, on inputs that can be staged again (section P has the
+method, the per-pot line and the eleven misses). The old 194/214-at-bar (~91%, section J) and the
+265-of-294 tally both belong to a different binary, a different growth angle and clouds that no longer
+exist; quote only the 292 number.
+
+**What this ledger still cannot say, 2026-10-25**:
+- Whether any of it improves **joins**. E1's actual question is whether the extracted edges let SfS++
+  find correct reassemblies; the 96.2% is extraction against the authors' own lines, and no run since
+  the strip has measured join success.
+- Three lanes trace a different contour from the reference (`C03` Bl1, `I25` Bl0 + Bl1) and eight
+  differ over one stretch; neither family has a mechanism yet (tickets 286, 293).
+- The merge's Step 3 is the paper's own rule and refuses on curved faces; it is a limit, not a defect
+  (ticket 276), and no threshold fixes it.
+- The mesh stage draws from an unseeded `std::random_device`
+  (`mesh_processing_headless.cpp:1526-1527`), which puts a piece-dependent 0.1-0.9 mm band on some
+  pieces' exported lines.
+- `Pot_J_Piece_09` is unscored by the conservator's ruling on its reference (section N).
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
