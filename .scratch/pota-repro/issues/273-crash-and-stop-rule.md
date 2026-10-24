@@ -296,3 +296,17 @@ lanes before anything is wired into the default path.
    275 must print both directions.
 2. **P22 Bl0 stays off-bar in all four configs** (87.8 / 87.8 / 87.6 / 15.3). Unchanged by this ticket; it is
    still the separate parallel-ridge / extent item, not evidence about the walker.
+
+## Comments (lead, 2026-10-24) - the worktree behind this ticket is closed
+
+This ticket's worktree was removed. The commit it was opened at is an ancestor of
+`origin/main`, so no commit was stranded; what the tree alone held was the **working-tree
+text** - the experimental variant that produced this ticket's numbers - and that is archived:
+
+- `C:/PR/.scratch/workspace-restructure/archive/worktrees-273-275-20261024/` (laptop)
+- `/data/gpfs/projects/punim2657/SfSpp/attic/worktrees-273-275-20261024.tar.gz` (project attic,
+  md5 `2ee9ea91ea48ce11c4dfe8479c94d5cd`, 65 members, with `-INDEX.md` and `-MANIFEST.tsv`)
+
+MANIFEST.tsv records 53 files with sha1; every member was extracted and `cmp`-verified against
+the worktree before `git worktree remove --force` ran. The `Working in:` line above no longer
+resolves to a directory - the ticket stays open and its findings are unchanged.
