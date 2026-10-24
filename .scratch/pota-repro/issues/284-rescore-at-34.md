@@ -1,8 +1,8 @@
 # 284 — Re-score every rollout lane at theta 3.4 on the shipped binary
 
 Answers: E1
-Status: ready-for-agent
-Working in: C:/PR/worktrees/sfs/284 (Phase 0 is read-only inventory; Phases 1-3 run on Spartan)
+Status: blocked (Phase 0 no-go: the input clouds cannot be regenerated, 2 of 148 survive; ticket cannot proceed as written)
+Working in: main (worktree closed 2026-10-25; blocked)
 Needs-eye: yes -- a per-pot overlay picture for any lane that moves across the bar
 
 ## Why
