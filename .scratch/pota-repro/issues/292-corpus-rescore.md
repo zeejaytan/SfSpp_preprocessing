@@ -1,8 +1,8 @@
 # 292 — Re-score the frozen corpus at the shipped defaults
 
 Answers: E1
-Status: ready-for-agent
-Working in: (set by ticket_start.sh)
+Status: in-progress (worker: corpus re-score, 148 array tasks)
+Working in: C:/PR/worktrees/sfs/292
 Needs-eye: yes -- a per-pot summary picture, and a picture for every lane that misses
 
 ## Why
