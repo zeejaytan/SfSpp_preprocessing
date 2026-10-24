@@ -38,6 +38,8 @@ def read_pcd_xyz(path):
 
 def read_ours(run, piece, lane):
     p = os.path.join(run, "out", "census", "%s_Bl%d.assign.tsv" % (piece, lane))
+    if not os.path.exists(p):
+        return None
     pts = []
     with open(p) as fh:
         next(fh)
@@ -60,6 +62,9 @@ def main(run):
     for piece in ("Pot_C_Piece_03", "Pot_I_Piece_25"):
         for k in (0, 1):
             ours = read_ours(run, piece, k)
+            if ours is None:
+                print("no per-dot table for %s Bl%d (not a lane the renderer drew)" % (piece, k))
+                continue
             for j in (0, 1):
                 auth = read_pcd_xyz(os.path.join(corpus, "Breaklines", "%s_Breakline_%d.pcd" % (piece, j)))
                 med, cov_o, cov_a, mx = score(ours, auth)
