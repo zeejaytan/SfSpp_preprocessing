@@ -103,6 +103,25 @@ side, so the base's nearest kept point is 2.4872 mm = 2.5x rho_d and no Appendix
 
 Owner tickets: 276, 278, 279.
 
+### K.2 Same face, two different contours (2026-10-24, ticket 289)
+
+Pot J 09, the one whole-piece failure of the seven-pot rollout, turned out not to be a trace failure at
+all. On the shipped binary (8e1e514) both lanes are complete closed rings on the correct faces, welded to
+1.80 mm (one dot spacing), with no jump: interior 78 dots / 143.2 mm / median 1.20 mm / 75.6 % coverage
+(was 2.53 / 32.6 on ticket 259), exterior 84 / 153.3 / 1.98 / 51.2 (was 2.41 / 40.0, and its 14.4 mm jump
+is gone). Ours encloses 1010 mm2, the authors' 769 mm2: our line is the outer silhouette of the sherd,
+theirs is a contour drawn inside it over 41 mm of arc, up to 10.4 mm away and smooth (no run longer than
+10 mm keeps a turning angle under 2 deg per step, so it only looks like a chord). The pre-walk bag already
+sat 1.717 mm off with 48.5 % of its dots beyond 2 mm, so the walk inherited the disagreement and moved it
+0.24 mm. Every reference dot is on a kept surface, so this is not the dropped-cluster class of K.
+
+Class name: **same face, different contour (S)**. Running hypothesis, shared with Pot H 02 (ticket 286):
+the two pipelines kept surfaces of different EXTENT, and each line is the boundary of its own surface.
+The settling test is named in the ticket and not yet run: the share of each reference ring that lies
+inside our surface's silhouette.
+
+Owner ticket: 289.
+
 ## L. Known-defective input pieces (read before scoring)
 
 **Pot C 01 and Pot J 01 — not watertight, in the INTERIOR surface only.** The conservator reports
