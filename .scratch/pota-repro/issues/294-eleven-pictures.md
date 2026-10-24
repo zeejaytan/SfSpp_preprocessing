@@ -1,8 +1,8 @@
 # 294 — Eleven pictures: our line and the authors' line, on the mesh and on the surface
 
-Status: ready-for-agent
+Status: in-progress (worker: eleven picture pairs)
 Answers: E1
-Working in: unassigned (open with `scripts/ticket_start.sh SfSpp_preprocessing .scratch/pota-repro/issues/294-eleven-pictures.md`)
+Working in: C:/PR/worktrees/sfs/294 (branch 294-eleven-pictures)
 Created: 2026-10-25
 Follows: 292 (the baseline), 293 (the two families this illustrates), 289 (the on-mesh overlay that worked)
 
