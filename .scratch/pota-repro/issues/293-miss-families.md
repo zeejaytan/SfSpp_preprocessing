@@ -9,19 +9,25 @@ Follows: 292 (the baseline: 281/292 sound lanes at bar), 286 (H02/H10 mechanism)
 ## Why
 
 Ticket 292 measured every lane of the frozen corpus at the shipped defaults. Eleven sound lanes are
-below bar and they are not one thing. Nine keep the reference's route and length and differ over one
-stretch; two are different contours. This ticket names both families so a later session does not
+below bar and they are not one thing. Eight keep the reference's route and length and differ over one
+stretch; three are different contours. This ticket names both families so a later session does not
 re-measure them, and answers the one question the numbers cannot: **is the eight-lane family one
 mechanism or several?**
 
 ## The lanes
 
-Different contours (below bar by miles, zero coverage both ways):
+Different contours -- three lanes where our line and the reference are both real edges of the
+same sherd, taken differently (ticket 294 read this off the pictures and off the authors' own mesh):
 
-| piece | lane | n ours/auth | median mm | cov ours/auth | len ratio |
+| piece | lane | n ours/auth | median mm | cov ours/auth | len ours/auth mm |
 |---|---|---|---|---|---|
-| Pot_I_Piece_25 | 0 | 58/69 | 6.910 | 0.00 / 0.00 | 0.84 |
-| Pot_I_Piece_25 | 1 | 67/60 | 6.951 | 0.00 / 0.00 | 1.13 |
+| Pot_C_Piece_03 | 1 | 337/120 | 11.327 | 18.40 / 50.83 | 607.34 / 273.69 |
+| Pot_I_Piece_25 | 0 | 58/69 | 6.910 | 0.00 / 0.00 | 105 / 124 |
+| Pot_I_Piece_25 | 1 | 67/60 | 6.951 | 0.00 / 0.00 | 121 / 106 |
+
+`Pot_C_Piece_03` Bl1: ours is the sherd's outer rim, theirs a closed ring on the flat of the same
+face about 11 mm inside. `Pot_I_Piece_25`: ours a small closed triangle, theirs a larger loop,
+6.9 mm apart in 3D and crossing only in projection.
 
 The picture (`C:/PR/SfSpp_preprocessing/artifacts/pota292/png/Pot_I_Piece_25_Bl0.png`) shows our
 closed loop crossing outside a smaller closed reference loop. Both are on the piece; they are not the
@@ -38,7 +44,7 @@ One-stretch family -- eight lanes (median well under the 2 mm bar, coverage 62-8
 | Pot_H_Piece_02 | 1 | 0.688 | 72.46 | 1.01 |
 | Pot_H_Piece_10 | 1 | 0.728 | 72.22 | 1.05 |
 | Pot_I_Piece_06 | 1 | 0.883 | 70.22 | 1.01 |
-| Pot_I_Piece_13 Bl1 | 0.734 | 82.61 | 1.02 |
+| Pot_I_Piece_13 | 1 | 0.734 | 82.61 | 1.02 |
 
 (`Pot_H_Piece_02` Bl1 and `Pot_H_Piece_10` Bl1 were already diagnosed in ticket 286 -- (S) same
 face different contour, and (K) partition mismatch -- so they are members with a known reading, not
@@ -65,9 +71,10 @@ Same instrument, one table row per lane above: where along the reference the >2 
 (start/end index, arc length, share of the loop), how far it goes (max, mean), and whether at that
 stretch **our kept surface spans a feature the reference turns into** (a fold, a notch, a step) or
 **our line leaves the surface** (rides an edge the reference does not use). Ticket 286 already showed
-both happen (H02 (S) vs H10 (K)); the question is the mix across nine lanes.
+both happen (H02 (S) vs H10 (K)); the question is the mix across eight lanes.
 
-Pieces to mesh: Pot_D 22, 27, Pot_E 16, Pot_H 02, 10, Pot_I 06, 13 -- seven pieces, one job.
+Pieces to mesh: Pot_C 03, Pot_D 22, 27, Pot_E 16, Pot_H 02, 10, Pot_I 06, 13, 25 -- nine
+pieces, one job (Phase A's three-piece run and Phase B's seven overlap on four).
 
 ## Constraints
 
