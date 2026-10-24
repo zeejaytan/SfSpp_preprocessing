@@ -1,0 +1,51 @@
+tag       st       n      med    cov_o    cov_a   jmp   maxjump  bar
+================================================================================================
+[GATE1] identity: exported lane from a COPIED stage (A) vs a SYMLINKED stage (B)
+piece            bl    n_A   n_B  max|dxyz| mean|dxyz|    set_max
+Pot_J_Piece_09   0      79    79   0.000000   0.000000     0.0000  pointwise IDENTICAL
+Pot_J_Piece_09   1      91    91   0.000000   0.000000     0.0000  pointwise IDENTICAL
+Pot_H_Piece_02   0     152   152   0.716773   0.203735     0.7168  pointwise DIFFERS
+Pot_H_Piece_02   1     138   138   0.418649   0.066255     0.4186  pointwise DIFFERS
+
+[SCORE] same scorer, same authors lane, both stages (a gate record, not a bar claim)
+piece            bl  arm     n      med    cov_o    cov_a  jmp  maxstep       len
+Pot_J_Piece_09   0   A    79    1.079    70.89    75.68    0    4.999    145.40
+Pot_J_Piece_09   0   B    79    1.079    70.89    75.68    0    4.999    145.40
+Pot_J_Piece_09   1   A    91    1.913    50.55    63.77    0    4.890    166.89
+Pot_J_Piece_09   1   B    91    1.913    50.55    63.77    0    4.890    166.89
+Pot_H_Piece_02   0   A   152    0.504   100.00   100.00    0    4.000    275.80
+Pot_H_Piece_02   0   B   152    0.541   100.00   100.00    0    4.202    276.00
+Pot_H_Piece_02   1   A   138    0.662    72.46    74.45    0    3.682    250.28
+Pot_H_Piece_02   1   B   138    0.681    72.46    74.45    0    3.388    249.99
+
+[GATE2] no geometry in the symlinked stage (pre-run census)
+Pot_J_Piece_09   files>1MiB=0 symlinks=2 du=10K  OK
+Pot_H_Piece_02   files>1MiB=0 symlinks=2 du=10K  OK
+
+[GATE3] provenance: every staged input resolves into the corpus and matches its manifest md5
+Pot_J_Piece_09   Pot_J_Piece_09_Mesh.obj inside_corpus=yes md5_manifest=-  OK
+                 /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_J_Piece_09_Mesh_DS.obj
+Pot_J_Piece_09   Pot_J_Piece_09_Point.pcd inside_corpus=yes md5_manifest=manifest  OK
+                 /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_J/Pot_J_Piece_09_Point.pcd
+Pot_J_Piece_09   Pot_J_Piece_09_Axis.xyz inside_corpus=NO md5_manifest=-  FAIL
+                 /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Axes/Pot_J_Piece_09_Axis.xyz
+Pot_H_Piece_02   Pot_H_Piece_02_Mesh.obj inside_corpus=yes md5_manifest=-  OK
+                 /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_H_Piece_02_Mesh_DS.obj
+Pot_H_Piece_02   Pot_H_Piece_02_Point.pcd inside_corpus=yes md5_manifest=manifest  OK
+                 /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_H/Pot_H_Piece_02_Point.pcd
+Pot_H_Piece_02   Pot_H_Piece_02_Axis.xyz inside_corpus=NO md5_manifest=-  FAIL
+                 /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_H_Piece_02/Dataset/Axes/Pot_H_Piece_02_Axis.xyz
+
+[SHEETS] mesh stage determinism: are the two stages partitions equal?
+Pot_J_Piece_09   identical
+Pot_H_Piece_02   DIFFER
+  A: 6bea8964358d86e2324e027e57ceef84  Temp/Data/Pot_H/Pot_H_Piece_02_Surface_0.xyz
+     acc44cb5085b751202de702de1a7e9c2  Temp/Data/Pot_H/Pot_H_Piece_02_Surface_1.xyz
+  B: 2534cd866c809b7a258fe3bba2953e1d  Temp/Data/Pot_H/Pot_H_Piece_02_Surface_0.xyz
+     14ff0c76eb86d657602f392dd6b046d9  Temp/Data/Pot_H/Pot_H_Piece_02_Surface_1.xyz
+
+[CORPUS] did anything write into the input corpus?
+CORPUS_UNCHANGED=YES (no input file changed)
+
+[VERDICT] item1 identity=FAIL   item2 no-geometry=PASS   item3 provenance=FAIL   item4 scores_reported=8   sheets=differ
+[VERDICT] gate=FAIL

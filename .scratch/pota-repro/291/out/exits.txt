@@ -1,0 +1,11 @@
+STAGE_EXIT[Pot_J_Piece_09]=0
+MESH_EXIT[A Pot_J_Piece_09]=0
+EDGE_EXIT[A Pot_J_Piece_09]=0
+MESH_EXIT[B Pot_J_Piece_09]=0
+EDGE_EXIT[B Pot_J_Piece_09]=0
+STAGE_EXIT[Pot_H_Piece_02]=0
+MESH_EXIT[A Pot_H_Piece_02]=0
+EDGE_EXIT[A Pot_H_Piece_02]=0
+MESH_EXIT[B Pot_H_Piece_02]=0
+EDGE_EXIT[B Pot_H_Piece_02]=0
+CMP_EXIT=1

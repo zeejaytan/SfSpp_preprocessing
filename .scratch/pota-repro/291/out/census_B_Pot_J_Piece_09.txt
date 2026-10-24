@@ -1,0 +1,7 @@
+## pre-run census: B Pot_J_Piece_09
+-- count: 0
+-- symlinks: 2
+/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Mesh/Pot_J/Pot_J_Piece_09_Mesh.obj -> /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_J_Piece_09_Mesh_DS.obj
+/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09/Dataset/Point/Pot_J/Pot_J_Piece_09_Point.pcd -> /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_J/Pot_J_Piece_09_Point.pcd
+-- du: 10K
+-- files: 2

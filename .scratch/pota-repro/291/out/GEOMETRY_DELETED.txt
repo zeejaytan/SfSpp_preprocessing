@@ -1,0 +1,7 @@
+ticket 291 gate: stage trees deleted 2026-10-24 23:52:50
+deleted 102M  /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageA_Pot_H_Piece_02
+deleted 68M  /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageA_Pot_J_Piece_09
+deleted 69M  /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_H_Piece_02
+deleted 39M  /data/gpfs/projects/punim2657/SfSpp/runs/20261024-2351_3888318_p291-gate/stageB_Pot_J_Piece_09
+kept: run.json, submit.sbatch, stage_piece.sh, cmp291.py, logs/, bin/, out/ (lane exports, per-arm logs, censuses, inputs.md5 records, md5 lists)
+STAGE_DIRS_REMAINING=0

@@ -1,0 +1,49 @@
+{
+  "runid": "20261024-2351_3888318_p291-gate",
+  "jobid": "33748798",
+  "commit": "3888318",
+  "tag": "p291-gate",
+  "ticket": ".scratch/pota-repro/issues/291-symlink-staging.md",
+  "question": "Does a piece staged by symlink into the frozen corpus behave identically to one staged by copy, and does it stage no geometry of its own?",
+  "host": "spartan (Slurm, cascade partition), apptainer pcl_191_nurbs.sif",
+  "created": "2026-10-24 23:51 (Spartan local)",
+  "parameters": {
+    "pieces": [
+      "Pot_J_Piece_09",
+      "Pot_H_Piece_02"
+    ],
+    "arms": {
+      "A": "inputs copied with cp (the old way)",
+      "B": "inputs staged by scripts/stage_piece.sh (symlinks)"
+    },
+    "pipeline": "shipped defaults; no env switch set except POT_NAME and SFS_AXIS_FILE",
+    "scripts": {
+      "stage_piece_under_test_md5": "585955252cc84fe1a49e6dac8cef892e",
+      "note": "the tested script is the worktree copy at commit 3888318, uncommitted; the job ran the uploaded bytes with this md5",
+      "submit_sbatch_md5": "4d152aadec006028a2a3701f1b31cefb",
+      "cmp291_py_md5": "4c47d5e96b5e28cc2bfc223d5a1311ea"
+    }
+  },
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (frozen: 143 released + 5 derived clouds)",
+    "binaries": {
+      "edge": "a28d10afab2b50bbe750d599ee2b7214 (copied from the p290 run's bin/, ticket 288/290 binary)",
+      "mesh": "0171f471d0558d2676df7c4b113c1e9d (same source commit 8e1e514 recipe)"
+    },
+    "authors_lanes": "corpus Breaklines/<piece>_Breakline_{0,1}.pcd"
+  },
+  "steps": [
+    "record binary md5s and the script under test; md5 the six corpus inputs",
+    "per piece: stage A by cp, stage B by stage_piece.sh; pre-run census of both",
+    "per arm: mesh stage (SFS_AXIS_FILE set, classify lines quoted), then edge stage",
+    "corpus md5 re-check; cmp291.py identity + scores + provenance + census verdicts",
+    "delete both stage trees, write out/GEOMETRY_DELETED.txt"
+  ],
+  "acceptance_gate": {
+    "1_identity": "n equal and max|dxyz| = 0.000000 between the A and B exports, else the gate fails and the ticket stops",
+    "2_no_geometry_in_B": "no regular file larger than 1 MiB in the symlinked stage, exactly 2 symlinks per piece, du reported for both stages",
+    "3_provenance": "every staged input resolves into the corpus and its md5 matches MANIFEST_released.tsv / MANIFEST_derived.tsv",
+    "4_scores": "reported for both arms, not gated against older runs"
+  },
+  "status": "submitted 2026-10-24 23:52; awaiting the job"
+}
