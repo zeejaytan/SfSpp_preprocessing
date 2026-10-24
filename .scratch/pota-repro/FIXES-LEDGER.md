@@ -103,5 +103,15 @@ side, so the base's nearest kept point is 2.4872 mm = 2.5x rho_d and no Appendix
 
 Owner tickets: 276, 278, 279.
 
+## L. Known-defective input pieces (read before scoring)
+
+**Pot C 01 — not watertight.** The scan left a gap in the surface mesh; the pipeline reads it as
+a second broken edge the sherd does not have. Its lanes (Bl0 25 dots / 51.62 mm / cov 0.0 at the
+shipped defaults; 986-dot bag in 4 components) measure the input, not the method. Two candidate
+causes are on record and have NOT been separated: the walk seed in a debris lump (ticket 275) and
+the scan gap (this entry). Do not cite C01 as evidence for or against any walk change until the
+gap is located and the two are told apart. Ticket:
+`.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.

@@ -14,6 +14,15 @@ Follow the workspace root **`../AGENTS.md`** (laptop ↔ GitHub ↔ Spartan) for
 
 This is the **preprocessing** stage (axis extraction, breaklines, NURBS surfaces) feeding the SFS++ **assembly** repo (`zeejaytan/structure-from-sherds-pp`, at Spartan path `sfs_main/sfspreproc-docker` — misleading name, see that repo's AGENTS.md).
 
+## Corpus caveats — read before scoring
+
+**Pot C 01 is not watertight.** The scan left a gap in the surface mesh, and the pipeline reads
+that gap as **a second broken edge the sherd does not have**. Any lane on Pot C 01 (Bl0/Bl1) is
+therefore measured against a reference that includes an edge we invent: its scores are evidence
+about the input, not about the method, and it can neither convict nor exonerate a change.
+Recorded from the conservator, 2026-10-24; details, the two competing causes and the open
+measurements are in `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
+
 ## Repo history note (2026-07-19 migration)
 
 The pre-migration fork on GitHub and the cluster checkout had **unrelated histories**: the cluster repo re-created upstream's commits with different hashes, then added ~20 research commits. Migration merged the fork lineage into the cluster lineage with `-s ours` (fork content was verified byte-identical to its cluster mirror commit `ad6f415`, so nothing was lost). History contains ~1GB of committed Pot A dataset revisions — cloning is slow; that is expected.
