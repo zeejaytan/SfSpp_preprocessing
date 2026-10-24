@@ -264,6 +264,25 @@ a reference that left its part, and the eight are a **convention difference abou
 taken**, not a tracing error. Reading trap worth keeping: `Pot_I_Piece_25`'s lines cross in X-Y and are
 6.9 mm apart in 3D -- a crossing in one projection is not contact.
 
+**Why the eleven differ, and why the walk cannot close them** (ticket 293, 2026-10-25). Phase A:
+`Pot_C_Piece_03` Bl1 is the partition mismatch section K.1 predicted, measured here from cluster
+membership -- our line the outer rim of the wall we keep (0.700 mm from its p95 rim, 35.1% ring share)
+and theirs 10.51 mm inside that rim, on the base band the mesh stage drops. `Pot_I_Piece_25` is **not a
+contour difference at all: the two lanes are one curve pair counted twice**, with the two sides' indices
+crossed -- our Bl0 sits 0.680 mm from their Bl1 and our Bl1 0.568 mm from their Bl0, coverage 100/100
+both ways (max 1.42 / 1.75 mm), while the same-index pairs sit at 6.910 and 6.951 mm at 0/0; the dot
+counts (58 against 60, 67 against 69) and the arc lengths (104.79 against 106.28, 120.57 against 124.26)
+pair crossed too. **If the conservator accepts those labels as swapped, both Pot I 25 lanes are at bar
+and the corpus is 283 of 292 (96.9%).** Phase B, the eight: one mechanism in three causes -- one
+reference drawing a chord over a notch mouth (`Pot_D_Piece_22` Bl0, its own dots 8.07 mm from any kept
+material), six references running inside continuous material of the face we keep (D 27 Bl0, D 27 Bl1,
+E 16 Bl0, H 10 Bl1, I 06 Bl1, I 13 Bl1; 0.208-1.933 mm from it, 0-6% of their dots on a boundary against
+94-100% of ours), and one fold our surface spans (`Pot_H_Piece_02` Bl1, ticket 286's 14.13 deg). **Only
+the chord is visible in a boundary set, and only negatively** -- in the other seven the turning feature
+lies inside continuous material, so no walk rule, seed or stop condition can close this family; it needs
+curvature evidence on the kept face, or a merge that refuses to join across a fold. Our own line never
+leaves the surface in any of the eleven (median 0.010-0.052 mm, max 0.334 mm to the authors' own mesh).
+
 One jump survives in the shipped code: `Pot_C_Piece_02` Bl1, a single 37.712 mm step at median
 0.530 mm -- at bar, recorded, not diagnosed.
 
@@ -310,8 +329,11 @@ exist; quote only the 292 number.
 - Whether any of it improves **joins**. E1's actual question is whether the extracted edges let SfS++
   find correct reassemblies; the 96.2% is extraction against the authors' own lines, and no run since
   the strip has measured join success.
-- Three lanes trace a different contour from the reference (`C03` Bl1, `I25` Bl0 + Bl1) and eight
-  differ over one stretch; neither family has a mechanism yet (tickets 286, 293).
+- The eleven below-bar lanes now have their "why" (ticket 293, and the paragraph above): `C03` Bl1 is a
+  partition mismatch, `I25` both lanes are a **label inversion** (one curve pair counted twice), and the
+  eight are one mechanism in three causes, of which only the chord is visible in a boundary set. What is
+  still missing is not the mechanism but the **fix**: seven of the eight need curvature on the kept face
+  or a merge rule that refuses to join across folds, and neither is built.
 - The merge's Step 3 is the paper's own rule and refuses on curved faces; it is a limit, not a defect
   (ticket 276), and no threshold fixes it.
 - The mesh stage draws from an unseeded `std::random_device`
