@@ -122,5 +122,35 @@ contour that belongs to the input.
 The gap itself is still unlocated, and no interior lane may be quoted as a cure. Owner ticket:
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
+## M. Shipped after section J: the walk starts in the largest lump (2026-10-24, ticket 287)
+
+Landed to main with the ticket and its patch (\`.scratch/pota-repro/patches/287-largest-lump-seed.patch\`).
+In \`getPointsInSequence_Vote247\` the deterministic start dot is now taken inside the LARGEST 5 mm
+component instead of inside the whole bag: the seed and its centroid are both summed over dots with
+\`!used[i] && comp[i] == biggest\`. No environment switch, no threshold touched; the stop rule, the
+heading guard, the vote-order host and the 1.9 mm resample are untouched.
+
+Where the bag has split (crack, hole, scan gap) the old code began the walk in a debris lump tens of
+millimetres from the rim and the 12 mm stop then ended it as a stub. Measured, with the scorer in the
+run directory (before -> after, n / median / coverage ours->author, zero jumps in every row):
+
+- Pot C 01 Bl1 **81 / 41.055 / 0.00 -> 226 / 0.572 / 100.00** (author-side 99.57)
+- Pot J 01 Bl1 **82 / 23.201 / 0.00 -> 184 / 0.597 / 100.00** (author-side 99.47)
+- Pot C 01 Bl0 25 / 51.620 / 0.00 -> 207 / 0.682 / 98.55 (interior lane of a defective input, ticket L)
+- Pot J 01 Bl0 47 / 29.268 / 0.00 -> 170 / 0.581 / 100.00 (same caveat)
+- Pot H 02 Bl0/Bl1 and Pot H 10 Bl0/Bl1: **bit-identical**, max|dxyz| 0.000000 (single-lump bags)
+
+Record: run \`/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2046_edf679c_p287-seed/\` (jobs
+33746239, 33746280, 33746344, 33746350, 33746383, all COMPLETED 0:0); binary before
+62ddd28f4476e9cdf5b27cf0ee01c2f0, after a28d10afab2b50bbe750d599ee2b7214. Lead recomputed every row
+from the exported clouds with an independent scorer.
+
+**What it does not cover.** Pot D 03/22/01 and Pot B 01 are untested: their stage inputs were deleted
+on 2026-10-24 (attic manifest class G, 2,468 Surface_*.xyz) and the authors' own surfaces cannot stand
+in for them because the edge stage also needs the mesh-stage product. H02/H10 are still below bar
+(73.19 / 72.83) for their own reasons (tickets 280/286), P22 Bl0 is still 87.79, and the 296-lane
+corpus cannot be re-scored (ticket 284). Ticket 275's walk selector stays HELD and is now redundant in
+purpose: this change seeds the single full walk instead of adding a fallback path.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.

@@ -625,15 +625,29 @@ static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr clou
 	std::cout << "[VOTE-247] comp-filter kept " << keptN << "/" << n
 	          << " (comp " << biggest << " of " << ncomp << " @ " << COMP_GAP_MM << "mm)" << std::endl; }
 	// Deterministic seed: kept-component centroid-nearest (no cloud[0] order dependence).
+	// POTA-287: seed inside the LARGEST lump, not nearest the middle of the bag. When the bag has
+	// split (cracks, holes, scan gaps) the whole-bag centroid can land in a debris lump tens of mm
+	// from the rim; the walk traces that lump and the 12 mm stop ends it as a stub. Restricting both
+	// the centroid and the seed to comp[i]==biggest is a no-op where the bag is a single lump
+	// (comp[i]==biggest for every dot, so same summands in the same order and the same divisor) and a
+	// no-op under SFS_FULL_WALK=0 too, where the comp-filter above already marked every other lump
+	// used. SFS_COMP_KEEP=all is the one arm whose start dot moves: it still keeps every lump but now
+	// begins in the largest.
 	Eigen::Vector3f cent(0,0,0);
-	for (size_t i = 0; i < n; i++) if (!used[i])
+	size_t seedN = 0;
+	for (size_t i = 0; i < n; i++) if (!used[i] && comp[i] == biggest) {
 		cent += Eigen::Vector3f(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
-	cent /= (float)keptN;
+		seedN++;
+	}
+	cent /= (float)seedN;
 	size_t seed = 0; float seedD2 = std::numeric_limits<float>::max();
-	for (size_t i = 0; i < n; i++) if (!used[i]) {
+	for (size_t i = 0; i < n; i++) if (!used[i] && comp[i] == biggest) {
 		Eigen::Vector3f d(cloud->points[i].x - cent(0), cloud->points[i].y - cent(1), cloud->points[i].z - cent(2));
 		if (d.squaredNorm() < seedD2) { seedD2 = d.squaredNorm(); seed = i; }
 	}
+	std::cout << "[SEED-287] ncomp=" << ncomp << " biggest=" << biggest << " size=" << seedN << "/" << n;
+	if (!diagStop267) std::cout << " seed=" << cloud->points[seed].x << " " << cloud->points[seed].y << " " << cloud->points[seed].z;
+	std::cout << std::endl;
 	std::vector<Eigen::Vector3f> chain; chain.reserve(n);
 	size_t cur = seed;
 	if (diagStop267) {

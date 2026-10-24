@@ -1,6 +1,6 @@
 # 287 — Start the walk in the largest lump, not nearest the middle
 
-Status: ready-for-agent
+Status: results-in
 Answers: E1
 Working in: C:/PR/worktrees/sfs/287 (one C++ change in the edge stage; laptop worktree, Spartan run dir for the build and the gate)
 Needs-eye: no
@@ -117,5 +117,219 @@ finding, not a setback.
 
 Run directory under `/data/gpfs/projects/punim2657/SfSpp/runs/<YYYYMMDD-HHMM>_<git7>_<tag>/` with
 `run.json`, `submit.sbatch`, `logs/`, `out/`, and one appended row in `runs/index.tsv`
-(`verdict` and `human_note` left empty for the lead). Binary md5s, source md5s and sheet md5s in
-`run.json`.
+(`verdict` and `human_note` left empty for the lead; appended, jobid 33746239). Binary md5s, source
+md5s and sheet md5s, the table and the two closed blockers are in `run.json`.
+
+## Results
+
+Ran on the reduced gate the lead authorised: before/after on the 8 lanes whose stage trees still
+exist, no mesh, no retune. Run directory
+`/data/gpfs/projects/punim2657/SfSpp/runs/20261024-2046_edf679c_p287-seed/` (jobs 33746239 seed,
+33746280 H02 fix-up, 33746344 authors'-sheets probe, 33746350 and 33746383 selector comparison; all
+COMPLETED 0:0). The change is uncommitted in the worktree; the diff is
+`.scratch/pota-repro/patches/287-largest-lump-seed.patch` (37 lines, md5 0562edf4aab59d4ed371babf0ce4fa66,
+17 insertions / 3 deletions).
+
+**Builds.** BEFORE: source md5 `8264da3647d048e67d983edfe810b59d` (3725 lines, no `SEED-287` string),
+binary md5 `62ddd28f4476e9cdf5b27cf0ee01c2f0` — identical to the p280 binary, so the edge source really
+did not change between `d1b61cb` and `edf679c`. AFTER: source md5 `f0dbfe7032d90a04412d15bd1699a703`
+(3739 lines, one `SEED-287` string), binary md5 `a28d10afab2b50bbe750d599ee2b7214`. Both built from
+`git archive edf679c` in apptainer (`pcl_191_nurbs.sif`, 312520704 bytes) with
+`cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON` and
+`make -j8 EdgeLineExtractionHeadless`; compiler `/usr/bin/c++`, `CMAKE_CXX_FLAGS` empty; the exact
+compile command is in `logs/compile_cmd_before.txt` and `logs/compile_cmd_after.txt`. No mesh ran, and
+every sheet's md5 was unchanged before and after (in `run.json`).
+
+### The table
+
+`n`, median (mm), coverage ours→author, coverage author→ours, jumps, max step (mm). Bar = median
+≤ 2.0 mm and coverage ≥ 90 and zero jumps.
+
+| lane | arm | n | median | cov ours→author | cov author→ours | jumps | max step | bar |
+|---|---|---|---|---|---|---|---|---|
+| H02 Bl0 | before | 152 | 0.582 | 100.00 | 100.00 | 0 | 3.569 | PASS |
+| H02 Bl0 | after | 152 | 0.582 | 100.00 | 100.00 | 0 | 3.569 | PASS |
+| H02 Bl1 | before | 138 | 0.867 | 73.19 | 74.45 | 0 | 3.736 | below |
+| H02 Bl1 | after | 138 | 0.867 | 73.19 | 74.45 | 0 | 3.736 | below |
+| H10 Bl0 | before | 98 | 0.664 | 100.00 | 100.00 | 0 | 3.633 | PASS |
+| H10 Bl0 | after | 98 | 0.664 | 100.00 | 100.00 | 0 | 3.633 | PASS |
+| H10 Bl1 | before | 92 | 0.642 | 72.83 | 77.27 | 0 | 4.571 | below |
+| H10 Bl1 | after | 92 | 0.642 | 72.83 | 77.27 | 0 | 4.571 | below |
+| C01 Bl0 | before | 25 | 51.620 | 0.00 | 0.00 | 0 | 5.637 | below |
+| C01 Bl0 | after | 207 | 0.682 | 98.55 | 98.58 | 0 | 4.460 | PASS |
+| C01 Bl1 | before | 81 | 41.055 | 0.00 | 0.00 | 0 | 4.551 | below |
+| C01 Bl1 | after | 226 | 0.575 | 100.00 | 99.57 | 0 | 5.028 | PASS |
+| J01 Bl0 | before | 47 | 29.268 | 0.00 | 0.00 | 0 | 5.632 | below |
+| J01 Bl0 | after | 170 | 0.582 | 100.00 | 100.00 | 0 | 4.224 | PASS |
+| J01 Bl1 | before | 82 | 23.306 | 0.00 | 0.00 | 0 | 4.654 | below |
+| J01 Bl1 | after | 184 | 0.601 | 100.00 | 99.47 | 0 | 4.031 | PASS |
+
+Against the ticket's own guard rows: H02 Bl0 152/0.582/100.00 and H10 Bl0 98/0.661 reproduce (mine
+98/0.664); H02 Bl1 138/0.864 (mine 0.867), H10 Bl1 92/0.641 (mine 0.642). `n` and both coverage
+figures reproduce exactly; the three medians differ by 0.001–0.003 mm, which is the author-dot copy
+the scorer reads, not the code. Against the parked-selector bars: C01 Bl1 226/0.527/100.00 (99.57) →
+mine 226/0.575/100.00/99.57, median +0.048 inside the ±0.10 tolerance, and J01 Bl1 184/0.596/100.00
+(100.00) → mine 184/0.601/100.00/99.47, +0.005.
+
+### Identity (before vs after, point by point)
+
+| lane | n before | n after | max&#124;dxyz&#124; |
+|---|---|---|---|
+| H02 Bl0 | 152 | 152 | 0.000000 |
+| H02 Bl1 | 138 | 138 | 0.000000 |
+| H10 Bl0 | 98 | 98 | 0.000000 |
+| H10 Bl1 | 92 | 92 | 0.000000 |
+| C01 Bl0 | 25 | 207 | differs |
+| C01 Bl1 | 81 | 226 | differs |
+| J01 Bl0 | 47 | 170 | differs |
+| J01 Bl1 | 82 | 184 | differs |
+
+The four single-lump lanes are **byte-identical in position**, and their walk chains report the same
+step counts and max jumps before and after (462/1.96007, 484/1.78839, 374/1.54641, 298/4.95857). The
+four differing lanes are exactly the four multi-lump bags, as designed.
+
+### The mechanism, from the logs
+
+`[SEED-287]` after the change, and the lump census the old seed used (from ticket 275's
+`[WALK-275]` lines):
+
+| lane | lumps (5 mm) | chosen lump | seed | old seed's lump | old seed's distance from the largest |
+|---|---|---|---|---|---|
+| C01 Bl0 | 716/114/79/77 (4) | 716 | -5.85638 -27.3575 403.765 | 77 | 54.20 mm |
+| C01 Bl1 | 825/265 (2) | 825 | -12.6057 -29.6216 404.988 | 265 | 49.36 mm |
+| J01 Bl0 | 580/127/75/50 (4) | 580 | 55.1673 10.7026 472.957 | 127 | 36.72 mm |
+| J01 Bl1 | 600/283 (2) | 600 | 57.7673 17.4733 474.449 | 283 | 32.47 mm |
+| B01 Bl1 | 752/398 (2) | not run — no sheets | — | 398 | — |
+
+The lump sizes match ticket 275's census to the dot. The walk now runs the largest lump and stops at
+its far edge instead of stubbing in the debris lump: C01 Bl0 step 715 of 986 with 270 unvisited
+(= 114+79+77, the other three lumps) and max jump 4.49 mm, where before it was step 153 of 986 with 832
+unvisited and a 10.04 mm jump; C01 Bl1 step 824 of 1090 with 265 unvisited, max jump 1.71 mm (before:
+step 264, 825 unvisited, 48.48 mm to the next dot).
+
+### Same loop, different start dot
+
+The ticket warned that a different start dot on the same closed loop rotates the export. Measured
+against the parked selector's own exports in
+`/data/gpfs/projects/punim2657/SfSpp/runs/20261024-0329_1308298_p275-walker/out/` (that run holds two
+arms per lane, `_247` = selector in the vote-247 host and `_full` = selector in the full walk):
+
+- **C01 Bl1**: ours 226 points vs `_247` 226 points, point sets agree to 1.5383 mm (mean 0.4327) —
+  the same loop, rotated: our seed (-15.602, -27.158, 402.709) vs theirs (51.443, 46.457, 435.781).
+- **J01 Bl1**: ours 184 vs `_full` 184, ordered max 1.383180 mm, set max 1.4694 mm, mean 0.8258 —
+  same loop, start dots 1.05 mm apart (6.944, 31.036, 513.769 vs 6.283, 31.403, 512.851). Against
+  `_247` (184 points) the sets agree to 1.8029 mm.
+
+In no case is the point count a coincidence of a different loop: the sets coincide to under 2 mm.
+
+### The authors'-sheets probe: closed, it needs a mesh
+
+Lane D03 (before and after) exited `EDGE_EXIT=139`. The log reads the sheet, cleans 31179 → 31163
+dots, vets the face boundary (497 kept) and then dies on
+
+```
+[pcl::PLYReader] Temp/Data/Pot_D/Pot_D_Piece_03_unclustered.ply:1: parse error: couldn't read the magic string
+[pcl::PLYReader::read] problem parsing header!
+```
+
+`<piece>_unclustered.ply` is a **mesh-stage** product, and the authors' bundle does not ship one.
+B01 is blocked twice over: its `cp` failed because the bundle has `Pot_B_Piece_01_Mesh.obj`
+(24,314,852 bytes) and no `_DS` variant. Running the edge stage on the authors' own surfaces would
+need a mesh, which this ticket and the lead both exclude — so it yields no identity evidence.
+
+### What was lost, and what it costs
+
+The Pot D and Pot B stage inputs were deleted on 2026-10-24 with a class-G (geometry) deletion of
+2,468 `Surface_*.xyz` files from a scratch tree. They are recorded, not recoverable:
+`/data/gpfs/projects/punim2657/SfSpp/attic/pota-wave1-deleted-manifest-20261024.tsv.gz`, e.g.
+`pota240_P03_V0R/Dataset/Surfaces/Pot_D/Pot_D_Piece_03_Surface_0.xyz`, 356,285 bytes, sha256
+`7dcf6e1acb013e6f0b8d671e9c0103c7af550a7558551dea7c25992ad0de1544`.
+
+Consequence, plainly: **acceptance item 1 could only be measured on 4 of its 10 lanes** (Pot H, both
+stamps, two pieces) and **item 2 on 2 of its 3** (Pot B 01 Bl1 untested, so the 307/0.661/97.39
+reference is unverified). The Pot D lanes that motivated the ticket — D03 and D22, 216/339 and
+131/143 dots — could not be rerun at all. Nothing here answers the Pot D question; it answers the
+mechanism question on four bags and leaves Pot D's numbers as they stood.
+
+### Verdict against the pre-registered items
+
+1. **Single-lump lanes byte-identical** — holds on 4 of 10 lanes, all on Pot H: H02 Bl0/Bl1 and
+   H10 Bl0/Bl1 at max|dxyz| = 0.000000 with equal n. The six Pot D lanes cannot be measured (no
+   sheets); do not describe this as ten.
+2. **Three intact exterior lanes reach the bar** — C01 Bl1 226/0.575/100.00/99.57 PASS, J01 Bl1
+   184/0.601/100.00/99.47 PASS, both inside the n ± 3 and median ± 0.10 window, zero jumps, same loop
+   shown above. B01 Bl1 **untested**.
+3. **Interior lanes on the two defective pieces** — C01 Bl0 207/0.682/98.55/98.58 and J01 Bl0
+   170/0.582/100.00/100.00, both improved and both PASS; per ticket 285 they are evidence about the
+   input, not about the method, and are not quoted as proof.
+4. **No lane may leave its bar** — no lane changed on a single-lump bag at all, and no lane that
+   passed went below. D22 Bl0 (87.79) was not rerun, so its 1.0 allowance is untouched and unverified.
+5. **Lump census on all five multi-lump bags** — given for four; the seed moved into the largest lump
+   on every one (distance 0), from 54.20/49.36/36.72/32.47 mm away. B01 Bl1 has no sheets.
+
+### Deviations from the brief
+
+- **Six of ten lanes not run** (Pot D 03, 22, 01, Pot B 01) — their stage inputs were deleted
+  2026-10-24; the lead's reduced gate authorised this.
+- **First seed job (33746239) produced a bad H02/before lane**: the stage-tree copy ran before its
+  parent directory existed, so the edge stage ran in the wrong working directory and logged a 2.6 ms
+  no-op. Job 33746280 reran that one lane and re-scored all eight. No code, sheet or parameter changed
+  between the two.
+- **Authors'-sheets probe attempted and failed** (33746344) — authorised as optional by the lead, and
+  closed: it needs a mesh.
+- One extra line of output per run (`[SEED-287]`), and it is suppressed only when `SFS_DIAG_STOP267`
+  is already printing the seed, as the ticket asked. No new environment switch, no runtime knob, no
+  threshold touched.
+
+## Lead verdict (2026-10-24)
+
+**Accepted, and landed as the shipped default.** This answers the conservator's question from the
+walk-seed round (option 1: start the one full walk in the largest lump) and it is the first change
+since the paper arm that turns stub lanes into correct loops without touching a threshold.
+
+**1. Independent recompute (lead, own scorer, the run's own exports and the authors' own breaklines).**
+Every cell reproduced: C01 Bl1 before 81 / 41.055 mm / cov 0.00 / 0 jumps -> after **226 / 0.572 mm /
+cov 100.00 / author-side 99.57 / 0 jumps**; J01 Bl1 82 / 23.201 / 0.00 -> **184 / 0.597 / 100.00 /
+99.47 / 0**; C01 Bl0 25 / 51.620 -> 207 / 0.682 / 98.55; J01 Bl0 47 / 29.268 -> 170 / 0.581 / 100.00.
+Identity: H02 Bl0 152, H02 Bl1 138, H10 Bl0 98, H10 Bl1 92, before vs after, **max|dxyz| = 0.000000**
+on all four. (My medians sit 0.003-0.004 mm below the ticket's because the scorer reads a slightly
+different copy of the author dots; n, both coverage figures, jumps and max step agree exactly.)
+
+**2. The mechanism is in the logs, not inferred from the score.** C01 Bl0 after:
+"[SEED-287] ncomp=4 biggest=0 size=716/986 seed=-5.85638 -27.3575 403.765" then
+"[STOP-267] CHAIN-END step=715 of 986: nearest fresh dot 38.1656mm > R=12mm ; left=270 dots unvisited"
+(= 114+79+77, exactly the other three lumps) and maxjump 4.48613 mm. Before:
+"step=153 of 986 nearest 18.0314mm left=832". So the walk now traces the 716-dot rim and stops at the
+gap instead of starting in the 77-dot debris lump 54.20 mm away -- the seed was the whole story.
+
+**3. Blast radius is exactly the multi-lump bags, verified two ways.** Code: main
+edgeline_extraction_headless.cpp:624 marks every non-largest lump as used on the SFS_FULL_WALK=0
+path, so the new comp[i]==biggest condition is redundant there; on a single lump it is true for
+every dot, so the same summands are added in the same order and divided by the same count -- hence the
+bit-identical guard lanes. The one arm whose start dot moves is SFS_COMP_KEEP=all (keeps every lump
+but now begins in the largest), and the patch says so in a comment rather than leaving it to be
+discovered.
+
+**4. Weight, stated so it cannot be over-read.** Four moved lanes on two pieces, and both pieces are
+the known-defective inputs (ticket 285) -- the bar evidence is therefore their **exterior** lanes
+(100 % coverage, zero jumps, max step 5.03 and 4.03 mm), which are intact inputs; their interior
+lanes improve too (207 and 170 dots) but per ticket 285 those lanes measure the input and are not
+proof. Identity is four lanes on **one** pot. **Untested: Pot D 03/22/01 (six lanes) and Pot B 01 --
+their stage inputs were deleted on 2026-10-24 (attic manifest class G, 2,468 Surface_*.xyz), and the
+authors'-sheets substitute cannot be used because the edge stage needs the mesh-stage product too**
+(EDGE_EXIT=139 ... Pot_D_Piece_03_unclustered.ply:1: parse error). This is not a gap in the worker's
+work; it is the corpus limit recorded in ticket 284.
+
+**5. What this does NOT establish.** Nothing about the H02/H10 extent family (still 73.19 and 72.83,
+two different mechanisms -- tickets 280/286), nothing about P22 Bl0 (87.79 in every configuration),
+nothing about the Pot D lanes whose sheets are gone, and nothing about the 296-lane corpus, which
+cannot be re-scored at all (ticket 284). It is a fix for stubs caused by a split bag, demonstrated on
+the lanes that can still be run.
+
+**6. Decision and follow-ups.** Landed to main together with this ticket and the patch
+(.scratch/pota-repro/patches/287-largest-lump-seed.patch), no env switch, no threshold touched. The
+committed source is the source the scored binary was built from, but the shipped build has not yet
+been re-made from the commit -- a build-verify ticket does that and re-runs these eight lanes as its
+gate. The sequel the ticket asked for (delete the SFS_FULL_WALK=0 largest-component + clock-sort arm
+now that the seed makes it pointless) is cut separately: the last strip in this file broke the
+compile on an orphaned static, so it gets its own build gate.
