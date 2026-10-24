@@ -2,7 +2,7 @@
 
 Status: done (accepted: three partition-mismatch lanes, eight lanes in three causes; no walk fix)
 Working in: main (worktree closed 2026-10-25)
-Branch: 293-miss-families, in /c/PR/worktrees/sfs/293
+Branch: 293-miss-families (merged 87583e6, worktree closed)
 Answers: E1
 Created: 2026-10-25
 Follows: 292 (the baseline: 281/292 sound lanes at bar), 286 (H02/H10 mechanism), 278/279 (base-band partition)
