@@ -326,3 +326,28 @@ how much of each reference ring falls inside our surface's silhouette.
    2.35 points) instead of hedging in prose. That rule stands for every later re-score.
 
 Status set to **done (S)/(S) recorded; the extent test is unrun.**
+
+
+## On-mesh overlay (added by the lead, 2026-10-24)
+
+Asked for by the conservator: both edge lines drawn on the sherd's own mesh rather than over a point
+cloud. Rendered from `Pot_J_Piece_09_Mesh_DS.obj` (5,633 v / 11,262 f) with the four lane files already
+in this ticket; each dot lifted 0.45 mm along its nearest face normal so the line is not buried in the
+surface, shaded with a single light source, three views per lane (3D, plan down Z, 3D close).
+
+- `artifacts/pota289/png/p289_J09_Bl0_onmesh.png` (2215x760)
+- `artifacts/pota289/png/p289_J09_Bl1_onmesh.png` (2215x760)
+- scripts: `artifacts/pota289/data/onmesh.py`, `crease3.py`
+
+What the pictures show: the piece is a curved band with two long faces and a rolled edge between them.
+On **both** lanes our green line runs the extreme edge of its own face. On Bl0 the authors' line shadows
+it 1-2 mm inside on the same face, and both take the same route over the notch. On Bl1 the same holds for
+the left half, and over the right half theirs leaves the edge and runs across the face — the 41 mm
+excursion already measured, and it is visible as such on the mesh.
+
+**The crease test I offered does not work on this piece, measured rather than assumed.** Local normal
+variation within 2 mm of a dot, restricted to same-side faces, is median 28.8-35.3 deg on both lines —
+and median 27.0 / p90 43.3 / max 89.3 deg on 500 RANDOM mesh points. A 5,633-vertex faceted mesh has that
+much normal noise everywhere, so curvature cannot separate the two contours here. The question stays a
+visual one, and the picture above is the answer: both lines are on the same face, and theirs is the one
+that leaves the edge.
