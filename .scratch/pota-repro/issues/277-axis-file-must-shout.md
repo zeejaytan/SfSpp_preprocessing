@@ -1,8 +1,9 @@
 # 277 — The mesh stage must not silently keep size order when it has no axis file
 
 Answers: E1
-Status: ready-for-agent (small; can ride with any mesh-stage ticket)
-Working in: mesh_processing_headless.cpp only
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-25)
+Branch: 277-axis-file-must-shout, in /c/PR/worktrees/sfs/277
 Needs-eye: no
 
 ## Why
