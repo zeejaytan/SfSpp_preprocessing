@@ -21,9 +21,9 @@ BUILDROOT=/data/gpfs/projects/punim2657/sfs-vote-248
 SIF=$CANON/pcl_191_nurbs.sif
 APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
 PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
-PIECE="$PIECE"; [ -n "$PIECE" ] || PIECE=Pot_H_Piece_02
-POT="$POT"; [ -n "$POT" ] || POT=Pot_H
-REPS="$REPS"; [ -n "$REPS" ] || REPS=5
+PIECE="${PIECE:-Pot_H_Piece_02}"
+POT="${POT:-Pot_H}"
+REPS="${REPS:-5}"
 
 unset SFS_AXIS_FILE NURBS_OUTPUT_BASE
 mkdir -p $RUN/logs $RUN/out $RUN/bin $RUN/scripts $RUN/stage $RUN/out/geom
