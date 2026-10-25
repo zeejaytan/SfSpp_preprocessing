@@ -59,8 +59,8 @@ CMAKE_EXIT=$?; echo "[RUN] cmake exit=$CMAKE_EXIT"
 "$APT" exec --bind /data:/data "$SIF" make -j8 EdgeLineExtractionHeadless MeshPreprocessingHeadless > $RUN/logs/make.log 2>&1
 MAKE_EXIT=$?; echo "[RUN] make exit=$MAKE_EXIT"
 [ $MAKE_EXIT -eq 0 ] || { tail -40 $RUN/logs/make.log; exit 4; }
-E=$(find $BT/src/build -type f -name EdgeLineExtractionHeadless | head -1)
-M=$(find $BT/src/build -type f -name MeshPreprocessingHeadless | head -1)
+E=$(find $BT/src/build -type f -name EdgeLineExtractionHeadless -print -quit)
+M=$(find $BT/src/build -type f -name MeshPreprocessingHeadless -print -quit)
 [ -n "$E" ] && [ -n "$M" ] || { echo "[RUN] FATAL binaries not found"; exit 5; }
 cp -f $E $RUN/bin/edge/EdgeLineExtractionHeadless; cp -f $M $RUN/bin/mesh/MeshPreprocessingHeadless
 chmod +x $RUN/bin/edge/EdgeLineExtractionHeadless $RUN/bin/mesh/MeshPreprocessingHeadless

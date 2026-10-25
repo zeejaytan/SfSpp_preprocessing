@@ -167,11 +167,14 @@ commented at lines 10-19) **and the bundle root**, which is `path = "/Dataset/" 
    pieces, ~4x the seating work, so 4 h is ~50x headroom), and a run directory whose
    `out/Result/*Acc.txt` already carries two accuracy lines is **scored and never re-run**.
 
-### Job plan (31 run directories, each with an `runs/index.tsv` row, verdict and human_note left empty)
+### Job plan (30 run directories, each with an `runs/index.tsv` row, verdict and human_note left empty)
+
+There is no separate build job: each prep job builds both binaries from the pushed commit in its
+own scratch root (ticket 296's precedent), so a build failure is reported by the prep job that
+needed it and cannot silently hand the campaign a stale binary.
 
 | run tag | jobs | what it does |
 |---------|------|--------------|
-| `p298-build` | 1 | builds `MeshPreprocessingHeadless` + `EdgeLineExtractionHeadless` from the pushed commit (git archive), records the commit and both binary md5s |
 | `p298-prep-POT_X` | 10 | per piece: `stage_piece.sh` (authors' released cloud, symlinked) -> mesh stage with `SFS_AXIS_FILE` (must print the `[PAPER-234] classify` line) -> edge stage; exports `out/geom/<Piece>.{S0,S1,Bl0,Bl1}` = OUR bundle |
 | `p298-POT_X-oursd`, `p298-POT_X-authb` | 20 | assembler, one pot per job, arm = what is mounted at `/Dataset/SfS_pp` |
 
@@ -199,6 +202,66 @@ Goal: prove the whole chain end to end on our own input before spending the camp
    invent a numeric bar; report what each arm produced. If the chain fails anywhere -- missing
    file, unreadable config, crash, empty result -- STOP and report the exact error; do not
    patch the algorithm to make a number appear.
+
+## Phase 1 - result (2026-10-26): pilot PASSED, Pot B both arms, 9/9 sherds and 15/15 joins
+
+Source commit `63cf61540094c3ec1e1dbefa9ff46a05b7d4708` ("298 Phase 0: inventory of all ten
+pots; prep/arm job scripts; zero assembler edits needed"), pushed to `origin/298-assemble-all-pots`
+before any job was submitted, built by each job from `git archive` of that commit.
+
+| arm | run dir (job) | Total number | Total number pruned | sherds (first line) | joins (second line) |
+|-----|---------------|--------------|---------------------|---------------------|---------------------|
+| OURSD = our Surfaces + our Breakline_0 | `20261026-0052_63cf615_p298-Pot_B-oursd` (33782366) | 182 | 81 | **9 / 9 (100 %)** | **15 / 15 (100 %)** |
+| AUTHB = corpus Surfaces + corpus Breakline_0 | `20261026-0052_63cf615_p298-Pot_B-authb` (33782456) | 114 | 77 | **9 / 9 (100 %)** | **15 / 15 (100 %)** |
+
+Verbatim, `out/Result/1. Acc.txt` of the OURSD run:
+
+```
+Time : 1.90872e+06 Sec
+Sherd accuracy : 9 / 9 (100 %)
+Sherd accuracy : 15 / 15 (100 %)
+```
+
+and of the AUTHB run:
+
+```
+Time : 1.024e+06 Sec
+Sherd accuracy : 9 / 9 (100 %)
+Sherd accuracy : 15 / 15 (100 %)
+```
+
+Both lines come from the assembler itself; the first "Sherd accuracy" line is sherds seated and
+the second is joins recovered (`class/data_structure.cpp:1004-1005`), and the console prints the
+same two numbers under the labels "Sherd accuracy" and "Edge accuracy".
+
+Prep (`20261026-0046_63cf615_p298-prep-Pot_B`, job 33782096, exit 0): 9 of 9 pieces, 9 of 9
+`[PAPER-234] classify` lines, every stage/mesh/edge exit 0, theta 3.40000 on all nine, all nine
+exported `Surface_0 = interior` ("kept" on piece 01, "swapped" on 02-09) -> our `S0/Bl0` ride the
+interior face exactly as the authors' `Surface_0/Breakline_0` do, so the two arms differ in the
+extractor and in nothing else. Our bundle: `out/geom` 36 files, 24 MB, kept.
+
+Inputs. Both arms staged the frozen corpus by symlink (`out/links.tsv`, 46 links) for mesh, axis
+and Ground Truth; `out/gt_missing.txt` is empty for Pot B. The only unmatched file open in either
+arm is the corpus-wide absence of `..._Surface_F.pcd` (9 hits, one per piece) which the assembler
+tolerates and which the gate allow-lists; no other "Could not open file" line appears.
+
+Defects met and fixed while getting the pilot to run (all three are harness, none is the algorithm,
+and both arms were re-run after the last fix):
+
+1. The selector flip first looked for `POT_Pot_B`; the C++ selectors are `POT_B`. Fixed by
+   upper-casing the letter and prefixing `POT_`.
+2. Under `set -u`, a sed address written with a bare `$p` read the variable `p` and aborted the
+   container. Fixed with an explicit numeric range.
+3. Twice, "container pipeline exit 141" with no other message: `set -euo pipefail` turns a
+   producer's SIGPIPE into a silent abort. First `grep ... | head -1`, then `sed -n ... | grep -m1`
+   -- `head`/`grep -m1` exit early, the producer dies of SIGPIPE, `pipefail` propagates 141 and
+   `set -e` kills the script at that line. Fixed by reading the header with **one** process
+   (`awk`) and with `grep -m1` instead of a downstream `head`. Every attempt is recorded in
+   `out/attempts.tsv` inside the arm run dirs, so the five submissions of one arm are legible
+   without creating five run directories.
+
+Gate: PASSED. Both arms produced a result and both scored from the assembler's own output, so
+Phase 2 proceeds unchanged: 9 prep jobs (A, C, D, E, F, G, H, I, J) and 18 arm jobs.
 
 ## Phase 2 - the campaign, all ten pots (only after the Phase 1 gate passes)
 

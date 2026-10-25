@@ -11,6 +11,8 @@
 set -euo pipefail
 R=/p298run
 : ${POT:?} ; : ${SHARD:?} ; : ${ARM:?}
+# POT is the dataset name (Pot_B); the C++ selector is the upper-case POT_B.
+POTSEL=$(echo "POT_${POT#Pot_}" | tr 'a-z' 'A-Z')
 BD=$(mktemp -d /tmp/p298-build-XXXXXX) && cd "$BD"
 echo "[P298] build dir $BD (fresh; /tmp is shared between jobs on a node, never reuse a name)"
 echo "[P298] inside $(hostname); pot=$POT arm=$ARM shard=$SHARD"
@@ -19,22 +21,26 @@ cp -a /opt/sfs-pristine "$BD/sfx"
 H="$BD/sfx/class/data_path.h"
 echo "[P298] pinned header md5 (before flip) $(md5sum "$H" | awk '{print $1}')"
 sed -i -E "s|^#define (POT_[A-Z_]+)[[:space:]]*\$|//#define \1|" "$H"
-sed -i -E "s|^// ?#define (POT_${POT})[[:space:]]*\$|#define \1|" "$H"
+sed -i -E "s|^// ?#define (${POTSEL})[[:space:]]*\$|#define \1|" "$H"
 ACTIVE=$(grep -c "^#define POT_" "$H" || true)
-if [ "${ACTIVE:-0}" != "1" ] || ! grep -q "^#define ${POT}\$" "$H"; then
+if [ "${ACTIVE:-0}" != "1" ] || ! grep -q "^#define ${POTSEL}\$" "$H"; then
   echo "[P298] FATAL selector flip failed: $(grep -n '^#define POT_' "$H" || echo none) active"
   grep -n "define POT_" "$H" | head -20
   exit 20
 fi
-BLOCK=$(grep -n "^#ifdef ${POT}\$" "$H" | head -1 | cut -d: -f1)
-BLOCK_SHARD=$(sed -n "${BLOCK},$p" "$H" | grep -m1 "^#define SHARD_NUMBER" | awk '{print $3}')
+BLOCK=$(grep -m1 -n "^#ifdef ${POTSEL}\$" "$H" | cut -d: -f1 || true)
+if [ -z "$BLOCK" ]; then echo "[P298] FATAL no #ifdef ${POTSEL} block in the header"; exit 22; fi
+# one reader, no pipe: sed | grep -m1 makes sed die of SIGPIPE and pipefail turns that into a
+# silent abort under set -e (cost two pilot attempts).
+BLOCK_SHARD=$(awk -v s="$BLOCK" 'NR>=s && !f && /^#define SHARD_NUMBER/ {print $3; f=1}' "$H")
 if [ "${BLOCK_SHARD:-x}" != "${SHARD}" ]; then
   echo "[P298] FATAL SHARD_NUMBER of $POT is ${BLOCK_SHARD:-absent}, job was given $SHARD"
   exit 21
 fi
 {
   echo "pot $POT"
-  echo "selector line $(grep -n "^#define ${POT}\$" "$H" | cut -d: -f1)"
+  echo "selector $POTSEL"
+  echo "selector line $(grep -n "^#define ${POTSEL}\$" "$H" | cut -d: -f1)"
   echo "ifdef line $BLOCK"
   echo "SHARD_NUMBER $BLOCK_SHARD"
   echo "header md5 after flip $(md5sum "$H" | awk '{print $1}')"
