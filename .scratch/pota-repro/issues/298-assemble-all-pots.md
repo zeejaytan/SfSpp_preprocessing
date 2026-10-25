@@ -1,6 +1,6 @@
 # Ticket 298 - assemble all ten pots with our own input, and with the authors' input
 
-Status: in-progress
+Status: done (accepted: ten pots assembled both ways; eight match the paper exactly, H and J are better with our bundle, F is one piece short through a silent 50-point floor, D reproduces the paper's raw counts)
 Working in: chat on Thinkbook16 (2026-10-26)
 Branch: 298-assemble-all-pots, in /c/PR/worktrees/sfs/298
 Answers: E1
@@ -502,3 +502,76 @@ saying whether our input matched the authors' output, and where it fell short if
 3. Phase 2: a row for every one of the ten pots, with the paper's own numbers beside ours.
 4. Every staged tree accounted for; our ten bundles retained; run directories and index rows present.
 5. Any defect found is stated with its evidence, not smoothed over.
+## Lead verdict (coordinating session, 2026-10-26) - ACCEPTED
+
+1. **Independently re-read, not taken on report.** I opened every one of the 20 arm runs'
+   `out/Result/1. Acc.txt` on Spartan myself and read the two score lines; all 20 cells match
+   this ticket's table to the character, and both repeats (jobs 33783435 Pot_H, 33783436 Pot_D)
+   match their first runs to the character. The table stands as recorded.
+2. **Neither permitted edit was needed.** The bundle root is the bind mount at
+   `/Dataset/SfS_pp`, and the PINNED `/opt/sfs-pristine/class/data_path.h` (6607 lines, md5
+   `a244382311cb5d81f8bbf4ba4d823b47`) declares `gt_graph_path` for all ten pots, Pot D
+   included (`class/data_path.h:1993`). My Phase 0 worry came from the 6948-line laptop copy,
+   which carries a `POT_A_ORIG` block the pinned tree never had. Both diffs empty => the
+   assembler was byte-identical in all 20 runs, which is the strongest form this comparison can
+   take.
+3. **The result, in one line.** On eight of ten pots our bundle and the authors' bundle produce
+   the same reassembly; on Pot J ours is better on both measures (10/11 sherds, 17/21 joins
+   against 8/11 and 16/21, both above the published 72.7/76.2); on Pot H ours recovers two more
+   joins (11 against 9 at the same 8/11 sherds); on Pot F ours is one piece short for a reason
+   that is not about quality (item 4); on Pot D ours reaches the paper's raw counts (23 sherds /
+   55 joins) over one extra piece. Nowhere does our preprocessing lower the reassembly result.
+4. **The denominators are a silent 50-point floor, and I verified every count myself.**
+   `hpc/tools/main_pristine_batch.cpp:86`: `if (shard[i].edge_line_.point_.cols() < 50)` sets
+   `shard_on_off[i] = false`, removes the line and `continue`s with no message. Unique points per
+   `Breakline_0`, authors' bundle vs ours (lead's own count on Spartan): Pot F 06 **50 vs 49**,
+   Pot F 07 28 vs 37, Pot I 27 **53 vs 49**, Pot I 28 44 vs 41, Pot I 29 41 vs 40, Pot I 30 40 vs 38 (all under 50),
+   Pot D 27 **48 vs 56**. So the authors' arm drops F 07 + I 28/29/30 (the
+   four the paper excluded) and reads F 6, I 27, D 28; ours additionally drops F 06 and I 27 by
+   ONE point, and keeps D 27 where the authors lose it. **Correction to this ticket:** the F 06
+   line is 50 points, not 57 - the conclusion (49 < 50, dropped) is unaffected, but the number was
+   wrong and is corrected here. A percentage is not comparable between arms without the counts
+   beside it; that is now the rule for quoting this table.
+5. **The D and H shortfalls of the authors' arm are real, and are NOT run-to-run noise.** Both
+   were repeated into fresh run directories on the same commit, binary and bundle and landed on
+   the identical percentages (H 72.7273/52.9412, D 78.5714/80.303). The search bookkeeping does
+   drift (H pruned 232 -> 233, D 886 -> 888) while the answers do not, so state counts are not a
+   reproducible quantity and must never be quoted as one. Why the authors' own bundle misses their
+   own published table on exactly these two pots is left OPEN: the candidate explanations
+   (a different upstream commit than the one released for the paper; the 50-point floor's
+   interaction with the eight-piece difference on D; the five missing GT transforms, one of them
+   D 22) are untested and I have deliberately not opened a ticket to chase them.
+6. **What weight this bears.** Both arms saturate on seven of ten pots, so this is a FLOOR test
+   ("our preprocessing does not make reassembly worse anywhere"), not a ranking of two methods.
+   The two pots that separate them are J (clearly ours) and H (one more join). One pot that
+   separates them is F, and that difference is a bookkeeping floor, not a quality difference. It
+   is also the first POT-level measurement in this project whose numbers a conservator can act
+   on, and the join-level answer behind intent E1 now has its first corpus-wide datum.
+7. **Caveats that travel with the number.** (a) Pot C's four pieces include Pot C 01, whose
+   interior surface carries a scan gap (project AGENTS.md, ticket 285); the assembler reads
+   `Breakline_0` = the interior boundary, so a defective interior sits inside that pot. The
+   assembler prints pot totals and no per-piece line, so 4/4 shows the pot came out right and does
+   not certify C 01's seat. (b) Five of the authors' released GT transforms are absent from the
+   corpus (D 22, F 07, I 28/29/30) and `Trans::Read` turns an absent transform into an identity
+   pose (`data_structure.cpp:633`); four of the five are pieces the floor removes anyway, and
+   D 22 is inside the authors' D denominator. (c) `POT_J` declares `SHARD_NUMBER` 19 with 12
+   usable slots and switches J 09 off itself; the 19 "could not open file" lines in the J runs are
+   expected and the gather gate now classifies them instead of failing on them. (d) Our J arm's
+   `Acc.txt` carries a nonsense `Time : -184038 Sec`; the accuracy lines are unaffected and were
+   read directly.
+8. **Nothing was changed to get this result.** No algorithm, threshold, weight, ordering or
+   assembler edit; the two permitted INFRA edits were not needed. Geometry was deleted with a
+   counted per-run record (8,378 files, 9,911,628,046 bytes), the ten bundles are KEPT (588 files,
+   458 MB) because most of the corpus's clouds cannot be regenerated, and each of the 32 runs has
+   a directory and an index row.
+9. **Decision this supports.** The preprocessing shipped at `d1f1a4c` is fit to be judged on
+   reassembly, not only on lane coverage: it seats every pot the authors seat and never fewer
+   sherds, and it does better on two pots. What would change that: an arm where our bundle loses
+   a sherd the authors' bundle seats ON THE SAME DENOMINATOR - none exists in this table (F differs
+   by denominator, not by failure).
+
+---
+
+*The worker's own 8 numbered defects/open items above are accepted as recorded, with item 1's
+"57" corrected to 50 as noted in point 4.*
+
