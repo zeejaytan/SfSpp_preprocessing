@@ -61,6 +61,56 @@ piece regenerated at shipped defaults.
 No threshold moves after the first number is seen. If a measurement turns out to be impossible with
 the data that exists, say so and stop rather than substituting a proxy silently.
 
+## Definitions fixed before the run (no threshold here moves afterwards)
+
+The rule above is fixed. These are the definitions it is applied with, written down before the run
+so that the numbers cannot choose their own geometry. Code: `.scratch/pota-repro/297/measure297.py`
+(measurement) and `render297.py` (the picture); both are copied into the run directory as
+`scripts/` and their md5s are in the Results block.
+
+- **The stretch** is fixed by ticket 294's own rule, copied verbatim out of
+  `.scratch/pota-repro/294/p294_render.py:91-119` `worst_stretch()`: the run of OUR dots further
+  than 2.0 mm from their line, chosen by the largest arc x mean gap; if no dot is further than
+  2.0 mm the threshold falls back to max(1.0 mm, median + 0.5 mm). It gave dots 39-49 of 125 when
+  294 was written; it is re-derived for each repeat here, never assumed.
+- **The chord** is their dots from the one nearest our dot i to the one nearest our dot j,
+  inclusive. Those dots are the *chord dots*; the rest of their line is the control.
+- **The interior-face plane** is the least-squares plane through the authors' own labelled interior
+  face (`Surfaces/Pot_D_Piece_22_Surface_0.xyz`, identified as the interior one by its agreement
+  with our run's `Surface_0`) within 15 mm of the chord midpoint, grown to 22.5 and then 30 mm if
+  fewer than 400 points fall inside; its normal is oriented away from the body, into the interior
+  air. Three cross-checks are reported and **none of them feeds the verdict**: our own `Surface_0`
+  fitted the same way, and the share of the mesh's local area that is parallel (<=20 deg), steeper
+  than 45 deg, and perpendicular (>=70 deg) to that plane.
+- **The enclosed patch** is the mesh triangles whose centroid lies inside the closed polygon
+  [their chord dots] + [our detour dots, reversed], projected on that plane. Its area is the sum of
+  those triangles' 3-D areas (the projected area is reported beside it); each triangle's tilt is
+  acos(|n_tri . n_face|). Every share is **area-weighted**, with the count-weighted share printed
+  beside it so the two cannot be confused.
+- **Radial depth** and the face-plane offset are the signed distance of each patch triangle's
+  centroid from the face plane along its normal.
+- **Face-like** means tilt <=20 deg **and** within 1 mm of the plane; that is the quantity (e)
+  reports, as mm2 and as a share of the patch.
+- **"over >50% of its length"** for the REFUTE limb is measured length-weighted on the chord's own
+  steps, with the dot-weighted share printed beside it.
+
+### The gate, and what counts as reproducing 294
+
+Ticket 294's row is 125 dots / 0.757 mm / 86.40 % ours / 78.95 % theirs at theta 3.40000. The
+tolerance is this piece's own run-to-run spread, because the mesh stage draws 30 random ray-cast
+points unseeded (`mesh_processing_headless.cpp:1526-1527`). Three repeats of the identical commit,
+identical staged inputs and identical defaults are run; **the gate passes if 294's median 0.757 mm
+and its cov_ours 86.40 % both fall inside the range the three repeats span**, and that spread
+(max - min) is the piece's run-to-run spread, quoted with every later comparison. If they do not,
+this ticket says so and every new number is marked provisional. Dot count is reported as it comes
+out: the draw moves the line, so a dot or two either way is not a mismatch.
+
+### Read the same way on each repeat
+
+The rule is applied independently to each of the three repeats. If all three give the same verdict,
+that is the verdict. If they differ, the verdict is PARTIAL and both outcomes are shown: the
+repeats are not a menu to choose from.
+
 ## Constraints
 
 - **No source edits, no parameter sweeps, no new binary.** Build the shipped commit with the recipe
