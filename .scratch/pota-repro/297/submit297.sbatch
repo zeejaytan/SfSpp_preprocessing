@@ -17,8 +17,8 @@ set -uo pipefail
 
 : "$RUN_DIR"
 RUN=$RUN_DIR
-COMMIT=\${SOURCE_COMMIT:-0f8a4a417221647e7d6e7f7d031a90109930d44d}
-CANON=\${CANONICAL:-/data/gpfs/projects/punim2657/sfs_preprocessing}
+COMMIT=${SOURCE_COMMIT:-0f8a4a417221647e7d6e7f7d031a90109930d44d}
+CANON=${CANONICAL:-/data/gpfs/projects/punim2657/sfs_preprocessing}
 BUILDROOT=/data/gpfs/projects/punim2657/sfs-vote-248
 SIF=$CANON/pcl_191_nurbs.sif
 APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
@@ -79,12 +79,12 @@ printf '{"commit": "%s", "edge_md5": "%s", "mesh_md5": "%s", "jobid": "%s", "exp
   "$([ "$EDGE_MD5" = "$EXPECT_EDGE" ] && echo true || echo false)" > $RUN/out/build.json
 
 # ---- the inputs that are not ours: the authors' line and their mesh (frozen corpus, read-only) ----
-cp -f $CORP/Breaklines/\${PIECE}_Breakline_\${LANE}.pcd $RUN/out/geom/authors.Bl0.pcd
-{ md5sum $CORP/Breaklines/\${PIECE}_Breakline_\${LANE}.pcd
-  md5sum $CORP/Mesh/\${PIECE}_Mesh_DS.obj
-  md5sum $CORP/Surfaces/\${PIECE}_Surface_0.xyz
-  md5sum $CORP/Surfaces/\${PIECE}_Surface_1.xyz
-  md5sum $CORP/Axes/\${PIECE}_Axis.xyz ; } > $RUN/out/inputs.authors.md5
+cp -f $CORP/Breaklines/${PIECE}_Breakline_${LANE}.pcd $RUN/out/geom/authors.Bl0.pcd
+{ md5sum $CORP/Breaklines/${PIECE}_Breakline_${LANE}.pcd
+  md5sum $CORP/Mesh/${PIECE}_Mesh_DS.obj
+  md5sum $CORP/Surfaces/${PIECE}_Surface_0.xyz
+  md5sum $CORP/Surfaces/${PIECE}_Surface_1.xyz
+  md5sum $CORP/Axes/${PIECE}_Axis.xyz ; } > $RUN/out/inputs.authors.md5
 cat $RUN/out/inputs.authors.md5
 
 # ---- three repeats of the same thing: mesh stage, edge stage, score ----
@@ -101,7 +101,7 @@ for K in 1 2 3; do
   echo "[RUN] $REP stage exit=$SS" | tee -a "$LOG"
   [ $SS -eq 0 ] || { echo "[RUN] FATAL STAGE_FAILED $REP"; exit 7; }
   cp -f "$ST/inputs.md5" "$RUN/out/inputs.$REP.md5"
-  ( cd "$ST" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" SFS_AXIS_FILE="$ST/Dataset/Axes/\${PIECE}_Axis.xyz" "$MESH" ) >> "$LOG" 2>&1
+  ( cd "$ST" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" SFS_AXIS_FILE="$ST/Dataset/Axes/${PIECE}_Axis.xyz" "$MESH" ) >> "$LOG" 2>&1
   echo "[RUN] $REP mesh exit=$?" | tee -a "$LOG"
   CLS=$(grep -m1 "PAPER-234] classify: face0" "$LOG" || true)
   SW=$(grep -m1 "classify: swapped\|classify: kept" "$LOG" || true)
@@ -109,13 +109,13 @@ for K in 1 2 3; do
   THETA=$(grep -m1 "PAPER-234] paper grow" "$LOG" | sed "s/.*thetaDeg=//; s/ .*//")
   echo "[RUN] $REP theta=$THETA classify=$CLS" | tee -a "$LOG"
   printf "%s\t%s\t%s\t%s\n" "$REP" "$THETA" "$CLS" "$SW" >> $RUN/out/classify.tsv
-  cp -f "$ST/Temp/Data/$POT/\${PIECE}_Surface_0.xyz" "$RUN/out/geom/$REP/ours.S0.xyz"
-  cp -f "$ST/Temp/Data/$POT/\${PIECE}_Surface_1.xyz" "$RUN/out/geom/$REP/ours.S1.xyz"
+  cp -f "$ST/Temp/Data/$POT/${PIECE}_Surface_0.xyz" "$RUN/out/geom/$REP/ours.S0.xyz"
+  cp -f "$ST/Temp/Data/$POT/${PIECE}_Surface_1.xyz" "$RUN/out/geom/$REP/ours.S1.xyz"
   rm -rf "$ST/Dataset/Breaklines/$POT"; mkdir -p "$ST/Dataset/Breaklines/$POT"
   ( cd "$ST" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" "$EDGE" ) >> "$LOG" 2>&1
   echo "[RUN] $REP edge exit=$?" | tee -a "$LOG"
   for L in 0 1; do
-    cp -f "$ST/Dataset/Breaklines/$POT/\${PIECE}_Breakline_\${L}.pcd" "$RUN/out/geom/$REP/ours.Bl$L.pcd"
+    cp -f "$ST/Dataset/Breaklines/$POT/${PIECE}_Breakline_${L}.pcd" "$RUN/out/geom/$REP/ours.Bl$L.pcd"
   done
   "$PY" $RUN/scripts/score292.py "$POT" "$PIECE" "$LANE" "$RUN/out/geom/$REP/ours.Bl0.pcd" \
       "$RUN/out/geom/authors.Bl0.pcd" | sed "s/^/$REP\t/" >> $RUN/out/scores.tsv
