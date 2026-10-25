@@ -1983,6 +1983,20 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     }
 }
 
+// TICKET 277: no symmetry axis is a hard failure, not a fallback. Keeping size order
+// silently swaps the labels -- Surface_0 becomes whichever cluster is larger, so Bl0/Bl1
+// stop matching the authors' lanes and the run reads downstream as a method failure.
+static const int MESH_NO_AXIS_EXIT = 42;
+[[noreturn]] static void dieNoAxis(const std::string& why)
+{
+    std::cerr << "[PAPER-234] FATAL: " << why << std::endl
+              << "[PAPER-234] FATAL: refusing to keep size order -- Surface_0/Surface_1 would be mislabelled" << std::endl
+              << "[PAPER-234] FATAL: and Bl0/Bl1 would stop matching the authors' lanes. Set SFS_AXIS_FILE" << std::endl
+              << "[PAPER-234] FATAL: to the piece's axis file (Dataset/Axes/<Piece>_Axis.xyz) and re-run." << std::endl
+              << "[PAPER-234] FATAL: exiting " << MESH_NO_AXIS_EXIT << std::endl;
+    std::exit(MESH_NO_AXIS_EXIT);
+}
+
 // Axis-ray classification (paper Sec IV-B1): ray along the point normal meets
 // the symmetry axis; intersection on the positive normal side = interior.
 // Both assignments tried; the one with more satisfying points wins; the
@@ -1993,16 +2007,16 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
 {
     if (pclusters.size() < 2) return;
     const char* axPath = std::getenv("SFS_AXIS_FILE");
-    if (!axPath || !*axPath) { std::cout << "[PAPER-234] classify: no SFS_AXIS_FILE, keep size order" << std::endl; return; }
+    if (!axPath || !*axPath) dieNoAxis("SFS_AXIS_FILE is unset or empty");
     std::ifstream axf(axPath);
-    if (!axf.is_open()) { std::cout << "[PAPER-234] classify: cannot open axis file, keep size order" << std::endl; return; }
+    if (!axf.is_open()) dieNoAxis(std::string("cannot open SFS_AXIS_FILE='") + axPath + "'");
     double ax, ay, az, dx, dy, dz;
     axf >> ax >> ay >> az >> dx >> dy >> dz;
-    if (axf.fail()) { std::cout << "[PAPER-234] classify: bad axis parse, keep size order" << std::endl; return; }
+    if (axf.fail()) dieNoAxis(std::string("SFS_AXIS_FILE='") + axPath + "' does not hold six numbers (axis point xyz + direction xyz)");
     Eigen::Vector3f axPt(static_cast<float>(ax), static_cast<float>(ay), static_cast<float>(az));
     Eigen::Vector3f axDir(static_cast<float>(dx), static_cast<float>(dy), static_cast<float>(dz));
     float dl = axDir.norm();
-    if (dl < 1e-9f) { std::cout << "[PAPER-234] classify: zero axis dir, keep size order" << std::endl; return; }
+    if (dl < 1e-9f) dieNoAxis(std::string("SFS_AXIS_FILE='") + axPath + "' has a zero-length direction");
     axDir /= dl;
     double inFrac[2] = {0.0, 0.0};
     for (int f = 0; f < 2; ++f) {
