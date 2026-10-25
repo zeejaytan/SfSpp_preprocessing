@@ -326,23 +326,12 @@ results are in our own favour, which is the least comfortable place for them to 
   breakline-to-surface index pairing.
 - **Pot C 03 Bl1 holds:** their line is the rim of their own small plate-like face (n_ax 0.939), 5.83 mm from
   ours; the 2 mm band angle test calls it different_surface, the only lane of the nine that does.
-- **Pot D 22 Bl0 and D 27 both hold with qualification:** their lines are boundaries of their own faces, but
-  on D 22 the reference bridges the notch with its 18 mm chord (66.9% of its dots beyond 2 mm from our
-  material) while our edge is the real one, 6.0 mm further out.
-- **Pot H 10 does NOT hold, in our favour and against his reading:** our face is **14% smaller**, not bigger
-  (633.9 against 734.9 mm2), and the whole 12.6 mm stretch sits 2.33 mm outside our face, 100% nearest the
-  dropped ribbon cluster. Not a mismatch of labels, not an oversized surface -- a partition we did not keep.
-- **Pot I 06 / I 13 do NOT hold:** the two faces are equal to 1.4-1.8% in area and the band under the
-  reference is coplanar (0.73-1.74 deg, 0.005-0.007 mm offset). There is no welded break material.
-- **Pot E 16 Bl0 holds with qualification:** 52.7% of their dots lie on our >100 deg edge and the band agrees
-  to 3.28 deg, but on a 41.4 mm stretch (20.8%) their line is up to 10.86 mm inside our face with only
-  0.206 mm of material under it -- an inset line, not an edge.
-- **Pot H 02 both lanes confirm his judgement and correct his reason.** The turn is real and sharp -- the
-  material just outside our face sits at 48.4 deg (Bl0) / 44.2 deg (Bl1) median from it, 54.8% / 48.5% of it
-  beyond 45 deg -- and it is **continuous material, not a scan gap** (the unlabelled corridor is 1.525 / 0.667 mm
-  from the kept face, 282 / 36 points within one sample spacing). But the authors' line does not go past ours:
-  on Bl1's 59.4 mm stretch their dots are **0.221 mm above our wall face and 4.67 mm inside our edge**. Ours
-  is the better edge; it is not a line that stopped short.
+- **Pot D 22 Bl0 and D 27 both hold with qualification:** their lines are boundaries of their own faces. On
+  D 22 the earlier reading (that THEIR line bridges the notch with an 18 mm chord) is WRONG and was corrected
+  by ticket 297: the 19.92 mm is only the end-to-end distance of their two nearest dots, their polyline runs
+  43.28 mm round the corner, and OURS is the 18.00 mm cut across it (our dots 39-49). Measured tilt under
+  each line's own dots: theirs 66.3 deg median and 100% above 45 deg (broken/rounded material), ours 29.6 deg
+  and 0% (the flat of the face). So ours is the shortcut and the conservator's reading was right.
 
 **No welded break facet anywhere, measured:** on all nine matched lanes **0.00%** of the 2 mm band our kept
 material contributes under the reference is pitched more than 45 deg off the authors' own normals (median
@@ -431,7 +420,7 @@ worst delta 0.0050 mm):
 |---|---|
 | Pot I 25's labels are swapped | Holds with qualification -- it is a **naming inversion**: on 158 of 163 pieces their Surface_0 is the inside; I 25 and J 14 invert their own order. Both releases' lines ride the **same physical faces** (0.249 / 0.242 mm apart) |
 | Pot C 03 Bl1 traced the base | **Holds** -- see section N; the lane is now struck |
-| D 22 / D 27 ours is the better edge | Holds with qualification -- D 27's two are small insets (7.2 / 16.2 mm); on **D 22 the 18 mm chord is theirs** (66.9% of its dots beyond 2 mm from our material) and ours rounds the notch |
+| D 22 / D 27 ours is the better edge | Does NOT hold on D 22 and holds with qualification on D 27. D 27's two are small insets (7.2 / 16.2 mm). On **D 22 OURS is the 18 mm chord** (theirs runs 43.28 mm round the corner; tilt under theirs 66.3 deg median, under ours 29.6 deg) -- ticket 297, and the earlier ledger claim was backwards |
 | H 10 is a mismatch, or our surface is bigger | **Does not hold** -- our face is **14% smaller** (633.9 vs 734.9 mm2) and the whole 12.6 mm stretch sits over a 629-point ribbon cluster we dropped |
 | I 06 / I 13 -- our mesh is bigger, so our line is bigger | **Does not hold** -- the faces match to 1.4-1.8% in area and the band under their line is coplanar (1.4 / 1.7 deg, 0.006 / 0.007 mm) |
 | H 02's lines stop at the base-rim | **Holds, both reasons corrected** -- see below |
