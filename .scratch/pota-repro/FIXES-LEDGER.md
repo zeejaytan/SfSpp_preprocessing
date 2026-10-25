@@ -505,5 +505,69 @@ Retained on Spartan: prep out/geom 27 MB (surfaces are not byte-reproducible, un
 arms' out/Result (~363 MB) as the evidence behind the two accuracy lines. Deleted: stage/ 582 MB and the two
 dataset/ trees, 242 + 121 MB, each recorded in that run's out/GEOMETRY_DELETED.txt.
 
+## T. Reassembly at corpus scale: all ten pots, both bundles (2026-10-26, ticket 298) -- a floor, not a ranking
+
+Ticket 296 proved the seating chain on ONE pot and both arms saturated (8/8 + 15/15). Ticket 298
+asked the same question on every pot: assemble each pot twice, once with OUR bundle (our Surfaces
+and our `Breakline_0`) and once with the AUTHORS' released bundle, on identical meshes, axes,
+assembler (`/opt/sfs-pristine` = upstream `9195c016` + the INFRA shim, unmodified, beam k=5 b=3 as
+the paper sets at `sfspp-2502.13986v1.md:344`) and ground-truth graphs. Preprocessing commit
+`d1f1a4c`; 10 prep + 20 arm + 2 repeat jobs; every cell below read by the lead from that run's own
+`out/Result/1. Acc.txt`.
+
+| pot | pieces staged | our bundle SA / EA | authors' bundle SA / EA | paper (Table V, :351/:356) |
+|---|---|---|---|---|
+| A | 8 | 8/8 + 15/15 (100/100) | 8/8 + 15/15 (100/100) | 100/100 |
+| B | 9 | 9/9 + 15/15 (100/100) | 9/9 + 15/15 (100/100) | 100/100 |
+| C | 4 | 4/4 + 5/5 (100/100) | 4/4 + 5/5 (100/100) | 100/100 |
+| D | 29 | **23/29 (79.3103) + 55/69 (79.7101)** | 22/28 (78.5714) + 53/66 (80.303) | 82.1/83.3 |
+| E | 31 | 31/31 + 62/62 (100/100) | 31/31 + 62/62 (100/100) | 100/100 |
+| F | 7 | 5/5 + 7/7 (100/100) | 6/6 + 9/9 (100/100) | 100/100 |
+| G | 7 | 7/7 + 10/10 (100/100) | 7/7 + 10/10 (100/100) | 100/100 |
+| H | 11 | 8/11 (72.7273) + **11/17** (64.7059) | 8/11 (72.7273) + 9/17 (52.9412) | 90.9/88.2 |
+| I | 30 | 25/26 (96.1538) + 59/62 (95.1613) | 25/27 (92.5926) + 59/65 (90.7692) | 92.6/90.8 |
+| J | 11 | **10/11 (90.9091) + 17/21 (80.9524)** | 8/11 (72.7273) + 16/21 (76.1905) | 72.7/76.2 |
+
+**What it says.** Our preprocessing never seats fewer sherds than the authors' bundle on any pot,
+seats two more on Pot J (10 against 8 of 11) and recovers two more joins on Pot H (11 against 9 of
+17); on Pot I it recovers the same raw counts over a smaller denominator; on Pot D it reaches the
+paper's raw counts (23 sherds, 55 joins) over one extra piece. Equal on A, B, C, E, G.
+
+**Why this is a floor and not a ranking.** Both arms are at 100/100 on seven of the ten pots --
+they saturate. The two pots that separate them (J, H) and the one that separates them in the other
+direction (F) are the whole signal. Treat "0 drift" on a saturated pot as "no evidence of harm",
+never as "our preprocessing is as good as theirs".
+
+**The denominators are a silent 50-point floor, and it is the one number trap here.**
+`hpc/tools/main_pristine_batch.cpp:86`: `if (shard[i].edge_line_.point_.cols() < 50)` switches the
+piece off, deletes its line and continues **with no message**. It drops F 07 + I 28/29/30 (the four
+the paper excluded). Our bundles additionally drop **F 06 (49 points against their 50)** and **I 27
+(49 against their 53)**, and keep **D 27 (56 against their 48)**. So F reads 5 against 6 and I 26
+against 27 while D reads 29 against 28. **A percentage from this table is never quoted without its
+counts beside it**, and the difference on F is bookkeeping, not quality.
+
+**The authors' arm does not reproduce the paper on D and H.** 78.5714/80.303 against 82.1/83.3, and
+72.7273/52.9412 against 90.9/88.2; both were re-run into fresh directories on the same commit and
+binary and landed on identical percentages (the search bookkeeping does drift -- H pruned 232 -> 233,
+D 886 -> 888 -- so state counts are NOT a reproducible quantity and must never be quoted as one).
+The cause is OPEN and deliberately not chased; the candidates are a different upstream commit than
+the one used for the paper, the 8-vs-9-piece difference on D, and the five released GT transforms
+missing from the corpus (D 22, F 07, I 28/29/30; `Trans::Read` turns an absent transform into an
+identity pose, `data_structure.cpp:633`).
+
+**Caveats that travel with the number.** (a) Pot C's four pieces include Pot C 01, whose interior
+surface carries a scan gap (section L) and the assembler reads `Breakline_0` = the interior boundary;
+the assembler prints pot totals only, so 4/4 does not certify that piece's seat. (b) `POT_J` declares
+`SHARD_NUMBER` 19 with 12 usable slots and switches J 09 off itself, so the 19 "could not open file"
+lines in the J runs are expected. (c) Our J arm's `Acc.txt` carries a nonsense negative `Time`; the
+accuracy lines were read directly and are unaffected. (d) Both arms use the AUTHORS' released clouds
+as input, so the difference measured is our mesh+edge stage alone.
+
+**Nothing was changed to obtain this.** No algorithm, threshold, weight, ordering or assembler edit;
+the two permitted INFRA edits (bundle-root override, a `gt_graph_path` line) proved unnecessary
+because the bundle root is the bind mount and the pinned header declares the graph path for all ten
+pots. Geometry deleted with a counted record (8,378 files, 9,911,628,046 bytes); the ten bundles are
+KEPT (588 files, 458 MB) because most corpus clouds cannot be regenerated (section P / ticket 284).
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
