@@ -384,6 +384,7 @@ and shootout losers are NOT rows -- they are in the "removed" list at the end.
 | 8 | symlink staging (`291`, `acc9943`, `scripts/stage_piece.sh`) | every job copied its cloud and mesh into its stage tree | 108 bytes copied per piece instead of up to 90 MB; the inputs are byte-identical by construction, and identity claims were restated where the pipeline is deterministic |
 | 9 | staging header read without a pipe (`292`, `19b78a7`) | `head -20 "$1" \| awk ... exit` under `set -euo pipefail` could SIGPIPE and abort the stage -- 22 of 148 pieces failed once each, hidden by the retry | fixed and verified against three corpus clouds (999810 / 1000026 / 840964 points as their headers say) |
 | 10 | build from a commit (`288`) | a build could be of any tree, and `build.sh --target nurbs` silently compiles a pre-247 duplicate (ticket 282) | `git archive 8e1e514` reproduces binary `a28d10af...` bit-identically, and the eight-lane gate reproduces the table pointwise (max&#124;dxyz&#124; 0.000000) |
+| 11 | mesh stage refuses to guess (ticket 277, commit 66d4ad9) | with SFS_AXIS_FILE unset or unopenable it printed one line and kept size order: Surface_0 became whichever cluster was larger, Bl0/Bl1 stopped matching the authors' lanes, and the run read downstream as a method failure | all four no-axis paths now exit 42 with the variable named and no surfaces written (unset and missing-path both proved before/after in run 20261025-2356_66d4ad9_p277-axis-loud); a normal run is unchanged -- identical classify line 10/10, worst pre-vs-post 0.6255/0.6094 mm against the stage's own 0.6255 mm draw spread |
 
 **Removed, because they were measured and they did not work** (all deleted from main in `538357c` and
 `67ff3d7`, gate: the strip is behaviour-identical, max&#124;dxyz&#124; 0.000000 on four lanes): the vote
@@ -470,9 +471,11 @@ conservator, 2026-10-25). Our surface order is interior-first: classifyAndOrderP
 interior face and the writer names Surface_0 -> Breakline_0, so every piece we produce feeds the assembler an
 interior edge without a per-piece swap decision. What section B's B-swap records is a **pre-fix workaround**
 from the period when the surfacing order was not interior-first; needing a swap now would be a bug signal,
-not a routine step. The one way the slot can still be wrong is mechanical: without SFS_AXIS_FILE the classify
-step silently keeps size order (ticket 277), so the proof per bundle is (a) the classify line printed for
-every piece, (b) a measured interior test on the two surfaces, (c) Breakline_0 riding the interior one. The
+not a routine step. The one way the slot could still be wrong was mechanical: without SFS_AXIS_FILE the
+classify step silently kept size order (ticket 277). **That hole is closed** -- since ticket 277 the mesh stage
+exits 42 with a message naming the variable instead of exporting surfaces it cannot name, so a mislabelled
+bundle can no longer appear silently; the proof per bundle stays (a) the classify line printed for every
+piece, (b) a measured interior test on the two surfaces, (c) Breakline_0 riding the interior one. The
 authors' own data is the exception worth watching: on 2 of 163 pieces their Surface_0 is the exterior
 (I 25, J 14), so a ceiling arm built from their _0 files is not interior-consistent on those pieces.
 
