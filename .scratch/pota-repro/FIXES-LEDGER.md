@@ -190,6 +190,11 @@ pieces a reference line is the boundary of the authors' own kept surface, and 26
 these references. What would overturn the ruling: their surface being trimmed exactly where ours is not, by
 an identifiable rule -- then theirs would be consistent and ours the outlier here. Nothing in hand shows it.
 
+- **Pot I 25 -- the authors' surface order is inverted** (ticket 295). On 163 pieces a concavity test names
+  Surface_0 the interior on 158; the exceptions are Pot I 25 and Pot J 14, where their Surface_0 is the
+  physically exterior face. Both releases' lines still ride the same physical faces (0.249 / 0.242 mm apart),
+  so this is a naming inversion, not a lane swap, and the lanes are scored normally.
+
 ## O. Pieces outside the authors' evaluation set (read before comparing to the paper)
 
 **Five pieces we score were never evaluated by the authors, so their numbers are ours alone**
@@ -290,6 +295,61 @@ Weight: one draw per piece, one binary, one commit, no repeat runs. The mesh sta
 piece-dependently non-deterministic (ticket 291: 0.867 mm on Pot H 02), so a lane within about 1 mm
 of the bar must not be quoted as clearing or missing it on this run alone -- the nearest case is
 `Pot_D_Piece_22` Bl0 at 86.40% coverage against a 90% bar.
+
+### Why the eleven below-bar lanes differ -- the conservator's six claims, measured (ticket 295, 2026-10-25)
+
+He read the eleven ticket-294 figures and stated six claims. Every one was measured against the run of
+record SfSpp/runs/20261025-1824_ca18c8f_p295-lanes/ (job 33761881), after a gate that reproduced **385 of
+385** ticket-293 numbers (worst delta 0.0050 mm). Verdict: **C2 holds; C1 and C3 hold with qualification; C4
+and C5 do not hold; C6's judgements hold with both stated reasons corrected.** Two of the four partial
+results are in our own favour, which is the least comfortable place for them to be.
+
+- **Pot I 25 is a naming inversion, not a lane swap.** On 163 pieces a concavity test names Surface_0 the
+  interior on 158 and Surface_1 on 2 -- **Pot I 25 and Pot J 14**, where the *authors* are the outliers against
+  their own 161/163 convention. Both releases' Bl0 ride the **same physical face** (0.249 mm apart) and both
+  Bl1 the same other one (0.242 mm); every reference dot is inside 2 mm of our material (max 1.475 / 1.690).
+  So the surface files carry an inverted order on that piece, and on our side it shows as the
+  breakline-to-surface index pairing.
+- **Pot C 03 Bl1 holds:** their line is the rim of their own small plate-like face (n_ax 0.939), 5.83 mm from
+  ours; the 2 mm band angle test calls it different_surface, the only lane of the nine that does.
+- **Pot D 22 Bl0 and D 27 both hold with qualification:** their lines are boundaries of their own faces, but
+  on D 22 the reference bridges the notch with its 18 mm chord (66.9% of its dots beyond 2 mm from our
+  material) while our edge is the real one, 6.0 mm further out.
+- **Pot H 10 does NOT hold, in our favour and against his reading:** our face is **14% smaller**, not bigger
+  (633.9 against 734.9 mm2), and the whole 12.6 mm stretch sits 2.33 mm outside our face, 100% nearest the
+  dropped ribbon cluster. Not a mismatch of labels, not an oversized surface -- a partition we did not keep.
+- **Pot I 06 / I 13 do NOT hold:** the two faces are equal to 1.4-1.8% in area and the band under the
+  reference is coplanar (0.73-1.74 deg, 0.005-0.007 mm offset). There is no welded break material.
+- **Pot E 16 Bl0 holds with qualification:** 52.7% of their dots lie on our >100 deg edge and the band agrees
+  to 3.28 deg, but on a 41.4 mm stretch (20.8%) their line is up to 10.86 mm inside our face with only
+  0.206 mm of material under it -- an inset line, not an edge.
+- **Pot H 02 both lanes confirm his judgement and correct his reason.** The turn is real and sharp -- the
+  material just outside our face sits at 48.4 deg (Bl0) / 44.2 deg (Bl1) median from it, 54.8% / 48.5% of it
+  beyond 45 deg -- and it is **continuous material, not a scan gap** (the unlabelled corridor is 1.525 / 0.667 mm
+  from the kept face, 282 / 36 points within one sample spacing). But the authors' line does not go past ours:
+  on Bl1's 59.4 mm stretch their dots are **0.221 mm above our wall face and 4.67 mm inside our edge**. Ours
+  is the better edge; it is not a line that stopped short.
+
+**No welded break facet anywhere, measured:** on all nine matched lanes **0.00%** of the 2 mm band our kept
+material contributes under the reference is pitched more than 45 deg off the authors' own normals (median
+0.7-5.5 deg, offset 0.004-0.023 mm). "Our surface swallowed part of the break face" is not present in this
+sample and is no ground for a growth or classify change.
+
+**The mechanism is PARTITION -- the face-extent rule**, not the walk seed and not a weld test: our edgeline is
+the boundary of the *labelled* face, and immediately outside it lies real sherd material that growth left
+unlabelled (H 02: a 2311-point unclustered band in the 2 mm corridor, 89 on Bl1; E 16: 68.6 deg; C 03 and
+D 22: 90% / 92.3% of the stretch's nearest labels unlabelled; H 10: 100% over a dropped cluster). Where that
+material *is* labelled, our face extends **2.4-9.6 mm past the reference** on the same plane.
+
+**And the growth gate cannot be the fix.** The turns do not differ in per-step size: H 02's straddling pairs
+step a median **3.23 deg** with 52.7% at or below the 3.4 deg gate (ticket 281), while Pot D P03's severing
+bottleneck is **3.45 deg** and P 22's **3.06** (ticket 271). A gate loose enough to cross H 02's base-rim also
+crosses P03's flank and re-breaks the lane 271 fixed. What remains is **which faces are kept** -- a third
+surface, or base handling, which the paper itself lists as future work (papers/text/sfspp-2502.13986v1.md:460).
+
+**A reading rule, earned twice.** On H 02 Bl1 I wrote that the authors' line "carries on over the turn"; on
+Pot D 22 I assumed the chord was ours. Both were backwards. **Which line stops short is not readable from a
+plot -- only the per-dot signed position says it.** Quote the sign, not the picture.
 
 ## Q. The shipped change set, and what each change bought (2026-10-25)
 
