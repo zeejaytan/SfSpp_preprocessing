@@ -465,10 +465,16 @@ build. Bought: a valid denominator (283 of 291), a dead hypothesis (welded facet
 on the interior line the assembler reads** (D 22 Bl0, D 27 Bl0, E 16 Bl0, I 25 Bl0), and on two of those the
 conservator's own reading is that ours is the better edge.
 
-**Before any seating test, per-piece slot check.** Section B's B-swap (Pot A P02-P08, 8/8+15/15) proves that
-*which* line is fed as Breakline_0 decides seating, and ticket 295 found the authors invert their own
-surface order on 2 of 163 pieces. A seating run must first verify, per piece, that our _0 is our interior and
-that it lands on the same physical face as the reference the run is compared against.
+**The interior slot is guaranteed by construction, and must still be proved per bundle** (corrected by the
+conservator, 2026-10-25). Our surface order is interior-first: classifyAndOrderPaper234 sets Surface_0 to the
+interior face and the writer names Surface_0 -> Breakline_0, so every piece we produce feeds the assembler an
+interior edge without a per-piece swap decision. What section B's B-swap records is a **pre-fix workaround**
+from the period when the surfacing order was not interior-first; needing a swap now would be a bug signal,
+not a routine step. The one way the slot can still be wrong is mechanical: without SFS_AXIS_FILE the classify
+step silently keeps size order (ticket 277), so the proof per bundle is (a) the classify line printed for
+every piece, (b) a measured interior test on the two surfaces, (c) Breakline_0 riding the interior one. The
+authors' own data is the exception worth watching: on 2 of 163 pieces their Surface_0 is the exterior
+(I 25, J 14), so a ceiling arm built from their _0 files is not interior-consistent on those pieces.
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
