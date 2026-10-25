@@ -476,5 +476,42 @@ every piece, (b) a measured interior test on the two surfaces, (c) Breakline_0 r
 authors' own data is the exception worth watching: on 2 of 163 pieces their Surface_0 is the exterior
 (I 25, J 14), so a ceiling arm built from their _0 files is not interior-consistent on those pieces.
 
+## S. Seating after the strip: the interior slot proved, and both arms seat (2026-10-25, ticket 296)
+
+**Pot A, 8 pieces, 15 joins, identical meshes and axes, only the eight Breakline_0 files differing:**
+
+| arm | run | job | sherds | joins |
+|---|---|---|---|---|
+| CEILING (authors' Breakline_0) | 20261025-2234_3d5d537_p296-ceiling | 33780523 | 8/8 | 15/15 |
+| TEST (ours, shipped defaults) | 20261025-2234_3d5d537_p296-test | 33780524 | 8/8 | 15/15 |
+
+Drift 0 sherds, 0 joins. Assembler pinned /opt/sfs-pristine (upstream 9195c016) in sfs_pristine_assembly.sif,
+binary md5 0fd8d707ceb3f9cffd08d8951c43ccda identical in both arms; edge cbf747dc3172fe0bbd188822df14092a,
+mesh fb3fd055d30fb08ccce48dba7d49a879. The ceiling arm reproduces the 2026-10-20 reference exactly, so the
+harness is sound and **the B-swap in section B is not needed any more**.
+
+**The interior slot is proved by measurement, not assumed** (the conservator's point, 2026-10-25): our
+Breakline_0 sits **0.17-0.25 mm** off Surface_0 and **2.9-4.8 mm** off Surface_1 on 8 of 8 pieces; Surface_0 is
+the negative-concavity face (m = mean(n.r) with r away from the axis) on 8 of 8 with |m| 0.464-1.703 against a
+0.10 abstain line, radius agreeing 8/8; the classify step did real work (1 kept, 7 swapped, theta 3.40000 on
+all eight, SFS_AXIS_FILE staged so the no-axis guard never fired). The authors' own bundle reads 8/8 the same
+way, so the instrument is calibrated on known-good data. Mechanism at 3d5d537: classifyAndOrderPaper234 at
+mesh_processing_headless.cpp:1990, called :2178 after the size sort, guard :1995-1996, swap :2027-2031 / keep
+:2033 -> Surface_0=interior; rename Surface_0 -> Breakline_0 at edgeline_extraction_headless.cpp:3517-3525,
+written :3536.
+
+**What it does not say.** One pot, fifteen joins: a readiness check, not a corpus result, and it does not move
+283/291. Both arms saturate, so **drift 0 is a floor, not a ranking**. Our own surfaces appear in neither arm
+(both load the corpus Surfaces/), so this tests the line only; Breakline_1 was staged inert and never read; no
+part_acc/chamfer was computed from the saved transforms.
+
+**A labelling trap in the output itself:** the assembler prints the string "Sherd accuracy" twice
+(data_structure.cpp:1004-1005). The second line is the **joins** count -- quote it as joins, never as a second
+sherd score.
+
+Retained on Spartan: prep out/geom 27 MB (surfaces are not byte-reproducible, unseeded ray-cast draw) and both
+arms' out/Result (~363 MB) as the evidence behind the two accuracy lines. Deleted: stage/ 582 MB and the two
+dataset/ trees, 242 + 121 MB, each recorded in that run's out/GEOMETRY_DELETED.txt.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
