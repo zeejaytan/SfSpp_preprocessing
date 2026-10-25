@@ -1,7 +1,7 @@
 # 297 — Is the authors' chord on Pot D 22 Bl0 the better break edge?
 
 Answers: E1
-Status: todo
+Status: ready-for-agent
 Working in: unassigned
 Needs-eye: yes (the conservator has already looked at this mesh and read it against our record)
 
