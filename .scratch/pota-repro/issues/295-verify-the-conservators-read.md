@@ -1,6 +1,6 @@
 # 295 — Verify the conservator's reading of the eleven below-bar lanes
 
-Status: results-in
+Status: done (accepted: six claims adjudicated; partition owns the eleven, no welded facet, the gate cannot fix it)
 Working in: chat on Thinkbook16 (2026-10-25)
 Branch: 295-verify-the-conservators-read, in /c/PR/worktrees/sfs/295
 Answers: E1
@@ -347,3 +347,21 @@ columns), `out/pairing.tsv`, `out/detail_<piece>_Bl<k>.json`; `out/q6.tsv`; `out
 `out/repro293.tsv`, `out/repro295.tsv`; scripts `p295_lib.py`, `p295_repro.py`, `p295_q1.py`,
 `p295_lanes.py`, `p295_q6.py`, `p295_meshrim.py` (copies in `scripts/`, md5 in `scripts.MD5`; the same
 files are on branch `295-verify-the-conservators-read` under `.scratch/pota-repro/295/`).
+
+## Lead verdict (2026-10-25)
+
+**Accepted.** The reproduction gate (385/385 ticket-293 numbers, worst delta 0.0050) plus three numbers I checked myself before landing: Pot H 02 Bl1 = 137 dots / 245.168 mm with a median 0.221 mm to our material, Pot E 16 Bl0 = 112 / 199.1, Pot I 25 Bl0 = 69 / 124.26. Run directory present with `run.json`, `submit.sbatch`, `scripts.MD5`, no geometry; index row appended with the verdict field left to me.
+
+**1. The adjudication stands: C2 holds; C1 and C3 hold with qualification; C4 and C5 do not hold; C6's judgements hold with both stated reasons corrected.** Two of the six failures are in our own favour — H 10, I 06 and I 13 are *not* cases of our surface growing over the break — and that is the least comfortable direction for them to fail in, so they are recorded as measured, not as relief.
+
+**2. My own reading was wrong, and it is the second time this exact error has appeared.** I told the conservator that on H 02 Bl1 "the authors' line runs mostly over the unlabelled band and carries on over the turn". It does not. The band is an unlabelled corridor **inside** our face — 1.525 mm (Bl0) / 0.667 mm (Bl1) from the kept material, 282 / 36 points within one sample spacing of it — and their line lies 0.221 mm above our wall face and **4.67 mm inside our edge**. The first instance was Pot D 22, where the chord turned out to be the reference's. **Rule to carry: which line stops short is not readable from a plot; only the per-dot signed position says it.**
+
+**3. The welded-facet hypothesis is dead on measured grounds.** On all nine matched lanes, **0.00%** of the 2 mm band our kept material contributes under the reference is pitched more than 45 deg off the authors' own normals (median 0.7-5.5 deg, offset 0.004-0.023 mm). Nothing here licenses a growth or classify change on the "our surface swallowed part of the break face" story, and that includes I 06 / I 13.
+
+**4. The gate cannot be the fix, and this amends the ticket's own 296 prediction.** The measured turns do not differ in per-step size: H 02's straddling pairs have a median step of **3.23 deg** with **52.7%** at or below the 3.4 deg gate (ticket 281), while Pot D P03's severing bottleneck is **3.45 deg** and P22's **3.06** (ticket 271). A gate loose enough to cross H 02's base-rim also crosses P03's flank and re-breaks the lane 271 fixed. So "grow across the turn" must not be attempted by moving theta; what remains is **which faces are kept** — a third surface, or the paper's own base treatment (`C:/PR/papers/text/sfspp-2502.13986v1.md:313` counts base sherds as detected parts, `:460` lists base handling as future work).
+
+**5. No lane changes state.** Pot I 25's two lanes were already counted at bar (283 of 292 sound lanes); Pot C 03 Bl1 stays a partition mismatch until the conservator rules; Pot D 22 Bl0 stays a miss whose reference is a chord. The two rulings this ticket now supports are the ones on his desk: strike C 03 Bl1 (283/291) and/or D 22 Bl0 (283/290).
+
+**6. If ticket 296 is cut, it is a partition test, not a growth sweep:** keep a third surface (or label the unlabelled corridor) and show the edge move toward the reference on E 16, D 22, D 27 and H 02 Bl1 while I 06, I 13 and every at-bar lane stay unchanged, with P 03 Bl1 and both P 22 lanes as regression guards, and with no claim of corpus-wide identity (ticket 284: the input clouds cannot be regenerated).
+
+**7. Deviation 1 is accepted as the honest limit of this ticket.** Our lines' own geometry is gone, so the >100 deg boundary of the kept material stands in for them. No verdict rests on the substitution alone, and ticket 293 measured our lines to ride that boundary at 0.98 mm, so it is sound for this purpose — but every number in this ticket inherits it and must be quoted with it.
