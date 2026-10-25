@@ -1,9 +1,9 @@
 # 296 - Seat a pot's pieces, and prove the interior edge is the one we feed
 
 **Answers:** E1
-**Status:** ready-for-agent
-**Working in:** unassigned
-**Branch:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-25)
+**Branch:** 296-seat-a-pot-and-prove-the-interior-slot, in /c/PR/worktrees/sfs/296
 **Created:** 2026-10-25
 
 ## Why
