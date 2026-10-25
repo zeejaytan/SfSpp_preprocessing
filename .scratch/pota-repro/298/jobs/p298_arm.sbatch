@@ -104,11 +104,12 @@ md5sum "$ASM/hpc/tools/main_pristine_batch.cpp" "$SIF" > "$RUN/out/assembler_inp
     env POT="$POT" SHARD="$SHARD" ARM="$ARM" bash /p298run/scripts/p298_inside.sh 2>&1 | tee "$RUN/logs/container.log"
 echo "[RUN] container pipeline exit ${PIPESTATUS[0]}"
 
-# Surface_F.pcd is absent from the corpus by design and LoadSurface tolerates it (ticket 296);
-# any OTHER unreadable input is a staging failure and must not be read as a seating result.
-if grep "Could not open file" "$RUN/logs/assembly.log" 2>/dev/null | grep -qv "_Surface_F.pcd"; then
-  echo "[RUN] FATAL the assembler could not open an input file:"
-  grep "Could not open file" "$RUN/logs/assembly.log" | grep -v "_Surface_F.pcd" | head -5
+# An unreadable input of an ACTIVE piece is a staging failure and must not be read as a seating
+# result; the paths upstream itself cannot open (absent Surface_F.pcd, the block's empty slots and
+# its switched-off pieces) are classified and counted in out/open_absent.tsv by the gather script.
+bash "$RUN/scripts/p298_gather.sh" "$RUN"
+if [ "$?" -ne 0 ]; then
+  echo "[RUN] FATAL the assembler could not open an input file of an active piece -- see out/open_absent.tsv and out/open_missing.txt"
   exit 11
 fi
 if ! grep -qE "Total number : [1-9]" "$RUN/logs/assembly.log" 2>/dev/null; then
@@ -116,9 +117,6 @@ if ! grep -qE "Total number : [1-9]" "$RUN/logs/assembly.log" 2>/dev/null; then
   exit 12
 fi
 
-mkdir -p "$RUN/out/Result"
-cp -pr "$DS/Result/." "$RUN/out/Result/" 2>/dev/null || echo "[RUN] no Result directory to copy"
-ls -la "$RUN/out/Result" > "$RUN/out/result_copy_ls.txt" 2>&1 || true
 echo "==== $POT $ARM arm ===="
 cat "$RUN/out/summary.txt" 2>/dev/null || echo "[RUN] NO SUMMARY LINES"
 echo "[RUN] done $(date -Is)"
