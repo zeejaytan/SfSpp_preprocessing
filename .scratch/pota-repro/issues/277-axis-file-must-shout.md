@@ -1,7 +1,7 @@
 # 277 — The mesh stage must not silently keep size order when it has no axis file
 
 Answers: E1
-Status: in-progress
+Status: done (accepted: exit 42 on four no-axis paths, normal run inside its own draw spread)
 Working in: chat on Thinkbook16 (2026-10-25)
 Branch: 277-axis-file-must-shout, in /c/PR/worktrees/sfs/277
 Needs-eye: no
@@ -197,3 +197,45 @@ change moves the output by less than the stage moves itself.
    question the brief asked (one piece, its own measured envelope). Bit-identity on the 271
    lanes is a separate harness and its own run directory, and is the one acceptance line of
    this ticket still open.
+
+## Lead verdict (2026-10-26)
+
+**Accepted.** I read the code, not the summary: dieNoAxis at mesh_processing_headless.cpp:1990
+writes the five [PAPER-234] FATAL lines and calls std::exit(42); four call sites (unset :2010,
+unopenable :2012, unparseable :2015, zero direction :2019); the string "keep size order" survives
+only inside the fatal message, so no silent path is left; edgeline_extraction_headless.cpp is not
+in the diff at all.
+
+1. **The shape is right.** Preference 1 was taken, and no opt-out switch was added -- a switch would
+   have recreated the defect. Exit 42 rather than 1 is a good detail: in a batch log "no axis" is
+   separable from a generic failure without reading prose.
+2. **The caller audit holds.** Every live recipe sets SFS_AXIS_FILE; the omitters are the legacy
+   corpus generators and smoke tests listed in the ticket, none of which reads labelled surfaces,
+   plus the pre-247 duplicate binary which does not carry this code. **Recorded consequence:** those
+   scripts now fail loudly if they are ever used again. That is the desired outcome, not a
+   regression -- an unlabelled surface set is exactly the artefact this ticket exists to prevent. If
+   one of them is needed, it sets the variable first.
+3. **The proofs are the right ones.** Unset -> exit 42 with both surfaces ABSENT and the variable
+   named (not a run that dies early: the log is 85 lines deep, i.e. it reaches the labelling step).
+   Missing path -> exit 42, same class, different message. The pre-binary at the same two stages
+   exits 0 and exports both surfaces, which is the before/after this ticket asked for.
+4. **The normal run is unchanged.** Five runs per binary: all ten printed the identical shipped
+   classify line, and the worst pre-vs-post nearest-neighbour distance (0.6255 mm Surface_0,
+   0.6094 mm Surface_1) is the same number the stage produces against ITSELF across two draws
+   (pre-vs-pre 0.6255), with median and p99 at 0.000. That is the correct form of proof for an
+   unseeded stage: inside its own spread, not "bit-identical", which it could never be.
+5. **The open acceptance line is closed here, with the reason stated.** Ticket 271's six guard lanes
+   are not re-run. They measure the EDGE stage downstream of surfaces this change cannot alter when
+   the axis is set, and the stage-level spread test above already bounds the only thing that does
+   vary (the draw). If a future change touches the classification maths or the split/merge, the
+   guard lanes come back -- this was a guard-rail change, not a method change.
+6. **The extension is accepted.** Unparseable and zero-direction axis files exit through the same
+   helper. Unreachable with the 163 shipped axis files (all carry >= 6 numbers), and if a malformed
+   one ever arrives, refusing beats mislabelling.
+7. **One caveat carried forward, not fixed here:** on Pot_H_Piece_02 the axis rule keeps size order,
+   so the old mislabelled surfaces coincide with the correct ones on that piece. The proof therefore
+   demonstrates the guard firing, not the swap being caught; the swap was already proved by ticket
+   296's Phase 0 on Pot A (1 kept, 7 swapped, interior confirmed by measurement). The two together
+   close the loop.
+
+Status set to done by the lead.
