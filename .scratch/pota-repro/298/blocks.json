@@ -1,0 +1,1608 @@
+{
+ "POT_A": {
+  "start": 1379,
+  "end": 1475,
+  "arrays": {
+   "file_path": {
+    "line": 1383,
+    "len": 8,
+    "vals": [
+     "Breaklines/Pot_A_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_A_Piece_08_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 1394,
+    "len": 8,
+    "vals": [
+     "Mesh/Pot_A_Piece_01_Mesh.obj",
+     "Mesh/Pot_A_Piece_02_Mesh.obj",
+     "Mesh/Pot_A_Piece_03_Mesh.obj",
+     "Mesh/Pot_A_Piece_04_Mesh.obj",
+     "Mesh/Pot_A_Piece_05_Mesh.obj",
+     "Mesh/Pot_A_Piece_06_Mesh.obj",
+     "Mesh/Pot_A_Piece_07_Mesh.obj",
+     "Mesh/Pot_A_Piece_08_Mesh.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 1405,
+    "len": 8,
+    "vals": [
+     "Axes/Pot_A_Piece_01_Axis.xyz",
+     "Axes/Pot_A_Piece_02_Axis.xyz",
+     "Axes/Pot_A_Piece_03_Axis.xyz",
+     "Axes/Pot_A_Piece_04_Axis.xyz",
+     "Axes/Pot_A_Piece_05_Axis.xyz",
+     "Axes/Pot_A_Piece_06_Axis.xyz",
+     "Axes/Pot_A_Piece_07_Axis.xyz",
+     "Axes/Pot_A_Piece_08_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 1416,
+    "len": 8,
+    "vals": [
+     "Surfaces/Pot_A_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_A_Piece_08_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 1427,
+    "len": 8,
+    "vals": [
+     "Surfaces/Pot_A_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_A_Piece_08_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 1438,
+    "len": 8,
+    "vals": [
+     "Surfaces/Pot_A_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_A_Piece_08_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 1449,
+    "len": 8,
+    "vals": [
+     "Ground Truth/Pot_A_Piece_1_T.txt",
+     "Ground Truth/Pot_A_Piece_2_T.txt",
+     "Ground Truth/Pot_A_Piece_3_T.txt",
+     "Ground Truth/Pot_A_Piece_4_T.txt",
+     "Ground Truth/Pot_A_Piece_5_T.txt",
+     "Ground Truth/Pot_A_Piece_6_T.txt",
+     "Ground Truth/Pot_A_Piece_7_T.txt",
+     "Ground Truth/Pot_A_Piece_8_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 1460,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_A_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 8,
+  "onFalse": 0
+ },
+ "POT_B": {
+  "start": 1478,
+  "end": 1581,
+  "arrays": {
+   "file_path": {
+    "line": 1482,
+    "len": 9,
+    "vals": [
+     "Breaklines/Pot_B_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_B_Piece_09_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 1494,
+    "len": 9,
+    "vals": [
+     "Mesh/Pot_B_Piece_01_Mesh.obj",
+     "Mesh/Pot_B_Piece_02_Mesh.obj",
+     "Mesh/Pot_B_Piece_03_Mesh.obj",
+     "Mesh/Pot_B_Piece_04_Mesh.obj",
+     "Mesh/Pot_B_Piece_05_Mesh.obj",
+     "Mesh/Pot_B_Piece_06_Mesh.obj",
+     "Mesh/Pot_B_Piece_07_Mesh.obj",
+     "Mesh/Pot_B_Piece_08_Mesh.obj",
+     "Mesh/Pot_B_Piece_09_Mesh.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 1506,
+    "len": 9,
+    "vals": [
+     "Axes/Pot_B_Piece_01_Axis.xyz",
+     "Axes/Pot_B_Piece_02_Axis.xyz",
+     "Axes/Pot_B_Piece_03_Axis.xyz",
+     "Axes/Pot_B_Piece_04_Axis.xyz",
+     "Axes/Pot_B_Piece_05_Axis.xyz",
+     "Axes/Pot_B_Piece_06_Axis.xyz",
+     "Axes/Pot_B_Piece_07_Axis.xyz",
+     "Axes/Pot_B_Piece_08_Axis.xyz",
+     "Axes/Pot_B_Piece_09_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 1518,
+    "len": 9,
+    "vals": [
+     "Surfaces/Pot_B_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_B_Piece_09_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 1530,
+    "len": 9,
+    "vals": [
+     "Surfaces/Pot_B_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_B_Piece_09_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 1542,
+    "len": 9,
+    "vals": [
+     "Surfaces/Pot_B_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_B_Piece_09_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 1554,
+    "len": 9,
+    "vals": [
+     "Ground Truth/Pot_B_Piece_1_T.txt",
+     "Ground Truth/Pot_B_Piece_2_T.txt",
+     "Ground Truth/Pot_B_Piece_3_T.txt",
+     "Ground Truth/Pot_B_Piece_4_T.txt",
+     "Ground Truth/Pot_B_Piece_5_T.txt",
+     "Ground Truth/Pot_B_Piece_6_T.txt",
+     "Ground Truth/Pot_B_Piece_7_T.txt",
+     "Ground Truth/Pot_B_Piece_8_T.txt",
+     "Ground Truth/Pot_B_Piece_9_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 1566,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_B_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 9,
+  "onFalse": 0
+ },
+ "POT_C": {
+  "start": 1584,
+  "end": 1647,
+  "arrays": {
+   "file_path": {
+    "line": 1588,
+    "len": 4,
+    "vals": [
+     "Breaklines/Pot_C_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_C_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_C_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_C_Piece_04_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 1595,
+    "len": 4,
+    "vals": [
+     "Mesh/Pot_C_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_C_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_C_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_C_Piece_04_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 1602,
+    "len": 4,
+    "vals": [
+     "Axes/Pot_C_Piece_01_Axis.xyz",
+     "Axes/Pot_C_Piece_02_Axis.xyz",
+     "Axes/Pot_C_Piece_03_Axis.xyz",
+     "Axes/Pot_C_Piece_04_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 1609,
+    "len": 4,
+    "vals": [
+     "Surfaces/Pot_C_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_C_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_C_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_C_Piece_04_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 1616,
+    "len": 4,
+    "vals": [
+     "Surfaces/Pot_C_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_C_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_C_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_C_Piece_04_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 1623,
+    "len": 4,
+    "vals": [
+     "Surfaces/Pot_C_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_C_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_C_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_C_Piece_04_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 1630,
+    "len": 4,
+    "vals": [
+     "Ground Truth/Pot_C_Piece_1_T.txt",
+     "Ground Truth/Pot_C_Piece_2_T.txt",
+     "Ground Truth/Pot_C_Piece_3_T.txt",
+     "Ground Truth/Pot_C_Piece_4_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 1637,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_C_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 4,
+  "onFalse": 0
+ },
+ "POT_D": {
+  "start": 1650,
+  "end": 1914,
+  "arrays": {
+   "file_path": {
+    "line": 1654,
+    "len": 29,
+    "vals": [
+     "Breaklines/Pot_D_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_09_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_10_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_11_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_12_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_13_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_14_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_15_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_16_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_17_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_18_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_19_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_20_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_21_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_22_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_23_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_24_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_25_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_26_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_27_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_28_Breakline_0.pcd",
+     "Breaklines/Pot_D_Piece_29_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 1686,
+    "len": 29,
+    "vals": [
+     "Mesh/Pot_D_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_07_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_08_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_09_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_10_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_11_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_12_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_13_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_14_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_15_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_16_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_17_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_18_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_19_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_20_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_21_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_22_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_23_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_24_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_25_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_26_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_27_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_28_Mesh_DS.obj",
+     "Mesh/Pot_D_Piece_29_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 1718,
+    "len": 29,
+    "vals": [
+     "Axes/Pot_D_Piece_01_Axis.xyz",
+     "Axes/Pot_D_Piece_02_Axis.xyz",
+     "Axes/Pot_D_Piece_03_Axis.xyz",
+     "Axes/Pot_D_Piece_04_Axis.xyz",
+     "Axes/Pot_D_Piece_05_Axis.xyz",
+     "Axes/Pot_D_Piece_06_Axis.xyz",
+     "Axes/Pot_D_Piece_07_Axis.xyz",
+     "Axes/Pot_D_Piece_08_Axis.xyz",
+     "Axes/Pot_D_Piece_09_Axis.xyz",
+     "Axes/Pot_D_Piece_10_Axis.xyz",
+     "Axes/Pot_D_Piece_11_Axis.xyz",
+     "Axes/Pot_D_Piece_12_Axis.xyz",
+     "Axes/Pot_D_Piece_13_Axis.xyz",
+     "Axes/Pot_D_Piece_14_Axis.xyz",
+     "Axes/Pot_D_Piece_15_Axis.xyz",
+     "Axes/Pot_D_Piece_16_Axis.xyz",
+     "Axes/Pot_D_Piece_17_Axis.xyz",
+     "Axes/Pot_D_Piece_18_Axis.xyz",
+     "Axes/Pot_D_Piece_19_Axis.xyz",
+     "Axes/Pot_D_Piece_20_Axis.xyz",
+     "Axes/Pot_D_Piece_21_Axis.xyz",
+     "Axes/Pot_D_Piece_22_Axis.xyz",
+     "Axes/Pot_D_Piece_23_Axis.xyz",
+     "Axes/Pot_D_Piece_24_Axis.xyz",
+     "Axes/Pot_D_Piece_25_Axis.xyz",
+     "Axes/Pot_D_Piece_26_Axis.xyz",
+     "Axes/Pot_D_Piece_27_Axis.xyz",
+     "Axes/Pot_D_Piece_28_Axis.xyz",
+     "Axes/Pot_D_Piece_29_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 1750,
+    "len": 29,
+    "vals": [
+     "Surfaces/Pot_D_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_09_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_10_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_11_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_12_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_13_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_14_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_15_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_16_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_17_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_18_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_19_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_20_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_21_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_22_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_23_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_24_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_25_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_26_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_27_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_28_Surface_0.xyz",
+     "Surfaces/Pot_D_Piece_29_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 1782,
+    "len": 29,
+    "vals": [
+     "Surfaces/Pot_D_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_09_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_10_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_11_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_12_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_13_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_14_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_15_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_16_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_17_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_18_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_19_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_20_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_21_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_22_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_23_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_24_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_25_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_26_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_27_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_28_Surface_1.xyz",
+     "Surfaces/Pot_D_Piece_29_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 1814,
+    "len": 29,
+    "vals": [
+     "Surfaces/Pot_D_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_09_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_10_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_11_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_12_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_13_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_14_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_15_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_16_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_17_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_18_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_19_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_20_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_21_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_22_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_23_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_24_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_25_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_26_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_27_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_28_Surface_F.pcd",
+     "Surfaces/Pot_D_Piece_29_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 1847,
+    "len": 29,
+    "vals": [
+     "Ground Truth/Pot_D_Piece_1_T.txt",
+     "Ground Truth/Pot_D_Piece_2_T.txt",
+     "Ground Truth/Pot_D_Piece_3_T.txt",
+     "Ground Truth/Pot_D_Piece_4_T.txt",
+     "Ground Truth/Pot_D_Piece_5_T.txt",
+     "Ground Truth/Pot_D_Piece_6_T.txt",
+     "Ground Truth/Pot_D_Piece_7_T.txt",
+     "Ground Truth/Pot_D_Piece_8_T.txt",
+     "Ground Truth/Pot_D_Piece_9_T.txt",
+     "Ground Truth/Pot_D_Piece_10_T.txt",
+     "Ground Truth/Pot_D_Piece_11_T.txt",
+     "Ground Truth/Pot_D_Piece_12_T.txt",
+     "Ground Truth/Pot_D_Piece_13_T.txt",
+     "Ground Truth/Pot_D_Piece_14_T.txt",
+     "Ground Truth/Pot_D_Piece_15_T.txt",
+     "Ground Truth/Pot_D_Piece_16_T.txt",
+     "Ground Truth/Pot_D_Piece_17_T.txt",
+     "Ground Truth/Pot_D_Piece_18_T.txt",
+     "Ground Truth/Pot_D_Piece_19_T.txt",
+     "Ground Truth/Pot_D_Piece_20_T.txt",
+     "Ground Truth/Pot_D_Piece_21_T.txt",
+     "Ground Truth/Pot_D_Piece_22_T.txt",
+     "Ground Truth/Pot_D_Piece_23_T.txt",
+     "Ground Truth/Pot_D_Piece_24_T.txt",
+     "Ground Truth/Pot_D_Piece_25_T.txt",
+     "Ground Truth/Pot_D_Piece_26_T.txt",
+     "Ground Truth/Pot_D_Piece_27_T.txt",
+     "Ground Truth/Pot_D_Piece_28_T.txt",
+     "Ground Truth/Pot_D_Piece_29_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 1879,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_D_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 29,
+  "onFalse": 0
+ },
+ "POT_E": {
+  "start": 1917,
+  "end": 2197,
+  "arrays": {
+   "file_path": {
+    "line": 1921,
+    "len": 31,
+    "vals": [
+     "Breaklines/Pot_E_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_09_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_10_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_11_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_12_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_13_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_14_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_15_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_16_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_17_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_18_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_19_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_20_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_21_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_22_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_23_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_24_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_25_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_26_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_27_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_28_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_29_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_30_Breakline_0.pcd",
+     "Breaklines/Pot_E_Piece_31_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 1955,
+    "len": 31,
+    "vals": [
+     "Mesh/Pot_E_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_07_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_08_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_09_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_10_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_11_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_12_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_13_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_14_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_15_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_16_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_17_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_18_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_19_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_20_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_21_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_22_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_23_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_24_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_25_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_26_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_27_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_28_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_29_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_30_Mesh_DS.obj",
+     "Mesh/Pot_E_Piece_31_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 1989,
+    "len": 31,
+    "vals": [
+     "Axes/Pot_E_Piece_01_Axis.xyz",
+     "Axes/Pot_E_Piece_02_Axis.xyz",
+     "Axes/Pot_E_Piece_03_Axis.xyz",
+     "Axes/Pot_E_Piece_04_Axis.xyz",
+     "Axes/Pot_E_Piece_05_Axis.xyz",
+     "Axes/Pot_E_Piece_06_Axis.xyz",
+     "Axes/Pot_E_Piece_07_Axis.xyz",
+     "Axes/Pot_E_Piece_08_Axis.xyz",
+     "Axes/Pot_E_Piece_09_Axis.xyz",
+     "Axes/Pot_E_Piece_10_Axis.xyz",
+     "Axes/Pot_E_Piece_11_Axis.xyz",
+     "Axes/Pot_E_Piece_12_Axis.xyz",
+     "Axes/Pot_E_Piece_13_Axis.xyz",
+     "Axes/Pot_E_Piece_14_Axis.xyz",
+     "Axes/Pot_E_Piece_15_Axis.xyz",
+     "Axes/Pot_E_Piece_16_Axis.xyz",
+     "Axes/Pot_E_Piece_17_Axis.xyz",
+     "Axes/Pot_E_Piece_18_Axis.xyz",
+     "Axes/Pot_E_Piece_19_Axis.xyz",
+     "Axes/Pot_E_Piece_20_Axis.xyz",
+     "Axes/Pot_E_Piece_21_Axis.xyz",
+     "Axes/Pot_E_Piece_22_Axis.xyz",
+     "Axes/Pot_E_Piece_23_Axis.xyz",
+     "Axes/Pot_E_Piece_24_Axis.xyz",
+     "Axes/Pot_E_Piece_25_Axis.xyz",
+     "Axes/Pot_E_Piece_26_Axis.xyz",
+     "Axes/Pot_E_Piece_27_Axis.xyz",
+     "Axes/Pot_E_Piece_28_Axis.xyz",
+     "Axes/Pot_E_Piece_29_Axis.xyz",
+     "Axes/Pot_E_Piece_30_Axis.xyz",
+     "Axes/Pot_E_Piece_31_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2023,
+    "len": 31,
+    "vals": [
+     "Surfaces/Pot_E_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_09_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_10_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_11_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_12_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_13_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_14_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_15_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_16_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_17_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_18_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_19_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_20_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_21_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_22_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_23_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_24_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_25_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_26_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_27_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_28_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_29_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_30_Surface_0.xyz",
+     "Surfaces/Pot_E_Piece_31_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2057,
+    "len": 31,
+    "vals": [
+     "Surfaces/Pot_E_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_09_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_10_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_11_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_12_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_13_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_14_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_15_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_16_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_17_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_18_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_19_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_20_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_21_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_22_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_23_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_24_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_25_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_26_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_27_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_28_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_29_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_30_Surface_1.xyz",
+     "Surfaces/Pot_E_Piece_31_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2091,
+    "len": 31,
+    "vals": [
+     "Surfaces/Pot_E_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_09_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_10_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_11_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_12_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_13_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_14_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_15_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_16_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_17_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_18_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_19_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_20_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_21_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_22_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_23_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_24_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_25_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_26_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_27_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_28_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_29_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_30_Surface_F.pcd",
+     "Surfaces/Pot_E_Piece_31_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2125,
+    "len": 31,
+    "vals": [
+     "Ground Truth/Pot_E_Piece_1_T.txt",
+     "Ground Truth/Pot_E_Piece_2_T.txt",
+     "Ground Truth/Pot_E_Piece_3_T.txt",
+     "Ground Truth/Pot_E_Piece_4_T.txt",
+     "Ground Truth/Pot_E_Piece_5_T.txt",
+     "Ground Truth/Pot_E_Piece_6_T.txt",
+     "Ground Truth/Pot_E_Piece_7_T.txt",
+     "Ground Truth/Pot_E_Piece_8_T.txt",
+     "Ground Truth/Pot_E_Piece_9_T.txt",
+     "Ground Truth/Pot_E_Piece_10_T.txt",
+     "Ground Truth/Pot_E_Piece_11_T.txt",
+     "Ground Truth/Pot_E_Piece_12_T.txt",
+     "Ground Truth/Pot_E_Piece_13_T.txt",
+     "Ground Truth/Pot_E_Piece_14_T.txt",
+     "Ground Truth/Pot_E_Piece_15_T.txt",
+     "Ground Truth/Pot_E_Piece_16_T.txt",
+     "Ground Truth/Pot_E_Piece_17_T.txt",
+     "Ground Truth/Pot_E_Piece_18_T.txt",
+     "Ground Truth/Pot_E_Piece_19_T.txt",
+     "Ground Truth/Pot_E_Piece_20_T.txt",
+     "Ground Truth/Pot_E_Piece_21_T.txt",
+     "Ground Truth/Pot_E_Piece_22_T.txt",
+     "Ground Truth/Pot_E_Piece_23_T.txt",
+     "Ground Truth/Pot_E_Piece_24_T.txt",
+     "Ground Truth/Pot_E_Piece_25_T.txt",
+     "Ground Truth/Pot_E_Piece_26_T.txt",
+     "Ground Truth/Pot_E_Piece_27_T.txt",
+     "Ground Truth/Pot_E_Piece_28_T.txt",
+     "Ground Truth/Pot_E_Piece_29_T.txt",
+     "Ground Truth/Pot_E_Piece_30_T.txt",
+     "Ground Truth/Pot_E_Piece_31_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2159,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_E_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 31,
+  "onFalse": 0
+ },
+ "POT_F": {
+  "start": 2201,
+  "end": 2288,
+  "arrays": {
+   "file_path": {
+    "line": 2205,
+    "len": 7,
+    "vals": [
+     "Breaklines/Pot_F_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_F_Piece_07_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 2215,
+    "len": 7,
+    "vals": [
+     "Mesh/Pot_F_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_F_Piece_07_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 2225,
+    "len": 7,
+    "vals": [
+     "Axes/Pot_F_Piece_01_Axis.xyz",
+     "Axes/Pot_F_Piece_02_Axis.xyz",
+     "Axes/Pot_F_Piece_03_Axis.xyz",
+     "Axes/Pot_F_Piece_04_Axis.xyz",
+     "Axes/Pot_F_Piece_05_Axis.xyz",
+     "Axes/Pot_F_Piece_06_Axis.xyz",
+     "Axes/Pot_F_Piece_07_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2235,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_F_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_F_Piece_07_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2245,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_F_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_F_Piece_07_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2255,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_F_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_F_Piece_07_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2265,
+    "len": 7,
+    "vals": [
+     "Ground Truth/Pot_F_Piece_1_T.txt",
+     "Ground Truth/Pot_F_Piece_2_T.txt",
+     "Ground Truth/Pot_F_Piece_3_T.txt",
+     "Ground Truth/Pot_F_Piece_4_T.txt",
+     "Ground Truth/Pot_F_Piece_5_T.txt",
+     "Ground Truth/Pot_F_Piece_6_T.txt",
+     "Ground Truth/Pot_F_Piece_7_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2275,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_F_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 7,
+  "onFalse": 0
+ },
+ "POT_G": {
+  "start": 2292,
+  "end": 2379,
+  "arrays": {
+   "file_path": {
+    "line": 2296,
+    "len": 7,
+    "vals": [
+     "Breaklines/Pot_G_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_G_Piece_07_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 2306,
+    "len": 7,
+    "vals": [
+     "Mesh/Pot_G_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_G_Piece_07_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 2316,
+    "len": 7,
+    "vals": [
+     "Axes/Pot_G_Piece_01_Axis.xyz",
+     "Axes/Pot_G_Piece_02_Axis.xyz",
+     "Axes/Pot_G_Piece_03_Axis.xyz",
+     "Axes/Pot_G_Piece_04_Axis.xyz",
+     "Axes/Pot_G_Piece_05_Axis.xyz",
+     "Axes/Pot_G_Piece_06_Axis.xyz",
+     "Axes/Pot_G_Piece_07_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2326,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_G_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_G_Piece_07_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2336,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_G_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_G_Piece_07_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2346,
+    "len": 7,
+    "vals": [
+     "Surfaces/Pot_G_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_G_Piece_07_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2356,
+    "len": 7,
+    "vals": [
+     "Ground Truth/Pot_G_Piece_1_T.txt",
+     "Ground Truth/Pot_G_Piece_2_T.txt",
+     "Ground Truth/Pot_G_Piece_3_T.txt",
+     "Ground Truth/Pot_G_Piece_4_T.txt",
+     "Ground Truth/Pot_G_Piece_5_T.txt",
+     "Ground Truth/Pot_G_Piece_6_T.txt",
+     "Ground Truth/Pot_G_Piece_7_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2366,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_G_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 7,
+  "onFalse": 0
+ },
+ "POT_H": {
+  "start": 2382,
+  "end": 2501,
+  "arrays": {
+   "file_path": {
+    "line": 2386,
+    "len": 11,
+    "vals": [
+     "Breaklines/Pot_H_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_09_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_10_Breakline_0.pcd",
+     "Breaklines/Pot_H_Piece_11_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 2400,
+    "len": 11,
+    "vals": [
+     "Mesh/Pot_H_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_07_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_08_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_09_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_10_Mesh_DS.obj",
+     "Mesh/Pot_H_Piece_11_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 2414,
+    "len": 11,
+    "vals": [
+     "Axes/Pot_H_Piece_01_Axis.xyz",
+     "Axes/Pot_H_Piece_02_Axis.xyz",
+     "Axes/Pot_H_Piece_03_Axis.xyz",
+     "Axes/Pot_H_Piece_04_Axis.xyz",
+     "Axes/Pot_H_Piece_05_Axis.xyz",
+     "Axes/Pot_H_Piece_06_Axis.xyz",
+     "Axes/Pot_H_Piece_07_Axis.xyz",
+     "Axes/Pot_H_Piece_08_Axis.xyz",
+     "Axes/Pot_H_Piece_09_Axis.xyz",
+     "Axes/Pot_H_Piece_10_Axis.xyz",
+     "Axes/Pot_H_Piece_11_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2428,
+    "len": 11,
+    "vals": [
+     "Surfaces/Pot_H_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_09_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_10_Surface_0.xyz",
+     "Surfaces/Pot_H_Piece_11_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2442,
+    "len": 11,
+    "vals": [
+     "Surfaces/Pot_H_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_09_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_10_Surface_1.xyz",
+     "Surfaces/Pot_H_Piece_11_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2456,
+    "len": 11,
+    "vals": [
+     "Surfaces/Pot_H_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_09_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_10_Surface_F.pcd",
+     "Surfaces/Pot_H_Piece_11_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2470,
+    "len": 11,
+    "vals": [
+     "Ground Truth/Pot_H_Piece_1_T.txt",
+     "Ground Truth/Pot_H_Piece_2_T.txt",
+     "Ground Truth/Pot_H_Piece_3_T.txt",
+     "Ground Truth/Pot_H_Piece_4_T.txt",
+     "Ground Truth/Pot_H_Piece_5_T.txt",
+     "Ground Truth/Pot_H_Piece_6_T.txt",
+     "Ground Truth/Pot_H_Piece_7_T.txt",
+     "Ground Truth/Pot_H_Piece_8_T.txt",
+     "Ground Truth/Pot_H_Piece_9_T.txt",
+     "Ground Truth/Pot_H_Piece_10_T.txt",
+     "Ground Truth/Pot_H_Piece_11_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2484,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_H_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 11,
+  "onFalse": 0
+ },
+ "POT_I": {
+  "start": 2504,
+  "end": 2775,
+  "arrays": {
+   "file_path": {
+    "line": 2508,
+    "len": 30,
+    "vals": [
+     "Breaklines/Pot_I_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_09_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_10_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_11_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_12_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_13_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_14_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_15_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_16_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_17_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_18_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_19_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_20_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_21_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_22_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_23_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_24_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_25_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_26_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_27_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_28_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_29_Breakline_0.pcd",
+     "Breaklines/Pot_I_Piece_30_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 2541,
+    "len": 30,
+    "vals": [
+     "Mesh/Pot_I_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_07_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_08_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_09_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_10_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_11_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_12_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_13_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_14_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_15_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_16_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_17_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_18_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_19_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_20_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_21_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_22_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_23_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_24_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_25_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_26_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_27_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_28_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_29_Mesh_DS.obj",
+     "Mesh/Pot_I_Piece_30_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 2574,
+    "len": 30,
+    "vals": [
+     "Axes/Pot_I_Piece_01_Axis.xyz",
+     "Axes/Pot_I_Piece_02_Axis.xyz",
+     "Axes/Pot_I_Piece_03_Axis.xyz",
+     "Axes/Pot_I_Piece_04_Axis.xyz",
+     "Axes/Pot_I_Piece_05_Axis.xyz",
+     "Axes/Pot_I_Piece_06_Axis.xyz",
+     "Axes/Pot_I_Piece_07_Axis.xyz",
+     "Axes/Pot_I_Piece_08_Axis.xyz",
+     "Axes/Pot_I_Piece_09_Axis.xyz",
+     "Axes/Pot_I_Piece_10_Axis.xyz",
+     "Axes/Pot_I_Piece_11_Axis.xyz",
+     "Axes/Pot_I_Piece_12_Axis.xyz",
+     "Axes/Pot_I_Piece_13_Axis.xyz",
+     "Axes/Pot_I_Piece_14_Axis.xyz",
+     "Axes/Pot_I_Piece_15_Axis.xyz",
+     "Axes/Pot_I_Piece_16_Axis.xyz",
+     "Axes/Pot_I_Piece_17_Axis.xyz",
+     "Axes/Pot_I_Piece_18_Axis.xyz",
+     "Axes/Pot_I_Piece_19_Axis.xyz",
+     "Axes/Pot_I_Piece_20_Axis.xyz",
+     "Axes/Pot_I_Piece_21_Axis.xyz",
+     "Axes/Pot_I_Piece_22_Axis.xyz",
+     "Axes/Pot_I_Piece_23_Axis.xyz",
+     "Axes/Pot_I_Piece_24_Axis.xyz",
+     "Axes/Pot_I_Piece_25_Axis.xyz",
+     "Axes/Pot_I_Piece_26_Axis.xyz",
+     "Axes/Pot_I_Piece_27_Axis.xyz",
+     "Axes/Pot_I_Piece_28_Axis.xyz",
+     "Axes/Pot_I_Piece_29_Axis.xyz",
+     "Axes/Pot_I_Piece_30_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2607,
+    "len": 30,
+    "vals": [
+     "Surfaces/Pot_I_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_09_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_10_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_11_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_12_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_13_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_14_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_15_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_16_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_17_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_18_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_19_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_20_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_21_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_22_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_23_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_24_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_25_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_26_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_27_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_28_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_29_Surface_0.xyz",
+     "Surfaces/Pot_I_Piece_30_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2640,
+    "len": 30,
+    "vals": [
+     "Surfaces/Pot_I_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_09_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_10_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_11_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_12_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_13_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_14_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_15_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_16_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_17_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_18_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_19_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_20_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_21_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_22_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_23_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_24_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_25_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_26_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_27_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_28_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_29_Surface_1.xyz",
+     "Surfaces/Pot_I_Piece_30_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2673,
+    "len": 30,
+    "vals": [
+     "Surfaces/Pot_I_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_09_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_10_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_11_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_12_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_13_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_14_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_15_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_16_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_17_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_18_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_19_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_20_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_21_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_22_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_23_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_24_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_25_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_26_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_27_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_28_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_29_Surface_F.pcd",
+     "Surfaces/Pot_I_Piece_30_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2706,
+    "len": 30,
+    "vals": [
+     "Ground Truth/Pot_I_Piece_1_T.txt",
+     "Ground Truth/Pot_I_Piece_2_T.txt",
+     "Ground Truth/Pot_I_Piece_3_T.txt",
+     "Ground Truth/Pot_I_Piece_4_T.txt",
+     "Ground Truth/Pot_I_Piece_5_T.txt",
+     "Ground Truth/Pot_I_Piece_6_T.txt",
+     "Ground Truth/Pot_I_Piece_7_T.txt",
+     "Ground Truth/Pot_I_Piece_8_T.txt",
+     "Ground Truth/Pot_I_Piece_9_T.txt",
+     "Ground Truth/Pot_I_Piece_10_T.txt",
+     "Ground Truth/Pot_I_Piece_11_T.txt",
+     "Ground Truth/Pot_I_Piece_12_T.txt",
+     "Ground Truth/Pot_I_Piece_13_T.txt",
+     "Ground Truth/Pot_I_Piece_14_T.txt",
+     "Ground Truth/Pot_I_Piece_15_T.txt",
+     "Ground Truth/Pot_I_Piece_16_T.txt",
+     "Ground Truth/Pot_I_Piece_17_T.txt",
+     "Ground Truth/Pot_I_Piece_18_T.txt",
+     "Ground Truth/Pot_I_Piece_19_T.txt",
+     "Ground Truth/Pot_I_Piece_20_T.txt",
+     "Ground Truth/Pot_I_Piece_21_T.txt",
+     "Ground Truth/Pot_I_Piece_22_T.txt",
+     "Ground Truth/Pot_I_Piece_23_T.txt",
+     "Ground Truth/Pot_I_Piece_24_T.txt",
+     "Ground Truth/Pot_I_Piece_25_T.txt",
+     "Ground Truth/Pot_I_Piece_26_T.txt",
+     "Ground Truth/Pot_I_Piece_27_T.txt",
+     "Ground Truth/Pot_I_Piece_28_T.txt",
+     "Ground Truth/Pot_I_Piece_29_T.txt",
+     "Ground Truth/Pot_I_Piece_30_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2739,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_I_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 30,
+  "onFalse": 0
+ },
+ "POT_J": {
+  "start": 2779,
+  "end": 2906,
+  "arrays": {
+   "file_path": {
+    "line": 2783,
+    "len": 12,
+    "vals": [
+     "Breaklines/Pot_J_Piece_01_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_02_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_03_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_04_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_05_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_06_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_07_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_08_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_09_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_10_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_11_Breakline_0.pcd",
+     "Breaklines/Pot_J_Piece_12_Breakline_0.pcd"
+    ]
+   },
+   "obj_path": {
+    "line": 2798,
+    "len": 12,
+    "vals": [
+     "Mesh/Pot_J_Piece_01_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_02_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_03_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_04_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_05_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_06_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_07_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_08_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_09_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_10_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_11_Mesh_DS.obj",
+     "Mesh/Pot_J_Piece_12_Mesh_DS.obj"
+    ]
+   },
+   "axis_path": {
+    "line": 2813,
+    "len": 12,
+    "vals": [
+     "Axes/Pot_J_Piece_01_Axis.xyz",
+     "Axes/Pot_J_Piece_02_Axis.xyz",
+     "Axes/Pot_J_Piece_03_Axis.xyz",
+     "Axes/Pot_J_Piece_04_Axis.xyz",
+     "Axes/Pot_J_Piece_05_Axis.xyz",
+     "Axes/Pot_J_Piece_06_Axis.xyz",
+     "Axes/Pot_J_Piece_07_Axis.xyz",
+     "Axes/Pot_J_Piece_08_Axis.xyz",
+     "Axes/Pot_J_Piece_09_Axis.xyz",
+     "Axes/Pot_J_Piece_10_Axis.xyz",
+     "Axes/Pot_J_Piece_11_Axis.xyz",
+     "Axes/Pot_J_Piece_12_Axis.xyz"
+    ]
+   },
+   "surface_in": {
+    "line": 2828,
+    "len": 12,
+    "vals": [
+     "Surfaces/Pot_J_Piece_01_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_02_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_03_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_04_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_05_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_06_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_07_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_08_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_09_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_10_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_11_Surface_0.xyz",
+     "Surfaces/Pot_J_Piece_12_Surface_0.xyz"
+    ]
+   },
+   "surface_out": {
+    "line": 2843,
+    "len": 12,
+    "vals": [
+     "Surfaces/Pot_J_Piece_01_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_02_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_03_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_04_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_05_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_06_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_07_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_08_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_09_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_10_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_11_Surface_1.xyz",
+     "Surfaces/Pot_J_Piece_12_Surface_1.xyz"
+    ]
+   },
+   "surface_fr": {
+    "line": 2858,
+    "len": 12,
+    "vals": [
+     "Surfaces/Pot_J_Piece_01_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_02_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_03_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_04_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_05_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_06_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_07_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_08_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_09_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_10_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_11_Surface_F.pcd",
+     "Surfaces/Pot_J_Piece_12_Surface_F.pcd"
+    ]
+   },
+   "gt_T_path": {
+    "line": 2873,
+    "len": 12,
+    "vals": [
+     "Ground Truth/Pot_J_Piece_1_T.txt",
+     "Ground Truth/Pot_J_Piece_2_T.txt",
+     "Ground Truth/Pot_J_Piece_3_T.txt",
+     "Ground Truth/Pot_J_Piece_4_T.txt",
+     "Ground Truth/Pot_J_Piece_5_T.txt",
+     "Ground Truth/Pot_J_Piece_6_T.txt",
+     "Ground Truth/Pot_J_Piece_7_T.txt",
+     "Ground Truth/Pot_J_Piece_8_T.txt",
+     "Ground Truth/Pot_J_Piece_9_T.txt",
+     "Ground Truth/Pot_J_Piece_10_T.txt",
+     "Ground Truth/Pot_J_Piece_11_T.txt",
+     "Ground Truth/Pot_J_Piece_12_T.txt"
+    ]
+   },
+   "gt_graph_path": {
+    "line": 2888,
+    "len": 1,
+    "vals": [
+     "Ground Truth/Pot_J_simple_graph.txt"
+    ]
+   }
+  },
+  "onTrue": 11,
+  "onFalse": 1
+ }
+}

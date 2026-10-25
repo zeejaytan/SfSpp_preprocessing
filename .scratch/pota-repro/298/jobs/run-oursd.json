@@ -1,0 +1,20 @@
+{
+  "ticket": "298",
+  "runid": "20261026-0052_63cf615_p298-Pot_B-oursd",
+  "role": "assembly-arm",
+  "pot": "Pot_B",
+  "stage": "Phase 1 pilot",
+  "arm": "oursd",
+  "commit_assembler": "upstream 9195c0167e2077a564bd7c91156063252feeb506 + INFRA shim hpc/tools/main_pristine_batch.cpp (unmodified)",
+  "commit_preprocessing": "63cf61540094c3ec1e1dbefa9ff46a05b7d470b8",
+  "parameters": {
+    "pot_selector": "class/data_path.h flipped to #define POT_B in a throwaway copy of /opt/sfs-pristine in /tmp (pinned tree read-only, never edited)",
+    "SHARD_NUMBER": 9,
+    "step_size": 9,
+    "bundle": "our Surfaces + our Breakline_0/1 from /data/gpfs/projects/punim2657/SfSpp/runs/20261026-0046_63cf615_p298-prep-Pot_B/out/geom ; mesh, axis, ground truth from the frozen corpus",
+    "mesh": "corpus Mesh/Pot_B_Piece_NN_Mesh.obj (plain, full resolution), symlinked",
+    "settings": "TOP_k 5, BRANCH_b 3, NO_BASE_INFO (shim defaults; nothing tuned)"
+  },
+  "prep_run": "/data/gpfs/projects/punim2657/SfSpp/runs/20261026-0046_63cf615_p298-prep-Pot_B",
+  "evidence": "out/Result/*Acc.txt (first Sherd accuracy line = sherds, second = joins), logs/assembly.log, out/selector.txt, out/inputs.md5, out/links.tsv, out/build.json"
+}
