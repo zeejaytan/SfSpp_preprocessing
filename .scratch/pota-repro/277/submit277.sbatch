@@ -9,6 +9,7 @@
 #   A  SFS_AXIS_FILE unset              -> the mesh stage must exit non-zero, naming the variable
 #   B  SFS_AXIS_FILE at a missing path  -> the same class of failure, named differently
 #   C  SFS_AXIS_FILE set, N runs per binary -> the piece's own run-to-run spread, and pre vs post
+# A and B are also run with the pre-change binary, to show what the old code did instead.
 # No assembler, no edge stage: this ticket is the mesh stage's axis guard only.
 set -uo pipefail
 
@@ -70,22 +71,31 @@ stage_one() { # stage_one <name> -> echoes the stage dir
 MESH_PRE=$RUN/bin/MeshPreprocessingHeadless.pre
 MESH_POST=$RUN/bin/MeshPreprocessingHeadless.post
 
+# The binaries link against the container's PCL, so every run goes through apptainer, exactly as the
+# live recipes do. POT_NAME selects Dataset/{Mesh,Point}/Pot_<X> and Temp/Data/Pot_<X> at run time.
 run_mesh() { # run_mesh <tag> <binary> <stage> <unset|missing|real>
-  local tag=$1 bin=$2 st=$3 mode=$4 rc s0 s1 have
+  local tag=$1 bin=$2 st=$3 mode=$4 rc s0 s1 have line md5s
   local ax=$st/Dataset/Axes/"$PIECE"_Axis.xyz
   s0=$st/Temp/Data/"$POT"/"$PIECE"_Surface_0.xyz
   s1=$st/Temp/Data/"$POT"/"$PIECE"_Surface_1.xyz
   rm -f "$s0" "$s1"
   case $mode in
-    unset)   ( cd "$st" && env -u SFS_AXIS_FILE POT_NAME="$POT" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
-    missing) ( cd "$st" && env POT_NAME="$POT" SFS_AXIS_FILE="$ax.DOES-NOT-EXIST" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
-    real)    ( cd "$st" && env POT_NAME="$POT" SFS_AXIS_FILE="$ax" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
+    unset)   ( cd "$st" && "$APT" exec --bind /data:/data "$SIF" env -u SFS_AXIS_FILE POT_NAME="$POT" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
+    missing) ( cd "$st" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" SFS_AXIS_FILE="$ax.DOES-NOT-EXIST" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
+    real)    ( cd "$st" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" SFS_AXIS_FILE="$ax" "$bin" ) > $RUN/logs/mesh-$tag.log 2>&1; rc=$? ;;
   esac
   echo $rc > $RUN/out/exit-$tag.txt
-  have=absent
-  if [ -f "$s0" ] && [ -f "$s1" ]; then have=present; fi
-  printf '%s\t%s\t%s\t%s\t%s\n' "$tag" "$mode" "$rc" "$have" \
-    "$(grep -m1 'PAPER-234. classify: face0' $RUN/logs/mesh-$tag.log || echo NO_CLASSIFY_LINE)" >> $RUN/out/cases.tsv
+  have=absent; md5s=none
+  if [ -f "$s0" ] && [ -f "$s1" ]; then
+    have=present
+    md5s=$(md5sum "$s0" "$s1" | awk '{print $1}' | tr '\n' ',')
+  fi
+  line=$(grep -m1 'keep size order' $RUN/logs/mesh-$tag.log || true)
+  [ -n "$line" ] || line=$(grep -m1 'PAPER-234. FATAL' $RUN/logs/mesh-$tag.log || true)
+  [ -n "$line" ] || line=NO_AXIS_MESSAGE
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$tag" "$mode" "$rc" "$have" "$md5s" \
+    "$(grep -m1 'PAPER-234. classify: face0' $RUN/logs/mesh-$tag.log || echo NO_CLASSIFY_LINE)" \
+    "$line" >> $RUN/out/cases.tsv
   if [ "$mode" = real ]; then
     mkdir -p $RUN/out/geom/$tag
     [ -f "$s0" ] && cp -f "$s0" $RUN/out/geom/$tag/Surface_0.xyz
@@ -96,15 +106,19 @@ run_mesh() { # run_mesh <tag> <binary> <stage> <unset|missing|real>
 }
 
 : > $RUN/out/cases.tsv
-printf 'case\taxis_mode\texit\tsurfaces\texported\n' >> $RUN/out/cases.tsv
+printf 'case\taxis_mode\texit\tsurfaces\tsurface_md5\tclassify_line\taxis_message\n' >> $RUN/out/cases.tsv
 
 # ---- A: the variable unset ----
 ST=$(stage_one A) || { echo "[RUN] FATAL stage A"; exit 12; }
 run_mesh A_unset "$MESH_POST" "$ST" unset
+ST=$(stage_one A_old) || { echo "[RUN] FATAL stage A_old"; exit 12; }
+run_mesh A_old_unset "$MESH_PRE" "$ST" unset
 
 # ---- B: the variable set to a path that does not exist ----
 ST=$(stage_one B) || { echo "[RUN] FATAL stage B"; exit 13; }
 run_mesh B_missing "$MESH_POST" "$ST" missing
+ST=$(stage_one B_old) || { echo "[RUN] FATAL stage B_old"; exit 13; }
+run_mesh B_old_missing "$MESH_PRE" "$ST" missing
 
 # ---- C: the variable set, N runs per binary, spread measured not assumed ----
 for R in $(seq 1 $REPS); do
@@ -127,6 +141,6 @@ SE=$?; echo "[RUN] spread exit=$SE"; [ $SE -eq 0 ] || tail -20 $RUN/out/spread.l
 [ -f $RUN/out/spread.json ] && cat $RUN/out/spread.json
 
 echo "[RUN] ---- cases ----"; cat $RUN/out/cases.tsv
-echo "[RUN] ---- failure message, case A ----"; grep 'FATAL' $RUN/logs/mesh-A_unset.log | head -8
-echo "[RUN] ---- failure message, case B ----"; grep 'FATAL' $RUN/logs/mesh-B_missing.log | head -8
+echo "[RUN] ---- failure message, case A ----"; grep -A5 'PAPER-234. FATAL' $RUN/logs/mesh-A_unset.log | head -8
+echo "[RUN] ---- failure message, case B ----"; grep -A5 'PAPER-234. FATAL' $RUN/logs/mesh-B_missing.log | head -8
 echo "[RUN] done $(date -Is)"
