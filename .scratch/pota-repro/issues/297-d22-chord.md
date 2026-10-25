@@ -1,8 +1,9 @@
 # 297 — Is the authors' chord on Pot D 22 Bl0 the better break edge?
 
 Answers: E1
-Status: ready-for-agent
-Working in: unassigned
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-25)
+Branch: 297-d22-chord, in /c/PR/worktrees/sfs/297
 Needs-eye: yes (the conservator has already looked at this mesh and read it against our record)
 
 ## The conservator's reading — recorded first, then tested
