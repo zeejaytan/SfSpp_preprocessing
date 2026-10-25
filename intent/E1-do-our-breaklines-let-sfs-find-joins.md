@@ -151,6 +151,20 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+**2026-10-26 — the join-level question, measured on all ten pots (ticket 298).** Every pot was
+assembled twice on identical meshes, axes, assembler and ground-truth graphs: once from OUR
+preprocessing bundle, once from the authors' released bundle. Ours never seats fewer sherds than
+theirs. Both are at 100% on seven pots (A, B, C, E, G — and D, F, I below). On **Pot J ours is
+clearly better**: 10/11 sherds and 17/21 joins against their 8/11 and 16/21, both above the
+published 72.7/76.2. On **Pot H** ours recovers two more joins (11 against 9 of 17) at the same
+8/11 sherds. On **Pot D** both sit below the paper (79.3/79.7 ours, 78.6/80.3 theirs against
+82.1/83.3) and ours reaches the paper's raw counts, 23 sherds and 55 joins, over one extra piece.
+On **Pot I** ours recovers the same raw counts over a smaller denominator. Two denominators differ
+for a bookkeeping reason, not a quality one: the assembler silently drops any piece whose edge line
+has fewer than 50 points, and our Pot F 06 (49) and Pot I 27 (49) fall under it while the authors'
+do not — so F reads 5 against 6. Honest limit: both arms saturate on seven pots, so this is a
+FLOOR ("our preprocessing does not degrade reassembly"), not a ranking of two methods.
+
 The break-line chain seats the reference pot (Pot A) at the authors' own level. After the
 paper splitter was merged to `main` (`e31be21`) and the tree was given back the edge source
 it needs to build its own lanes (`885f433`, producing a binary byte-identical to the
@@ -172,10 +186,17 @@ clean loops and fails braids, because its K-D tree filter was never ported. The 
 result of September still stands and is still unexplained: 0 of the 5 measurable touching
 pairs pass, and no fix that worked on the pots has moved it.
 
-Weight: one reference pot at the bar in two arms, one real 29-piece pot at 20/29, one further
-pot at its earlier bar — three pots, single runs each. That is a lead about a class of
-failures, not a claim that the method works on pottery.
-Next: name the two remaining extraction families (Pot I 25's contour, ticket 293; the eight-lane extent family) and then measure the join-level question this entry asks -- no run since the strip has measured whether the 96% of lanes that now match the authors' lines actually produce correct rejoins.
+Weight: ten pots assembled both ways on identical meshes, axes and assembler (ticket 298), single
+runs each plus two repeats. Both arms saturate on seven pots; ours seats two more sherds on Pot J
+and recovers two more joins on Pot H, and on Pot D reaches the paper's raw counts. That supports a
+floor — the extraction does not cost reassembly anywhere measured — and does not support a claim
+that our preprocessing beats the authors' except on Pot J.
+Next: only two pots separate the arms, so the corpus cannot rank them further while the search stays
+saturated. On the extraction side the eleven below-bar lanes are explained (tickets 293/295: eight
+are one face read differently, three are genuine partition differences, and only the chord is
+visible in a boundary set) but not cured; the mechanism implicated is which faces are kept, not the
+walk. Open item from 298: the authors' own bundle misses their published Pot D and H numbers,
+repeated identically, cause not chased.
 
 **2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
 preprocessing does not regenerate the authors' own Pot A inputs.**
