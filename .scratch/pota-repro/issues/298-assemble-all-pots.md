@@ -1,11 +1,11 @@
 # Ticket 298 - assemble all ten pots with our own input, and with the authors' input
 
-Status: ready-for-agent
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-26)
+Branch: 298-assemble-all-pots, in /c/PR/worktrees/sfs/298
 Answers: E1
 Created: 2026-10-26 by the coordinating session, on the conservator's instruction
 ("let's test all pots with our own input, and see if output match author's")
-Working in: unassigned
-Branch: 298-assemble-all-pots
 
 ## Why
 
