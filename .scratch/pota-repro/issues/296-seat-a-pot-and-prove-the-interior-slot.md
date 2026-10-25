@@ -1,7 +1,7 @@
 # 296 - Seat a pot's pieces, and prove the interior edge is the one we feed
 
 **Answers:** E1
-**Status:** in-progress
+**Status:** done (accepted: interior slot proved 8/8; both arms seat 8/8 and join 15/15)
 **Working in:** chat on Thinkbook16 (2026-10-25)
 **Branch:** 296-seat-a-pot-and-prove-the-interior-slot, in /c/PR/worktrees/sfs/296
 **Created:** 2026-10-25
@@ -276,3 +276,37 @@ Nothing in the frozen corpus was copied, moved or written; the canonical checkou
   distance was computed from them.
 - **No comparison with the paper's per-pot scores**, and no claim about the other nine pots.
 - Nothing was tuned: one run per arm, no sweep, no threshold, no source edit in either repo.
+
+## Lead verdict (2026-10-25)
+
+**Accepted.** I re-read both arms' own output rather than the summary: 20261025-2234_3d5d537_p296-ceiling/out/Result/
+"1. Acc.txt" reads "Sherd accuracy : 8 / 8 (100 %)" then "Sherd accuracy : 15 / 15 (100 %)", and the test arm
+reads the same two lines. The second line is the joins count -- the assembler prints the same label twice
+(data_structure.cpp:1004-1005) -- so read it as joins, not as a second sherd score. The three index rows
+existed with empty verdict columns, and the ticket's Phase 0 table matches the numbers below.
+
+1. **The interior slot is proved, not assumed** -- which was the conservator's point, and it is now a
+   measurement rather than a convention: our Breakline_0 sits 0.17-0.25 mm off Surface_0 and 2.9-4.8 mm off
+   Surface_1 on 8 of 8 pieces, Surface_0 is the negative-concavity (interior) face on 8 of 8 with margin 4.6-17x
+   the abstain line, and the classify step did real work (1 kept, 7 swapped, theta 3.4 on all eight). The
+   authors' own bundle reads 8/8 the same way, so the instrument is calibrated against known-good data.
+2. **Both arms seat.** Ceiling 8/8 + 15/15 reproduces the 2026-10-20 reference exactly, so the harness, its
+   paths and its pinned binary are sound; the test arm reaches the same 8/8 + 15/15 with our shipped lines.
+   **The B-swap is not needed any more** -- the workaround in section B stays history.
+3. **What this does not say.** Pot A is eight pieces of one pot and fifteen joins: a readiness check, not a
+   corpus result, and it does not move 283/291. Both arms saturate, so drift 0 is a **floor, not a ranking** --
+   it shows a Pot A-sized problem does not discriminate our line from theirs, not that our line equals theirs.
+   Our own surfaces appear in neither arm (both load the corpus Surfaces/), so this tests the line only, and
+   Breakline_1 was staged inert and never read. No geometry-level agreement (part_acc, chamfer) was computed
+   from the saved transforms.
+4. **Retention is right.** out/geom (27 MB) is kept because the surfaces are not byte-reproducible (unseeded
+   ray-cast draw), and both arms' out/Result trees (~363 MB) are kept as the evidence behind the two
+   accuracy lines. The 582 + 242 + 121 MB of staged geometry is deleted with its own record per run.
+5. **Deviations accepted**, all disclosed before the numbers were read: apptainer 1.3.3's missing --mkdir, a
+   crashed summary step re-run over the same out/geom, a fail-fast tripped by the by-design-absent
+   Surface_F.pcd (the clean re-run reproduced 8/8 + 15/15 and the binary md5), and the extra /data:/data bind.
+
+Next: the object for the join-level question is now chosen by evidence, not convenience -- Pot A is saturated
+and cannot discriminate, so the next seating test has to be an object with more pieces and a harder rim
+structure (Pot D, 29 pieces) once a ground-truth graph is wired for it.
+
