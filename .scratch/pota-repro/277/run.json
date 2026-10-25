@@ -1,0 +1,103 @@
+{
+  "runid": "20261025-2356_66d4ad9_p277-axis-loud",
+  "tag": "p277-axis-loud",
+  "commit": "66d4ad961093c94c14db02fb33519c0178630667",
+  "prev_commit": "e3be07f",
+  "created": "2026-10-25T23:56+11:00",
+  "host": "spartan (compute node, batch)",
+  "ticket": "C:/PR/worktrees/sfs/277/.scratch/pota-repro/issues/277-axis-file-must-shout.md",
+  "question": "Can the mesh stage still produce a full set of surfaces when it has no symmetry axis, and does a normal run with the axis set move at all?",
+  "parameters": {
+    "build": "git archive of the commit and of its parent, cmake -DCMAKE_BUILD_TYPE=Release + make -j8 MeshPreprocessingHeadless inside pcl_191_nurbs.sif (never build.sh --target nurbs)",
+    "staging": "scripts/stage_piece.sh from the same archive, geometry symlinked into the frozen corpus, axis copied",
+    "mesh_stage_env": "POT_NAME only, plus SFS_AXIS_FILE in the three modes below",
+    "case_A": "SFS_AXIS_FILE unset (env -u), post-change binary: expect non-zero exit + variable named",
+    "case_B": "SFS_AXIS_FILE=<stage>/Dataset/Axes/<piece>_Axis.xyz.DOES-NOT-EXIST, post-change binary: expect the same class of failure, named differently",
+    "case_C": "SFS_AXIS_FILE=<stage>/Dataset/Axes/<piece>_Axis.xyz, 5 runs of the pre-change binary and 5 of the post-change binary, to measure the stage's own unseeded spread before comparing",
+    "spread_tool": ".scratch/pota-repro/277/spread277.py (nearest-neighbour both ways, mm)",
+    "edge_stage": "not run -- out of scope, reads a different axis path"
+  },
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+    "piece": "Pot_H_Piece_02",
+    "pot": "Pot_H",
+    "mesh": "Mesh/Pot_H_Piece_02_Mesh_DS.obj",
+    "cloud": "Point/Pot_H/Pot_H_Piece_02_Point.pcd",
+    "axis": "Axes/Pot_H_Piece_02_Axis.xyz",
+    "frozen": "every staged input md5 recorded in out/inputs.md5 by stage_piece.sh"
+  },
+  "not_run": [
+    "assembler",
+    "edge stage (edgeline_extraction_headless.cpp)"
+  ],
+  "provenance": "run started from branch 277-axis-file-must-shout at 66d4ad9",
+  "recipe_commit": "b10651c946bf9cdefe86345e982f41eb5014598d",
+  "job": {
+    "jobid": "33781618",
+    "partition": "sapphire",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:06:10",
+    "start": "2026-10-26T00:01:56+11:00",
+    "end": "2026-10-26T00:08:03+11:00"
+  },
+  "binaries": {
+    "pre": {
+      "commit": "e3be07f2872da8c83b7328a451bd3c5b92d4e3d2",
+      "md5": "fb3fd055d30fb08ccce48dba7d49a879"
+    },
+    "post": {
+      "commit": "66d4ad961093c94c14db02fb33519c0178630667",
+      "md5": "91b75eeadcf02009064f5f18218e0882"
+    }
+  },
+  "inputs_md5": {
+    "mesh": "12882b9868661e417806498178e2ec06",
+    "cloud": "a7edd8c828c0573e09d0888370cfcd6d",
+    "cloud_points": 1000161,
+    "axis": "f90e8c18f121ab25f7c2b509624e7b26"
+  },
+  "results": {
+    "A_unset": {
+      "exit": 42,
+      "surfaces": "absent",
+      "message": "SFS_AXIS_FILE is unset or empty"
+    },
+    "B_missing": {
+      "exit": 42,
+      "surfaces": "absent",
+      "message": "cannot open SFS_AXIS_FILE='<path>.DOES-NOT-EXIST'"
+    },
+    "A_old_unset": {
+      "exit": 0,
+      "surfaces": "present",
+      "message": "classify: no SFS_AXIS_FILE, keep size order"
+    },
+    "B_old_missing": {
+      "exit": 0,
+      "surfaces": "present",
+      "message": "classify: cannot open axis file, keep size order"
+    },
+    "C_classify_line": "face0 n=17678 interior_frac=0.9996 face1 n=14614 interior_frac=0.0000 satA=32285.0000 satB=7.0000 (kept -> Surface_0=interior), identical in all 10 runs",
+    "C_spread_mm": {
+      "Surface_0": {
+        "pre_max": 0.62551,
+        "post_max": 0.62551,
+        "cross_max": 0.62551,
+        "within": true
+      },
+      "Surface_1": {
+        "pre_max": 0.609408,
+        "post_max": 0.607429,
+        "cross_max": 0.609408,
+        "within": true
+      }
+    },
+    "verdict": "inside"
+  },
+  "not_done": [
+    "the six guard lanes of ticket 271 (separate harness, own run directory)",
+    "assembler",
+    "edge stage"
+  ]
+}
