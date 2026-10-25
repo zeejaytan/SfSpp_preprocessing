@@ -226,12 +226,14 @@ once per piece in both arms.
 ### What was deleted at the end
 
 Run P's `stage/` (582 MB: the 8 per-piece staging trees -- symlinks into the frozen corpus, the copied axis
-files and the pipeline's Temp trees) and both arms' `dataset/` (242 MB and 121 MB: the staged /Dataset tree
-plus the `Result/` the assembler wrote into it). What the assembler wrote is preserved as `out/Result/`
-(`1. Acc.txt`, the `Top_1_Edgeline_*.xyz` files, `T_*to_*.txt`). Kept on purpose: run P's `out/geom/` (27 MB)
--- our 8 surfaces and 8 breakline pairs exactly as the TEST arm consumed them. The mesh stage draws unseeded
-ray-cast points (`mesh_processing_headless.cpp:1526-1527`), so those files are not byte-reproducible and are the
-only record of what the test arm was fed. Each run records its own deletion in `out/GEOMETRY_DELETED.txt`.
+files and the pipeline's Temp trees) and both arms' `dataset/` (242 MB and 121 MB). In each arm the size is
+almost entirely the `Result/` directory the assembler wrote into it, saved before deletion as `out/Result/`
+(`1. Acc.txt`, the `Top_1_Edgeline_*.xyz` files, `T_*to_*.txt`; 41 files) -- so what remains per arm is
+242 MB and 121 MB, and the ticket holds about 390 MB in all. Kept besides that: run P's `out/geom/` (27 MB) --
+our 8 surfaces and 8 breakline pairs exactly as the TEST arm consumed them, which the mesh stage's unseeded
+ray-cast points (`mesh_processing_headless.cpp:1526-1527`) make the only record of, and each arm's
+`out/inputs.md5` + `out/links.tsv`, which carry md5, size and the resolved target of all 57 staged inputs, so
+an arm can be rebuilt from the record. Each run documents its own deletion in `out/GEOMETRY_DELETED.txt`.
 Nothing in the frozen corpus was copied, moved or written; the canonical checkouts were only read.
 
 ## Deviations
