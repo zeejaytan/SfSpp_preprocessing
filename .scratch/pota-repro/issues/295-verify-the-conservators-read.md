@@ -1,8 +1,8 @@
 # 295 — Verify the conservator's reading of the eleven below-bar lanes
 
-Status: ready-for-agent
-Working in: unassigned
-Branch: (set by ticket_start)
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-25)
+Branch: 295-verify-the-conservators-read, in /c/PR/worktrees/sfs/295
 Answers: E1
 Created: 2026-10-25
 Follows: 293 (the mechanism), 294 (the pictures), 279 (a reference is the boundary of the authors' kept surface)
