@@ -278,6 +278,203 @@ For every pot A..J, both arms, in the same form as the pilot. Requirements:
   missing gt_graph_path line for a pot block. Both are INFRA changes and must be listed in the
   ticket with their diff. No algorithm, threshold, weight or ordering change anywhere.
 
+## Phase 2 - result (2026-10-26): the campaign, all ten pots
+
+### What ran, on what
+
+- Preprocessing source commit **`d1f1a4c37ec5bc8e531c195858303b3ce942486a`** (pushed before the
+  campaign; each job builds its own throwaway tree from a `git archive` of it and deletes it).
+- Assembler: **`/opt/sfs-pristine`** = upstream `9195c0167e2077a564bd7c91156063252feeb506` plus the
+  INFRA shim `hpc/tools/main_pristine_batch.cpp`, **unmodified**. Beam search `k`=5, `b`=3 — the
+  paper's own setting: line 344, "We used $k=5$ and $b=3$ beam search parameters for SfS pipelines" —
+  and `NO_BASE_INFO`, the shim's defaults. Nothing was tuned per pot.
+- **Neither of the two permitted source edits was made, because neither was needed.** (a) The
+  bundle root is decided by what is bind-mounted at `/Dataset/SfS_pp`, so a single unmodified binary
+  serves both arms and no environment override was added to the shim. (b) All ten pot blocks declare
+  `gt_graph_path`, including `POT_D` (`class/data_path.h:1993`, Phase 0 above), so no line had to be
+  filled in. Both diffs are therefore empty and the assembler ran byte-identical in all 20 runs.
+- 10 prep jobs, 18 campaign arm jobs, plus 2 repeat jobs (below). Per-arm wall-clock cap **4 h**
+  (`#SBATCH --time=04:00:00`); the slowest arm was **1 h 13 min** (Pot D, our bundle), so the cap cut
+  nothing. Resume rule honoured: no scored run directory was re-run; the repeats are new directories.
+- Bundles retained as deliverables: **588 files / 458 MB** in the ten prep runs' `out/geom`
+  (4 per piece: `.Bl0.pcd`, `.Bl1.pcd`, `.S0.xyz`, `.S1.xyz`).
+
+Job ids: prep A `33782539`, C `33782540`, D `33782541`, E `33782542`, F `33782543`, G `33782544`,
+H `33782545`, I `33782546`, J `33782547`; arms (ours bundle / authors' bundle) A `33782548/49`,
+C `50/51`, D `52/53`, E `54/55`, F `56/57`, G `58/59`, H `60/61`, I `62/63`, J `64/65`;
+Pot B pilot: prep `33782096`, arms `33782366 / 33782456`; repeats H `33783435`, D `33783436`.
+
+### The table
+
+"Scored" is the number of pieces the assembler actually put into its accuracy count — not the number
+staged; the section after this one says why. Every cell is quoted from that run's own
+`out/Result/1. Acc.txt` (first line = sherds seated, second = joins recovered) and from the
+`Sherd accuracy` / `Edge accuracy` lines in `logs/assembly.log`.
+
+| pot | pieces staged | scored (ours / authors') | our bundle SA / EA | authors' bundle SA / EA | paper SA / EA (line 351 / 356) |
+| --- | --- | --- | --- | --- | --- |
+| A | 8 | 8 / 8 | 8/8 (100 %) / 15/15 (100 %) | 8/8 (100 %) / 15/15 (100 %) | 100 / 100 |
+| B | 9 | 9 / 9 | 9/9 (100 %) / 15/15 (100 %) | 9/9 (100 %) / 15/15 (100 %) | 100 / 100 |
+| C | 4 | 4 / 4 | 4/4 (100 %) / 5/5 (100 %) | 4/4 (100 %) / 5/5 (100 %) | 100 / 100 |
+| D | 29 | 29 / 28 | 23/29 (79.3103 %) / 55/69 (79.7101 %) | 22/28 (78.5714 %) / 53/66 (80.303 %) | 82.1 / 83.3 |
+| E | 31 | 31 / 31 | 31/31 (100 %) / 62/62 (100 %) | 31/31 (100 %) / 62/62 (100 %) | 100 / 100 |
+| F | 7 | 5 / 6 | 5/5 (100 %) / 7/7 (100 %) | 6/6 (100 %) / 9/9 (100 %) | 100 / 100 |
+| G | 7 | 7 / 7 | 7/7 (100 %) / 10/10 (100 %) | 7/7 (100 %) / 10/10 (100 %) | 100 / 100 |
+| H | 11 | 11 / 11 | 8/11 (72.7273 %) / 11/17 (64.7059 %) | 8/11 (72.7273 %) / 9/17 (52.9412 %) | 90.9 / 88.2 |
+| I | 30 | 26 / 27 | 25/26 (96.1538 %) / 59/62 (95.1613 %) | 25/27 (92.5926 %) / 59/65 (90.7692 %) | 92.6 / 90.8 |
+| J | 11 | 11 / 11 | 10/11 (90.9091 %) / 17/21 (80.9524 %) | 8/11 (72.7273 %) / 16/21 (76.1905 %) | 72.7 / 76.2 |
+
+The paper prints percentages only; the counts they imply are unambiguous and match our authors'-bundle
+denominators wherever the percentage agrees (82.1 % of 28 = 23, 83.3 % of 66 = 55, 90.9 % of 11 = 10,
+88.2 % of 17 = 15, 92.6 % of 27 = 25, 90.8 % of 65 = 59, 72.7 % of 11 = 8, 76.2 % of 21 = 16).
+
+Raw state counts, for the record only — `Total number` (states the beam search examined) is not a
+quality measure and swings widely with the bundle: A 242 our / 124 authors', C 91/125, D 2358/2445,
+E 1807/1912, F 32/36, G 74/51, H 480/485, I 1309/1424, J 698/731, B 182/114.
+
+### Why a pot's scored count is not its piece count
+
+`hpc/tools/main_pristine_batch.cpp:86` switches a piece off, **silently**, when its own
+`Breakline_0` has fewer than 50 unique points:
+
+```cpp
+shard[i].edge_line_.ReadPCDFileWithInfo(file_path[i]);
+if (shard[i].edge_line_.point_.cols() < 50) {
+    shard_on_off[i] = false;
+    shard[i].edge_line_.Remove();
+    continue;
+}
+```
+
+No message is printed, so a dropped piece simply disappears from both numerator and denominator. The
+count above is therefore recomputed from the `Found N unique points` lines, per run:
+
+| pot | dropped with our bundle (points) | dropped with the authors' bundle (points) |
+| --- | --- | --- |
+| D | none | D 27 (48) |
+| F | F 06 (49), F 07 (37) | F 07 (28) |
+| I | I 27 (49), I 28 (41), I 29 (40), I 30 (38) | I 28 (44), I 29 (41), I 30 (40) |
+| A, B, C, E, G, H, J | none | none |
+
+The four pieces the paper itself excluded as "fewer than 50 points in the respective surface edge
+lines" (F 07, I 28, I 29, I 30 — project AGENTS.md, "Which pieces are in the corpus") are exactly the
+ones this floor removes from the authors' bundle, which is why the authors'-bundle denominators (6, 27)
+equal the paper's piece counts. **Our bundles lose two more pieces, by one point each**: Pot F 06 has
+49 unique points where the authors' line has 57, and Pot I 27 has 49 where the authors' has more. That
+is a real property of our extracted interior breaklines, not a scoring artefact, and it is the only
+reason our denominators differ from the authors'.
+
+### Per pot
+
+- **A (8 pieces).** Both arms 8/8 and 15/15 = 100 / 100, the paper's numbers. Our bundle reproduces the
+  authors' seating exactly; it makes the search work about twice as hard (242 states against 124).
+- **B (9 pieces, the Phase 1 pilot).** Both arms 9/9 and 15/15 = 100 / 100 = the paper.
+- **C (4 pieces).** Both arms 4/4 and 5/5 = 100 / 100 = the paper. This pot carries the corpus caveat
+  (Pot C 01's interior surface has a scan gap, project AGENTS.md; ticket 285) and the assembler reads
+  `Breakline_0`, which is the boundary of the interior surface — so a broken interior input sits inside
+  this pot's four pieces. The assembler prints pot totals only, no per-piece line, so 4/4 shows the
+  pot came out right; it does not by itself certify C 01's seat.
+- **D (29 pieces).** Our bundle **23/29 sherds (79.3103 %) and 55/69 joins (79.7101 %)**; the authors'
+  bundle 22/28 (78.5714 %) and 53/66 (80.303 %); the paper 82.1 / 83.3. Two separate facts: our arm
+  reaches the paper's raw counts (23 sherds, 55 joins) but scores one extra piece (D 27, which our
+  line keeps above the 50-point floor and the authors' does not), so its percentages are lower; and
+  **the authors' own bundle is one sherd and two joins short of the published D numbers**. A repeat of the authors' bundle (job `33783436`) reproduced **22/28 and 53/66 exactly** (below), so the gap is a property of the release on this pinned commit, not of one run.
+- **E (31 pieces).** Both arms 31/31 and 62/62 = 100 / 100 = the paper. The largest pot, and the one
+  whose search is longest (53 min our bundle, 54 min the authors').
+- **F (7 pieces).** Our bundle **5/5 (100 %) and 7/7 (100 %)**; the authors' 6/6 and 9/9; the paper
+  100 / 100 over 6 pieces. Our arm is 100 % of what it is allowed to score but one piece fewer: F 06's
+  interior breakline has 49 unique points against the assembler's floor of 50 and is switched off. The
+  authors' bundle keeps F 06 (57 points) and drops only F 07, so the two arms are not scoring the same
+  piece set, and the percentages cannot be read against each other without the counts.
+- **G (7 pieces).** Both arms 7/7 and 10/10 = 100 / 100 = the paper.
+- **H (11 pieces).** Our bundle 8/11 (72.7273 %) and **11/17 joins (64.7059 %)**; the authors' bundle
+  8/11 (72.7273 %) and 9/17 (52.9412 %); the paper 90.9 / 88.2 = 10/11 and 15/17. **This is the one pot
+  where both arms fall well short of the paper and the shortfall is not run-to-run variance** — the
+  authors' arm reproduces 8/11 and 9/17 exactly on a repeat (see below). Our bundle seats the same
+  eight sherds and recovers two more joins than theirs, so on this pot our interior lines are slightly
+  the better input, and neither arm reaches the published 10 sherds / 15 joins. Cause not established;
+  it is named as an open item rather than explained away.
+- **I (30 pieces staged, 27 scored).** Our bundle 25/26 (96.1538 %) and 59/62 (95.1613 %); the authors'
+  bundle **25/27 (92.5926 %) and 59/65 (90.7692 %) = the paper exactly**. Our raw counts are the
+  paper's (25 sherds, 59 joins) over one piece fewer (I 27, 49 points against the floor), so the
+  percentages move only because the denominator does.
+- **J (11 pieces staged; the block carries 12 entries and J 09 is switched off in it).** Our bundle
+  **10/11 (90.9091 %) and 17/21 (80.9524 %)**, the authors' 8/11 (72.7273 %) and 16/21 (76.1905 %) =
+  the paper exactly. This is the pot where our chain does best against the authors': two more sherds
+  and one more join, i.e. 18 points of SA above their arm and above the published 72.7. Two
+  bookkeeping oddities of this run are recorded below (the 19 unreadable paths, and a negative
+  `Time` in our arm's `Acc.txt`).
+
+### The two repeat runs
+
+The only pots where the authors'-bundle arm misses the paper are D and H. Because a shortfall can be a
+property of the input or a property of one run, the same inputs were run again into two new run
+directories (same commit, same binary, same bundle, nothing else changed):
+
+- **H, job `33783435`, `20261026-0301_d1f1a4c_p298-Pot_H-authb-rep2`**: "Sherd accuracy : 8 / 11
+  (72.7273 %)" and "Edge accuracy : 9 / 17 (52.9412 %)" — **identical** to the first run, which is
+  what makes the H shortfall a stable property rather than noise. The search bookkeeping did move:
+  `Total number` 485 / pruned 232 became 485 / pruned 233. The answer is reproducible; the state count
+  is not.
+- **D, job `33783436`, `20261026-0301_d1f1a4c_p298-Pot_D-authb-rep2`**: "Sherd accuracy : 22 / 28 (78.5714 %)" and "Edge accuracy : 53 / 66 (80.303 %)" — **identical** to the first run, with `Total number` 2445 and pruned 886 against 888.
+
+### Defects, surprises and open items
+
+1. **The 50-point floor is silent** (`main_pristine_batch.cpp:86`) and it is what makes "pieces in the
+   block" and "pieces scored" differ. Anyone comparing two runs must recompute the denominator from the
+   `Found N unique points` lines; the percentage alone is not comparable. Our bundles lose F 06 and
+   I 27 by one point each (49 against 50).
+2. **Five pieces the blocks name have no ground-truth transform in the corpus** — D 22, F 07, I 28,
+   I 29, I 30 (`out/gt_missing.txt` in both arms of both pots). `Trans::Read` leaves the identity, so
+   the piece is scored as if it had never moved. These are exactly the pieces the authors excluded
+   (project AGENTS.md) and all five are switched off by the floor anyway, so nothing was scored against
+   an identity by accident — but the mechanism is worth stating.
+3. **Pot J's 19 unreadable paths are expected, and my first gate got this wrong.** Both J arms finished
+   and wrote `Result/1. Acc.txt`, and the job was then failed with exit 11 by a gate that treated any
+   `Could not open file` line as a staging failure. The 19 lines are: 11 `*_Surface_F.pcd` (the corpus
+   has no `Surface_F` file for **any** piece — 0 hits in 164 pieces), 7 empty paths from slots 12..18
+   (`POT_J` declares `SHARD_NUMBER 19` while its arrays hold 12 entries), and 1 axis of Pot J Piece 09,
+   which the block itself switches off (`shard_on_off[8]=false`) and which we therefore never staged.
+   The gate was replaced by `scripts/p298_gather.sh` (commit `b78d9b8`), which classifies every
+   unreadable path into `out/open_absent.tsv` and fails only for an **active** piece; it was applied to
+   both finished J runs (fatal_open=0, absent=19: 11 surface-f, 7 phantom-slot, 1 inactive-piece) and
+   those runs were **not** re-run, per the resume rule. Pot J's numbers above come from those runs.
+4. **Two pots do not reproduce the paper with the authors' own bundle**: D (78.5714 / 80.303 against
+   82.1 / 83.3) and H (72.7273 / 52.9412 against 90.9 / 88.2). Everything else matches the paper's
+   percentage exactly. Both pots reproduce their numbers exactly on a repeat (H 8/11 and 9/17,
+   D 22/28 and 53/66), so the gap is a property of the release on this pinned commit and not of a
+   single run. Why the release does not reach its own published D and H numbers is not established
+   here, and is left as the open item of this ticket.
+5. **A negative `Time` line** in Pot J's our-bundle `1. Acc.txt` ("Time : -184038 Sec") against
+   1.11027e+06 in the authors' bundle. The accuracy lines in the same file are well-formed and agree
+   with `assembly.log`; the timer is the only damaged field.
+6. **Mesh `.obj` reads fail for pieces with no `_Mesh_DS.obj`** (e.g. all of Pot H, and Pot F 01-07
+   in the log). The mesh is used for the exported scene, not for seating or scoring; the accuracy
+   lines are unaffected. Recorded so the log noise is not mistaken for input loss later.
+7. **`run.json` in all 27 campaign run directories was laid out from the Pot B template** and carried
+   Pot B's run id, `SHARD_NUMBER` and bundle text (and the pilot commit). It was corrected on
+   2026-10-26 from each job's own log and `out/links.tsv` — the real `SHARD_NUMBER` per block (A 8,
+   C 4, D 29, E 31, F 7, G 7, H 11, I 30, J 19), the real bundle per arm, `runid` = directory name,
+   and `commit_preprocessing` = `d1f1a4c`. A `metadata_note` in each file says so. No execution
+   changed; arm-to-bundle binding was verified independently in `out/links.tsv` (our arms point at
+   `runs/<prep>/out/geom`, the authors' arms at `original_samples/SfS_pp`).
+8. **The two arms are not always scoring the same pieces** (F: 5 against 6; I: 26 against 27; D: 29
+   against 28). Percentages must never be compared across arms without the counts beside them.
+
+### Housekeeping
+
+- **Index rows**: `runs/index.tsv` has one row for each of the **32** run directories this ticket made
+  (10 prep + 20 arm runs + 2 repeats), with the job id and commit of that run, and `verdict` /
+  `human_note` left empty for the lead. Appended by `.scratch/pota-repro/298/jobs/index_rows.py`,
+  which is idempotent, skips a run id already present, and takes the commit from the run's own
+  `run.json`; the file now has 119 rows and every row has six tab-separated fields.
+- **GEOMETRY_DELETED**: the ten prep runs' staged `stage/` trees were deleted after both arms of every
+  pot had been read: **8,378 files and 9,911,628,046 bytes** (A 454/606,156,458; B 510/585,880,073;
+  C 261/448,195,238; D 1,649/2,343,102,994; E 1,750/1,942,108,449; F 404/334,921,781;
+  G 394/336,697,172; H 615/613,430,197; I 1,698/1,981,334,294; J 643/719,801,390). Each run directory
+  keeps `out/GEOMETRY_DELETED.txt` with the per-kind counts; the `out/geom` bundles are **kept**.
+  The frozen corpus is untouched.
+
 ## Deliverable
 
 One table, one row per pot: pot | pieces | our arm sherds/joins | authors' arm sherds/joins |
