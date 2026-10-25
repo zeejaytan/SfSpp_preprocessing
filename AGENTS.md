@@ -47,11 +47,11 @@ to explain away misses: ticket 279 measured that on 163 of 163 pieces a referenc
 the authors' own kept surface, and 265 edgelines sit within 2 mm of these references, so one piece is wrong, not
 the standard.
 
-**Pot C 03 Bl1 - do not score against the authors' breakline on this lane** (conservator's ruling,
+**Pot C 03 Bl1 - do not score against the authors' breakline on this edgeline** (conservator's ruling,
 2026-10-25, ticket 295). Their Bl1 is not a break edge at all: it is the rim of their own small plate-like
 face, 5.8 mm from ours, 90% of its dots over pottery we never labelled, and it is the only one of nine
-adjudicated lanes classed *different surface*. Our line runs the sherd's real outer rim (607 mm of edge
-against their 274 mm). The lane is **excluded from the bar tally**: Pot C is 4 of 7 valid edgelines and the
+adjudicated edgelines classed *different surface*. Our line runs the sherd's real outer rim (607 mm of edge
+against their 274 mm). The edgeline is **excluded from the bar tally**: Pot C is 4 of 7 valid edgelines and the
 corpus is **283 of 291**.
 
 **Which line the assembly stage reads - it matters more than the tally.** The assembler
