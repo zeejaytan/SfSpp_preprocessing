@@ -47,6 +47,20 @@ to explain away misses: ticket 279 measured that on 163 of 163 pieces a referenc
 the authors' own kept surface, and 265 edgelines sit within 2 mm of these references, so one piece is wrong, not
 the standard.
 
+**Pot C 03 Bl1 - do not score against the authors' breakline on this lane** (conservator's ruling,
+2026-10-25, ticket 295). Their Bl1 is not a break edge at all: it is the rim of their own small plate-like
+face, 5.8 mm from ours, 90% of its dots over pottery we never labelled, and it is the only one of nine
+adjudicated lanes classed *different surface*. Our line runs the sherd's real outer rim (607 mm of edge
+against their 274 mm). The lane is **excluded from the bar tally**: Pot C is 4 of 7 valid edgelines and the
+corpus is **283 of 291**.
+
+**Which line the assembly stage reads - it matters more than the tally.** The assembler
+(structure-from-sherds-pp) loads exactly **one** breakline per piece, the _0 file: the file_path arrays in
+class/data_path.h name only Breakline_0, and Breakline_1 appears **nowhere** in class/ or the build (9
+repo-wide hits, all helper scripts and docs). Our Breakline_0 is the boundary of Surface_0, which our
+classify step sets to the **interior** face. Consequence: a wrong Bl1 cannot change a seating result, and
+the extraction quality that matters for reassembly is the **interior lines only**.
+
 ### Which pieces are in the corpus, and which the authors left out
 
 The released datasets carry **exactly the pieces the paper reports** (Table V) — A 8, B 9, C 4,

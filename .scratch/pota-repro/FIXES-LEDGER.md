@@ -190,6 +190,20 @@ pieces a reference line is the boundary of the authors' own kept surface, and 26
 these references. What would overturn the ruling: their surface being trimmed exactly where ours is not, by
 an identifiable rule -- then theirs would be consistent and ours the outlier here. Nothing in hand shows it.
 
+- **Pot C 03 Bl1 - the authors' line is a plate rim, not a break edge** (conservator's ruling,
+  2026-10-25). Their Bl1 follows the rim of their own small plate-like face (n_ax 0.939), 5.83 mm from
+  ours, with 90% of its dots over pottery our growth never labelled and 100% of them beyond 2 mm from our
+  material over a 273.7 mm stretch; the band test classes it *different surface*, the only lane of the nine
+  adjudicated. Our line runs the sherd's real outer rim - 607.34 mm of edge against their 273.69 mm. The
+  lane is **excluded from the bar tally**: Pot C is 4 of 7 valid edgelines and the corpus becomes
+  **283 of 291 (97.3%)**. The numbers stay in ticket 295; they are the measurement, not the criterion.
+- **And it is a cheap lane either way, because the assembly stage reads only Breakline_0.** Verified
+  2026-10-25: the file_path arrays in structure-from-sherds-pp/class/data_path.h name one file per piece,
+  the _0 one, and Breakline_1 appears nowhere in class/ or the build (9 repo-wide hits, all in helper
+  scripts and docs). Our Breakline_0 is the boundary of Surface_0 = the **interior** face, so a wrong Bl1
+  cannot move a seating number. Of the eleven below-bar lanes, **four are interior** (D 22 Bl0, D 27 Bl0,
+  E 16 Bl0, I 25 Bl0) and seven are exterior.
+
 - **Pot I 25 -- the authors' surface order is inverted** (ticket 295). On 163 pieces a concavity test names
   Surface_0 the interior on 158; the exceptions are Pot I 25 and Pot J 14, where their Surface_0 is the
   physically exterior face. Both releases' lines still ride the same physical faces (0.249 / 0.242 mm apart),
@@ -400,6 +414,61 @@ exist; quote only the 292 number.
   (`mesh_processing_headless.cpp:1526-1527`), which puts a piece-dependent 0.1-0.9 mm band on some
   pieces' exported lines.
 - `Pot_J_Piece_09` is unscored by the conservator's ruling on its reference (section N).
+
+## R. The 296-lane score adjudicated (2026-10-25, ticket 295) -- one mechanism, two symptoms, four interior misses
+
+**Result in one line: 283 of 291 valid lanes at bar (97.3%)**, after the conservator struck Pot C 03 Bl1 as
+an invalid reference. Nothing in the code changed in this round: every number below rests on the change set
+in section Q, scored at the shipped defaults (theta 3.4, largest-lump seed, no-discard full walk, 12 mm
+terminal stop, the 274 clamp).
+
+**The six claims the conservator made from the ticket-294 figures, each measured** (run of record
+SfSpp/runs/20261025-1824_ca18c8f_p295-lanes/, job 33761881; gate reproduced 385 of 385 ticket-293 numbers,
+worst delta 0.0050 mm):
+
+| Claim | Verdict |
+|---|---|
+| Pot I 25's labels are swapped | Holds with qualification -- it is a **naming inversion**: on 158 of 163 pieces their Surface_0 is the inside; I 25 and J 14 invert their own order. Both releases' lines ride the **same physical faces** (0.249 / 0.242 mm apart) |
+| Pot C 03 Bl1 traced the base | **Holds** -- see section N; the lane is now struck |
+| D 22 / D 27 ours is the better edge | Holds with qualification -- D 27's two are small insets (7.2 / 16.2 mm); on **D 22 the 18 mm chord is theirs** (66.9% of its dots beyond 2 mm from our material) and ours rounds the notch |
+| H 10 is a mismatch, or our surface is bigger | **Does not hold** -- our face is **14% smaller** (633.9 vs 734.9 mm2) and the whole 12.6 mm stretch sits over a 629-point ribbon cluster we dropped |
+| I 06 / I 13 -- our mesh is bigger, so our line is bigger | **Does not hold** -- the faces match to 1.4-1.8% in area and the band under their line is coplanar (1.4 / 1.7 deg, 0.006 / 0.007 mm) |
+| H 02's lines stop at the base-rim | **Holds, both reasons corrected** -- see below |
+
+**Pot H 02, the corrected reading:** the turn is real and sharp (material just outside our face at 48.4 deg
+median on Bl0, 44.2 on Bl1, 54.8% / 48.5% of it beyond 45 deg) and it is **continuous material, not a scan
+gap** -- the unlabelled corridor sits 1.525 / 0.667 mm from the kept face with 282 / 36 of its points within
+one sample spacing, Pot C 03's corner-ring signature (section K). But the authors' line does not go past
+ours: on Bl1's 59.4 mm stretch their dots are **0.221 mm above our wall face and 4.67 mm inside our edge**.
+Ours is the outer edge and the better one. Bl0 is clean (0.830 / 1.332 / 2.090 mm, 71.2% on our edge).
+
+**No welded break facet anywhere.** On all nine adjudicated lanes **0.00%** of the 2 mm band our kept
+material contributes under the reference is pitched more than 45 deg off the authors' own normals (median
+0.7-5.5 deg, offset 0.004-0.023 mm). "Our surface swallowed part of the break face" is not in this sample
+and is no ground for a growth or classify change.
+
+**The mechanism is PARTITION -- which faces are kept**, not the walk seed and not a weld test. Our edgeline
+is the boundary of the *labelled* face; immediately outside it lies real pottery that growth left unlabelled
+(H 02: a 2311-point corridor in the 2 mm band, 89 of them on Bl1; E 16: 68.6 deg; C 03 90% and D 22 92.3% of
+the stretch nearest unlabelled; H 10 100% over a dropped cluster). Where that material *is* labelled, our
+face extends 2.4-9.6 mm past the reference on the same plane.
+
+**The growth gate cannot be the fix, and this is now arithmetic.** H 02's straddling pairs step a median
+**3.23 deg** with 52.7% at or below the 3.4 deg gate (ticket 281), while Pot D P03's severing bottleneck is
+**3.45 deg** and P 22's **3.06** (ticket 271). A gate loose enough to cross H 02's base-rim re-breaks the
+lane that fix repaired. What remains is a **partition** change (keep a third surface / label the corridor),
+or base handling, which the paper itself lists as future work (papers/text/sfspp-2502.13986v1.md:460).
+
+**What this round cost and what it bought.** Cost: one instrument ticket (295) plus its lead probes, no
+build. Bought: a valid denominator (283 of 291), a dead hypothesis (welded facet), a named mechanism
+(partition), and the distinction that matters for the next phase -- **only 4 of the 11 remaining misses are
+on the interior line the assembler reads** (D 22 Bl0, D 27 Bl0, E 16 Bl0, I 25 Bl0), and on two of those the
+conservator's own reading is that ours is the better edge.
+
+**Before any seating test, per-piece slot check.** Section B's B-swap (Pot A P02-P08, 8/8+15/15) proves that
+*which* line is fed as Breakline_0 decides seating, and ticket 295 found the authors invert their own
+surface order on 2 of 163 pieces. A seating run must first verify, per piece, that our _0 is our interior and
+that it lands on the same physical face as the reference the run is compared against.
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
