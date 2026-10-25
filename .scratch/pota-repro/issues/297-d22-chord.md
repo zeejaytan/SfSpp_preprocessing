@@ -1,7 +1,7 @@
 # 297 — Is the authors' chord on Pot D 22 Bl0 the better break edge?
 
 Answers: E1
-Status: in-progress
+Status: done (accepted: the conservator's reading holds -- OUR line is the 18 mm shortcut round a rounded corner)
 Working in: chat on Thinkbook16 (2026-10-25)
 Branch: 297-d22-chord, in /c/PR/worktrees/sfs/297
 Needs-eye: yes (the conservator has already looked at this mesh and read it against our record)
@@ -310,3 +310,46 @@ supports our line over theirs.
   (200.29 mm one way against 42.79 mm the other). No threshold moved; the first analysis is kept as
   `scripts/measure297_firstrun.py` `e70d8b46764d5cf05feb6b031cb9bda7` with
   `out/measure297.firstrun.{json,txt}` and `out/png/p297_D_22_Bl0_chord.firstrun.png`.
+
+## Lead verdict (2026-10-26)
+
+**The conservator is right in substance; the ticket's own rule returns PARTIAL because it modelled the
+wrong object. Both are recorded, and the record of ticket 294 is corrected below.**
+
+1. **What the numbers say.** Their chord dots sit 0.025 mm median off the mesh with 86.96 % inside
+   0.50 mm; the enclosed patch is 64.89 % area at >= 45 deg off the face normal, only 5.24 % within
+   20 deg. The CONFIRM limbs (90 % / 70 %) are missed by 3.0 and 5.1 points; the REFUTE limbs are missed
+   by 46 points and 65 points. That is not a close call between confirm and refute -- it is a rule that
+   describes the wrong shape.
+2. **Why it is the wrong shape.** The premise was a flat facet facing a flat face, where a single 45 deg
+   plane separates them. What is there is a ROUNDED corner: tilt varies continuously across it, so no
+   single-angle area test can be satisfied, and the enclosed patch is diluted by the corner's own
+   curvature. The discriminator that does not depend on that model is the tilt under each line's own
+   dots: **theirs 66.3 deg median, 100 % >= 45 deg; ours 29.6 deg, 0 % >= 45 deg.** Theirs rides the
+   broken/rounded material; ours rides the flat of the face. On a pot that is the wrong edge for us to
+   draw.
+3. **The correction that matters, and it is mine.** Ticket 294 said the authors "bridge the notch mouth
+   with an 18 mm straight segment", and I repeated it as "the chord is theirs" in the ledger and in
+   report. **That is backwards.** 19.92 mm is only the end-to-end distance of their two nearest dots;
+   their polyline goes round the corner in 43.28 mm while OURS cuts across in 18.00 mm (our dots
+   39-49, 11 of 125). 105 of their 133 dots lie within 2 mm of ours, so the loops differ only at this
+   corner -- and there it is our line that is the shortcut. The 294 sentence and the ledger text are
+   corrected in the same landing as this verdict.
+4. **So D22 Bl0 is a real miss and it counts.** It stays a below-bar lane, and it is now the first one
+   where the reason is a defect in OUR edge rather than in the reference: we cut the corner of a
+   rounded break, which would glue two sherds across material the pair does not share. The 283-of-291
+   tally does not move; what moves is the explanation, which is now actionable in a way "their line is
+   a chord" never was.
+5. **The worker's corrections are accepted and are the right instinct.** The 294 wording, the binary
+   md5 difference stated instead of papered over (identity resting on byte-identical sources plus the
+   score row reproducing to the digit), the chord-resolver defect found AFTER the first number and
+   both analyses kept, the dead 4-second submit kept as a row. Self-reporting a defect that would
+   have been invisible in the answer is exactly what this ticket needed.
+6. **Determinism was measured, not assumed** -- three repeats, exported x,y,z byte-identical
+   (md5 4625c4e1...), spread 0.000 mm / 0.00 pp. Good: that closes the unseeded-draw escape hatch for
+   this piece rather than leaving it as a standing excuse.
+
+Status set to done by the lead. Follow-up, not this ticket: the same rounded-corner shortcut may exist
+on other lanes, so a corpus-wide measure of "how far does our line cut inside the reference's own
+polyline" is worth its own ticket if the all-pot assembly work (ticket 298) shows seating lost at
+corners.
