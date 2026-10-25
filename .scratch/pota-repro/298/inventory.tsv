@@ -1,0 +1,17 @@
+# inventory.tsv - ticket 298 Phase 0 pose-by-pose inventory. Tab separated. One row per pot.
+# Columns 1-4, 8-9: /opt/sfs-pristine/class/data_path.h (upstream 9195c0167e2077a564bd7c91156063252feeb506, extracted from
+#   /data/gpfs/projects/punim2657/sfs_main/sfs_pristine_assembly.sif; md5 a244382311cb5d81f8bbf4ba4d823b47, 6288 non-blank lines).
+# Columns 5-7, 10-14: /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (Axes/, Surfaces/, Breaklines/, Mesh/, Point/, Ground Truth/).
+# "active" = slots whose shard_on_off[] is true. "corpus" = pieces that own an axis file (Axes/ has 163, one per piece).
+# "T present" = Ground Truth/Pot_X_Piece_N_T.txt files the block's gt_T_path[] names, counted against active slots.
+pot	ifdef_line	define	shard_number	active_pieces	slots_declared	block_pieces	corpus_pieces	corpus_count	block_minus_corpus	corpus_minus_block	mesh_form	axis_path_populated	obj_path_populated	gt_graph_path_populated	gt_graph_file	gt_graph_exists	cloud_missing_in_block	gtT_missing_in_block	gt_graph_shape
+POT_A	1379	#define POT_A	8	8	8	01-08	01-08	8	none	none	plain _Mesh.obj (all 8)	yes	yes	yes	Ground Truth/Pot_A_simple_graph.txt	yes	none	none	8x8 30nz
+POT_B	1478	#define POT_B	9	9	9	01-09	01-09	9	none	none	plain _Mesh.obj (all 9)	yes	yes	yes	Ground Truth/Pot_B_simple_graph.txt	yes	none	none	9x9 30nz
+POT_C	1584	#define POT_C	4	4	4	01-04	01-06	6	none	05, 06	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_C_simple_graph.txt	yes	none	none	4x4 10nz
+POT_D	1650	#define POT_D	29	29	29	01-29	01-32	32	none	30, 31, 32	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_D_simple_graph.txt	yes	none	22	29x29 138nz
+POT_E	1917	#define POT_E	31	31	31	01-31	01-34	34	none	32, 33, 34	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_E_simple_graph.txt	yes	none	none	31x31 124nz
+POT_F	2201	#define POT_F	7	7	7	01-07	01-07	7	none	none	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_F_simple_graph.txt	yes	none	07	7x7 18nz
+POT_G	2292	#define POT_G	7	7	7	01-07	01-07	7	none	none	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_G_simple_graph.txt	yes	none	none	7x7 20nz
+POT_H	2382	#define POT_H	11	11	11	01-11	01-11	11	none	none	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_H_simple_graph.txt	yes	none	none	11x11 34nz
+POT_I	2504	#define POT_I	30	30	30	01-30	01-30	30	none	none	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_I_simple_graph.txt	yes	none	28, 29, 30	30x30 130nz
+POT_J	2779	#define POT_J	19	11	12	01-12 (09 off)	01-19	19	none	13-19	_Mesh_DS.obj only	yes	yes	yes	Ground Truth/Pot_J_simple_graph.txt	yes	none	09 (and 12 never read)	11 rows x 12 cols 42nz

@@ -1,0 +1,58 @@
+{
+  "runid": "20261025-2234_3d5d537_p296-ceiling",
+  "tag": "p296-ceiling",
+  "commit": "3d5d5379175d0731dffa1f0edb186a848093508e",
+  "created": "2026-10-25T22:34+11:00",
+  "host": "spartan (compute node, batch)",
+  "ticket": "C:/PR/worktrees/sfs/296/.scratch/pota-repro/issues/296-seat-a-pot-and-prove-the-interior-slot.md",
+  "question": "Pot A seating, arm CEILING: the authors' own Breakline_0 files -- how many of 8 sherds and 15 joins does the pinned assembler seat?",
+  "assembler": {
+    "code": "/data/gpfs/projects/punim2657/sfs_main/sfspreproc-docker (the ASSEMBLY checkout; folder name is misleading)",
+    "pinned_tree_in_sif": "/opt/sfs-pristine = upstream 9195c0167e2077a564bd7c91156063252feeb506",
+    "sif": "/data/gpfs/projects/punim2657/sfs_main/sfs_pristine_assembly.sif",
+    "shim": "hpc/tools/main_pristine_batch.cpp, upstream main.cpp with viewer statements removed (GUI only; Xvfb segfaults, diag job 32976970)",
+    "invocation": "./Hierarchy-Batch 8 (TOP_k 5, BRANCH_b 3, NO_BASE_INFO, state 0 = straight-line space+f+s+g)",
+    "reads": "class/data_path.h POT_A block: one Breakline_0 per piece, mesh, axis, both surfaces, ground-truth graph and T files"
+  },
+  "parameters": {
+    "dataset": "this run's own dataset/SfS_pp, bound to /Dataset/SfS_pp (the harness binds original_samples and would write Result/ into the frozen corpus)",
+    "identical_between_arms": [
+      "mesh (full resolution)",
+      "axis",
+      "Surface_0",
+      "Surface_1",
+      "Ground Truth graph and T files"
+    ],
+    "differing_between_arms": [
+      "the 8 Breakline_0 files"
+    ],
+    "breakline_source": "frozen corpus Breaklines/Pot_A_Piece_NN_Breakline_0.pcd",
+    "default_only": true,
+    "no_sfs_variables": true
+  },
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+    "corpus_is_input": true
+  },
+  "status": "complete",
+  "jobid": "33780523",
+  "results": {
+    "sherds": "8 / 8 (100 %)",
+    "joins": "15 / 15 (100 %)",
+    "assembler_candidates": {
+      "lcs_out": 124,
+      "kept_after_pruning": 70
+    },
+    "reference_on_this_object": "8/8 sherds, 15/15 joins -- reached",
+    "assembler_binary_md5": "0fd8d707ceb3f9cffd08d8951c43ccda",
+    "result_files": "out/Result/1. Acc.txt + Top_1_Edgeline_*.xyz + T_*to_*.txt"
+  },
+  "deviations": [
+    "first submission 33780064 died in 2 s: apptainer 1.3.3 has no --mkdir; bind targets are auto-created, flag dropped, resubmitted (no parameter changed)",
+    "job 33780374 produced the same 8/8 + 15/15 but exited 11 on my own fail-fast, which tripped on the by-design-absent Surfaces/Pot_A_Piece_NN_Surface_F.pcd; check narrowed, clean re-run 33780523 exit 0 -- the two runs agree on every number and on the binary md5",
+    "the arm's dataset dir must be bound as /data:/data in addition to the /Dataset bind, or the corpus symlinks dangle and the assembler loads 0 axis files",
+    "in out/inputs.md5 the byte column for corpus rows is the symlink's own size, not the file's",
+    "index.tsv verdict/human_note left EMPTY"
+  ],
+  "geometry_deleted": "staged geometry deleted after the arms were read; see out/GEOMETRY_DELETED.txt"
+}
