@@ -256,6 +256,35 @@ def lane(piece, k):
         rest[stretch["i0"]:stretch["i1"] + 1] = False
     Rest = BL[rest]
 
+    # ---- which of OUR dump labels is nearest each reference dot (Q2/Q5: does their line lie on
+    # material the pipeline dropped?).  Dump ids are survivors re-issued in DESCENDING SIZE order
+    # (ticket 283), so an id here names a size rank on this piece, never 293's PAIR or classify face.
+    Pt = cKDTree(P)
+    _, nidx = Pt.query(BL)
+    nlab = labels[nidx]
+    near = {}
+    isk = np.isin(nlab, kept)
+    near["near_neg1"] = round(float(100.0 * (nlab == -1).mean()), 2)
+    near["near_kept"] = round(float(100.0 * isk.mean()), 2)
+    near["near_dropped"] = round(float(100.0 * ((nlab != -1) & ~isk).mean()), 2)
+    vals, cnts = np.unique(nlab, return_counts=True)
+    top = int(vals[int(np.argmax(cnts))])
+    near["near_top_lab"] = ("c%d" % top) if top >= 0 else "-1"
+    near["near_top_share"] = round(float(100.0 * cnts.max() / cnts.sum()), 2)
+    near["near_top_n"] = int((labels == top).sum())
+    if stretch["n"] > 0:
+        _, sidx = Pt.query(Sd)
+        slab = labels[sidx]
+        sk = np.isin(slab, kept)
+        near["s_near_neg1"] = round(float(100.0 * (slab == -1).mean()), 2)
+        near["s_near_kept"] = round(float(100.0 * sk.mean()), 2)
+        near["s_near_dropped"] = round(float(100.0 * ((slab != -1) & ~sk).mean()), 2)
+        sv, sc = np.unique(slab, return_counts=True)
+        stop = int(sv[int(np.argmax(sc))])
+        near["s_near_top_lab"] = ("c%d" % stop) if stop >= 0 else "-1"
+        near["s_near_top_share"] = round(float(100.0 * sc.max() / sc.sum()), 2)
+        near["s_near_top_n"] = int((labels == stop).sum())
+
     Nr = SN[rides]
     wt = faces_test(BL, K, Ktree, Sride, Stree, Nr)
     if stretch["n"] >= 3:
@@ -360,6 +389,7 @@ def lane(piece, k):
         our_area=round(oa["area"], 1), their_area=round(aa["area"], 1),
         our_a_span=round(oa["a_span"], 3), their_a_span=round(aa["a_span"], 3),
         our_s_span=round(oa["s_span"], 3), their_s_span=round(aa["s_span"], 3),
+        **near,
         ours_n=ours_n, ours_arc=round(ours_arc, 3) if ours_arc == ours_arc else float("nan"),
         ours_arc293=ours_arc293, ours_ride=ours_ride,
     )
