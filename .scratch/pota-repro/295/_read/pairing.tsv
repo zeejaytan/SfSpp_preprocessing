@@ -1,0 +1,89 @@
+piece	lane	left	right	n_left	d_left_to_right	d_right_to_left
+Pot_C_Piece_03	Bl1	our_c0	authS0	23898	0.3036	0.2365
+Pot_C_Piece_03	Bl1	our_c0	authS1	23898	7.7060	5.8263
+Pot_C_Piece_03	Bl1	our_c1	authS0	17455	5.9809	7.0826
+Pot_C_Piece_03	Bl1	our_c1	authS1	17455	15.0214	12.3909
+Pot_C_Piece_03	Bl1	our_dropped	authS0	15427	5.7200	
+Pot_C_Piece_03	Bl1	our_dropped	authS1	15427	0.3210	
+Pot_C_Piece_03	Bl1	our_unclustered	authS0	14430	4.9800	
+Pot_C_Piece_03	Bl1	our_unclustered	authS1	14430	15.7863	
+Pot_I_Piece_25	Bl0	our_c0	authS0	2321	6.8915	6.9300
+Pot_I_Piece_25	Bl0	our_c0	authS1	2321	0.2967	0.2422
+Pot_I_Piece_25	Bl0	our_c1	authS0	3072	0.2988	0.2494
+Pot_I_Piece_25	Bl0	our_c1	authS1	3072	6.9129	6.8975
+Pot_I_Piece_25	Bl0	our_dropped	authS0	2633	3.4605	
+Pot_I_Piece_25	Bl0	our_dropped	authS1	2633	3.5114	
+Pot_I_Piece_25	Bl0	our_unclustered	authS0	1788	1.1513	
+Pot_I_Piece_25	Bl0	our_unclustered	authS1	1788	5.8836	
+Pot_I_Piece_25	Bl1	our_c0	authS0	2321	6.8915	6.9300
+Pot_I_Piece_25	Bl1	our_c0	authS1	2321	0.2967	0.2422
+Pot_I_Piece_25	Bl1	our_c1	authS0	3072	0.2988	0.2494
+Pot_I_Piece_25	Bl1	our_c1	authS1	3072	6.9129	6.8975
+Pot_I_Piece_25	Bl1	our_dropped	authS0	2633	3.4605	
+Pot_I_Piece_25	Bl1	our_dropped	authS1	2633	3.5114	
+Pot_I_Piece_25	Bl1	our_unclustered	authS0	1788	1.1513	
+Pot_I_Piece_25	Bl1	our_unclustered	authS1	1788	5.8836	
+Pot_D_Piece_22	Bl0	our_c0	authS0	5642	0.2925	0.2617
+Pot_D_Piece_22	Bl0	our_c0	authS1	5642	4.2942	4.2092
+Pot_D_Piece_22	Bl0	our_c1	authS0	5027	3.8165	4.8331
+Pot_D_Piece_22	Bl0	our_c1	authS1	5027	0.2981	0.2992
+Pot_D_Piece_22	Bl0	our_dropped	authS0	2535	2.2017	
+Pot_D_Piece_22	Bl0	our_dropped	authS1	2535	2.7378	
+Pot_D_Piece_22	Bl0	our_unclustered	authS0	6681	2.7297	
+Pot_D_Piece_22	Bl0	our_unclustered	authS1	6681	0.8991	
+Pot_D_Piece_27	Bl0	our_c0	authS0	2237	0.3412	0.2531
+Pot_D_Piece_27	Bl0	our_c0	authS1	2237	8.1337	8.0880
+Pot_D_Piece_27	Bl0	our_c1	authS0	2500	8.0572	8.0543
+Pot_D_Piece_27	Bl0	our_c1	authS1	2500	0.3802	0.2522
+Pot_D_Piece_27	Bl0	our_dropped	authS0	2220	4.5355	
+Pot_D_Piece_27	Bl0	our_dropped	authS1	2220	5.1282	
+Pot_D_Piece_27	Bl0	our_unclustered	authS0	2316	7.6643	
+Pot_D_Piece_27	Bl0	our_unclustered	authS1	2316	7.9823	
+Pot_D_Piece_27	Bl1	our_c0	authS0	2237	0.3412	0.2531
+Pot_D_Piece_27	Bl1	our_c0	authS1	2237	8.1337	8.0880
+Pot_D_Piece_27	Bl1	our_c1	authS0	2500	8.0572	8.0543
+Pot_D_Piece_27	Bl1	our_c1	authS1	2500	0.3802	0.2522
+Pot_D_Piece_27	Bl1	our_dropped	authS0	2220	4.5355	
+Pot_D_Piece_27	Bl1	our_dropped	authS1	2220	5.1282	
+Pot_D_Piece_27	Bl1	our_unclustered	authS0	2316	7.6643	
+Pot_D_Piece_27	Bl1	our_unclustered	authS1	2316	7.9823	
+Pot_E_Piece_16	Bl0	our_c0	authS0	11081	0.3251	0.2357
+Pot_E_Piece_16	Bl0	our_c0	authS1	11081	7.4864	7.6432
+Pot_E_Piece_16	Bl0	our_c1	authS0	14989	7.5897	7.4376
+Pot_E_Piece_16	Bl0	our_c1	authS1	14989	0.2987	0.2430
+Pot_E_Piece_16	Bl0	our_dropped	authS0	12432	10.4113	
+Pot_E_Piece_16	Bl0	our_dropped	authS1	12432	7.9336	
+Pot_E_Piece_16	Bl0	our_unclustered	authS0	6741	8.4496	
+Pot_E_Piece_16	Bl0	our_unclustered	authS1	6741	6.1002	
+Pot_H_Piece_02	Bl1	our_c0	authS0	17678	0.2908	0.2360
+Pot_H_Piece_02	Bl1	our_c0	authS1	17678	7.3648	6.2272
+Pot_H_Piece_02	Bl1	our_c1	authS0	14614	6.5447	7.3689
+Pot_H_Piece_02	Bl1	our_c1	authS1	14614	0.3137	0.2377
+Pot_H_Piece_02	Bl1	our_dropped	authS0	7906	6.4437	
+Pot_H_Piece_02	Bl1	our_dropped	authS1	7906	13.4835	
+Pot_H_Piece_02	Bl1	our_unclustered	authS0	7670	4.2043	
+Pot_H_Piece_02	Bl1	our_unclustered	authS1	7670	6.4092	
+Pot_H_Piece_10	Bl1	our_c0	authS0	4872	0.3008	0.2520
+Pot_H_Piece_10	Bl1	our_c0	authS1	4872	8.2919	7.0086
+Pot_H_Piece_10	Bl1	our_c1	authS0	3718	6.9646	8.1243
+Pot_H_Piece_10	Bl1	our_c1	authS1	3718	0.2983	0.2522
+Pot_H_Piece_10	Bl1	our_dropped	authS0	4648	6.0441	
+Pot_H_Piece_10	Bl1	our_dropped	authS1	4648	6.3134	
+Pot_H_Piece_10	Bl1	our_unclustered	authS0	4481	4.1844	
+Pot_H_Piece_10	Bl1	our_unclustered	authS1	4481	5.7183	
+Pot_I_Piece_06	Bl1	our_c0	authS0	19380	0.2944	0.2309
+Pot_I_Piece_06	Bl1	our_c0	authS1	19380	9.2748	9.4498
+Pot_I_Piece_06	Bl1	our_c1	authS0	23564	9.7932	9.0282
+Pot_I_Piece_06	Bl1	our_c1	authS1	23564	0.2937	0.2339
+Pot_I_Piece_06	Bl1	our_dropped	authS0	14378	6.6001	
+Pot_I_Piece_06	Bl1	our_dropped	authS1	14378	10.9742	
+Pot_I_Piece_06	Bl1	our_unclustered	authS0	6989	5.5172	
+Pot_I_Piece_06	Bl1	our_unclustered	authS1	6989	5.4146	
+Pot_I_Piece_13	Bl1	our_c0	authS0	14442	0.2993	0.2424
+Pot_I_Piece_13	Bl1	our_c0	authS1	14442	11.0010	10.9079
+Pot_I_Piece_13	Bl1	our_c1	authS0	16463	10.8910	11.1240
+Pot_I_Piece_13	Bl1	our_c1	authS1	16463	0.2993	0.2322
+Pot_I_Piece_13	Bl1	our_dropped	authS0	14009	5.6054	
+Pot_I_Piece_13	Bl1	our_dropped	authS1	14009	12.3255	
+Pot_I_Piece_13	Bl1	our_unclustered	authS0	7199	4.4728	
+Pot_I_Piece_13	Bl1	our_unclustered	authS1	7199	6.0522	
