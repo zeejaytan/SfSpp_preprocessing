@@ -297,7 +297,7 @@ supports our line over theirs.
   committed copies are `.scratch/pota-repro/297/` on this branch. Run copies:
   `scripts/` in the run directory.
 - Geometry: the staged trees were deleted by the job and counted in `out/GEOMETRY_DELETED.txt` (58 real
-  files / 47.26 MB per repeat, 2 symlinks each into the read-only corpus). Kept: the two line files
+  files, 46.97-47.26 MB per repeat, 2 symlinks each into the read-only corpus). Kept: the two line files
   (`out/geom/authors.Bl0.pcd`, `out/geom/rep{1,2,3}/ours.Bl0.pcd`) plus our Bl1 and both surfaces
   per repeat, and the picture.
 - `runs/index.tsv` carries both submits of this ticket, verdict and `human_note` left empty:
