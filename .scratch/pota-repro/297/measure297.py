@@ -269,20 +269,39 @@ def analyse_rep(ctx, run, rep, keep_arrays=False):
                           mean_gap_mm=round(mean_gap, 3), threshold_mm=thr)
 
     # ---- the chord: their dots from the one nearest our dot i to the one nearest our dot j ----
+    # Their line is a CLOSED loop, so "from the one nearest our i to the one nearest our j" names
+    # two arcs, not one.  It is the shorter arc that answers our detour: the other one runs the
+    # long way round through the whole stretch where their line already coincides with ours, so it
+    # cannot be the counterpart of a detour.  (Measured, ticket 297's first run: the min..max slice
+    # gave their dots 12..123, a 199.80 mm path whose two ends are 19.92 mm apart -- a polygon that
+    # wraps most of the loop and is not a chord.  Both arcs' patch numbers are reported; the
+    # verdict reads the shorter one, which is the geometry the definition names.)
     ai = int(np.argmin(((auth - ours[i]) ** 2).sum(1)))
     aj = int(np.argmin(((auth - ours[j]) ** 2).sum(1)))
-    lo, hi = min(ai, aj), max(ai, aj)
-    chord = auth[lo:hi + 1]
+    n_a = len(auth)
+    fwd = (aj - ai) % n_a
+    if fwd <= n_a - fwd:
+        idx_chord = [(ai + k) % n_a for k in range(fwd + 1)]
+        idx_other = [(ai - k) % n_a for k in range(n_a - fwd + 1)]
+    else:
+        idx_chord = [(ai - k) % n_a for k in range(n_a - fwd + 1)]
+        idx_other = [(ai + k) % n_a for k in range(fwd + 1)]
+    chord = auth[idx_chord]
     step = np.linalg.norm(np.diff(chord, axis=0), axis=1) if len(chord) > 1 else np.zeros(0)
-    rec["chord"] = dict(lo=int(lo), hi=int(hi), n_dots=int(len(chord)),
+    step_other = np.linalg.norm(np.diff(auth[idx_other], axis=0), axis=1)
+    rec["chord"] = dict(lo=int(idx_chord[0]), hi=int(idx_chord[-1]), idx=[int(k) for k in idx_chord],
+                        direction="forward along their order" if idx_chord[1 % len(idx_chord)] == (ai + 1) % n_a else "backward along their order",
+                        n_dots=int(len(chord)),
                         polyline_mm=round(float(step.sum()), 2),
                         straight_mm=round(float(np.linalg.norm(chord[-1] - chord[0])), 2),
+                        other_arc_mm=round(float(step_other.sum()), 2),
+                        other_arc_n_dots=int(len(idx_other)),
                         own_detour_arc_mm=round(arc, 2))
 
     # ---- (a) the authors' dots against the mesh, chord and rest separately ----
     da = pts_to_mesh(auth, T1, T2, T3)
     in_chord = np.zeros(len(auth), dtype=bool)
-    in_chord[lo:hi + 1] = True
+    in_chord[idx_chord] = True
     rec["dist"] = dict(
         auth_all=dist_stats(da),
         auth_chord=dist_stats(da[in_chord]),
@@ -290,8 +309,9 @@ def analyse_rep(ctx, run, rep, keep_arrays=False):
     )
     seg = step if len(step) else np.zeros(0)
     if len(seg):
-        f = da[lo:hi]
-        g = da[lo + 1:hi + 1]
+        dc = da[idx_chord]
+        f = dc[:-1]
+        g = dc[1:]
         fl = 0.5 * (f + g) > REFUTE_FLOAT_MM
         rec["dist"]["auth_chord"]["length_share_gt_1.0mm"] = round(100.0 * float(seg[fl].sum() / seg.sum()), 2)
         rec["dist"]["auth_chord"]["length_share_le_0.5mm"] = round(100.0 * float(seg[0.5 * (f + g) <= CONFIRM_CHORD_MM].sum() / seg.sum()), 2)

@@ -9,6 +9,7 @@ Usage:  render297.py <run dir> [rep]
 Writes: <run>/out/png/p297_D_22_Bl0_chord.png
 """
 import importlib.util
+import json
 import os
 import sys
 
@@ -95,7 +96,7 @@ def main(argv):
     poly = r["_poly"]
     c, n, u, v = r["_plane"]
     i, j = r["stretch"]["i"], r["stretch"]["j"]
-    lo, hi = r["chord"]["lo"], r["chord"]["hi"]
+    ci = np.array(r["chord"]["idx"], dtype=int); lo, hi = int(ci[0]), int(ci[-1])
 
     ours_l = lift(ours, verts, faces)
     auth_l = lift(auth, verts, faces)
@@ -127,8 +128,9 @@ def main(argv):
     o2 = np.column_stack([(ours - c) @ u, (ours - c) @ v])
     a2 = np.column_stack([(auth - c) @ u, (auth - c) @ v])
     mid = p2.mean(0)
+    pad_z = float(max(np.ptp(p2[:, 0]), np.ptp(p2[:, 1]))) / 2.0 + 4.0
     for ax, pad, ttl in ((axw, 26.0, "MESH, section cut along the face plane (u-v), whole stretch"),
-                         (axz, 9.0, "zoom: the enclosed patch, both lines, the mesh it sits on")):
+                         (axz, pad_z, "zoom: the enclosed patch, both lines, the mesh it sits on")):
         keep = (np.abs(t2[:, 0] - mid[0]) < pad) & (np.abs(t2[:, 1] - mid[1]) < pad)
         ax.scatter(t2[keep, 0], t2[keep, 1], s=3.0, c=C_MESH, alpha=0.55, linewidths=0, rasterized=True)
         if mask.any():
@@ -139,7 +141,7 @@ def main(argv):
                                              edgecolors="#5a2400", linewidths=0.3, alpha=0.75))
         ax.plot(o2[i:j + 1, 0], o2[i:j + 1, 1], color=C_OURS, lw=3.4, solid_capstyle="round")
         ax.plot(o2[:, 0], o2[:, 1], color=C_OURS, lw=2.0, alpha=0.75)
-        ax.plot(a2[lo:hi + 1, 0], a2[lo:hi + 1, 1], color=C_AUTH, lw=2.6, ls=(0, (6, 3)))
+        ax.plot(a2[ci, 0], a2[ci, 1], color=C_AUTH, lw=2.6, ls=(0, (6, 3)))
         ax.plot(a2[:, 0], a2[:, 1], color=C_AUTH, lw=1.5, ls=(0, (6, 3)), alpha=0.75)
         ax.plot(p2[:, 0], p2[:, 1], color="#5a2400", lw=0.6, alpha=0.5)
         ax.set_xlim(mid[0] - pad, mid[0] + pad)
@@ -149,7 +151,7 @@ def main(argv):
         ax.set_xlabel("u mm (face plane)", fontsize=9)
         ax.set_ylabel("v mm (face plane)", fontsize=9)
         ax.set_title(ttl, fontsize=11)
-    axw.annotate("", xy=a2[hi], xytext=a2[lo], arrowprops=dict(arrowstyle="<->", color="#000000", lw=1.2))
+    axw.annotate("", xy=a2[ci[-1]], xytext=a2[ci[0]], arrowprops=dict(arrowstyle="<->", color="#000000", lw=1.2))
     p = r["patch"]
     box = ("our detour: dots %d-%d (%d of %d), arc %.1f mm\n"
            "their chord: dots %d-%d (%d), polyline %.1f mm straight %.1f mm\n"
@@ -165,7 +167,7 @@ def main(argv):
                 p.get("offset_mm", {}).get("p5", 0.0), p.get("offset_mm", {}).get("median", 0.0),
                 p.get("offset_mm", {}).get("p95", 0.0), p.get("share_within_1mm_area", 0.0),
                 p.get("facelike_area_mm2", 0.0), p.get("facelike_share_area", 0.0))
-    axz.text(0.015, 0.985, box, transform=axz.transAxes, va="top", ha="left", fontsize=9,
+    axw.text(0.015, 0.03, box, transform=axw.transAxes, va="bottom", ha="left", fontsize=8.6,
              family="monospace", bbox=dict(fc="white", ec="#888888", alpha=0.93))
 
     hist = p.get("tilt_histogram", [])
@@ -197,9 +199,14 @@ def main(argv):
                 np.median([q["cov_ours"] for q in g["fresh"].values()]) if g["fresh"] else float("nan"),
                 g.get("spread_median_mm") or 0.0, g.get("spread_cov_ours_pp") or 0.0,
                 "PASS" if g.get("gate_pass") else "FAIL/UNKNOWN"), ha="center", fontsize=12)
+    try:
+        with open(os.path.join(run, "out", "build.json")) as f:
+            commit = (json.load(f).get("commit") or "?")[:12]
+    except Exception:
+        commit = (os.environ.get("SOURCE_COMMIT") or "?")[:12]
     fig.text(0.5, 0.012,
              "repeat %s  |  commit %s  |  our %d dots, theirs %d  |  mesh %s, %d triangles  |  face plane: %d points, rms %.3f mm  |  faces drawn %d of %d, decimation for display only"
-             % (rep, (os.environ.get("SOURCE_COMMIT") or "?")[:12], len(ours), len(auth), r["mesh_obj"],
+             % (rep, commit, len(ours), len(auth), r["mesh_obj"],
                 r["mesh_tris"], r["plane"]["n_pts"], r["plane"]["rms_mm"], nf_drawn, nf_total),
              ha="center", fontsize=8.2, color="#333333")
     out = os.path.join(run, "out", "png")
