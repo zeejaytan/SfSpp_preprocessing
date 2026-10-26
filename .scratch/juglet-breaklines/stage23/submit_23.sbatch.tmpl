@@ -56,7 +56,7 @@ hash_inputs() {
     pot=$(pot_of "$p")
     if [ "$pot" = "Pot_A" ]; then
       f="$CORP/Point/Pot_A/${p}_Point.pcd"; [ -f "$f" ] && md5sum "$f"
-      f="$CORP/Mesh/Pot_A/${p}_Mesh.obj"; [ -f "$f" ] && md5sum "$f"
+      f="$CORP/Mesh/${p}_Mesh.obj"; [ -f "$f" ] && md5sum "$f"
     else
       f="$CANON/Dataset/Point/$pot/${p}_Point.pcd"; [ -f "$f" ] && md5sum "$f"
       f="$CANON/Dataset/Mesh/$pot/${p}_Mesh.obj"; [ -f "$f" ] && md5sum "$f"

@@ -76,7 +76,7 @@ fi
 
 # the binary's own per-piece status rows, prefixed with the arm and the piece
 if [ -s "$STATUS_RAW" ]; then
-  awk -v a="$TAG" -v p="$POT" -v q="$PIECE" 'BEGIN{OFS="\t"} {print a,p,q,$0}' "$STATUS_RAW" >> "$CELLROOT/status23.tsv"
+  awk -v a="$TAG" -v p="$POT" 'BEGIN{OFS="\t"} {print a,p,$0}' "$STATUS_RAW" >> "$CELLROOT/status23.tsv"
 else
   printf "%s\t%s\t%s\t%s\tNO_STATUS_ROW\n" "$TAG" "$POT" "$PIECE" "mesh_exit=$MS" >> "$CELLROOT/status23.tsv"
 fi

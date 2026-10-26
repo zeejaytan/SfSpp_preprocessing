@@ -16,7 +16,7 @@ DSET=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset
 CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
 if [ "$POT" = "Pot_A" ]; then
   CLOUD=$CORP/Point/Pot_A/"$P"_Point.pcd
-  MESH=$CORP/Mesh/Pot_A/"$P"_Mesh.obj
+  MESH=$CORP/Mesh/"$P"_Mesh.obj
 else
   CLOUD=$DSET/Point/"$POT"/"$P"_Point.pcd
   MESH=$DSET/Mesh/"$POT"/"$P"_Mesh.obj
