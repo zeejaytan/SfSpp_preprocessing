@@ -1,6 +1,6 @@
 # Ticket 300 - stage the reassembled Pot C (ours vs the authors'), and say whether C 01's gap cost a seat
 
-Status: in-progress
+Status: done (accepted: both arms rebuild the same four pieces and the transform convention is proved by a measured join test with a negative control; C 01's joins close to 0.035-0.100 mm at 0.44-0.63 deg / 2.55-4.35 mm, inside the assembler's own bar and no worse than its neighbours; the scan gap is real but sits >=36 mm inside the line that seats the piece, so it did not cost a seat. NEEDS-EYE OUTSTANDING: the conservator has not yet opened pota300_potC_arms / pota300_potC_c01, and the gate caveats stand as recorded in section 5 -- check_stage_pair.py exits 1 in its own Windows temp teardown, the two loader gates exit 1 on manifests that live in preview/retired/ and are absent from HEAD)
 Working in: chat on Thinkbook16 (2026-10-26)
 Branch: 300-pot-c-eye, in /c/PR/worktrees/sfs/300
 Answers: E1
