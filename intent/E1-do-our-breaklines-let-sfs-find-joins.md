@@ -2037,3 +2037,22 @@ coverage against 90) must not be quoted as clearing or missing it on this run al
 Next: name the two remaining families -- Pot I 25's contour (ticket 293) and the eight-lane extent
 family -- and then take the extraction result to the join-level question this entry actually asks,
 which no run since the strip has measured.
+
+
+**2026-10-27 — on sherds this small there is no surface for a breakline to be the edge of (ticket 20).**
+Ticket 07 rebuilt the Juglet from its nine meshes with today's code and only four sherds came out with
+any surface at all, so the run was paused and the cause was taken first. The walls exist: all nine meshes
+are watertight and 2.09–2.90 mm thick, with two or more surface sheets on 78–99 % of ray samples. What the
+pipeline never produces is inside-versus-outside. On the four pieces whose two clusters could be measured,
+their mean normals point the same way (+0.46 to +0.92, where opposite walls give about −1); only Pot A 07
+gives **−0.9989**. So the segmentation splits a sherd along its arc rather than through its thickness, and
+the piece that ends up with one cluster is thrown away — no surface, two "Source file not found" warnings,
+exit 0. Five of nine sherds disappear without a single failure.
+
+This does not move the 281/292 tally: that was measured on the released corpus, where the pieces are
+54–173 mm across and the two walls do come apart. It does draw a boundary on what the number covers. A
+breakline is the boundary of Surface_0, so **where the surface stage fails the breakline question is not
+answered, it is unasked** — and until the segmentation separates the two walls on a sherd much under
+50 mm, no lane measurement on such material means anything. Weight: none on the tally, decisive on its
+scope. Next: ticket 20's lead reading names the two candidate repairs (more neighbours for the normals,
+or a one-wall surface instead of discarding the piece); the conservator picks which is tried first.
