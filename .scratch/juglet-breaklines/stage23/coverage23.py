@@ -13,7 +13,7 @@ surface this records how much of that piece's own cloud the surface lies on:
 A coarse surface that is one wall of a sherd covers a wall's worth of cloud; one that is the
 whole sherd covers more. The number is a description, not a threshold and not a verdict.
 
-usage: coverage23.py <cellroot>   ->  <cellroot>/coverage23.tsv
+usage: coverage23.py <cellroot> [out.tsv]   ->  <cellroot>/coverage23.tsv by default
 """
 import os
 import sys
@@ -35,23 +35,80 @@ def cloud_path(pot, piece):
     return os.path.join(CANON, "Dataset", "Point", pot, piece + "_Point.pcd")
 
 
+def _pcd_header(fh):
+    """FIELDS/SIZE/TYPE/COUNT/POINTS/DATA of a PCD, and the offsets of x, y and z.
+
+    The corpus does not agree on either point order or encoding: the 143 released clouds are
+    DATA binary with FIELDS normal_x normal_y normal_z x y z _ (a 4-byte padding field last),
+    while the derived and Juglet clouds are DATA ascii with FIELDS x y z ... . Reading columns
+    0,1,2 is therefore wrong for the released clouds -- it returns normals as coordinates."""
+    fields, sizes, types, counts = [], [], [], []
+    n, data = 0, "ascii"
+    while True:
+        line = fh.readline()
+        if not line:
+            break
+        s = line.decode("ascii", "replace").strip()
+        if not s or s.startswith("#"):
+            continue
+        key, _, val = s.partition(" ")
+        parts = val.split()
+        if key == "FIELDS":
+            fields = parts
+        elif key == "SIZE":
+            sizes = [int(v) for v in parts]
+        elif key == "TYPE":
+            types = parts
+        elif key == "COUNT":
+            counts = [int(v) for v in parts]
+        elif key == "POINTS":
+            n = int(parts[0])
+        elif key == "DATA":
+            data = parts[0]
+            break
+    if not fields or not sizes or not types:
+        raise ValueError("PCD header incomplete")
+    if not counts:
+        counts = [1] * len(fields)
+    offs, acc = [], 0
+    for sz, ct in zip(sizes, counts):
+        offs.append(acc)
+        acc += sz * ct
+    return fields, sizes, types, counts, offs, acc, n, data
+
+
 def read_pcd_xyz(path, maxpts=MAXPTS):
-    """xyz from an ASCII PCD, strided down to maxpts. Reads only; never writes."""
+    """xyz of a PCD (DATA ascii or DATA binary), strided down to maxpts. Reads only; never writes."""
     with open(path, "rb") as fh:
-        n = 0
-        for line in fh:
-            if line.startswith(b"POINTS"):
-                n = int(line.split()[1])
-            if line.startswith(b"DATA"):
-                break
-        body = fh.read().splitlines()
-    stride = max(1, len(body) // maxpts)
-    rows = body[::stride]
-    out = np.empty((len(rows), 3))
-    for i, line in enumerate(rows):
-        f = line.split()
-        out[i] = (float(f[0]), float(f[1]), float(f[2]))
-    return out, n, stride
+        fields, sizes, types, counts, offs, step, n, data = _pcd_header(fh)
+        try:
+            ix, iy, iz = (fields.index(c) for c in ("x", "y", "z"))
+        except ValueError:
+            raise ValueError("no x/y/z field in %s" % path)
+        if data == "ascii":
+            body = fh.read().splitlines()
+            stride = max(1, len(body) // maxpts)
+            rows = body[::stride]
+            base = [sum(counts[:i]) for i in range(len(fields))]
+            cx, cy, cz = base[ix], base[iy], base[iz]
+            out = np.empty((len(rows), 3))
+            for i, line in enumerate(rows):
+                f = line.split()
+                out[i] = (float(f[cx]), float(f[cy]), float(f[cz]))
+            return out, n, stride
+        if data == "binary":
+            raw = fh.read(n * step)
+            dt = np.dtype({"names": ["f%d" % i for i in range(len(fields))],
+                           "formats": [np.dtype("<%s%d" % (types[i].lower(), sizes[i]))
+                                       for i in range(len(fields))],
+                           "offsets": offs, "itemsize": step})
+            rec = np.frombuffer(raw, dtype=dt, count=n)
+            stride = max(1, n // maxpts)
+            out = np.empty((len(rec[::stride]), 3))
+            for axis, i in enumerate((ix, iy, iz)):
+                out[:, axis] = rec["f%d" % i][::stride].astype(np.float64)
+            return out, n, stride
+    raise ValueError("unsupported PCD DATA %r in %s" % (data, path))
 
 
 def extents(p):
@@ -73,7 +130,7 @@ def main():
     root = sys.argv[1]
     rows = read_cells(os.path.join(root, "cells23.tsv"))
     cache = {}
-    out = os.path.join(root, "coverage23.tsv")
+    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(root, "coverage23.tsv")
     cols = ["tag", "pot", "piece", "outcome", "n_surf", "n0", "n1",
             "ext0_x", "ext0_y", "ext0_z", "diag0", "cov0_2mm",
             "ext1_x", "ext1_y", "ext1_z", "diag1", "cov1_2mm",

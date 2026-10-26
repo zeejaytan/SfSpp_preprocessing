@@ -22,11 +22,17 @@ from measure_arm23 import load_ply, read_cells  # noqa: E402
 from coverage23 import cloud_path, read_pcd_xyz  # noqa: E402
 
 DEFAULT_PANELS = [
-    "A:Juglet:Juglet_Piece_1",
-    "B:Juglet:Juglet_Piece_3",
+    # the two pieces that keep one cluster at today's defaults, and what B does with each
     "A:Juglet:Juglet_Piece_3",
+    "B:Juglet:Juglet_Piece_3",
+    "A:Juglet:Juglet_Piece_5",
     "B:Juglet:Juglet_Piece_5",
+    # the two pieces that reach zero clusters at today's defaults, and what C does with each
+    "A:Juglet:Juglet_Piece_2",
     "C:Juglet:Juglet_Piece_2",
+    "C:Juglet:Juglet_Piece_5",
+    # references: a Juglet piece that already writes two surfaces, and a healthy Pot A wall pair
+    "A:Juglet:Juglet_Piece_1",
     "A:Pot_A:Pot_A_Piece_07",
 ]
 
@@ -41,9 +47,14 @@ def main():
     rows = read_cells(os.path.join(cellroot, "cells23.tsv"))
     idx = {(r["tag"], r["pot"], r["piece"]): r for r in rows}
     clouds = {}
-    fig, axes = plt.subplots(2, 3, figsize=(13.6, 8.6), dpi=110)
-    axes = axes.ravel()
+    ncol = 4
+    nrow = (len(panels) + ncol - 1) // ncol
+    fig, axes = plt.subplots(nrow, ncol, figsize=(4.5 * ncol, 4.3 * nrow), dpi=110)
+    axes = np.atleast_1d(axes).ravel()
+    for ax in axes:
+        ax.set_visible(False)
     for ax, spec in zip(axes, panels):
+        ax.set_visible(True)
         arm, pot, piece = spec.split(":")
         key = (pot, piece)
         if key not in clouds:

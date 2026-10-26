@@ -1,0 +1,27 @@
+{
+  "runid": "20261027-0433_e7e6086_p23-switch-grid",
+  "tag": "p23-switch-grid",
+  "ticket": ".scratch/juglet-breaklines/issues/23-write-one-cluster-as-one-surface.md",
+  "commit": "e7e608601e341fa2d16e5c9580d93e4919af0a6b",
+  "instruments_commit": "b4aff288ff2f8b1fc8fdcbf425c6f6913b500520",
+  "parent_commit_pre_change": "158ddc6",
+  "purpose": "Ticket 23: does a one-cluster sherd get written as one surface, and does the scaled patch floor empty a small sherd? Every switch default reproduces today.",
+  "job": "p23-grid: build new (e7e6086) and pre-change (158ddc6) with apptainer+pcl_191_nurbs.sif, run 6 arms x 17 pieces, measure surface pairs, measure what each surface covers of its own cloud, prove defaults and inputs.",
+  "pieces": "Juglet_Piece_1..9 (Dataset tree) + Pot_A_Piece_01..08 (frozen corpus, read-only)",
+  "tags": {
+    "A": "new binary, no switches (today)",
+    "A2": "new binary, second pass (run-to-run floor; the boundary fit draws pcl::RandomSample(10000) unseeded)",
+    "A_old": "pre-change binary at 158ddc6, no switches (defaults proof)",
+    "B": "SFS_SINGLE_CLUSTER=write",
+    "C0": "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto (floor not capped)",
+    "C": "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.01"
+  },
+  "unchanged_by_design": "3 mm reassignment radius, rhoD 1.0, planeDistMM 2.0, 0.6 mm default density step, paperTheta, merge rule, mesh stage, corpus",
+  "boot_axes": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot/Juglet_Piece_N_boot_Axis.xyz",
+  "read_only_inputs": [
+    "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+    "/opt/sfs-pristine"
+  ],
+  "geometry_policy": "every cell's stage (cloud symlink, mesh symlink, copied axis, temp PLYs) is deleted when the cell ends, with a counted record per extension in out/cells/geometry_counts.tsv; surfaces, logs and the status rows are kept",
+  "not_scored": "no verdict and no arm choice are written here; cells23.tsv, status23.tsv, measure23.tsv, coverage23.tsv and the renders are the record"
+}
