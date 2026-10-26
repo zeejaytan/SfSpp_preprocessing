@@ -1,0 +1,40 @@
+Ticket 300: Pot C rebuilt both ways, C 01 measured, and its gap located 36 mm off the line that seats it
+
+The conservator asked to see the Pot C reassembly with his own eye, ours beside the
+authors', and to know whether C 01's interior-surface scan gap cost it a seat. Pot C
+scored 4/4 sherds and 5/5 joins in both arms of ticket 298, but a pot-level score does
+not certify a single piece, and the assembler reads Breakline_0 - the boundary of the
+interior surface, the one surface carrying the gap.
+
+Staging needed the geometry, and 298 stored only transforms, so both reassemblies were
+rebuilt from the corpus meshes and the stored T_0to_0..T_3to_3. The convention was not
+assumed: p_world = R p_local + t was tested against the authors' own Ground Truth
+transforms, whose five joins close at 0.045-0.102 mm, with the pair the GT graph says
+does NOT join (C03-C04) as the control at 12.105 mm; the inverted reading scatters every
+piece hundreds of millimetres. Nothing inverted, nothing fixed. Both arms' stored
+transforms reproduce the same seams (authb 0.020-0.066 mm, oursd 0.035-0.100 mm), so the
+rebuilt geometry is the geometry that was scored.
+
+Measured answer: the gap did not cost a seat. C 01 is the only non-watertight piece of the
+four (C 02-C 04 have zero boundary edges); its four open rims include a 101.97 mm-perimeter
+hole lying 0.29 mm on our interior Surface_0 and, 11.35 mm away across the wall, a
+116.82 mm rim - the scan gap, on the flat of the sherd. Our Bl0 line (207 dots) is 36.1 mm
+from the nearest rim and the authors' Breakline_0 (211 dots) 36.2 mm, so the line the
+assembler reads runs the real break edge, not the gap. C 01's joins close to
+0.035-0.100 mm and its relative pose error is 0.438-0.634 deg / 2.548-4.351 mm (oursd) and
+0.333-0.862 / 3.004-3.886 (authb) - inside the assembler's 20.05 deg / 50 mm tolerance and
+the same order as its neighbours', so it is not the outlier of the hand in either arm.
+
+Weight kept honest: the per-piece 152-153.7 deg "frame-free" rotation is the frame
+difference and is recorded as such; the sub-millimetre per-piece residuals after one
+global alignment are the pose error. One hand, four pieces, one seating each - this settles
+C 01 for these two arms and says nothing about Pot C's other released pieces or Pot J 01.
+
+Staged as visual-qa pairs pota300_potC_arms (authors beside ours, same four pieces, same
+colours, GT vessel frame, z up) and pota300_potC_c01 (C 01 seated with its rims marked in
+magenta and both interior lines drawn). stage_pair.py reports 0.10 mm median surface
+coincidence between the two builds, under the 5.0 mm same-frame gate; check_annotations
+exits 0 and every check_stage_pair assertion passes (its exit 1 is a Windows temp-dir
+teardown bug on its own fixtures). Geometry stays in artifacts/pota300 and
+artifacts/visual-qa (both gitignored); no algorithm, threshold or assembler was touched and
+the campaign was not re-run. Status left at in-progress for the lead.
