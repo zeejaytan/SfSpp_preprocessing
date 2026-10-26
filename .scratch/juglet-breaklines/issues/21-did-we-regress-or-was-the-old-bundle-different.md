@@ -10,7 +10,9 @@ is described.
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 21-did-we-regress-or-was-the-old-bundle-different, in /c/PR/worktrees/sfs/21
 
 ## What is already established
 
