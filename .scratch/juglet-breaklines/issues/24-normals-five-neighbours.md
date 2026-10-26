@@ -2,7 +2,7 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** 23
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 24-normals-five-neighbours, in /c/PR/worktrees/sfs/24
 
@@ -193,3 +193,115 @@ Both grid jobs were green on their own terms: 102 rows of `cells24.tsv` for 102 
 ### Where the numbers live
 
 `out/cells/cells24.tsv` (38 columns: ticket 23's 26 plus calls, nmode, cgalk, radii, nbr_med/min/max, orient_k, floored, capped, cloud_spacing, switch24), `status23.tsv`, `angles24_all.tsv` (370 rows, per call), `measure23.tsv`, `coverage23.tsv`, `defaults_proof_Juglet.tsv` / `defaults_proof_Pot_A.tsv`, `arm_e.txt`, `arm_e_env.txt`, `pick_arm_e.log`, and `out/renders/*.png` (five figures, six rows each) in job 33842352. Per-point angle tables were kept only for Juglet 1, 2, 4, 9 and Pot A 07; everything else died with its stage under the counted record.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**The neighbour count is not the defect. Giving the normals 6 to 14 neighbours instead of 5 changes
+neither their accuracy nor how many sherds yield two surfaces — and on the one sherd whose walls the
+3 mm reassignment cannot reach, the metric radius turned a failed split into a genuine inner/outer pair.**
+That splits this ticket's hypothesis in two, and only the second half survives.
+
+### Where each half stands
+
+**"Normal quality is a function of point count, so more neighbours will separate the walls" — refuted.**
+The angle to the mesh normal does not improve when the neighbourhood grows, on any piece:
+
+| piece | A (count, k=5) | B (radius 2x s, ~6 nbr) | C (3x, ~13 nbr) | D (1.0 mm, ~9 nbr) |
+|---|---|---|---|---|
+| Juglet 1 | 4.34° | 4.01° | 4.30° | 4.06° |
+| Juglet 4 | 6.83° | 6.99° | 8.27° | 7.38° |
+| Juglet 7 | 5.78° | 5.80° | 6.59° | 5.99° |
+| Juglet 9 | 10.53° | 10.22° | 11.75° | 11.28° |
+| Pot A 07 | 0.88° | 0.91° | 0.90° | 0.93° |
+
+(median folded angle per piece, last call = the normals the segmentation used.) The error is **bias, not
+variance**: it comes from fitting a plane over a curved patch, and a bigger patch does not remove it.
+
+Coverage of two surfaces goes the other way: **A 4, A2 4, A_old 4, B 4, C 2, D 2** of nine pieces. Radius
+mode *loses* pieces 4 and 6 rather than gaining any; the only arm that reaches 7 is E, and E is radius
+**plus** ticket 23's four switches, so its gain cannot be credited to the normals.
+
+**The segmentation is still sensitive to *which* neighbours — that half survives.** Piece 7 flips from a
+failed pair under A (n0 1012 / n1 829, 26.3 % of Surface_1's points sitting on Surface_0, mean dot
++0.5621) to the **only genuine wall pair in the whole 17-piece x 6-arm grid** under D (n0 355 / n1 2366,
+share **0.0000**, mean dot **-0.9597**, nearest cross distance **4.4852 mm**, opposite-facing **0.9996**,
+offset along the normal **2.8111 mm**) — with the same normal accuracy (5.78° against 5.99°). The
+decision is being made by the *neighbourhood a normal was averaged over*, not by whether the normal is
+right. That is what a 3.4° growth criterion does when the normals carry 4-11° of error.
+
+### The ordering this implies
+
+Piece 7 is the one sherd whose walls are **3.43 mm** apart, i.e. outside the 3 mm boundary radius, and it
+is the only piece where the growth's own quality is visible at all. On the other eight the reassignment
+destroys whatever was found, before any normal estimator can show its worth. So the next repair is the
+**3 mm radius**, not the normals; and this ticket's result is the evidence for that ordering rather than
+a repair in its own right.
+
+### Two defects and one deviation found on the way
+
+- **A whole-piece normal flip under radius mode.** Pot A 08 under B has frac_same_hemisphere **0.0009**
+  and opposite-facing **0.5256**, against **1.0000** in A / A2 / A_old; Juglet 9 under D sits at **0.1881**.
+  The wall statistics happen to be unaffected there, but any logic keyed to the normal **sign** — the
+  40°/140° admission window (mesh_processing_headless.cpp:1103, :1114) — would be inverted for that sherd.
+  Radius mode is not safe to adopt as a default without a sign check.
+- **The normals step is deterministic.** A and A2 agree to 4 decimal places on every angle statistic and
+  to **0.0000 mm** surface displacement on every Juglet piece. The run-to-run wobble this project keeps
+  meeting lives downstream, in the boundary fit — a useful narrowing, since it retires "the normals are
+  noisy" as an explanation for the wobble.
+- **Deviation from the ticket, documented by the worker:** SFS_NORMAL_RADIUS_MM=auto resolves per call
+  from the *downsampled* cloud's spacing (0.395 mm x 2 = 0.79 mm) rather than the raw-cloud s0
+  (0.021-0.216 mm), which would have picked ~2 neighbours and collapsed onto the floor. The arms therefore
+  test radii of **0.73-1.32 mm**, i.e. 1.2-2.2x the density step; no arm tests a radius below the step.
+
+### The figure, looked at
+
+C:/PR/worktrees/sfs/24/.scratch/juglet-breaklines/stage24/render24_Piece_1.png (700x2039, 0.150 mm/px,
+5 mm bar, six rows). Under A and A2 the right-hand panel is a **blue Surface_1 covering 83 % of the whole
+sherd** (12 092 of 14 546 points) with the red Surface_0 almost hidden under it — that is what a 32 %
+coincidence looks like, and it is not two walls. Under B the red becomes a distinct lobe at the lower left
+(1 327 points) and under D and E it stays a lobe. The left-hand panels read as mostly red under A and A2
+because the colour is the **unfolded** angle and 41.7 % of those normals point the wrong way; B, D and E
+drive that to 0.4 % and the panel goes green. **What the figure does not show is wall separation** — it is
+a projected view, so two surfaces 2.4 mm apart still paint over one another; separation is the cross
+distance in the tables, not this picture.
+
+### The job count
+
+Six jobs against a cap of five, both overruns named by the worker and re-checked by me: **33841866** ran no
+arm at all (EENV not exported to the xargs children, so every cell kept the defaults) and **33842036** was
+arm B repeated (arm_e_env.txt carried only the radius part of arm E, so ticket 23's switches were absent).
+Neither contributes a number used here. The sixth, **33842352**, is a redraw with no new measurement.
+
+### verified: the command or file:line behind each load-bearing claim
+
+- git diff --stat main..origin/24-normals-five-neighbours -> 14 files, 1737 insertions / 138 deletions;
+  mesh_processing_headless.cpp is the only path outside .scratch/juglet-breaklines/stage24/.
+- sacct -j 33841452,33841704,33841866,33842036,33842148,33842352 -> all six **COMPLETED 0:0**, 05:29 /
+  04:26 / 02:02 / 02:43 / 02:10 / 00:10.
+- awk over 20261027-0532_1d8fb01_p24-normals-grid/out/measure.log -> bar=yes counts: Pot_A **8** for A,
+  A2, A_old, B, C, D; **Juglet 1** (arm D). No other Juglet pass exists in the grid.
+- awk over the same run's out/cells/measure23.tsv -> "D Juglet_Piece_7 355 2366 0.0000 -0.9597 4.4852
+  0.9996 2.8111 yes"; "A Juglet_Piece_7 1012 829 0.2630 0.5621 4.3393".
+- awk over out/angles24_all.tsv -> A Juglet_Piece_1 med_abs 4.3405, B 4.0138, D 4.0615;
+  D Juglet_Piece_9 frac_same_hemisphere 0.1881.
+- cat out/defaults_proof_Juglet.tsv -> pieces 1, 4, 6, 7: npts_A == npts_ref and med/max displacement
+  0.0000 mm in both directions against both A_old and A2; pieces 2, 3, 5, 8, 9 are NA on both sides
+  (no surface written by either binary).
+- cmp corpus_before.txt corpus_after.txt -> identical; cmp inputs_before.md5 inputs_after.md5 -> identical.
+- **Mesh units, settled on the cluster:** Dataset/Juglet/Piece04.obj diagonal **0.6307** (inches) against
+  Dataset/Mesh/Juglet/Juglet_Piece_4_Mesh.obj diagonal **32.0374 mm**, both 3 651 vertices. The pipeline
+  reads the **mm** mesh; the inches figure applies to the raw source only. The workspace note has been
+  corrected to say which file is which.
+- awk over arm E's out/measure.log -> Pot_A bar=yes **8**; Juglet rows for pieces 1, 2, 3, 4, 5, 7, 8
+  (7 two-surface pieces), piece 6 one surface, piece 9 none.
+
+### What this does not settle
+
+- **One bar pass is a lead, not a conclusion.** It is a single cell out of 102, on one sherd, in one run;
+  no second draw was made of arm D on piece 7.
+- It says nothing about whether the pair it found is *correct* — a dot of -0.96 and 4.49 mm of separation
+  are consistent with an inner and an outer wall, and this project's mesh measurement puts that sherd's
+  wall at **3.26 mm**, but no seating was scored and no ground-truth pose was involved.
+- Only pieces 1, 2, 4, 9 and Pot A 07 kept per-point tables; pieces 3, 5, 6, 7 and 8 survive as summary
+  rows only, their geometry gone with its counted record.
+- Radius mode with a radius **below** the 0.6 mm density step was never tried.
