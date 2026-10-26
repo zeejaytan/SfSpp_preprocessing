@@ -225,6 +225,7 @@ Pot J 12**.
 - **The release is the evaluation set, not a lost subset.** `Mesh.zip` and `Point.zip` carry exactly
   Table V's counts — A 8, B 9, C 4, D 29, E 31, F 6, G 7, H 11, I 27, J 11 = **143** — and all 143
   meshes are byte-equivalent in vertex and face counts to ours.
+- **The gate counts dots, not length**. Measured on Pot F 06: the authors' line is 50 points and 87.6 mm, ours is 49 points and 88.8 mm — the longer line is the one dropped. Section T carries the four measured cases and the ruling (keep the pin; quote the length beside the count).
 - **How to use them**: score them against the authors' breaklines as usual (the reference is a real
   author line), report them with the corpus, and **never set their scores beside the paper's**. Pot J
   and the pot subtotals must state which of their lanes are inside the evaluation set.
@@ -568,6 +569,33 @@ the two permitted INFRA edits (bundle-root override, a `gt_graph_path` line) pro
 because the bundle root is the bind mount and the pinned header declares the graph path for all ten
 pots. Geometry deleted with a counted record (8,378 files, 9,911,628,046 bytes); the ten bundles are
 KEPT (588 files, 458 MB) because most corpus clouds cannot be regenerated (section P / ticket 284).
+
+### The 50-point floor: it counts dots, the paper means length, and the pin stays (2026-10-26, conservator's ruling)
+
+**What it is.** `hpc/tools/main_pristine_batch.cpp:86` — `if (shard[i].edge_line_.point_.cols() < 50) { shard_on_off[i] = false; shard[i].edge_line_.Remove(); continue; }` — silently switches a piece off. It is the AUTHORS' own datum rule, not a port defect: the paper excludes "very small fragments comprising fewer than 50 points in the respective surface edge lines (with a perimeter of approximately 9cm)" (`C:/PR/papers/text/sfspp-2502.13986v1.md:329`).
+
+**The rule counts dots; the paper means length.** Our resample puts dots about 1.85 mm apart, so the count tracks length divided by ~1.9 — and the two can disagree right at the threshold. Measured on Spartan (polyline length in file order over the ASCII PCD DATA section; all four lines are in order, so the length is not inflated):
+
+| piece | authors' line | our line | what the floor did |
+|---|---|---|---|
+| Pot F 06 | 50 pts, **87.6 mm** | 49 pts, **88.8 mm** | theirs passes, ours dropped — ours covers 1.2 mm MORE edge |
+| Pot I 27 | 53 pts, 92.8 mm | 49 pts, 89.5 mm | theirs passes, ours dropped |
+| Pot D 27 | 48 pts, 84.9 mm | 56 pts, 101.9 mm | ours passes, theirs dropped |
+| Pot F 07 | 28 pts, 48.5 mm | 37 pts | both dropped — genuinely half the 9 cm rule |
+
+**Consequence for the tally.** Our arm's denominators read F 5 and I 26 against the authors' F 6 and I 27, and D the other way (ours 29, theirs 28). Pot F 06 is the case that names the defect: the line we lose describes more edge than the line that passes.
+
+**Decision (conservator, 2026-10-26): keep the pin and report the length beside the count.** No assembler change, no extractor change, no re-run, no new numbers. The reasons, in order of weight: (i) the pin is the measuring instrument — tickets 296 and 298 were produced by one binary, byte-identical in both arms, and patching the assembler ends that comparability; (ii) the floor is a *datum* rule from the paper (which pieces are worth scoring), not a matching criterion, so it is the wrong place to encode our extractor's point density; (iii) the search is global — an extra piece adds hypotheses for every other piece — and a gate that admits a nearly-empty line has never been tested; and (iv) admitting a marginal piece usually lowers the percentage (5 of 6 is worse than 5 of 5), so "more pieces admitted" is not the same as a better result.
+
+**Alternatives considered, and where each stands.**
+
+- *Restate the floor as a perimeter (~90 mm) in our scoring harness only* — NOT rejected, deferred. It is the honest reading of the authors' sentence and would move the tally to F 6 / I 27, but it must then be applied to every future number, so it needs a deliberate start rather than a quiet edit inside a landing.
+- *Patch the assembler to admit lines by perimeter* — REFUSED. It changes the instrument and re-tests the search with pieces it was never tested with.
+- *Densify the resample step so counts follow length (1.9 → 1.7 mm)* — REFUSED for now. It is a method change on every lane in every pot, it would also admit Pot F 07 and Pot I 28–30 (40–48 mm lines the authors excluded on purpose), and it would not touch Pot D 27, where our line is 17 mm LONGER than theirs — the defect there is where the line runs, not how many dots describe it.
+
+**What would reopen it.** Pot F 06 or Pot I 27 failing to seat even when admitted (then the drop hid a real seat), or a pot whose total swings on the floor rather than on its lanes (then reporting both numbers is not enough).
+
+**How to read any number near the floor.** Section O names the pieces outside the authors' evaluation set; this subsection is about the boundary itself. Whenever a piece sits at 49–56 dots, quote the length with the count — the count alone cannot say whether the edge was short or just coarsely sampled.
 
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
