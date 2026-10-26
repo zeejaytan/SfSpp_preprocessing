@@ -821,6 +821,53 @@ struct FittedSplineSurface
 static double g_effectiveSpacingMM = 0.6;
 static double g_countScale = 1.0;
 
+// TICKET 23: a piece that keeps one cluster is one surface, not nothing.
+// SFS_SINGLE_CLUSTER=off (default) keeps today's behaviour exactly: the single cluster is
+// built, dropped, and main warns twice about two temp files that were never written.
+// =write runs the same boundary improvement the two-cluster path runs on that cluster and
+// writes it as tmpSurfaceCluster_Improved_0.ply, so it becomes Surface_0.
+static std::string g_singleClusterMode = "off";
+// TICKET 23: SFS_FLOOR_CEILING=<fraction> (default off) bounds the scaled minCluster at
+// that fraction of the piece's own post-downsample point count, so a finer spacing cannot
+// ask for a floor larger than the piece; off leaves the floor exactly as it was.
+static double g_floorCeilingFrac = 0.0;
+static bool g_floorCeilingOn = false;
+static bool g_countScaleAuto = false;
+
+// TICKET 23: per-piece record, filled by surfaceSegmentation and printed by main, so every
+// piece announces two surfaces, one, or none -- with the numbers that decided it.
+struct PieceStatus23
+{
+	std::string piece;
+	int npts = -1;
+	int retries = 0;
+	int finalClusters = -1;
+	std::string finalSizes = "none";
+	int floorUsed = -1;
+	int floorFrom = -1;
+	bool capped = false;
+	int singleSurfacePoints = -1;
+};
+static PieceStatus23 g_status23;
+
+// TICKET 23: vertex count from a PLY header, so the status can state what was written.
+static int plyVertexCount23(const std::string& f)
+{
+	std::ifstream in(f.c_str());
+	if (!in.is_open()) return -1;
+	std::string line;
+	int n = -1;
+	while (std::getline(in, line))
+	{
+		std::istringstream ls(line);
+		std::string a, b;
+		ls >> a;
+		if (a == "end_header") break;
+		if (a == "element") { ls >> b; if (b == "vertex") ls >> n; }
+	}
+	return n;
+}
+
 void fitSplineSurfaceToCluster(pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud, FittedSplineSurface& out)
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_OriginalSurface(new pcl::PointCloud<pcl::PointXYZ>);
@@ -2283,6 +2330,31 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         int dynMinCluster = std::max(minClusterEff, std::max(30, Npts / 500));          // ~0.2% of points, min 30
         int dynK          = std::max(noOfNeighbours, std::min(40, std::max(15, Npts / 500))); // 15..40 range
 
+        // TICKET 23: SFS_FLOOR_CEILING=<fraction>. With the counts scaled to a finer spacing the
+        // floor can outrun a small piece and no cluster survives; the ceiling bounds it by the
+        // piece's own size. It applies only where the count scale is armed, and off leaves both
+        // numbers untouched.
+        const int dynMinClusterFrom23 = dynMinCluster;
+        bool capped23 = false;
+        if (g_floorCeilingOn && g_countScaleAuto)
+        {
+            int cap23 = static_cast<int>(std::lround(g_floorCeilingFrac * static_cast<double>(Npts)));
+            if (cap23 < 1) cap23 = 1;
+            if (dynMinCluster > cap23)
+            {
+                dynMinCluster = cap23;
+                capped23 = true;
+            }
+            std::cout << "[FLOOR-23] piece=" << fileNameOnly << " npts=" << Npts
+                      << " frac=" << g_floorCeilingFrac << " cap=" << cap23
+                      << " minCluster=" << dynMinCluster << " from=" << dynMinClusterFrom23
+                      << " clamped=" << (capped23 ? "yes" : "no") << std::endl;
+        }
+        g_status23.npts = Npts;
+        g_status23.floorUsed = dynMinCluster;
+        g_status23.floorFrom = dynMinClusterFrom23;
+        g_status23.capped = capped23;
+
         std::vector<pcl::PointIndices> clusters;
         if (paperChain) {
             std::cout << "[PAPER-234] paper grow: thetaDeg=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
@@ -2318,6 +2390,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             std::cout << "Cluster " << std::to_string(i + 1) << " : " << clusters[i].indices.size() << std::endl;
             totalPointsInClusters = totalPointsInClusters + clusters[i].indices.size();
         }
+        const size_t preMergeCount23 = clusters.size();
         if (clusters.size() > 1)
         {
             std::cout << "Points in two clusters / Total Points in Pointcloud: " << std::setprecision(4) << static_cast<double>(100) * (clusters[0].indices.size() + clusters[1].indices.size()) / cloud->points.size() << "%" << std::endl;
@@ -2343,6 +2416,23 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         } else {
         std::cout << "Calling mergeClusters function." << std::endl;
         mergeClusters(cloudWithNormals, clusters);
+        }
+
+        // TICKET 23: one line per retry with the numbers the retry ended on, so a piece that
+        // keeps or loses a cluster says so whether or not a switch is armed.
+        {
+            std::ostringstream sz;
+            for (size_t i = 0; i < clusters.size(); ++i) { if (i) sz << ","; sz << clusters[i].indices.size(); }
+            std::cout << "[RETRY-23] piece=" << fileNameOnly << " retry=" << currentIteration
+                      << " npts=" << Npts << " clusters_pre=" << preMergeCount23
+                      << " clusters=" << clusters.size()
+                      << " sizes=" << (clusters.empty() ? std::string("none") : sz.str())
+                      << " minCluster=" << dynMinCluster << " minClusterFrom=" << dynMinClusterFrom23
+                      << std::endl;
+            g_status23.retries = currentIteration;
+            g_status23.finalClusters = static_cast<int>(clusters.size());
+            g_status23.finalSizes = clusters.empty() ? std::string("none") : sz.str();
+            g_status23.floorUsed = dynMinCluster;
         }
 
         numberOfClustersCreated = clusters.size();
@@ -2482,6 +2572,31 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             }
             cloudWithNormals_Cluster1->width = cloudWithNormals_Cluster1->points.size();
             cloudWithNormals_Cluster1->height = 1;
+
+            // TICKET 23: SFS_SINGLE_CLUSTER=write. One surviving cluster is a surface; run the
+            // same boundary improvement the two-cluster path runs on a cluster and write it as
+            // Surface_0. No interior/exterior flip: with one surface there is no decision to make,
+            // and checkNormalsIntersection has no second cluster to test against.
+            if (g_singleClusterMode == "write")
+            {
+                pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster1(new pcl::PointCloud<pcl::PointNormal>);
+                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
+                cloudWithNormals_Cluster1->points.clear();
+                pcl::copyPointCloud(*improvedSurfacePoints_Cluster1, *cloudWithNormals_Cluster1);
+                cloudWithNormals_Cluster1->width = static_cast<int>(cloudWithNormals_Cluster1->points.size());
+                cloudWithNormals_Cluster1->height = 1;
+                pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_0.ply", *cloudWithNormals_Cluster1, false); // ASCII mode
+                g_status23.singleSurfacePoints = static_cast<int>(cloudWithNormals_Cluster1->points.size());
+                std::cout << "[SINGLE-23] piece=" << fileNameOnly << " mode=write cluster=1 clusterPoints="
+                          << clusters[0].indices.size() << " surfacePoints=" << cloudWithNormals_Cluster1->points.size()
+                          << " wrote=tmpSurfaceCluster_Improved_0.ply surface0=single no_flip=yes" << std::endl;
+            }
+            else
+            {
+                std::cout << "[SINGLE-23] piece=" << fileNameOnly << " mode=" << g_singleClusterMode
+                          << " cluster=1 clusterPoints=" << clusters[0].indices.size()
+                          << " wrote=none surface0=none" << std::endl;
+            }
 
             // Getting file name without path and extension
             const size_t last_slash_idx = tmp_path.find_last_of("/");
@@ -2731,10 +2846,33 @@ int main(int argc, char** argv) {
         std::string countScale = "off";
         if (const char* e = std::getenv("SFS_COUNT_SCALE")) { if (*e) countScale = e; }
         g_countScale = (countScale == "auto") ? (0.6 / g_effectiveSpacingMM) * (0.6 / g_effectiveSpacingMM) : 1.0;
+        g_countScaleAuto = (countScale == "auto");
         std::cout << "[COUNT-22] policy=" << countScale << " scale=" << g_countScale
                   << " minCluster=" << static_cast<int>(std::lround(50 * g_countScale))
                   << " k1=" << static_cast<int>(std::lround(10 * g_countScale))
                   << " k2=" << static_cast<int>(std::lround(30 * g_countScale)) << std::endl;
+
+        // TICKET 23: the two switches. Both default to today's behaviour.
+        if (const char* e23 = std::getenv("SFS_SINGLE_CLUSTER")) { if (*e23) g_singleClusterMode = e23; }
+        g_floorCeilingOn = false;
+        g_floorCeilingFrac = 0.0;
+        if (const char* e23 = std::getenv("SFS_FLOOR_CEILING"))
+        {
+            if (*e23 && std::string(e23) != "off") { g_floorCeilingFrac = std::stod(e23); g_floorCeilingOn = true; }
+        }
+        std::cout << "[SWITCH-23] singleCluster=" << g_singleClusterMode
+                  << " floorCeiling=" << (g_floorCeilingOn ? std::to_string(g_floorCeilingFrac) : std::string("off"))
+                  << " countScaleAuto=" << (g_countScaleAuto ? "yes" : "no") << std::endl;
+        // TICKET 23: a previous piece's temp surface must not be read back as this piece's on a
+        // multi-piece run. Only armed under the switch, so the off path is untouched.
+        if (g_singleClusterMode == "write")
+        {
+            std::error_code ec23;
+            fs::remove(intermediatePath + "tmpSurfaceCluster_Improved_0.ply", ec23);
+            fs::remove(intermediatePath + "tmpSurfaceCluster_Improved_1.ply", ec23);
+        }
+        g_status23 = PieceStatus23();
+        g_status23.piece = fileNameOnly;
         std::string downsampledFilePath = downsamplePointCloud(inputFilePath, samplingRadius244, dsTarget244);
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
@@ -2799,7 +2937,60 @@ int main(int argc, char** argv) {
         } else {
             std::cout << "Warning: Source file not found: " << tempFileName1 << std::endl;
         }
-        
+
+        // TICKET 23: announce the piece. Two surfaces, one, or none -- and a "none" carries the
+        // numbers that produced it, so an absence is an announced absence rather than silence.
+        {
+            const bool got0_23 = fs::exists(tempFileName0);
+            const bool got1_23 = fs::exists(tempFileName1);
+            const int p0_23 = got0_23 ? plyVertexCount23(tempFileName0) : -1;
+            const int p1_23 = got1_23 ? plyVertexCount23(tempFileName1) : -1;
+            const std::string outcome23 = (got0_23 && got1_23) ? "two" : (got0_23 ? "one" : "none");
+            std::ostringstream reason23;
+            if (outcome23 == "two")
+            {
+                reason23 << "two surfaces written";
+            }
+            else if (outcome23 == "one")
+            {
+                reason23 << (g_singleClusterMode == "write"
+                             ? "one cluster written as Surface_0 (SFS_SINGLE_CLUSTER=write)"
+                             : "one temp surface present");
+            }
+            else
+            {
+                reason23 << "no temp surface; final clusters=" << g_status23.finalClusters
+                         << " sizes=" << g_status23.finalSizes
+                         << " floor=" << g_status23.floorUsed << " from=" << g_status23.floorFrom
+                         << " singleCluster=" << g_singleClusterMode;
+            }
+            std::cout << "[STATUS-23] piece=" << fileNameOnly << " outcome=" << outcome23
+                      << " retries=" << g_status23.retries << " clusters=" << g_status23.finalClusters
+                      << " sizes=" << g_status23.finalSizes << " npts=" << g_status23.npts
+                      << " floor=" << g_status23.floorUsed << " floor_from=" << g_status23.floorFrom
+                      << " capped=" << (g_status23.capped ? "yes" : "no")
+                      << " surf0_points=" << p0_23 << " surf1_points=" << p1_23
+                      << " reason=" << reason23.str() << std::endl;
+            if (const char* sf23 = std::getenv("SFS_STATUS_FILE"))
+            {
+                if (*sf23)
+                {
+                    std::ofstream st23(sf23, std::ofstream::out | std::ofstream::app);
+                    if (st23.is_open())
+                    {
+                        st23 << fileNameOnly << "\t" << g_status23.npts << "\t" << g_status23.retries
+                             << "\t" << g_status23.finalClusters << "\t" << g_status23.finalSizes
+                             << "\t" << g_status23.floorUsed << "\t" << g_status23.floorFrom
+                             << "\t" << (g_status23.capped ? "yes" : "no")
+                             << "\t" << outcome23 << "\t" << p0_23 << "\t" << p1_23
+                             << "\t" << g_singleClusterMode << "\t" << g_floorCeilingOn
+                             << "\t" << reason23.str() << std::endl;
+                        st23.close();
+                    }
+                }
+            }
+        }
+
         myfile.open(baseOutputPath + "segmentationTimes.txt", std::ofstream::out | std::ofstream::app);
         if (myfile.is_open()) {
             std::cout << "\nTime after processing: " << t_individual.elapsed() << " seconds" << std::endl;
