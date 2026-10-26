@@ -2,8 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** 23
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 24-normals-five-neighbours, in /c/PR/worktrees/sfs/24
 
 A ticket on the *method*. It changes how the surface normals are estimated — behind switches whose
 defaults reproduce today's behaviour exactly — and measures whether the two walls of a sherd then
