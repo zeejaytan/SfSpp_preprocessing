@@ -149,3 +149,47 @@ surfaces. Whether pieces 2 and 9 can ever give two walls: their meshes hold 2 56
 if a metric radius does not recover them, the honest conclusion is that **the scan does not carry two
 walls** and one surface is the ceiling for those sherds — a different finding, and one that would send
 the next ticket at the input data rather than the code.
+
+## Comments (worker, 2026-10-27)
+
+### What was built
+
+The switch set is in `mesh_processing_headless.cpp` (commit `69b6539`, +288/-6, unchanged since):
+
+| switch | default | where it takes effect |
+|---|---|---|
+| `SFS_NORMAL_MODE`=`count` or `radius` | `count` (today) | `mesh_processing_headless.cpp:625` |
+| `SFS_NORMAL_RADIUS_MM`=`<mm>` or `auto` | `0` = today | `:3099-3147` (parse), `:433-526` (resolved per call) |
+| `SFS_NORMAL_RADIUS_MULT` | `2` | `mesh_processing_headless.cpp:470` |
+| `SFS_NORMAL_MIN_K` / `SFS_NORMAL_MAX_K` | `5` / `20` | `:433-526` (floor and cap) |
+| `SFS_NBRS_FILE` | unset | per-point neighbour counts, instrument only |
+| `SFS_NORMAL_DUMP_DIR` | unset | the per-call normals PLY, instrument only |
+
+The count rule itself is untouched at `mesh_processing_headless.cpp:621`; radius mode fits its own Eigen PCA over the radius neighbours (CGAL's `pca_estimate_normals` takes a count only, and there is no local CGAL to test another overload against), then hands its median neighbour count to `CGAL::mst_orient_normals` so orientation is still CGAL's. `[ADAPTIVE CGAL] Using N neighbors` keeps printing the count rule's N in every arm: it is **not** evidence of what radius mode used, the `[NORMAL-24]` line is.
+
+### Deviation the ticket should know about: `auto` is resolved per call, not from the raw probe
+
+The ticket defines `auto` as a multiple of "the piece's own measured spacing (the ticket-22 probe's s0)". Measured on this corpus that is 0.021 mm (Pot A 07) to 0.216 mm (Juglet): the **raw scan** spacing, where 2 x 0.216 mm picks about two neighbours and the arm collapses onto the 5-neighbour floor. So `auto` resolves per call from the spacing of the cloud that call is handed (`mesh_processing_headless.cpp:470-472`, `rEff = mult * cloudSpacingMM`). The raw probe's s0 is still measured and printed beside it (`[NORMAL-24] probe`, `[NORMAL-24-SWITCH] s0MM=` / `diagMM=`), so both readings are on the record. Resolved radius: 0.73-0.88 mm on the Juglet pieces, 0.45-0.62 mm on Pot A.
+
+### Jobs
+
+| job | run dir | state | wall | what |
+|---|---|---|---|---|
+| 33841452 | `20261027-0522_d790f2a_p24-normals-grid` | COMPLETED 0:0 | 5:29 | 102 cells, every angle table empty: `trimesh.proximity` needs `rtree`, absent from the tora env |
+| 33841704 | `20261027-0532_1d8fb01_p24-normals-grid` | COMPLETED 0:0 | 4:26 | the grid again, instrument rewritten without trimesh and self-tested in the job |
+| 33841866 | `20261027-0537_ba3e41a_p24-normals-arm-e` | COMPLETED 0:0 | 2:02 | arm E, but `EENV` was not exported to the `xargs` child shells, so **no switch reached a cell** (`cells24` shows `envs=none`, `nmode=count`) |
+| 33842036 | `20261027-0542_1ec968b_p24-normals-arm-e-rerun` | COMPLETED 0:0 | 2:43 | arm E with the radius env only: `arm_e_env.txt` holds the winning radius setting alone, so this job is arm B repeated |
+| 33842148 | `20261027-0546_d3b9f4a_p24-normals-arm-e2` | COMPLETED 0:0 | 2:10 | arm E as defined: radius winner + ticket 23's six switches (17/17 cells report `singleCluster=write floorCeiling=0.010000 countScaleAuto=yes`) |
+| 33842352 | `20261027-0552_d30ec2a_p24-renders` | COMPLETED 0:0 | 0:10 | redraw only |
+
+The ticket allows five jobs; the sixth is a **redraw** and makes no new measurement, so every number comes from jobs inside the cap. Jobs 33841866 and 33842036 are wasted quota: their causes (an unexported variable; `arm_e_env.txt` holding only the radius part) are now guarded by a preflight that prints every arm's environment, aborts if arm E's is empty, counts cells whose environment was empty, and counts arm-E cells whose log does not report `singleCluster=write`.
+
+Both grid jobs were green on their own terms: 102 rows of `cells24.tsv` for 102 cells asked; inputs unchanged (51 files byte-identical before/after); frozen corpus and `/opt/sfs-pristine` unchanged (1804 lines); geometry deleted with a counted record (2084 files / 3 491 553 510 bytes, 510 rows = 102 cells x 5 extensions).
+
+### The renderer's colour is the unfolded angle
+
+`angle_points.tsv` stores `ang_deg` in [0, 180] and `dot`; the panel colours `ang_deg` clipped at 45 deg, so a point whose normal is **flipped** (dot < 0) paints red at the same weight as a 45 deg direction error. The folded figure is `med_abs_deg` in `angles24_all.tsv`; the flipped share is 1 - `frac_same_hemisphere`. On Juglet piece 1 arm A the per-point median of the unfolded angle is 11.24 deg against a folded median of 4.34 deg, because 41.7 % of the points sit in the opposite hemisphere; arms B, D and E drive that share to 0.4 %. Read the left-hand colour as "disagrees with the mesh normal, either in direction or in sign".
+
+### Where the numbers live
+
+`out/cells/cells24.tsv` (38 columns: ticket 23's 26 plus calls, nmode, cgalk, radii, nbr_med/min/max, orient_k, floored, capped, cloud_spacing, switch24), `status23.tsv`, `angles24_all.tsv` (370 rows, per call), `measure23.tsv`, `coverage23.tsv`, `defaults_proof_Juglet.tsv` / `defaults_proof_Pot_A.tsv`, `arm_e.txt`, `arm_e_env.txt`, `pick_arm_e.log`, and `out/renders/*.png` (five figures, six rows each) in job 33842352. Per-point angle tables were kept only for Juglet 1, 2, 4, 9 and Pot A 07; everything else died with its stage under the counted record.
