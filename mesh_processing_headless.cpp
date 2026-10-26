@@ -2424,6 +2424,9 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2);
             }
+            // Both improved surfaces are written back only after every call has run.
+            cloudWithNormals_Cluster1->points.clear();
+            pcl::copyPointCloud(*improvedSurfacePoints_Cluster1, *cloudWithNormals_Cluster1);
             cloudWithNormals_Cluster2->points.clear();
             pcl::copyPointCloud(*improvedSurfacePoints_Cluster2, *cloudWithNormals_Cluster2);
 

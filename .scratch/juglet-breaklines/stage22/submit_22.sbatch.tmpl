@@ -121,8 +121,8 @@ say "inputs hashed: $(wc -l < out/inputs_before.md5) files -> out/inputs_before.
 build_arm new "$NEW" || exit 2
 build_arm old "$OLD" || exit 2
 
-printf "tag\tpot\tpiece\tenvs\tmesh_exit\telapsed_s\tclusters_pre\tclusters_post\tsizes_pre\tgrow\tmerge\tclassify\tface\tspacing\tcount\tcount_merge\treassign\tsurf0\tsurf1\tsurf0_md5\tsurf1_md5\tsurf0_bytes\tsurf1_bytes\tseg_points\tseg_md5\n" > out/cells.tsv
-printf "cell\text\tcount\tbytes\n" > out/geometry_counts.tsv
+printf "tag\tpot\tpiece\tenvs\tmesh_exit\telapsed_s\tclusters_pre\tclusters_post\tsizes_pre\tgrow\tmerge\tclassify\tface\tspacing\tcount\tcount_merge\treassign\tsurf0\tsurf1\tsurf0_md5\tsurf1_md5\tsurf0_bytes\tsurf1_bytes\tseg_points\tseg_md5\n" > out/cells/cells.tsv
+printf "cell\text\tcount\tbytes\n" > out/cells/geometry_counts.tsv
 : > out/cells.list
 for p in $PIECES; do for t in $TAGS; do echo "$t $p" >> out/cells.list; done; done
 say "cells to run: $(wc -l < out/cells.list)"
@@ -142,8 +142,8 @@ else
   diff out/inputs_before.md5 out/inputs_after.md5 | head -20
 fi
 
-say "geometry deleted: $(awk -F'\t' 'NR>1{c+=$3; b+=$4} END{printf "%d files, %d bytes", c, b}' out/geometry_counts.tsv)"
+say "geometry deleted: $(awk -F'\t' 'NR>1{c+=$3; b+=$4} END{printf "%d files, %d bytes", c, b}' out/cells/geometry_counts.tsv)"
 say "run dir bytes: $(du -sb "$RUN" | awk '{print $1}')"
 rm -rf build
 printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "${SLURM_JOB_ID:-local}" "$NEW" "$POT-armgrid22" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
-say "done: out/cells.tsv $(($(wc -l < out/cells.tsv) - 1)) rows, out/measure.tsv $(($(wc -l < out/measure.tsv) - 1)) rows"
+say "done: out/cells/cells.tsv $(($(wc -l < out/cells/cells.tsv) - 1)) rows, out/measure.tsv $(($(wc -l < out/measure.tsv) - 1)) rows"
