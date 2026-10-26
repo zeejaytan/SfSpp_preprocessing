@@ -383,6 +383,207 @@ AdaptiveParams computeAdaptiveParams(int num_points, double avg_spacing_m) {
     return p;
 }
 
+// ---------------------------------------------------------------------------------------
+// TICKET 24: how many neighbours a surface normal is estimated from.
+//
+// Today (the line this ticket is about) the count is a function of the point count:
+//     nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000));
+// so a 2 000-point sherd is triangulated from five neighbours whatever its sampling radius
+// is, and only a cloud past 20 000 points ever gets twenty. That is a rule about how big the
+// cloud is, not about the surface, and it is the count the two walls of a sherd are read with.
+//
+//   SFS_NORMAL_MODE=count|radius   count (default) is today's rule, untouched below; radius
+//                                  picks neighbours by a physical radius instead.
+//   SFS_NORMAL_RADIUS_MM=<mm|auto> the radius. auto = SFS_NORMAL_RADIUS_MULT x the piece's own
+//                                  measured nearest-neighbour spacing s0 (the ticket-22 probe,
+//                                  [SPACING-22] s0MM). 0 (default) is today.
+//   SFS_NORMAL_RADIUS_MULT=<f>     multiple of s0 for auto (default 2).
+//   SFS_NORMAL_MIN_K=<n>           floor on the neighbours a radius picks (default 5, today's
+//   SFS_NORMAL_MAX_K=<n>           floor) and cap (default 20, today's cap): a radius on a
+//                                  sparse cloud can otherwise pick two neighbours, which is
+//                                  worse than five.
+//   SFS_NBRS_FILE=<path>           optional instrument; per-point rows "call<TAB>index<TAB>count".
+//
+// Every default leaves the count path exactly as it was: the mode is "count", the radius is 0,
+// and the count branch is the code that was already there plus one log line.
+// ---------------------------------------------------------------------------------------
+static std::string g_normalMode = "count";
+static double g_normalRadiusMM = 0.0;
+static std::string g_normalRadiusMMRaw = "0";
+static bool g_normalRadiusAuto = false;
+static double g_normalRadiusMult = 2.0;
+static int g_normalMinK = 5;
+static int g_normalMaxK = 20;
+static double g_pieceS0MM = 0.0;
+static double g_pieceDiagMM = 0.0;
+static std::string g_nbrsFile;
+static int g_normalCall = 0;
+
+// TICKET 24: median of a count vector (0 when empty).
+static int n24Median(std::vector<int> v)
+{
+	if (v.empty()) return 0;
+	std::sort(v.begin(), v.end());
+	return v[v.size() / 2];
+}
+
+// TICKET 24: PCA normals from a physical radius. CGAL's pca_estimate_normals takes a count, so
+// the radius path does its own PCA over the neighbours a radius picks and leaves the count path
+// on CGAL untouched. Reports the clamps and returns the k to hand MST orientation.
+static int estimateNormalsRadius(std::list<PointVectorPair>& pts, double radiusMM,
+                                 int minK, int maxK, std::vector<int>& used,
+                                 int& floored, int& capped, double& cloudSpacingMM)
+{
+	std::vector<Eigen::Vector3d> P;
+	P.reserve(pts.size());
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	cloud->points.reserve(pts.size());
+	for (std::list<PointVectorPair>::const_iterator it = pts.begin(); it != pts.end(); ++it)
+	{
+		const double x = CGAL::to_double(it->first.x());
+		const double y = CGAL::to_double(it->first.y());
+		const double z = CGAL::to_double(it->first.z());
+		P.push_back(Eigen::Vector3d(x, y, z));
+		pcl::PointXYZ q; q.x = (float)x; q.y = (float)y; q.z = (float)z;
+		cloud->points.push_back(q);
+	}
+	cloud->width = (uint32_t)cloud->points.size();
+	cloud->height = 1;
+	cloud->is_dense = true;
+	const int nAll = (int)cloud->points.size();
+	pcl::KdTreeFLANN<pcl::PointXYZ> tree;
+	tree.setInputCloud(cloud);
+
+	// the cloud's own spacing, so a radius can be read against what it is sampling
+	std::vector<double> nn;
+	nn.reserve(nAll);
+	for (int i = 0; i < nAll && nAll > 1; ++i)
+	{
+		std::vector<int> k2(2); std::vector<float> d2(2);
+		if (tree.nearestKSearch(cloud->points[i], 2, k2, d2) >= 2)
+			nn.push_back(std::sqrt((double)d2[1]));
+	}
+	if (!nn.empty()) { std::sort(nn.begin(), nn.end()); cloudSpacingMM = nn[nn.size() / 2]; }
+
+	// auto = a multiple of the spacing of the cloud this call is handed (the downsampled surface
+	// cloud), not of the raw scan: the raw scan is 0.02-0.08 mm spaced and a radius that small
+	// picks two neighbours. The raw probe's s0 is printed beside it ([NORMAL-24-SWITCH] s0MM).
+	double rEff = radiusMM;
+	if (g_normalRadiusAuto && cloudSpacingMM > 0.0)
+	{
+		rEff = g_normalRadiusMult * cloudSpacingMM;
+		g_normalRadiusMM = rEff;
+	}
+
+	std::vector<int> idx; std::vector<float> sqd;
+	used.assign(P.size(), 0);
+	floored = 0; capped = 0;
+	int i = 0;
+	for (std::list<PointVectorPair>::iterator it = pts.begin(); it != pts.end(); ++it, ++i)
+	{
+		idx.clear(); sqd.clear();
+		int got = tree.radiusSearch(cloud->points[i], (float)rEff, idx, sqd, 0);
+		if (got < minK)
+		{
+			++floored;
+			got = tree.nearestKSearch(cloud->points[i], std::min(nAll, minK), idx, sqd);
+		}
+		else if (got > maxK)
+		{
+			++capped;
+			got = maxK;
+		}
+		if (got < 3 && nAll >= 3)   // a plane cannot be fitted to fewer than three points
+			got = tree.nearestKSearch(cloud->points[i], 3, idx, sqd);
+		used[i] = got;
+
+		Eigen::Vector3d c = Eigen::Vector3d::Zero();
+		for (int k = 0; k < got; ++k) c += P[idx[k]];
+		c /= (double)got;
+		Eigen::Matrix3d cov = Eigen::Matrix3d::Zero();
+		for (int k = 0; k < got; ++k)
+		{
+			const Eigen::Vector3d d = P[idx[k]] - c;
+			cov += d * d.transpose();
+		}
+		cov /= (double)got;
+		Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> es(cov);
+		Eigen::Vector3d n = es.eigenvectors().col(0);   // smallest eigenvalue = plane normal
+		const double ln = n.norm();
+		if (ln > 0.0) n /= ln;
+		it->second = VectorCGAL(n[0], n[1], n[2]);
+	}
+	if (!g_nbrsFile.empty())
+	{
+		std::ofstream nf(g_nbrsFile.c_str(), std::ofstream::app);
+		if (nf.is_open())
+		{
+			for (size_t k = 0; k < used.size(); ++k)
+				nf << g_normalCall << "\t" << k << "\t" << used[k] << "\n";
+		}
+	}
+	return std::max(minK, std::min(maxK, n24Median(used)));
+}
+
+// TICKET 24: instrument only. When SFS_NORMAL_DUMP_DIR is set, each call's own normals PLY is
+// copied there under its call index, so the per-point angle against the mesh can be measured
+// before the stage (and the copy) is deleted with the counted record.
+static std::string g_normalDumpDir;
+
+static void dumpNormalsPly24(const std::string& src, int call)
+{
+	if (g_normalDumpDir.empty() || fileNameOnly.empty()) return;
+	const std::string dst = g_normalDumpDir + "/" + fileNameOnly + "_call" + std::to_string(call) + ".ply";
+	std::ifstream in(src.c_str(), std::ios::binary);
+	if (!in.is_open()) return;
+	std::ofstream out(dst.c_str(), std::ios::binary);
+	if (!out.is_open()) return;
+	out << in.rdbuf();
+	std::cout << "[NORMAL-24] dump piece=" << fileNameOnly << " call=" << call
+	          << " path=" << dst << std::endl;
+}
+
+// TICKET 24: one line per normal-estimation call, so no arm has to be believed about itself.
+static void printNormalLine24(size_t npts, const std::vector<int>& used, int kCount,
+                              int kOrient, int floored, int capped, double cloudSpacingMM)
+{
+	const bool radiusMode = (g_normalMode == "radius" && (g_normalRadiusMM > 0.0 || g_normalRadiusAuto));
+	std::cout << "[NORMAL-24] piece=" << (fileNameOnly.empty() ? "NA" : fileNameOnly)
+	          << " call=" << g_normalCall
+	          << " mode=" << (radiusMode ? "radius" : "count")
+	          << " n=" << npts;
+	if (radiusMode)
+	{
+		std::cout << " radiusMM=" << g_normalRadiusMM
+		          << " radiusFrom=" << (g_normalRadiusAuto ? "auto" : "fixed")
+		          << " mult=" << g_normalRadiusMult
+		          << " s0MM=" << g_pieceS0MM
+		          << " minK=" << g_normalMinK << " maxK=" << g_normalMaxK;
+	}
+	else
+	{
+		std::cout << " k=" << kCount;
+	}
+	if (radiusMode && !used.empty())
+	{
+		std::vector<int> v(used);
+		std::sort(v.begin(), v.end());
+		double sum = 0.0;
+		for (size_t i = 0; i < v.size(); ++i) sum += v[i];
+		const int p50 = v[v.size() / 2];
+		const int p90 = v[(size_t)(0.9 * (double)(v.size() - 1))];
+		std::cout << " nbrMin=" << v.front() << " nbrMedian=" << p50
+		          << " nbrP90=" << p90 << " nbrMax=" << v.back()
+		          << " nbrMean=" << (sum / (double)v.size())
+		          << " flooredToMinK=" << floored << " cappedAtMaxK=" << capped
+		          << " orientK=" << kOrient << " cloudSpacingMM=" << cloudSpacingMM;
+	}
+	if (!g_normalDumpDir.empty() && !fileNameOnly.empty())
+		std::cout << " dumpCall=" << g_normalDumpDir << "/" << fileNameOnly
+		          << "_call" << g_normalCall << ".ply";
+	std::cout << std::endl;
+}
+
 // Forward declarations for curvature computation
 std::vector<int> getKNNPoints(const Eigen::Vector3f& center_point, const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, int K);
 std::pair<float, float> getCurvature(const Eigen::Vector3f& center_point, const Eigen::Vector3f& center_normal, const std::vector<Eigen::Vector3f>& knn_points);
@@ -421,20 +622,44 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	std::cout << "[ADAPTIVE CGAL] Using " << nb_neighbors << " neighbors for "
 	          << points.size() << " points (density-aware)" << std::endl;
 
-	// Estimates normals direction.
-	CGAL::pca_estimate_normals<Concurrency_tag>
-		(points, nb_neighbors,
-			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
-			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+	// TICKET 24: in radius mode the neighbours are chosen by a physical distance instead of by
+	// how many points the cloud happens to have. CGAL's pca_estimate_normals takes a count only,
+	// so the radius path fits its own plane per point (estimateNormalsRadius) and leaves the
+	// count path below byte-for-byte as it was; MST orientation is CGAL's in both modes.
+	const size_t n24npts = points.size();
+	const bool n24radius = (g_normalMode == "radius" && (g_normalRadiusMM > 0.0 || g_normalRadiusAuto));
+	std::vector<int> n24used;
+	int n24floored = 0;
+	int n24capped = 0;
+	double n24spacing = 0.0;
+	int n24orientK = nb_neighbors;
+
+	if (n24radius)
+	{
+		const int n24minK = std::max(3, std::min(g_normalMinK, g_normalMaxK));
+		n24orientK = estimateNormalsRadius(points, g_normalRadiusMM, n24minK, g_normalMaxK,
+		                                   n24used, n24floored, n24capped, n24spacing);
+	}
+	else
+	{
+		// Estimates normals direction.
+		CGAL::pca_estimate_normals<Concurrency_tag>
+			(points, nb_neighbors,
+				CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
+				normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+	}
 	std::cout << "[DEBUG getNormalsOnSurface] PCA normal estimation complete." << std::endl;
 
 	// Orients normals.
 	std::cout << "[DEBUG getNormalsOnSurface] Orienting normals with MST..." << std::endl;
 	std::list<PointVectorPair>::iterator unoriented_points_begin =
-		CGAL::mst_orient_normals(points, nb_neighbors,
+		CGAL::mst_orient_normals(points, n24orientK,
 			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
 			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
 	std::cout << "[DEBUG getNormalsOnSurface] MST orientation complete." << std::endl;
+	printNormalLine24(n24npts, n24used, nb_neighbors, n24orientK, n24floored, n24capped, n24spacing);
+	const int n24callId = g_normalCall;
+	++g_normalCall;
 	points.erase(unoriented_points_begin, points.end());
 	std::cout << "[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: " << points.size() << std::endl;
 
@@ -551,6 +776,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 		if (valid) {
 			std::cout << "[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode..." << std::endl;
 			pcl::io::savePLYFile(fragmentMeshFile + "_SampledWithNormals.ply", *surfaceWithNormals, false); // ASCII mode
+			dumpNormalsPly24(fragmentMeshFile + "_SampledWithNormals.ply", n24callId); // TICKET 24 instrument
 		} else {
 			std::cerr << "Error: Surface point cloud contains invalid data, skipping PLY save" << std::endl;
 		}
@@ -2834,6 +3060,8 @@ int main(int argc, char** argv) {
             double sClamped = std::min(0.6, std::max(s0MM, sRaw));
             samplingRadius244 = static_cast<float>(sClamped);
             g_effectiveSpacingMM = sClamped;
+            g_pieceDiagMM = diagMM;   // TICKET 24: the radius arm reads these instead of re-probing
+            g_pieceS0MM = s0MM;
             std::cout << "[SPACING-22] policy=piece diagMM=" << diagMM << " s0MM=" << s0MM
                       << " samples=" << spacingSamples << " rawMM=" << sRaw
                       << " S=" << sClamped << std::endl;
@@ -2841,6 +3069,10 @@ int main(int argc, char** argv) {
         else
         {
             g_effectiveSpacingMM = 0.6;
+            // TICKET 24: policy=fixed measures nothing, so a radius arm probes for itself below
+            // and must not inherit the previous piece's numbers.
+            g_pieceS0MM = 0.0;
+            g_pieceDiagMM = 0.0;
             std::cout << "[SPACING-22] policy=fixed S=" << g_effectiveSpacingMM << std::endl;
         }
         std::string countScale = "off";
@@ -2863,6 +3095,56 @@ int main(int argc, char** argv) {
         std::cout << "[SWITCH-23] singleCluster=" << g_singleClusterMode
                   << " floorCeiling=" << (g_floorCeilingOn ? std::to_string(g_floorCeilingFrac) : std::string("off"))
                   << " countScaleAuto=" << (g_countScaleAuto ? "yes" : "no") << std::endl;
+
+        // TICKET 24: how many neighbours a normal is estimated from. Every default here
+        // reproduces today: mode=count ignores the radius and runs the untouched count rule.
+        g_normalCall = 0;
+        g_normalMode = "count";
+        g_normalRadiusMM = 0.0;
+        g_normalRadiusMMRaw = "0";
+        g_normalRadiusAuto = false;
+        g_normalRadiusMult = 2.0;
+        g_normalMinK = 5;
+        g_normalMaxK = 20;
+        g_nbrsFile.clear();
+        if (const char* e24 = std::getenv("SFS_NORMAL_MODE")) { if (*e24) g_normalMode = e24; }
+        if (const char* e24 = std::getenv("SFS_NORMAL_RADIUS_MM")) { if (*e24) g_normalRadiusMMRaw = e24; }
+        if (const char* e24 = std::getenv("SFS_NORMAL_RADIUS_MULT")) { if (*e24) g_normalRadiusMult = std::stod(e24); }
+        if (const char* e24 = std::getenv("SFS_NORMAL_MIN_K")) { if (*e24) g_normalMinK = std::stoi(e24); }
+        if (const char* e24 = std::getenv("SFS_NORMAL_MAX_K")) { if (*e24) g_normalMaxK = std::stoi(e24); }
+        if (const char* e24 = std::getenv("SFS_NBRS_FILE")) { if (*e24) g_nbrsFile = e24; }
+        g_normalDumpDir.clear();
+        if (const char* e24 = std::getenv("SFS_NORMAL_DUMP_DIR")) { if (*e24) g_normalDumpDir = e24; }
+        if (g_normalMode == "radius" && (g_pieceS0MM <= 0.0 || g_pieceDiagMM <= 0.0))
+        {
+            double d24 = 0.0, s24 = 0.0;
+            measurePieceSpacing(inputFilePath, d24, s24);
+            g_pieceDiagMM = d24;
+            if (g_pieceS0MM <= 0.0) g_pieceS0MM = s24;
+            std::cout << "[NORMAL-24] probe diagMM=" << d24 << " s0MM=" << s24 << std::endl;
+        }
+        if (g_normalRadiusMMRaw == "auto")
+        {
+            // resolved per call from the spacing of the cloud that call is handed; see
+            // estimateNormalsRadius. 0 here means "not yet resolved".
+            g_normalRadiusAuto = true;
+            g_normalRadiusMM = 0.0;
+        }
+        else
+        {
+            g_normalRadiusMM = std::stod(g_normalRadiusMMRaw);
+        }
+        std::cout << "[NORMAL-24-SWITCH] mode=" << g_normalMode
+                  << " radiusMMraw=" << g_normalRadiusMMRaw
+                  << " radiusMM=" << (g_normalRadiusAuto ? std::string("autoPending") : std::to_string(g_normalRadiusMM))
+                  << " radiusFrom=" << (g_normalRadiusAuto ? "auto" : "fixed")
+                  << " mult=" << g_normalRadiusMult
+                  << " s0MM=" << g_pieceS0MM
+                  << " diagMM=" << g_pieceDiagMM
+                  << " radiusOverDiag=" << ((g_normalMode == "radius" && !g_normalRadiusAuto && g_pieceDiagMM > 0.0 && g_normalRadiusMM > g_pieceDiagMM) ? "yes" : "no")
+                  << " minK=" << g_normalMinK << " maxK=" << g_normalMaxK
+                  << " nbrsFile=" << (g_nbrsFile.empty() ? "none" : g_nbrsFile)
+                  << " dumpDir=" << (g_normalDumpDir.empty() ? "none" : g_normalDumpDir) << std::endl;
         // TICKET 23: a previous piece's temp surface must not be read back as this piece's on a
         // multi-piece run. Only armed under the switch, so the off path is untouched.
         if (g_singleClusterMode == "write")
