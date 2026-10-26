@@ -10,7 +10,7 @@ whether this is the method, the measurement, or the material.
 
 **Blocked by:** none
 
-**Status:** in-progress
+**Status:** ready-for-human
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 20-why-five-sherds-produce-no-surface, in /c/PR/worktrees/sfs/20
 
@@ -130,3 +130,121 @@ Juglet surfaces lack (point count? curvature? interior-facing dots?) and whether
 Whether the Juglet reassembly would work even if every sherd produced a surface —
 that is stage 2 of ticket 07, and it is paused. Nothing here is about Pot A, Pot D
 or Pot H.
+
+## Comments
+
+**Worker evidence, 2026-10-27 — no verdicts; the lead marks H1–H4.** Full report with every
+number, path and source line: `.scratch/juglet-breaklines/stage20/REPORT.md` (commit `64144c4`);
+renders and captions: `.scratch/juglet-breaklines/stage20/renders/`; instruments:
+`.scratch/juglet-breaklines/stage20/instruments/`.
+
+Two completed jobs carry every number used here: **33836128** (53-variant sweep, COMPLETED 0:0
+2 m 04 s, run `20261027-0136_ea1f11a_p20-sweep`) and **33836433** (density arm + analysis +
+renders, COMPLETED 0:0 3 m 10 s, run `20261027-0148_f3896e4_p20-arm`). Three failures:
+33836033 (my harness: stager restored 0644 from a `git archive`, exit 126 — nothing ran),
+33836171 and 33836302 (my analysis instrument: `normal_x` against `nx`, then `clusters[0]` on a
+zero-cluster piece). No number here comes from a failed job. Budget: 5 of 6 jobs used.
+
+### Where each silent piece is lost (acceptance 2)
+
+| piece | clusters printed | lost at | printout |
+|---|---|---|---|
+| 2 | 0 | growth | `Number of clusters is equal to 0`, 21 identical retries, `notfound=2` |
+| 9 | 0 | growth | same |
+| 5 | 1 (679) | `if (clusters.size() > 1)` at `:2200` is skipped; `:2316` builds cluster 0 and `break;`s | `Final cluster count: 1`, `notfound=2` |
+| 3 | 2 (169, 99) | the appendix-A merge | `pass 1: merge 99 into 169`, `pass 1 done: 1 clusters`, `notfound=2` |
+| 8 | 2 (224, 196) at the shipped defaults | the appendix-A merge | stage-1 run's table; my replay of that PLY fires the same criterion |
+
+A sherd reaches a NURBS surface only if two clusters survive the merge: only then is
+`pcl::io::savePLYFile(...tmpSurfaceCluster_Improved_0.ply/_1.ply)` reached (`:2289-2291`), and
+otherwise `:2600-2612` prints two `Warning: Source file not found`.
+
+### H1 — normals and density
+
+`SFS_PAPER_NB` never reaches the normal estimation: all 13 piece-2 cells, 6 piece-3, 12 piece-5,
+3 piece-8 and 12 piece-9 cells share one segmentation-input md5 (`A_segmentation_input.tsv`,
+`distinct_md5_over_variants=1`), and every log prints `Using 5 neighbors for N points
+(density-aware)` for the Juglet and `8` for Pot A 07 — the adaptive rule at
+`mesh_processing_headless.cpp:420` (`max(5, min(20, N/1000))`) sits at its floor for all nine.
+How much the estimate depends on neighbourhood size (`D_normal_density.tsv`, 5-NN against 20-NN
+PCA normal at the same point): median 5.5°–13.0° across pieces, p90 22°–39°; the two
+growth-starved pieces are the worst (piece 2 median 11.14°, piece 9 12.97°, 14.7 % of piece-9
+normals above 30°) and the control is the best (`Pot_A_Piece_07` 0.88°). The density arm
+(`arm_table.tsv`, target 19000 against `-1`) moves these clouds by ≤4 points
+(2: 2564/2565, 3: 3490/3486, 5: 6211/6208, 8: 4478/4478, 9: 2094/2090) and changes no outcome:
+because at target 19000 the band is `Bounds=[15200-22800]` and the clouds are 2.1k–6.2k points,
+so `[DOWNSAMPLING RESULT] ... Result=2565 points` on piece 2 — the restore path and the raw cloud
+are the same clouds.
+
+### H2 — the merge on 99–224-point clusters
+
+Appendix A (`C:/PR/papers/text/sfspp-2502.13986v1.md:464-479`): `k1=10`, `k2=30`,
+`rho_d=1.0` mm, `rho_n=0.95`, `rho_c=0.1`, `rho_in,n=0.75`, `rho_in,c=0.25`, and "at least
+three boundary point pairs must be detected". Measured on the pipeline's own PLYs
+(`B_merge_criteria.tsv`): piece 3 (169/99) has **5** boundary pairs, min pair distance
+**0.520166 mm** against 1.0, dot **0.970041** against 0.95, dCurv **0.000217** against 0.1,
+internal dot **0.971461** against 0.75 — every criterion clear at once. Piece 8 (224/196): 4
+pairs, 0.51495 mm, dot 0.961161, dCurv 0.010478, internal 0.782891/0.00693 — same. The
+non-fusing comparison that *does* produce surfaces, `Pot_A_Piece_07`, fuses only (120, 71)
+(7 pairs, dot 0.997768, internal 0.978151) and leaves every other pair at `too-few-pairs`; the
+pair that comes closest to fusing without doing so is piece 7's (403, 263), stopped at
+`rhoInN` 0.409647 against 0.75. One disagreement is recorded: my replay grows 244/51 on piece 4
+where the pipeline prints 242/51, and there the replay fires and the pipeline does not.
+
+### H3 — measured on the mesh
+
+`C_mesh.tsv` (800 rays per piece, my own Möller–Trumbore intersector): pieces 2, 3, 4, 5, 7, 8, 9
+are watertight two-sheet shells with median wall **2.09–2.90 mm**, 34–80 % of rays in the 1–3 mm
+band, and every ray but a handful crossing at least two sheets; `Pot_A_Piece_07` is an open shell
+(median 4.06 mm, 0.93 % in 1–3 mm). `B_two_clusters.tsv` pre-merge: on pieces 3 and 8 the two
+clusters' mean normals point the **same** way (+0.741637 and +0.717114) and their nearest points
+are **0.52 mm** apart; on `Pot_A_Piece_07` they are **antiparallel** (−0.998866) and 3.30 mm
+apart. The code has no honest one-wall branch: with one cluster `:2316-2339` throws the cloud
+away and breaks, and the only trace is the printed warning at `:2392-2396`.
+
+### H4 — the interior test
+
+`classifyAndOrderPaper234` (`:2004-2049`) counts, per face, the fraction of points whose normal
+points toward the axis (`v.dot(nn) > 0` at `:2031`), then compares
+`satA = inFrac[0]*n0 + (1-inFrac[1])*n1` with `satB = (1-inFrac[0])*n0 + inFrac[1]*n1` and swaps
+on `satB > satA` (`:2041`). **There is no threshold and no third branch**: with both fractions
+at 0.0000 the scores collapse to `satA = n1`, `satB = n0`, so the "interior" label is decided
+by relative cluster size. That is the case for piece 1 (`interior_frac=0.0000` on both faces,
+3489 and 626 points, `satA=626.0 satB=3489.0`) and for pieces 4 and 6 in their `axes` attempts.
+The same evidence is axis-dependent: pieces 4, 6 and 7 each have two stage-1 attempts with
+identical cluster sizes and different axes, and the fractions move — piece 6 from
+`0.0822/0.2207` (boot axis) to `0.0000/0.0000` (axes), piece 7 from `0.1836/0.0000` to
+`0.0000/0.3878`, piece 4 from `0.0000/0.0000` to `0.0826/0.9412`. The smallest margin measured
+on a Juglet piece is 8 points out of 268 (piece 7 boot: 337 against 329; piece 3 in my replay:
+138 against 130). Pieces 2, 5 and 9 never reach the test at all (`:2008`, fewer than two
+clusters). Nothing in the code reports "no evidence".
+
+### Renders (acceptance 5)
+
+`.scratch/juglet-breaklines/stage20/renders/`: `Juglet_Piece_3.png` (118021 B) and
+`Pot_A_Piece_07.png` (217871 B), plus the three theta-8 pieces; captions in `CAPTIONS.txt`.
+Zoom scale **0.0414 mm/px** (31.06 mm across 750 px, 1 mm bar) on piece 3 and **0.0622 mm/px**
+(46.65 mm, 1 mm bar) on Pot A 07 — a 1–3 mm separation is 24–72 px. On piece 3 the 169 and 99
+point clusters lie on one arc side by side along z within one radial band (median s 2.492 against
+3.298 mm, separation 0.805 mm, overlapping histograms); on Pot A 07 they are two parallel bands
+(35.005 against 31.872 mm, separation 3.133 mm, disjoint).
+
+### What would restore surfaces (acceptance 6, not implemented)
+
+Costed in report §9: env only `SFS_PAPER_THETA=8` (piece 2 → 4 clusters, 9 → 2, 3 → 3, 5 → 6,
+all with surfaces; ~2.3 s per piece, no rebuild; collateral on pieces 1, 4, 6, 7 and Pot A 07
+**not measured**); env only `SFS_PAPER_CHAIN=0` (2 and 5 produce surfaces, 3, 8, 9 do not); a
+source branch for the one-cluster case (`:2316-2339`, `:2600-2612`; one extra B-spline fit per
+piece; needs a rebuilt binary — the container is fixed and each job builds the checkout);
+removing the 21 identical retries (proved a no-op: `p3-sm3.0` and `p3-sm45.0` differ in exactly
+one printed token, `smoothDeg=3.00000` against `45.00000`, and in nothing else); and a new stage
+that decides interior/exterior from the mesh (`ray_hits`, ~1 s per piece) instead of the argmax.
+
+### Accounting (acceptance 7)
+
+No tracked source changed. Frozen corpus md5 unchanged in both completed runs
+(`out/corpus_verdict.txt`: `yes (21 files)`). Geometry deleted with a counted record: sweep
+832 files / 103619712 B, arm 140 files / 21217764 B, aborted job 300 files / 1378584 B. Index
+rows for all five run directories with `verdict` and `human_note` empty. **One ledger wart:**
+the aborted job 33836033 appended 50 per-variant rows before it died; the index is append-only,
+so they stay and are declared void in `20261027-0131_bc58c3d_p20-sweep/out/VOID_VARIANT_ROWS.txt`.
