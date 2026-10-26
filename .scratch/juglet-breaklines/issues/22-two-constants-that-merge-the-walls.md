@@ -79,10 +79,12 @@ identical to today** — that is an acceptance criterion, not a nicety.
    `auto` multiplies each of these by `(0.6 / S)^2`. **Measure both**, scaled and unscaled: the
    conservator's expectation is that scaling is enough and the counts "shouldn't matter much", and
    that expectation is a hypothesis for the arms, not a design assumption.
-   Distance thresholds (`rhoD 1.0 mm`, `planeDistMM 2.0`) are **not** scaled, and neither is
-   anything that defines a *scoring bar* — the assembler's 20.05 deg / 50 mm and the paper's
-   parameters stay absolute, because scaling the ruler would make our numbers incomparable with
-   the paper's and with every earlier run. Method-internal constants adapt; the ruler does not.
+   Distance thresholds (`rhoD 1.0 mm`, `planeDistMM 2.0`) are **not** scaled. The assembler's
+   20.05 deg / 50 mm stays absolute too, but only as a *comparability* figure printed beside our
+   own score — **the score itself is per-sherd correct seating**, whose tolerances are relative to
+   pot size (user decision, 2026-10-27; U19 and `docs/glossary.md`, "own place / right way
+   round"). Method-internal constants adapt; a figure kept for comparison with the paper keeps
+   the paper's definition.
 
 ## The arms to measure
 
