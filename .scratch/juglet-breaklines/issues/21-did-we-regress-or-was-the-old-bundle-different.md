@@ -58,10 +58,12 @@ If no md5 record survives, say **unknown** — do not infer identity from file n
 
 1. A per-piece table, old commit vs today: surfaces produced, cluster count and sizes,
    points into clustering — with the run directory named for each row.
-2. A verdict, one of: **(1) regression** — the older code produces more surfaces from
-   byte-identical inputs; **(2) comparison artefact** — the old number came from
-   different inputs or a different stage, so the two were never comparable; **(3) not
-   determined**, with what would decide it. The evidence that decides it, quoted.
+2. The per-piece comparison, plus for each of the three candidate readings — **(1)
+   regression** (the older code produces more surfaces from byte-identical inputs),
+   **(2) comparison artefact** (the old number came from different inputs or a different
+   stage), **(3) not determined** — the evidence that would establish it, quoted. **Do
+   not write the verdict**: the lead records it; a worker reports evidence, never a
+   judgement.
 3. The input-identity question answered with md5s, or explicitly recorded as unknown
    after the search.
 4. If the older code cannot build or run, the exact failure (command, error text) and
