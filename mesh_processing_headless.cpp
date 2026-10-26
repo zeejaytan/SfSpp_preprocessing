@@ -807,6 +807,173 @@ void PointCloud2Vector3d(pcl::PointCloud<Point>::Ptr cloud, pcl::on_nurbs::vecto
 	}
 }
 
+// TICKET 22: the B-spline boundary step. The fit is shared by both reassignment modes,
+// so that only the admission rule differs between them.
+struct FittedSplineSurface
+{
+	pcl::on_nurbs::NurbsDataSurface data;
+	pcl::on_nurbs::FittingSurface* fit;
+	FittedSplineSurface() : fit(nullptr) {}
+	~FittedSplineSurface() { delete fit; }
+};
+
+// TICKET 22: spacing this piece was sampled at, and the count scale derived from it.
+static double g_effectiveSpacingMM = 0.6;
+static double g_countScale = 1.0;
+
+void fitSplineSurfaceToCluster(pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud, FittedSplineSurface& out)
+{
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_OriginalSurface(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_Sampled(new pcl::PointCloud<pcl::PointXYZ>);
+
+	pcl::copyPointCloud(*segmentedSurfacePointCloud, *cloud_OriginalSurface);
+
+	pcl::RandomSample<pcl::PointXYZ> rs;
+	rs.setInputCloud(cloud_OriginalSurface);
+	rs.setSample(10000);
+	rs.filter(*cloud_Sampled);
+
+	pcl::io::savePCDFile("cloudForSpline.pcd", *cloud_Sampled);
+
+	string pcd_file = "cloudForSpline.pcd";
+
+	printf("  loading %s\n", pcd_file.c_str());
+	pcl::PointCloud<Point>::Ptr cloud(new pcl::PointCloud<Point>);
+	pcl::PCLPointCloud2 cloud2;
+
+	if (pcl::io::loadPCDFile(pcd_file, cloud2) == -1)
+		throw std::runtime_error("  PCD file not found.");
+
+	fromPCLPointCloud2(cloud2, *cloud);
+	PointCloud2Vector3d(cloud, out.data.interior);
+	printf("  %zu points in data set\n", cloud->size());
+
+	unsigned order(3);
+	unsigned refinement(3);
+	unsigned iterations(8);
+
+	pcl::on_nurbs::FittingSurface::Parameter params;
+	params.interior_smoothness = 0.2;
+	params.interior_weight = 1.0;
+	params.boundary_smoothness = 0.4;
+	params.boundary_weight = 0.0;
+
+	printf("  surface fitting ...\n");
+	ON_NurbsSurface nurbs = pcl::on_nurbs::FittingSurface::initNurbsPCABoundingBox(order, &out.data);
+	out.fit = new pcl::on_nurbs::FittingSurface(&out.data, nurbs);
+
+	for (unsigned i = 0; i < refinement; i++)
+	{
+		out.fit->refine(0);
+		out.fit->refine(1);
+		out.fit->assemble(params);
+		out.fit->solve();
+	}
+
+	for (unsigned i = 0; i < iterations; i++)
+	{
+		out.fit->assemble(params);
+		out.fit->solve();
+	}
+}
+
+void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud,
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud_other,
+	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud)
+{
+	if (improvedSurfacePointCloud_other->points.size() > improvedSurfacePointCloud->points.size())
+	{
+		pcl::copyPointCloud(*improvedSurfacePointCloud_other, *improvedSurfacePointCloud);
+	}
+
+	for (int i = 0; i < segmentedSurfacePointCloud->points.size(); i++)
+	{
+		pcl::PointNormal ptTmp;
+
+		ptTmp.x = segmentedSurfacePointCloud->points[i].x; // point[0];
+		ptTmp.y = segmentedSurfacePointCloud->points[i].y; // point[1];
+		ptTmp.z = segmentedSurfacePointCloud->points[i].z; // point[2];
+		ptTmp.normal_x = segmentedSurfacePointCloud->points[i].normal_x;
+		ptTmp.normal_y = segmentedSurfacePointCloud->points[i].normal_y;
+		ptTmp.normal_z = segmentedSurfacePointCloud->points[i].normal_z;
+		improvedSurfacePointCloud->points.push_back(ptTmp);
+	}
+
+	improvedSurfacePointCloud->width = static_cast<int>(improvedSurfacePointCloud->points.size());
+	improvedSurfacePointCloud->height = 1;
+
+	//removing duplicate points
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloudNoDuplicates(new pcl::PointCloud<PointNormal>);
+	std::vector<PointNormal> vectorPointNormal;
+	for (size_t i = 0; i < improvedSurfacePointCloud->points.size(); i++)
+	{
+		vectorPointNormal.push_back(improvedSurfacePointCloud->points[i]);
+	}
+	std::sort(vectorPointNormal.begin(), vectorPointNormal.end(), myobject2);
+
+	if (vectorPointNormal.size() > 0)
+	{
+		for (size_t i = 0; i < vectorPointNormal.size() - 1; i++)
+		{
+			if ((vectorPointNormal[i].x == vectorPointNormal[i + 1].x) && (vectorPointNormal[i].y == vectorPointNormal[i + 1].y) && (vectorPointNormal[i].z == vectorPointNormal[i + 1].z))
+			{
+
+			}
+			else
+			{
+				improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[i]);
+			}
+		}
+
+		improvedSurfacePointCloudNoDuplicates->width = improvedSurfacePointCloudNoDuplicates->points.size();
+		improvedSurfacePointCloudNoDuplicates->height = 1;
+	}
+}
+
+// TICKET 22: SFS_SPACING_POLICY=piece needs the piece's bounding-box diagonal and its
+// own median nearest-neighbour spacing, both measured on the raw cloud.
+void measurePieceSpacing(const std::string& pcdFile, double& diagMM, double& s0MM)
+{
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	if (pcl::io::loadPCDFile<pcl::PointXYZ>(pcdFile, *cloud) == -1)
+		throw std::runtime_error("  PCD file not found: " + pcdFile);
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr finiteCloud(new pcl::PointCloud<pcl::PointXYZ>);
+	for (size_t i = 0; i < cloud->points.size(); i++)
+	{
+		const pcl::PointXYZ& p = cloud->points[i];
+		if (std::isfinite(p.x) && std::isfinite(p.y) && std::isfinite(p.z))
+			finiteCloud->points.push_back(p);
+	}
+	finiteCloud->width = static_cast<int>(finiteCloud->points.size());
+	finiteCloud->height = 1;
+	if (finiteCloud->points.empty())
+		throw std::runtime_error("  PCD file has no finite points: " + pcdFile);
+
+	Eigen::Vector4f minPt, maxPt;
+	pcl::getMinMax3D(*finiteCloud, minPt, maxPt);
+	double dx = maxPt[0] - minPt[0];
+	double dy = maxPt[1] - minPt[1];
+	double dz = maxPt[2] - minPt[2];
+	diagMM = std::sqrt(dx * dx + dy * dy + dz * dz);
+
+	pcl::KdTreeFLANN<pcl::PointXYZ> tree;
+	tree.setInputCloud(finiteCloud);
+	std::vector<double> nnDist;
+	nnDist.reserve(finiteCloud->points.size());
+	std::vector<int> nbrIdx(2);
+	std::vector<float> nbrSqDist(2);
+	for (size_t i = 0; i < finiteCloud->points.size(); i++)
+	{
+		if (tree.nearestKSearch(finiteCloud->points[i], 2, nbrIdx, nbrSqDist) >= 2)
+			nnDist.push_back(std::sqrt(static_cast<double>(nbrSqDist[1])));
+	}
+	if (nnDist.empty())
+		throw std::runtime_error("  could not measure nearest-neighbour spacing: " + pcdFile);
+	std::sort(nnDist.begin(), nnDist.end());
+	s0MM = nnDist[nnDist.size() / 2];
+}
+
 void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>::Ptr meshPointCloud, pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud, pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud)
 {
 
@@ -819,86 +986,10 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	std::string file_contents;
 	int numberOfPoints;
 
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_OriginalSurface(new pcl::PointCloud<pcl::PointXYZ>);
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_Sampled(new pcl::PointCloud<pcl::PointXYZ>);
+	FittedSplineSurface fitted;
+	fitSplineSurfaceToCluster(segmentedSurfacePointCloud, fitted);
+	pcl::on_nurbs::FittingSurface& fit = *fitted.fit;
 
-	pcl::copyPointCloud(*segmentedSurfacePointCloud, *cloud_OriginalSurface);
-	numberOfPoints = cloud_OriginalSurface->points.size();
-
-
-	pcl::RandomSample<pcl::PointXYZ> rs;
-	rs.setInputCloud(cloud_OriginalSurface);
-	rs.setSample(10000);
-
-	rs.filter(*cloud_Sampled);
-
-
-	pcl::io::savePCDFile("cloudForSpline.pcd", *cloud_Sampled);
-
-	string pcd_file = "cloudForSpline.pcd";
-	string file_3dm = "splineSurfaceOutput.3dm";
-
-
-	// ############################################################################
-	// load point cloud
-
-	printf("  loading %s\n", pcd_file.c_str());
-	pcl::PointCloud<Point>::Ptr cloud(new pcl::PointCloud<Point>);
-	pcl::PCLPointCloud2 cloud2;
-	pcl::on_nurbs::NurbsDataSurface data;
-
-	if (pcl::io::loadPCDFile(pcd_file, cloud2) == -1)
-		throw std::runtime_error("  PCD file not found.");
-
-	fromPCLPointCloud2(cloud2, *cloud);
-	PointCloud2Vector3d(cloud, data.interior);
-	printf("  %zu points in data set\n", cloud->size()); //sisung_change
-
-	// ############################################################################
-	// fit B-spline surface
-
-	unsigned order(3);
-	unsigned refinement(3);
-	unsigned iterations(8);
-	unsigned mesh_resolution(128);
-
-	pcl::on_nurbs::FittingSurface::Parameter params;
-	params.interior_smoothness = 0.2;
-	params.interior_weight = 1.0;
-	params.boundary_smoothness = 0.4;
-	params.boundary_weight = 0.0;
-
-	// initialize
-	printf("  surface fitting ...\n");
-	ON_NurbsSurface nurbs = pcl::on_nurbs::FittingSurface::initNurbsPCABoundingBox(order, &data);
-	pcl::on_nurbs::FittingSurface fit(&data, nurbs);
-
-	// mesh for visualization
-	pcl::PolygonMesh mesh;
-	pcl::PointCloud<pcl::PointXYZ>::Ptr mesh_cloud(new pcl::PointCloud<pcl::PointXYZ>);
-	std::vector<pcl::Vertices> mesh_vertices;
-	std::string mesh_id = "mesh_nurbs";
-	pcl::on_nurbs::Triangulation::convertSurface2PolygonMesh(fit.m_nurbs, mesh, mesh_resolution);
-
-	// surface refinement
-	for (unsigned i = 0; i < refinement; i++)
-	{
-		fit.refine(0);
-		fit.refine(1);
-		fit.assemble(params);
-		fit.solve();
-		pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
-	}
-
-	// surface fitting with final refinement level
-	for (unsigned i = 0; i < iterations; i++)
-	{
-		fit.assemble(params);
-		fit.solve();
-		pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
-	}
-
-	// pcl::io::savePCDFile("bSpline_inital_pointcloud.pcd", *mesh_cloud);
 
 	//viewer.close();
 	pcl::PointCloud<pcl::PointNormal>::Ptr bSplineSurface(new pcl::PointCloud<pcl::PointNormal>);
@@ -1006,62 +1097,117 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 		projectedPointCloudWithNormals->points.push_back(ptTmp);
 	}
 
-	if (improvedSurfacePointCloud_other->points.size() > improvedSurfacePointCloud->points.size())
-	{
-		pcl::copyPointCloud(*improvedSurfacePointCloud_other, *improvedSurfacePointCloud);
-	}
-
-
 	bSplineSurface->width = static_cast<int>(bSplineSurface->points.size());
 	bSplineSurface->height = 1;
 	// pcl::io::savePCDFile("bSplineSurfacePoints.pcd", *bSplineSurface);
 
 
-	for (int i = 0; i < segmentedSurfacePointCloud->points.size(); i++)
-	{
-		pcl::PointNormal ptTmp;
-
-		ptTmp.x = segmentedSurfacePointCloud->points[i].x; // point[0];
-		ptTmp.y = segmentedSurfacePointCloud->points[i].y; // point[1];
-		ptTmp.z = segmentedSurfacePointCloud->points[i].z; // point[2];
-		ptTmp.normal_x = segmentedSurfacePointCloud->points[i].normal_x;
-		ptTmp.normal_y = segmentedSurfacePointCloud->points[i].normal_y;
-		ptTmp.normal_z = segmentedSurfacePointCloud->points[i].normal_z;
-		improvedSurfacePointCloud->points.push_back(ptTmp);
-	}
-
-	improvedSurfacePointCloud->width = static_cast<int>(improvedSurfacePointCloud->points.size());
-	improvedSurfacePointCloud->height = 1;
-
-	//removing duplicate points
-	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloudNoDuplicates(new pcl::PointCloud<PointNormal>);
-	std::vector<PointNormal> vectorPointNormal;
-	for (size_t i = 0; i < improvedSurfacePointCloud->points.size(); i++)
-	{
-		vectorPointNormal.push_back(improvedSurfacePointCloud->points[i]);
-	}
-	std::sort(vectorPointNormal.begin(), vectorPointNormal.end(), myobject2);
-
-	if (vectorPointNormal.size() > 0)
-	{
-		for (size_t i = 0; i < vectorPointNormal.size() - 1; i++)
-		{
-			if ((vectorPointNormal[i].x == vectorPointNormal[i + 1].x) && (vectorPointNormal[i].y == vectorPointNormal[i + 1].y) && (vectorPointNormal[i].z == vectorPointNormal[i + 1].z))
-			{
-
-			}
-			else
-			{
-				improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[i]);
-			}
-		}
-
-		improvedSurfacePointCloudNoDuplicates->width = improvedSurfacePointCloudNoDuplicates->points.size();
-		improvedSurfacePointCloudNoDuplicates->height = 1;
-	}
+	finishImprovedSurface(improvedSurfacePointCloud, improvedSurfacePointCloud_other, segmentedSurfacePointCloud);
 
 	projectedPointCloudWithNormals->width = static_cast<int>(projectedPointCloudWithNormals->points.size());
 	projectedPointCloudWithNormals->height = 1;
+}
+
+// TICKET 22: SFS_REASSIGN_MODE=own. Both clusters are fitted before either surface is
+// rewritten, and a candidate point may join a surface only when that surface's spline is
+// the nearer of the two; the 3 mm radius and the 140/40 degree angle gates stay as outer caps.
+void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNormal>::Ptr meshPointCloud,
+	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud1,
+	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud2,
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud1,
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud2)
+{
+	FittedSplineSurface fitted1;
+	FittedSplineSurface fitted2;
+	fitSplineSurfaceToCluster(segmentedSurfacePointCloud1, fitted1);
+	fitSplineSurfaceToCluster(segmentedSurfacePointCloud2, fitted2);
+
+	pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePointCloud1_other(new pcl::PointCloud<pcl::PointNormal>);
+	pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePointCloud2_other(new pcl::PointCloud<pcl::PointNormal>);
+
+	pcl::on_nurbs::FittingSurface* fits[2] = { fitted1.fit, fitted2.fit };
+
+	for (size_t i = 0; i < meshPointCloud->points.size(); i++)
+	{
+		Eigen::Vector3d originalPt(meshPointCloud->points[i].x, meshPointCloud->points[i].y, meshPointCloud->points[i].z);
+		Eigen::Vector2d hintPt(0.5, 0.5);
+		int im_max_steps = 100;
+		double im_accuracy = 1e-5;
+
+		pcl::PointXYZ ptOnOriginalMesh;
+		ptOnOriginalMesh.x = meshPointCloud->points[i].x;
+		ptOnOriginalMesh.y = meshPointCloud->points[i].y;
+		ptOnOriginalMesh.z = meshPointCloud->points[i].z;
+
+		pcl::Normal normOnOriginalMesh;
+		normOnOriginalMesh.normal_x = meshPointCloud->points[i].normal_x;
+		normOnOriginalMesh.normal_y = meshPointCloud->points[i].normal_y;
+		normOnOriginalMesh.normal_z = meshPointCloud->points[i].normal_z;
+		Eigen::Vector4f eigen_normal_pt2 = normOnOriginalMesh.getNormalVector4fMap();
+
+		double dist[2];
+		double angleDiff[2];
+
+		for (int k = 0; k < 2; k++)
+		{
+			Eigen::Vector3d pt, tu, tv, n;
+			double error;
+			Eigen::Vector2d paramsB = fits[k]->inverseMapping(fits[k]->m_nurbs, originalPt, hintPt, error, pt, tu, tv, im_max_steps, im_accuracy);
+
+			double point[9];
+			ON_3dVector normalEst;
+			fits[k]->m_nurbs.Evaluate(paramsB(0), paramsB(1), 1, 3, point);
+			fits[k]->m_nurbs.EvNormal(paramsB(0), paramsB(1), normalEst);
+
+			pcl::PointXYZ ptOnFittedSurface;
+			ptOnFittedSurface.x = point[0];
+			ptOnFittedSurface.y = point[1];
+			ptOnFittedSurface.z = point[2];
+
+			pcl::Normal normOnFittedSurface;
+			normOnFittedSurface.normal_x = -normalEst.x;
+			normOnFittedSurface.normal_y = -normalEst.y;
+			normOnFittedSurface.normal_z = -normalEst.z;
+
+			dist[k] = pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh);
+			angleDiff[k] = pcl::getAngle3D(normOnFittedSurface.getNormalVector4fMap(), eigen_normal_pt2, true);
+		}
+
+		for (int k = 0; k < 2; k++)
+		{
+			if (!(dist[k] < 3)) continue;
+			if (!(dist[k] < dist[1 - k])) continue;
+
+			pcl::PointCloud<pcl::PointNormal>::Ptr own = (k == 0) ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2;
+			pcl::PointCloud<pcl::PointNormal>::Ptr other = (k == 0) ? improvedSurfacePointCloud1_other : improvedSurfacePointCloud2_other;
+
+			if (angleDiff[k] > 140)
+			{
+				pcl::PointNormal ptTmp;
+				ptTmp.x = meshPointCloud->points[i].x;
+				ptTmp.y = meshPointCloud->points[i].y;
+				ptTmp.z = meshPointCloud->points[i].z;
+				ptTmp.normal_x = meshPointCloud->points[i].normal_x;
+				ptTmp.normal_y = meshPointCloud->points[i].normal_y;
+				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
+				own->points.push_back(ptTmp);
+			}
+			else if (angleDiff[k] < 40)
+			{
+				pcl::PointNormal ptTmp;
+				ptTmp.x = meshPointCloud->points[i].x;
+				ptTmp.y = meshPointCloud->points[i].y;
+				ptTmp.z = meshPointCloud->points[i].z;
+				ptTmp.normal_x = meshPointCloud->points[i].normal_x;
+				ptTmp.normal_y = meshPointCloud->points[i].normal_y;
+				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
+				other->points.push_back(ptTmp);
+			}
+		}
+	}
+
+	finishImprovedSurface(improvedSurfacePointCloud1, improvedSurfacePointCloud1_other, segmentedSurfacePointCloud1);
+	finishImprovedSurface(improvedSurfacePointCloud2, improvedSurfacePointCloud2_other, segmentedSurfacePointCloud2);
 }
 
 void getBreakLineForDecorativeParts(string fileName)
@@ -2133,7 +2279,8 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 
         // Tune parameters based on current cloud size to handle scale differences robustly
         int Npts = static_cast<int>(cloud->points.size());
-        int dynMinCluster = std::max(minCluster, std::max(30, Npts / 500));          // ~0.2% of points, min 30
+        int minClusterEff = static_cast<int>(std::lround(minCluster * g_countScale));
+        int dynMinCluster = std::max(minClusterEff, std::max(30, Npts / 500));          // ~0.2% of points, min 30
         int dynK          = std::max(noOfNeighbours, std::min(40, std::max(15, Npts / 500))); // 15..40 range
 
         std::vector<pcl::PointIndices> clusters;
@@ -2187,7 +2334,10 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         // 병합 함수 호출
         if (paperChain) {
             std::cout << "Calling mergePaper234 function." << std::endl;
-            mergePaper234(cloud, normals, clusters, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC, 10, 30);
+            int k1Eff = static_cast<int>(std::lround(10 * g_countScale));
+            int k2Eff = static_cast<int>(std::lround(30 * g_countScale));
+            std::cout << "[COUNT-22] merge k1=" << k1Eff << " k2=" << k2Eff << " minCluster=" << minClusterEff << std::endl;
+            mergePaper234(cloud, normals, clusters, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC, k1Eff, k2Eff);
             std::sort(clusters.begin(), clusters.end(), myobject3);
             classifyAndOrderPaper234(cloud, normals, clusters);
         } else {
@@ -2261,12 +2411,19 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             cloudWithNormals_Cluster2->height = 1;
 
             pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster1(new pcl::PointCloud<pcl::PointNormal>);
-            improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
-            cloudWithNormals_Cluster1->points.clear();
-            pcl::copyPointCloud(*improvedSurfacePoints_Cluster1, *cloudWithNormals_Cluster1);
-
             pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster2(new pcl::PointCloud<pcl::PointNormal>);
-            improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2);
+            std::string reassignMode = "radius";
+            if (const char* e = std::getenv("SFS_REASSIGN_MODE")) { if (*e) reassignMode = e; }
+            std::cout << "[REASSIGN-22] mode=" << reassignMode << std::endl;
+            if (reassignMode == "own")
+            {
+                improveSurfaceBoundaryByFittingBSplineSurfaceOwn(sampledPointCloudNormal, cloudWithNormals_Cluster1, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster1, improvedSurfacePoints_Cluster2);
+            }
+            else
+            {
+                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
+                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2);
+            }
             cloudWithNormals_Cluster2->points.clear();
             pcl::copyPointCloud(*improvedSurfacePoints_Cluster2, *cloudWithNormals_Cluster2);
 
@@ -2546,7 +2703,36 @@ int main(int argc, char** argv) {
         // SFS_DOWNSAMPLE_TARGET=N overrides: 19000 = 48fb588 adaptive, <0 = skip (raw cloud).
         int dsTarget244 = 0;
         if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) { if (*e) dsTarget244 = std::stoi(e); }
-        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, 0.6F, dsTarget244);
+        float samplingRadius244 = 0.6F;
+        std::string spacingPolicy = "fixed";
+        if (const char* e = std::getenv("SFS_SPACING_POLICY")) { if (*e) spacingPolicy = e; }
+        if (spacingPolicy == "piece")
+        {
+            int spacingSamples = 200;
+            if (const char* e = std::getenv("SFS_SPACING_SAMPLES")) { if (*e) spacingSamples = std::stoi(e); }
+            double diagMM = 0.0, s0MM = 0.0;
+            measurePieceSpacing(inputFilePath, diagMM, s0MM);
+            double sRaw = diagMM / static_cast<double>(spacingSamples);
+            double sClamped = std::min(0.6, std::max(s0MM, sRaw));
+            samplingRadius244 = static_cast<float>(sClamped);
+            g_effectiveSpacingMM = sClamped;
+            std::cout << "[SPACING-22] policy=piece diagMM=" << diagMM << " s0MM=" << s0MM
+                      << " samples=" << spacingSamples << " rawMM=" << sRaw
+                      << " S=" << sClamped << std::endl;
+        }
+        else
+        {
+            g_effectiveSpacingMM = 0.6;
+            std::cout << "[SPACING-22] policy=fixed S=" << g_effectiveSpacingMM << std::endl;
+        }
+        std::string countScale = "off";
+        if (const char* e = std::getenv("SFS_COUNT_SCALE")) { if (*e) countScale = e; }
+        g_countScale = (countScale == "auto") ? (0.6 / g_effectiveSpacingMM) * (0.6 / g_effectiveSpacingMM) : 1.0;
+        std::cout << "[COUNT-22] policy=" << countScale << " scale=" << g_countScale
+                  << " minCluster=" << static_cast<int>(std::lround(50 * g_countScale))
+                  << " k1=" << static_cast<int>(std::lround(10 * g_countScale))
+                  << " k2=" << static_cast<int>(std::lround(30 * g_countScale)) << std::endl;
+        std::string downsampledFilePath = downsamplePointCloud(inputFilePath, samplingRadius244, dsTarget244);
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
         
