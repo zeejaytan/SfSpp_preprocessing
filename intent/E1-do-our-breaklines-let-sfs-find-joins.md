@@ -2080,3 +2080,28 @@ So "which repair first" has an answer now, and it is neither of ticket 20's two 
 the **silence** — write a one-cluster piece as one surface instead of discarding it — with a bound on the
 scaled count floor so it cannot outrun the piece. Weight: none on the 281/292 tally; it decides the next
 method ticket. Next: that fix, then the Juglet end-to-end run resumes.
+
+## 2026-10-27 — where a breakline question cannot even be asked (ticket 23)
+
+The question in this file assumes a piece has a surface whose edge can be walked. On the Juglet,
+five of the nine sherds produced **no surface at all** until today, and the stage exited 0 while it
+did it — so anything said about their breaklines was vacuous rather than failed. Ticket 23 removed
+that: behind switches whose defaults change nothing (maximum displacement 0.0000 mm against the
+pre-change binary), a one-cluster piece now writes one Surface_0, and a 1 % floor ceiling stops the
+scaled patch floor from emptying a small sherd. Result: **all nine Juglet sherds write a surface**
+(today: four).
+
+What it does **not** do is give them two walls. No Juglet piece meets the wall-pair bar in any arm
+(mean-normal dot <= -0.9, gap >= 1.5 mm, overlap <= 5 %); the closest is piece 4 at -0.9637 and
+3.84 mm apart, failing only on 7.1 % overlap, and the two recovered sherds are corner patches —
+piece 2 covering 28 % of its own cloud and piece 9 42 %. Pot A keeps 8 of 8 wall pairs in every arm,
+so the corpus end of this file is untouched.
+
+The consequence for breaklines is specific. The assembler reads Breakline_0, the boundary of
+Surface_0, so a one-surface sherd still yields a line — but from whichever wall that one surface
+happens to be, and the interior/exterior decision behind it was made by point count on no evidence.
+A Juglet edgeline tally measured now would describe the surface stage, not the walk.
+
+Weight: none on the 281/292 corpus tally, because no corpus piece changes. Next: ticket 24 measures
+the normals, since the neighbour count is a function of point count (max(5, min(20, points/1000))),
+so the sherds that fail are precisely the ones triangulated from 5 neighbours.
