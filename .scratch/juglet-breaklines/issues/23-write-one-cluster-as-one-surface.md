@@ -2,8 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 23-write-one-cluster-as-one-surface, in /c/PR/worktrees/sfs/23
 
 A ticket on the *method*, not the record. It changes `mesh_processing_headless.cpp` behind an
 environment switch whose default reproduces today's behaviour exactly, and it measures what the
