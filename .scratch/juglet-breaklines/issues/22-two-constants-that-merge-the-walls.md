@@ -67,11 +67,22 @@ identical to today** — that is an acceptance criterion, not a nicety.
    `N` from `SFS_SPACING_SAMPLES`. Measure **three** values of N — 100, 200, 400 — and report all
    three; the choice between them is the lead's, on the numbers.
 3. `SFS_COUNT_SCALE` = `off` (default) | `auto`.
-   The count thresholds were calibrated at 0.6 mm. `auto` multiplies every count threshold whose
-   meaning is "points per fixed physical patch" by `(0.6 / S)^2`: `minCluster` at `:2136` and any
-   other fixed `k` that is a neighbourhood size in points rather than a distance. List what was
-   scaled and what was left alone, with `file:line`, in the report. Distance thresholds
-   (`rhoD 1.0 mm`, `planeDistMM 2.0`, the 50 mm assembler tolerance) are **not** scaled.
+   Every count threshold is a physical patch size multiplied by the point density, so at a finer
+   spacing the same number means a smaller area:
+
+   | constant | where | what it is at 0.6 mm spacing |
+   |---|---|---|
+   | `minCluster 50` | `:2136`, `:2560` | a patch of 18 mm² |
+   | `k1 = 10` | boundary status test, `:1948`, `:1953` | a disc of radius ~1.1 mm |
+   | `k2 = 30` | `k2AvgNormal234`, `:1837`, `:1906` | a disc of radius ~1.9 mm |
+
+   `auto` multiplies each of these by `(0.6 / S)^2`. **Measure both**, scaled and unscaled: the
+   conservator's expectation is that scaling is enough and the counts "shouldn't matter much", and
+   that expectation is a hypothesis for the arms, not a design assumption.
+   Distance thresholds (`rhoD 1.0 mm`, `planeDistMM 2.0`) are **not** scaled, and neither is
+   anything that defines a *scoring bar* — the assembler's 20.05 deg / 50 mm and the paper's
+   parameters stay absolute, because scaling the ruler would make our numbers incomparable with
+   the paper's and with every earlier run. Method-internal constants adapt; the ruler does not.
 
 ## The arms to measure
 
@@ -85,6 +96,7 @@ points coinciding with a Surface_0 point, fraction of the pair's normals pointin
 | A baseline | none |
 | B ownership only | `SFS_REASSIGN_MODE=own` |
 | C spacing only | `SFS_SPACING_POLICY=piece` × N in {100, 200, 400}, counts scaled |
+| C2 spacing only, counts unscaled | as C with `SFS_COUNT_SCALE=off` |
 | D both | B + C |
 
 A piece counts as **a real wall pair** when dot <= -0.9, median cross distance >= 1.5 mm and share
