@@ -1,0 +1,181 @@
+#!/usr/bin/env bash
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --time=__TIME__
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --output=logs/slurm-%j.out
+#
+# ticket 23, switch grid. One run directory per job; one cell per (arm, piece) under out/cells/.
+# Builds the new commit and the pre-change commit (158ddc6) from the canonical checkout's object
+# store, runs every arm x piece, measures the surface pairs, measures what each written surface
+# covers of its own piece, proves the defaults and the inputs unchanged.
+# Nothing is scored here and no arm is chosen: cells23.tsv, status23.tsv, measure23.tsv and
+# coverage23.tsv are the record.
+set -uo pipefail
+RUN=__RUNDIR__
+NEW=__NEWCOMMIT__
+OLD=__OLDCOMMIT__
+PIECES="__PIECES__"
+TAGS="__TAGS__"
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+INSTR=$RUN/instruments
+CELLROOT=$RUN/out/cells
+RUNID=$(basename "$RUN")
+export RUN NEW OLD CANON CORP BOOT SIF APT INSTR CELLROOT RUNID
+
+cd "$RUN" || exit 1
+mkdir -p logs out/cells build out/bin
+say() { echo "[$(date +%H:%M:%S)] $*"; }
+
+pot_of() {
+  case "$1" in
+    Juglet_Piece_*) echo "Juglet" ;;
+    *) echo "Pot_A" ;;
+  esac
+}
+
+axis_of() {
+  case "$1" in
+    Juglet_Piece_*) echo "$BOOT/$1_boot_Axis.xyz" ;;
+    *) echo "$CANON/Dataset/Axes/Pot_A/$1_Axis.xyz" ;;
+  esac
+}
+
+hash_inputs() {
+  local pot p f
+  for p in $PIECES; do
+    pot=$(pot_of "$p")
+    if [ "$pot" = "Pot_A" ]; then
+      f="$CORP/Point/Pot_A/${p}_Point.pcd"; [ -f "$f" ] && md5sum "$f"
+      f="$CORP/Mesh/Pot_A/${p}_Mesh.obj"; [ -f "$f" ] && md5sum "$f"
+    else
+      f="$CANON/Dataset/Point/$pot/${p}_Point.pcd"; [ -f "$f" ] && md5sum "$f"
+      f="$CANON/Dataset/Mesh/$pot/${p}_Mesh.obj"; [ -f "$f" ] && md5sum "$f"
+    fi
+    f=$(axis_of "$p"); [ -f "$f" ] && md5sum "$f"
+  done | sort -k2
+}
+
+corpus_tree() {
+  find "$CORP" -type f -printf '%p\t%s\t%T@\n' 2>/dev/null | sort
+  ls -R /opt/sfs-pristine 2>/dev/null | md5sum || echo "opt-sfs-pristine NA"
+}
+
+build_arm() {
+  local name=$1 sha=$2 rc
+  say "build $name from $sha"
+  mkdir -p "build/$name/src/build"
+  git -C "$CANON" archive "$sha" | tar -x -C "build/$name/src" || { say "archive FAILED $sha"; return 1; }
+  ( cd "build/$name/src/build" \
+    && "$APT" exec --bind /data:/data "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
+    && "$APT" exec --bind /data:/data "$SIF" make -j"${SLURM_CPUS_PER_TASK:-8}" MeshPreprocessingHeadless \
+  ) > "logs/build-$name.log" 2>&1
+  rc=$?
+  if [ $rc -eq 0 ] && [ -x "build/$name/src/build/MeshPreprocessingHeadless" ]; then
+    cp -f "build/$name/src/build/MeshPreprocessingHeadless" "out/bin/MeshPreprocessingHeadless.$name"
+    say "build $name ok"
+    return 0
+  fi
+  say "build $name FAILED rc=$rc -- tail of logs/build-$name.log:"
+  tail -20 "logs/build-$name.log"
+  return 1
+}
+
+arms_env() {
+  case "$1" in
+    A|A2|A_old) echo "" ;;
+    B) echo "SFS_SINGLE_CLUSTER=write" ;;
+    C0) echo "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto" ;;
+    C) echo "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.01" ;;
+    *) echo "" ;;
+  esac
+}
+
+arm_bin() {
+  case "$1" in
+    A_old) echo old ;;
+    *) echo new ;;
+  esac
+}
+
+run_one() {
+  local tag=$1 piece=$2 bk
+  bk=$(arm_bin "$tag")
+  POT=$(pot_of "$piece")
+  PIECE=$piece
+  TAG=$tag
+  ENVS=$(arms_env "$tag")
+  AXIS=$(axis_of "$piece")
+  BIN=$RUN/build/$bk/src/build/MeshPreprocessingHeadless
+  STAGER=$INSTR/stage_piece_p23.sh
+  if [ "$bk" = "old" ]; then COMMIT=$OLD; else COMMIT=$NEW; fi
+  export POT PIECE TAG ENVS AXIS BIN STAGER COMMIT
+  bash "$INSTR/run_cell23.sh" "$tag"
+}
+
+say "job ${SLURM_JOB_ID:-local} run=$RUNID pieces=${PIECES} arms=${TAGS}"
+hash_inputs > out/inputs_before.md5
+corpus_tree > out/corpus_before.txt
+say "inputs hashed: $(wc -l < out/inputs_before.md5) files; corpus listing $(wc -l < out/corpus_before.txt) lines"
+
+build_arm new "$NEW" || exit 2
+build_arm old "$OLD" || exit 2
+
+printf "tag\tpot\tpiece\tenvs\tmesh_exit\telapsed_s\tnpts\tretries\tclusters\tsizes\toutcome\tfloor\tfloor_from\tcapped\tsurf0\tsurf1\tsurf0_points\tsurf1_points\tswitch\tfloor_line\tsingle\tstatus\tspacing\tcount\twarn_missing\tsurf0_bytes\n" > out/cells/cells23.tsv
+printf "tag\tpot\tpiece\tnpts\tretries\tclusters\tsizes\tfloor\tfloor_from\tcapped\toutcome\tsurf0_points\tsurf1_points\tsingle_cluster\tfloor_ceiling_on\treason\n" > out/cells/status23.tsv
+printf "cell\text\tcount\tbytes\n" > out/cells/geometry_counts.tsv
+: > out/cells.list
+for p in $PIECES; do for t in $TAGS; do echo "$t $p" >> out/cells.list; done; done
+say "cells to run: $(wc -l < out/cells.list)"
+
+export -f pot_of axis_of arms_env arm_bin run_one
+xargs -a out/cells.list -n 2 -P "${SLURM_CPUS_PER_TASK:-8}" bash -c 'run_one "$@"' _ 2>&1 | tee out/run_cells.log | grep -c '^\[CELL\]' | xargs -I{} echo "[$(date +%H:%M:%S)] cells reported: {}"
+
+say "measuring surface pairs"
+"$PY" "$INSTR/measure_arm23.py" "$CELLROOT" > out/measure.log 2>&1
+say "measure exit=$? -> $(tail -1 out/measure.log)"
+
+say "measuring coverage of each written surface"
+"$PY" "$INSTR/coverage23.py" "$CELLROOT" > out/coverage.log 2>&1
+say "coverage exit=$? -> $(tail -1 out/coverage.log)"
+
+say "defaults proof"
+for pot in Juglet Pot_A; do
+  ps=""
+  for p in $PIECES; do [ "$(pot_of "$p")" = "$pot" ] && ps="$ps $p"; done
+  [ -n "$ps" ] || continue
+  "$PY" "$INSTR/defaults_proof23.py" "$CELLROOT" "$pot" $ps > "out/defaults_proof_$pot.log" 2>&1
+  say "defaults proof $pot exit=$? -> $(tail -1 "out/defaults_proof_$pot.log")"
+done
+
+hash_inputs > out/inputs_after.md5
+if diff -q out/inputs_before.md5 out/inputs_after.md5 > /dev/null; then
+  say "[CHECK] inputs unchanged: $(wc -l < out/inputs_after.md5) files identical before/after"
+else
+  say "[CHECK] INPUTS CHANGED -- see out/inputs_before.md5 out/inputs_after.md5"
+  diff out/inputs_before.md5 out/inputs_after.md5 | head -20
+fi
+corpus_tree > out/corpus_after.txt
+if diff -q out/corpus_before.txt out/corpus_after.txt > /dev/null; then
+  say "[CHECK] frozen corpus and /opt/sfs-pristine unchanged: $(wc -l < out/corpus_after.txt) lines identical"
+else
+  say "[CHECK] CORPUS TREE CHANGED -- see out/corpus_before.txt out/corpus_after.txt"
+  diff out/corpus_before.txt out/corpus_after.txt | head -20
+fi
+
+say "outcome counts by arm:"
+awk -F'\t' 'NR>1{c[$1"/"$11]++} END{for (k in c) printf "  %s %d\n", k, c[k]}' out/cells/cells23.tsv | sort
+say "geometry deleted: $(awk -F'\t' 'NR>1{c+=$3; b+=$4} END{printf "%d files, %d bytes", c, b}' out/cells/geometry_counts.tsv)"
+say "run dir bytes: $(du -sb "$RUN" | awk '{print $1}')"
+rm -rf build
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "${SLURM_JOB_ID:-local}" "$NEW" "p23-switch-grid" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+say "done: cells23 $(($(wc -l < out/cells/cells23.tsv) - 1)) rows, status23 $(($(wc -l < out/cells/status23.tsv) - 1)) rows, measure23 $(($(wc -l < out/cells/measure23.tsv) - 1)) rows, coverage23 $(($(wc -l < out/cells/coverage23.tsv) - 1)) rows"
