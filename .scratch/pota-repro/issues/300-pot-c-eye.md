@@ -86,6 +86,151 @@ human_note EMPTY), not on the laptop.
 5. What the conservator must look for, written as a line he can act on - not a description of the
    script.
 
+## Result (2026-10-26)
+
+All four phases done on the laptop; no step ran longer than about a minute, so no Spartan job and no run
+directory were created. Numbers come from `.scratch/pota-repro/300/*.py` in this worktree; machine-readable
+records are in `artifacts/pota300/geom/{measure,gap,gap_detail,pair_build,obj_export}.json`.
+
+### 1. The four pieces, and the transform convention (measured, not assumed)
+
+Both arms stage and seat **Pot C 01, 02, 03, 04** — `out/links.tsv` maps `Mesh/Pot_C_Piece_01..04_Mesh.obj`
+to the corpus `Pot_C_Piece_0N_Mesh_DS.obj`, and `out/selector.txt` reads pot `Pot_C`, `SHARD_NUMBER 4`,
+ifdef line 1584. C 05 and C 06 are in the bundle but not in the assembly; C 07 has a mesh only.
+
+Convention: **`p_world = R p_local + t`** — the top three rows of `T_ito_i.txt` read as (R|t), applied to the
+raw corpus mesh. Decided by the only thing that can decide it, using the authors' Ground Truth transforms as
+the known-good reference and measuring the minimum vertex-to-vertex distance across each join:
+
+| join | in GT graph | GT transforms | inverted reading R^T(p - t) |
+|---|---|---|---|
+| C01-C02 | yes | 0.0755 mm | 292.47 mm |
+| C01-C03 | yes | 0.0454 mm | 523.95 mm |
+| C01-C04 | yes | 0.1018 mm | 240.46 mm |
+| C02-C03 | yes | 0.0574 mm | 709.02 mm |
+| C02-C04 | yes | 0.0678 mm | 198.97 mm |
+| C03-C04 | **no** | 12.105 mm | 551.87 mm |
+
+The five joins the GT graph has close under 0.11 mm; the one pair it says does **not** join stays 12.1 mm apart,
+so the test carries a negative control and passes it. The inverted reading throws every piece hundreds of mm
+away. **The convention is not inverted; nothing was fixed.** Applied unchanged to both arms' stored transforms:
+
+- authb: 0.0664 / 0.0353 / 0.0518 / 0.0563 / 0.0196 mm (non-join 10.5825)
+- oursd: 0.0698 / 0.0694 / 0.0998 / 0.0347 / 0.0958 mm (non-join 10.6722)
+
+Reassembled OBJs: `artifacts/pota300/geom/potC_oursd_assembled.obj` and `potC_authb_assembled.obj`
+(4,688 KB each, four `g Pot_C_Piece_0N` groups, assembler world frame); re-read from disk they give the same
+seam distances to 4 dp, so the export is faithful.
+
+### 2. C 01's seated pose vs Ground Truth, and vs its neighbours
+
+Two numbers are needed and they are not the same number, so both are given.
+
+**(a) The assembler's own metric** — frame-free relative transform `E = T_rel · inv(GT_rel)`, i.e. what
+`CountResult` compares, reported as quantities rather than a pass/fail at its tolerance of 0.35 rad
+(20.05 deg) / 50 mm:
+
+| join | oursd rot deg / trans mm | authb rot deg / trans mm |
+|---|---|---|
+| C01-C02 | 0.591 / 2.948 | 0.677 / 2.952 |
+| C01-C03 | 0.634 / 2.548 | 0.862 / 3.886 |
+| C01-C04 | 0.438 / 4.351 | 0.333 / 3.004 |
+| C02-C03 | 0.467 / 2.853 | 0.778 / 4.494 |
+| C02-C04 | 0.490 / 4.319 | 0.395 / 3.107 |
+
+Every join in both arms is inside the assembler's tolerance by more than an order of magnitude. C 01's worst
+join (C01-C04: 4.351 mm oursd / 3.004 mm authb) is the same size as its neighbours' worst (C02-C04:
+4.319 / 3.107), so C 01 is **not** the outlier of the hand in either arm.
+
+**(b) Whole-hand pose after ONE global rigid alignment per arm onto the GT assembly** (removes the frame
+choice only; cannot change inter-piece geometry):
+
+| piece | authb centroid shift / RMS mm | oursd centroid shift / RMS mm |
+|---|---|---|
+| C 01 | 1.057 / 1.131 | 0.941 / 1.005 |
+| C 02 | 0.614 / 0.634 | 0.585 / 0.598 |
+| C 03 | 0.765 / 0.841 | 0.759 / 0.795 |
+| C 04 | 0.904 / 0.913 | 0.806 / 0.825 |
+| hand RMS | 0.8457 | 0.7760 |
+
+**Trap to keep:** the per-piece "frame-free" rotation of ~152-153.7 deg is the difference between the
+assembler's axis frame and the GT vessel frame. It is not seating error and must never be quoted as one. The
+sub-millimetre residuals above are the honest pose error.
+
+**(c) Ours against the authors'**, after one global alignment between the two arms (1.366 deg / 0.341 mm):
+raw centroid separation C 01 0.947, C 02 0.983, C 03 0.416, C 04 0.940 mm; expressed relative to C 01 —
+C 02 0.139 deg / 0.723 mm, C 03 0.318 / 1.874, C 04 0.262 / 1.520. The two builds agree to 0.10 mm median
+surface coincidence on the staged previews (p90 0.18).
+
+### 3. The gap: where it is, measured for the first time (ticket 285's open question)
+
+C 01 is the only one of the four that is not watertight: C 02, C 03, C 04 have **zero** boundary edges, C 01
+has four closed rims.
+
+| rim | vertices | perimeter mm | radius to axis mm | distance to our S0 / S1 |
+|---|---|---|---|---|
+| 1 | 274 | 116.82 | 63.8 - 74.3 (the wall's thickness) | 11.7 / 11.4 mm |
+| 2 | 247 | 101.97 | 55.0 - 59.8 | **0.29** (p90 2.48) / 9.3 mm |
+| 3 | 97 | 43.81 | ~95 | 47.6 / 41.0 mm |
+| 4 | 18 | 5.15 | ~55 | - |
+
+Rim 2 lies on our **Surface_0, the interior** sheet (0.29 mm), so it is a hole in the interior face; rim 1
+spans the wall's thickness 11.35 mm away in centroid, i.e. the same missing region seen across the wall. That
+is the scan gap, and it is on the flat of the sherd, not at its edge: **both interior lines stay clear of every
+rim** — our `Bl0` (207 dots) is 36.1 / 40.3 / 71.3 / 36.4 mm from rims 1-4, the authors' `Breakline_0`
+(211 dots) 36.2 / 40.2 / 71.5 / 36.1 mm. The `.pcd` header records our line's lump structure as five lumps
+(1-31, 32-98, 99-109, 110-179, 180-212): the gap owns some of those dots, not the exported line's path.
+
+### 4. Did the gap cost a seat
+
+**No.** The interior line the assembler seats C 01 by runs the real break edge — 36.1 mm from the nearest gap
+rim, where the authors' own line is 36.2 mm from it — and C 01's joins close to 0.035-0.100 mm with relative
+pose error 0.44-0.63 deg / 2.55-4.35 mm, inside the assembler's 20.05 deg / 50 mm tolerance and no worse than
+its neighbours'. The gap is real and it does hand the boundary detector four rims the sherd does not have, so a
+Bl0-derived score on this piece still measures an input defect; what this ticket adds is that on this piece
+the defect never reached the seat.
+
+Weight: one hand, four pieces, one pot, one seating each. It settles C 01 for these two arms; it does not
+speak for Pot C's other three released pieces, for Pot J 01, or for other pots, and the pot-level 4/4 stays a
+pot-level score.
+
+### 5. Staged in visual-qa
+
+- **`pota300_potC_arms`** — left "Authors' lines (authb arm)", right "Our lines (oursd arm)", four pieces in
+  the same colours on both sides (C 01 tan, C 02 teal, C 03 olive, C 04 purple), both in the GT vessel frame,
+  z up.
+- **`pota300_potC_c01`** — `single:` C 01 seated, light grey; magenta rings = the two large open rims (the
+  interior-face hole and its far side), yellow rings = the two small ones, red = our `Bl0`, blue = the
+  authors' `Breakline_0`.
+- Descs: `C:/PR/visual-qa/viewer/pairs/pota300_potC_arms.json` and `..._potC_c01.json` (untracked, like the
+  `pota209_*` and `pristine_pota_whole` descs). Manifests: `visual-qa/preview/manifest_pota300_potC_arms.json`
+  and `..._c01.json`. Geometry (gitignored, in the method's own artifacts):
+  `SfSpp_preprocessing/artifacts/visual-qa/pota300_potC_arms/{left_authors,right_ours}.ply` (127,936 faces
+  each) and `.../pota300_potC_c01/c01_seated.ply` (48,410 faces) — no decimation, median edges 1.226 and
+  1.043 mm.
+- `stage_pair.py` output: `surface coincidence: median 0.10 mm, p90 0.18 mm` — under the 5.0 mm gate, so
+  `frame_ok: true` and the overlay is live; the single look stages without overlay, as designed.
+- Gates (`C:/PR/visual-qa/viewer/`): `check_annotations.py` **exit 0** — "all-hits OK: entry, exit, entry,
+  exit in order / mouth-ray OK: interior floor hit with the floor out of nearest-vertex range / annotations OK:
+  nearest-side hit, camera round-trip, log round-trip". `check_stage_pair.py` prints all 21 of its checks as
+  passing (matched pair 0.00 mm, shifted 45.00 mm warns not refuses, unit scaling, scale-less refusal, empty
+  mesh refusal, colour and guessed flags through decimation, drawing crop/refusals) and then exits 1 inside
+  Windows temp-dir teardown — `PermissionError: [WinError 32] ... drawing.png` — a gate-side cleanup bug on
+  its own fixtures; it never opens a pair desc. `check_loader.py` and `check_mesh_loader.py` exit 1 reading
+  `preview/manifest.json` / `preview/manifest_a02.json`, which are in `preview/retired/` on this checkout:
+  pre-existing, TORA/juglet bundles, nothing to do with Pot C.
+- Page-side check (read-only): `view_juglet.manifest_loader` loads both bundles (127,936 + 127,936 and 48,410
+  faces, all finite) and `registry()` lists both titles, so the pairs appear in the dropdown.
+- Viewer serving: `python viewer/view_juglet.py --port 8080` from `C:/PR/visual-qa`, HTTP 200 on
+  `http://localhost:8080/` (pid 40640 listening on 0.0.0.0:8080); log `.viewer_pota300.log`.
+
+### 6. What the conservator should look for
+
+**Open `pota300_potC_arms` first and check the seams where C 01 meets C 02, C 03 and C 04: they close in
+both builds. Then open `pota300_potC_c01` and note that the magenta rings — the open rims on C 01's interior
+face — sit on the flat of the sherd, at least 36 mm inside the red line that seats it: what you see at the
+seam is the real break edge, not the gap.**
+
 ## Needs-eye
 
 Visual-qa pair `pota300_potC_arms` (ours against the authors', same four pieces) and
