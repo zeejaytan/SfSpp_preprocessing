@@ -2,7 +2,7 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 23-write-one-cluster-as-one-surface, in /c/PR/worktrees/sfs/23
 
@@ -135,3 +135,91 @@ one-surface piece is a usable breakline (it is Surface_0's boundary by construct
 assembler will read it). Whether the normals are the deeper cause: ticket 20 left that suspect and
 untried, and `SFS_PAPER_NB` is proven not to reach normal estimation, but the switch to fix it is
 not in this ticket.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**The silence is fixed, and the surfacing ceiling is gone.** Every number below I re-read from the run
+directories myself; the worker's item (4) had two mis-typed cloud counts and one panel-width guess, which
+it withdrew by message, and the table here is the file's.
+
+Outcomes per arm over the nine Juglet pieces (`status23.tsv`, 16-field rows, counted by me):
+
+| arm | two surfaces | one surface | none |
+|---|---|---|---|
+| A baseline | 4 | 0 | 5 |
+| B single-cluster write | 4 | **3** | 2 |
+| C0 = B + piece spacing + scaled counts, floor uncapped | 2 | 2 | 5 |
+| C = C0 + floor ceiling 0.01 | 4 | **5** | **0** |
+
+Pot A: **8 of 8 two-surface pieces in all five arms**, mean-normal dot −0.9988 to −0.9997, cross distance
+3.56-7.10 mm, share 0.0000, bar met every time.
+
+- **B does exactly what the ticket asked.** Pieces 3, 5 and 8 — the three that keep one cluster — each write
+  one Surface_0 (740 / 1 677 / 1 236 points) and announce it. Pieces 2 and 9 stay silent, because they have
+  zero clusters and this switch cannot invent one; the status line says so in numbers rather than warning
+  about a missing file.
+- **The floor ceiling is what lifts the ceiling.** Uncapped (C0) the scaled floor empties four pieces
+  (piece 4's 335-point cluster against a 387-point floor); capped at 1 % (C) **no Juglet piece is left
+  without a surface** — the first time that has been true, and it moves the vessel question's surfacing
+  ceiling from 4 of 9 to 9 of 9.
+- **But a surface is not a wall pair, and nothing here separates walls.** No Juglet pair passes the wall bar
+  in any arm (dot ≤ −0.9, cross ≥ 1.5 mm, share ≤ 0.05). Closest is piece 4 under A: dot **−0.9637**, cross
+  **3.84 mm**, share **0.0710** — a real pair that fails only the 7 % overlap.
+- **Two of the new surfaces are corner patches, not sherds.** Piece 2 under C: 220 points, extent
+  **11.49 mm** on a piece whose cloud diagonal is **28.31 mm**, covering **28 %** of its own cloud. Piece 9:
+  277 points, **13.76 / 23.50 mm**, **42 %**. Pieces 3, 4, 6 and 8 reach **86-98 %** of their clouds.
+- **Extent alone cannot be trusted, and piece 5 is why.** Under B its single surface spans 41.80 mm of a
+  42.49 mm piece yet sits within 2 mm of only **54 %** of the cloud: a surface the size of the sherd that
+  is not lying on most of it. Both columns are needed.
+- **A cost this grid exposes and did not test.** Under C piece 1's two surfaces **lie on top of each other**
+  (dot **+0.3468**, median cross distance **0.47 mm**, 46 % of Surface_1's points coincident): the finer
+  spacing plus the 3 mm reassignment claims the whole sherd into both surfaces. Ticket 22's own-mode arm is
+  what separated this piece (dot −0.9139 at 2.01 mm), and **this grid runs radius mode only**, so the two
+  repairs have an interaction that has not been measured. Ticket 24 carries an arm for it.
+
+**The picture, looked at** (`stage23/ticket23_surfaces_over_cloud.png`, 1 980 × 1 418, nine panels, 0.0583-
+0.1136 mm/px, 10 mm bar in each): piece 3 under A is a grey cloud with no coloured point at all; under B the
+740 red points are spread thinly over the whole face — a patch lying on the sherd, not a second wall. Piece
+5 repeats the pattern; under C its red and blue sit side by side across the face rather than one behind the
+other, which is what a dot of −0.54 describes. Piece 2 under C is a small red cluster in one corner. Piece 1
+under A is a dense blue mass over red — two surfaces on the same wall. Pot A 07 is the honest reference: red
+and blue interleaved point-for-point along one wall.
+
+**What this changes.** The switches merge **off by default**, so nothing already scored moves. C is the
+configuration that gives every sherd a surface and should be the one the next stage runs; it must not become
+the default on this evidence, because the 1 % ceiling is one number chosen before the fact and because it
+costs piece 1 its pair.
+
+**What this does not settle.** Whether a corner patch is enough to seat a sherd (piece 2's 220 points over
+28 % of it may be worse than nothing, or may be enough — that is the assembly stage's measurement, not
+this one's). Whether one surface's boundary is a usable breakline in practice. Whether the normals are the
+deeper cause: still untested, and ticket 24 is where it goes.
+
+## verified — the command or file:line behind each load-bearing claim
+
+- `git diff --stat main..origin/23-write-one-cluster-as-one-surface` → 14 rows: `mesh_processing_headless.cpp`
+  +193/−2, the ticket file 3 lines, 11 files under `.scratch/juglet-breaklines/stage23/`. The row removing
+  `24-normals-five-neighbours.md` is **main being ahead of the branch** (I pushed ticket 24 after the branch
+  was cut), not a deletion on the branch.
+- `sacct -j 33840779,33840913,33840987` → all three COMPLETED 0:0 (00:04:48 / 00:00:25 / 00:00:08).
+- `awk -F'\t' 'NF==16 && $2=="Juglet" {c[$1" "$11]++}'` over `cells/status23.tsv` → A two 4/none 5; B two
+  4/one 3/none 2; C0 two 2/one 2/none 5; C two 4/one 5/none 0; Pot A two 8 in every arm.
+- `one_surface_coverage.tsv` → piece 2 (C) n0 220 / diag 11.49 / cov 0.2838 / cloud 2565; piece 9 (C) 277 /
+  13.76 / 0.4245 / 2094; piece 3 (B) 740 / 30.58 / 0.8872; piece 3 (C) 1 115 / 31.41 / 0.9264; piece 4 (C)
+  1 300 / 27.03 / 0.8641 / cloud 3651; piece 5 (B) 1 677 / 41.80 / 0.5419; piece 5 (C0) 2 050 / 35.00 /
+  0.6907; piece 6 (C0 and C) 2 137 / 37.40 / 0.9830; piece 8 (B) 1 236 / 32.93 / 0.9779.
+- `measure23.tsv` arm C Pot A → 8 of 8 `bar=yes`, dot −0.9988 to −0.9997, share 0.0000. Juglet: no `bar=yes`
+  in any arm; A piece 1 +0.6183/4.347/0.3252; A piece 4 −0.9637/3.841/0.0710; C piece 1 +0.3468/0.472/0.4597;
+  C piece 5 −0.5389/8.118/0.0317.
+- `defaults_proof23_Juglet.tsv` → the four pieces that write surfaces: `max_mm_A_to_ref` 0.0000 and
+  `max_mm_ref_to_A` 0.0000 against **both** the pre-change binary (A_old, 158ddc6) and a second pass (A2),
+  point counts identical (3 580/12 092, 182/732, 608/1 016, 1 012/829). Pot A: worst 0.6472 / 0.8170 mm
+  (piece 04) with ±10 points, and the A-vs-A2 repeat alone reaches 0.7364 mm — so the binary difference sits
+  inside the run-to-run band it is being compared against.
+- `diff -q inputs_before.md5 inputs_after.md5` → identical, 51 rows each; `diff -q corpus_before.txt
+  corpus_after.txt` → identical (1 804-line listing including `/opt/sfs-pristine`).
+- Render opened at 1 980 × 1 418 (456 943 B) and read panel by panel; the panel titles carry each arm's
+  `outcome`, `n0`, `n1` and floor, so the picture and the table can be checked against each other.
+- The worker's own instruments were caught and re-run twice (ASCII-only PCD reader in `coverage23.py`, one
+  output path per pot in `defaults_proof23.py:68`); both re-runs are recorded in the run directories, and no
+  number above comes from a truncated file.
