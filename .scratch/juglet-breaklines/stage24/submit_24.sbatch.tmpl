@@ -141,6 +141,16 @@ say "inputs hashed: $(wc -l < out/inputs_before.md5) files; corpus listing $(wc 
 build_arm new "$NEW" || exit 2
 [ "$PHASE" = "grid" ] && { build_arm old "$OLD" || exit 2; }
 
+say "self-testing the mesh-normal instrument before spending cell time"
+"$PY" "$INSTR/mesh_angle24.py" --selftest > out/angle_selftest.log 2>&1
+SRC=$?
+cat out/angle_selftest.log
+if [ $SRC -ne 0 ]; then
+  say "ABORT: mesh_angle24.py --selftest exit=$SRC -- see out/angle_selftest.log"
+  exit 3
+fi
+say "angle selftest ok"
+
 printf "tag\tpot\tpiece\tenvs\tmesh_exit\telapsed_s\tnpts\tretries\tclusters\tsizes\toutcome\tfloor\tfloor_from\tcapped\tsurf0\tsurf1\tsurf0_points\tsurf1_points\tswitch\tfloor_line\tsingle\tstatus\tspacing\tcount\twarn_missing\tsurf0_bytes\tcalls\tnmode\tcgalk\tradii\tnbr_med\tnbr_min\tnbr_max\torient_k\tfloored\tcapped24\tcloud_spacing\tswitch24\n" > out/cells/cells24.tsv
 printf "tag\tpot\tpiece\tnpts\tretries\tclusters\tsizes\tfloor\tfloor_from\tcapped\toutcome\tsurf0_points\tsurf1_points\tsingle_cluster\tfloor_ceiling_on\treason\n" > out/cells/status23.tsv
 printf "cell\text\tcount\tbytes\n" > out/cells/geometry_counts.tsv

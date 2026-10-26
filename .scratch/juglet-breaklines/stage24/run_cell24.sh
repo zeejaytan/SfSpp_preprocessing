@@ -82,12 +82,12 @@ SW24=$(grep -m1 '\[NORMAL-24-SWITCH\]' "$LOG" | sed 's/^.*\[NORMAL-24-SWITCH\] /
 ANGN=0
 if [ -d "$ST/Temp/_n24" ] && [ -n "$(ls -A "$ST/Temp/_n24" 2>/dev/null)" ]; then
   "$PY" "$ANGLER" "$ST/Dataset/Mesh/$POT/${PIECE}_Mesh.obj" "$ST/Temp/_n24" \
-      "$CELL/angles24.tsv" "$CELL/angle_points.tsv" "$TAG" "$POT" "$PIECE" >> "$CELL/logs/angles.log" 2>&1
+      "$CELL/angles24.tsv" "$CELL/angle_points.tsv" "$TAG" "$POT" "$PIECE" --max-calls 24 >> "$CELL/logs/angles.log" 2>&1
   AN=$?
   ANGN=$(($(wc -l < "$CELL/angles24.tsv") - 1))
   echo "[ANGLES] $TAG $POT/$PIECE exit=$AN rows=$ANGN" >> "$CELL/logs/angles.log"
 else
-  printf "%s\t%s\t%s\t0\tNA\tNA\tNA\tNA\tNA\tNA\tNA\n" "$TAG" "$POT" "$PIECE" >> "$CELL/angles24.tsv"
+  printf "%s\t%s\t%s\t0\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\n" "$TAG" "$POT" "$PIECE" >> "$CELL/angles24.tsv"
 fi
 
 S0=no; S1=no; B0=0; B1=0
