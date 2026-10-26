@@ -72,8 +72,16 @@ def main():
     dpi = 100
     print("[RENDER] dpi=%d vmax=%.0fdeg colours: green=0 red=%.0f" % (dpi, VMAX, VMAX))
     for pot, piece in pieces:
+        try:
+            draw_piece(pot, piece, root, outdir, tags, dpi)
+        except Exception as exc:  # one bad panel must not cost the other four
+            print("[RENDER] FAILED %s/%s %s: %s" % (pot, piece, type(exc).__name__, exc))
+
+
+def draw_piece(pot, piece, root, outdir, tags, dpi):
+    for _once in (0,):
         cpath = cloud_path(pot, piece)
-        cloud = read_pcd_xyz(cpath)
+        cloud, _nall, _stride = read_pcd_xyz(cpath)  # (xyz strided down to MAXPTS, n, stride)
         centre = cloud.mean(axis=0)
         u, s, vt = np.linalg.svd(cloud - centre, full_matrices=False)
         basis = vt.T

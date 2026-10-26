@@ -28,6 +28,10 @@ TAGS="__TAGS__"
 PHASE=__PHASE__
 GRIDRUN="__GRIDRUN__"
 EENV="__EENV__"
+# arms_env is exported to the xargs child shells, so every variable it reads must be exported too:
+# a plain shell variable is invisible in "bash -c", which is exactly how arm E silently ran with no
+# environment at all in job 33841866 (cells24 envs=none, nmode=count).
+export EENV
 IXTAG=__IXTAG__
 CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
 CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
@@ -105,7 +109,7 @@ arms_env() {
     B) echo "SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=auto SFS_NORMAL_RADIUS_MULT=2" ;;
     C) echo "SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=auto SFS_NORMAL_RADIUS_MULT=3" ;;
     D) echo "SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=1.0" ;;
-    E) echo "$EENV" ;;
+    E) [ -n "$EENV" ] || echo "ARM-E-ENV-MISSING" >&2; echo "$EENV" ;;
     *) echo "" ;;
   esac
 }
@@ -158,6 +162,11 @@ printf "cell\text\tcount\tbytes\n" > out/cells/geometry_counts.tsv
 for p in $PIECES; do for t in $TAGS; do echo "$t $p" >> out/cells.list; done; done
 EXPECT=$(wc -l < out/cells.list)
 say "cells to run: $EXPECT"
+for t in $TAGS; do say "arm $t env=[$(arms_env "$t")]"; done
+if [ "$PHASE" = "e" ] && [ -z "$(arms_env E)" ]; then
+  say "ABORT: arm E has no environment -- EENV is empty in this script"
+  exit 3
+fi
 
 export -f pot_of axis_of arms_env arm_bin run_one
 xargs -a out/cells.list -n 2 -P "${SLURM_CPUS_PER_TASK:-8}" bash -c 'run_one "$@"' _ 2>&1 | tee out/run_cells.log | grep -c '^\[CELL\]' | xargs -I{} echo "[$(date +%H:%M:%S)] cells reported: {}"
@@ -174,6 +183,12 @@ say "angle rows: $(($(wc -l < out/angles24_all.tsv) - 1)) across $(find out/cell
 # column 27 is "calls", the count of [NORMAL-24] lines, i.e. normals PLYs the stage dumped
 NONCELL=$(awk -F'\t' 'NR>1 && $27==0' out/cells/cells24.tsv | wc -l)
 say "[CHECK] cells whose stage dumped no normals PLY: $NONCELL"
+NOENV=$(awk -F'\t' 'NR>1 && $4=="none"' out/cells/cells24.tsv | wc -l)
+say "[CHECK] cells whose environment was empty: $NOENV (expected 0 in a switch arm, 17 per switchless arm)"
+if [ "$PHASE" = "e" ] && [ "$NOENV" != "0" ]; then
+  say "ABORT: arm E cells ran without their switches -- see the envs column of cells24.tsv"
+  exit 3
+fi
 
 cp -f out/cells/cells24.tsv out/cells/cells23.tsv
 say "measuring surface pairs"
@@ -207,9 +222,17 @@ if [ "$PHASE" = "e" ]; then
   RTAGS=__RTAGS__
   RP=$(find out/cells/E -name angle_points.tsv 2>/dev/null | wc -l)
   say "cells with a per-point angle table in arm E: $RP"
-  "$PY" "$INSTR/render24.py" "$CELLROOT" out/renders "$RTAGS" "__RPIECES__" > out/render.log 2>&1
-  say "render exit=$? -> $(grep -c '\[RENDER\] wrote' out/render.log) figures"
-  tail -3 out/render.log
+  "$PY" "$INSTR/render24.py" "$CELLROOT" out/renders_smoke A "Juglet/Juglet_Piece_1" > out/render_smoke.log 2>&1
+  SMOKE=$(ls out/renders_smoke/*.png 2>/dev/null | wc -l)
+  say "render smoke exit=$? -> $SMOKE figure(s)"
+  if [ "$SMOKE" = "0" ]; then
+    say "ABORT RENDER ONLY: the smoke panel drew nothing -- see out/render_smoke.log"
+    tail -5 out/render_smoke.log
+  else
+    "$PY" "$INSTR/render24.py" "$CELLROOT" out/renders "$RTAGS" "__RPIECES__" > out/render.log 2>&1
+    say "render exit=$? -> $(grep -c '\[RENDER\] wrote' out/render.log) figures"
+    tail -3 out/render.log
+  fi
 fi
 
 hash_inputs > out/inputs_after.md5
