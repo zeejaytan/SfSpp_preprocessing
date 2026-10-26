@@ -10,7 +10,9 @@ whether this is the method, the measurement, or the material.
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 20-why-five-sherds-produce-no-surface, in /c/PR/worktrees/sfs/20
 
 ## What is already established (lead-verified, job 33834939)
 
