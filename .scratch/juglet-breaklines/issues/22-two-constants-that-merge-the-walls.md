@@ -2,7 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 22-two-constants-that-merge-the-walls, in /c/PR/worktrees/sfs/22
 
 A ticket on the *method*, not the record. It changes `mesh_processing_headless.cpp` behind
 environment switches whose defaults reproduce today's behaviour exactly, and it measures what
