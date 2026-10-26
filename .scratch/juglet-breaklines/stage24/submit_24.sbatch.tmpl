@@ -189,6 +189,11 @@ if [ "$PHASE" = "e" ] && [ "$NOENV" != "0" ]; then
   say "ABORT: arm E cells ran without their switches -- see the envs column of cells24.tsv"
   exit 3
 fi
+if [ "$PHASE" = "e" ]; then
+  NOSW=$(awk -F'\t' 'NR>1 && $19 !~ /singleCluster=write/' out/cells/cells24.tsv | wc -l)
+  say "[CHECK] arm-E cells whose log does not report singleCluster=write: $NOSW (expected 0)"
+  [ "$NOSW" = "0" ] || say "WARNING: arm E did not carry the ticket-23 switch set -- EENV=$EENV"
+fi
 
 cp -f out/cells/cells24.tsv out/cells/cells23.tsv
 say "measuring surface pairs"
