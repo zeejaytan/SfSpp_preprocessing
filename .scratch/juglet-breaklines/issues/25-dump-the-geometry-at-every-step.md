@@ -51,6 +51,14 @@ plus a `.json` sidecar. Same point set for rungs 2-5, so they can be diffed poin
 Naming: `dump/<piece>/r<N>_<name>.ply` + `.json`. ASCII, so an instrument can read it without a PCL
 dependency — a binary PCD already killed one of our coverage scripts.
 
+**Colour is the reading, so the colour has to be stable.** Cluster id 0 is always the same colour, id 1
+always the next, `-1` (never claimed) always grey, and that mapping is identical in every panel, every
+rung and every piece. If colours were assigned per panel, a merge and a renumbering would look the same
+and the ladder would be unreadable. At rung 4 the cluster colour stays primary — a point keeps the
+colour of the region it ended up in — with rejected points drawn as small grey dots, so the swallowing
+is visible as colour 1's points turning into colour 0's, and the reason code read from the sidecar
+rather than from the picture.
+
 ## Cost guard (this is the part that can sink the run)
 
 Geometry is what makes this project's archives 97 % payload, and the last three jobs each deleted
@@ -103,9 +111,12 @@ No new method arms. The ladder is measured inside arms that already exist:
    sidecar names the radius, floor and merge values **actually used**.
 3. `out/ladder.tsv` has one row per (piece, rung) with expectation, measured values and pass/fail —
    evidence only.
-4. At least one figure per dumped piece: the sherd cloud coloured by cluster id, r2 beside r4, at a
-   scale that resolves the wall gap (this material's gaps are 0.75-3.43 mm). **Return the path, do not
-   attach the image.**
+4. **One figure per dumped piece: a strip of panels r2 | r3 | r4 | r5, coloured by cluster id.** The
+   camera, the scale and the colour-to-cluster-id mapping are **identical in every panel and for every
+   piece**, so a region can be followed from rung to rung and a merge reads as one colour swallowing
+   another rather than as a recolour. Each panel carries a scale bar, and one shared legend lists each
+   colour with its cluster size at that rung. The scale must resolve the wall gap (this material's gaps
+   are 0.75-3.43 mm). **Return the path, do not attach the image.**
 5. No tracked source changed except `mesh_processing_headless.cpp`.
 6. Corpus and `/opt/sfs-pristine` md5 before/after identical.
 7. Geometry deleted with a counted record; ladder dumps kept, their paths reported.
