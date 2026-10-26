@@ -314,13 +314,17 @@ Per-arm medians over the pairs that were written (arm_summary.tsv):
 | 08 | 5528/6097, -0.9994, 3.62, yes | 6795/7465, -0.9995, 3.62, yes | 26771/29286, -0.9993, 3.60, yes | 17961/127619, -0.8080, 11.30, **no** |
 
 Cells are `points S0/S1, mean-normal dot, median cross distance, bar`. Arm B, C100, C200, C2_100
-and C2_200 reproduce arm A's numbers on all eight pieces (the reassignment switch alone changes
-nothing on Pot A, and the spacing policy is clamped at 0.6 there at N <= 200).
+and C2_200 reproduce arm A's *pair statistics* on all eight pieces (dot and cross distance to four
+decimals, share 0.0000 on every one); their point counts move by at most 8 points in 57,000, which
+is the stochastic spread of Caveat 1. The reassignment switch alone changes nothing measurable on
+Pot A, and at N = 100 the spacing policy is clamped at 0.6 on seven of the eight pieces (piece 08
+excepted, 0.5407).
 
 Read: **Pot A is unharmed by every arm at N = 100 and 200** — dot stays at -0.999, cross distance
 at 3.6-3.7 mm, share at 0.0000 on all eight pieces, i.e. the walls stay apart and the two surfaces
-stay clean. Arm D does change *which* points and how many (piece 08: 5,528 points under A against
-26,771 under D200; piece 07: 6,066 against 24,635) without changing the pair statistics. At
+stay clean. Arm D does change *which* points and how many (piece 04: 32,683 under A against
+34,728 under D200; piece 07: 6,066 against 24,635; piece 08: 5,528 against 26,771) without
+changing the pair statistics. At
 **N = 400 piece 08 fails the bar in every arm that refines it** (C400 -0.4709, C2_400 -0.3960,
 D400 -0.8080, all with cross distance ~10.7-11.3 mm and `minCluster` 985, i.e. the surfaces are
 cut into fragments); pieces 01-07 still pass at N=400 with dot -0.981 to -0.9995.
