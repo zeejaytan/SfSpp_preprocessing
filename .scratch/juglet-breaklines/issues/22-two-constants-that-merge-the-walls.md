@@ -2,7 +2,7 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** results-in
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 22-two-constants-that-merge-the-walls, in /c/PR/worktrees/sfs/22
 
@@ -81,10 +81,12 @@ identical to today** — that is an acceptance criterion, not a nicety.
    `auto` multiplies each of these by `(0.6 / S)^2`. **Measure both**, scaled and unscaled: the
    conservator's expectation is that scaling is enough and the counts "shouldn't matter much", and
    that expectation is a hypothesis for the arms, not a design assumption.
-   Distance thresholds (`rhoD 1.0 mm`, `planeDistMM 2.0`) are **not** scaled, and neither is
-   anything that defines a *scoring bar* — the assembler's 20.05 deg / 50 mm and the paper's
-   parameters stay absolute, because scaling the ruler would make our numbers incomparable with
-   the paper's and with every earlier run. Method-internal constants adapt; the ruler does not.
+   Distance thresholds (`rhoD 1.0 mm`, `planeDistMM 2.0`) are **not** scaled. What a piece is
+   *scored* by is not a constant of this stage at all: the score is **per-sherd correct seating**
+   (own place, then right way round — `U19`, conservator's decision 2026-10-27), and the
+   assembler's 20.05 deg / 50 mm is printed **beside** our number for comparability only, because
+   50 mm is 77 % of this juglet's 65 mm height. Method-internal constants adapt; the ruler is the
+   conservator's eye and does not.
 
 ## The arms to measure
 
@@ -382,8 +384,9 @@ dot -0.914, bar yes).
    fragments the sherd. Unscaled counts at the same spacing keep 4-5 (C2_200: 4).
 4. Only one arm, on one piece, reaches the bar. This ticket reports that; it does not say the arm
    is right, and it does not choose N.
-5. `main` rewrote this ticket's scoring-bar paragraph in `35e38e5` (per-sherd seating). That
-   paragraph is left untouched on this branch; merging it in is a separate edit.
+5. `main` rewrote this ticket's scoring-bar paragraph in `35e38e5` (per-sherd seating). The
+   wording above is harmonised with it in this ticket's lead reading, and the three wall-pair
+   conditions are a **diagnostic**, not a score.
 
 ## What this cannot settle
 
@@ -391,3 +394,108 @@ Whether a two-surface result is *correct* — that needs the breakline and join 
 paused behind this repair. Whether an adaptive spacing is right for the corpus at large: the
 scored corpus pieces are 54-173 mm, so the `piece` policy would move many of them, and no corpus
 bar is measured here. Nothing about pieces 2 and 8 beyond reporting them as already fused.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+### What the switches are worth
+
+**The defaults reproduce today, so the switches are safe to merge.** Juglet piece 1 writes the same
+point sets under the new binary's defaults as under the pre-change binary and as under a second
+pass of the new binary: max displacement 0.0000 mm in both directions, identical counts
+(3580 / 12092). Pot A's median displacement is 0.0000 mm with a max of 0.33–0.63 mm and ±1–2
+points, which is the stochastic floor of the boundary step, not a change.
+
+**Every armed cell actually used its switches** — the binary prints them, so this is not inferred
+from the arm name. Piece 1 under D200:
+`[SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049`,
+`[COUNT-22] policy=auto scale=3.15023 minCluster=158 k1=32 k2=95`, `[REASSIGN-22] mode=own`;
+piece 2: `scale=8.0939 minCluster=405 k1=81 k2=243`. These match the ticket's count table.
+
+**Pot A is unharmed at N ≤ 200**: 8 of 8 pieces pass the wall-pair conditions in A, A_old,
+A_new2, B, C100, C200, C2_100, C2_200, D100 and D200; at N = 400 seven of eight, piece 08
+fragmenting against `minCluster` 985. The point counts grow with the finer spacing (piece 07:
+6369 → 24 635 → 90 430 as S goes 0.5858 → 0.2929 → 0.1464) while dot stays −0.9988 and share
+0.0000 — so the owned reassignment does not wreck Pot A. The growth is density, not drift. That
+distinction matters because "twice as many points on the surface" reads like a change and is not
+one.
+
+### What the repair does not do
+
+The ticket tests one hypothesis: own the reassignment instead of letting one fitted surface claim
+every point within 3 mm, and scale the count constants to the piece's own spacing, so the walls
+the clustering already separates stay separate. Measured over 13 arms and 221 cells:
+
+- **Coverage falls.** Pieces writing a surface pair, of nine: A 4 (1, 4, 6, 7), B 4, C100 4,
+  C2_200 4, C2_400 4, D100 4, **C200 2, C400 2, D200 2, D400 2, C2_100 3**. Refining the spacing
+  costs surfaces, and scaling the counts alongside it is what makes it cost them.
+- **One piece, one draw, one thin margin.** Exactly two of 221 cells pass all three conditions,
+  and they are the same settings twice — on the Juglet D200 and D400 collapse to one run, because
+  the cloud's own spacing is the floor for eight of nine pieces (`S = s0`). Piece 1: dot −0.9139
+  against a −0.9 bar, cross 2.0146 mm, share 0.0351. The dot clears by 0.014, on a fit that draws
+  `pcl::RandomSample(10000)` unseeded.
+- **The pieces that need the fix never reach it.** From the cell logs: pieces 2 and 9 print
+  `Number of clusters is equal to 0` at all 21 retries in every arm; piece 5 stops at one cluster;
+  pieces 3 (169, 99) and 8 (224, 196) are merged in arm A; and under scaled counts pieces 3, 4 and
+  8 fall to zero clusters — piece 4 goes from 182 / 732 points in arm A to zero clusters under
+  D200, because `minCluster` 158–387 outruns the fragments of a finer cloud. The boundary step
+  sits downstream of all that, so the arm built to fix the walls cannot run on the pieces that
+  lose them.
+
+So the hypothesis is **refuted as a repair** while the mechanism it rests on stands: raw
+clustering separates the walls on seven of nine pieces, and the 3 mm reassignment merges them
+back. What is missing is not the reassignment's ownership but what the stage does with the
+clusters it is given — nothing is written when only one survives, and the count floor that is
+supposed to stop fragmentation is calibrated to a density the Juglet does not have.
+
+### What this changes
+
+The next repair is the **silence**, not the spacing: write a single-cluster piece as one surface
+instead of nothing, and give the scaled counts a floor they cannot outrun, or refuse loudly.
+That is where the next ticket belongs. Nothing here moves the end-to-end run off pause.
+
+### The figure, looked at
+
+`stage22/ticket22_wall_gap_Juglet_Piece_1.png`, 2200×1120, `71.9 px/mm` in both panel titles with a
+drawn 2 mm bar. Before: Surface_1 sits on the Surface_0 line over the whole height — the nesting.
+After: most of Surface_1 is a band about 2 mm away, and a large minority still scatters from −1
+to −5 mm on the far side, which is the honest reason the mean-normal dot is −0.914 and not −0.99.
+Two labelling notes: the legend calls Surface_0 "(interior)" and Surface_1 "(exterior)", which
+the Juglet does not establish — the classify step reports `interior_frac 0.0000` on both faces of
+piece 1 and picks by point count — so read those words as "cluster 0" and "cluster 1"; and the
+projection is unrolled along the local Surface_0 normal, so the horizontal axis is a signed
+offset, not a distance across a flat sherd.
+
+### verified: the command or file:line behind each load-bearing claim
+
+- `git diff --stat main..HEAD` in the worktree → 10 files: `mesh_processing_headless.cpp`
+  (+371 / −98) plus seven files under `.scratch/juglet-breaklines/stage22/` and the figure; no
+  other tracked source, so no assembler, tolerance or corpus file moved.
+- `awk -F'\t' 'NR>1 && $4==0 && $5+0>0 {a[$1]++} END{for(k in a) print k, a[k]}' measure_juglet.tsv`
+  → A 4, A_old 4, A_new2 4, B 4, C100 4, C200 2, C2_100 3, C2_200 4, C2_400 4, C400 2, D100 4,
+  D200 2, D400 2.
+- `awk -F'\t' 'NR>1 && $NF=="yes"' measure_juglet.tsv` → exactly two rows, both `Juglet_Piece_1`,
+  tags D200 and D400.
+- `awk` over `measure_pota.tsv` counting `bar=="yes"` per tag → 8/8 for A, A_old, A_new2, B, C100,
+  C200, C2_100, C2_200, D100, D200; 7/8 for C400, C2_400, D400.
+- `cut -f1-4,9,10,12 defaults_juglet.tsv` and `defaults_pota.tsv` → Juglet piece 1
+  `max_mm_A_to_ref` 0.0000 and `max_mm_ref_to_A` 0.0000 against both A_old and A_new2; Pot A
+  piece 01 0.3308 / 0.5730 with median 0.0000.
+- `grep -oE "\[(SPACING|COUNT|REASSIGN)-22\][^[]*" D200/Juglet/*/logs/mesh.log` → the per-cell
+  values quoted above.
+- `grep -oE "Number of clusters is equal to [0-9]+" <arm>/Juglet/Juglet_Piece_{2,3,5,8,9}/logs/mesh.log`
+  → arm A: p3 `[2]` with one merge, p5 `[1]`, p8 `[2]` with one merge, p2 and p9 `[0]` × 21;
+  C200 and D200: p3, p4, p8 `[0]` × 21, p5 `[1]`.
+- `read` of `D200/Juglet/Juglet_Piece_1/logs/mesh.log` → `Number of clusters is equal to 7`,
+  `[ADAPTIVE CLUSTER 1] N=7921`; `A/Juglet/Juglet_Piece_1/logs/mesh.log` → `22` clusters and four
+  merge lines, i.e. the two arms are not the same segmentation.
+- The figure: opened at 2200×1120 and read against the per-panel statistics printed under each
+  panel.
+
+### What this does not settle
+
+Whether a wall pair is what the *reassembly* needs — that is the seating score's job, and it stays
+paused. Whether a spacing between 0.6 mm and `s0` would keep coverage while separating walls: only
+three settings ran on the Juglet and this grid is not a curve. Whether piece 1's D200 pair holds on
+a second draw: one run, unseeded fit. Nothing about pieces 2 and 8 beyond "already fused before the
+reassignment".
+
