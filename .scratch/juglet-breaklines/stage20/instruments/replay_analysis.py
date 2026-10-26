@@ -21,6 +21,7 @@ import glob
 import json
 import math
 import os
+import re
 import sys
 
 import numpy as np
@@ -38,29 +39,54 @@ def log(*a):
 
 # ---------------------------------------------------------------- PLY reading
 def load_ply(path):
-    """ASCII PLY with the fields PLYWriter wrote for pcl::PointNormal."""
-    props, nvert, body, in_v = [], 0, [], False
+    """ASCII PLY as PLYWriter wrote pcl::PointNormal: x y z nx ny nz curvature.
+
+    A second element ("camera") follows the vertices; its properties are not
+    collected, so the vertex column indices stay the vertex ones.
+    """
+    props, nvert, body, in_v, el = [], 0, [], False, None
     with open(path, "r") as fh:
         for ln in fh:
             s = ln.split()
             if not s:
                 continue
-            if s[0] == "end_header":
+            k = s[0]
+            if k == "end_header":
                 in_v = True
                 continue
             if not in_v:
-                if s[0] == "element" and s[1] == "vertex":
-                    nvert = int(s[2])
-                elif s[0] == "property":
-                    props.append(s[-1])
+                if k == "element":
+                    el = s[1]
+                    if el == "vertex":
+                        nvert = int(s[2])
+                elif k == "property" and el == "vertex":
+                    props.append("__list__" if s[1] == "list" else s[-1])
                 continue
             body.append(s)
     arr = np.asarray([[float(x) for x in row] for row in body[:nvert]], dtype=float)
-    ix = {k: i for i, k in enumerate(props)}
-    pts = arr[:, [ix["x"], ix["y"], ix["z"]]]
-    nrm = arr[:, [ix["normal_x"], ix["normal_y"], ix["normal_z"]]]
-    curv = arr[:, ix["curvature"]] if "curvature" in ix else np.zeros(len(pts))
+    ix = {nm: i for i, nm in enumerate(props)}
+
+    def pick(*names):
+        for nm in names:
+            if nm in ix:
+                return arr[:, ix[nm]]
+        raise KeyError("none of %s in %s" % (names, props))
+
+    pts = np.stack([pick("x"), pick("y"), pick("z")], axis=1)
+    nrm = np.stack([pick("nx", "normal_x"), pick("ny", "normal_y"), pick("nz", "normal_z")], axis=1)
+    curv = pick("curvature") if "curvature" in ix else np.zeros(len(pts))
     return pts, nrm, curv, props
+
+
+def find_axis(root, corpus, piece):
+    """The axis the pipeline was given for this piece: boot bundle, PotSAC file, or the released one."""
+    for c in (os.path.join(root, "boot", piece + "_boot_Axis.xyz"),
+              os.path.join(root, "axes", piece + "_Axis.xyz"),
+              os.path.join(corpus, "Axes", piece + "_Axis.xyz"),
+              os.path.join(corpus, "Axes", piece.split("_")[0], piece + "_Axis.xyz")):
+        if os.path.exists(c):
+            return c
+    return None
 
 
 def read_axis(path):
@@ -143,7 +169,7 @@ def k2_avg_normal(pts, nrm, cidx, qid, k2):
     K = min(k2, len(cidx))
     _d, rr = cKDTree(pts[cidx]).query(pts[qid], k=K)
     rr = np.atleast_1d(rr)
-    m = nrm[cidx[rr]].sum(axis=0)
+    m = nrm[np.asarray(cidx)[rr]].sum(axis=0)
     ln = np.linalg.norm(m)
     return m / ln if ln > 1e-9 else np.array([0.0, 0.0, 1.0])
 
@@ -396,7 +422,7 @@ def render(piece, pts, clusters, axis_pt, axis_dir, png, caption_lines):
     lab = np.full(len(pts), -1)
     for ci, c in enumerate(clusters[:2]):
         lab[np.asarray(c)] = ci
-    fig, ax = plt.subplots(1, 3, figsize=(13.5, 4.6), dpi=200)
+    fig, ax = plt.subplots(1, 3, figsize=(15, 5), dpi=150)
     lim = dict(x0=float(z.min()), x1=float(z.max()), y0=float(s.min()), y1=float(s.max()))
     for k, (axi, ttl) in enumerate([(ax[0], "full side view"), (ax[1], "zoom on the two clusters")]):
         axi.scatter(z[lab < 0], s[lab < 0], s=0.6, c="0.82", lw=0, label="unclustered")
@@ -540,9 +566,9 @@ def main():
         post, npass = merge(pts, nrm, curv, clusters, cfg, trace)
         for d in trace:
             rows_merge.append(dict(piece=piece, **d))
-        axis_file = os.path.join(args.axes, piece + "_Axis.xyz")
-        if not os.path.exists(axis_file):
-            log("[B]", piece, "no axis for classify:", axis_file)
+        axis_file = find_axis(args.axes, args.corpus, piece)
+        if axis_file is None:
+            log("[B]", piece, "no axis available for classify")
             continue
         ap_, ad_ = read_axis(axis_file)
         for label, cl in (("pre-merge", clusters), ("post-merge", post)):
@@ -637,7 +663,11 @@ def main():
             continue
         f, _ = ply_of[piece]
         pts, _n, _c, _p = load_ply(f)
-        d = normal_density_test(pts)
+        try:
+            d = normal_density_test(pts)
+        except Exception as exc:
+            log("[D] failed for", piece, repr(exc))
+            continue
         d["piece"] = piece
         rows_n.append(d)
         log("[D]", piece, d)
@@ -653,10 +683,17 @@ def main():
         pts, nrm, curv, _p = load_ply(f)
         d = replay_ok[piece]
         clusters = [d["cluster0"]] + ([d["cluster1"]] if d["cluster1"] else [])
-        axis_file = os.path.join(args.axes, piece + "_Axis.xyz")
+        axis_file = find_axis(args.axes, args.corpus, piece)
+        if axis_file is None:
+            log("[E] no axis for", piece)
+            continue
         ap_, ad_ = read_axis(axis_file)
         png = os.path.join(args.renders, piece + ".png")
-        render(piece, pts, clusters, ap_, ad_, png, caps)
+        try:
+            render(piece, pts, clusters, ap_, ad_, png, caps)
+        except Exception as exc:
+            log("[E] render failed for", piece, repr(exc))
+            continue
         caps.append("%s: pre-merge clusters %s from %s, axis %s, PNG %s"
                     % (piece, [len(c) for c in clusters], os.path.basename(f), os.path.basename(axis_file), os.path.basename(png)))
     with open(os.path.join(args.out, "E_captions.txt"), "w") as fh:
@@ -664,23 +701,35 @@ def main():
 
     # ---- F. the sweep table as a markdown block
     with open(os.path.join(args.out, "F_sweep_table.md"), "w") as fh:
-        fh.write("| piece | SFS_PAPER_NB | SFS_PAPER_THETA | clusters | cluster sizes | run directory tag |\n")
-        fh.write("|---|---|---|---|---|---|\n")
+        fh.write("| piece | SFS_PAPER_NB | SFS_PAPER_THETA | other env | clusters first print | clusters final | retries | cluster sizes | surface 0/1 | not found | run directory |\n")
+        fh.write("|---|---|---|---|---|---|---|---|---|---|---|\n")
         with open(args.variants) as v:
             hdr = v.readline()
             for ln in v:
                 p = ln.rstrip("\n").split("\t")
-                if len(p) < 7:
+                if len(p) < 12:
                     continue
-                tag, pot, piece, env, ex, cl, sizes = p[:7]
-                nb = "-"
-                th = "-"
+                tag, pot, piece, env, ex, cl, sizes, s0, s1, nf = p[:10]
+                d = [x for x in glob.glob(os.path.join(args.runs_root, "*_p20-" + tag))
+                     if os.path.exists(os.path.join(x, "logs", "mesh.log"))]
+                fin, ret = "-", "-"
+                if d:
+                    txt = open(os.path.join(d[0], "logs", "mesh.log"), errors="replace").read()
+                    cs = re.findall(r"Number of clusters is equal to (\d+)", txt)
+                    fin = cs[-1] if cs else "-"
+                    ret = str(len(re.findall(r"Single cluster failed|Single cluster found \(iteration", txt)))
+                nb = th = "-"
+                other = []
                 for tok in env.split():
                     if tok.startswith("SFS_PAPER_NB="):
                         nb = tok.split("=", 1)[1]
-                    if tok.startswith("SFS_PAPER_THETA="):
+                    elif tok.startswith("SFS_PAPER_THETA="):
                         th = tok.split("=", 1)[1]
-                fh.write("| %s | %s | %s | %s | %s | p20-%s |\n" % (piece, nb, th, cl, sizes, tag))
+                    else:
+                        other.append(tok)
+                fh.write("| %s | %s | %s | %s | %s | %s | %s | %s | %s/%s | %s | %s |\n"
+                         % (piece.replace("Juglet_", "J"), nb, th, " ".join(other) or "-",
+                            cl, fin, ret, sizes, s0, s1, nf, os.path.basename(d[0]) if d else "?"))
     log("[F] wrote", os.path.join(args.out, "F_sweep_table.md"))
     log("[DONE]")
 
