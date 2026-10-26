@@ -1,6 +1,6 @@
 # Ticket 300 - stage the reassembled Pot C (ours vs the authors'), and say whether C 01's gap cost a seat
 
-Status: todo
+Status: ready-for-agent
 Working in: unassigned
 Branch: unassigned
 Answers: E1

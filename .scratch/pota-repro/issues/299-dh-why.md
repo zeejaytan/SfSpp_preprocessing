@@ -1,6 +1,6 @@
 # Ticket 299 - why the authors' own bundle misses the paper on Pot D and Pot H
 
-Status: todo
+Status: ready-for-agent
 Working in: unassigned
 Branch: unassigned
 Answers: E1
