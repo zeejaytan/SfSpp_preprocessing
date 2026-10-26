@@ -2056,3 +2056,27 @@ answered, it is unasked** — and until the segmentation separates the two walls
 50 mm, no lane measurement on such material means anything. Weight: none on the tally, decisive on its
 scope. Next: ticket 20's lead reading names the two candidate repairs (more neighbours for the normals,
 or a one-wall surface instead of discarding the piece); the conservator picks which is tried first.
+
+*Correction, same day, ticket 22: the two-cluster normals quoted above were measured **after** the 3 mm
+boundary reassignment, not after clustering. On the clusters themselves, seven of nine pieces already have
+their two walls facing opposite (−0.82 to −0.997). What merges them back is
+`improveSurfaceBoundaryByFittingBSplineSurface` (`mesh_processing_headless.cpp:810`), which fits one
+surface and then admits every point of the whole sherd within 3 mm of it. The consequence still stands: a
+piece that ends with one cluster is written as no surface at all.*
+
+**2026-10-27 — the spacing repair was tried, and it is not the repair (ticket 22).** Three environment
+switches — owned reassignment, a piece-scaled spacing (`S = min(0.6, max(s0, diag/N))`), and count scaling
+by `(0.6/S)^2` — over thirteen arms and 221 cells on the Juglet and Pot A. The defaults reproduce today's
+output exactly (identical point sets on the Juglet; Pot A inside its own stochastic floor), so the switches
+are safe to keep. What they do not do is fix the walls. **Coverage falls**: four pieces write a surface pair
+today, two under every arm that refines the spacing. **One cell in 221 reaches the wall-pair conditions**:
+piece 1 under D200/D400, dot −0.9139 against a −0.9 bar, cross distance 2.01 mm, share 0.035 — one unseeded
+draw clearing the deciding number by 0.014. And **the pieces that lose their walls lose them upstream**: two
+and nine return zero clusters at every retry, and under scaled counts pieces 3, 4 and 8 do too, because
+`minCluster` 158–387 outruns the fragments of a cloud at its own spacing. Pot A is unharmed at N ≤ 200
+(8 of 8 pieces) and fragments piece 08 only at N = 400.
+
+So "which repair first" has an answer now, and it is neither of ticket 20's two as stated: the next repair is
+the **silence** — write a one-cluster piece as one surface instead of discarding it — with a bound on the
+scaled count floor so it cannot outrun the piece. Weight: none on the 281/292 tally; it decides the next
+method ticket. Next: that fix, then the Juglet end-to-end run resumes.
