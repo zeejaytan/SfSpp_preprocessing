@@ -425,3 +425,18 @@ reproducible, and no copy of the corpus is committed. From /tmp on Spartan:
 Then run an299.py, edges299.py, axis299.py, mk299md.py in this directory with the bundled python
 (C:\Users\hermi\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe). The extracted
 copy is deleted after use; only the scripts are committed.
+
+## 2026-10-26 — two corrections from ticket 301 (its numbers stand; these two do not)
+
+1. **This ticket's per-piece translation column contradicts its own failed-edge list.** For the four pieces
+   that reproduce, section 3 quotes 18 `895.62` mm where the edge list says 554.76, 26 `974.37` vs 821.32,
+   28 `754.87` vs 659.71, 29 `462.95` vs 519.59. The degrees agree in every case. Ticket 301 re-ran all five
+   and reproduced the **edge list** to 0.12 deg or better (18 153.07 vs 153.12, 26 163.42 identical,
+   28 164.43 vs 164.43, 29 87.40 vs 87.52), so the edge list is right and the per-piece column is the typo
+   carrier. Cite the edge list.
+2. **The axis-deviation correlation is weaker than section 8 reads, and section 10's nondeterminism is worse
+   than two replays showed.** Five control arms of byte-identical staged input (same `out/inputs.md5`,
+   203 staged entries, `Total number : 2445` in all five) disagreed: pruned 888 / 890 / 892 / 896 / 890,
+   sherds 22 or 23 of 28, joins 53 or 55 of 66. **Piece 25 seats (3.14 deg / 19.48 mm) in four of the ten arms
+   and fails at 104-157 deg in six, with its own axis untouched** — so for that piece the axis does not decide
+   seating at all, which makes it a third counter-example beside 21 and 28. Per-piece verdicts: ticket 301.

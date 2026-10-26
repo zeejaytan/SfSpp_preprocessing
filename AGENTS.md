@@ -50,6 +50,15 @@ broken edge, read on an on-mesh overlay against `Pot_J_Piece_09_Mesh_DS.obj`. Bo
 from the bar tally**: the piece is neither a pass nor a miss. Pot J is 20 of 22 valid edgelines at bar; the
 corpus is 265 of 294.
 
+**Pot D pieces 18 and 29 — their released axis files point away from the direction their own released pose
+implies, and that is what stops them seating** (2026-10-26, ticket 301). Replacing only that one file per piece,
+everything else byte-identical, seats every incident edge: D 18 from 153.04 deg / 799.13 mm to 0.34 / 3.32,
+D 29 from 87.40 / 420.98 to 3.10 / 25.28 — and in the nine arms that swapped a *different* piece both still
+fail at the same angle. So a Pot D miss on 18 or 29 says nothing about our method; it is a defective released
+input, the reference-wrong claim in a second form (an axis file rather than a breakline). Do not "fix" the
+corpus: the substituted files lived only in the run directories and died with the ticket, and the corpus md5s
+are unchanged.
+
 This is the third of the workspace's three kinds of claim — the reference is wrong — and it is not a licence
 to explain away misses: ticket 279 measured that on 163 of 163 pieces a reference line is the boundary of
 the authors' own kept surface, and 265 edgelines sit within 2 mm of these references, so one piece is wrong, not

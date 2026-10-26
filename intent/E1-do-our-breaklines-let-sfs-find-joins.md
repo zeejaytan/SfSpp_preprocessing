@@ -166,7 +166,22 @@ and has no edge in their own ground-truth graph — an isolated node can never b
 they are the five whose released axis contradicts their released pose by 36-72 deg, while every other D
 piece sits at 0.4-11.3 deg and all 47 pieces of the three pots that do reproduce sit at or below 13.7 deg.
 One piece (D 28, best axis candidate only 10.0 deg off) fails as grossly as the rest, so the axis story
-explains four of five and not that one — said plainly rather than rounded off.
+explains four of five and not that one — said plainly rather than rounded off. Ticket 301 then measured the
+axis piece by piece and cut that story down again, below.
+
+**2026-10-26, ticket 301 — the axis story measured piece by piece, and it splits three ways.** For **D 18**
+and **D 29** replacing only that piece's axis file with the direction its own released pose implies seats
+every incident edge — 18: 153.04 deg / 799.13 mm -> 0.34 / 3.32; 29: 87.40 / 420.98 -> 3.10 / 25.28 — while
+the same piece still fails at the same 153 / 87 deg in the nine arms whose swapped piece was someone else. So
+for those two the released **axis file** is the defect; neither the released pose nor the method is. For
+**D 26** the swap moves the failure 18 deg on every edge and leaves it gross (163.42 -> 145.12 deg, 837 mm):
+the axis is a contributor, not the cause, and the axis *point* (47.6-161.5 mm off the reconstructed pot axis
+line) or the frame the breakline sets are what remain — this ticket did not separate them. For **D 28** the
+swap does not help at all (163.78 -> 170.97). **D 25 is unscorable**: it seats in four arms and fails at
+104-157 deg in six **with its own axis untouched**, and five controls of byte-identical staged input
+disagreed (pruned 888-896, sherds 22 or 23, joins 53 or 55). So of the five failures, two are a defective
+released artefact, two are partly, and one cannot be measured at all; and the axis-deviation correlation
+quoted above is weaker than it reads.
 
 On **Pot H the gap is not one broken input**. Piece 6 fails in all three runs and is the pot's worst axis
 outlier (67-78 deg). The rest sits within millimetres of the assembler's 50 mm bar and does not hold
