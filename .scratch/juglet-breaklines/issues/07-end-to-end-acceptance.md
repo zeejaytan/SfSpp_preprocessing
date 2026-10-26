@@ -290,44 +290,54 @@ that the effect of 02-06 remains attributable.
 
 ## 2026-10-26 — revived as the vehicle for U19
 
-This ticket had been idle since 2026-10-02 with its blocker cleared, and the conservator
-asked for the Juglet end-to-end run. The verifier check found that **this ticket already is
-that run**, so it is revived rather than duplicated, and it now answers
+*(Rewritten 2026-10-26: the code spans in this section were eaten when it was first appended
+through a shell heredoc. No claim changed; the missing backticked words are restored.)*
+
+This ticket had been idle since 2026-10-02 with its blocker cleared, and the conservator asked
+for the Juglet end-to-end run. A verifier check found that **this ticket already is that run**,
+so it is revived rather than duplicated, and it now answers
 [U19](C:/PR/intent/U19-does-the-pipeline-put-the-juglet-back-together.md) as well as E1.
 
-**Why a new run is not a repeat.** Both arms on record — ours (S1, 0 of 10 touching joins)
-and the authors' untouched binary (S3, 0 of 18 gate probes, 2 of 9 seated on a pair that
-does not touch) — were fed a bundle written **2026-09-25**, three days BEFORE the per-sherd
-interior classifier landed (ticket 04, 2026-09-28) and before 05, 06, 14, 17, 271 and 287.
-In that bundle  was chosen by file order and was the interior face on only 3
-of 9 sherds. So no Juglet number on record was produced by the code we have now.
+**Why a new run is not a repeat.** Both arms on record — ours (S1, 0 of 10 touching joins) and
+the authors' untouched binary (S3, 0 of 18 gate probes, 2 of 9 seated on a pair that does not
+touch) — were fed a bundle written **2026-09-25**, three days BEFORE the per-sherd interior
+classifier landed (ticket 04, 2026-09-28) and before 05, 06, 14, 17, 271 and 287. In that
+bundle `Breakline_0` was filled by slot, not by face, and was the interior face on only 3 of 9
+sherds (1, 5, 9 — ticket 01's census: 43.8 % outer dots, 21.5 % inner, 34.7 % ambiguous). So no
+Juglet number on record was produced by the code we have now. The old bundle itself is gone:
+the 2026-10-24 attic sweep carved the three `Juglet_Dataset_*` trees out whole and deleted
+their geometry, and only `SfS_pp/Ground Truth/` survives inside
+`attic/checkout-bucketc-20261024-record.tar.gz`.
 
 **The two decisions, taken by the conservator 2026-10-26.**
 
-1. *Settle it like-for-like, then stage it for the eye.* Same answer key and the same
-   honest denominator as S1/S3 — 10 touching joins of 18, plus the raw 18-join count — so
-   the only thing that differs from the old arms is the preprocessing. Then the reassembly
-   is staged in  beside the conservator's hand reassembly for his verdict.
-2. *Rebuild the preprocessing first, then assemble.* Re-derive surfaces, breaklines and
-   axes from the nine meshes with today's code; do not reuse the old bundle. It is gone
-   anyway — deleted as geometry by the 2026-10-24 attic sweep — so any comparison with S3
-   is number against number and must be described that way.
+1. *Settle it like-for-like, then stage it for the eye.* Same answer key and the same honest
+   denominator as S1/S3 — 10 touching joins of 18, plus the raw 18-join count — so the only
+   thing that differs from the old arms is the preprocessing. Then the reassembly is staged in
+   `visual-qa/` beside the conservator's hand reassembly for his verdict.
+2. *Rebuild the preprocessing first, then assemble.* Re-derive surfaces, breaklines and axes
+   from the nine meshes with today's code; do not reuse the old bundle. It is gone anyway, so
+   any comparison with S3 is number against number and must be described that way.
 
 **Two stages, and only the first is in this ticket's hands.**
 
-- *Stage 1 (this ticket):* rebuild  for the Juglet from
-   plus ; record md5s and prove no
-  byte-identical copies between pieces (the corruption that withdrew the old 0/10, ticket
-  17); record every piece's interior/exterior decision and prove the breakline the
-  assembler reads is the one the interior vote chose. **Pot A rebuilds in the same batch**
-  and must still reach 15/15, or the batch is void and says so.
+- *Stage 1 (this ticket):* rebuild the bundle for the Juglet — surfaces, `Breakline_0` and axes
+  for all nine pieces — from `Dataset/Juglet/Piece01..09.obj` with today's code, into a new
+  bundle directory under the run root, and:
+  - record an md5 per output and **prove no byte-identical copies between pieces** (the
+    corruption that withdrew the old 0/10, ticket 17);
+  - record every piece's interior/exterior decision, and **prove the `Breakline_0` the
+    assembler reads is the one the interior vote chose** — it reads only `Breakline_0`, and
+    `Breakline_1` appears nowhere in `class/` or the build (ticket 296);
+  - **rebuild Pot A in the same batch** at the same settings; it must still reach 15/15, per
+    pair, or the batch is void and says so. A rebuild that also loses Pot A proves nothing
+    about the Juglet.
 - *Stage 2 (its own ticket, opened when stage 1 delivers a bundle):* assemble the rebuilt
   Juglet against the conservator's poses, report each touching join as pass / fail /
-  unmeasurable with rotation in degrees and translation in mm, stage the pair, and take
-  the eye verdict.
+  unmeasurable with rotation in degrees and translation in mm, stage the pair in
+  `visual-qa/`, and take the eye verdict.
 
 **Pieces 3 and 9 stay absent, not zero.** They produce one cluster even after 30 loosened
-retries, so five of the ten touching joins cannot be scored at all. Decision 2026-10-26:
-report the partial result on seven sherds with those five stated as unmeasurable, and let
-a separate ticket own the clustering diagnosis. Nothing here may turn an absent pair into
-a failed one.
+retries, so five of the ten touching joins cannot be scored at all. Decision 2026-10-26: report
+the partial result on seven sherds with those five stated as unmeasurable, and let a separate
+ticket own the clustering diagnosis. Nothing here may turn an absent pair into a failed one.
