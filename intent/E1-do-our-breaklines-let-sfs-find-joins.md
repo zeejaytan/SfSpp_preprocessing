@@ -151,6 +151,52 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+**2026-10-26 — why the authors' published Pot D and H numbers do not come back (ticket 299), and what
+the scan gap in Pot C 01 did to its seat (ticket 300).**
+
+On **Pot D the paper's own number is not reproducible from the paper's own release**. At the commit we
+pinned, their bundle reaches 22 sherds and 53 joins on the same denominators the paper prints, while we
+reach the paper's raw counts (23 and 55) over one more piece — so on the paper's own denominators the two
+bundles seat identically, and the difference between us and Table V is not a seating difference at all.
+Two bookkeeping facts account for most of it, and neither is a quality claim. The paper's 28 excludes a
+piece their own rule removes: D 27's released edge line carries 48 points against the 50-point floor
+(their own datum rule, paper :329). And the paper's 28 still *contains* D 22, which has no reference pose
+and has no edge in their own ground-truth graph — an isolated node can never be scored, so the published
+23/28 is really 23 of 27 scorable pieces. The five pieces that fail in every run fail by 76-176 deg, and
+they are the five whose released axis contradicts their released pose by 36-72 deg, while every other D
+piece sits at 0.4-11.3 deg and all 47 pieces of the three pots that do reproduce sit at or below 13.7 deg.
+One piece (D 28, best axis candidate only 10.0 deg off) fails as grossly as the rest, so the axis story
+explains four of five and not that one — said plainly rather than rounded off.
+
+On **Pot H the gap is not one broken input**. Piece 6 fails in all three runs and is the pot's worst axis
+outlier (67-78 deg). The rest sits within millimetres of the assembler's 50 mm bar and does not hold
+still: between two replays of byte-identical staged input, piece 8 moved from 58.65 deg / 362 mm to
+9.68 deg / 72.9 mm — a gross miss becoming a 1.46x near miss — while the count stayed 8/11. So the
+paper's two extra sherds may sit inside our own run-to-run band, and quoting Pot H's single-run number
+as if it were stable would overstate what we know.
+
+For **Pot C, the conservator's question — did C 01's scan gap cost it a seat — is answered no.** The gap
+is real: C 01 carries four closed rims where C 02, C 03 and C 04 have none. But it lies on the flat of the
+sherd, not at an edge, and both interior lines — ours (207 points) and the authors' own (211) — stay about
+36 mm inside its nearest rim (36.1 and 36.2 mm). C 01 seats with its joins closing to 0.035-0.100 mm and
+pose error 0.44-0.63 deg / 2.6-4.4 mm, inside the assembler's own 20.05 deg / 50 mm bar and no worse than
+its neighbours'. What that means: the defect still makes any interior-line score on this piece a
+measurement of the input, but on this piece the defect never reached the seat. Two pairs are staged for
+the conservator's eye (`pota300_potC_arms`, `pota300_potC_c01`) and have not been opened yet.
+
+This ticks **no Done-when box**: it explains published numbers and one input caveat, and changes nothing
+about the Juglet acceptance test those boxes are written for.
+
+Weight: Pot C is one pot, four pieces, one seating per arm. Pot D is pinned by the released files
+themselves — three arms and two byte-identical replays fail the same five pieces. Pot H is the weaker one
+and is stated as such: its failing set moves between replays, so its count is stable at 8/11 while its
+membership is not.
+Next: two measurements would settle what is left, and neither touches the assembler — on Pot D an
+input-only axis swap on those five pieces (replace the axis direction with the one the reference pose
+implies, re-assemble, see whether the piece seats, which separates "the axis file is wrong" from "the
+reference pose is wrong"); on Pot H a third identical replay, to say whether the failing set is structural
+or inside the band.
+
 **2026-10-26 — the join-level question, measured on all ten pots (ticket 298).** Every pot was
 assembled twice on identical meshes, axes, assembler and ground-truth graphs: once from OUR
 preprocessing bundle, once from the authors' released bundle. Ours never seats fewer sherds than
@@ -196,7 +242,7 @@ saturated. On the extraction side the eleven below-bar lanes are explained (tick
 are one face read differently, three are genuine partition differences, and only the chord is
 visible in a boundary set) but not cured; the mechanism implicated is which faces are kept, not the
 walk. Open item from 298: the authors' own bundle misses their published Pot D and H numbers,
-repeated identically, cause not chased.
+repeated identically — chased by ticket 299 in the block above.
 
 **2026-10-15 — untouched-upstream check (lead-run, task-1–3): the released
 preprocessing does not regenerate the authors' own Pot A inputs.**
