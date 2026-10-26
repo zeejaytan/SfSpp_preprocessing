@@ -2105,3 +2105,41 @@ A Juglet edgeline tally measured now would describe the surface stage, not the w
 Weight: none on the 281/292 corpus tally, because no corpus piece changes. Next: ticket 24 measures
 the normals, since the neighbour count is a function of point count (max(5, min(20, points/1000))),
 so the sherds that fail are precisely the ones triangulated from 5 neighbours.
+
+## 2026-10-27 — the walls are separated by the growth rule, and my wall test was wrong (ticket 24)
+
+Two things came out of ticket 24, and the second is the one that changes this file.
+
+The normals were the suspect because the neighbour count is a function of point count
+(`max(5, min(20, points / 1000))` at `mesh_processing_headless.cpp:420`), so every Juglet sherd is
+triangulated from 5 neighbours. Measured against each mesh's own surface normal — the only
+non-circular reference — a wider neighbourhood does **not** improve them: median folded error
+4.34° → 4.01° on piece 1, 6.83° → 7.38° on piece 4, 5.78° → 5.99° on piece 7, Pot A 0.88° → 0.93°
+at every setting. Two-surface coverage: 4 of 9 today, 4 with a radius, 2 with a fixed 1 mm radius.
+The normals step is deterministic (two passes, 0.0000 mm displacement on every Juglet surface), so
+the run-to-run wobble lives downstream, in the boundary fit. **The normals are not where the walls
+are lost.**
+
+The correction matters more than the subject. The wall-pair bar this file has been quoting since
+ticket 20 compared the two surfaces' **mean normals**, and on a curved sherd two separate patches of
+one shell can point almost opposite ways. The single pass in 102 cells (piece 7, fixed 1 mm radius,
+dot −0.9597, 4.49 mm apart) proved on an edge-on redraw to be two coplanar patches **0.230 mm** apart
+through that normal — same shell, written twice. Every earlier "genuine pair" sentence resting on that
+bar is withdrawn, including "piece 7 is the only real pair" in the September arm. The sound test takes
+each Surface_1 point's nearest Surface_0 point and splits the step into **through** and **along** the
+wall: Pot A every arm 3.56–7.13 mm through, 0.24–0.27 mm along, coincidence 0.0000; the Juglet has
+exactly **two** pairs in the 36 cells of the 2×2 grid — piece 7 at native density and piece 5 at
+today's 0.6 mm step (3.14 and 2.28 mm through, 0.31 and 0.36 mm along). **Both are in arms with the
+paper chain off**; no arm running the newer growth produces one. Two of nine says nothing about a
+rate, but it names the growth rule as the suspect — not the normals, and not (yet) the 3 mm
+reassignment, since piece 5's pair survives that step.
+
+For breaklines the consequence is unchanged and now better founded: the assembler reads
+`Breakline_0` = the boundary of `Surface_0`, and on eight of nine Juglet sherds that surface is one
+wall, whichever wall the clustering happened to keep — so a Juglet edgeline tally would still measure
+the surface stage, not the walk.
+
+Weight: none on the 281/292 corpus tally — no corpus piece changes, and Pot A keeps 8 of 8 in every
+arm. Next: the growth rule. The per-step dump (ticket 25) shows in colour where a second wall is born
+or lost, so the choice between "use the older region growing" and "fix the newer chain" is made on a
+picture plus a count rather than on inference.
