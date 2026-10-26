@@ -1,0 +1,45 @@
+{
+  "runid": "20261027-0055_d8af9d2_p07-juglet-stage1",
+  "jobid": "33834939",
+  "commit": "d8af9d288214b1a72bfba69f8fb99a4ecf09d071",
+  "branch": "07-end-to-end-acceptance",
+  "tag": "p07-juglet-stage1",
+  "ticket": ".scratch/juglet-breaklines/issues/07-end-to-end-acceptance.md (stage 1)",
+  "purpose": "Rebuild the SfS++ preprocessing bundle for the handmade Juglet from its nine meshes with the current commit, and rebuild Pot A in the same job as the positive control (the t14_patches 15/15 bar). Stage 1 only: no assembly, no scoring against reference poses.",
+  "host": "spartan (spartan.hpc.unimelb.edu.au), account punim2657, partition sapphire",
+  "builds_from": "git archive of the commit above out of the canonical checkout /data/gpfs/projects/punim2657/sfs_preprocessing; build tree deleted at the end of the job",
+  "settings": {
+    "shipped_defaults": true,
+    "sfs_overrides": {
+      "POT_NAME": "dataset selector (data_path.h:46-53)",
+      "SFS_AXIS_FILE": "required for the [PAPER-234] classify vote (ticket 277)",
+      "SFS_SMOOTHNESS_DEG": "ONLY on the bounded cluster retries for a piece that fuses to one cluster: unset(=4.5 shipped), 3.5, 3.0 -- at most three attempts, recorded per attempt in out/juglet_attempts.tsv"
+    },
+    "juglet_smoothness_attempts": [
+      "4.5 (shipped default)",
+      "3.5",
+      "3.0"
+    ],
+    "pot_a": "shipped defaults only, frozen-corpus axis files, exactly the p296 chain"
+  },
+  "inputs": {
+    "juglet_clouds": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Point/Juglet/Juglet_Piece_1..9_Point.pcd (ascii, mesh vertices with estimated normals, no corpus manifest row -- the frozen corpus has no Juglet entry)",
+    "juglet_meshes": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_1..9_Mesh.obj (scan pose, mm) -- the family whose vertex counts match the clouds exactly",
+    "juglet_meshes_deviation": "the brief named Dataset/Juglet/Piece01.obj..Piece09.obj. Those are the same pieces re-exported; they do not match the available clouds vertex-for-vertex and their names lack the _Mesh/_Point pair the stage derives, so the Mesh/Juglet family is used and both families' md5s are recorded in out/corpus_md5_before.tsv.",
+    "juglet_axes": "regenerated in this run (out/boot/ PCA bootstrap for pass 1, out/axes/ PotSAC for the final pass). The pre-classifier Dataset/Axes/Juglet files are NOT used as SFS_AXIS_FILE.",
+    "pot_a": "frozen corpus: Point/Pot_A/*_Point.pcd, Mesh/*_Mesh.obj, Axes/*_Axis.xyz, staged by scripts/stage_piece.sh with manifest checks"
+  },
+  "instrument": {
+    "note": "submit.sbatch, scripts/stage_juglet.sh, scripts/boot_axis.py, scripts/potsac_axis.py live in this run directory and are not part of the commit; their md5s are in out/source.md5",
+    "stage_juglet_reason": "the frozen corpus cannot stage a Juglet piece (no cloud, no manifest row), so stage_piece.sh refuses; this stages the same Dataset/ tree from the mesh/cloud artifacts on Spartan"
+  },
+  "outputs": {
+    "bundle": "out/geom/ -- KEPT in this run directory; stage 2 consumes it (per piece: .S0.xyz, .S1.xyz, .Bl0.pcd, .Bl1.pcd)",
+    "axes": "out/axes/ (.xyz per piece, assembly layout)",
+    "logs": "out/logs/ one log per piece and per attempt, plus out/juglet_attempts.tsv, out/juglet_pieces.tsv, out/classify.tsv, out/pieces_run.tsv",
+    "md5s": "out/files.md5",
+    "corpus_manifest": "out/corpus_md5_before.tsv / out/corpus_md5_after.tsv / out/corpus_verdict.txt"
+  },
+  "deleted_geometry": "the build tree ($BUILDROOT/p07-build-<jobid>) only. Staged geometry stays because the run directory is the stage-2 input.",
+  "index_row": "appended by this job's session with verdict and human_note left EMPTY"
+}
