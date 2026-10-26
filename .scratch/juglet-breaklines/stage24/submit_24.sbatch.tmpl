@@ -161,7 +161,8 @@ fi
 say "collecting the normals angle tables"
 { head -1 out/cells/A/Juglet/Juglet_Piece_1/angles24.tsv 2>/dev/null || printf "tag\tpot\tpiece\tcall\tn\tmed_signed_deg\tmed_abs_deg\tp90_abs_deg\tfrac_abs_gt10\tfrac_abs_gt30\tfrac_same_hemisphere\tmed_dist_mm\tframe_ok\n"; find out/cells -name angles24.tsv | sort | xargs -r -I{} tail -n +2 {}; } > out/angles24_all.tsv
 say "angle rows: $(($(wc -l < out/angles24_all.tsv) - 1)) across $(find out/cells -name angles24.tsv | wc -l) cells"
-NONCELL=$(awk -F'\t' 'NR>1 && $5==0' out/cells/cells24.tsv | wc -l)
+# column 27 is "calls", the count of [NORMAL-24] lines, i.e. normals PLYs the stage dumped
+NONCELL=$(awk -F'\t' 'NR>1 && $27==0' out/cells/cells24.tsv | wc -l)
 say "[CHECK] cells whose stage dumped no normals PLY: $NONCELL"
 
 cp -f out/cells/cells24.tsv out/cells/cells23.tsv
