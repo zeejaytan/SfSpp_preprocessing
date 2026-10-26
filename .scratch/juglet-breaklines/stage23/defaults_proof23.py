@@ -9,7 +9,9 @@ Compares arm A (new binary, no switches) against
 md5 is reported but is not the test: the ASCII PLY carries digits beyond the 4-decimal distance,
 so two runs can agree to 0.0000 mm and still differ byte for byte.
 
-Usage: defaults_proof23.py <cellroot> <pot> <pieces...>  ->  <cellroot>/defaults_proof23.tsv
+Usage: defaults_proof23.py <cellroot> <pot> <pieces...>  ->  <cellroot>/defaults_proof23_<pot>.tsv
+(set SFS_PROOF_OUT to name the output file explicitly; the per-pot default exists because one
+call per pot wrote the same path and the second pot truncated the first pot's rows).
 """
 import hashlib
 import os
@@ -65,7 +67,8 @@ def main():
                 rows.append([pot, piece, "Surface_%d" % k, ref, len(xa), len(xr),
                              "yes" if same_md5 else "no", "yes" if same_bytes else "no",
                              "%.4f" % m1, "%.4f" % x1, "%.4f" % m2, "%.4f" % x2])
-    out = os.path.join(cellroot, "defaults_proof23.tsv")
+    out = os.environ.get("SFS_PROOF_OUT") or os.path.join(
+        cellroot, "defaults_proof23_%s.tsv" % pot)
     with open(out, "w") as fh:
         fh.write("pot\tpiece\tsurface\tref\tnpts_A\tnpts_ref\tmd5_equal\tbytes_equal"
                  "\tmed_mm_A_to_ref\tmax_mm_A_to_ref\tmed_mm_ref_to_A\tmax_mm_ref_to_A\n")
