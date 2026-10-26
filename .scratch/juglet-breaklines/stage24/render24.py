@@ -53,6 +53,17 @@ def load_angles(path, call):
     return (np.column_stack([out["x"], out["y"], out["z"]]), np.array(out["ang"]))
 
 
+def last_call(path):
+    """the call id of the table's last row: the call whose normals the segmentation actually used."""
+    call = None
+    with open(path) as fh:
+        for line in fh:
+            if line.startswith("tag\t"):
+                continue
+            call = int(line.split("\t")[3])
+    return call
+
+
 def scale_bar(ax, lim, dpi, inches):
     dx = lim[1] - lim[0]
     x0 = lim[0] + 0.06 * dx
@@ -97,16 +108,11 @@ def draw_piece(pot, piece, root, outdir, tags, dpi):
         for r, tag in enumerate(tags):
             cell = os.path.join(root, tag, pot, piece)
             axL, axR = axes[r][0], axes[r][1]
-            ang = load_angles(os.path.join(cell, "angle_points.tsv"), None)
+            apath = os.path.join(cell, "angle_points.tsv")
             sc = None
-            if ang is not None:
-                call = None
-                with open(os.path.join(cell, "angle_points.tsv")) as fh:
-                    for line in fh:
-                        if line.startswith("tag\t"):
-                            continue
-                        call = int(line.split("\t")[3])
-                ang = load_angles(os.path.join(cell, "angle_points.tsv"), call)
+            # probing with load_angles(path, None) can never match a row, so the first version of this
+            # panel drew nothing at all; probe the file and read its last call instead.
+            ang = load_angles(apath, last_call(apath)) if os.path.exists(apath) else None
             if ang is not None:
                 px, py = project(ang[0], centre, basis)
                 sc = axL.scatter(px, py, c=np.clip(ang[1], 0, VMAX), cmap="RdYlGn_r",
