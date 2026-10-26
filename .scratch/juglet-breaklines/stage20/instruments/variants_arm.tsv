@@ -1,0 +1,10 @@
+p2-ds19000	Juglet	Juglet_Piece_2	SFS_DOWNSAMPLE_TARGET=19000	boot
+p2-ds-1	Juglet	Juglet_Piece_2	SFS_DOWNSAMPLE_TARGET=-1	boot
+p3-ds19000	Juglet	Juglet_Piece_3	SFS_DOWNSAMPLE_TARGET=19000	boot
+p3-ds-1	Juglet	Juglet_Piece_3	SFS_DOWNSAMPLE_TARGET=-1	boot
+p5-ds19000	Juglet	Juglet_Piece_5	SFS_DOWNSAMPLE_TARGET=19000	boot
+p5-ds-1	Juglet	Juglet_Piece_5	SFS_DOWNSAMPLE_TARGET=-1	boot
+p8-ds19000	Juglet	Juglet_Piece_8	SFS_DOWNSAMPLE_TARGET=19000	boot
+p8-ds-1	Juglet	Juglet_Piece_8	SFS_DOWNSAMPLE_TARGET=-1	boot
+p9-ds19000	Juglet	Juglet_Piece_9	SFS_DOWNSAMPLE_TARGET=19000	boot
+p9-ds-1	Juglet	Juglet_Piece_9	SFS_DOWNSAMPLE_TARGET=-1	boot

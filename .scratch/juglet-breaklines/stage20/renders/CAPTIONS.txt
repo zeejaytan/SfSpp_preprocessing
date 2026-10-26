@@ -1,0 +1,5 @@
+Juglet_Piece_3.png — Juglet piece 3, pre-merge clusters 169 (red) / 99 (blue) from Juglet_Piece_3_SampledWithNormals.ply, axis Juglet_Piece_3_boot_Axis.xyz; zoom panel 31.06 mm across 750 px = 0.0414 mm/px, 1 mm bar drawn, median s 2.492 vs 3.298 mm (separation 0.805 mm).
+Pot_A_Piece_07.png — Pot A piece 07, pre-merge clusters 3093 (red) / 2850 (blue) from Pot_A_Piece_07_SampledWithNormals.ply, axis Pot_A_Piece_07_Axis.xyz; zoom panel 46.65 mm across 750 px = 0.0622 mm/px, 1 mm bar drawn, median s 35.005 vs 31.872 mm (separation 3.133 mm).
+Juglet_Piece_2_theta8.png — Juglet piece 2 at SFS_PAPER_THETA=8, the clusters growth recovers where the shipped theta finds none; same panel construction, 1 mm bar.
+Juglet_Piece_5_theta8.png — Juglet piece 5 at SFS_PAPER_THETA=8 (6 clusters, 901/418/134/130/57/54); same panel construction, 1 mm bar.
+Juglet_Piece_9_theta8.png — Juglet piece 9 at SFS_PAPER_THETA=8, the clusters growth recovers where the shipped theta finds none; same panel construction, 1 mm bar.
