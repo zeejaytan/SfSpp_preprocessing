@@ -71,8 +71,8 @@ job. Report, per piece and per arm:
 ## The arms
 
 All nine Juglet pieces plus Pot A pieces 01-08, same staged inputs as ticket 22's grid, corpus read-only
-with md5 before and after. Ticket 23's default path is the baseline (arm A), so **23 must be merged
-first**.
+with md5 before and after. Ticket 23's default path is the baseline (arm A); **23 is merged**
+(`b8040fa`), so the switches exist on main with defaults that reproduce today.
 
 | arm | normals | everything else |
 |---|---|---|
@@ -81,6 +81,14 @@ first**.
 | B | `radius`, auto = 2 × s₀ | today |
 | C | `radius`, auto = 3 × s₀ | today |
 | D | `radius`, fixed 1.0 mm | today |
+| E | whichever `radius` arm wins above | ticket 23's full set: `SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.01 SFS_REASSIGN_MODE=own` |
+
+**Arm E exists because two repairs interact and neither grid tested the pair.** Under ticket 23's arm C
+the finer spacing plus **radius-mode** reassignment made piece 1's two surfaces lie on each other (dot
+**+0.3468**, 0.47 mm apart, 46 % of points coincident), while ticket 22's **own-mode** reassignment is
+what separated that same piece (dot **−0.9139** at 2.01 mm). So the normals arm that looks best on its
+own may behave differently under C's switches. E carries the winners together with `own` mode. It can
+ride inside the same job as the normals grid rather than needing a job of its own.
 
 If an arm's radius exceeds the piece's own extent — plausible on a 23 mm sherd — say so and report the
 neighbours used rather than letting the arm silently become "the whole piece".
