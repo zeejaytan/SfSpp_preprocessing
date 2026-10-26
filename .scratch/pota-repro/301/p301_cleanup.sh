@@ -28,18 +28,27 @@ for RUN in "$@"; do
     fi
   done
 
-  for WHAT in dataset out/Result; do
-    D=$RUN/$WHAT
-    if [ -e "$D" ]; then
-      N_FILES=$(find "$D" -type f | wc -l)
-      N_LINKS=$(find "$D" -type l | wc -l)
-      BYTES=$(du -sb "$D" | cut -f1)
-      echo "removed  $WHAT : $N_FILES files, $N_LINKS symlinks, $BYTES bytes" >> "$REC"
-      rm -rf "$D"
-    else
-      echo "removed  $WHAT : absent (nothing to remove)" >> "$REC"
-    fi
-  done
+  # the staged dataset: 29 pieces of symlinks into the frozen corpus, plus the one real swap file
+  if [ -e "$RUN/dataset" ]; then
+    N_FILES=$(find "$RUN/dataset" -type f | wc -l)
+    N_LINKS=$(find "$RUN/dataset" -type l | wc -l)
+    BYTES=$(du -sb "$RUN/dataset" | cut -f1)
+    echo "removed  dataset/  : $N_FILES files, $N_LINKS symlinks, $BYTES bytes" >> "$REC"
+    rm -rf "$RUN/dataset"
+  else
+    echo "removed  dataset/  : absent (nothing to remove)" >> "$REC"
+  fi
+  # the assembler's exported edgelines are the geometry the run produced; the T_<i>to_<j>.txt
+  # transforms are numbers, they are what every per-piece figure in the ticket is computed from,
+  # and they are ~1 KB each, so they stay with the record.
+  EDG=$RUN/out/Result
+  if [ -d "$EDG" ]; then
+    N_XYZ=$(find "$EDG" -name '*.xyz' | wc -l)
+    BYTES=$(find "$EDG" -name '*.xyz' -printf '%s\n' | awk '{s+=$1} END {print s+0}')
+    echo "removed  out/Result/*.xyz (edgelines) : $N_XYZ files, $BYTES bytes" >> "$REC"
+    find "$EDG" -name '*.xyz' -delete
+    echo "kept     out/Result/T_<i>to_<j>.txt : $(find "$EDG" -name 'T_*to_*.txt' | wc -l) transforms, $(du -sb "$EDG" | cut -f1) bytes" >> "$REC"
+  fi
 
   KEPT_BYTES=$(du -sb "$RUN" | cut -f1)
   KEPT_FILES=$(find "$RUN" -type f | wc -l)

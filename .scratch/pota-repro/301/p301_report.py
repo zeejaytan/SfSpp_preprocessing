@@ -101,12 +101,126 @@ def summarise(G, gt, T, on):
     )
 
 
+def counts(txt):
+    """The assembler's own printed counts, out of out/summary.txt."""
+    import re as _re
+    def g(pat):
+        m = _re.search(pat, txt)
+        return int(m.group(1)) if m else None
+    return dict(hyp=g(r"Total number\s*:\s*(\d+)"),
+                pruned=g(r"Total number pruned\s*:\s*(\d+)"))
+
+
+def provenance(run_dir):
+    p = os.path.join(run_dir, "out", "swap_provenance.json")
+    return json.load(open(p)) if os.path.exists(p) else None
+
+
+def markdown(out, arms):
+    """The three tables the ticket quotes, generated from the runs so nothing is transcribed by hand."""
+    import re as _re
+    labels = [l for l, _ in arms]
+    print("### Pot-level counts, all ten runs\n")
+    print("| run | role | hypotheses | pruned | sherds seated | joins seated | pieces off | pieces not seated |")
+    print("|---|---|---|---|---|---|---|---|")
+    for l in labels:
+        s = out[l]
+        c = counts(s["summary_txt"])
+        role = "swap" if l.endswith("-swap") else ("ctrl" if l.endswith("-ctrl") else "?")
+        print("| `%s` | %s | %s | %s | %d/%d (%.4f%%) | %d/%d (%.3f%%) | %s | %s |" % (
+            l, role, c["hyp"], c["pruned"], s["sherds_seated"], s["sherds_denom"],
+            100.0 * s["sherds_seated"] / max(1, s["sherds_denom"]),
+            s["joins_ok"], s["joins_denom"], 100.0 * s["joins_ok"] / max(1, s["joins_denom"]),
+            ",".join(str(p) for p in s["pieces_off"]) or "none",
+            ",".join(str(p) for p in s["not_seated"]) or "none"))
+
+    def short(l):
+        m = _re.search(r"(\d+)-(ctrl|swap)$", l)
+        return "%s%s" % (m.group(1), "c" if m.group(2) == "ctrl" else "s") if m else l
+
+    print("\n### Every staged piece, best incident ground-truth edge (deg / mm), all runs\n")
+    print("Cell = the piece's best incident edge against its reference transform; * = within the bar"
+          " (seated). 'off' = the assembler dropped the piece before assignment. Rows are the whole"
+          " shard, not only the five targets, because the screen is global.\n")
+    print("| piece | " + " | ".join(short(l) for l in labels) + " |")
+    print("|---" * (len(labels) + 1) + "|")
+    for p in range(1, N + 1):
+        cells = []
+        for l in labels:
+            if p not in out[l]["pieces_on"]:
+                cells.append("off")
+                continue
+            pp = out[l]["per_piece"].get(p)
+            cells.append("-" if pp is None else "%.2f / %.1f%s" % (pp["deg"], pp["mm"],
+                                                                   "*" if pp["seated"] else ""))
+        print("| %d | %s |" % (p, " | ".join(cells)))
+
+    pairs = {}
+    for l in labels:
+        m = _re.search(r"(d\d+)-(ctrl|swap)$", l)
+        if m:
+            pairs.setdefault(m.group(1), {})[m.group(2)] = l
+    print("\n### Per piece: every incident ground-truth edge, ctrl against swap\n")
+    print("Bar: %.2f deg / %.1f mm (class/data_structure.cpp:927, isSimilarTrans :661-680; seated when"
+          " at least one incident edge passes, :967-983).\n" % (BAR_DEG, BAR_MM))
+    for key in sorted(pairs, key=lambda k: int(k[1:])):
+        p = int(key[1:])
+        cl, sl = pairs[key].get("ctrl"), pairs[key].get("swap")
+        es = {}
+        for l in (cl, sl):
+            if not l:
+                continue
+            for e in out[l]["edges"]:
+                if e["i"] == p or e["j"] == p:
+                    es.setdefault("%02d-%02d" % (e["i"], e["j"]), {})[l] = e
+        print("**piece %d**\n" % p)
+        print("| edge | ctrl deg | ctrl mm | swap deg | swap mm |")
+        print("|---|---|---|---|---|")
+        for k in sorted(es, key=lambda k: min(es[k][l]["deg"] for l in es[k])):
+            ec, esw = es[k].get(cl), es[k].get(sl)
+            print("| %s | %s | %s | %s | %s |" % (
+                k,
+                "%.2f" % ec["deg"] if ec else "-", "%.2f" % ec["mm"] if ec else "-",
+                "%.2f" % esw["deg"] if esw else "-", "%.2f" % esw["mm"] if esw else "-"))
+        print()
+        print("| piece %d | best edge | best deg | best mm | seated |" % p)
+        print("|---|---|---|---|---|")
+        for l, nm in ((cl, "ctrl"), (sl, "swap")):
+            if not l:
+                continue
+            pp = out[l]["per_piece"].get(p)
+            if pp is None:
+                print("| %d | %s | - | - | piece off |" % (p, nm))
+            else:
+                print("| %d | %d-%d | %.2f | %.2f | %s |" % (
+                    p, p, pp["best_edge_with"], pp["deg"], pp["mm"],
+                    "SEATED" if pp["seated"] else "failed"))
+        print()
+
+    print("\n### Swap landed: what the staged file says when read back\n")
+    print("| run | piece | corpus md5 | staged md5 | real file | staged vs planted (deg) | R_GT.d_staged vs a_world (deg) | moved from corpus (deg) |")
+    print("|---|---|---|---|---|---|---|---|")
+    for l in labels:
+        pv = provenance(dict(arms)[l])
+        if not pv:
+            continue
+        sw = pv["swaps"]
+        print("| `%s` | %d | `%s` | `%s` | %s | %s | %s | %s |" % (
+            l, pv["piece"], pv["corpus_axis_md5"], pv["staged_axis_md5"],
+            "yes" if pv["staged_is_real_file"] else "NO",
+            ", ".join("%.2e" % s["angle_staged_vs_planted_deg"] for s in sw),
+            ", ".join("%.2e" % s["angle_staged_in_world_vs_a_world_deg"] for s in sw),
+            ", ".join("%.2f" % s["angle_staged_vs_corpus_deg"] for s in sw)))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--corpus", required=True)
     ap.add_argument("--arm", action="append", default=[], help="label=<run dir>")
     ap.add_argument("--json", default=None)
     ap.add_argument("--pieces", nargs="*", type=int, default=[18, 25, 26, 28, 29])
+    ap.add_argument("--markdown", action="store_true",
+                    help="emit the three ticket tables instead of the verbose blocks")
     a = ap.parse_args()
 
     arms = []
@@ -127,6 +241,12 @@ def main():
                  100.0 * s["joins_ok"] / max(1, s["joins_denom"]),
                  ",".join(str(p) for p in s["pieces_off"]) or "none"))
         print("   not seated: %s" % (",".join(str(p) for p in s["not_seated"]) or "none"))
+
+    if a.markdown:
+        markdown(out, arms)
+        if a.json:
+            json.dump(out, open(a.json, "w"), indent=1)
+        return
 
     print("\n-- per piece, EVERY incident ground-truth edge (bar %.2f deg / %.1f mm). A piece is seated"
           "\n   when at least one of its edges passes (class/data_structure.cpp:967-983)." % (BAR_DEG, BAR_MM))

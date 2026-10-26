@@ -1,0 +1,58 @@
+== d18-ctrl               sherds 22/28   joins 53/66 (78.5714 / 80.303%)   off: 27
+   not seated: 18,22,25,26,28,29
+== d18-swap               sherds 23/28   joins 56/66 (82.1429 / 84.848%)   off: 27
+   not seated: 22,25,26,28,29
+== d25-ctrl               sherds 23/28   joins 55/66 (82.1429 / 83.333%)   off: 27
+   not seated: 18,22,26,28,29
+== d25-swap               sherds 22/28   joins 53/66 (78.5714 / 80.303%)   off: 27
+   not seated: 18,22,25,26,28,29
+== d26-ctrl               sherds 22/28   joins 53/66 (78.5714 / 80.303%)   off: 27
+   not seated: 18,22,25,26,28,29
+== d26-swap               sherds 23/28   joins 55/66 (82.1429 / 83.333%)   off: 27
+   not seated: 18,22,26,28,29
+== d28-ctrl               sherds 23/28   joins 55/66 (82.1429 / 83.333%)   off: 27
+   not seated: 18,22,26,28,29
+== d28-swap               sherds 23/28   joins 55/66 (82.1429 / 83.333%)   off: 27
+   not seated: 18,22,26,28,29
+== d29-ctrl               sherds 22/28   joins 53/66 (78.5714 / 80.303%)   off: 27
+   not seated: 18,22,25,26,28,29
+== d29-swap               sherds 23/28   joins 54/66 (82.1429 / 81.818%)   off: 27
+   not seated: 18,22,25,26,28
+
+-- per piece, EVERY incident ground-truth edge (bar 20.05 deg / 50.0 mm). A piece is seated
+   when at least one of its edges passes (class/data_structure.cpp:967-983).
+
+piece 18
+   edge 10-18 :  d18-ctrl   153.23 deg    198.14 mm  d18-swap     0.34 deg      3.32 mm  d25-ctrl    48.95 deg    414.76 mm  d25-swap   148.23 deg    205.50 mm  d26-ctrl   153.24 deg    197.45 mm  d26-swap   121.90 deg    698.34 mm  d28-ctrl    49.02 deg    414.78 mm  d28-swap   142.17 deg    427.88 mm  d29-ctrl   153.23 deg    198.15 mm  d29-swap   153.25 deg    199.01 mm   fail
+   edge 13-18 :  d18-ctrl   153.04 deg    799.13 mm  d18-swap     0.49 deg      2.74 mm  d25-ctrl    48.96 deg    323.42 mm  d25-swap   148.11 deg    791.49 mm  d26-ctrl   153.14 deg    799.80 mm  d26-swap   121.89 deg    771.36 mm  d28-ctrl    49.09 deg    324.33 mm  d28-swap   142.01 deg    687.31 mm  d29-ctrl   153.04 deg    799.13 mm  d29-swap   153.04 deg    798.99 mm   fail
+   edge 08-18 :  d18-ctrl   153.07 deg    554.59 mm  d18-swap     0.95 deg      4.96 mm  d25-ctrl    48.95 deg    179.97 mm  d25-swap   148.08 deg    546.20 mm  d26-ctrl   153.10 deg    554.87 mm  d26-swap   122.36 deg    552.86 mm  d28-ctrl    49.04 deg    179.53 mm  d28-swap   141.90 deg    402.14 mm  d29-ctrl   153.08 deg    554.58 mm  d29-swap   153.11 deg    554.32 mm   fail
+   best deg/mm:  d18-ctrl  153.04 /  799.13 fail  d18-swap    0.34 /    3.32 SEAT  d25-ctrl   48.95 /  179.97 fail  d25-swap  148.08 /  546.20 fail  d26-ctrl  153.10 /  554.87 fail  d26-swap  121.89 /  771.36 fail  d28-ctrl   49.02 /  414.78 fail  d28-swap  141.90 /  402.14 fail  d29-ctrl  153.04 /  799.13 fail  d29-swap  153.04 /  798.99 fail
+
+piece 22
+   best deg/mm:  d18-ctrl absent (piece off)          d18-swap absent (piece off)          d25-ctrl absent (piece off)          d25-swap absent (piece off)          d26-ctrl absent (piece off)          d26-swap absent (piece off)          d28-ctrl absent (piece off)          d28-swap absent (piece off)          d29-ctrl absent (piece off)          d29-swap absent (piece off)        
+
+piece 25
+   edge 15-25 :  d18-ctrl   108.49 deg    440.64 mm  d18-swap   157.37 deg    764.72 mm  d25-ctrl     3.14 deg     19.48 mm  d25-swap   154.61 deg    655.30 mm  d26-ctrl   108.76 deg    441.64 mm  d26-swap     3.16 deg     19.58 mm  d28-ctrl     3.20 deg     21.18 mm  d28-swap     3.23 deg     21.94 mm  d29-ctrl   108.49 deg    440.65 mm  d29-swap   108.54 deg    441.19 mm   fail
+   edge 24-25 :  d18-ctrl   109.51 deg    379.13 mm  d18-swap   158.25 deg    333.22 mm  d25-ctrl     3.70 deg     24.37 mm  d25-swap   153.88 deg    550.17 mm  d26-ctrl   108.70 deg    375.64 mm  d26-swap     3.70 deg     24.19 mm  d28-ctrl     3.51 deg     23.24 mm  d28-swap     3.40 deg     21.85 mm  d29-ctrl   109.50 deg    379.13 mm  d29-swap   109.34 deg    376.62 mm   fail
+   edge 25-29 :  d18-ctrl   109.06 deg    522.48 mm  d18-swap   170.46 deg    644.88 mm  d25-ctrl   129.89 deg    828.79 mm  d25-swap    71.70 deg    283.59 mm  d26-ctrl   107.48 deg    519.75 mm  d26-swap    82.58 deg    480.81 mm  d28-ctrl    82.33 deg    478.57 mm  d28-swap   114.57 deg    348.18 mm  d29-ctrl   109.06 deg    522.47 mm  d29-swap   104.56 deg    561.29 mm   fail
+   best deg/mm:  d18-ctrl  108.49 /  440.64 fail  d18-swap  157.37 /  764.72 fail  d25-ctrl    3.14 /   19.48 SEAT  d25-swap   71.70 /  283.59 fail  d26-ctrl  107.48 /  519.75 fail  d26-swap    3.16 /   19.58 SEAT  d28-ctrl    3.20 /   21.18 SEAT  d28-swap    3.23 /   21.94 SEAT  d29-ctrl  108.49 /  440.65 fail  d29-swap  104.56 /  561.29 fail
+
+piece 26
+   edge 16-26 :  d18-ctrl   164.43 deg    783.99 mm  d18-swap   164.29 deg    784.40 mm  d25-ctrl   144.63 deg    554.30 mm  d25-swap   164.31 deg    783.83 mm  d26-ctrl   164.68 deg    784.33 mm  d26-swap   146.66 deg    517.08 mm  d28-ctrl   144.64 deg    554.39 mm  d28-swap   124.97 deg    814.43 mm  d29-ctrl   164.43 deg    783.99 mm  d29-swap   164.12 deg    784.41 mm   fail
+   edge 03-26 :  d18-ctrl   163.22 deg    824.58 mm  d18-swap   163.01 deg    823.24 mm  d25-ctrl   144.25 deg    651.20 mm  d25-swap   163.14 deg    825.05 mm  d26-ctrl   163.54 deg    821.32 mm  d26-swap   145.63 deg    842.34 mm  d28-ctrl   144.19 deg    652.29 mm  d28-swap   126.21 deg    682.35 mm  d29-ctrl   163.22 deg    824.58 mm  d29-swap   162.76 deg    820.81 mm   fail
+   edge 13-26 :  d18-ctrl   163.10 deg    440.59 mm  d18-swap   162.83 deg    440.30 mm  d25-ctrl   143.37 deg    956.37 mm  d25-swap   163.05 deg    441.25 mm  d26-ctrl   163.42 deg    438.49 mm  d26-swap   145.12 deg    837.29 mm  d28-ctrl   143.51 deg    956.76 mm  d28-swap   126.29 deg    193.05 mm  d29-ctrl   163.10 deg    440.59 mm  d29-swap   162.67 deg    433.68 mm   fail
+   best deg/mm:  d18-ctrl  163.10 /  440.59 fail  d18-swap  162.83 /  440.30 fail  d25-ctrl  143.37 /  956.37 fail  d25-swap  163.05 /  441.25 fail  d26-ctrl  163.42 /  438.49 fail  d26-swap  145.12 /  837.29 fail  d28-ctrl  143.51 /  956.76 fail  d28-swap  124.97 /  814.43 fail  d29-ctrl  163.10 /  440.59 fail  d29-swap  162.67 /  433.68 fail
+
+piece 28
+   edge 12-28 :  d18-ctrl   164.45 deg    660.30 mm  d18-swap   172.02 deg    861.34 mm  d25-ctrl   176.22 deg    850.37 mm  d25-swap   164.39 deg    659.72 mm  d26-ctrl   164.43 deg    659.71 mm  d26-swap   117.18 deg    593.58 mm  d28-ctrl   164.43 deg    659.59 mm  d28-swap   170.77 deg    905.61 mm  d29-ctrl   164.45 deg    660.30 mm  d29-swap   176.12 deg    851.21 mm   fail
+   edge 03-28 :  d18-ctrl   164.39 deg    860.55 mm  d18-swap   171.91 deg    627.27 mm  d25-ctrl   175.98 deg    960.78 mm  d25-swap   164.39 deg    861.16 mm  d26-ctrl   164.42 deg    861.11 mm  d26-swap   118.14 deg    816.75 mm  d28-ctrl   164.40 deg    861.39 mm  d28-swap   170.58 deg    667.77 mm  d29-ctrl   164.39 deg    860.55 mm  d29-swap   175.82 deg    960.46 mm   fail
+   edge 14-28 :  d18-ctrl   163.69 deg    597.06 mm  d18-swap   172.07 deg    865.81 mm  d25-ctrl   175.40 deg    819.68 mm  d25-swap   163.66 deg    596.28 mm  d26-ctrl   163.65 deg    596.35 mm  d26-swap   118.49 deg    446.18 mm  d28-ctrl   163.78 deg    596.45 mm  d28-swap   170.97 deg    871.16 mm  d29-ctrl   163.69 deg    597.06 mm  d29-swap   175.45 deg    820.31 mm   fail
+   best deg/mm:  d18-ctrl  163.69 /  597.06 fail  d18-swap  171.91 /  627.27 fail  d25-ctrl  175.40 /  819.68 fail  d25-swap  163.66 /  596.28 fail  d26-ctrl  163.65 /  596.35 fail  d26-swap  117.18 /  593.58 fail  d28-ctrl  163.78 /  596.45 fail  d28-swap  170.58 /  667.77 fail  d29-ctrl  163.69 /  597.06 fail  d29-swap  175.45 /  820.31 fail
+
+piece 29
+   edge 07-29 :  d18-ctrl    87.40 deg    420.98 mm  d18-swap   154.00 deg    551.59 mm  d25-ctrl   126.53 deg    688.39 mm  d25-swap    87.22 deg    427.70 mm  d26-ctrl    87.52 deg    426.23 mm  d26-swap    87.34 deg    425.20 mm  d28-ctrl    87.37 deg    425.81 mm  d28-swap   117.36 deg    243.43 mm  d29-ctrl    87.40 deg    420.98 mm  d29-swap     3.10 deg     25.28 mm   fail
+   edge 25-29 :  d18-ctrl   109.06 deg    522.48 mm  d18-swap   170.46 deg    644.88 mm  d25-ctrl   129.89 deg    828.79 mm  d25-swap    71.70 deg    283.59 mm  d26-ctrl   107.48 deg    519.75 mm  d26-swap    82.58 deg    480.81 mm  d28-ctrl    82.33 deg    478.57 mm  d28-swap   114.57 deg    348.18 mm  d29-ctrl   109.06 deg    522.47 mm  d29-swap   104.56 deg    561.29 mm   fail
+   best deg/mm:  d18-ctrl   87.40 /  420.98 fail  d18-swap  154.00 /  551.59 fail  d25-ctrl  126.53 /  688.39 fail  d25-swap   71.70 /  283.59 fail  d26-ctrl   87.52 /  426.23 fail  d26-swap   82.58 /  480.81 fail  d28-ctrl   82.33 /  478.57 fail  d28-swap  114.57 /  348.18 fail  d29-ctrl   87.40 /  420.98 fail  d29-swap    3.10 /   25.28 SEAT
+
+pieces whose seated/failed state differs between these arms: 18,25,29
+json -> results/p301-ten-runs.json
