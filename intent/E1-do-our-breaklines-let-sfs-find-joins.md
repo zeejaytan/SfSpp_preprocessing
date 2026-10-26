@@ -181,8 +181,8 @@ sherd, not at an edge, and both interior lines — ours (207 points) and the aut
 36 mm inside its nearest rim (36.1 and 36.2 mm). C 01 seats with its joins closing to 0.035-0.100 mm and
 pose error 0.44-0.63 deg / 2.6-4.4 mm, inside the assembler's own 20.05 deg / 50 mm bar and no worse than
 its neighbours'. What that means: the defect still makes any interior-line score on this piece a
-measurement of the input, but on this piece the defect never reached the seat. Two pairs are staged for
-the conservator's eye (`pota300_potC_arms`, `pota300_potC_c01`) and have not been opened yet.
+measurement of the input, but on this piece the defect never reached the seat. Staged as two pairs (`pota300_potC_arms`, `pota300_potC_c01`); the conservator opened them on 2026-10-26 and
+confirmed by eye that our Pot C reassembly seated properly, so the seat is witnessed and not only measured.
 
 This ticks **no Done-when box**: it explains published numbers and one input caveat, and changes nothing
 about the Juglet acceptance test those boxes are written for.
