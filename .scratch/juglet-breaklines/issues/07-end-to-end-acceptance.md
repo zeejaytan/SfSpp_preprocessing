@@ -413,9 +413,13 @@ appendix-A merge use per-cluster PCA axes (`pcaAxis234` :1805, `medianInternal23
   shipped 4.5 deg, then 3.5, then 3.0 (`SFS_SMOOTHNESS_DEG`) — give identical cluster counts
   every time. All 19 attempt rows with the setting tried and the counts obtained are in
   `out/juglet_attempts.tsv`; each attempt's log is `out/logs/<piece>.attempt-<tag>.log`.
-- Even where it produces, the split is fragmentary: the two exported walls hold 3489 + 626 points
-  out of 24294 input (14546 after the 0.6 fixed-radius downsample), 242 + 51 of 3651, 365 + 213 of
-  5126, 403 + 263 of 8421. The cloud is mesh vertices, roughly 2-3 mm spacing before the downsample.
+- Even where it produces, the split is fragmentary, and two different counts must not be confused.
+  The two CLUSTERS the vote saw hold 3489 + 626 points of 24294 input on piece 1 (14546 after the 0.6
+  fixed-radius downsample), 242 + 51 of 3651 on piece 4, 365 + 213 of 5126 on piece 6, 403 + 263 of
+  8421 on piece 7. The files WRITTEN OUT are larger, because the boundary is re-fitted
+  (`:2264-2271`): piece 1 Surface_0 3580 lines / Surface_1 12092, piece 4 182 / 732, piece 6
+  608 / 1016, piece 7 829 / 1012. The cloud itself is mesh vertices, roughly 2-3 mm apart before the
+  downsample.
 - **This is not the prior run's pattern and not the prior run's cause.** 2026-09-30 logged 7
   surfaces with 3 and 9 absent, under MATLAB-era axes and before tickets 271 and 287 (the current log
   shows the chain that now runs: `[SPLITTER-234] rule=PCL-REGION-GROWING ... paper=PAPER-CHAIN
@@ -449,6 +453,30 @@ Two facts worth stating so the chain is not over-read:
   its exported Surface_1 is a 12092-point filled patch that overlaps Surface_0 in space, so both
   distances are small. The code path above, not the ride number, is what establishes the claim.
 
+### Recorded for stage 2 — the interior vote is blind on most Juglet pieces
+
+`classifyAndOrderPaper234` decides by counting points whose normal faces the axis ray
+(`:2021-2037`). What its two fractions actually were in this batch:
+
+| piece | face0 interior_frac | face1 interior_frac | satA | satB | outcome |
+|---|---|---|---|---|---|
+| Juglet 1 | 0.0000 | 0.0000 | 626 | 3489 | swapped |
+| Juglet 4 | 0.0826 | 0.9412 | 23 | 270 | swapped |
+| Juglet 6 | 0.0000 | 0.0000 | 213 | 365 | swapped |
+| Juglet 7 | 0.0000 | 0.3878 | 161 | 505 | swapped |
+| Pot_A 01 | 0.9685 | 0.0000 | 59292 | 1034 | kept |
+| Pot_A 02-08 | 0.0000 | 1.0000 | 0 | 31826-43171 | swapped |
+
+On **pieces 1 and 6 both fractions are 0.0000**, so `satA` and `satB` collapse to the two
+cluster sizes (`:2036-2037` reduces to `n1` and `n0`) and the face labelled interior is
+simply the **larger** one. Only piece 4 has a decisive vote (0.0826 / 0.9412); piece 7 is close to
+blind. On Pot A all eight are decisive. So on the Juglet — where each cluster holds only 51-3489
+points — the classifier that ticket 04 introduced **cannot see an interior**, and the interior
+status of `Surface_0` on pieces 1, 6 and 7 rests on cluster size, not on the axis test. It follows
+that `Breakline_0` there is the boundary of the larger face, which is a weaker claim than "the
+interior face"; stage 2 must describe it that way. The lines are correspondingly thin: 15-67 dots per
+Juglet `Breakline_0` against 71-219 on Pot A.
+
 ### Criterion 3 — md5 of every output, and no copies between pieces
 
 `out/files.md5` lists md5, path and byte size for all **48** files in the bundle. All 48 md5s are
@@ -480,9 +508,26 @@ Eight pieces through exactly the p296 chain (frozen-corpus axis, shipped default
 satA 59292, satB 1034), pieces 02-08 **swapped** (face0 frac 0.0000, face1 frac 1.0000), theta 3.4
 on all eight — the same kept/swapped pattern as p296.
 
-The bar is the assembler's own join test on `Breakline_0` at the reference poses
-(`gate_probe_b0.py`, `_0`-only, gates 2.0 mm / 0.85 and 20 deg / 0.7, `simple_graph` 15 mates).
-Measured on the rebuilt files: **15/15 strict passes**, per-pair inliers 1-2 32, 1-3 47, 1-4 34,
+**This number is not a step inside the job, and it is not claimed as one.** `submit.sbatch` runs no
+gate probe; the job's Pot A product is the geometry in `out/geom`, and the pass count was measured
+after the job, on the laptop, from that bundle:
+
+    out/stage1_out.tgz (md5 0d823524f974d2ac8fe6b0f3428ed007, 11,654,126 B)
+      -> C:/PR/structure-from-sherds-pp/artifacts/p07_stage1/
+    each Pot_A_Piece_0N.Bl0.pcd copied to pota_bl/Pot_A_Piece_0N_Breakline_0.pcd (rename by copy,
+      because the probe's bundle spec names the file `_Breakline_0`)
+    cd C:/PR/structure-from-sherds-pp/artifacts/p07_stage1 && python gate_probe_b0_p07.py p07
+
+The probe is the assembler's own join test at the reference poses: `_0`-only, gates 2.0 mm / 0.85
+and 20 deg / 0.7, `simple_graph` 15 mates. `gate_probe_b0_p07.py` (md5
+26f5d8e204e7e47d8d59292ac937e3a9) is `artifacts/juglet_run1/gate_probe_b0.py` (md5
+c96b108f13a9a72248ecfe213f0b6ccf) with exactly one added `BUNDLES` entry naming the files above;
+the gate logic is untouched. The probe script, its raw output, the ride/md5 check and a README with
+these commands are now also in the run directory at `out/gate_probe/`, where
+`gate_probe_p07.out` records `p07 mates: 15 (_0-only)` and `STRICT pass rate at GT
+(_0-only): 15/15`.
+
+The measured result on the rebuilt files: **15/15 strict passes**, per-pair inliers 1-2 32, 1-3 47, 1-4 34,
 1-5 30, 1-6 16, 1-7 27, 2-4 6, 2-5 21, 2-8 18, 3-5 30, 3-6 11, 4-6 14, 4-7 13, 4-8 17, 6-7 22;
 minimum inlier distance 0.28-1.06 mm. The weakest pair (2-4, 6 inliers) clears the gate, but note
 ticket 14's caveat that 1-2 passes thin and 2-8 rides on piece 8's wall rim — the pair-level
