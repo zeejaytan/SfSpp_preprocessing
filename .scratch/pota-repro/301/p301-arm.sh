@@ -114,6 +114,19 @@ md5sum "$ASM/hpc/tools/main_pristine_batch.cpp" "$SIF" > "$RUN/out/assembler_inp
 { for f in "$HERE"/p301-arm.sh "$HERE"/p301_inside.sh "$HERE"/p301_mkswap.py "$HERE"/p301-constants.json "$HERE"/pieces.txt; do
     [ -f "$f" ] && md5sum "$f"; done; } > "$RUN/out/harness_md5.txt"
 echo "[RUN] harness md5s:"; cat "$RUN/out/harness_md5.txt"
+# The container sees this run directory at /p301run, so the harness that runs INSIDE it has to be a
+# real file under $RUN/scripts: the job's temporary checkout is not bind-mounted. Copy, then record
+# the copies -- the first submission of these jobs died here ("No such file or directory" from the
+# container) because the harness was measured but never staged.
+for f in p301-arm.sh p301_inside.sh p301_mkswap.py p301-constants.json pieces.txt; do
+  [ -f "$HERE/$f" ] || continue
+  [ "$HERE/$f" -ef "$RUN/scripts/$f" ] && continue
+  cp -f "$HERE/$f" "$RUN/scripts/$f" || { echo "[RUN] FATAL cannot stage $f into $RUN/scripts"; exit 16; }
+done
+cp -f "$ASM/hpc/tools/main_pristine_batch.cpp" "$RUN/scripts/main_pristine_batch.cpp" 2>/dev/null || true
+md5sum "$RUN/scripts"/p301* "$RUN/scripts/pieces.txt" >> "$RUN/out/harness_md5.txt"
+[ -f "$RUN/scripts/p301_inside.sh" ] || { echo "[RUN] FATAL $RUN/scripts/p301_inside.sh is missing"; exit 16; }
+echo "[RUN] staged into $RUN/scripts: $(ls "$RUN/scripts" | tr '\n' ' ')"
 
 "$APT" exec --bind /data:/data --bind "$RUN:/p301run" --bind "$ASM:/workspace:ro" --bind "$DS:/Dataset/SfS_pp" "$SIF" \
     env POT="$POT" SHARD="$SHARD" ARM="$ARM" TARGET="$TARGET" bash /p301run/scripts/p301_inside.sh 2>&1 | tee "$RUN/logs/container.log"
