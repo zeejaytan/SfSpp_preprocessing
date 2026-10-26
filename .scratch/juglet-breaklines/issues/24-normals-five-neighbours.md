@@ -333,7 +333,9 @@ here. The sixth, **33842352**, is a redraw with no new measurement.
   `Dataset/Mesh/Juglet/Juglet_Piece_4_Mesh.obj` diagonal **32.0374 mm**, both 3 651 vertices. The pipeline
   reads the **mm** mesh; the inches figure applies to the raw source only.
 
-### What this does not settle
+#Geometry record: the four piece-7 surface PLYs fetched to run the check above (p7_A_S0.ply 78 842 B, p7_A_S1.ply 64 340 B, p7_D_S0.ply 28 515 B, p7_D_S1.ply 186 704 B) were deleted under the geometry rule once the numbers were written here; they re-derive from run 20261027-0601_062a1c6_p24-p7-figure.
+
+## What this does not settle
 
 - **Two genuine pairs out of nine pieces is a lead.** One sherd each, one arm each, no second draw, and the
   comparison (paper chain off: 2 of 9; paper chain on: 0 of 9) is too small to be a rate.
