@@ -342,28 +342,57 @@ def classify(pts, nrm, clusters, axis_pt, axis_dir):
 
 
 # ------------------------------------------------------------------ mesh work
+def ray_hits(V, F, orig, dirs):
+    """Every ray-triangle hit distance along each ray (Moller-Trumbore).
+
+    trimesh's RayMeshIntersector needs the rtree package, which this interpreter
+    does not have, so the intersection is done here directly: one vectorised pass
+    over the triangles per ray. Lists are returned per ray, in mm, positive t only.
+    """
+    v0 = V[F[:, 0]]
+    e1 = V[F[:, 1]] - v0
+    e2 = V[F[:, 2]] - v0
+    hits = []
+    for r in range(len(orig)):
+        o, d = orig[r], dirs[r]
+        h = np.cross(d, e2)
+        a = np.einsum("ij,ij->i", e1, h)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            f = 1.0 / a
+            s = o - v0
+            u = f * np.einsum("ij,ij->i", s, h)
+            q = np.cross(s, e1)
+            v = f * np.einsum("j,ij->i", d, q)
+            t = f * np.einsum("ij,ij->i", e2, q)
+        ok = (np.abs(a) > 1e-12) & (u >= -1e-9) & (v >= -1e-9) & (u + v <= 1 + 1e-9) & (t > 0)
+        hits.append(t[ok])
+    return hits
+
+
 def mesh_measure(mesh_path, pts, nrm, nmax=800):
     import trimesh
-    from trimesh.ray.ray_triangle import RayMeshIntersector
     m = trimesh.load(mesh_path, process=False)
-    out = dict(mesh=mesh_path, vertices=int(len(m.vertices)),
-               faces=int(len(m.faces)), area_mm2=float(m.area),
+    V = np.asarray(m.vertices, dtype=float)
+    F = np.asarray(m.faces, dtype=np.int64)
+    out = dict(mesh=mesh_path, vertices=int(len(V)), faces=int(len(F)),
+               area_mm2=float(m.area),
                watertight=bool(getattr(m, "is_watertight", False)),
-               bounds_mm=[float(x) for x in (m.bounds[1] - m.bounds[0])])
+               bounds_mm=[float(x) for x in (np.ptp(V, axis=0))])
     step = max(1, len(pts) // nmax)
     p = pts[::step]
     nn = nrm[::step]
     ln = np.linalg.norm(nn, axis=1)
     ok = ln > 1e-9
     p, nn = p[ok], nn[ok] / ln[ok][:, None]
-    inter = RayMeshIntersector(m)
     origins = p + nn * 1e-3
-    loc, ray_id, _tri = inter.intersects_location(origins, -nn, multiple_hits=False)
+    hits = ray_hits(V, F, origins, -nn)
     thick = np.full(len(p), np.nan)
-    if len(loc):
-        dist = np.linalg.norm(loc - origins[ray_id], axis=1)
-        keep = dist > 0.15
-        thick[ray_id[keep]] = dist[keep]
+    counts = np.zeros(len(p), dtype=int)
+    for r, t in enumerate(hits):
+        counts[r] = int(t.size)
+        t = t[t > 0.15]
+        if t.size:
+            thick[r] = float(t.min())
     good = thick[~np.isnan(thick)]
     out["rays"] = int(len(p))
     out["ray_hits"] = int(len(good))
@@ -372,12 +401,10 @@ def mesh_measure(mesh_path, pts, nrm, nmax=800):
         out["thick_p10_mm"] = float(np.percentile(good, 10))
         out["thick_p90_mm"] = float(np.percentile(good, 90))
         out["thick_frac_1to3mm"] = float(((good >= 1.0) & (good <= 3.0)).mean())
-    loc2, ray2, _t2 = inter.intersects_location(origins, -nn, multiple_hits=True)
-    counts = np.bincount(ray2, minlength=len(p)) if len(ray2) else np.zeros(len(p), int)
     out["hits_per_ray_med"] = float(np.median(counts)) if len(counts) else 0.0
     out["hits_per_ray_max"] = int(counts.max()) if len(counts) else 0
+    out["rays_with_2plus_sheets"] = int((counts >= 2).sum())
     return out
-
 
 def normal_density_test(pts, nmax=1500):
     """How far a 5-NN PCA normal sits from a 20-NN PCA normal on this cloud."""
@@ -554,16 +581,19 @@ def main():
         if [len(c) for c in res["signed"]] == [len(c) for c in res["abs"]]:
             chosen = "signed"
         clusters = res[chosen]
+        # A piece that yields no cluster at this operating point has no cluster 0;
+        # that is a result, not a crash (piece 2 at theta 3.4 prints 0 and retries 21 times).
         replay_ok[piece] = dict(n=n, dynmin=dynmin, nb_density=nb_density,
                                 sizes_signed=[len(c) for c in res["signed"]],
                                 sizes_abs=[len(c) for c in res["abs"]],
                                 convention=chosen, props=props,
-                                cluster0=clusters[0], cluster1=clusters[1] if len(clusters) > 1 else None,
+                                cluster0=clusters[0] if len(clusters) > 0 else None,
+                                cluster1=clusters[1] if len(clusters) > 1 else None,
                                 premerge_sizes=[len(c) for c in clusters])
         log("[B]", piece, "N=%d dynmin=%d pre-merge sizes signed=%s abs=%s"
             % (n, dynmin, replay_ok[piece]["sizes_signed"], replay_ok[piece]["sizes_abs"]))
         trace = []
-        post, npass = merge(pts, nrm, curv, clusters, cfg, trace)
+        post, npass = merge(pts, nrm, curv, clusters, cfg, trace) if clusters else ([], 0)
         for d in trace:
             rows_merge.append(dict(piece=piece, **d))
         axis_file = find_axis(args.axes, args.corpus, piece)
@@ -682,7 +712,10 @@ def main():
         f, _ = ply_of[piece]
         pts, nrm, curv, _p = load_ply(f)
         d = replay_ok[piece]
-        clusters = [d["cluster0"]] + ([d["cluster1"]] if d["cluster1"] else [])
+        clusters = ([d["cluster0"]] if d["cluster0"] else []) + ([d["cluster1"]] if d["cluster1"] else [])
+        if not clusters:
+            log("[E] no cluster to render for", piece)
+            continue
         axis_file = find_axis(args.axes, args.corpus, piece)
         if axis_file is None:
             log("[E] no axis for", piece)
@@ -698,6 +731,53 @@ def main():
                     % (piece, [len(c) for c in clusters], os.path.basename(f), os.path.basename(axis_file), os.path.basename(png)))
     with open(os.path.join(args.out, "E_captions.txt"), "w") as fh:
         fh.write("\n".join(caps) + "\n")
+
+    # ---- H. what the theta-loosened clusters are made of (lead's question, 2026-10-27)
+    rows_theta = []
+    for piece, th in (("Juglet_Piece_2", 8.0), ("Juglet_Piece_9", 8.0), ("Juglet_Piece_5", 8.0)):
+        if piece not in ply_of:
+            continue
+        pts, nrm, curv, _pr = load_ply(ply_of[piece][0])
+        n = len(pts)
+        dynmin = max(50, max(30, n // 500))
+        cl = [c for c in grow(pts, nrm, curv, cfg["nb"], th, cfg["kappa"], dynmin, "signed")]
+        log("[H]", piece, "theta=%.1f N=%d clusters=%s" % (th, n, [len(c) for c in cl]))
+        for ci, c in enumerate(cl):
+            rows_theta.append(dict(piece=piece, theta=th, N=n, cluster=ci, n=len(c),
+                                   frac_of_cloud=len(c) / float(n),
+                                   mean_curv=float(curv[np.asarray(c)].mean()),
+                                   mean_abs_dot_axis=float(np.mean([abs(np.dot(
+                                       nrm[i] / (np.linalg.norm(nrm[i]) + 1e-12),
+                                       np.asarray(read_axis(find_axis(args.axes, args.corpus, piece))[1]) /
+                                       (np.linalg.norm(read_axis(find_axis(args.axes, args.corpus, piece))[1]) + 1e-12)))
+                                       for i in np.asarray(c)[:400]]))))
+        if len(cl) > 1:
+            from scipy.spatial import cKDTree
+            A = np.asarray(cl[0])
+            for j in range(1, min(len(cl), 3)):
+                B = np.asarray(cl[j])
+                na = mean_normal(A, nrm)
+                nb = mean_normal(B, nrm)
+                dist, _ = cKDTree(pts[A]).query(pts[B], k=1)
+                off = (pts[B] - pts[A].mean(axis=0)) @ na
+                rows_theta.append(dict(piece=piece, theta=th, N=len(pts), cluster="%d-%d" % (0, j),
+                                       n=len(B), frac_of_cloud=len(B) / float(len(pts)),
+                                       dot_mean_normals=float(np.dot(na, nb)),
+                                       nn_dist_min_mm=float(dist.min()),
+                                       nn_dist_med_mm=float(np.median(dist)),
+                                       offset_along_n0_med_mm=float(np.median(off)),
+                                       centroid_dist_mm=float(np.linalg.norm(pts[A].mean(axis=0) - pts[B].mean(axis=0)))))
+        ax_f = find_axis(args.axes, args.corpus, piece)
+        if ax_f and cl:
+            ap_, ad_ = read_axis(ax_f)
+            try:
+                render(piece + " theta=%.1f" % th, pts, cl[:2], ap_, ad_,
+                       os.path.join(args.renders, piece + "_theta8.png"), caps)
+                caps.append("%s at theta=%.1f: clusters %s of N=%d, PNG %s"
+                            % (piece, th, [len(c) for c in cl], n, piece + "_theta8.png"))
+            except Exception as exc:
+                log("[H] render failed for", piece, repr(exc))
+    dump("H_theta_recovered.tsv", rows_theta)
 
     # ---- F. the sweep table as a markdown block
     with open(os.path.join(args.out, "F_sweep_table.md"), "w") as fh:
