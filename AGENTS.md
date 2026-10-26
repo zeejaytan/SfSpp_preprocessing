@@ -100,6 +100,13 @@ Consequences before quoting a score:
 - The frozen clouds live in `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/`:
   143 released (binary, ~1,000,000 points each) plus 5 derived from the mesh (ASCII, ~841,000), with
   `MANIFEST_released.tsv` and `MANIFEST_derived.tsv` beside them.
+- **Two of the ten pots ship full-resolution meshes and eight ship decimated ones** (measured
+  2026-10-27, run `20261027-0157_f43cda2_mesh-density`): Pots A and B are
+  `Pot_X_Piece_NN_Mesh.obj`, pots C–J are `Pot_X_Piece_NN_Mesh_DS.obj` — median point spacing
+  0.286 mm for A and B against 0.392–0.591 mm for C–J, and 24,000–33,822 vertices against
+  4,361–13,299. **A mesh-side measurement is not comparable across those two groups** (spacing,
+  edgeline walking, wall thickness); a cloud-side measurement is, because every released cloud
+  is ~1,000,000 points at 0.02–0.08 mm spacing regardless of pot.
 
 **A derived cloud is not a second-class one — measured, not assumed** (Pot C 01, the one piece that has
 both): nearest-neighbour distance to the released cloud median **0.091 mm** ours→release and **0.110 mm**
