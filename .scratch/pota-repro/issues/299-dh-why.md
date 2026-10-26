@@ -1,8 +1,8 @@
 # Ticket 299 - why the authors' own bundle misses the paper on Pot D and Pot H
 
-Status: ready-for-agent
-Working in: unassigned
-Branch: unassigned
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-26)
+Branch: 299-dh-why, in /c/PR/worktrees/sfs/299
 Answers: E1
 Created: 2026-10-26 by the coordinating session, on the conservator's instruction
 ("can you check what caused author's D and H didn't get their result on paper?")
