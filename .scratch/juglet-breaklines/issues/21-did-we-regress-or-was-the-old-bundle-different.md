@@ -10,9 +10,10 @@ is described.
 
 **Blocked by:** none
 
-**Status:** in-progress — evidence recorded (job 33836038, 2026-10-27), reading and verdict left to the lead
-**Working in:** chat on Thinkbook16 (2026-10-27)
-**Branch:** 21-did-we-regress-or-was-the-old-bundle-different, in /c/PR/worktrees/sfs/21
+**Status:** done — the September code writes surfaces for all nine pieces from clouds that
+regenerate byte-identically; today's code writes four. The difference is the density step
+added on 2026-10-22 (`93c33bc`, ticket 245). Lead reading, verified first-hand 2026-10-27.
+**Branch:** 21-did-we-regress-or-was-the-old-bundle-different
 
 ## What is already established
 
@@ -279,4 +280,57 @@ one piece, never as a change in which pieces produced surfaces.
   `d8af9d2` binary with `SFS_DOWNSAMPLE_TARGET=19000` (the pre-restore adaptive band,
   :2534-2535) and with `SFS_DOWNSAMPLE_TARGET=-1` (skip), on pieces 2, 3, 5, 8, 9, which separates
   the density restore from the ticket-234 paper chain.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**Reading: regression, and the code change is located.** The older code produces surfaces for
+**9 of 9** Juglet pieces from clouds that regenerate byte-identically; today's code produces
+**4 of 9** (1, 4, 6, 7). Nothing about the inputs differs, so this is the method call, not the
+measurement call — the one case of the three that the workspace glossary warns about. The
+difference sits in the density step: the September file had
+`downsamplePointCloud(inputPcdFile, float samplingRadius = 0.6F)` and passed every cloud
+under 8000 points through untouched; today's takes a third argument and, with its default of
+0, thins every cloud to 0.38–0.60× of its points before normals are estimated.
+
+**The recorded "7 of 9" reading is not this commit's output.** At `28e470b` pieces 3 and 9
+each yield two clusters and both surfaces are written, so the 2026-09-30 note ("pieces 3 and
+9 produce no surfaces ... 30 loosened retries") cannot be cited as what `28e470b` does. Which
+build or retry grid produced it is **not determined** — no run directory, no `run.json`, no
+index row survives for it. This does not change the reading above; it does mean the old
+number is a prior with a date, not a result, and must be quoted that way.
+
+**What this does not decide, and ticket 20 now tests:** whether the density restore alone
+explains all five silent pieces, or whether the paper merge still fuses 3 and 8 once density
+is restored. The arm that separates them — `SFS_DOWNSAMPLE_TARGET=19000` for the pre-restore
+adaptive band and `-1` to skip downsampling entire — was sent to ticket 20's worker on
+2026-10-27 and is one job.
+
+### Verified lines (each one a command I ran myself, 2026-10-27)
+
+- verified: `sacct -j 33836038` → `COMPLETED 0:0 00:03:54`; it is the only job of the run.
+- verified: `cut -f1-8 out/table_old_vs_today.tsv` → old arm reaches clustering at 2565 / 3493 /
+  6211 / 5126 / 4479 / 2094 points for pieces 2, 3, 5, 6, 8, 9 (i.e. untouched), piece 1 at
+  11291 and piece 7 at 8407 (both inside the 8000–12000 band); new arm at 1031 / 1467 / 3021 /
+  2351 / 1988 / 787.
+- verified: `grep -c "Source file not found" out/logs/new_pass1_*.log` → **10** (both files
+  missing on 2, 3, 5, 8, 9); `out/logs/old_pass1_*.log` → **0**.
+- verified: `ls stage/` → `old_pass1 old_pass2 new_pass1`, nine piece entries each, 91 M.
+- verified: `md5sum Dataset/Point/Juglet/*_Point.pcd` → `b1df295b…` piece 1 … `1542b45d…` piece 9,
+  identical to `out/pcd_identity.md5`'s regenerated column; every `mtime` `2026-09-25T14:35:50`.
+- verified: `git show 28e470b:original_nurbs_preprocessing/mesh_processing_headless.cpp` → line 569
+  signature with no target argument; lines 600–620 `targetSamples = 10000`, band 8000–12000.
+- verified: `git show main:mesh_processing_headless.cpp` → lines 2547–2549 `int dsTarget244 = 0;
+  if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) …` then the call passes it; lines
+  603–609 `// POTA-244 RESTORE (targetSamples == 0): fixed-radius path`.
+- verified: `git log -1 93c33bc` → `2026-10-22 Ticket 245: merge density restore to main (user
+  call: keep restore)`, touching `mesh_processing_headless.cpp` +28/−8.
+- verified: `diff out/inputs_before.md5 out/inputs_after.md5` → empty, 18 rows,
+  `out/inputs_verdict.txt` = `UNCHANGED` (frozen corpus untouched).
+- verified: `git diff --stat main..origin/21-…` → 1 file, +195/−1, the ticket only.
+- verified: `awk -F'	' 'NF!=6' index.tsv | wc -l` → 0 over 237 rows; row 132 is this run with
+  verdict and human_note empty.
+
+Minor correction to the worker's section above: its line numbers for today's file are two low
+(:2534–2535 and :2533 where the file reads :2547–2549 and the restore path at :603–609 of the
+signature region). The quoted code is right; the line numbers are off by two.
 
