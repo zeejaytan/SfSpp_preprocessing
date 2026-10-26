@@ -102,7 +102,7 @@ def main():
     with open(out, "w") as fh:
         fh.write("\t".join(cols) + "\n")
         for r in rows:
-            base = os.path.join(root, "cells", r["tag"], r["pot"], r["piece"], "surfaces")
+            base = os.path.join(root, r["tag"], r["pot"], r["piece"], "surfaces")
             f0 = os.path.join(base, r["piece"] + "_Surface_0.ply")
             f1 = os.path.join(base, r["piece"] + "_Surface_1.ply")
             if r.get("surf0") != "yes" or r.get("surf1") != "yes" or not (

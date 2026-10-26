@@ -146,4 +146,4 @@ say "geometry deleted: $(awk -F'\t' 'NR>1{c+=$3; b+=$4} END{printf "%d files, %d
 say "run dir bytes: $(du -sb "$RUN" | awk '{print $1}')"
 rm -rf build
 printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "${SLURM_JOB_ID:-local}" "$NEW" "$POT-armgrid22" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
-say "done: out/cells/cells.tsv $(($(wc -l < out/cells/cells.tsv) - 1)) rows, out/measure.tsv $(($(wc -l < out/measure.tsv) - 1)) rows"
+say "done: out/cells/cells.tsv $(($(wc -l < out/cells/cells.tsv) - 1)) rows, out/cells/measure.tsv $(($(wc -l < out/cells/measure.tsv) - 1)) rows"
