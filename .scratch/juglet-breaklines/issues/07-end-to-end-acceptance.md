@@ -568,3 +568,12 @@ current chain even with the tolerance loosened.
 
 **Not done in this ticket, by design:** no assembly, no scoring against the reference poses, no
 visual-qa staging. That is stage 2.
+
+## Paused 2026-10-27 — stage 2 not started
+
+The conservator paused the end-to-end run on 2026-10-27 — "we need to find out what went wrong
+first, pause the e2e run. diagnose the issues" — so the segmentation failure recorded above can be
+diagnosed before anything is assembled. Stage 1 is delivered and measured as written in the section
+above; **stage 2 has not been started**: no assembly was run, nothing was scored against the
+reference poses, and nothing was staged in `visual-qa/`. The assembler half of this ticket is
+untouched. The diagnosis is being opened as separate tickets by the coordinating session, not here.
