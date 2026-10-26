@@ -10,7 +10,7 @@ whether this is the method, the measurement, or the material.
 
 **Blocked by:** none
 
-**Status:** ready-for-human
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 20-why-five-sherds-produce-no-surface, in /c/PR/worktrees/sfs/20
 
@@ -251,3 +251,90 @@ Pot A 07's mesh, cloud and axis from the frozen corpus; `corpus_md5_before.tsv` 
 rows for all five run directories with `verdict` and `human_note` empty. **One ledger wart:**
 the aborted job 33836033 appended 50 per-variant rows before it died; the index is append-only,
 so they stay and are declared void in `20261027-0131_bc58c3d_p20-sweep/out/VOID_VARIANT_ROWS.txt`.
+
+---
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**The finding, in one sentence.** The two walls of a Juglet sherd are physically there — every
+piece is watertight, 2.09–2.90 mm thick, with at least two surface sheets on 78–99 % of ray
+samples — but the region growing never returns inside-versus-outside. What it splits, when it
+splits at all, is two patches of the *same* wall along the arc; and then the code's demand for
+exactly two clusters throws the piece away. Five of nine sherds end below two clusters and are
+dropped silently.
+
+### Where each hypothesis stands
+
+- **H2 — the merge is too eager — refuted as the cause where it fires.** The dot product of the
+  two clusters' mean normals is **+0.742** on piece 3 and **+0.717** on piece 8, against
+  **−0.9989** on Pot A 07. Opposite walls face opposite ways, so a negative dot is the signature
+  of a real inner/outer split, and only Pot A shows it. The piece 3 render puts the two clusters
+  on one radial band, side by side along z, with heavily overlapping *s* histograms (medians
+  2.49 / 3.30 mm, separation 0.81 mm); Pot A 07's are two parallel bands 3.13 mm apart and
+  disjoint in *s*. So what the merge fuses on the Juglet is one wall split into two patches, and
+  fusing them is correct behaviour. The merge is still the proximate cause of piece 3 and piece 8
+  reading *absent* — but the defect it exposes is not the merge rule, it is that a piece which
+  ends with **one** cluster is written as no surface at all instead of one.
+- **H3 — there is no honest one-wall branch — supported, and this is the actionable defect.**
+  `:2276-2277` writes `tmpSurfaceCluster_Improved_0/1.ply` only inside the two-cluster path,
+  `:2382` announces "Proceeding with available clusters" and `:2578-2597` then reads two temp
+  files that were never written and prints "Warning: Source file not found" twice, and the piece
+  exits 0. Ten such warnings across five pieces in the stage-1 run, none of which fails.
+- **H4 — the interior test cannot get evidence — supported.** `:2022-2027` computes
+  `satA = inFrac[0]*n0 + (1-inFrac[1])*n1` and `satB = (1-inFrac[0])*n0 + inFrac[1]*n1` and swaps
+  iff `satB > satA`, with no threshold and no third branch. The pipeline's own classify lines
+  show both interior fractions at **0.0000** on pieces 1 and 4, so the decision there is nothing
+  but the point-count argmax (piece 1: satA 626 / satB 3489 = 3489 vs 626); piece 7 decides by
+  **8 points** out of 668; only piece 6 has any evidence at all (0.0822 / 0.2207). The interior
+  face the assembler's breakline is the boundary of is therefore picked by size, on a surface
+  that is a patch of one wall rather than a wall.
+- **H1 — the normals — suspect, and the one cheap test is untried.** The rule at `:420`
+  (`nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000))`) applies equally to Pot A,
+  which splits its walls correctly, so neighbour count alone is not the difference. But the
+  measured 5-NN versus 20-NN normal scatter is **11.1° / 11.0° / 8.4°** median on pieces 2 / 3 / 4
+  (p90 25–31°, up to 14.7 % of piece 9's normals beyond 30°) against **0.88°** on Pot A 07 — the
+  normals on the small pieces are demonstrably weak — and `SFS_PAPER_NB` provably does **not**
+  reach normal estimation (`:2563` sets `paperNB`, which prints as `nb=` in the growth rule and
+  never appears in `getNormalsOnSurface`: one segmentation-input md5 per piece across 13 variants).
+  So "we loosened it and nothing changed" was never tested on this axis.
+
+### What this changes
+
+The next move is not to loosen the merge and not to lower theta. It is either **to give the
+normals more neighbours so the rim stops leaking between the two walls**, or **to write a
+one-wall surface instead of discarding the piece** — and the first is the one that could restore
+a true inner/outer pair, which is what the assembler's breakline actually needs.
+
+`SFS_PAPER_THETA=8` does produce clusters on pieces 2 and 9, but they are fragments: 6.9–16.1 % of
+the cloud, 69–127 points, mean |dot with the axis| 0.12–0.49 — neither clearly a wall (≈0) nor
+clearly a base (≈1). It stays a lead, not a fix, until the recovered clusters are shown to be
+honest single walls.
+
+### Verified by me, this session (not read off the report)
+
+- `git diff main..HEAD -- . ':!.scratch'` → 7 lines removed, all of them the corpus caveat added
+  to `AGENTS.md` on main *after* the branch was cut (main was ahead, not the worker editing).
+- `diff out/corpus_md5_before.tsv out/corpus_md5_after.tsv` → **identical**, both md5
+  `22f85ccf7435dc029b50c855ae884742`, 21 lines (9 Juglet meshes + 9 clouds + Pot A 07's three).
+- `grep -h "merge |pass 1 done|classify:" .../20261027-0055_.../out/logs/Juglet_Piece_*.log` → the
+  pipeline's own six merge lines (`merge 99 into 169`, `merge 196 into 224`, `merge 77 into 326`,
+  `merge 64 into 164`, `merge 133 into 151`, `merge 102 into 274`) and four classify lines.
+- Source, at the cited behaviour (line numbers corrected): `:420` nb rule · `:2160` and `:2186`
+  the `clusters.size() > 1` gates · `:2276-2277` the two saves · `:2382` "Proceeding with
+  available clusters" · `:2578-2597` the two "Source file not found" warnings · `:2022-2027` the
+  satA/satB argmax · `:2563` `SFS_PAPER_NB` → `paperNB`.
+- `out/B_two_clusters.tsv` and `out/C_mesh.tsv` read in full; `out/H_theta_recovered.tsv` read in
+  full; the two renders opened and looked at (0.0414 mm/px on piece 3, 0.0622 mm/px on Pot A 07,
+  1 mm bar visible in both panels).
+- Renders on disk with the sizes claimed: `Juglet_Piece_3.png` 118,021 B, `Pot_A_Piece_07.png`
+  217,871 B, plus three `_theta8` panels.
+
+### What it does not settle
+
+Only four pieces (3, 4, 7, 8) plus Pot A 07 had their two clusters measured — pieces 1 and 6 were
+not in the arm's replay, so "every Juglet split is a patch split" is a statement about four
+pieces, not nine. The merge evidence is arithmetic on the pipeline's own cluster PLYs, but the
+*replay* that produced it does not reproduce the pipeline on piece 4 (244/51 against 242/51, and
+the merge fires in the replay where the pipeline printed two clusters) or on Pot A 07 (134 against
+144), so the replay is an instrument with a known drift, not a substitute for the pipeline's own
+log — which is why the merge lines above are quoted from the pipeline.
