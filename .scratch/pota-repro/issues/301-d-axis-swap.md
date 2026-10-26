@@ -1,6 +1,8 @@
 # Ticket 301 - swap one Pot D piece's axis for the direction its reference pose implies, and see which artefact is the defect
 
-Status: ready-for-agent
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-26)
+Branch: 301-d-axis-swap, in /c/PR/worktrees/sfs/301
 Answers: E1
 Created: 2026-10-26 by the coordinating session, on the conservator's instruction
 ("Write the D axis-swap ticket and run it (5 short single-pot jobs)")
