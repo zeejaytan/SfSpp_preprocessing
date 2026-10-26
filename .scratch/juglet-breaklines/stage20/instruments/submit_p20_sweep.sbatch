@@ -111,8 +111,14 @@ done
 # ---- the sweep ----
 printf "tag\tpot\tpiece\tenv\tmesh_exit\tclusters\tsizes\tsurface_0\tsurface_1\tnotfound_lines\telapsed_s\tsegmentation_ply_md5\n" > "$RUN"/out/variants.tsv
 : > "$RUN"/out/variants.log
-while IFS=$'\t' read -r TAG POT P ENVS AKIND; do
-  [ -z "$TAG" ] && continue
+NV=0
+while IFS= read -r LINE; do
+  case "$LINE" in ''|'#'*) continue ;; esac
+  TAG=$(printf '%s' "$LINE" | cut -f1)
+  POT=$(printf '%s' "$LINE" | cut -f2)
+  P=$(printf '%s' "$LINE" | cut -f3)
+  ENVS=$(printf '%s' "$LINE" | cut -f4)
+  AKIND=$(printf '%s' "$LINE" | cut -f5)
   case "$AKIND" in
     boot) AX=$RUN/out/boot/"$P"_boot_Axis.xyz ;;
     pot)  AX=$RUN/out/axes/"$P"_Axis.xyz ;;
@@ -125,6 +131,16 @@ while IFS=$'\t' read -r TAG POT P ENVS AKIND; do
        "$INSTR"/stage_piece_p20.sh "$INSTR"/submit_p20_sweep.sbatch "$PY" >> "$RUN"/out/variants.log 2>&1
   VE=$?
   echo "[RUN] variant $TAG exit=$VE"
+  NV=$((NV + 1))
+  if [ "$NV" -eq 1 ]; then
+    V1=$RUNSROOT/"$STAMP"_"$GIT7"_p20-"$TAG"
+    if [ -z "$(ls -A "$V1"/out/segmentation 2>/dev/null)" ]; then
+      echo "[RUN] FATAL the first variant harvested no segmentation input -- stopping before the other $(( $(wc -l < "$INSTR"/variants.tsv) - 1 ))"
+      tail -25 "$V1"/logs/mesh.log 2>/dev/null
+      tail -5 "$V1"/logs/stage.log 2>/dev/null
+      exit 8
+    fi
+  fi
 done < "$INSTR"/variants.tsv
 echo "[RUN] variants run: $(($(wc -l < "$RUN"/out/variants.tsv) - 1)) of $(wc -l < "$INSTR"/variants.tsv)"
 

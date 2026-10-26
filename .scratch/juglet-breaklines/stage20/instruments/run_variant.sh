@@ -29,7 +29,7 @@ cp -f "$SUBMITF" "$RUN"/submit.sbatch
 cp -f "$STAGER" "$RUN"/stage_piece_p20.sh
 printf "class\tcount\tbytes\n" > "$RUN"/out/geometry_counts.tsv
 T0=$(date +%s)
-"$STAGER" "$ST" "$POT" "$P" "$AXIS" > "$RUN"/logs/stage.log 2>&1
+bash "$STAGER" "$ST" "$POT" "$P" "$AXIS" > "$RUN"/logs/stage.log 2>&1
 SS=$?
 LOG=$RUN/logs/mesh.log
 : > "$LOG"
@@ -125,6 +125,6 @@ PYEOF
 RID=$(basename "$RUN")
 printf "%s\t%s\t%s\t%s\t\t\n" "$RID" "$SLURM_JOB_ID" "$COMMIT" "$TAG" >> "$ROOT"/index.tsv
 printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
-  "$TAG" "$pot" "$piece" "$envs" "$MS" "$CL" "$SIZES" "$S0" "$S1" "$NOTFOUND" "$EL" "$PMD5" > "$RUN"/out/variant.tsv
+  "$TAG" "$POT" "$P" "$ENVS" "$MS" "$CL" "$SIZES" "$S0" "$S1" "$NOTFOUND" "$EL" "$PMD5" > "$RUN"/out/variant.tsv
 cat "$RUN"/out/variant.tsv >> "$JOBRUN"/out/variants.tsv
 echo "[VAR] $TAG piece=$POT/$P env=$ENVS mesh_exit=$MS clusters=$CL sizes=$SIZES surface=$S0$S1 notfound=$NOTFOUND elapsed=$EL s"
