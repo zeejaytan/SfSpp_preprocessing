@@ -28,6 +28,14 @@ method, and they can neither convict nor exonerate a change. Edgelines derived f
 - **Pot J 01** — interior Bl0 47 dots / 29.27 mm on the theta-3.4 rebuild (25 / 32.05 shipped), its
   832-dot bag in four pieces (580 / 127 / 75 / 50); exterior Bl1 82 dots / 23.31 mm.
 
+**The Pot C 01 gap does not move the seat** — do not exclude that piece from reassembly results. The gap
+lies on the flat of the sherd, not at an edge: C 01's four closed rims sit at least 36 mm inside the line
+the assembler seats by (ours 36.1 mm, the authors' own 36.2 mm), its joins close to 0.035-0.100 mm at
+0.44-0.63 deg / 2.55-4.35 mm against the assembler's 20.05 deg / 50 mm bar, and the conservator confirmed
+by eye on 2026-10-26 that our Pot C reassembly seated properly. The caveat above is about interior
+**edgeline scores** on this piece, which still measure the input; it is not evidence about seating.
+Ticket 300, `.scratch/pota-repro/issues/300-pot-c-eye.md`.
+
 Both exterior edgelines are stub failures on intact input, so they remain evidence for the walk-seed
 change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-24; the full record,
 the competing causes and the open measurements are in
