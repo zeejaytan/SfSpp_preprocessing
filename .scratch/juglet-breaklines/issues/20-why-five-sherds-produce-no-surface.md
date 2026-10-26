@@ -242,8 +242,11 @@ that decides interior/exterior from the mesh (`ray_hits`, ~1 s per piece) instea
 
 ### Accounting (acceptance 7)
 
-No tracked source changed. Frozen corpus md5 unchanged in both completed runs
-(`out/corpus_verdict.txt`: `yes (21 files)`). Geometry deleted with a counted record: sweep
+No tracked source changed. Every staged input md5 unchanged in both completed runs
+(`out/corpus_verdict.txt`: `yes (21 files)`): the 9 Juglet meshes and 9 clouds read from the
+canonical checkout's `Dataset/{Mesh,Point}/Juglet/` (the frozen corpus has no Juglet entry) and
+Pot A 07's mesh, cloud and axis from the frozen corpus; `corpus_md5_before.tsv` against
+`corpus_md5_after.tsv` diff clean, rechecked on 2026-10-27. Geometry deleted with a counted record: sweep
 832 files / 103619712 B, arm 140 files / 21217764 B, aborted job 300 files / 1378584 B. Index
 rows for all five run directories with `verdict` and `human_note` empty. **One ledger wart:**
 the aborted job 33836033 appended 50 per-variant rows before it died; the index is append-only,

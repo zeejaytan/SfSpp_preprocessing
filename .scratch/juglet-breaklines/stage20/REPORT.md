@@ -458,9 +458,13 @@ of piece 3 at the shipped setting (`169+99` of 268 clustered, 1467 in the cloud)
 
 ## 11. Accounting (acceptance 7)
 
-- **Corpus untouched.** `out/corpus_verdict.txt` in both completed runs: `frozen corpus md5
-  unchanged: yes (21 files)`, computed from `out/corpus_md5_before.tsv` and
-  `out/corpus_md5_after.tsv`.
+- **Inputs untouched.** `out/corpus_verdict.txt` in both completed runs: `frozen corpus md5
+  unchanged: yes (21 files)`, from `out/corpus_md5_before.tsv` against
+  `out/corpus_md5_after.tsv` (identical, verified again after the fact). The 21 files are the
+  ones actually staged: 9 Juglet meshes + 9 Juglet clouds under
+  `/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/{Mesh,Point}/Juglet/` (the frozen
+  corpus carries no Juglet entry — read-only, md5 unchanged) and Pot A 07's mesh, cloud and axis
+  under `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/`.
 - **Geometry deleted, counted.**
   - Sweep (`33836128`): `out/GEOMETRY_DELETED.txt` — obj 53 / 15728760 B, other 53 / 21438 B,
     pcd 141 / 41768593 B, ply 275 / 28306803 B, txt 87 / 3546 B, xyz 223 / 17790572 B,
