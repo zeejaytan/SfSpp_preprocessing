@@ -1,0 +1,53 @@
+p2-nb10-t3.4	Juglet	Juglet_Piece_2	SFS_PAPER_NB=10 SFS_PAPER_THETA=3.4	boot
+p2-nb10-t5	Juglet	Juglet_Piece_2	SFS_PAPER_NB=10 SFS_PAPER_THETA=5	boot
+p2-nb10-t8	Juglet	Juglet_Piece_2	SFS_PAPER_NB=10 SFS_PAPER_THETA=8	boot
+p2-nb10-t12	Juglet	Juglet_Piece_2	SFS_PAPER_NB=10 SFS_PAPER_THETA=12	boot
+p2-nb30-t3.4	Juglet	Juglet_Piece_2	SFS_PAPER_NB=30 SFS_PAPER_THETA=3.4	boot
+p2-nb30-t5	Juglet	Juglet_Piece_2	SFS_PAPER_NB=30 SFS_PAPER_THETA=5	boot
+p2-nb30-t8	Juglet	Juglet_Piece_2	SFS_PAPER_NB=30 SFS_PAPER_THETA=8	boot
+p2-nb30-t12	Juglet	Juglet_Piece_2	SFS_PAPER_NB=30 SFS_PAPER_THETA=12	boot
+p2-nb50-t3.4	Juglet	Juglet_Piece_2	SFS_PAPER_NB=50 SFS_PAPER_THETA=3.4	boot
+p2-nb50-t5	Juglet	Juglet_Piece_2	SFS_PAPER_NB=50 SFS_PAPER_THETA=5	boot
+p2-nb50-t8	Juglet	Juglet_Piece_2	SFS_PAPER_NB=50 SFS_PAPER_THETA=8	boot
+p2-nb50-t12	Juglet	Juglet_Piece_2	SFS_PAPER_NB=50 SFS_PAPER_THETA=12	boot
+p9-nb10-t3.4	Juglet	Juglet_Piece_9	SFS_PAPER_NB=10 SFS_PAPER_THETA=3.4	boot
+p9-nb10-t5	Juglet	Juglet_Piece_9	SFS_PAPER_NB=10 SFS_PAPER_THETA=5	boot
+p9-nb10-t8	Juglet	Juglet_Piece_9	SFS_PAPER_NB=10 SFS_PAPER_THETA=8	boot
+p9-nb10-t12	Juglet	Juglet_Piece_9	SFS_PAPER_NB=10 SFS_PAPER_THETA=12	boot
+p9-nb30-t3.4	Juglet	Juglet_Piece_9	SFS_PAPER_NB=30 SFS_PAPER_THETA=3.4	boot
+p9-nb30-t5	Juglet	Juglet_Piece_9	SFS_PAPER_NB=30 SFS_PAPER_THETA=5	boot
+p9-nb30-t8	Juglet	Juglet_Piece_9	SFS_PAPER_NB=30 SFS_PAPER_THETA=8	boot
+p9-nb30-t12	Juglet	Juglet_Piece_9	SFS_PAPER_NB=30 SFS_PAPER_THETA=12	boot
+p9-nb50-t3.4	Juglet	Juglet_Piece_9	SFS_PAPER_NB=50 SFS_PAPER_THETA=3.4	boot
+p9-nb50-t5	Juglet	Juglet_Piece_9	SFS_PAPER_NB=50 SFS_PAPER_THETA=5	boot
+p9-nb50-t8	Juglet	Juglet_Piece_9	SFS_PAPER_NB=50 SFS_PAPER_THETA=8	boot
+p9-nb50-t12	Juglet	Juglet_Piece_9	SFS_PAPER_NB=50 SFS_PAPER_THETA=12	boot
+p5-nb10-t3.4	Juglet	Juglet_Piece_5	SFS_PAPER_NB=10 SFS_PAPER_THETA=3.4	boot
+p5-nb10-t5	Juglet	Juglet_Piece_5	SFS_PAPER_NB=10 SFS_PAPER_THETA=5	boot
+p5-nb10-t8	Juglet	Juglet_Piece_5	SFS_PAPER_NB=10 SFS_PAPER_THETA=8	boot
+p5-nb10-t12	Juglet	Juglet_Piece_5	SFS_PAPER_NB=10 SFS_PAPER_THETA=12	boot
+p5-nb30-t3.4	Juglet	Juglet_Piece_5	SFS_PAPER_NB=30 SFS_PAPER_THETA=3.4	boot
+p5-nb30-t5	Juglet	Juglet_Piece_5	SFS_PAPER_NB=30 SFS_PAPER_THETA=5	boot
+p5-nb30-t8	Juglet	Juglet_Piece_5	SFS_PAPER_NB=30 SFS_PAPER_THETA=8	boot
+p5-nb30-t12	Juglet	Juglet_Piece_5	SFS_PAPER_NB=30 SFS_PAPER_THETA=12	boot
+p5-nb50-t3.4	Juglet	Juglet_Piece_5	SFS_PAPER_NB=50 SFS_PAPER_THETA=3.4	boot
+p5-nb50-t5	Juglet	Juglet_Piece_5	SFS_PAPER_NB=50 SFS_PAPER_THETA=5	boot
+p5-nb50-t8	Juglet	Juglet_Piece_5	SFS_PAPER_NB=50 SFS_PAPER_THETA=8	boot
+p5-nb50-t12	Juglet	Juglet_Piece_5	SFS_PAPER_NB=50 SFS_PAPER_THETA=12	boot
+p3-nb30-t8	Juglet	Juglet_Piece_3	SFS_PAPER_NB=30 SFS_PAPER_THETA=8	boot
+p8-nb30-t8	Juglet	Juglet_Piece_8	SFS_PAPER_NB=30 SFS_PAPER_THETA=8	boot
+p3-nb50-t12	Juglet	Juglet_Piece_3	SFS_PAPER_NB=50 SFS_PAPER_THETA=12	boot
+p8-nb50-t12	Juglet	Juglet_Piece_8	SFS_PAPER_NB=50 SFS_PAPER_THETA=12	boot
+p3-sm3.0	Juglet	Juglet_Piece_3	SFS_SMOOTHNESS_DEG=3.0	boot
+p3-sm45.0	Juglet	Juglet_Piece_3	SFS_SMOOTHNESS_DEG=45.0	boot
+p5-sm3.0	Juglet	Juglet_Piece_5	SFS_SMOOTHNESS_DEG=3.0	boot
+p5-sm45.0	Juglet	Juglet_Piece_5	SFS_SMOOTHNESS_DEG=45.0	boot
+p2-chainoff	Juglet	Juglet_Piece_2	SFS_PAPER_CHAIN=0	boot
+p3-chainoff	Juglet	Juglet_Piece_3	SFS_PAPER_CHAIN=0	boot
+p5-chainoff	Juglet	Juglet_Piece_5	SFS_PAPER_CHAIN=0	boot
+p8-chainoff	Juglet	Juglet_Piece_8	SFS_PAPER_CHAIN=0	boot
+p9-chainoff	Juglet	Juglet_Piece_9	SFS_PAPER_CHAIN=0	boot
+p3-chainoff-sm3.0	Juglet	Juglet_Piece_3	SFS_PAPER_CHAIN=0 SFS_SMOOTHNESS_DEG=3.0	boot
+p4-default	Juglet	Juglet_Piece_4		pot
+p7-default	Juglet	Juglet_Piece_7		pot
+pota07-default	Pot_A	Pot_A_Piece_07		corpus
