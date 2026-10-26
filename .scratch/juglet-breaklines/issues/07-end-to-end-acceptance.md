@@ -5,19 +5,19 @@ whose true mates pass the assembler's own join test at correct placement,
 with the working sample unchanged — and a witnessed render, because a
 passing number is not something to believe on its own.
 
-**Answers:** E1
+**Answers:** U19 (the vessel-level claim, in the umbrella `intent/`) and E1 (its
+preprocessing half)
 
-**Blocked by:** 06 (and therefore 01-05)
+**Blocked by:** none — 06 resolved 2026-09-30, so 01–06 are settled
 
-**Status:** in-progress — Pot_A half done by our own output (15/15,
+**Status:** ready-for-agent — revived 2026-10-26 as the vehicle for U19 (see the section
+at the end). Pot_A half done by our own output (15/15,
 `t14_patches` arm, re-verified identical under ticket-17 code); Juglet half
 retracted-and-remeasured: old 0/10 rested on copied surfaces (ticket 17)
 and is withdrawn, not compared. Clean state 2026-09-30: **0 of 5 scorable
 touching pairs pass, 5 touching pairs unmeasurable** (pieces 3 and 9
 produce no surfaces — single cluster after 30 loosened retries — and skip
 loudly). Seven present breaklines md5-unique, zero copies.
-**Working in:** not recorded (in progress before this line existed; last changed 2026-10-02)
-
 ## 2026-09-28 — Pot_A acceptance met, by our pipeline, not the sample
 
 - [x] **Pot_A at 15/15 on our output.** The old criterion ("held at 15/15")
@@ -287,3 +287,47 @@ broken input gets certified by its own producer.
 The segment-boundary non-determinism (piece 1 differs between runs) is
 **not** fixed here. It is a separate ticket, deliberately unbundled so
 that the effect of 02-06 remains attributable.
+
+## 2026-10-26 — revived as the vehicle for U19
+
+This ticket had been idle since 2026-10-02 with its blocker cleared, and the conservator
+asked for the Juglet end-to-end run. The verifier check found that **this ticket already is
+that run**, so it is revived rather than duplicated, and it now answers
+[U19](C:/PR/intent/U19-does-the-pipeline-put-the-juglet-back-together.md) as well as E1.
+
+**Why a new run is not a repeat.** Both arms on record — ours (S1, 0 of 10 touching joins)
+and the authors' untouched binary (S3, 0 of 18 gate probes, 2 of 9 seated on a pair that
+does not touch) — were fed a bundle written **2026-09-25**, three days BEFORE the per-sherd
+interior classifier landed (ticket 04, 2026-09-28) and before 05, 06, 14, 17, 271 and 287.
+In that bundle  was chosen by file order and was the interior face on only 3
+of 9 sherds. So no Juglet number on record was produced by the code we have now.
+
+**The two decisions, taken by the conservator 2026-10-26.**
+
+1. *Settle it like-for-like, then stage it for the eye.* Same answer key and the same
+   honest denominator as S1/S3 — 10 touching joins of 18, plus the raw 18-join count — so
+   the only thing that differs from the old arms is the preprocessing. Then the reassembly
+   is staged in  beside the conservator's hand reassembly for his verdict.
+2. *Rebuild the preprocessing first, then assemble.* Re-derive surfaces, breaklines and
+   axes from the nine meshes with today's code; do not reuse the old bundle. It is gone
+   anyway — deleted as geometry by the 2026-10-24 attic sweep — so any comparison with S3
+   is number against number and must be described that way.
+
+**Two stages, and only the first is in this ticket's hands.**
+
+- *Stage 1 (this ticket):* rebuild  for the Juglet from
+   plus ; record md5s and prove no
+  byte-identical copies between pieces (the corruption that withdrew the old 0/10, ticket
+  17); record every piece's interior/exterior decision and prove the breakline the
+  assembler reads is the one the interior vote chose. **Pot A rebuilds in the same batch**
+  and must still reach 15/15, or the batch is void and says so.
+- *Stage 2 (its own ticket, opened when stage 1 delivers a bundle):* assemble the rebuilt
+  Juglet against the conservator's poses, report each touching join as pass / fail /
+  unmeasurable with rotation in degrees and translation in mm, stage the pair, and take
+  the eye verdict.
+
+**Pieces 3 and 9 stay absent, not zero.** They produce one cluster even after 30 loosened
+retries, so five of the ten touching joins cannot be scored at all. Decision 2026-10-26:
+report the partial result on seven sherds with those five stated as unmeasurable, and let
+a separate ticket own the clustering diagnosis. Nothing here may turn an absent pair into
+a failed one.
