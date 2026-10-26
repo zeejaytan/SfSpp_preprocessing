@@ -107,7 +107,9 @@ Juglet surfaces lack (point count? curvature? interior-facing dots?) and whether
 
 ## Acceptance
 
-1. Each of H1-H4 marked supported or refuted, with the artefact that decides it.
+1. For each of H1-H4: the artefact that bears on it, the measured values, and the exact
+   log or file lines. **Do not write the verdict** — the lead marks supported or refuted;
+   a worker reports evidence, never a judgement.
 2. For each of the five silent pieces, the exact stage where it is lost (0 clusters
    / 1 cluster / fused to 1 / missing file) and the log line that shows it.
 3. A sweep table: piece × (NB, theta) → cluster count and sizes, with the run
