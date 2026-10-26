@@ -382,3 +382,11 @@ outside the bar against a correct pose. Pot H is untouched.
 - The acceptance boxes above are ticked by the worker against the evidence in §1-§10; the review and the
   close are the coordinating session's.
 
+- **The board was rebuilt and this ticket still shows as queued on it, for a reason worth knowing:**
+  `C:/PR/scripts/build_board.py` reads the canonical clone `C:/PR/SfSpp_preprocessing` and skips
+  `worktrees/`, so it read that clone's copy of this file, still at `Status: ready-for-agent`. The
+  `Status: results-in` lives on branch `301-d-axis-swap` (commit `8b7a496`) and reaches the board only
+  when the branch is merged and the board is rebuilt again. Board output
+  `C:/PR/.board/where-the-work-is.html`, 638 tickets, 55 questions.
+
+
