@@ -1,8 +1,8 @@
 # Ticket 300 - stage the reassembled Pot C (ours vs the authors'), and say whether C 01's gap cost a seat
 
-Status: ready-for-agent
-Working in: unassigned
-Branch: unassigned
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-10-26)
+Branch: 300-pot-c-eye, in /c/PR/worktrees/sfs/300
 Answers: E1
 Created: 2026-10-26 by the coordinating session, on the conservator's instruction
 ("Pot C seated with C01 gap? can you stage the reassembled pot on visual-qa? ours vs authors")
