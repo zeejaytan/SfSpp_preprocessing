@@ -91,7 +91,9 @@ def main():
                 "%.3f mm/px" % mmpx, fontsize=6)
         print("  %-34s x span %8.2f mm over %4d px -> %.4f mm/px"
               % (spec, x1 - x0, int(bb.width), mmpx))
-    fig.savefig(outpng, dpi=110, bbox_inches="tight")
+    # no bbox_inches="tight": cropping the saved canvas would change the pixels-per-mm
+    # after the mm/px above was measured, and the stated scale has to describe the file.
+    fig.savefig(outpng, dpi=110)
     print("[RENDER] wrote %s" % outpng)
 
 
