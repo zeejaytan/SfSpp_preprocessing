@@ -360,9 +360,7 @@ def normal_density_test(pts, nmax=1500):
     t = cKDTree(pts)
     step = max(1, n // nmax)
     q = np.arange(0, n, step)
-    ang = []
-    for k in (5, 20):
-        pass
+
     def pca_normals(k):
         _d, idx = t.query(pts[q], k=k)
         out = np.zeros((len(q), 3))
@@ -474,7 +472,7 @@ def main():
         for f in glob.glob(os.path.join(d, "out", "segmentation", "*_SampledWithNormals.ply")):
             piece = os.path.basename(f).replace("_SampledWithNormals.ply", "")
             md5 = os.popen("md5sum %s | awk '{print $1}'" % f).read().strip()
-            md5_by_piece.setdefault(piece, {}).setdefault(md5, []).append(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(f + "/..")))))
+            md5_by_piece.setdefault(piece, {}).setdefault(md5, []).append(os.path.basename(d))
             ply_of.setdefault(piece, (f, md5))
     with open(os.path.join(args.out, "A_segmentation_input.tsv"), "w") as fh:
         fh.write("piece\tmd5\tbytes\tdistinct_md5_over_variants\tn_variants\n")
@@ -483,6 +481,32 @@ def main():
             n = sum(len(v) for v in md5_by_piece[piece].values())
             fh.write("%s\t%s\t%d\t%d\t%d\n" % (piece, md5, os.path.getsize(f), len(md5_by_piece[piece]), n))
     log("[A] pieces with a harvested segmentation input:", sorted(ply_of))
+
+    # ---- A2. the pipeline's own printouts, per variant, straight from run.json
+    rows_pipe = []
+    for d in var_dirs:
+        rj = os.path.join(d, "run.json")
+        if not os.path.exists(rj):
+            continue
+        j = json.load(open(rj))
+        if j.get("tag") == "p20-sweep" or "piece" not in j:
+            continue
+        rows_pipe.append(dict(tag=j["tag"], piece=j["piece"], env=j.get("env", ""),
+                              clusters=j.get("clusters"), sizes=j.get("cluster_sizes"),
+                              adaptive=j.get("adaptive_normals"), grow=j.get("paper_grow"),
+                              rule=j.get("splitter_rule"), merge=j.get("merge_line"),
+                              classify=j.get("classify_line"), face_order=j.get("face_order"),
+                              s0=j.get("surface_0_written"), s1=j.get("surface_1_written"),
+                              notfound=j.get("source_file_not_found_lines"),
+                              mesh_exit=j.get("mesh_exit"), elapsed=j.get("elapsed_s"),
+                              ply_md5=j.get("segmentation_input", {}).get("md5")))
+    if rows_pipe:
+        cols = list(rows_pipe[0].keys())
+        with open(os.path.join(args.out, "A2_pipeline_printouts.tsv"), "w") as fh:
+            fh.write("\t".join(cols) + "\n")
+            for r in rows_pipe:
+                fh.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
+    log("[A2] pipeline rows:", len(rows_pipe))
 
     # ---- B. replay grow + merge + classify per piece
     rows_merge, rows_cls, rows_two = [], [], []
@@ -560,6 +584,27 @@ def main():
     dump("B_merge_criteria.tsv", rows_merge)
     dump("B_classify_replay.tsv", rows_cls)
     dump("B_two_clusters.tsv", rows_two)
+
+    # ---- B2. does the replay reproduce the pipeline's own cluster sizes?
+    base_env = ("", "SFS_PAPER_NB=10 SFS_PAPER_THETA=3.4")
+    rows_id = []
+    for piece, r in sorted(replay_ok.items()):
+        pipe = [x for x in rows_pipe if x["piece"] == piece and x.get("env", "") in base_env]
+        psizes = pipe[0]["sizes"] if pipe else ""
+        ptxt = [s for s in str(psizes).split(",") if s and s != "none"]
+        def same(trial):
+            return ",".join(str(x) for x in trial) == ",".join(ptxt)
+        rows_id.append(dict(piece=piece, N=r["n"], dynmin=r["dynmin"],
+                            nb_at_line_420=r["nb_density"],
+                            pipeline_baseline=psizes or "none",
+                            replay_signed=",".join(str(x) for x in r["sizes_signed"]),
+                            replay_abs=",".join(str(x) for x in r["sizes_abs"]),
+                            convention=r["convention"],
+                            signed_matches=same(r["sizes_signed"]),
+                            abs_matches=same(r["sizes_abs"]),
+                            adaptive_line=(pipe[0]["adaptive"] if pipe else ""),
+                            grow_line=(pipe[0]["grow"] if pipe else "")))
+    dump("B2_replay_identity.tsv", rows_id)
 
     # ---- C. the meshes themselves
     rows_mesh = []
