@@ -10,7 +10,9 @@ preprocessing half)
 
 **Blocked by:** none — 06 resolved 2026-09-30, so 01–06 are settled
 
-**Status:** ready-for-agent — revived 2026-10-26 as the vehicle for U19 (see the section
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 07-end-to-end-acceptance, in /c/PR/worktrees/sfs/07
 at the end). Pot_A half done by our own output (15/15,
 `t14_patches` arm, re-verified identical under ticket-17 code); Juglet half
 retracted-and-remeasured: old 0/10 rested on copied surfaces (ticket 17)
