@@ -1,6 +1,6 @@
 # Ticket 299 - why the authors' own bundle misses the paper on Pot D and Pot H
 
-Status: in-progress
+Status: done (accepted: on Pot D the authors' own bundle is one sherd and two joins short of their own paper at the release we pinned, and the missing sherd is explained by five pieces whose released axis contradicts their released pose -- not by D 22, which is an isolated node and contributes zero to both counts; on Pot H the gap is piece 6 plus three pieces whose pass/fail moves between replays of byte-identical input)
 Working in: chat on Thinkbook16 (2026-10-26)
 Branch: 299-dh-why, in /c/PR/worktrees/sfs/299
 Answers: E1
