@@ -59,7 +59,7 @@ hash_inputs() {
 build_arm() {
   local name=$1 sha=$2 rc
   say "build $name from $sha"
-  mkdir -p "build/$name/src"
+  mkdir -p "build/$name/src/build"
   git -C "$CANON" archive "$sha" | tar -x -C "build/$name/src" || { say "archive FAILED $sha"; return 1; }
   ( cd "build/$name/src/build" \
     && "$APT" exec --bind /data:/data "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
