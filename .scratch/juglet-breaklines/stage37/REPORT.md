@@ -295,3 +295,17 @@ python instruments/partc37.py --run phase2
 python instruments/fig37.py --dumpdir phase2/out/prefloor --outdir phase2/figures/Juglet_Piece_2 \
        --pieces Juglet_Piece_2 --target-mm-px 0.050
 \`\`\`
+
+## 12. Delivered
+
+```
+$ git diff --stat main...HEAD -- mesh_processing_headless.cpp
+ mesh_processing_headless.cpp | 11 +-   (10 insertions, 1 deletion)
+$ git diff --stat main...HEAD | tail -1
+ 222 files changed, ... (the insertion count grows with every stage37 commit; the file count does not)
+```
+
+The payload of the diff is the single source line at `mesh_processing_headless.cpp:4365` plus its comment; everything
+else in the diff is `.scratch/juglet-breaklines/stage37/` (the instruments, the two phases' evidence, this
+report). The branch head that carries this report is `6c27d70f3f423a8c05e199a70402a11cd6392e2d`; a later
+commit on this branch, if any, is an addition under `stage37/` and does not touch the source.
