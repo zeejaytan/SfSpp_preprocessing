@@ -1,0 +1,97 @@
+[JOB] runid=20261027-0337_d69f76f_t25-dump-grid2 job=33858581 new=d69f76fd7b3645811f35815ab3062c58ff988d1c old=d543e18627c02354732bd9e7f33eb21d8dbbbce2 cpus=8 pieces=Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_5 Juglet_Piece_7
+start 2026-10-27T03:39:26Z
+[JOB] commits ok new=d69f76f old=d543e18
+[JOB] cells in list: 32
+[JOB] inputs hashed: 12 rows, corpus 1803 rows
+[BUILD] ok NEW sha=d69f76fd7b3645811f35815ab3062c58ff988d1c bytes=1568752 md5=1a89a870ae5ffc758a168df8f7f6d45c
+[BUILD] ok OLD sha=d543e18627c02354732bd9e7f33eb21d8dbbbce2 bytes=1506632 md5=17fc78bd0b8facb11ff5795e95e5cd0e
+cells start 2026-10-27T03:41:21Z
+[JOB] cells finished rc=0 rows=32
+[CELL] D Juglet/Juglet_Piece_2 arm=NEW exit=0 elapsed=2s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=8 refused=0 outcome=two clusters=2 sizes=174,65 surf=yes/yes pts=345/178 single=none
+[CELL] DOLD Juglet/Juglet_Piece_2 arm=OLD exit=0 elapsed=2s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=2 sizes=174,65 surf=yes/yes pts=345/178 single=none
+[CELL] B Juglet/Juglet_Piece_3 arm=NEW exit=0 elapsed=1s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=none clusters=1 sizes=268 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=268 wrote=none surface0=none
+[CELL] D Juglet/Juglet_Piece_3 arm=NEW exit=0 elapsed=1s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=none clusters=1 sizes=343 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=343 wrote=none surface0=none
+[CELL] EOLD Juglet/Juglet_Piece_2 arm=OLD exit=0 elapsed=3s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=3 sizes=94,80,61 surf=yes/yes pts=434/342 single=none
+[CELL] E Juglet/Juglet_Piece_2 arm=NEW exit=0 elapsed=3s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=8 refused=0 outcome=two clusters=3 sizes=94,80,61 surf=yes/yes pts=434/342 single=none
+[CELL] E Juglet/Juglet_Piece_3 arm=NEW exit=0 elapsed=1s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=none clusters=1 sizes=487 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=487 wrote=none surface0=none
+[CELL] A Juglet/Juglet_Piece_3 arm=NEW exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=268 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=268 wrote=none surface0=none
+[CELL] A2 Juglet/Juglet_Piece_3 arm=NEW exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=268 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=268 wrote=none surface0=none
+[CELL] OLD Juglet/Juglet_Piece_3 arm=OLD exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=268 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=268 wrote=none surface0=none
+[CELL] A2 Juglet/Juglet_Piece_2 arm=NEW exit=0 elapsed=5s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=0 sizes=none surf=no/no pts=-1/-1 single=none
+[CELL] A Juglet/Juglet_Piece_2 arm=NEW exit=0 elapsed=5s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=0 sizes=none surf=no/no pts=-1/-1 single=none
+[CELL] DOLD Juglet/Juglet_Piece_3 arm=OLD exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=343 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=343 wrote=none surface0=none
+[CELL] OLD Juglet/Juglet_Piece_2 arm=OLD exit=0 elapsed=5s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=0 sizes=none surf=no/no pts=-1/-1 single=none
+[CELL] EOLD Juglet/Juglet_Piece_3 arm=OLD exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=487 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_3 mode=off cluster=1 clusterPoints=487 wrote=none surface0=none
+[CELL] B Juglet/Juglet_Piece_2 arm=NEW exit=0 elapsed=5s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=84 refused=0 outcome=none clusters=0 sizes=none surf=no/no pts=-1/-1 single=none
+[CELL] B Juglet/Juglet_Piece_5 arm=NEW exit=0 elapsed=1s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=none clusters=1 sizes=679 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_5 mode=off cluster=1 clusterPoints=679 wrote=none surface0=none
+[CELL] A Juglet/Juglet_Piece_5 arm=NEW exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=679 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_5 mode=off cluster=1 clusterPoints=679 wrote=none surface0=none
+[CELL] OLD Juglet/Juglet_Piece_5 arm=OLD exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=679 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_5 mode=off cluster=1 clusterPoints=679 wrote=none surface0=none
+[CELL] A2 Juglet/Juglet_Piece_5 arm=NEW exit=0 elapsed=1s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=none clusters=1 sizes=679 surf=no/no pts=-1/-1 single=piece=Juglet_Piece_5 mode=off cluster=1 clusterPoints=679 wrote=none surface0=none
+[CELL] D Juglet/Juglet_Piece_5 arm=NEW exit=0 elapsed=2s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=two clusters=2 sizes=828,63 surf=yes/yes pts=1845/300 single=none
+[CELL] DOLD Juglet/Juglet_Piece_5 arm=OLD exit=0 elapsed=2s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=2 sizes=828,63 surf=yes/yes pts=1845/300 single=none
+[CELL] D Juglet/Juglet_Piece_7 arm=NEW exit=0 elapsed=2s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=two clusters=5 sizes=809,553,84,84,53 surf=yes/yes pts=2005/1462 single=none
+[CELL] B Juglet/Juglet_Piece_7 arm=NEW exit=0 elapsed=3s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=two clusters=4 sizes=403,263,68,65 surf=yes/yes pts=1012/829 single=none
+[CELL] A Juglet/Juglet_Piece_7 arm=NEW exit=0 elapsed=3s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=4 sizes=403,263,68,65 surf=yes/yes pts=1012/829 single=none
+[CELL] A2 Juglet/Juglet_Piece_7 arm=NEW exit=0 elapsed=3s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=4 sizes=403,263,68,65 surf=yes/yes pts=1012/829 single=none
+[CELL] OLD Juglet/Juglet_Piece_7 arm=OLD exit=0 elapsed=3s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=4 sizes=403,263,68,65 surf=yes/yes pts=1012/829 single=none
+[CELL] E Juglet/Juglet_Piece_5 arm=NEW exit=0 elapsed=5s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=two clusters=3 sizes=1000,60,58 surf=yes/yes pts=2584/317 single=none
+[CELL] EOLD Juglet/Juglet_Piece_5 arm=OLD exit=0 elapsed=5s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=3 sizes=1000,60,58 surf=yes/yes pts=2584/317 single=none
+[CELL] DOLD Juglet/Juglet_Piece_7 arm=OLD exit=0 elapsed=3s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=5 sizes=809,553,84,84,53 surf=yes/yes pts=2005/1462 single=none
+[CELL] E Juglet/Juglet_Piece_7 arm=NEW exit=0 elapsed=6s dumps=5 rungs=11111 dumproot=yes stray=0 wrote=4 refused=0 outcome=two clusters=10 sizes=1701,453,147,108,100,64,63,63,53,50 surf=yes/yes pts=4204/2638 single=none
+[CELL] EOLD Juglet/Juglet_Piece_7 arm=OLD exit=0 elapsed=5s dumps=0 rungs=00000 dumproot=no stray=0 wrote=0 refused=0 outcome=two clusters=10 sizes=1701,453,147,108,100,64,63,63,53,50 surf=yes/yes pts=4204/2638 single=none
+cells end 2026-10-27T03:41:35Z
+[JOB] ladder
+[LADDER25] rows=60 fail=2 n/a=46 pass=12
+[JOB] defaults proof (A vs OLD, A vs A2); statistic = sorted six-column point set, md5 NOT used
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=OLD npts=1012/1012 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=OLD npts=829/829 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=A2 npts=1012/1012 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=A2 npts=829/829 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=D npts=1012/2005 pointset_equal=no only_a=761 only_b=1754 nn_max=12.448121/20.873935
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=D npts=829/1462 pointset_equal=no only_a=658 only_b=1291 nn_max=16.679384/18.756751
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=DOLD npts=1012/2005 pointset_equal=no only_a=761 only_b=1754 nn_max=12.448121/20.873935
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=DOLD npts=829/1462 pointset_equal=no only_a=658 only_b=1291 nn_max=16.679384/18.756751
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=E npts=1012/4204 pointset_equal=no only_a=1012 only_b=4204 nn_max=0.519348/21.275414
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=E npts=829/2638 pointset_equal=no only_a=829 only_b=2638 nn_max=3.891707/16.225766
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=EOLD npts=1012/4204 pointset_equal=no only_a=1012 only_b=4204 nn_max=0.519348/21.275414
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=EOLD npts=829/2638 pointset_equal=no only_a=829 only_b=2638 nn_max=3.891707/16.225766
+[PROOF25] comparisons=12 differing=8 reference=A others=OLD,A2,D,DOLD,E,EOLD
+[JOB] dump file check (json parses, ply header count matches body, label columns present)
+[JSON25] sidecars=60 bad=0
+[PLY25] plys=60 bad=0
+[JOB] figures
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F1_piece3_armB.png 2400x672 px mm_per_px=0.0537 bar=5mm rows=1 missing=0
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F2_piece3_armE.png 2400x672 px mm_per_px=0.0539 bar=5mm rows=1 missing=0
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F3_piece2_armB.png 2400x672 px mm_per_px=0.0571 bar=5mm rows=1 missing=0
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F4_piece5_armB_armD.png 2400x1152 px mm_per_px=0.0651 bar=10mm rows=2 missing=0
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F5_piece7_armE.png 2400x672 px mm_per_px=0.0620 bar=5mm rows=1 missing=0
+[FIG25] /data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F6_piece7_armB.png 2400x672 px mm_per_px=0.0618 bar=5mm rows=1 missing=0
+[FIG25] report rows=6
+# ticket 25 -- geometry deleted when each cell finished, with counts and bytes.
+# KEPT: out/dump/** (the five rungs per arm and piece -- the deliverable), every
+# cell's surfaces/*.ply and *.xyz, and every log.
+tag_pot_piece	ext	count	bytes
+D/Juglet/Juglet_Piece_2	other	3	489
+D/Juglet/Juglet_Piece_2	obj	1	159681
+D/Juglet/Juglet_Piece_2	pcd	4	196995
+D/Juglet/Juglet_Piece_2	ply	7	295031
+D/Juglet/Juglet_Piece_2	xyz	5	172639
+DOLD/Juglet/Juglet_Piece_2	other	3	489
+DOLD/Juglet/Juglet_Piece_2	obj	1	159681
+DOLD/Juglet/Juglet_Piece_2	pcd	4	196995
+DOLD/Juglet/Juglet_Piece_2	ply	7	297303
+DOLD/Juglet/Juglet_Piece_2	xyz	5	172639
+B/Juglet/Juglet_Piece_3	other	3	490
+B/Juglet/Juglet_Piece_3	obj	1	219412
+B/Juglet/Juglet_Piece_3	pcd	1	184432
+B/Juglet/Juglet_Piece_3	ply	2	216792
+B/Juglet/Juglet_Piece_3	xyz	3	205792
+D/Juglet/Juglet_Piece_3	other	2	460
+[INPUTS] identical before and after: 12 rows
+[CORPUS] identical before and after: 1803 rows (incl /opt/sfs-pristine line)
+opt-sfs-pristine ABSENT
+[INDEX] appended: 20261027-0337_d69f76f_t25-dump-grid2\t33858581\td69f76fd7b3645811f35815ab3062c58ff988d1c\tt25-dump-grid2
+20261027-0329_c369b56_t25-dump-grid	33858161	c369b567691ac6ef52908ed79b858d2ac3b8ea38	t25-dump-grid		
+20261027-0337_d69f76f_t25-dump-grid2	33858581	d69f76fd7b3645811f35815ab3062c58ff988d1c	t25-dump-grid2		
+end 2026-10-27T03:41:48Z
+[JOB] done run=20261027-0337_d69f76f_t25-dump-grid2
