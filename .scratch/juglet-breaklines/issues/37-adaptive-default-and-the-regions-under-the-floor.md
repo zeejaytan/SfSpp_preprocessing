@@ -1,8 +1,8 @@
 # 37: Make the adaptive step the default, take the floor away, and look at the regions
 
-**Status:** ready-for-agent
-**Working in:** chat on Thinkbook16 (2026-10-27)
-**Branch:** —
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-28)
+**Branch:** 37-adaptive-default-and-the-regions-under-the-floor, in /c/PR/worktrees/sfs/37
 **Answers:** U19, E1
 **Blocked by:** none
 **Blocks:** none
