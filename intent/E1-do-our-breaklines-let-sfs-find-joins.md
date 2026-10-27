@@ -2264,3 +2264,30 @@ edgeline.
 
 Next: a theta derived from each cloud, and then whether the boundary of the region it grows lies on the sherd's
 real broken edge — the strip question above, still unmeasured.
+
+## 2026-10-27 — a sherd that surfaces as a corner patch has no breakline to walk (ticket 32)
+
+The conservator asked whether the sherd-to-vessel size ratio could be tuned on, and the vessel sizes had
+never been recorded for either pot: applying each pot's own ground-truth transforms gives **85.441470 mm**
+for the Juglet (sides 41.508968 / 36.772109 / 65.000479) and **279.789935 mm** for Pot A (193.418983 /
+194.118357 / 56.476264); the other two transform conventions scatter the pieces 1.3-1.5 m apart, so the
+convention is identified rather than chosen.
+
+The ratio does not predict the angle. Juglet ratios are 0.275-0.738 of its vessel (mean 0.443) and Pot A's
+0.193-0.617 (mean 0.413) — overlapping ranges — and the two Juglet pieces that produce no surface at all
+(2 at 0.331, 9 at 0.275) are relatively **larger** than two Pot A pieces that work (07 at 0.209, 08 at
+0.193). At fixed physical windows the separation is by vessel, not by size: at a 1 mm window the vessel's
+median neighbour angle is 19.8-25.8 deg and the pot's 0.84-1.60 deg.
+
+For breaklines the consequence is direct and negative: forced below 50 points, the pipeline does write a
+surface for piece 2 (220 points, 11.49 mm across, 28.4 % coverage) and piece 9 (277 points, 13.76 mm,
+42.5 %), but at floor 10 the best region on those sherds is 46 and 16 points spanning 8.4 mm and 4.1 mm.
+**A surface that covers a corner of a sherd has no line along the sherd's broken edge**, so the breakline
+question cannot be asked of that piece at all — the same conclusion ticket 23 reached for a silent piece,
+now with the floor as the named mechanism.
+
+Weight: none on the 281/292 tally, and none on the Juglet's seating ceiling — it explains why two sherds
+produce nothing to score, not how any existing edgeline scores.
+
+Next: unchanged from ticket 29 — a threshold set from the outcome per piece, and then whether the boundary
+of the region the growth returns lies on the real broken edge.
