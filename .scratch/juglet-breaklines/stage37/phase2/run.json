@@ -1,0 +1,30 @@
+{
+  "ticket": ".scratch/juglet-breaklines/issues/37-adaptive-default-and-the-regions-under-the-floor.md",
+  "title": "Part C distributions and part D pre-floor region dumps, from the python replica on the pipeline's own rung-2 dumps",
+  "phase": 2,
+  "answers": ["U19", "E1"],
+  "branch": "37-adaptive-default-and-the-regions-under-the-floor",
+  "commit": "c6f649115100f8e3f725ef2bd68e1b32f1f629b1",
+  "pre_change_commit": "5bdaff656f7aa683d5d2bc66f7c3fc2e6c31986f",
+  "source_change": "mesh_processing_headless.cpp:4365 only (already in the phase-1 commit); this phase changes no C++",
+  "why_the_replica": "the pipeline passes the floor INTO growPaper234 (mesh_processing_headless.cpp:3647) so it cannot report the regions it discarded; replica37.py grows from the pipeline's own rung-2 dump (points, normals, theta/kappa/nb/floor read from the rung-2 sidecar) and reports the distribution before the floor",
+  "arms": {
+    "NA": "no spacing environment + SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest -- the part C main column: adaptive spacing, honest nearest-carry normals",
+    "PDN": "NA + a rung-2 dump and --partd: the same column as NA, written out as one PLY and one json per piece for part D (Juglet 2, Juglet 9, Pot_A 07)",
+    "FX": "SFS_SPACING_POLICY=fixed + nearest-carry -- the fixed 0.6 mm column, normals held, so the spacing is the only difference",
+    "RA": "SFS_SPACING_POLICY=piece only, i.e. the pipeline's own re-estimated normals + a replica run -- this IS the new default configuration and it is the config the replica must reproduce (Juglet 3, 5, 7, Pot_A 07)"
+  },
+  "cells": 16,
+  "cell_plan": {
+    "NA": "Juglet 3, 5, 7",
+    "PDN": "Juglet 2, Juglet 9, Pot_A 07",
+    "FX": "Juglet 2, 3, 5, 7, 9, Pot_A 07",
+    "RA": "Juglet 3, 5, 7, Pot_A 07"
+  },
+  "replica_validation": "replica37.py grows from the rung-2 dump and compares its survivors at floor_applied against the rung-2 sidecar 'clusters' list. MATCH exact / NEAR same count and every pair within max(2 points, 10%) with the deltas written out / MISMATCH = the numbers are unvalidated and are reported as such",
+  "part_d_format": "x y z nx ny nz cluster_id int reason uchar, the ticket-25 rung-2 layout, ids ordered by size (0 = largest); reason 1 = seed, 3 = grown member; the growth partitions the cloud so -1 never appears",
+  "jobs_used_before_this_one": 1,
+  "job_budget": 3,
+  "compute_node_only": true,
+  "boot_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot"
+}

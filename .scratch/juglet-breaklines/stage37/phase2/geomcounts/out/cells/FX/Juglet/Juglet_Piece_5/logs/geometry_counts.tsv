@@ -1,0 +1,12 @@
+path	ext	files	bytes
+FX/Juglet/Juglet_Piece_5/stage	other	3	487
+FX/Juglet/Juglet_Piece_5/stage	obj	1	396698
+FX/Juglet/Juglet_Piece_5/stage	pcd	4	514695
+FX/Juglet/Juglet_Piece_5/stage	ply	7	910048
+FX/Juglet/Juglet_Piece_5/stage	xyz	5	526786
+FX/Juglet/Juglet_Piece_5/dump	json	5	2918
+FX/Juglet/Juglet_Piece_5/dump	ply	5	983740
+# counted above, then deleted: 2422626 bytes of stage,
+# 994850 bytes of rung dump
+# what the delete does not touch: everything under /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1420_c6f6491_t37-prefigure/out/cells/FX/Juglet/Juglet_Piece_5/surfaces and /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1420_c6f6491_t37-prefigure/out/cells/FX/Juglet/Juglet_Piece_5/measure
+after: stage present=no dump present=no

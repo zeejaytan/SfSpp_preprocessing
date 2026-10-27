@@ -105,14 +105,26 @@ def _draw(piece, xyz, cid, fmt, outpath, target_mm_px, dpi, geometry):
     lo, hi, mid, half, span_p = geometry
     inch = (span_p / target_mm_px) / dpi
     fig, axes = plt.subplots(1, 3, figsize=(inch * 3 + 0.9, inch + 1.15), dpi=dpi)
-    order = np.argsort(cid)  # tail first, so the eight named colours stay on top
-    colours = [colour_of(int(c)) for c in cid[order]]
-    marker_pt = max(0.4, 2.2 * target_mm_px)
+    # A point must be visible as a point: the marker is a fraction of a millimetre, converted to
+    # points through the figure's own dpi. Without this the top-8 regions are invisible as soon as
+    # a piece splits into thousands of slivers (Juglet 2: 1765 regions, largest 45 points).
+    def pt_for(marker_mm):
+        return max(0.6, (marker_mm / target_mm_px) * 72.0 / dpi)
+
+    tail_pt, top_pt = pt_for(0.35), pt_for(0.55)
+    tail_mask = (cid > 7) | (cid < 0)
     mm_px = None
     for ax, (title, i, j, la, lb) in zip(axes, VIEWS):
         ax.set_facecolor("white")
-        ax.scatter(xyz[order, i], xyz[order, j], c=colours, s=marker_pt ** 2, marker=".",
-                   linewidths=0, edgecolors="none")
+        if tail_mask.any():
+            ax.scatter(xyz[tail_mask, i], xyz[tail_mask, j], c="grey", s=tail_pt ** 2,
+                       marker="o", linewidths=0, alpha=0.55, zorder=2)
+        for c in range(7, -1, -1):  # region 0 last, so the largest region is always on top
+            m = cid == c
+            if not m.any():
+                continue
+            ax.scatter(xyz[m, i], xyz[m, j], c=FIXED[c][0], s=top_pt ** 2, marker="o",
+                       edgecolors="black", linewidths=0.15, zorder=3)
         ax.set_xlim(mid[i] - half, mid[i] + half)
         ax.set_ylim(mid[j] - half, mid[j] + half)
         ax.set_aspect("equal", adjustable="box")
@@ -141,7 +153,7 @@ def _draw(piece, xyz, cid, fmt, outpath, target_mm_px, dpi, geometry):
     fig.legend(handles=handles, loc="lower center", ncol=min(6, len(handles)), fontsize=7,
                frameon=False, bbox_to_anchor=(0.5, 0.0))
     fig.suptitle("%s pre-floor regions: npts=%d regions=%d largest=%d   mm/px %.4f x %.4f   "
-                 "5 mm bar   (%s PLY)" % (piece, len(xyz), len(sizes), max(sizes), mm_px[0],
+                 "5 mm bar   (%s PLY)" % (piece, len(xyz), len(sizes), max(sizes.values()), mm_px[0],
                                           mm_px[1], fmt), fontsize=8)
     fig.tight_layout(rect=(0, 0.10, 1, 0.93))
     # bbox_inches="tight" crops/expands the whitespace only: the axes box keeps its pixel size, so
@@ -175,7 +187,7 @@ def render(piece, ply, sidecar, outpath, target_mm_px):
         mm_px, sizes, w, h = _draw(piece, xyz, cid, fmt, None, target_mm_px, dpi, geometry)
     mm_px, sizes, w, h = _draw(piece, xyz, cid, fmt, outpath, target_mm_px, dpi, geometry)
     meta = {"piece": piece, "ply": os.path.basename(ply), "png": os.path.basename(outpath),
-            "points": int(len(xyz)), "regions": len(sizes), "largest_region": int(max(sizes)),
+            "points": int(len(xyz)), "regions": len(sizes), "largest_region": int(max(sizes.values())),
             "region_sizes_top8": {int(k): int(v) for k, v in
                                   sorted(sizes.items(), key=lambda kv: -kv[1])[:8]},
             "mm_per_px": [round(mm_px[0], 6), round(mm_px[1], 6)], "scale_bar_mm": 5.0,
@@ -196,9 +208,18 @@ def main():
     pieces = [p for p in a.pieces.split(",") if p] or sorted(
         f[:-4] for f in os.listdir(a.dumpdir) if f.endswith(".ply"))
     metas = []
+
+    def find_dump(piece, ext):
+        """<piece>.<ext>, or the replica's own <piece>_prefloor_regions.<ext>."""
+        for name in (piece + "." + ext, piece + "_prefloor_regions." + ext):
+            cand = os.path.join(a.dumpdir, name)
+            if os.path.exists(cand):
+                return cand
+        return os.path.join(a.dumpdir, piece + "." + ext)
+
     for piece in pieces:
-        ply = os.path.join(a.dumpdir, piece + ".ply")
-        side = os.path.join(a.dumpdir, piece + ".json")
+        ply = find_dump(piece, "ply")
+        side = find_dump(piece, "json")
         if not os.path.exists(ply):
             print("[F37] MISSING %s" % ply, file=sys.stderr)
             continue

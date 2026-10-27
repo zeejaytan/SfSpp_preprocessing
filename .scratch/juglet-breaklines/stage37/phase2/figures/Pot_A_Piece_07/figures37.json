@@ -1,0 +1,31 @@
+[
+ {
+  "bytes": 349315,
+  "dpi": 269.8,
+  "largest_region": 13131,
+  "mm_per_px": [
+   0.108409,
+   0.108409
+  ],
+  "piece": "Pot_A_Piece_07",
+  "pixel_height": 864,
+  "pixel_width": 2061,
+  "ply": "Pot_A_Piece_07_prefloor_regions.ply",
+  "png": "Pot_A_Piece_07_regions_3views.png",
+  "points": 34608,
+  "region_sizes_top8": {
+   "0": 13131,
+   "1": 12042,
+   "2": 1622,
+   "3": 1248,
+   "4": 1127,
+   "5": 1052,
+   "6": 183,
+   "7": 165
+  },
+  "regions": 2494,
+  "scale_bar_mm": 5.0,
+  "sidecar": "Pot_A_Piece_07_prefloor_regions.json",
+  "target_mm_px": 0.085
+ }
+]
