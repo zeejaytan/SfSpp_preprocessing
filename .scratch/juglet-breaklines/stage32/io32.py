@@ -84,14 +84,17 @@ def read_pcd(path):
         raise SystemExit("[io32] unsupported PCD data mode %r in %s" % (mode, path))
     if n == 0:
         raise SystemExit("[io32] empty cloud: %s" % path)
-    xyz = np.stack([np.asarray(a["x"], dtype=np.float64),
-                    np.asarray(a["y"], dtype=np.float64),
-                    np.asarray(a["z"], dtype=np.float64)], axis=1)
+    def col(nm):
+        # the ascii branch is a plain float array (no named fields); the binary branch is
+        # a structured array.  Both are addressed by the header's own column offsets.
+        if a.dtype.names:
+            return np.asarray(a[nm], dtype=np.float64)
+        return np.asarray(a[:, off[nm][0]], dtype=np.float64)
+
+    xyz = np.stack([col("x"), col("y"), col("z")], axis=1)
     nrm = None
-    if "normal_x" in off and "normal_y" in off and "normal_z" in off:
-        nrm = np.stack([np.asarray(a["normal_x"], dtype=np.float64),
-                        np.asarray(a["normal_y"], dtype=np.float64),
-                        np.asarray(a["normal_z"], dtype=np.float64)], axis=1)
+    if all(k in off for k in ("normal_x", "normal_y", "normal_z")):
+        nrm = np.stack([col("normal_x"), col("normal_y"), col("normal_z")], axis=1)
     return {"xyz": xyz, "nrm": nrm, "n_points": int(n),
             "header_points": int(header_points), "data": mode,
             "fields": fields, "md5": md5_file(path), "path": path}

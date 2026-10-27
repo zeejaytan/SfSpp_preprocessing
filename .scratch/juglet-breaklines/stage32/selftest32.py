@@ -6,7 +6,9 @@ Exit 0 = all checks passed.  Anything else stops the job.
 """
 import argparse
 import os
+import shutil
 import sys
+import tempfile
 
 import numpy as np
 from scipy.spatial import cKDTree
@@ -29,12 +31,55 @@ def check(name, ok, detail):
         FAILS.append(name)
 
 
+def synthetic_pcds(tmp):
+    """Both reader branches on files whose answer is known, padding field included."""
+    xyz = np.array([[1.5, -2.25, 3.0], [4.0, 5.5, -6.75]])
+    head = ("VERSION 0.7\nFIELDS x y z normal_x normal_y normal_z _\nSIZE 4 4 4 4 4 4 4\n"
+            "TYPE F F F F F F F\nCOUNT 1 1 1 1 1 1 4\nWIDTH 2\nHEIGHT 1\n"
+            "VIEWPOINT 0 0 0 1 0 0 0\n")
+    ok = []
+    det = []
+    p = os.path.join(tmp, "syn_ascii.pcd")
+    with open(p, "w") as fh:
+        fh.write(head + "POINTS 2\nDATA ascii\n")
+        for i in range(2):
+            fh.write("%.3f %.3f %.3f 0 0 1 0 0 0 0\n" % tuple(xyz[i]))
+    r = io32.read_pcd(p)
+    ok.append(r["data"] == "ascii" and r["n_points"] == 2 and r["nrm"] is not None
+              and float(np.max(np.abs(r["xyz"] - xyz))) < 1e-6
+              and float(np.max(np.abs(r["nrm"][:, 2] - 1.0))) < 1e-9)
+    det.append("ascii n=%d nrm=%s" % (r["n_points"], r["nrm"] is not None))
+    q = os.path.join(tmp, "syn_bin.pcd")
+    rec = np.zeros(2, dtype=[("x", "<f4"), ("y", "<f4"), ("z", "<f4"),
+                             ("normal_x", "<f4"), ("normal_y", "<f4"),
+                             ("normal_z", "<f4"), ("_", "<f4", (4,))])
+    rec["x"] = xyz[:, 0]
+    rec["y"] = xyz[:, 1]
+    rec["z"] = xyz[:, 2]
+    rec["normal_z"] = 1.0
+    with open(q, "wb") as fh:
+        fh.write((head + "POINTS 5\nDATA binary\n").encode("ascii"))
+        fh.write(rec.tobytes())
+    r2 = io32.read_pcd(q)
+    ok.append(r2["data"] == "binary" and r2["n_points"] == 2 and r2["header_points"] == 5
+              and float(np.max(np.abs(r2["xyz"] - xyz))) < 1e-6)
+    det.append("binary body=%d header=%d itemsize=%d"
+               % (r2["n_points"], r2["header_points"], rec.dtype.itemsize))
+    return all(ok), "; ".join(det)
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--corpus", required=True)
     ap.add_argument("--dump", required=True)
     a = ap.parse_args(argv)
+    tmp = tempfile.mkdtemp(prefix="st32_")
+    try:
+        ok, det = synthetic_pcds(tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    check("pcd_synthetic_parse", ok, det)
     jp = PA.jug_paths(a.dataset, 7)
     cl = io32.read_pcd(jp["pcd"])
     check("pcd_ascii_count", cl["n_points"] == PA.RECORDED_N[7],
