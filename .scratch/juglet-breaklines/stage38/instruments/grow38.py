@@ -20,6 +20,8 @@ usage:
   grow38.py selftest
   grow38.py cell --cloud X.pcd --mesh M.obj --orig-cloud O.pcd --piece P --level 4 --arm A
                  --outdir O [--theta 3.4 --kappa 1.0 --nb 10 --floor 50]
+  grow38.py surface --ply S.ply --mesh M.obj --orig-cloud O.pcd --tag T --outdir DIR
+  grow38.py surfacepair --a S0.ply --b S1.ply --tag T --outdir DIR
   grow38.py aggregate --cells DIR --outdir DIR [--figures37 figs.json]
 """
 import argparse
@@ -237,6 +239,42 @@ def cmd_surface(a):
     return 0
 
 
+def cmd_surfacepair(a):
+    """The corrected pair statistic between two surfaces the pipeline wrote in one cell: for
+    every Surface_1 point, the nearest Surface_0 point and that step split along Surface_0's own
+    normal (t kept signed, so the sign says which side Surface_1 lies on) and across it, plus the
+    folded normal angle at that nearest point.  No floor, no threshold: every point of Surface_1
+    is measured."""
+    pts = {}
+    nrm = {}
+    src = {}
+    for k, path in (("0", a.a), ("1", a.b)):
+        d = M.read_ply(path)
+        pts[k] = M.ply_xyz(d)
+        n = M.ply_normals(d)
+        if n is None:
+            n, _c = M.pca_normals(pts[k], M.NORM_PCA_K)
+            src[k] = "pca%d" % M.NORM_PCA_K
+        else:
+            src[k] = "ply"
+        nrm[k] = n
+    st = M.pair_stats(pts["0"], nrm["0"], pts["1"], nrm["1"])
+    pw = M.pair_pointwise(pts["0"], nrm["0"], pts["1"], nrm["1"])
+    st.update({"tag": a.tag, "surface_a": a.a, "surface_b": a.b,
+               "normal_src_a": src["0"], "normal_src_b": src["1"],
+               "med_t_signed": float(np.median(pw["t"])),
+               "p05_t_signed": float(np.percentile(pw["t"], 5)),
+               "p95_t_signed": float(np.percentile(pw["t"], 95))})
+    os.makedirs(a.outdir, exist_ok=True)
+    with open(os.path.join(a.outdir, "surfacepair_%s.json" % a.tag), "w") as f:
+        json.dump(st, f, indent=1, sort_keys=True)
+    print("[SURFACEPAIR] %s n0=%d n1=%d med_nn=%.4f along=%.4f across=%.4f angle=%.3f deg "
+          "coin=%.6f t_signed=%.4f (normals a:%s b:%s)"
+          % (a.tag, st["n0"], st["n1"], st["med_nn"], st["med_along"], st["med_across"],
+             st["med_angle_deg"], st["coin"], st["med_t_signed"], src["0"], src["1"]))
+    return 0
+
+
 def cmd_aggregate(a):
     cells = []
     for root, _d, files in os.walk(a.cells):
@@ -386,6 +424,10 @@ def main(argv=None):
     for k in ("--ply", "--mesh", "--orig-cloud", "--tag", "--outdir"):
         s.add_argument(k, required=True)
     s.set_defaults(fn=cmd_surface)
+    s = sub.add_parser("surfacepair")
+    for k in ("--a", "--b", "--tag", "--outdir"):
+        s.add_argument(k, required=True)
+    s.set_defaults(fn=cmd_surfacepair)
     a = ap.parse_args(argv)
     if not getattr(a, "fn", None):
         ap.print_help()
