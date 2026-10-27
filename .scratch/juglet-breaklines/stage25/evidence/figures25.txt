@@ -1,0 +1,74 @@
+[
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F1_piece3_armB.png",
+  "panels": 5,
+  "width_px": 2400,
+  "height_px": 672,
+  "span_mm": 25.77465,
+  "mm_per_px": 0.0536971875,
+  "scale_bar_mm": 5.0,
+  "rows": 1,
+  "name": "F1_piece3_armB",
+  "missing_rungs": []
+ },
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F2_piece3_armE.png",
+  "panels": 5,
+  "width_px": 2400,
+  "height_px": 672,
+  "span_mm": 25.853080000000002,
+  "mm_per_px": 0.05386058333333334,
+  "scale_bar_mm": 5.0,
+  "rows": 1,
+  "name": "F2_piece3_armE",
+  "missing_rungs": []
+ },
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F3_piece2_armB.png",
+  "panels": 5,
+  "width_px": 2400,
+  "height_px": 672,
+  "span_mm": 27.401110000000003,
+  "mm_per_px": 0.05708564583333334,
+  "scale_bar_mm": 5.0,
+  "rows": 1,
+  "name": "F3_piece2_armB",
+  "missing_rungs": []
+ },
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F4_piece5_armB_armD.png",
+  "panels": 10,
+  "width_px": 2400,
+  "height_px": 1152,
+  "span_mm": 31.254080000000002,
+  "mm_per_px": 0.06511266666666667,
+  "scale_bar_mm": 10.0,
+  "rows": 2,
+  "name": "F4_piece5_armB_armD",
+  "missing_rungs": []
+ },
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F5_piece7_armE.png",
+  "panels": 5,
+  "width_px": 2400,
+  "height_px": 672,
+  "span_mm": 29.758300000000002,
+  "mm_per_px": 0.06199645833333334,
+  "scale_bar_mm": 5.0,
+  "rows": 1,
+  "name": "F5_piece7_armE",
+  "missing_rungs": []
+ },
+ {
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/figs/F6_piece7_armB.png",
+  "panels": 5,
+  "width_px": 2400,
+  "height_px": 672,
+  "span_mm": 29.685920000000003,
+  "mm_per_px": 0.061845666666666674,
+  "scale_bar_mm": 5.0,
+  "rows": 1,
+  "name": "F6_piece7_armB",
+  "missing_rungs": []
+ }
+]

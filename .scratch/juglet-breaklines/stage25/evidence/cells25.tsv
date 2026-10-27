@@ -1,0 +1,33 @@
+tag	piece	pot	arm	dump_env	envs	mesh_exit	elapsed_s	dump_files	r1	r2	r3	r4	r5	dumproot_exists	stray_rung_files	stage_dump_dirs	dump_wrote	dump_refused	surf0	surf1	outcome	clusters
+D	Juglet_Piece_2	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/D SFS_DUMP_PIECES=Juglet_Piece_2 SFS_PAPER_CHAIN=0	0	2	5	1	1	1	1	1	yes	0	0	8	0	yes	yes	two	2
+DOLD	Juglet_Piece_2	Juglet	OLD	unset	SFS_PAPER_CHAIN=0	0	2	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	2
+B	Juglet_Piece_3	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/B SFS_DUMP_PIECES=Juglet_Piece_3	0	1	5	1	1	1	1	1	yes	0	0	4	0	no	no	none	1
+D	Juglet_Piece_3	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/D SFS_DUMP_PIECES=Juglet_Piece_3 SFS_PAPER_CHAIN=0	0	1	5	1	1	1	1	1	yes	0	0	4	0	no	no	none	1
+EOLD	Juglet_Piece_2	Juglet	OLD	unset	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	3	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	3
+E	Juglet_Piece_2	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/E SFS_DUMP_PIECES=Juglet_Piece_2 SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	3	5	1	1	1	1	1	yes	0	0	8	0	yes	yes	two	3
+E	Juglet_Piece_3	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/E SFS_DUMP_PIECES=Juglet_Piece_3 SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	1	5	1	1	1	1	1	yes	0	0	4	0	no	no	none	1
+A	Juglet_Piece_3	Juglet	NEW	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+A2	Juglet_Piece_3	Juglet	NEW	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+OLD	Juglet_Piece_3	Juglet	OLD	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+A2	Juglet_Piece_2	Juglet	NEW	unset		0	5	0	0	0	0	0	0	no	0	0	0	0	no	no	none	0
+A	Juglet_Piece_2	Juglet	NEW	unset		0	5	0	0	0	0	0	0	no	0	0	0	0	no	no	none	0
+DOLD	Juglet_Piece_3	Juglet	OLD	unset	SFS_PAPER_CHAIN=0	0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+OLD	Juglet_Piece_2	Juglet	OLD	unset		0	5	0	0	0	0	0	0	no	0	0	0	0	no	no	none	0
+EOLD	Juglet_Piece_3	Juglet	OLD	unset	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+B	Juglet_Piece_2	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/B SFS_DUMP_PIECES=Juglet_Piece_2	0	5	5	1	1	1	1	1	yes	0	0	84	0	no	no	none	0
+B	Juglet_Piece_5	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/B SFS_DUMP_PIECES=Juglet_Piece_5	0	1	5	1	1	1	1	1	yes	0	0	4	0	no	no	none	1
+A	Juglet_Piece_5	Juglet	NEW	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+OLD	Juglet_Piece_5	Juglet	OLD	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+A2	Juglet_Piece_5	Juglet	NEW	unset		0	1	0	0	0	0	0	0	no	0	0	0	0	no	no	none	1
+D	Juglet_Piece_5	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/D SFS_DUMP_PIECES=Juglet_Piece_5 SFS_PAPER_CHAIN=0	0	2	5	1	1	1	1	1	yes	0	0	4	0	yes	yes	two	2
+DOLD	Juglet_Piece_5	Juglet	OLD	unset	SFS_PAPER_CHAIN=0	0	2	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	2
+D	Juglet_Piece_7	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/D SFS_DUMP_PIECES=Juglet_Piece_7 SFS_PAPER_CHAIN=0	0	2	5	1	1	1	1	1	yes	0	0	4	0	yes	yes	two	5
+B	Juglet_Piece_7	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/B SFS_DUMP_PIECES=Juglet_Piece_7	0	3	5	1	1	1	1	1	yes	0	0	4	0	yes	yes	two	4
+A	Juglet_Piece_7	Juglet	NEW	unset		0	3	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	4
+A2	Juglet_Piece_7	Juglet	NEW	unset		0	3	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	4
+OLD	Juglet_Piece_7	Juglet	OLD	unset		0	3	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	4
+E	Juglet_Piece_5	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/E SFS_DUMP_PIECES=Juglet_Piece_5 SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	5	5	1	1	1	1	1	yes	0	0	4	0	yes	yes	two	3
+EOLD	Juglet_Piece_5	Juglet	OLD	unset	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	5	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	3
+DOLD	Juglet_Piece_7	Juglet	OLD	unset	SFS_PAPER_CHAIN=0	0	3	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	5
+E	Juglet_Piece_7	Juglet	NEW	set	SFS_DUMP_STAGE=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/E SFS_DUMP_PIECES=Juglet_Piece_7 SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	6	5	1	1	1	1	1	yes	0	0	4	0	yes	yes	two	10
+EOLD	Juglet_Piece_7	Juglet	OLD	unset	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1	0	5	0	0	0	0	0	0	no	0	0	0	0	yes	yes	two	10

@@ -1,0 +1,7 @@
+ticket 25 ladder: 60 rows over arms B,D,E, pieces Juglet_Piece_2,Juglet_Piece_3,Juglet_Piece_5,Juglet_Piece_7, five rungs
+  fail	2
+  n/a	46
+  pass	12
+pass = the ticket made a claim for this rung and the dump matches it; fail = the dump contradicts it;
+n/a = the ticket made no claim for this (arm, piece, rung); MISSING = the rung file was not written.
+No column here says whether a segmentation is right.
