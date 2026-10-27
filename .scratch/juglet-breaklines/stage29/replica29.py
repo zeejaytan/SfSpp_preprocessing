@@ -624,7 +624,8 @@ def draw_figure(a, thetas, clouds, loaded, astats, growth, path):
     fig_w, fig_h, dpi = 18.0, 11.0, 160
     binw = HIST_BINW
     p99max = max([astats[cd["cloud"]].get("p99", 0.0) for cd in clouds] + [0.0])
-    xmax = max(12.0, float(math.ceil(p99max)))
+    xmax = min(float(HIST_BINW * HIST_NBIN),
+               max(12.0, float(math.ceil(p99max))))
     edges = np.arange(0.0, HIST_BINW * HIST_NBIN + binw, binw)
     fig = plt.figure(figsize=(fig_w, fig_h), dpi=dpi)
     gs = GridSpec(3, 5, figure=fig, hspace=0.46, wspace=0.26,
@@ -653,8 +654,8 @@ def draw_figure(a, thetas, clouds, loaded, astats, growth, path):
         ax.grid(alpha=0.25, linewidth=0.5)
         ax.axvline(3.4, color="#555555", linestyle="--", linewidth=1.0)
         ax.axvline(4.0, color="#555555", linestyle=":", linewidth=1.0)
-        ax.text(0.985, 0.94, "above %.0f deg: %.2f %%"
-                % (xmax, 100.0 * (tot - seen) / tot),
+        ax.text(0.985, 0.94, "above %.2f deg: %.2f %%"
+                % (HIST_BINW * HIST_NBIN, 100.0 * (tot - seen) / tot),
                 transform=ax.transAxes, ha="right", va="top", fontsize=6.5,
                 color="#444444")
         ax.text(0.985, 0.80, "p50 %.2f  p90 %.2f deg"

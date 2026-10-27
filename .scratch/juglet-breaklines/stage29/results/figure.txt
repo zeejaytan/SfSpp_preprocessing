@@ -1,0 +1,12 @@
+colours	B #1f77b4  D #2ca02c  E #d62728  PotA #000000
+dpi	160
+figsize_in	18.0 x 11.0
+figsize_mm	457.2 x 279.4
+hist_x_range_deg	0..83.00, bin 0.25 deg
+mm_per_pixel_x	0.15875
+mm_per_pixel_y	0.15875
+path	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1637_7c3248f_t29-angle-survey/out/ticket29_angles_vs_theta.png
+pixels	2880 x 1760
+scale_bar_counts	8 regions bar in the count panel
+scale_bar_hist	10 deg bar in the first histogram panel; every histogram panel uses the same 0..83 deg x axis
+scale_bar_kgate	0.25 kgate bar in the kgate panel
