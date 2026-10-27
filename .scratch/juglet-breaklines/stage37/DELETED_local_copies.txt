@@ -1,0 +1,56 @@
+# Local copies deleted before ticket 37 closes (2026-10-28)
+
+These are copies of files that already live in the run directories of record on Spartan,
+fetched by the worker into the worktree so the reading could be written against them.
+They are not evidence: every one is present in
+  /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1404_c16e274_t37-adaptive-default/logs/
+  /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1420_c6f6491_t37-prefigure/logs/
+  /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1420_c6f6491_t37-prefigure/out/prefloor/
+and the numbers read from them are written into the ticket and into the committed tables.
+
+Classes deleted (no other class touched, nothing tracked, no source):
+
+  .err          1 files             0 B
+  .log         26 files        153701 B
+  .out          1 files         18731 B
+  .ply          3 files       2479914 B
+
+  TOTAL      31 files  2652346 B
+
+Geometry class: the three *_prefloor_regions.ply dumps (per-point cluster id + reason code).
+Record class: *.log, the Slurm .out/.err of both jobs. Never-delete class: nothing here —
+the figures, tables and json sidecars this ticket rests on are tracked in git.
+
+Paths:
+
+  .scratch/juglet-breaklines/stage37/phase1/logs/agg.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/build-new.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/build-orig.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/cells.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/fetch.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/pair-run.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/selftest-compare36.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/selftest-pair30.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/selftest-replica37.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/selftest.log
+  .scratch/juglet-breaklines/stage37/phase1/logs/slurm-33886175.err
+  .scratch/juglet-breaklines/stage37/phase1/logs/slurm-33886175.out
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Juglet/Juglet_Piece_2/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Juglet/Juglet_Piece_3/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Juglet/Juglet_Piece_5/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Juglet/Juglet_Piece_7/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Juglet/Juglet_Piece_9/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/FX/Pot_A/Pot_A_Piece_07/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/NA/Juglet/Juglet_Piece_3/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/NA/Juglet/Juglet_Piece_5/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/NA/Juglet/Juglet_Piece_7/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/PDN/Juglet/Juglet_Piece_2/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/PDN/Juglet/Juglet_Piece_9/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/PDN/Pot_A/Pot_A_Piece_07/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/RA/Juglet/Juglet_Piece_3/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/RA/Juglet/Juglet_Piece_5/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/RA/Juglet/Juglet_Piece_7/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/cellfiles/out/cells/RA/Pot_A/Pot_A_Piece_07/logs/replica.log
+  .scratch/juglet-breaklines/stage37/phase2/out/prefloor/Juglet_Piece_2_prefloor_regions.ply
+  .scratch/juglet-breaklines/stage37/phase2/out/prefloor/Juglet_Piece_9_prefloor_regions.ply
+  .scratch/juglet-breaklines/stage37/phase2/out/prefloor/Pot_A_Piece_07_prefloor_regions.ply
