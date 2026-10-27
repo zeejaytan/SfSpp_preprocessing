@@ -1,6 +1,8 @@
 # 29 — What angle does each vessel's wall actually need?
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 29-what-angle-does-the-wall-need, in /c/PR/worktrees/sfs/29
 **Answers:** U19
 **Blocked by:** none (read-only measurement; the replica instrument is on main at
 `.scratch/juglet-breaklines/stage28/replica234.py`)
