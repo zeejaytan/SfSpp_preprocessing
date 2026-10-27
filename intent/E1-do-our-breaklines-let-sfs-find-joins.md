@@ -2164,3 +2164,24 @@ so 283 of 291 stands as a coverage tally, not as a claim about how many distinct
 
 Next: the per-rung dump (ticket 25), then a small ticket to repair the de-duplication and re-measure whether
 any edgeline count moves.
+
+## 2026-10-27 — the breakline is the edge of a band, and most of the sherd is in no band (ticket 25)
+
+The per-rung dump turned the surface question inside out. On the Juglet the stage that produces Surface_0
+— and therefore our Breakline_0, which is its boundary — grows a region covering only about a fifth of the
+sherd: 679 of 3 021 points on piece 5, 326 and 263 of 4 254 on piece 7, 169 and 99 of 1 467 on piece 3,
+nothing at all on piece 2. So the line the assembler seats by is the rim of a **strip**, and whether that
+strip's boundary is the sherd's real broken edge has not been measured; the earlier 281/292 tally was
+measured on pieces whose regions cover far more of the sherd, and it is a coverage tally against the
+authors' lines, not a statement that the strip's rim is the right rim.
+
+The same run measured two further things that bear on any dot count: the 3 mm boundary reassignment
+multiplies a region 1.2× to 4.8×, and the written surfaces carry 1.2× to 1.45× more vertices than distinct
+positions (piece 5 chain off 1 845 vertices against 1 022 distinct). Both mean a dot count taken from these
+surfaces is an upper bound on distinct dots, which is why the duplication repair stays queued.
+
+Weight: none on the 281/292 tally — nothing here re-scores an edgeline. The strip question is a new
+measurement on one vessel, not a revision of the corpus tally.
+
+Next: measure whether the boundary of the grown band lies on the sherd's real broken edge, on the pieces
+that write a surface (1, 4, 6, 7), and repair the de-duplication so the count is of distinct dots.
