@@ -1,0 +1,285 @@
+[JOB] runid=20261027-1046_4099ee3_t34-nearest-carry job=33876722 tag=t34-nearest-carry new=4099ee35f32faaefe69d349d3a140a3619a86edb orig=908a7500ba568120ff0f3674403742d49643c927 host=spartan-bm152.hpc.unimelb.edu.au
+start 2026-10-27T10:47:49Z
+[JOB] commits ok new=4099ee3 orig=908a750
+[JOB] inputs hashed: 221 rows, tree 1803 rows
+opt-sfs-pristine ABSENT
+# /opt/sfs-pristine, recorded from the compute node
+status ABSENT
+ls: cannot access '/opt/sfs-pristine': No such file or directory
+stat: cannot statx '/opt/sfs-pristine': No such file or directory
+[JOB] instrument selftest
+[SELFTEST] ok   pcd/binary normals-first [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [-7.0, 8.0, -9.0]]
+[SELFTEST] ok   pcd/ascii x-first 
+[SELFTEST] ok   ply/ascii 
+[SELFTEST] ok   fold/30deg 30.000000
+[SELFTEST] ok   coverage/2mm 
+[SELFTEST] ok   pairs/along along=4.000 across=0.000
+[SELFTEST] ok   pairs/coincidence coin=1.000
+[SELFTEST] ok   replay/merge gates=['merge'] final=1 pairs=16
+[SELFTEST] ok   replay/min_pairs gate=min_pairs pairs=0
+[SELFTEST] ok   replay/min_pairs_2 
+[SELFTEST] ok   replay/rhoN gate=rhoN
+[SELFTEST] ok   obj/triangle [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
+[SELFTEST] ok   pca/flat max curv=0
+[SELFTEST] PASS (0 failures) tmp=/tmp/m34-mu5bbf49
+[JOB] the two comparison instruments' selftests
+[SELFTEST] PASS 5/5 through/across/coincidence on synthetic patches
+[SELFTEST] ok   identical file md5_equal=1 sorted_identical=1
+[SELFTEST] ok   one coordinate moved 0.5: sorted_identical=0 max_abs_diff=0.500
+[SELFTEST] ok   two rows swapped: sorted_identical=1 md5_equal=0
+[SELFTEST] PASS
+[JOB] build the pipeline from 908a7500ba568120ff0f3674403742d49643c927 (pre-change) and 4099ee35f32faaefe69d349d3a140a3619a86edb
+[BUILD] orig from 908a7500ba568120ff0f3674403742d49643c927
+[BUILD] orig ok 1582312 bytes
+[BUILD] new from 4099ee35f32faaefe69d349d3a140a3619a86edb
+[BUILD] new ok 1582080 bytes
+[JOB] cells: 70
+cells start 2026-10-27T10:50:16Z
+[JOB] xargs rc=0; cell.tsv written: 70 of 70
+[CELL] A2 Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=1s npts=1467 floor=50 from=50 capped=no clusters_pre=2 clusters=1 sizes=268 s0=no s1=no frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=1s npts=1467 floor=50 from=50 capped=no clusters_pre=2 clusters=1 sizes=268 s0=no s1=no frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] A2 Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=1s npts=1467 floor=50 from=50 capped=no clusters_pre=2 clusters=1 sizes=268 s0=no s1=no frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=1s npts=1467 floor=50 from=50 capped=no clusters_pre=1 clusters=1 sizes=316 s0=no s1=no frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=2s npts=1467 floor=50 from=50 capped=no clusters_pre=1 clusters=1 sizes=316 s0=yes s1=no frac=none kept=no
+[CELL] A2 Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=12s npts=14546 floor=50 from=50 capped=no clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 s0=yes s1=yes frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=12s npts=14546 floor=50 from=50 capped=no clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 s0=yes s1=yes frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=13s npts=14546 floor=50 from=50 capped=no clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 s0=yes s1=yes frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=1s npts=3021 floor=50 from=50 capped=no clusters_pre=1 clusters=1 sizes=679 s0=no s1=no frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=1s npts=3021 floor=50 from=50 capped=no clusters_pre=1 clusters=1 sizes=679 s0=no s1=no frac=none kept=no
+[CELL] A2 Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=2s npts=3021 floor=50 from=50 capped=no clusters_pre=1 clusters=1 sizes=679 s0=no s1=no frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=2s npts=3021 floor=50 from=50 capped=no clusters_pre=2 clusters=2 sizes=65,652 s0=yes s1=yes frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=2s npts=3021 floor=50 from=50 capped=no clusters_pre=2 clusters=2 sizes=65,652 s0=yes s1=yes frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=16s npts=14546 floor=50 from=50 capped=no clusters_pre=18 clusters=15 sizes=354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50 s0=yes s1=yes frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=16s npts=14546 floor=50 from=50 capped=no clusters_pre=18 clusters=15 sizes=354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50 s0=yes s1=yes frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=3s npts=4254 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=403,263,68,65 s0=yes s1=yes frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=3s npts=4254 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=403,263,68,65 s0=yes s1=yes frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=2s npts=4254 floor=50 from=50 capped=no clusters_pre=9 clusters=5 sizes=295,445,225,73,71 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=4s npts=4254 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=403,263,68,65 s0=yes s1=yes frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=3s npts=4254 floor=50 from=50 capped=no clusters_pre=9 clusters=5 sizes=295,445,225,73,71 s0=yes s1=yes frac=none kept=no
+[CELL] A Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=3s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] A2 Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=4s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] AO Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=4s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] B Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=4s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] C Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=4s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=18s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=19s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=18s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=16s npts=49528 floor=99 from=99 capped=no clusters_pre=7 clusters=6 sizes=20705,22696,686,385,245,184 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=16s npts=49528 floor=99 from=99 capped=no clusters_pre=7 clusters=6 sizes=20705,22696,686,385,245,184 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=52s npts=85136 floor=170 from=170 capped=no clusters_pre=11 clusters=11 sizes=32206,28179,3743,3401,891,757,486,336,304,291,240 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=15s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=5 sizes=19526,21518,916,135,128 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=17s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=57s npts=85136 floor=170 from=170 capped=no clusters_pre=11 clusters=11 sizes=32206,28179,3743,3401,891,757,486,336,304,291,240 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=58s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=61s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=60s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=12s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=11s npts=38901 floor=77 from=77 capped=no clusters_pre=11 clusters=8 sizes=16283,17794,510,303,235,197,174,98 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=11s npts=38901 floor=77 from=77 capped=no clusters_pre=11 clusters=8 sizes=16283,17794,510,303,235,197,174,98 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=15s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=5 sizes=19526,21518,916,135,128 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=12s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=13s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=9s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=10s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=10s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=7s npts=27944 floor=55 from=55 capped=no clusters_pre=9 clusters=7 sizes=11196,12418,393,316,219,104,62 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=11s npts=38074 floor=76 from=76 capped=no clusters_pre=7 clusters=6 sizes=15594,17028,713,462,429,129 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=11s npts=38074 floor=76 from=76 capped=no clusters_pre=7 clusters=6 sizes=15594,17028,713,462,429,129 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=8s npts=27944 floor=55 from=55 capped=no clusters_pre=9 clusters=7 sizes=11196,12418,393,316,219,104,62 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=7 clusters=7 sizes=2961,3185,312,244,143,125,67 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=7 clusters=7 sizes=2961,3185,312,244,143,125,67 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=7 clusters=5 sizes=2649,2969,271,265,50 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=3s npts=7682 floor=50 from=50 capped=no clusters_pre=7 clusters=5 sizes=2649,2969,271,265,50 s0=yes s1=yes frac=none kept=no
+cells end 2026-10-27T10:52:19Z
+[JOB] cells34.tsv rows=
+[JOB] aggregate measurement tables
+[M34] agg rows=4282 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1046_4099ee3_t34-nearest-carry/out
+[JOB] defaults proof: AO (pre-change binary) against A (this commit, no switches)
+[M34] defaults rows=28 non_identical=20 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1046_4099ee3_t34-nearest-carry/out/defaults34.tsv
+[JOB] defaults proof, both pairings, every file: AO vs A and A vs A2
+[DEFAULTS2] surface rows=68, not identical=40; segmentation comparisons=28, differing=9
+[DEFAULTS2] AO A Juglet_Piece_1 Juglet_Piece_1_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Juglet_Piece_1 Juglet_Piece_1_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Juglet_Piece_7 Juglet_Piece_7_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Juglet_Piece_7 Juglet_Piece_7_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_01 Pot_A_Piece_01_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_01 Pot_A_Piece_01_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_02 Pot_A_Piece_02_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_02 Pot_A_Piece_02_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_03 Pot_A_Piece_03_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_03 Pot_A_Piece_03_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_04 Pot_A_Piece_04_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_04 Pot_A_Piece_04_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] seg AO A Pot_A_Piece_01 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66760 surf1_points=57299 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66764 surf1_points=57299 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_02 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42199 surf1_points=46329 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42207 surf1_points=46325 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_03 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39774 surf1_points=43576 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39775 surf1_points=43577 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_04 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_04 outcome=two retries=1 clusters=5 sizes=15932,17374,770,164,124 npts=38901 floor=77 floor_from=77 capped=no surf0_points=32685 surf1_points=35789 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_04 outcome=two retries=1 clusters=5 sizes=15932,17374,770,164,124 npts=38901 floor=77 floor_from=77 capped=no surf0_points=32683 surf1_points=35789 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_05 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31576 surf1_points=34137 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31575 surf1_points=34139 reason=two surfaces written
+[DEFAULTS2] seg A A2 Pot_A_Piece_01 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66764 surf1_points=57299 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66762 surf1_points=57281 reason=two surfaces written
+[LINES34] rows=504
+[JOB] pair statistic on every cell that wrote two surfaces (ticket 30's ruler)
+[MEASURE30] cells=70 with_pair=52 ok=52 written=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1046_4099ee3_t34-nearest-carry/out/cells/measure30.tsv count_mismatch=0
+[JOB] pairs30.tsv rows=71
+[JOB] cells34.tsv rows=71
+[JOB] surfaces34.tsv rows=141
+[JOB] pairs34.tsv rows=53
+[JOB] carried34.tsv rows=141
+[JOB] replay34.tsv rows=3951
+[JOB] defaults34.tsv rows=29
+[JOB] defaults2.tsv rows=97
+[JOB] lines34.tsv rows=505
+[JOB] pairs30.tsv rows=71
+== cells34.tsv
+tag	pot	piece	envs	frac	mesh_exit	meas_exit	elapsed_s	npts	retries	clusters_pre_merge	clusters_post_merge	sizes_post_merge	outcome	floor	floor_from	capped	surf0	surf1	surf0_points	surf1_points	surf0_bytes	kept
+A2	Juglet	Juglet_Piece_1	none	none	0	0	12	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	266112	no
+A2	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_5	none	none	0	0	2	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_7	none	none	0	0	4	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	81278	no
+A2	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Pot_A	Pot_A_Piece_01	none	none	0	0	60	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66762	57281	5137137	no
+A2	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42207	46325	3310665	no
+A2	Pot_A	Pot_A_Piece_03	none	none	0	0	17	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39772	43577	3039462	no
+A2	Pot_A	Pot_A_Piece_04	none	none	0	0	13	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32683	35789	2568317	no
+A2	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31578	34140	2391707	no
+A2	Pot_A	Pot_A_Piece_06	none	none	0	0	10	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22574	24919	1778749	no
+A2	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+A2	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+A	Juglet	Juglet_Piece_1	none	none	0	0	13	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	280882	no
+A	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_7	none	none	0	0	3	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	80669	no
+A	Juglet	Juglet_Piece_9	none	none	0	0	3	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_1	none	none	0	0	12	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	277928	no
+AO	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_7	none	none	0	0	3	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	81278	no
+AO	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Pot_A	Pot_A_Piece_01	none	none	0	0	58	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66760	57299	5204967	no
+AO	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42199	46329	3205959	no
+AO	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39774	43576	3058995	no
+AO	Pot_A	Pot_A_Piece_04	none	none	0	0	12	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32685	35789	2500648	no
+AO	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31576	34137	2392621	no
+AO	Pot_A	Pot_A_Piece_06	none	none	0	0	9	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22572	24919	1767856	no
+AO	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+AO	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	405558	no
+A	Pot_A	Pot_A_Piece_01	none	none	0	0	61	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66764	57299	5136080	no
+A	Pot_A	Pot_A_Piece_02	none	none	0	0	19	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42207	46325	3310665	no
+A	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39775	43577	3059075	no
+A	Pot_A	Pot_A_Piece_04	none	none	0	0	12	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32683	35789	2551566	no
+A	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31575	34139	2391477	no
+A	Pot_A	Pot_A_Piece_06	none	none	0	0	10	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22572	24919	1756023	no
+A	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+A	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+B	Juglet	Juglet_Piece_1	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	16	14546	1	18	15	354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50	two	50	50	no	yes	yes	1422	8147	110313	no
+B	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	1	1467	1	1	1	316	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	3021	1	2	2	65,652	two	50	50	no	yes	yes	250	1620	20401	no
+B	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	4254	1	9	5	295,445,225,73,71	two	50	50	no	yes	yes	1049	1197	83156	no
+B	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	57	85136	1	11	11	32206,28179,3743,3401,891,757,486,336,304,291,240	two	170	170	no	yes	yes	66262	58058	5199373	no
+B	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	16	49528	1	7	6	20705,22696,686,385,245,184	two	99	99	no	yes	yes	42260	46490	3293964	no
+B	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	15	46784	1	5	5	19526,21518,916,135,128	two	93	93	no	yes	yes	39988	43937	3074786	no
+B	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	11	38901	1	11	8	16283,17794,510,303,235,197,174,98	two	77	77	no	yes	yes	33062	36297	2532290	no
+B	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	11	38074	1	7	6	15594,17028,713,462,429,129	two	76	76	no	yes	yes	32003	34637	2375045	no
+B	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	7	27944	1	9	7	11196,12418,393,316,219,104,62	two	55	55	no	yes	yes	23120	25465	1821326	no
+B	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	3	8598	1	7	7	2961,3185,312,244,143,125,67	two	50	50	no	yes	yes	6215	6557	471931	no
+B	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	7682	1	7	5	2649,2969,271,265,50	two	50	50	no	yes	yes	5577	6251	438650	no
+C	Juglet	Juglet_Piece_1	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	16	14546	1	18	15	354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50	two	50	50	no	yes	yes	1422	8147	109245	no
+C	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+C	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	2	1467	1	1	1	316	one	50	50	no	yes	no	797	-1	63538	no
+C	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	2	3021	1	2	2	65,652	two	50	50	no	yes	yes	250	1620	19846	no
+C	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	4254	1	9	5	295,445,225,73,71	two	50	50	no	yes	yes	1049	1197	83156	no
+C	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+C	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	52	85136	1	11	11	32206,28179,3743,3401,891,757,486,336,304,291,240	two	170	170	no	yes	yes	66262	58058	5199373	no
+C	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	16	49528	1	7	6	20705,22696,686,385,245,184	two	99	99	no	yes	yes	42260	46490	3293964	no
+C	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	15	46784	1	5	5	19526,21518,916,135,128	two	93	93	no	yes	yes	39988	43938	2993871	no
+C	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	11	38901	1	11	8	16283,17794,510,303,235,197,174,98	two	77	77	no	yes	yes	33060	36297	2580993	no
+C	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	11	38074	1	7	6	15594,17028,713,462,429,129	two	76	76	no	yes	yes	32003	34637	2424272	no
+C	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	8	27944	1	9	7	11196,12418,393,316,219,104,62	two	55	55	no	yes	yes	23119	25465	1765273	no
+C	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	8598	1	7	7	2961,3185,312,244,143,125,67	two	50	50	no	yes	yes	6215	6557	468677	no
+C	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	7682	1	7	5	2649,2969,271,265,50	two	50	50	no	yes	yes	5577	6251	438650	no
+== surfaces34.tsv
+points	ext_x	ext_y	ext_z	diag	cov_2mm	fold_deg	normal_src	surface	present	tag	pot	piece
+3580	17.573601	27.085600	23.015010	39.650370	0.274224	1.775220	ply	0	1	A	Juglet	Juglet_Piece_1
+12092	32.162600	36.050501	25.015990	54.404698	0.710299	1.906746	ply	1	1	A	Juglet	Juglet_Piece_1
+								0	0	A	Juglet	Juglet_Piece_2
+								1	0	A	Juglet	Juglet_Piece_2
+								0	0	A	Juglet	Juglet_Piece_3
+								1	0	A	Juglet	Juglet_Piece_3
+								0	0	A	Juglet	Juglet_Piece_5
+								1	0	A	Juglet	Juglet_Piece_5
+1012	14.664598	7.256799	22.080020	27.481609	0.196889	1.124358	ply	0	1	A	Juglet	Juglet_Piece_7
+829	15.660200	20.431000	11.612000	28.240152	0.167795	1.157469	ply	1	1	A	Juglet	Juglet_Piece_7
+								0	0	A	Juglet	Juglet_Piece_9
+								1	0	A	Juglet	Juglet_Piece_9
+66764	103.164198	115.286800	56.346990	164.647749	0.434400	0.734115	ply	0	1	A	Pot_A	Pot_A_Piece_01
+57299	105.922999	118.425900	58.345980	169.259059	0.394833	0.829227	ply	1	1	A	Pot_A	Pot_A_Piece_01
+42207	56.610411	107.370802	49.083000	130.928869	0.479067	0.829559	ply	0	1	A	Pot_A	Pot_A_Piece_02
+46325	59.282669	110.639799	52.129000	135.915535	0.523650	0.933839	ply	1	1	A	Pot_A	Pot_A_Piece_02
+39775	52.954168	84.695471	77.888000	126.664941	0.487250	0.614939	ply	0	1	A	Pot_A	Pot_A_Piece_03
+43577	56.303801	86.323560	78.012020	129.258463	0.518917	0.706952	ply	1	1	A	Pot_A	Pot_A_Piece_03
+32683	57.823399	85.029399	42.265990	111.175348	0.482133	0.565849	ply	0	1	A	Pot_A	Pot_A_Piece_04
+35789	60.365601	86.499802	43.660980	114.159987	0.522500	0.547003	ply	1	1	A	Pot_A	Pot_A_Piece_04
+31575	54.093719	94.671901	35.180000	114.571077	0.482367	0.647110	ply	0	1	A	Pot_A	Pot_A_Piece_05
+34139	57.136099	97.637101	36.193000	118.774873	0.522317	0.585240	ply	1	1	A	Pot_A	Pot_A_Piece_05
+22572	37.347199	115.185803	38.432010	127.041733	0.501350	0.617905	ply	0	1	A	Pot_A	Pot_A_Piece_06
+24919	38.760000	118.304402	39.422000	130.584697	0.532017	0.597326	ply	1	1	A	Pot_A	Pot_A_Piece_06
+6066	25.801941	39.828600	25.726990	53.980881	0.486417	0.566072	ply	0	1	A	Pot_A	Pot_A_Piece_07
+6437	26.884399	40.556100	26.403020	55.359621	0.523167	0.483995	ply	1	1	A	Pot_A	Pot_A_Piece_07
+5528	33.140252	27.246409	23.044010	48.699790	0.502250	0.698681	ply	0	1	A	Pot_A	Pot_A_Piece_08
+6097	35.727180	28.466190	24.453980	51.814597	0.545283	0.637197	ply	1	1	A	Pot_A	Pot_A_Piece_08
+3580	17.573601	27.085600	23.015010	39.650370	0.274224	1.775220	ply	0	1	A2	Juglet	Juglet_Piece_1
+12092	32.162600	36.050501	25.015990	54.404698	0.710299	1.906746	ply	1	1	A2	Juglet	Juglet_Piece_1
+								0	0	A2	Juglet	Juglet_Piece_2
+								1	0	A2	Juglet	Juglet_Piece_2
+								0	0	A2	Juglet	Juglet_Piece_3
+								1	0	A2	Juglet	Juglet_Piece_3
+								0	0	A2	Juglet	Juglet_Piece_5
+								1	0	A2	Juglet	Juglet_Piece_5
+1012	14.664598	7.256799	22.080020	27.481609	0.196889	1.124358	ply	0	1	A2	Juglet	Juglet_Piece_7
+829	15.660200	20.431000	11.612000	28.240152	0.167795	1.157469	ply	1	1	A2	Juglet	Juglet_Piece_7
+								0	0	A2	Juglet	Juglet_Piece_9
+								1	0	A2	Juglet	Juglet_Piece_9
+66762	103.164198	115.286800	56.346990	164.647749	0.434383	0.734114	ply	0	1	A2	Pot_A	Pot_A_Piece_01
+57281	105.922999	118.425900	58.345980	169.259059	0.394667	0.829010	ply	1	1	A2	Pot_A	Pot_A_Piece_01
+42207	56.610411	107.370802	49.083000	130.928869	0.479067	0.829559	ply	0	1	A2	Pot_A	Pot_A_Piece_02
+46325	59.282669	110.639799	52.129000	135.915535	0.523650	0.933839	ply	1	1	A2	Pot_A	Pot_A_Piece_02
+39772	52.954168	84.695471	77.888000	126.664941	0.487167	0.614773	ply	0	1	A2	Pot_A	Pot_A_Piece_03
+43577	56.303801	86.323560	78.012020	129.258463	0.518917	0.706952	ply	1	1	A2	Pot_A	Pot_A_Piece_03
+# ticket 34 -- geometry written by this run, recorded BEFORE the delete.
+# The two binaries stay at out/bin-orig and out/bin-new; everything below is reproducible
+# from the two commits and the corpus by out/commands.txt.
+key	ext	files	bytes
+ext	.1	2	216574
+ext	.backup_with_tps	2	241812
+ext	.bin	16	278592
+ext	.c	8	212016
+[JOB] build trees deleted: 6288 files, 380436810 bytes
+# cells whose stage and rung dump were NOT deleted because the measurement failed
+# count 0
+[INPUTS] identical before and after: 221 rows
+[CORPUS] identical before and after: 1803 rows incl the pristine line
+opt-sfs-pristine ABSENT
+[JOB] index row appended:
+20261027-1046_4099ee3_t34-nearest-carry^I33876722^I4099ee35f32faaefe69d349d3a140a3619a86edb^It34-nearest-carry^I^I$
+end 2026-10-27T10:52:46Z
+[JOB] DONE rc 0

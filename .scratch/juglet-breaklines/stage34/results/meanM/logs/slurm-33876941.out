@@ -1,0 +1,161 @@
+[JOB] runid=20261027-2159_bb3f67d_t34-mean-baseline job=33876941 tag=t34-mean-baseline new=bb3f67d45025485aace5b3baf695383b57b56d51 orig=908a7500ba568120ff0f3674403742d49643c927 host=spartan-bm170.hpc.unimelb.edu.au
+start 2026-10-27T10:59:51Z
+[JOB] commits ok new=bb3f67d orig=908a750
+[JOB] inputs hashed: 221 rows, tree 1803 rows
+opt-sfs-pristine ABSENT
+# /opt/sfs-pristine, recorded from the compute node
+status ABSENT
+ls: cannot access '/opt/sfs-pristine': No such file or directory
+stat: cannot statx '/opt/sfs-pristine': No such file or directory
+[JOB] instrument selftest
+[SELFTEST] ok   pcd/binary normals-first [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [-7.0, 8.0, -9.0]]
+[SELFTEST] ok   pcd/ascii x-first 
+[SELFTEST] ok   ply/ascii 
+[SELFTEST] ok   fold/30deg 30.000000
+[SELFTEST] ok   coverage/2mm 
+[SELFTEST] ok   pairs/along along=4.000 across=0.000
+[SELFTEST] ok   pairs/coincidence coin=1.000
+[SELFTEST] ok   replay/merge gates=['merge'] final=1 pairs=16
+[SELFTEST] ok   replay/min_pairs gate=min_pairs pairs=0
+[SELFTEST] ok   replay/min_pairs_2 
+[SELFTEST] ok   replay/rhoN gate=rhoN
+[SELFTEST] ok   obj/triangle [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
+[SELFTEST] ok   pca/flat max curv=0
+[SELFTEST] PASS (0 failures) tmp=/tmp/m34-cp3o4qvy
+[JOB] the two comparison instruments' selftests
+[SELFTEST] PASS 5/5 through/across/coincidence on synthetic patches
+[SELFTEST] ok   identical file md5_equal=1 sorted_identical=1
+[SELFTEST] ok   one coordinate moved 0.5: sorted_identical=0 max_abs_diff=0.500
+[SELFTEST] ok   two rows swapped: sorted_identical=1 md5_equal=0
+[SELFTEST] PASS
+[JOB] build the pipeline from 908a7500ba568120ff0f3674403742d49643c927 (pre-change) and bb3f67d45025485aace5b3baf695383b57b56d51
+[JOB] the pre-change binary is NOT built: this job runs no AO arm
+[BUILD] new from bb3f67d45025485aace5b3baf695383b57b56d51
+[BUILD] new ok 1582080 bytes
+[JOB] cells: 14
+cells start 2026-10-27T11:01:08Z
+[JOB] xargs rc=0; cell.tsv written: 14 of 14
+[CELL] M Juglet/Juglet_Piece_3 exit=0 meas=0 elapsed=1s npts=1467 floor=50 from=50 capped=no clusters_pre=2 clusters=1 sizes=275 s0=no s1=no frac=none kept=no
+[CELL] M Juglet/Juglet_Piece_5 exit=0 meas=0 elapsed=2s npts=3021 floor=50 from=50 capped=no clusters_pre=2 clusters=2 sizes=82,659 s0=yes s1=yes frac=none kept=no
+[CELL] M Juglet/Juglet_Piece_7 exit=0 meas=0 elapsed=3s npts=4254 floor=50 from=50 capped=no clusters_pre=6 clusters=3 sizes=80,912,56 s0=yes s1=yes frac=none kept=no
+[CELL] M Juglet/Juglet_Piece_9 exit=0 meas=0 elapsed=4s npts=787 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] M Juglet/Juglet_Piece_2 exit=0 meas=0 elapsed=5s npts=1031 floor=50 from=50 capped=no clusters_pre=0 clusters=0 sizes=none s0=no s1=no frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=7 clusters=7 sizes=2867,3137,225,212,199,133,75 s0=yes s1=yes frac=none kept=no
+[CELL] M Juglet/Juglet_Piece_1 exit=0 meas=0 elapsed=13s npts=14546 floor=50 from=50 capped=no clusters_pre=21 clusters=17 sizes=631,3541,539,200,148,144,142,136,115,112,93,87,82,62,61,52,52 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=4s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2616,2880,276,260 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=9s npts=27944 floor=55 from=55 capped=no clusters_pre=7 clusters=7 sizes=11195,12271,327,299,186,94,73 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=12s npts=38901 floor=77 from=77 capped=no clusters_pre=8 clusters=6 sizes=16296,17668,462,423,411,202 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=6 clusters=6 sizes=15585,16895,716,409,335,112 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=5 sizes=19619,21390,951,255,169 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=18s npts=49528 floor=99 from=99 capped=no clusters_pre=7 clusters=5 sizes=20914,22834,872,281,241 s0=yes s1=yes frac=none kept=no
+[CELL] M Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=52s npts=85136 floor=170 from=170 capped=no clusters_pre=14 clusters=13 sizes=32775,28101,3915,3440,841,785,436,434,417,393,334,325,191 s0=yes s1=yes frac=none kept=no
+cells end 2026-10-27T11:02:08Z
+[JOB] cells34.tsv rows=
+[JOB] aggregate measurement tables
+[M34] agg rows=801 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-2159_bb3f67d_t34-mean-baseline/out
+[JOB] no defaults proof in this job: it runs no AO and no A arm (the first ticket-34 job carries it)
+[LINES34] rows=150
+[JOB] pair statistic on every cell that wrote two surfaces (ticket 30's ruler)
+[MEASURE30] cells=14 with_pair=11 ok=11 written=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-2159_bb3f67d_t34-mean-baseline/out/cells/measure30.tsv count_mismatch=0
+[JOB] pairs30.tsv rows=15
+[JOB] cells34.tsv rows=15
+[JOB] surfaces34.tsv rows=29
+[JOB] pairs34.tsv rows=12
+[JOB] carried34.tsv rows=29
+[JOB] replay34.tsv rows=735
+[JOB] lines34.tsv rows=151
+[JOB] pairs30.tsv rows=15
+== cells34.tsv
+tag	pot	piece	envs	frac	mesh_exit	meas_exit	elapsed_s	npts	retries	clusters_pre_merge	clusters_post_merge	sizes_post_merge	outcome	floor	floor_from	capped	surf0	surf1	surf0_points	surf1_points	surf0_bytes	kept
+M	Juglet	Juglet_Piece_1	SFS_NORMAL_SOURCE=input	none	0	0	13	14546	1	21	17	631,3541,539,200,148,144,142,136,115,112,93,87,82,62,61,52,52	two	50	50	no	yes	yes	2010	8263	156896	no
+M	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+M	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input	none	0	0	1	1467	1	2	1	275	none	50	50	no	no	no	-1	-1	0	no
+M	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input	none	0	0	2	3021	1	2	2	82,659	two	50	50	no	yes	yes	235	1559	18551	no
+M	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input	none	0	0	3	4254	1	6	3	80,912,56	two	50	50	no	yes	yes	295	2552	23621	no
+M	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+M	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input	none	0	0	52	85136	1	14	13	32775,28101,3915,3440,841,785,436,434,417,393,334,325,191	two	170	170	no	yes	yes	66799	57908	5241105	no
+M	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input	none	0	0	18	49528	1	7	5	20914,22834,872,281,241	two	99	99	no	yes	yes	42489	46656	3249772	no
+M	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input	none	0	0	16	46784	1	5	5	19619,21390,951,255,169	two	93	93	no	yes	yes	40082	43801	3082811	no
+M	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input	none	0	0	12	38901	1	8	6	16296,17668,462,423,411,202	two	77	77	no	yes	yes	33066	36134	2597691	no
+M	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input	none	0	0	12	38074	1	6	6	15585,16895,716,409,335,112	two	76	76	no	yes	yes	31972	34467	2421761	no
+M	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input	none	0	0	9	27944	1	7	7	11195,12271,327,299,186,94,73	two	55	55	no	yes	yes	23101	25251	1808670	no
+M	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input	none	0	0	3	8598	1	7	7	2867,3137,225,212,199,133,75	two	50	50	no	yes	yes	6091	6487	459751	no
+M	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input	none	0	0	4	7682	1	5	4	2616,2880,276,260	two	50	50	no	yes	yes	5540	6122	435911	no
+== surfaces34.tsv
+points	ext_x	ext_y	ext_z	diag	cov_2mm	fold_deg	normal_src	surface	present	tag	pot	piece
+2010	21.464501	14.886800	19.191990	32.414103	0.202313	1.148406	ply	0	1	M	Juglet	Juglet_Piece_1
+8263	32.299000	36.050501	26.421990	55.145132	0.567136	1.139601	ply	1	1	M	Juglet	Juglet_Piece_1
+								0	0	M	Juglet	Juglet_Piece_2
+								1	0	M	Juglet	Juglet_Piece_2
+								0	0	M	Juglet	Juglet_Piece_3
+								1	0	M	Juglet	Juglet_Piece_3
+235	4.772202	11.251900	9.694030	15.599788	0.112381	0.980713	ply	0	1	M	Juglet	Juglet_Piece_5
+1559	22.849098	25.373100	20.086000	39.614680	0.467397	0.875236	ply	1	1	M	Juglet	Juglet_Piece_5
+295	10.466202	12.645400	3.596990	16.804341	0.091438	1.155040	ply	0	1	M	Juglet	Juglet_Piece_7
+2552	21.845799	26.779000	25.773990	43.112090	0.495666	1.508527	ply	1	1	M	Juglet	Juglet_Piece_7
+								0	0	M	Juglet	Juglet_Piece_9
+								1	0	M	Juglet	Juglet_Piece_9
+66799	103.186998	115.286800	56.346990	164.662036	0.434517	0.615976	ply	0	1	M	Pot_A	Pot_A_Piece_01
+57908	106.137497	118.593300	58.345980	169.510449	0.395250	0.678820	ply	1	1	M	Pot_A	Pot_A_Piece_01
+42489	56.200141	107.370802	49.140010	130.773413	0.478500	0.683203	ply	0	1	M	Pot_A	Pot_A_Piece_02
+46656	59.101249	110.528799	52.170990	135.762238	0.523733	0.763131	ply	1	1	M	Pot_A	Pot_A_Piece_02
+40082	53.087870	84.912097	78.026000	126.950553	0.488367	0.568188	ply	0	1	M	Pot_A	Pot_A_Piece_03
+43801	56.303801	86.061813	78.012020	129.083806	0.518583	0.625319	ply	1	1	M	Pot_A	Pot_A_Piece_03
+33066	57.923699	85.140799	42.265990	111.312733	0.482567	0.517725	ply	0	1	M	Pot_A	Pot_A_Piece_04
+36134	60.317402	86.499802	43.760990	114.172803	0.522467	0.493448	ply	1	1	M	Pot_A	Pot_A_Piece_04
+31972	53.798450	94.627703	35.180000	114.395401	0.483033	0.567564	ply	0	1	M	Pot_A	Pot_A_Piece_05
+34467	57.222501	98.386204	36.193000	119.432797	0.522133	0.513534	ply	1	1	M	Pot_A	Pot_A_Piece_05
+23101	37.232701	115.185803	38.573000	127.050854	0.503417	0.539964	ply	0	1	M	Pot_A	Pot_A_Piece_06
+25251	38.630900	118.376599	39.422000	130.611867	0.531717	0.526071	ply	1	1	M	Pot_A	Pot_A_Piece_06
+6091	24.547651	39.731699	25.587000	53.253072	0.481583	0.580449	ply	0	1	M	Pot_A	Pot_A_Piece_07
+6487	26.823100	40.188700	25.703010	54.728923	0.522067	0.458417	ply	1	1	M	Pot_A	Pot_A_Piece_07
+5540	33.050182	27.246409	23.044010	48.638542	0.500633	0.702167	ply	0	1	M	Pot_A	Pot_A_Piece_08
+6122	35.522381	28.177319	24.229980	51.409073	0.541867	0.642780	ply	1	1	M	Pot_A	Pot_A_Piece_08
+== carried34.tsv
+rung	points	zero_normals	unit_frac	fold_deg_to_mesh	tag	pot	piece
+r1_downsampled	14546	0	1.000000	1.646342	M	Juglet	Juglet_Piece_1
+r2_clusters_premerge	14546	0	1.000000	1.646342	M	Juglet	Juglet_Piece_1
+r1_downsampled	1031	0	1.000000	9.441063	M	Juglet	Juglet_Piece_2
+r2_clusters_premerge	1031	0	1.000000	9.441063	M	Juglet	Juglet_Piece_2
+r1_downsampled	1467	0	1.000000	7.034291	M	Juglet	Juglet_Piece_3
+r2_clusters_premerge	1467	0	1.000000	7.034291	M	Juglet	Juglet_Piece_3
+r1_downsampled	3021	0	1.000000	4.490551	M	Juglet	Juglet_Piece_5
+r2_clusters_premerge	3021	0	1.000000	4.490551	M	Juglet	Juglet_Piece_5
+r1_downsampled	4254	0	1.000000	3.866934	M	Juglet	Juglet_Piece_7
+r2_clusters_premerge	4254	0	1.000000	3.866934	M	Juglet	Juglet_Piece_7
+r1_downsampled	787	0	1.000000	9.952567	M	Juglet	Juglet_Piece_9
+r2_clusters_premerge	787	0	1.000000	9.952567	M	Juglet	Juglet_Piece_9
+r1_downsampled	85136	0	1.000000	0.797698	M	Pot_A	Pot_A_Piece_01
+r2_clusters_premerge	85136	0	1.000000	0.797698	M	Pot_A	Pot_A_Piece_01
+r1_downsampled	49528	0	1.000000	0.792184	M	Pot_A	Pot_A_Piece_02
+r2_clusters_premerge	49528	0	1.000000	0.792184	M	Pot_A	Pot_A_Piece_02
+r1_downsampled	46784	0	1.000000	0.653303	M	Pot_A	Pot_A_Piece_03
+r2_clusters_premerge	46784	0	1.000000	0.653303	M	Pot_A	Pot_A_Piece_03
+r1_downsampled	38901	0	1.000000	0.562790	M	Pot_A	Pot_A_Piece_04
+r2_clusters_premerge	38901	0	1.000000	0.562790	M	Pot_A	Pot_A_Piece_04
+r1_downsampled	38074	0	1.000000	0.608528	M	Pot_A	Pot_A_Piece_05
+r2_clusters_premerge	38074	0	1.000000	0.608528	M	Pot_A	Pot_A_Piece_05
+r1_downsampled	27944	0	1.000000	0.614159	M	Pot_A	Pot_A_Piece_06
+r2_clusters_premerge	27944	0	1.000000	0.614159	M	Pot_A	Pot_A_Piece_06
+r1_downsampled	8598	0	1.000000	0.694484	M	Pot_A	Pot_A_Piece_07
+r2_clusters_premerge	8598	0	1.000000	0.694484	M	Pot_A	Pot_A_Piece_07
+r1_downsampled	7682	0	1.000000	0.894819	M	Pot_A	Pot_A_Piece_08
+r2_clusters_premerge	7682	0	1.000000	0.894819	M	Pot_A	Pot_A_Piece_08
+# ticket 34 -- geometry written by this run, recorded BEFORE the delete.
+# The two binaries stay at out/bin-orig and out/bin-new; everything below is reproducible
+# from the two commits and the corpus by out/commands.txt.
+key	ext	files	bytes
+ext	.1	1	108287
+ext	.backup_with_tps	1	120906
+ext	.bin	8	139296
+ext	.c	4	106008
+[JOB] build trees deleted: 3153 files, 190333014 bytes
+# cells whose stage and rung dump were NOT deleted because the measurement failed
+# count 0
+[INPUTS] identical before and after: 221 rows
+[CORPUS] identical before and after: 1803 rows incl the pristine line
+opt-sfs-pristine ABSENT
+[JOB] index row appended:
+20261027-2159_bb3f67d_t34-mean-baseline^I33876941^Ibb3f67d45025485aace5b3baf695383b57b56d51^It34-mean-baseline^I^I$
+end 2026-10-27T11:02:15Z
+[JOB] DONE rc 0
