@@ -1,0 +1,23 @@
+{
+ "clusters": 8,
+ "ge10": 8,
+ "ge20": 8,
+ "ge30": 8,
+ "ge50": 8,
+ "ge_pct1": 7,
+ "ge_pct10": 3,
+ "ge_pct5": 4,
+ "largest": 2430,
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Juglet_Piece_9_x1/dump/Juglet_Piece_9/r2_clusters_premerge.ply",
+ "points": 5256,
+ "sizes_top20": [
+  2430,
+  1497,
+  538,
+  327,
+  166,
+  158,
+  89,
+  51
+ ]
+}

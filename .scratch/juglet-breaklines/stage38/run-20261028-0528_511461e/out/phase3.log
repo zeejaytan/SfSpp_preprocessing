@@ -1,0 +1,161 @@
+[PIPELINE] wall clock left: 1500s
+[PIPELINE] ==============================================================
+[PIPELINE] cell Juglet_Piece_2 (Juglet) level=1 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Juglet_Piece_2_x1
+[PIPELINE] mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj
+[PIPELINE] cloud=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd
+[PIPELINE] axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz
+[VALIDATE] Juglet_Piece_2 mesh v=2565 f=5126 area=491.0674 mm2  edge_median=0.3387 edge_cv=1.107 angle_median=55.8 deg angle_min=0.1 deg frac(tri min angle<20 deg)=0.110
+[VALIDATE] shipped cloud: points=2565 median_nn=0.2109 p10=0.1609 p90=0.4131 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2109 mm -> points=6259 median_nn=0.2090 p10=0.1653 p90=0.2851 mm (voxel 0.3213 mm, 2 merge iterations) | count_ratio=2.4402 spacing_ratio=0.9911 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 491.0674 mm2 at that spacing carries 11041 points = 4.30x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2090 mm at request 0.2109 (ratio 0.9911) and 0.1042 mm at request 0.1054 (ratio 0.9885) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1115 (0.529 s) p99=0.2079 (0.986 s) max=0.2476 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 6259 points to the original triangles median=0.00114 (0.005 s) p99=0.02800 (0.133 s) p99.9=0.04991 max=0.14001 mm (0.664 s) [7 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.89927 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 25238 points for 6259 (1.008 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.557 points*s^2/area at the request, 0.558 at half of it, 0.542 at the density-implied spacing 0.4375 mm (1386 points = 0.540 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+[SAMPLE] Juglet_Piece_2 x1 requested=0.21090 mm achieved median=0.20904 p10=0.16535 p90=0.28499 ratio=0.991 points=6259 voxel=0.32134 iters=2 area=491.07 mm2 elapsed=0.2s
+[PIPELINE] synthetic cloud /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd: 6259 points, achieved median NN 0.20904330739003849 mm (requested 0.21089557 mm)
+[PIPELINE] synthetic md5=c6cd2eab8a1df10b6e97951cc360d3af
+[PIPELINE] === stage: geometry symlinked, the SYNTHETIC cloud is the only cloud in the stage ===
+[STAGE] Juglet_Piece_2 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz
+SYNTHETIC	c6cd2eab8a1df10b6e97951cc360d3af	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd	6259
+REAL-MESH	5223fe76170ac556be23c7164c715943	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj	-
+REAL-AXIS	6066ab7374d91292403662fa1870f494	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz	-
+[PIPELINE] === run the pipeline ===
+[PIPELINE] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=6259
+[PIPELINE] pipeline rc=0 log=13189 bytes
+[PIPELINE] kept 25 log lines
+[PIPELINE] pipeline: Number of clusters is equal to 8
+piece	Juglet_Piece_2
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd
+cloud_md5	c6cd2eab8a1df10b6e97951cc360d3af
+cloud_points	6259
+cloud_achieved_spacing_mm	0.20904330739003849
+requested_spacing_mm	0.21089557
+pipeline_rc	0
+pipeline_clusters	8
+spacing_policy	piece
+spacing_s0MM	0.209045
+spacing_S	0.209045
+count_minCluster	50
+status_npts	6259
+status_floor	50
+status_outcome	two
+status_surf0_points	4155
+status_surf1_points	3979
+retry_sizes	1684,1620,62,52
+downsampling	6259
+downsampling_radius	0.04235
+[PIPELINE] === the surfaces the pipeline wrote, measured against the ORIGINAL cloud and mesh ===
+[PIPELINE] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_2_x1/Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply (319604 bytes)
+[SURFACE] Juglet_Piece_2_x1_Surface_0 points=4155 diag=27.471 mm cov2mm=0.7680 fold=3.104 deg (normals ply)
+[PIPELINE] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_2_x1/Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply (315847 bytes)
+[SURFACE] Juglet_Piece_2_x1_Surface_1 points=3979 diag=27.742 mm cov2mm=1.0000 fold=3.013 deg (normals ply)
+[PIPELINE] === the pair statistic between the two surfaces this cell wrote ===
+[SURFACEPAIR] Juglet_Piece_2_x1 n0=4155 n1=3979 med_nn=0.0000 along=0.0000 across=0.0000 angle=0.000 deg coin=0.591103 t_signed=0.0000 (normals a:ply b:ply)
+[PIPELINE] SampledWithNormals: points=6259 median_nn=0.20892 mm
+[PIPELINE] rung2 dump: points=6259 clusters=9 largest=2841 ge50=9 ge_pct5=3
+[PIPELINE] rung2 top20 sizes: [2841, 1549, 1212, 264, 144, 74, 62, 61, 52]
+[PIPELINE] === count the geometry this cell produced, then delete it ===
+ext	files	bytes
+json	5	4183
+obj	1	159681
+other	3	540
+pcd	4	1009477
+ply	12	4416096
+TOTAL	30	6916020
+xyz	5	1326043
+[PIPELINE] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_2_x1 and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Juglet_Piece_2_x1/dump after the counted record above
+[PIPELINE] wall clock left: 1486s
+[PIPELINE] ==============================================================
+[PIPELINE] cell Juglet_Piece_9 (Juglet) level=1 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Juglet_Piece_9_x1
+[PIPELINE] mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj
+[PIPELINE] cloud=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd
+[PIPELINE] axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz
+[VALIDATE] Juglet_Piece_9 mesh v=2094 f=4184 area=373.7574 mm2  edge_median=0.3146 edge_cv=0.919 angle_median=55.6 deg angle_min=0.0 deg frac(tri min angle<20 deg)=0.105
+[VALIDATE] shipped cloud: points=2094 median_nn=0.2034 p10=0.1599 p90=0.3950 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2034 mm -> points=5257 median_nn=0.2015 p10=0.1630 p90=0.2580 mm (voxel 0.3113 mm, 2 merge iterations) | count_ratio=2.5105 spacing_ratio=0.9906 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 373.7574 mm2 at that spacing carries 9033 points = 4.31x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2015 mm at request 0.2034 (ratio 0.9906) and 0.1011 mm at request 0.1017 (ratio 0.9942) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1071 (0.527 s) p99=0.2014 (0.990 s) max=0.2442 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 5257 points to the original triangles median=0.00088 (0.004 s) p99=0.02638 (0.130 s) p99.9=0.05486 max=0.08530 mm (0.419 s) [3 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.18714 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 21277 points for 5257 (1.012 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.571 points*s^2/area at the request, 0.582 at half of it, 0.568 at the density-implied spacing 0.4225 mm (1194 points = 0.570 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+[SAMPLE] Juglet_Piece_9 x1 requested=0.20342 mm achieved median=0.20151 p10=0.16296 p90=0.25803 ratio=0.991 points=5257 voxel=0.31129 iters=2 area=373.76 mm2 elapsed=0.1s
+[PIPELINE] synthetic cloud /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd: 5257 points, achieved median NN 0.201511365190472 mm (requested 0.20341531 mm)
+[PIPELINE] synthetic md5=77e0f59d80bef8df1f92049622f97f59
+[PIPELINE] === stage: geometry symlinked, the SYNTHETIC cloud is the only cloud in the stage ===
+[STAGE] Juglet_Piece_9 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz
+SYNTHETIC	77e0f59d80bef8df1f92049622f97f59	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd	5257
+REAL-MESH	c773e3d0e28d0bc8513d9eef463e190f	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj	-
+REAL-AXIS	2ece60314b1515e5b03904136af0a2e7	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz	-
+[PIPELINE] === run the pipeline ===
+[PIPELINE] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=5257
+[PIPELINE] pipeline rc=0 log=12916 bytes
+[PIPELINE] kept 21 log lines
+[PIPELINE] pipeline: Number of clusters is equal to 7
+piece	Juglet_Piece_9
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd
+cloud_md5	77e0f59d80bef8df1f92049622f97f59
+cloud_points	5257
+cloud_achieved_spacing_mm	0.201511365190472
+requested_spacing_mm	0.20341531
+pipeline_rc	0
+pipeline_clusters	7
+spacing_policy	piece
+spacing_s0MM	0.201486
+spacing_S	0.201486
+count_minCluster	50
+status_npts	5256
+status_floor	50
+status_outcome	two
+status_surf0_points	2229
+status_surf1_points	3512
+retry_sizes	589,1497,327,166,158,89
+downsampling	5256
+downsampling_radius	0.03502
+[PIPELINE] === the surfaces the pipeline wrote, measured against the ORIGINAL cloud and mesh ===
+[PIPELINE] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_9_x1/Temp/Data/Juglet/Juglet_Piece_9_Surface_0.ply (172248 bytes)
+[SURFACE] Juglet_Piece_9_x1_Surface_0 points=2229 diag=19.521 mm cov2mm=0.8138 fold=2.966 deg (normals ply)
+[PIPELINE] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_9_x1/Temp/Data/Juglet/Juglet_Piece_9_Surface_1.ply (272962 bytes)
+[SURFACE] Juglet_Piece_9_x1_Surface_1 points=3512 diag=22.025 mm cov2mm=0.7326 fold=2.803 deg (normals ply)
+[PIPELINE] === the pair statistic between the two surfaces this cell wrote ===
+[SURFACEPAIR] Juglet_Piece_9_x1 n0=2229 n1=3512 med_nn=0.0000 along=0.0000 across=0.0000 angle=0.000 deg coin=0.824601 t_signed=0.0000 (normals a:ply b:ply)
+[PIPELINE] SampledWithNormals: points=5256 median_nn=0.20154 mm
+[PIPELINE] rung2 dump: points=5256 clusters=8 largest=2430 ge50=8 ge_pct5=4
+[PIPELINE] rung2 top20 sizes: [2430, 1497, 538, 327, 166, 158, 89, 51]
+[PIPELINE] === count the geometry this cell produced, then delete it ===
+ext	files	bytes
+json	5	3344
+obj	1	128277
+other	3	540
+pcd	5	1228035
+ply	12	3526357
+TOTAL	31	5940819
+xyz	5	1054266
+[PIPELINE] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_9_x1 and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Juglet_Piece_9_x1/dump after the counted record above
+[PIPELINE] wall clock left: 1478s
+[PIPELINE] ==============================================================
+[PIPELINE] cell Pot_A_Piece_07 (Pot_A) level=real -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real
+[PIPELINE] mesh=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_07_Mesh.obj
+[PIPELINE] cloud=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+[PIPELINE] axis=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes/Pot_A_Piece_07_Axis.xyz
+[PIPELINE] the released cloud itself: 1000000 points (no sampling, no downsampling target change)
+[PIPELINE] === stage: geometry symlinked, the REAL-RELEASED-CLOUD cloud is the only cloud in the stage ===
+grep: /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd: binary file matches
+[STAGE] Pot_A_Piece_07 pot=Pot_A kind=REAL-RELEASED-CLOUD cloud=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd mesh=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_07_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes/Pot_A_Piece_07_Axis.xyz
+REAL-RELEASED-CLOUD	0a7fc1f2dc221e29788bfb8505d043e5	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd	
+REAL-MESH	1e16639d9847734cd9055085b14ab7b7	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_07_Mesh.obj	-
+REAL-AXIS	ab8edae4c50007a16433fbe940288209	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes/Pot_A_Piece_07_Axis.xyz	-
+[PIPELINE] === run the pipeline ===
+[PIPELINE] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=1000000

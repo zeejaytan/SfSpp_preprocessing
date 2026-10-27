@@ -1,0 +1,4 @@
+# geometry deleted by 20261028-0528_511461e_t38-surfaces phase 3, 2026-10-27T19:04:46Z
+geometry_files_before 25
+geometry_files_after 0
+# kept: tsv json log py sh txt png (tables, numbers, sources, figures)

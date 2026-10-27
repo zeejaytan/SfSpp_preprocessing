@@ -1,0 +1,12 @@
+# closed by hand after the job was killed at the wall clock
+runid=20261028-0528_511461e_t38-surfaces
+jobid=33894591
+commit=511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a
+tag=t38-surfaces
+phase=3
+sacct=TIMEOUT 00:30:16, batch CANCELLED 00:15, extern COMPLETED
+host=spartan-login3.hpc.unimelb.edu.au
+utc=2026-10-27T19:04:46Z
+phase_rc=na (the job never reached the summary; Slurm killed it)
+phase_failures=
+note=the batch script never reached finish(): bash defers a trap until the foreground child returns, and Slurm's 15 s kill wait cut the shell off first. The closing bookkeeping (corpus/inputs md5 after, geometry census and delete, this file, the index row) was run by hand from the same function bodies lifted out of this run's submit.sbatch.

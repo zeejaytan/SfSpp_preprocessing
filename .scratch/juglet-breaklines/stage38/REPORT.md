@@ -2,7 +2,7 @@
 
 Numbers only, from the runs; no verdict on what they mean (the ticket's Status and `intent/` are untouched).
 
-Two runs of record, both kept:
+Three runs of record, all kept:
 
 - **run 4** `/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/` (job 33890365,
   commit `92d6871022fdf75f63170a5af65b30e31c9e843a`, `spartan-bm174.hpc.unimelb.edu.au`): sections 1-5, the
@@ -11,9 +11,14 @@ Two runs of record, both kept:
   commit `2a34d86a54467ac1f0238eed214bc11bdf7be208`): the corrected pair statistic, the real pipeline cells, the
   Part E redraws, the five-piece aggregate and the re-rendered figures — sections 6-8 and everything in
   `stage38/results/` that is marked run 5. It repeated phases 1 and 2 and reproduced their numbers.
+- **run 6** `/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/` (job 33894591,
+  commit `511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a`): the per-surface measurement of the surfaces the pipeline
+  writes and the pair between them — section 11, `stage38/results/cells-pipeline-run6/` and
+  `stage38/run-20261028-0528_511461e/`. It was killed at the wall clock (TIMEOUT 00:30:16); its record was
+  closed by hand and says so.
 
-The geometry both runs made was deleted on the cluster with per-extension counts recorded before the delete
-(item 9).
+The geometry all three runs made was deleted on the cluster with per-extension counts recorded before the
+delete (item 9; run 6's own counts are in section 11.6).
 
 ## 1. Instrument proof, printed by the job on both target pieces
 
@@ -456,6 +461,185 @@ redraw 431 964 B.
    from run 5's `out/` where they agree and were re-rendered where they did not (the two PNGs and
    `figure_*.json` in `results/` are run 5's).
 
+## 11. Run 6: the surfaces the pipeline writes, measured
+
+Section 7's three cells wrote `Surface_0.ply` and `Surface_1.ply` and nothing measured them: the extension
+loop kept the `.xyz` the pipeline writes beside every `.ply`. Run 6 (job **33894591**, run
+`20261028-0528_511461e_t38-surfaces`, commit `511461e`, phase 3 only, `--time=00:30:00`) re-ran the three
+cells that had succeeded with that loop fixed, and added two records that did not exist before: one row per
+written surface, and one row for the pair between `Surface_0` and `Surface_1` of the same cell. Each cell
+staged its cloud inside the run directory (the synthetic ones under `out/geometry/`, the released Pot A cloud by
+symlink), built the pipeline binary from that commit, and ran it with
+`SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10` — the same recipe as run 5. The
+pipeline source is unmodified (`mesh_processing_headless.cpp` blob `f02768956ffd55a075246e8ca517ca7ff5c80e26`
+at both `66b2699` and HEAD). `sacct`: **TIMEOUT 00:30:16**, batch step CANCELLED 00:15. Two cells completed;
+the Pot_A reference cell did not (§11.5).
+
+### 11.1 The two completed cells
+
+`out/cells-pipeline/surfaces.tsv` and `pipeline_cells.tsv`, kept in the repository as
+`results/cells-pipeline-run6/`:
+
+| piece | cloud | points | achieved mm | clusters | STATUS-23 | Surface_0 pts | Surface_1 pts | diag S0 / S1 (mm) | 2 mm coverage S0 / S1 | fold to mesh S0 / S1 (deg) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Juglet_Piece_2 x1 | SYNTHETIC | 6 259 | 0.209043 | 8 -> 4 (1684,1620,62,52) | two | 4 155 | 3 979 | 27.4705 / 27.7418 | 0.7680 / 1.0000 | 3.1042 / 3.0135 |
+| Juglet_Piece_9 x1 | SYNTHETIC | 5 257 | 0.201511 | 7 -> 6 (589,1497,327,166,158,89) | two | 2 229 | 3 512 | 19.5211 / 22.0247 | 0.8138 / 0.7326 | 2.9662 / 2.8033 |
+
+Read against the pipeline's own sherd diagonal for these clouds — `[SPACING-22] policy=piece diagMM=28.2305` and
+`diagMM=23.3454` — each written surface spans 0.84-0.97 of the sherd's diagonal. The spacing the pipeline's own
+downsampling and normal estimation produced, measured on its `SampledWithNormals.ply`: 0.20892 mm
+(p10 0.16527 / p90 0.28501) on piece 2 and 0.20154 mm (0.16303 / 0.25797) on piece 9. Both clouds are labelled
+SYNTHETIC in the cell records — `cell.tsv` `cloud_kind SYNTHETIC`, the `cloud_kind` column of
+`pipeline_cells.tsv`, the file names (`Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd`), and section 4's
+figure captions; the Pot A cloud is the released one and is labelled `REAL-RELEASED-CLOUD` in the same places.
+
+### 11.2 The pipeline's own lines
+
+Verbatim from `results/cells-pipeline-run6/<cell>/logs/lines38.log` (the ungrepped `mesh.log` is beside it):
+
+```
+Juglet_Piece_2  [DOWNSAMPLING RESULT] Target=6259 points, Bounds=[5007-7510], Result=6259 points, Radius(leaf)=0.04235
+                [PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+                Number of clusters is equal to 8
+                [PAPER-234] pass 1 done: 5 clusters
+                [PAPER-234] pass 2 done: 4 clusters
+                [PAPER-234] classify: face0 n=1684 interior_frac=0.5238 face1 n=1620 interior_frac=0.0000
+                [PAPER-234] classify: kept -> Surface_0=interior
+                [RETRY-23] retry=1 npts=6259 clusters_pre=8 clusters=4 sizes=1684,1620,62,52 minCluster=50
+                [STATUS-23] outcome=two retries=1 clusters=4 sizes=1684,1620,62,52 npts=6259 floor=50
+                            floor_from=50 capped=no surf0_points=4155 surf1_points=3979 reason=two surfaces written
+Juglet_Piece_9  [DOWNSAMPLING RESULT] Target=5257 points, Bounds=[4205-6308], Result=5256 points, Radius(leaf)=0.03502
+                Number of clusters is equal to 7
+                [PAPER-234] pass 1 done: 6 clusters
+                [PAPER-234] classify: face0 n=1497 interior_frac=0.2953 face1 n=589 interior_frac=0.0000
+                [PAPER-234] classify: swapped -> Surface_0=interior
+                [RETRY-23] retry=1 npts=5256 clusters_pre=7 clusters=6 sizes=589,1497,327,166,158,89 minCluster=50
+                [STATUS-23] outcome=two retries=1 clusters=6 sizes=589,1497,327,166,158,89 npts=5256 floor=50
+                            floor_from=50 capped=no surf0_points=2229 surf1_points=3512 reason=two surfaces written
+```
+
+Rung-2 (pre-merge) on these two draws: piece 2 nine clusters with sizes
+`[2841,1549,1212,264,144,74,62,61,52]`, piece 9 eight clusters `[2430,1497,538,327,166,158,89,51]` — 9 of 9 and
+8 of 8 clearing the 50-point floor before the merge, against 1 765 and 1 465 pre-floor regions whose largest were
+45 and 16 when the same criterion ran on today's clouds at the same median spacing (section 4's `scan` rows).
+
+### 11.3 The pair between the two written surfaces
+
+`results/cells-pipeline-run6/surface_pairs.tsv`, from `grow38.py surfacepair` with the corrected
+`pair_stats` (§6): every point of `Surface_1` takes its nearest point in `Surface_0`; `nn` is that distance,
+`along` its component on `Surface_0`'s normal at that point, `across` the perpendicular residual,
+`med_t_signed` the signed `along` (negative = the step runs against the normal), `coin` the fraction of
+`Surface_1`'s points within 1 micron of a `Surface_0` point, `med_angle_deg` the folded angle between the two
+normals.
+
+| piece | n0 | n1 | med_nn | med_along | med_across | med_angle_deg | coin | med_t | p05_t | p95_t |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Juglet_Piece_2 x1 | 4 155 | 3 979 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.5911 | 0.0000 | -2.5417 | 0.0000 |
+| Juglet_Piece_9 x1 | 2 229 | 3 512 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.8246 | 0.0000 | -0.0043 | +0.0399 |
+
+Those medians are exactly zero, and that is the measurement, not a failure to measure: 59.1 % of piece 2's and
+82.5 % of piece 9's `Surface_1` points already have a `Surface_0` point within 1 micron, so the median nearest
+distance is 0 and every quantity derived from it is 0 as well. The tails are where the geometry is: piece 2's 5th
+percentile of the signed step is **-2.5417 mm**, i.e. a second sheet that far inside `Surface_0`; piece 9's 5th
+and 95th percentiles are -0.0043 and +0.0399 mm, i.e. no second sheet, only the shared one.
+
+The coincidence fraction agrees with the coordinator's own count of distinct positions (2 352 / 3 979 = 0.5911
+exactly, on piece 2) — the check that the two measurements are of the same thing.
+
+### 11.4 The two surfaces nest — the coordinator's measurement of the four PLY files
+
+Measured by the coordinating session from the four `Surface_*.ply` files it downloaded before the geometry was
+deleted (its script `artifacts/juglet-p38/check38.py`, rounding 1e-4 mm; the files themselves are gone with the
+run's geometry, so this table is their record):
+
+| piece | surf0 pts | surf0 distinct | surf1 pts | surf1 distinct | shared (of the smaller) | mean-normal dot |
+|---|---|---|---|---|---|---|
+| Juglet 2 | 4 155 | 2 471 | 3 979 | 3 979 | 2 352 (0.952) | +0.9960 |
+| Juglet 9 | 2 229 | 2 229 | 3 512 | 2 015 | 1 616 (0.802) | +0.9993 |
+
+Signed through-distance, `Surface_1` -> `Surface_0`: on piece 2, 2 359 of `Surface_1`'s points lie within
++-0.2 mm of `Surface_0` (the shared face) and 1 369 lie 2-4 mm on the other side; on piece 9, 3 472 lie within
++-0.2 mm and 39 lie further out. Two surfaces that share four fifths of their points and whose mean normals point
+the **same** way are not an inner/outer pair — they nest.
+
+How points got into both, in the pipeline's own words:
+
+```
+[WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=0 ... own_cluster_points=1684 other_cluster_points=1734 candidates=6259
+[WINDOW-26]         piece=Juglet_Piece_2 surface=0 mode=literal ... admitted_own=2003 admitted_other=2471
+[WINDOW-26-FINAL]   piece=Juglet_Piece_2 surface=0 admitted_own=2003 admitted_other=2471 other_copied_over=yes final_points=4155
+[WINDOW-26-FINAL]   piece=Juglet_Piece_2 surface=1 admitted_own=2359 admitted_other=2146 other_copied_over=no final_points=3979
+[WINDOW-26-MEASURE] piece=Juglet_Piece_9 surface=0 ... own_cluster_points=589 other_cluster_points=2237 candidates=5256
+[WINDOW-26]         piece=Juglet_Piece_9 surface=0 mode=literal ... admitted_own=1610 admitted_other=1640
+[WINDOW-26-FINAL]   piece=Juglet_Piece_9 surface=0 admitted_own=1610 admitted_other=1640 other_copied_over=yes final_points=2229
+[WINDOW-26-FINAL]   piece=Juglet_Piece_9 surface=1 admitted_own=1755 admitted_other=2015 other_copied_over=yes final_points=3512
+```
+
+At the literal 3 mm window (`raw_mm=3.000000 clamped_mm=3.000000`), a surface whose own cluster holds 589 points
+admits 1 640 points that belong to the other cluster, and `Surface_0` on piece 2 ends up holding 2 471 points of
+the other cluster — more than its own cluster's 1 684. That is the pooling, printed by the pipeline itself, on
+clouds where the clusters really are separated.
+
+### 11.5 The Pot_A reference cell — what it did before the wall clock took it
+
+Not comparable with section 7's Pot_A cell: that one staged a 34 608-point cloud; this one staged the released
+`Pot_A_Piece_07_Point.pcd` itself (`REAL-RELEASED-CLOUD`, md5 `0a7fc1f2dc221e29788bfb8505d043e5`,
+1 000 000 points), which the pipeline's own downsampling cut to 842 506 candidates — 134.6x the Juglet cells'
+6 259. It ran to the end of its region growing and both surface finalisations and was killed before the driver
+could measure or record it, so it has **no row** in `surfaces.tsv` and no measured surface at all. What it did
+write is in `results/cells-pipeline-run6/Pot_A_Piece_07_real/`:
+
+```
+Number of clusters is equal to 2
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=842506 clusters_pre=2 clusters=2 sizes=780686,34471 minCluster=1685
+[WINDOW-26-FINAL] piece=Pot_A_Piece_07 surface=0 admitted_own=102090 admitted_other=77736 other_copied_over=no final_points=882776
+[WINDOW-26-FINAL] piece=Pot_A_Piece_07 surface=1 admitted_own=4 admitted_other=47549 other_copied_over=yes final_points=82020
+```
+
+plus its own rung dumps (`r2_clusters_premerge.json`: 842 506 points, clusters 780 686 / 34 471, 27 349 points
+in no cluster, floor 1 685; `r5_write.json`: surface 0 882 776 vertices / 797 756 distinct positions, surface 1
+82 020 / 47 571, `write_gate "pair"`, `reassign_mode "radius"`). Two clusters on 842 506 points is a
+different regime from section 7's seven clusters on 34 608 points of the same sherd, and those two inputs differ
+by a factor of 24, so the two rows are not a comparison of anything but the input.
+
+The wall arithmetic: the two Juglet cells took 14 s and 8 s (the driver's own budget counter printed
+`wall clock left: 1500s / 1486s / 1478s` at the three cell boundaries), so Pot_A began 22 s into phase 3 and had
+the remaining 29 min 38 s of the job; it started at 05:30:24 and the job was killed at 05:58:16, so it had
+27 min 52 s and was still inside the pipeline. Its log was last written at 05:32:13 and the driver's
+`phase3.log` at 05:30:24 — both are block-buffered to a file, so the last line on disk is not the last line the
+process produced, and the exact point of the kill cannot be read from the log. Nothing about Pot A at this
+instrument is delivered.
+
+### 11.6 The run's own record, and the geometry that died with it
+
+Corpus and frozen inputs unchanged: `corpus.diff` and `inputs.diff` both **0 bytes**, 215 md5 rows before and
+after, 1 803 corpus-tree rows before and after, `/opt/sfs-pristine` recorded **ABSENT** from the compute node.
+Census written before the delete, then the delete (`out/geometry_counts_phase3.tsv`,
+`out/geometry_classes_phase3.tsv`, `out/GEOMETRY_DELETED_phase3.txt`, all kept):
+
+```
+class              files      bytes
+stage_tree            10  338 019 307     the Pot A stage: symlinks plus the pipeline's Temp/ writes
+cell_dump              5  266 598 132     the Pot A cell's rung-2..r5 PLYs
+cell_surfaces          6    1 917 873     the four kept Surface_*.ply + two SampledWithNormals.ply
+cell_measure           2      743 211     rung2_sizes.ply of the two Juglet cells
+geometry_dir           2      691 816     the two synthetic clouds
+TOTAL                 25  607 970 339     after the delete: 0 files, 0 bytes
+
+by extension: ply 17 / 460 136 591   xyz 3 / 115 763 610   pcd 4 / 28 975 138   obj 1 / 3 095 000
+```
+
+Kept: every `*.tsv`, every `*.json`, both `logs/` trees of the two completed cells and the Pot A cell,
+`cell.tsv`, `inputs.md5`, `geometry_counts.tsv`, `run.json`, `submit.sbatch`, and the instruments as run. The
+job was killed at the wall clock and never reached its own closing block, so the record was closed by hand on the
+login node from the same function bodies lifted out of this run's `submit.sbatch`:
+`out/run-meta_phase3.txt` and `out/CLOSED-BY-HAND.txt` say so, and `runs/index.tsv` carries one row with the
+last two fields empty:
+
+```
+20261028-0528_511461e_t38-surfaces<TAB>33894591<TAB>511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a<TAB>t38-surfaces<TAB><empty><TAB><empty>
+```
+
 ## Where the surviving numbers live
 
 ```
@@ -468,7 +652,10 @@ stage38/results/figure_Juglet_Piece_{2,9}.json   run 5: the figure's own record 
 stage38/results/Juglet_Piece_{2,9}_resolution_by_density.png        run 5 figures (label and floor fixes applied)
 stage38/results/Juglet_Piece_9_{partE_ranked_fullopacity,t37style_replay}.png   item 8, piece 9
 stage38/results/Pot_A_Piece_07_{partE_ranked_fullopacity,t37style_replay}.png   item 8, Pot A 07
-stage38/results/cells-pipeline/                  item 7: pipeline_cells.tsv + each cell's cell.tsv, measure jsons, logs
+stage38/results/cells-pipeline/                  run 5, item 7: pipeline_cells.tsv + each cell's cell.tsv, measure jsons, logs
+stage38/results/cells-pipeline-run6/             run 6, item 7: surfaces.tsv, surface_pairs.tsv, pipeline_cells.tsv,
+                                                 both Juglet cells' cell.tsv / inputs.md5 / logs / measure jsons, and the
+                                                 Pot A cell's rung dumps + log (no cell.tsv: it was killed)
 stage38/results/sample_*.json, subdiv_*.json     run 5: achieved spacing per (piece, level), subdivision counts
 stage38/results/sampler_validate_*.json          run 5: the sampler proof, five pieces
 stage38/results/SAMPLER-GATE-DISCLOSURE_*.txt    item 1 in long form
@@ -478,5 +665,7 @@ stage38/results/run5_CLOSED-BY-HAND.txt          why run 5's record was closed b
 stage38/results/run5_meta.txt                    run 5's own run-meta line
 stage38/run-20261028-0414_2a34d86/               the whole run-5 record: out/, run.json, submit.sbatch, instruments/, logs/
 stage38/run-20261027-1615_92d6871/               the run-4 record, kept: every per-cell json, phase logs, md5s
+stage38/run-20261028-0528_511461e/               the whole run-6 record minus build/: out/, run.json, submit.sbatch,
+                                                 instruments/, logs/, out/CLOSED-BY-HAND.txt (geometry already deleted)
 stage38/instruments/                             the sources (md5 equal to the run directories' copies)
 ```

@@ -1,0 +1,8 @@
+runid=20261028-0528_511461e_t38-surfaces tag=t38-surfaces phase=3 wall=00:30:00
+commit=511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a
+jobname=t38-surface
+COPIES.md fig37.py fig38.py grow38.py measure34.py mesh38.py parte38.py replica37.py run_cell38.sh run_controls38.sh run_targets38.sh stage_synth_p38.sh submit38.sbatch.tmpl submit38.sh 
+runid=20261028-0528_511461e_t38-surfaces tag=t38-surfaces phase=3 wall=00:30:00
+commit=511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a
+jobname=t38-surface
+COPIES.md fig37.py fig38.py grow38.py measure34.py mesh38.py parte38.py replica37.py run_cell38.sh run_controls38.sh run_targets38.sh stage_synth_p38.sh submit38.sbatch.tmpl submit38.sh 

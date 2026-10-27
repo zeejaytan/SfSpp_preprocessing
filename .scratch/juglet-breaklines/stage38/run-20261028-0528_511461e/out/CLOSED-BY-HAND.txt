@@ -1,0 +1,28 @@
+# CLOSED-BY-HAND — run 20261028-0528_511461e_t38-surfaces (job 33894591)
+
+Slurm ended this job at the wall clock: sacct says TIMEOUT 00:30:16, the batch step CANCELLED at 00:15.
+Bash defers a trap until the foreground child returns, and Slurm's 15 s kill wait cut the shell off first, so
+the template's finish() never ran: this run had no corpus_after/inputs_after diff, no geometry census, no
+geometry delete, no run-meta file and no index row when the job ended.
+
+Those five steps were therefore run by hand on the login node (spartan-login3) on 2026-10-27T19:04:46Z, using
+the function bodies lifted verbatim out of this run's own submit.sbatch (corpus_tree, md5_corpus, geom_record,
+geom_delete), so the numbers below are produced by the same code the job would have used:
+
+  corpus.diff   0 bytes        inputs.diff  0 bytes
+  inputs md5 rows  215 before / 215 after
+  corpus tree rows 1803 before / 1803 after
+  /opt/sfs-pristine  ABSENT on the compute node (recorded, not created)
+  geometry census before the delete: 25 files / 607 970 339 bytes
+      stage_tree 10 / 338 019 307   cell_dump 5 / 266 598 132   cell_surfaces 6 / 1 917 873
+      cell_measure 2 / 743 211      geometry_dir 2 / 691 816
+      ply 17 / 460 136 591   xyz 3 / 115 763 610   pcd 4 / 28 975 138   obj 1 / 3 095 000
+  after the delete: 0 geometry files, out/ 1.9 MB
+  index row appended with verdict and human_note left empty
+
+Files of record: out/geometry_counts_phase3.tsv, out/geometry_classes_phase3.tsv,
+out/GEOMETRY_DELETED_phase3.txt, out/corpus.diff, out/inputs.diff, out/run-meta_phase3.txt, this file.
+
+Nothing was re-run: the Pot_A reference cell wrote no measured surface (see out/phase3.log and
+out/cells-pipeline/Pot_A_Piece_07_real/logs/mesh.log).
+
