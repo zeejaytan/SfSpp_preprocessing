@@ -1,0 +1,33 @@
+# ticket 37 arm check -- read from each arm's own per-piece mesh logs
+# arm cells spacing(correct/total) normal_input single_write count_scale verdict
+AFIX 7 7/7 0/0 0/0 0/0 ok
+BFIX 7 7/7 0/0 0/0 0/0 ok
+A 14 14/14 0/0 0/0 0/0 ok
+B 9 9/9 0/0 9/9 0/0 ok
+C 9 9/9 0/0 9/9 9/9 ok
+D 9 9/9 0/0 0/0 0/0 ok
+# the pipeline's own first line of each kind, arm by arm
+# AFIX [SPACING-22] policy=fixed S=0.6
+# AFIX normalSource=reestimate normalSourceSet=no minPairs=3
+# AFIX [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# AFIX [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# BFIX [SPACING-22] policy=fixed S=0.6
+# BFIX normalSource=reestimate normalSourceSet=no minPairs=3
+# BFIX [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# BFIX [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# A [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# A normalSource=reestimate normalSourceSet=no minPairs=3
+# A [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# A [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# B [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# B normalSource=reestimate normalSourceSet=no minPairs=3
+# B [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# B [SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+# C [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# C normalSource=reestimate normalSourceSet=no minPairs=3
+# C [COUNT-22] policy=auto scale=3.15023 minCluster=158 k1=32 k2=95
+# C [SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+# D [SPACING-22] policy=fixed S=0.6
+# D normalSource=reestimate normalSourceSet=no minPairs=3
+# D [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# D [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no

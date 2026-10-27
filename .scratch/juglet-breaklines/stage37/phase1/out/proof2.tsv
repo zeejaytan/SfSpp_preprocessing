@@ -1,0 +1,6 @@
+# proof 2: arm A (no environment at all: the new default) against ticket 36 arm B
+# piece	run surf0/surf1	t36 expected	comparison
+Juglet_Piece_1	10800/15780	10800/15780	IDENTICAL
+Juglet_Piece_5	229/2317	229/2317	IDENTICAL
+Juglet_Piece_7	1753/1997	1753/1997	IDENTICAL
+Pot_A	8 of 8 two-surface	8 of 8	the ticket asks for 8 of 8

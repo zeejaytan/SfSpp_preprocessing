@@ -1,0 +1,36 @@
+{
+  "ticket": ".scratch/juglet-breaklines/issues/37-adaptive-default-and-the-regions-under-the-floor.md",
+  "title": "Adaptive spacing becomes the default; the two identity proofs and the arm grid",
+  "phase": 1,
+  "answers": [
+    "U19",
+    "E1"
+  ],
+  "branch": "37-adaptive-default-and-the-regions-under-the-floor",
+  "commit": "c16e2743965a6b30afe78db63a7dd0b8f420b19f",
+  "pre_change_commit": "5bdaff656f7aa683d5d2bc66f7c3fc2e6c31986f (branch HEAD before this ticket touched the file; mesh_processing_headless.cpp byte-equal to main at that commit)",
+  "source_change": "mesh_processing_headless.cpp:4365 spacingPolicy default fixed -> piece, plus the comment block beside the defaults. Nothing else.",
+  "spacing_rule_under_test": "S = min(0.6, max(s0, diag/200)) mm, mesh_processing_headless.cpp:4367-4391; s0 is the median nearest-neighbour distance of the raw scan, diag the bbox diagonal",
+  "count_scaling": "SFS_COUNT_SCALE unset in every arm except C, where the ticket's floor cap needs it armed (gated at :3625 by g_floorCeilingOn && g_countScaleAuto)",
+  "arms": {
+    "AFIX": "the PRE-CHANGE binary + SFS_SPACING_POLICY=fixed (proof 1, orig side)",
+    "BFIX": "this ticket's binary + SFS_SPACING_POLICY=fixed (proof 1, new side)",
+    "A": "no environment at all -- the new shipped default (proof 2)",
+    "B": "A + SFS_SINGLE_CLUSTER=write",
+    "C": "B + SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.005 -- the ticket's floor-capped arm",
+    "D": "SFS_SPACING_POLICY=fixed -- the fixed-step control, i.e. ticket 36's arm A"
+  },
+  "cells": 55,
+  "cell_plan": {
+    "A": "all 14 pieces (9 Juglet + Pot_A 01-08) -- proof 2 needs Pot A 8 of 8",
+    "BCD": "Juglet 1,2,3,5,7,9 + Pot_A 01,07,08 = 9 pieces",
+    "AFIX_BFIX": "Pot_A 01,02,07,08 + Juglet 1,3,7 = 7 pieces"
+  },
+  "proof_1": "md5 of <piece>_SampledWithNormals.ply, AFIX vs BFIX, joined into out/proof1.md5.tsv. Surface PLY are never compared by md5 anywhere in this run: the mesh stage draws 30 unseeded ray casts (mesh_processing_headless.cpp:1526-1527).",
+  "proof_2": "arm A cell.tsv surf0_points/surf1_points against ticket 36 arm B (Juglet 1 10800/15780, 5 229/2317, 7 1753/1997, Pot A 8 of 8)",
+  "arm_check": "the job reads every arm's own [SPACING-22]/[COUNT-22]/[SWITCH-23] lines and exits 12 before the index row if an arm did not run what it claims",
+  "jobs_used_before_this_one": 0,
+  "job_budget": 3,
+  "compute_node_only": true,
+  "boot_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot"
+}

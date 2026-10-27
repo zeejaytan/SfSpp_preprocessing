@@ -237,6 +237,20 @@ def cmd_run(a):
     pipe = sorted((int(x) for x in side.get("clusters", [])), reverse=True)
     mine = dist["survivors"]
     ok = (pipe == mine)
+    # NEAR: the same number of survivors, and every pair within max(2 points, 10%).
+    # The replica claims every seed while the pipeline drops a point instead of claiming it, so an
+    # identical-size region can differ by a handful of points; the tolerance keeps that visible
+    # (the deltas are written out) without calling a 10-point difference on a 144-point region a
+    # different answer.  Anything outside it stays MISMATCH and its numbers are unvalidated.
+    deltas = []
+    near = False
+    if not ok and len(pipe) == len(mine):
+        near = True
+        for pv, mv in zip(pipe, mine):
+            tol = max(2.0, 0.10 * float(max(pv, mv)))
+            deltas.append({"pipeline": pv, "replica": mv, "delta": mv - pv, "tol": tol})
+            if abs(mv - pv) > tol:
+                near = False
     outc = {
         "piece": a.piece, "config": a.config, "source_dump": os.path.abspath(a.dump),
         "retry": side.get("retry"), "theta": theta, "kappa": kappa, "nb": nb,
@@ -245,7 +259,9 @@ def cmd_run(a):
         "spacing_mm": side.get("spacing_mm"), "paper_chain": side.get("paper_chain"),
         "dist": dist,
         "pipeline_clusters": pipe,
-        "validation": {"verdict": "MATCH" if ok else "MISMATCH",
+        "validation": {"verdict": "MATCH" if ok else ("NEAR" if near else "MISMATCH"),
+                       "exact": bool(ok), "near_tolerance": "max(2 points, 10% per region)",
+                       "deltas": deltas,
                        "pipeline_count": len(pipe), "replica_count": len(mine),
                        "pipeline_sizes": pipe, "replica_sizes": mine,
                        "note": "replica survivors >= floor vs the rung-2 sidecar clusters"},

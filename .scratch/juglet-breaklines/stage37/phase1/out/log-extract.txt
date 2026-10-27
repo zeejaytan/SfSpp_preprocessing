@@ -1,0 +1,1303 @@
+## AFIX/Juglet/Juglet_Piece_1
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 102 into 274
+[PAPER-234] pass 1: merge 64 into 164
+[PAPER-234] pass 1: merge 133 into 151
+[PAPER-234] pass 1 done: 19 clusters
+[PAPER-234] pass 2: merge 53 into 376
+[PAPER-234] pass 2 done: 18 clusters
+[PAPER-234] pass 3 done: 18 clusters
+[PAPER-234] classify: face0 n=3489 interior_frac=0.0000 face1 n=626 interior_frac=0.0000 satA=626.0000 satB=3489.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=14546 clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 minCluster=50 minClusterFrom=50
+## AFIX/Juglet/Juglet_Piece_3
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 99 into 169
+[PAPER-234] pass 1 done: 1 clusters
+[PAPER-234] pass 2 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+## AFIX/Juglet/Juglet_Piece_7
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 77 into 326
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=403 interior_frac=0.1836 face1 n=263 interior_frac=0.0000 satA=337.0000 satB=329.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+## AFIX/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## AFIX/Pot_A/Pot_A_Piece_02
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 211 into 751
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2: merge 221 into 962
+[PAPER-234] pass 2 done: 3 clusters
+[PAPER-234] pass 3 done: 3 clusters
+[PAPER-234] classify: face0 n=22543 interior_frac=0.0000 face1 n=20628 interior_frac=1.0000 satA=0.0000 satB=43171.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_02 retry=1 npts=49528 clusters_pre=5 clusters=3 sizes=20628,22543,1183 minCluster=99 minClusterFrom=99
+## AFIX/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 71 into 120
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] pass 2 done: 7 clusters
+[PAPER-234] classify: face0 n=3093 interior_frac=0.0000 face1 n=2850 interior_frac=1.0000 satA=0.0000 satB=5943.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+## AFIX/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 90 into 194
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=2832 interior_frac=0.0000 face1 n=2611 interior_frac=1.0000 satA=0.0000 satB=5443.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=7682 clusters_pre=5 clusters=4 sizes=2611,2832,284,265 minCluster=50 minClusterFrom=50
+## A/Juglet/Juglet_Piece_1
+[SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 60 into 236
+[PAPER-234] pass 1: merge 51 into 296
+[PAPER-234] pass 1: merge 82 into 160
+[PAPER-234] pass 1: merge 57 into 242
+[PAPER-234] pass 1 done: 9 clusters
+[PAPER-234] pass 2: merge 299 into 347
+[PAPER-234] pass 2 done: 8 clusters
+[PAPER-234] pass 3: merge 106 into 646
+[PAPER-234] pass 3 done: 7 clusters
+[PAPER-234] pass 4 done: 7 clusters
+[PAPER-234] classify: face0 n=9032 interior_frac=0.0000 face1 n=4812 interior_frac=0.9979 satA=10.0000 satB=13834.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=23077 clusters_pre=13 clusters=7 sizes=4812,9032,752,373,338,205,59 minCluster=50 minClusterFrom=50
+## A/Juglet/Juglet_Piece_2
+[SPACING-22] policy=piece diagMM=28.3088 s0MM=0.210898 samples=200 rawMM=0.141544 S=0.210898
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=2397 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+## A/Juglet/Juglet_Piece_3
+[SPACING-22] policy=piece diagMM=33.576 s0MM=0.215277 samples=200 rawMM=0.16788 S=0.215277
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=3252 clusters_pre=1 clusters=1 sizes=289 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=289 npts=3252 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=289 floor=50 from=50 singleCluster=off
+## A/Juglet/Juglet_Piece_5
+[SPACING-22] policy=piece diagMM=42.4852 s0MM=0.238572 samples=200 rawMM=0.212426 S=0.238572
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 136 into 604
+[PAPER-234] pass 1 done: 2 clusters
+[PAPER-234] pass 2 done: 2 clusters
+[PAPER-234] classify: face0 n=740 interior_frac=0.1135 face1 n=51 interior_frac=0.0000 satA=135.0000 satB=656.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=5668 clusters_pre=3 clusters=2 sizes=51,740 minCluster=50 minClusterFrom=50
+## A/Juglet/Juglet_Piece_7
+[SPACING-22] policy=piece diagMM=44.0068 s0MM=0.257988 samples=200 rawMM=0.220034 S=0.257988
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 70 into 578
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=648 interior_frac=0.0000 face1 n=609 interior_frac=0.1560 satA=514.0000 satB=743.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=7471 clusters_pre=5 clusters=4 sizes=609,648,93,57 minCluster=50 minClusterFrom=50
+## A/Juglet/Juglet_Piece_9
+[SPACING-22] policy=piece diagMM=23.4967 s0MM=0.203464 samples=200 rawMM=0.117483 S=0.203464
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=1971 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+## A/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=piece diagMM=172.6 s0MM=0.0754864 samples=200 rawMM=0.863002 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## A/Pot_A/Pot_A_Piece_02
+[SPACING-22] policy=piece diagMM=137.195 s0MM=0.0558448 samples=200 rawMM=0.685973 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 211 into 751
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2: merge 221 into 962
+[PAPER-234] pass 2 done: 3 clusters
+[PAPER-234] pass 3 done: 3 clusters
+[PAPER-234] classify: face0 n=22543 interior_frac=0.0000 face1 n=20628 interior_frac=1.0000 satA=0.0000 satB=43171.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_02 retry=1 npts=49528 clusters_pre=5 clusters=3 sizes=20628,22543,1183 minCluster=99 minClusterFrom=99
+## A/Pot_A/Pot_A_Piece_03
+[SPACING-22] policy=piece diagMM=132.228 s0MM=0.051924 samples=200 rawMM=0.661142 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 100 into 829
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=21172 interior_frac=0.0000 face1 n=19382 interior_frac=1.0000 satA=0.0000 satB=40554.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_03 retry=1 npts=46784 clusters_pre=5 clusters=4 sizes=19382,21172,929,156 minCluster=93 minClusterFrom=93
+## A/Pot_A/Pot_A_Piece_04
+[SPACING-22] policy=piece diagMM=116.348 s0MM=0.0484361 samples=200 rawMM=0.581739 S=0.581739
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 5 clusters
+[PAPER-234] classify: face0 n=18456 interior_frac=0.0000 face1 n=16955 interior_frac=1.0000 satA=0.0000 satB=35411.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_04 retry=1 npts=41296 clusters_pre=5 clusters=5 sizes=16955,18456,857,205,147 minCluster=82 minClusterFrom=82
+## A/Pot_A/Pot_A_Piece_05
+[SPACING-22] policy=piece diagMM=120.894 s0MM=0.0483771 samples=200 rawMM=0.604471 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 5 clusters
+[PAPER-234] classify: face0 n=16570 interior_frac=0.0000 face1 n=15256 interior_frac=1.0000 satA=0.0000 satB=31826.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_05 retry=1 npts=38074 clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 minCluster=76 minClusterFrom=76
+## A/Pot_A/Pot_A_Piece_06
+[SPACING-22] policy=piece diagMM=132.011 s0MM=0.0417546 samples=200 rawMM=0.660053 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 6 clusters
+[PAPER-234] classify: face0 n=11984 interior_frac=0.0000 face1 n=10739 interior_frac=1.0000 satA=0.0000 satB=22723.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_06 retry=1 npts=27944 clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 minCluster=55 minClusterFrom=55
+## A/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=12888 interior_frac=0.0000 face1 n=11815 interior_frac=1.0000 satA=0.0000 satB=24703.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=7 sizes=11815,12888,2722,1059,1018,234,216 minCluster=69 minClusterFrom=69
+## A/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=piece diagMM=54.0737 s0MM=0.0202556 samples=200 rawMM=0.270368 S=0.270368
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=14141 interior_frac=0.0000 face1 n=12817 interior_frac=1.0000 satA=0.0000 satB=26958.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=36097 clusters_pre=7 clusters=7 sizes=12817,14141,1899,1499,222,106,97 minCluster=72 minClusterFrom=72
+## BFIX/Juglet/Juglet_Piece_1
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 102 into 274
+[PAPER-234] pass 1: merge 64 into 164
+[PAPER-234] pass 1: merge 133 into 151
+[PAPER-234] pass 1 done: 19 clusters
+[PAPER-234] pass 2: merge 53 into 376
+[PAPER-234] pass 2 done: 18 clusters
+[PAPER-234] pass 3 done: 18 clusters
+[PAPER-234] classify: face0 n=3489 interior_frac=0.0000 face1 n=626 interior_frac=0.0000 satA=626.0000 satB=3489.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=14546 clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 minCluster=50 minClusterFrom=50
+## BFIX/Juglet/Juglet_Piece_3
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 99 into 169
+[PAPER-234] pass 1 done: 1 clusters
+[PAPER-234] pass 2 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+## BFIX/Juglet/Juglet_Piece_7
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 77 into 326
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=403 interior_frac=0.1836 face1 n=263 interior_frac=0.0000 satA=337.0000 satB=329.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+## BFIX/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## BFIX/Pot_A/Pot_A_Piece_02
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 211 into 751
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2: merge 221 into 962
+[PAPER-234] pass 2 done: 3 clusters
+[PAPER-234] pass 3 done: 3 clusters
+[PAPER-234] classify: face0 n=22543 interior_frac=0.0000 face1 n=20628 interior_frac=1.0000 satA=0.0000 satB=43171.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_02 retry=1 npts=49528 clusters_pre=5 clusters=3 sizes=20628,22543,1183 minCluster=99 minClusterFrom=99
+## BFIX/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 71 into 120
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] pass 2 done: 7 clusters
+[PAPER-234] classify: face0 n=3093 interior_frac=0.0000 face1 n=2850 interior_frac=1.0000 satA=0.0000 satB=5943.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+## BFIX/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 90 into 194
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=2832 interior_frac=0.0000 face1 n=2611 interior_frac=1.0000 satA=0.0000 satB=5443.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=7682 clusters_pre=5 clusters=4 sizes=2611,2832,284,265 minCluster=50 minClusterFrom=50
+## B/Juglet/Juglet_Piece_1
+[SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 60 into 236
+[PAPER-234] pass 1: merge 51 into 296
+[PAPER-234] pass 1: merge 82 into 160
+[PAPER-234] pass 1: merge 57 into 242
+[PAPER-234] pass 1 done: 9 clusters
+[PAPER-234] pass 2: merge 299 into 347
+[PAPER-234] pass 2 done: 8 clusters
+[PAPER-234] pass 3: merge 106 into 646
+[PAPER-234] pass 3 done: 7 clusters
+[PAPER-234] pass 4 done: 7 clusters
+[PAPER-234] classify: face0 n=9032 interior_frac=0.0000 face1 n=4812 interior_frac=0.9979 satA=10.0000 satB=13834.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=23077 clusters_pre=13 clusters=7 sizes=4812,9032,752,373,338,205,59 minCluster=50 minClusterFrom=50
+## B/Juglet/Juglet_Piece_2
+[SPACING-22] policy=piece diagMM=28.3088 s0MM=0.210898 samples=200 rawMM=0.141544 S=0.210898
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=2397 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=2397 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=write
+## B/Juglet/Juglet_Piece_3
+[SPACING-22] policy=piece diagMM=33.576 s0MM=0.215277 samples=200 rawMM=0.16788 S=0.215277
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=3252 clusters_pre=1 clusters=1 sizes=289 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_3 outcome=one retries=1 clusters=1 sizes=289 npts=3252 floor=50 floor_from=50 capped=no surf0_points=1115 surf1_points=-1 reason=one cluster written as Surface_0 (SFS_SINGLE_CLUSTER=write)
+## B/Juglet/Juglet_Piece_5
+[SPACING-22] policy=piece diagMM=42.4852 s0MM=0.238572 samples=200 rawMM=0.212426 S=0.238572
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 136 into 604
+[PAPER-234] pass 1 done: 2 clusters
+[PAPER-234] pass 2 done: 2 clusters
+[PAPER-234] classify: face0 n=740 interior_frac=0.1135 face1 n=51 interior_frac=0.0000 satA=135.0000 satB=656.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=5668 clusters_pre=3 clusters=2 sizes=51,740 minCluster=50 minClusterFrom=50
+## B/Juglet/Juglet_Piece_7
+[SPACING-22] policy=piece diagMM=44.0068 s0MM=0.257988 samples=200 rawMM=0.220034 S=0.257988
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 70 into 578
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=648 interior_frac=0.0000 face1 n=609 interior_frac=0.1560 satA=514.0000 satB=743.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=7471 clusters_pre=5 clusters=4 sizes=609,648,93,57 minCluster=50 minClusterFrom=50
+## B/Juglet/Juglet_Piece_9
+[SPACING-22] policy=piece diagMM=23.4967 s0MM=0.203464 samples=200 rawMM=0.117483 S=0.203464
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=1971 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=1971 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=write
+## B/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=piece diagMM=172.6 s0MM=0.0754864 samples=200 rawMM=0.863002 S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## B/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=12888 interior_frac=0.0000 face1 n=11815 interior_frac=1.0000 satA=0.0000 satB=24703.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=7 sizes=11815,12888,2722,1059,1018,234,216 minCluster=69 minClusterFrom=69
+## B/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=piece diagMM=54.0737 s0MM=0.0202556 samples=200 rawMM=0.270368 S=0.270368
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=14141 interior_frac=0.0000 face1 n=12817 interior_frac=1.0000 satA=0.0000 satB=26958.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=36097 clusters_pre=7 clusters=7 sizes=12817,14141,1899,1499,222,106,97 minCluster=72 minClusterFrom=72
+## C/Juglet/Juglet_Piece_1
+[SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+[COUNT-22] policy=auto scale=3.15023 minCluster=158 k1=32 k2=95
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_1 npts=23077 frac=0.00500 cap=115 minCluster=115 from=158 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=32 k2=95 minCluster=158
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=32 k2=95 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=9032 interior_frac=0.0000 face1 n=4812 interior_frac=0.9979 satA=10.0000 satB=13834.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=23077 clusters_pre=7 clusters=7 sizes=4812,9032,373,338,236,205,160 minCluster=115 minClusterFrom=158
+## C/Juglet/Juglet_Piece_2
+[SPACING-22] policy=piece diagMM=28.3088 s0MM=0.210898 samples=200 rawMM=0.141544 S=0.210898
+[COUNT-22] policy=auto scale=8.0939 minCluster=405 k1=81 k2=243
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_2 npts=2397 frac=0.00500 cap=12 minCluster=12 from=405 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=81 k2=243 minCluster=405
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=81 k2=243 minPairs=3
+[PAPER-234] pass 1: merge 15 into 16
+[PAPER-234] pass 1 done: 5 clusters
+[PAPER-234] pass 2 done: 5 clusters
+[PAPER-234] classify: face0 n=32 interior_frac=0.3125 face1 n=31 interior_frac=0.0000 satA=41.0000 satB=22.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=2397 clusters_pre=6 clusters=5 sizes=32,31,23,14,14 minCluster=12 minClusterFrom=405
+## C/Juglet/Juglet_Piece_3
+[SPACING-22] policy=piece diagMM=33.576 s0MM=0.215277 samples=200 rawMM=0.16788 S=0.215277
+[COUNT-22] policy=auto scale=7.76797 minCluster=388 k1=78 k2=233
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_3 npts=3252 frac=0.00500 cap=16 minCluster=16 from=388 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=78 k2=233 minCluster=388
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=78 k2=233 minPairs=3
+[PAPER-234] pass 1 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=3252 clusters_pre=1 clusters=1 sizes=289 minCluster=16 minClusterFrom=388
+[STATUS-23] piece=Juglet_Piece_3 outcome=one retries=1 clusters=1 sizes=289 npts=3252 floor=16 floor_from=388 capped=yes surf0_points=1115 surf1_points=-1 reason=one cluster written as Surface_0 (SFS_SINGLE_CLUSTER=write)
+## C/Juglet/Juglet_Piece_5
+[SPACING-22] policy=piece diagMM=42.4852 s0MM=0.238572 samples=200 rawMM=0.212426 S=0.238572
+[COUNT-22] policy=auto scale=6.32503 minCluster=316 k1=63 k2=190
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_5 npts=5668 frac=0.00500 cap=28 minCluster=28 from=316 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=63 k2=190 minCluster=316
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=63 k2=190 minPairs=3
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] classify: face0 n=604 interior_frac=0.0712 face1 n=136 interior_frac=0.3015 satA=138.0000 satB=602.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=5668 clusters_pre=4 clusters=4 sizes=136,604,51,29 minCluster=28 minClusterFrom=316
+## C/Juglet/Juglet_Piece_7
+[SPACING-22] policy=piece diagMM=44.0068 s0MM=0.257988 samples=200 rawMM=0.220034 S=0.257988
+[COUNT-22] policy=auto scale=5.40881 minCluster=270 k1=54 k2=162
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_7 npts=7471 frac=0.00500 cap=37 minCluster=37 from=270 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=54 k2=162 minCluster=270
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=54 k2=162 minPairs=3
+[PAPER-234] pass 1: merge 70 into 578
+[PAPER-234] pass 1 done: 6 clusters
+[PAPER-234] pass 2 done: 6 clusters
+[PAPER-234] classify: face0 n=648 interior_frac=0.0000 face1 n=609 interior_frac=0.1560 satA=514.0000 satB=743.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=7471 clusters_pre=7 clusters=6 sizes=609,648,93,57,43,43 minCluster=37 minClusterFrom=270
+## C/Juglet/Juglet_Piece_9
+[SPACING-22] policy=piece diagMM=23.4967 s0MM=0.203464 samples=200 rawMM=0.117483 S=0.203464
+[COUNT-22] policy=auto scale=8.69612 minCluster=435 k1=87 k2=261
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Juglet_Piece_9 npts=1971 frac=0.00500 cap=10 minCluster=10 from=435 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=87 k2=261 minCluster=435
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=87 k2=261 minPairs=3
+[PAPER-234] pass 1: merge 11 into 21
+[PAPER-234] pass 1 done: 3 clusters
+[PAPER-234] pass 2 done: 3 clusters
+[PAPER-234] classify: face0 n=32 interior_frac=0.0000 face1 n=16 interior_frac=0.1875 satA=13.0000 satB=35.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=1971 clusters_pre=4 clusters=3 sizes=16,32,11 minCluster=10 minClusterFrom=435
+## C/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=piece diagMM=172.6 s0MM=0.0754864 samples=200 rawMM=0.863002 S=0.6
+[COUNT-22] policy=auto scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Pot_A_Piece_01 npts=85136 frac=0.00500 cap=426 minCluster=170 from=170 clamped=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## C/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+[COUNT-22] policy=auto scale=4.19683 minCluster=210 k1=42 k2=126
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Pot_A_Piece_07 npts=34608 frac=0.00500 cap=173 minCluster=173 from=210 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=42 k2=126 minCluster=210
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=42 k2=126 minPairs=3
+[PAPER-234] pass 1: merge 216 into 1018
+[PAPER-234] pass 1 done: 6 clusters
+[PAPER-234] pass 2 done: 6 clusters
+[PAPER-234] classify: face0 n=12888 interior_frac=0.0000 face1 n=11815 interior_frac=1.0000 satA=0.0000 satB=24703.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=6 sizes=11815,12888,2722,1234,1059,234 minCluster=173 minClusterFrom=210
+## C/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=piece diagMM=54.0737 s0MM=0.0202556 samples=200 rawMM=0.270368 S=0.270368
+[COUNT-22] policy=auto scale=4.92482 minCluster=246 k1=49 k2=148
+[SWITCH-23] singleCluster=write floorCeiling=0.005000 countScaleAuto=yes
+[FLOOR-23] piece=Pot_A_Piece_08 npts=36097 frac=0.00500 cap=180 minCluster=180 from=246 clamped=yes
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=49 k2=148 minCluster=246
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=49 k2=148 minPairs=3
+[PAPER-234] pass 1 done: 5 clusters
+[PAPER-234] classify: face0 n=14141 interior_frac=0.0000 face1 n=12817 interior_frac=1.0000 satA=0.0000 satB=26958.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=36097 clusters_pre=5 clusters=5 sizes=12817,14141,1899,1499,222 minCluster=180 minClusterFrom=246
+## D/Juglet/Juglet_Piece_1
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 102 into 274
+[PAPER-234] pass 1: merge 64 into 164
+[PAPER-234] pass 1: merge 133 into 151
+[PAPER-234] pass 1 done: 19 clusters
+[PAPER-234] pass 2: merge 53 into 376
+[PAPER-234] pass 2 done: 18 clusters
+[PAPER-234] pass 3 done: 18 clusters
+[PAPER-234] classify: face0 n=3489 interior_frac=0.0000 face1 n=626 interior_frac=0.0000 satA=626.0000 satB=3489.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_1 retry=1 npts=14546 clusters_pre=22 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 minCluster=50 minClusterFrom=50
+## D/Juglet/Juglet_Piece_2
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+## D/Juglet/Juglet_Piece_3
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 99 into 169
+[PAPER-234] pass 1 done: 1 clusters
+[PAPER-234] pass 2 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+## D/Juglet/Juglet_Piece_5
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 1 clusters
+[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=3021 clusters_pre=1 clusters=1 sizes=679 minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=679 npts=3021 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=679 floor=50 from=50 singleCluster=off
+## D/Juglet/Juglet_Piece_7
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 77 into 326
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=403 interior_frac=0.1836 face1 n=263 interior_frac=0.0000 satA=337.0000 satB=329.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+## D/Juglet/Juglet_Piece_9
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.00000 rhoN=0.95000 rhoC=0.10000 rhoInN=0.75000 rhoInC=0.25000 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 0 clusters
+[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+## D/Pot_A/Pot_A_Piece_01
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 203 into 697
+[PAPER-234] pass 1 done: 11 clusters
+[PAPER-234] pass 2 done: 11 clusters
+[PAPER-234] classify: face0 n=32775 interior_frac=0.9685 face1 n=27551 interior_frac=0.0000 satA=59292.0000 satB=1034.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_01 retry=1 npts=85136 clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 minCluster=170 minClusterFrom=170
+## D/Pot_A/Pot_A_Piece_07
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 71 into 120
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] pass 2 done: 7 clusters
+[PAPER-234] classify: face0 n=3093 interior_frac=0.0000 face1 n=2850 interior_frac=1.0000 satA=0.0000 satB=5943.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+## D/Pot_A/Pot_A_Piece_08
+[SPACING-22] policy=fixed S=0.6
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 90 into 194
+[PAPER-234] pass 1 done: 4 clusters
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] classify: face0 n=2832 interior_frac=0.0000 face1 n=2611 interior_frac=1.0000 satA=0.0000 satB=5443.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[RETRY-23] piece=Pot_A_Piece_08 retry=1 npts=7682 clusters_pre=5 clusters=4 sizes=2611,2832,284,265 minCluster=50 minClusterFrom=50
