@@ -63,17 +63,29 @@ say "node=$(hostname) job=$(printenv SLURM_JOB_ID) start=$(date -Is) commit=$SOU
 say "src=$SRC (the commit unpacked by run_from_commit.sh)"
 
 # ---- 1. the scripts about to run: line endings first (the grid killer) ----
+# Hard gate, for the files authored here: these are the ones that run as bash or
+# whose shebang-free import path I control.
 for f in "$SRC/$STAGE/gate_probe_p31.py" "$SRC/$STAGE/compare_p31.py" \
-         "$SRC/$STAGE/gate_probe_b0_p07.py" "$SRC/$STAGE/laptop/gate_probe_p07.out"; do
-    crlf_check "$f"
+         "$RUN_DIR/submit.sbatch"; do
+    crlf_check "$f" || say "CRLF above is fatal for $f"
 done
+# The laptop's own files are kept byte for byte. They ARE CRLF and the CR must
+# still be there -- that is the byte-identity claim. python runs a CRLF source
+# file unchanged, so the original probe is run exactly as it was fetched.
 {
-    for f in gate_probe_p31.py compare_p31.py gate_probe_b0_p07.py \
-             gate_probe_b0.py README.txt laptop/gate_probe_p07.out; do
-        printf '%s  %s\n' "$(md5_of "$SRC/$STAGE/$f")" "$f"
+    echo "# the laptop files: md5 and CR count, byte-identity with the machine that scored this bundle"
+    for f in orig/gate_probe_b0_p07.py orig/gate_probe_b0.py orig/README.txt \
+             orig/checks_p07.py orig/checks_p07.out laptop/gate_probe_p07.out; do
+        printf '%s  CR=%-4s %s\n' "$(md5_of "$SRC/$STAGE/$f")" \
+            "$(tr -dc '\015' < "$SRC/$STAGE/$f" | wc -c)" "$f"
+    done
+    echo "# authored here: must be LF (the crlf_check above is the hard gate)"
+    for f in gate_probe_p31.py compare_p31.py; do
+        printf '%s  CR=%-4s %s\n' "$(md5_of "$SRC/$STAGE/$f")" \
+            "$(tr -dc '\015' < "$SRC/$STAGE/$f" | wc -c)" "$f"
     done
 } > "$OUT/stage31_md5.tsv"
-say "stage31 file md5s in out/stage31_md5.tsv"
+say "stage31 file md5s and CR counts in out/stage31_md5.tsv"
 
 # ---- 2. interpreters, and whether scipy is there ----
 {
@@ -197,7 +209,7 @@ say "bl_md5.tsv: $(wc -l < "$OUT/bl_md5.tsv") renamed files; gt copies: $(sort -
 # ---- 6. A: the original script, unmodified, with scipy ----
 cd "$FAKE"
 say "cwd for the original probe: $(pwd)"
-"$PY_SCIPY" "$SRC/$STAGE/gate_probe_b0_p07.py" p07 > "$OUT/gate_probe_orig_p07.out" 2>&1
+"$PY_SCIPY" "$SRC/$STAGE/orig/gate_probe_b0_p07.py" p07 > "$OUT/gate_probe_orig_p07.out" 2>&1
 say "A original gate_probe_b0_p07.py (scipy cKDTree) exit=$?"
 tail -1 "$OUT/gate_probe_orig_p07.out" | sed 's/^/[RUN] A last line: /'
 
