@@ -79,31 +79,33 @@ def _draw(piece, mesh_xyz, rows, geometry, outpath, target_mm_px, dpi, arm):
     inch = (span_p / target_mm_px) / dpi
     nrow = len(rows)
     fig = plt.figure(figsize=(inch * 3.0 + 1.5, inch * nrow + 1.9 + 0.9 * nrow), dpi=dpi)
-    gs = fig.add_gridspec(nrow + 1, 3, height_ratios=[1.0] * nrow + [1.25],
+    gs = fig.add_gridspec(nrow + 1, 4, height_ratios=[1.0] * nrow + [1.25],
+                          width_ratios=[0.17, 1.0, 1.0, 1.0],
                           hspace=0.55, wspace=0.22,
-                          left=0.055, right=0.995, top=1.0 - 0.30 / (nrow + 1.4), bottom=0.035)
+                          left=0.012, right=0.995, top=1.0 - 0.30 / (nrow + 1.4), bottom=0.035)
     axes = []
     for r, (level, meta, xyz, cid, fmt) in enumerate(rows):
         for c, view in enumerate(F37.VIEWS):
-            ax = fig.add_subplot(gs[r, c])
+            ax = fig.add_subplot(gs[r, c + 1])
             _panel(ax, mesh_xyz, xyz, cid, view, geometry, 0.55, target_mm_px, dpi)
             if r == 0:
                 ax.set_title(view[0], fontsize=7)
             if c == 0:
-                tag = "x%d" % level
+                tag = "x%d\nn=%s" % (level, (meta["points"] if meta else "?"))
                 if meta:
-                    tag += ("  n=%d  req %.5f mm  ach %.5f mm" %
-                            (meta["points"], meta["requested_spacing_mm"],
-                             meta["achieved_spacing_mm"]))
-                ax.text(-0.30, 0.5, tag, transform=ax.transAxes, rotation=90, va="center",
-                        ha="center", fontsize=7)
+                    tag += ("\nreq %.4f\nach %.4f" %
+                            (meta["requested_spacing_mm"], meta["achieved_spacing_mm"]))
+                lab = fig.add_subplot(gs[r, 0])
+                lab.axis("off")
+                lab.text(0.98, 0.5, tag, ha="right", va="center", transform=lab.transAxes,
+                         fontsize=6.5, linespacing=1.15)
             axes.append(ax)
     fig.canvas.draw()
     box = axes[0].get_window_extent()
     mm_px = ((axes[0].get_xlim()[1] - axes[0].get_xlim()[0]) / float(box.width),
              (axes[0].get_ylim()[1] - axes[0].get_ylim()[0]) / float(box.height))
     # bottom: largest region against achieved spacing
-    axp = fig.add_subplot(gs[nrow, :])
+    axp = fig.add_subplot(gs[nrow, 1:])
     styles = {"A": ("blue", "arm A  analytic face normals"),
               "F": ("#1a9850", "arm F  face normals, viewpoint flip"),
               "B": ("#d95f02", "arm B  pipeline PCA re-estimation")}
@@ -179,11 +181,15 @@ def render_piece(cells, mesh, piece, outdir, arm="A", target_mm_px=0.05, levels=
     out = os.path.join(outdir, "%s_resolution_by_density.png" % piece)
     dpi = 110.0
     mm_px, w, h, reached = _draw(piece, verts, have, geometry, None, target_mm_px, dpi, arm)
-    for _ in range(2):
+    for _ in range(6):
         if abs(mm_px[0] - target_mm_px) <= 0.05 * target_mm_px:
             break
-        dpi = max(50.0, min(400.0, dpi * mm_px[0] / target_mm_px))
+        dpi = max(50.0, min(1200.0, dpi * mm_px[0] / target_mm_px))
         mm_px, w, h, reached = _draw(piece, verts, have, geometry, None, target_mm_px, dpi, arm)
+    conv = ("converged within 5 pct of the %.6f mm/px target" % target_mm_px
+            if abs(mm_px[0] - target_mm_px) <= 0.05 * target_mm_px else
+            "did NOT converge to the %.6f mm/px target inside 6 iterations" % target_mm_px)
+    print("[FIG38] dpi solve: %.1f dpi, %s" % (dpi, conv))
     mm_px, w, h, reached = _draw(piece, verts, have, geometry, out, target_mm_px, dpi, arm)
     meta = {"piece": piece, "png": os.path.basename(out), "arm": arm,
             "levels_drawn": [r[0] for r in have], "mesh": os.path.basename(mesh),

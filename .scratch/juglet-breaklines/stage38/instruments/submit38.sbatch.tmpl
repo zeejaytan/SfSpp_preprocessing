@@ -192,7 +192,11 @@ geom_delete() {
 }
 
 # PHASE may be a comma-separated list (for example 1,2): the phases run in the order given inside
-# one job, each writing its own out/phase<N>.log, and the first non-zero rc stops the job.
+# one job, each writing its own out/phase<N>.log. A failed phase is recorded and the job keeps
+# going, so one failure does not cost the other phases' evidence; the job still exits non-zero at
+# the end. A phase that refuses to use a result (for example the sampler gate in phase 1) refuses
+# inside its own driver, before that phase produces anything.
+RC_ANY=0
 for PH in $(echo "$PHASE" | tr ',' ' '); do
   echo "[JOB] ---- phase $PH ----"
   case "$PH" in
@@ -212,7 +216,11 @@ for PH in $(echo "$PHASE" | tr ',' ' '); do
       ;;
   esac
   tail -40 "$OUT/phase$PH.log" 2>/dev/null || true
-  [ "$rc" -eq 0 ] || fail 7 "phase $PH driver rc=$rc (see out/phase$PH.log)"
+  if [ "$rc" -ne 0 ]; then
+    echo "[JOB] WARN phase $PH driver failed rc=$rc (see out/phase$PH.log); continuing"
+    printf "%s\t%s\n" "$PH" "$rc" >> "$OUT/phase_failures.tsv"
+    RC_ANY=$rc
+  fi
 done
 
 corpus_tree "$OUT/corpus_after.tsv"
@@ -238,8 +246,14 @@ geom_delete
   echo "host=$(hostname)"
   echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo "phase_rc=$rc"
+  echo "phase_failures=$(cat "$OUT/phase_failures.tsv" 2>/dev/null | tr '\n' ' ')"
 } > "$OUT/run-meta_phase$PHASES_TAG.txt"
 
 printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
 echo "[JOB] index row appended (verdict and human_note left empty)"
+if [ "$RC_ANY" -ne 0 ]; then
+  echo "[JOB] FAILED: one or more phases returned non-zero:"
+  cat "$OUT/phase_failures.tsv"
+  exit "$RC_ANY"
+fi
 echo "[JOB] phase $PHASE complete rc=0"

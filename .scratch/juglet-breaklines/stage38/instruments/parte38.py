@@ -82,10 +82,13 @@ def panels(arr):
     return out
 
 
-def measure_png(path, label, npoints=None):
+def measure_png(path, label, npoints=None, boxes=None):
+    """boxes = explicit (x0,x1,y0,y1) panel rectangles in saved-PNG pixels; when given, the
+    panels are those rectangles and no content-based split is used (a sparse cloud can carry a
+    fully white column inside a panel, which would split it)."""
     with Image.open(path) as im:
         arr = np.asarray(im.convert("RGB"))
-    ps = panels(arr)
+    ps = list(boxes) if boxes else panels(arr)
     rows = []
     for i, (x0, x1, y0, y1) in enumerate(ps):
         st = ink_stats(arr[y0:y1, x0:x1])
@@ -96,6 +99,7 @@ def measure_png(path, label, npoints=None):
     whole = ink_stats(arr)
     rec = {"png": os.path.basename(path), "label": label, "file": path,
            "pixel_width": int(arr.shape[1]), "pixel_height": int(arr.shape[0]),
+           "panel_source": "axes boxes" if boxes else "white-column split",
            "panels_found": len(ps), "panels": rows, "whole": whole,
            "ink_frac_mean": (float(np.mean([r["ink_frac"] for r in rows])) if rows else 0.0),
            "grey_share_of_ink_mean": (float(np.mean([r["grey_share_of_ink"] for r in rows]))
@@ -122,7 +126,8 @@ def draw_e(piece, ply, outpath, target_mm_px, dpi=110.0):
     span_p = 2.0 * half
     ranks = np.maximum(cid, 0).astype(np.float64)
     rmax = max(1.0, float(ranks.max()))
-    cmap = cm.get_cmap("turbo")
+    cmap = (matplotlib.colormaps["turbo"] if hasattr(matplotlib, "colormaps")
+            else cm.get_cmap("turbo"))
     norm = mcolors.LogNorm(vmin=1.0, vmax=rmax)
     rgba = cmap(norm(np.maximum(ranks, 1.0)))
     order = np.argsort(-cid, kind="stable")          # largest region last -> drawn on top
@@ -176,9 +181,32 @@ def draw_e(piece, ply, outpath, target_mm_px, dpi=110.0):
                  "(%s PLY)" % (piece, len(xyz), len(np.unique(cid)), int(np.bincount(cid + 1)[1:].max())
                                if len(np.unique(cid)) else 0, mm_px[0], mm_px[1], fmt), fontsize=8)
     fig.tight_layout(rect=(0, 0.07, 1, 0.93))
-    fig.savefig(outpath, facecolor="white", bbox_inches="tight", pad_inches=0.06)
+    pad = 0.06
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    tb = fig.get_tightbbox(rend)                     # inches, before the pad
+    fig.savefig(outpath, facecolor="white", bbox_inches="tight", pad_inches=pad)
     with Image.open(outpath) as im:
         w, h = im.size
+    # panel rectangles in saved-PNG pixels (origin top-left): the saved image holds the tight
+    # bbox plus the pad, so subtract that origin and flip y
+    px0_in = tb.x0 - pad
+    py0_in = tb.y0 - pad
+    def to_png(x_disp, y_disp):
+        return (int(round(x_disp - px0_in * dpi)), int(round(h - (y_disp - py0_in * dpi))))
+
+    boxes, plot_boxes = [], []
+    for ax in axes:
+        b = ax.get_window_extent(rend)
+        bx0, by1 = to_png(b.x0, b.y0)
+        bx1, by0 = to_png(b.x1, b.y1)
+        boxes.append((max(0, bx0), min(w, bx1), max(0, by0), min(h, by1)))
+        # the data rectangle in the same pixels: everything inside is drawing, not furniture.
+        # Inset 3 px so the spines and the tick marks just outside them fall out.
+        x0d, y0d = to_png(*ax.transData.transform((ax.get_xlim()[0], ax.get_ylim()[0])))
+        x1d, y1d = to_png(*ax.transData.transform((ax.get_xlim()[1], ax.get_ylim()[1])))
+        plot_boxes.append((max(0, min(x0d, x1d) + 3), min(w, max(x0d, x1d) - 3),
+                           max(0, min(y0d, y1d) + 3), min(h, max(y0d, y1d) - 3)))
     plt.close(fig)
     sizes = {}
     for c in cid.tolist():
@@ -189,7 +217,8 @@ def draw_e(piece, ply, outpath, target_mm_px, dpi=110.0):
             "mm_per_px": [round(mm_px[0], 6), round(mm_px[1], 6)],
             "pixel_width": w, "pixel_height": h, "dpi": round(dpi, 1),
             "marker_mm": 0.45, "alpha": 1.0, "palette": "turbo, log over rank",
-            "scale_bar_mm": 5.0, "bytes": os.path.getsize(outpath)}
+            "scale_bar_mm": 5.0, "bytes": os.path.getsize(outpath),
+            "panel_boxes": boxes, "plot_boxes": plot_boxes}
 
 
 def main():
@@ -222,7 +251,11 @@ def main():
         out = os.path.join(a.outdir, "%s_partE_ranked_fullopacity.png" % piece)
         m2 = draw_e(piece, ply, out, tgt)
         rec["redraw"].append(m2)
-        rec["measure_redraw"].append(measure_png(out, "%s partE redraw" % piece, m2["points"]))
+        m_ax = measure_png(out, "%s partE redraw axes box" % piece, m2["points"],
+                           boxes=m2["panel_boxes"])
+        m_pl = measure_png(out, "%s partE redraw plot interior" % piece, m2["points"],
+                           boxes=m2["plot_boxes"])
+        rec["measure_redraw"].append({"axes_box": m_ax, "plot_interior": m_pl})
     with open(os.path.join(a.outdir, "parte38.json"), "w") as f:
         json.dump(rec, f, indent=1, sort_keys=True)
     print("[PARTE] wrote %s" % os.path.join(a.outdir, "parte38.json"))
