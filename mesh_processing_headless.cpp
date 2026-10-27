@@ -4353,7 +4353,16 @@ int main(int argc, char** argv) {
         int dsTarget244 = 0;
         if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) { if (*e) dsTarget244 = std::stoi(e); }
         float samplingRadius244 = 0.6F;
-        std::string spacingPolicy = "fixed";
+        // TICKET 37: the adaptive step is the DEFAULT from here on. Ticket 36 measured it on the
+        // sample pot: 8 of 8 two-surface, pairs unchanged or better, and more than double the
+        // samples on the small sherds, so the conservator asked for the change (2026-10-27). The
+        // step is the piece's own: S = min(0.6, max(s0, diag/SFS_SPACING_SAMPLES)), so a big piece
+        // keeps the 0.6 mm it has always had and only a small one is sampled finer.
+        // SFS_SPACING_POLICY=fixed is the override that restores the pre-37 behaviour exactly
+        // (ticket 37 proof 1: the same SampledWithNormals.ply md5 as the pre-change binary).
+        // SFS_COUNT_SCALE stays off on purpose: ticket 36 showed the scaled counts are what empties
+        // the small sherds, so the floor keeps its 50 and only the step moves.
+        std::string spacingPolicy = "piece";
         if (const char* e = std::getenv("SFS_SPACING_POLICY")) { if (*e) spacingPolicy = e; }
         if (spacingPolicy == "piece")
         {

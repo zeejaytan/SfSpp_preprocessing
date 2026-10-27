@@ -1,0 +1,2 @@
+#config	piece	npts	regions_before	largest	ge10	ge20	ge30	ge50	ge_pct1	ge_pct5	ge_pct10	largest_depth	fail_angle	af_per_point	largest_pops	floor	survivors	sizes_ge_floor	validation	pipeline_clusters
+FX	Juglet_Piece_7	4254	2020	258	27	12	10	9	9	2	0	23	16941	3.982	258	50	9	258,214,137,101,88,86,85,81,73	NEAR	9

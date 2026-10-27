@@ -1,0 +1,12 @@
+path	ext	files	bytes
+B/Pot_A/Pot_A_Piece_07/stage	other	3	466
+B/Pot_A/Pot_A_Piece_07/stage	obj	1	3095000
+B/Pot_A/Pot_A_Piece_07/stage	pcd	3	28622643
+B/Pot_A/Pot_A_Piece_07/stage	ply	7	13099734
+B/Pot_A/Pot_A_Piece_07/stage	xyz	5	7501601
+B/Pot_A/Pot_A_Piece_07/dump	json	5	3134
+B/Pot_A/Pot_A_Piece_07/dump	ply	5	10965179
+# counted above, then deleted: 52393362 bytes of stage,
+# 10976505 bytes of rung dump
+# what the delete does not touch: everything under /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1404_c16e274_t37-adaptive-default/out/cells/B/Pot_A/Pot_A_Piece_07/surfaces and /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1404_c16e274_t37-adaptive-default/out/cells/B/Pot_A/Pot_A_Piece_07/measure
+after: stage present=no dump present=no

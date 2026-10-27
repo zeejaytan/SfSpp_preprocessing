@@ -1,0 +1,40 @@
+# ticket 37 arm check -- read from each arm's own per-piece mesh logs
+# arm cells spacing(correct/total) normal_input single_write count_scale verdict
+NA 3 3/3 3/3 0/0 0/0 ok
+PDN 3 3/3 3/3 0/0 0/0 ok
+FX 6 6/6 6/6 0/0 0/0 ok
+RA 4 4/4 0/0 0/0 0/0 ok
+# the pipeline's own first line of each kind, arm by arm
+# NA [SPACING-22] policy=piece diagMM=33.576 s0MM=0.215277 samples=200 rawMM=0.16788 S=0.215277
+# NA normalSource=input normalSourceSet=yes minPairs=3
+# NA [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# NA [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# PDN [SPACING-22] policy=piece diagMM=28.3088 s0MM=0.210898 samples=200 rawMM=0.141544 S=0.210898
+# PDN normalSource=input normalSourceSet=yes minPairs=3
+# PDN [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# PDN [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# FX [SPACING-22] policy=fixed S=0.6
+# FX normalSource=input normalSourceSet=yes minPairs=3
+# FX [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# FX [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# RA [SPACING-22] policy=piece diagMM=33.576 s0MM=0.215277 samples=200 rawMM=0.16788 S=0.215277
+# RA normalSource=reestimate normalSourceSet=no minPairs=3
+# RA [COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+# RA [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# replica and dump, per cell (repl_rc, verdict, dump files)
+# FX/Juglet/Juglet_Piece_2 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# FX/Juglet/Juglet_Piece_3 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# FX/Juglet/Juglet_Piece_5 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# FX/Juglet/Juglet_Piece_7 repl_rc=0 verdict=NEAR partd_ply=0 partd_json=0
+# FX/Juglet/Juglet_Piece_9 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# FX/Pot_A/Pot_A_Piece_07 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# NA/Juglet/Juglet_Piece_3 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# NA/Juglet/Juglet_Piece_5 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# NA/Juglet/Juglet_Piece_7 repl_rc=0 verdict=MISMATCH partd_ply=0 partd_json=0
+# PDN/Juglet/Juglet_Piece_2 repl_rc=0 verdict=MATCH partd_ply=1 partd_json=1
+# PDN/Juglet/Juglet_Piece_9 repl_rc=0 verdict=MATCH partd_ply=1 partd_json=1
+# PDN/Pot_A/Pot_A_Piece_07 repl_rc=0 verdict=MATCH partd_ply=1 partd_json=1
+# RA/Juglet/Juglet_Piece_3 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# RA/Juglet/Juglet_Piece_5 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# RA/Juglet/Juglet_Piece_7 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0
+# RA/Pot_A/Pot_A_Piece_07 repl_rc=0 verdict=MATCH partd_ply=0 partd_json=0

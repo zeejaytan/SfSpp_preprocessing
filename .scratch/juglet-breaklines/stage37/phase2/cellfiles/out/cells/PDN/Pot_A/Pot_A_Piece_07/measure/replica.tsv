@@ -1,0 +1,2 @@
+#config	piece	npts	regions_before	largest	ge10	ge20	ge30	ge50	ge_pct1	ge_pct5	ge_pct10	largest_depth	fail_angle	af_per_point	largest_pops	floor	survivors	sizes_ge_floor	validation	pipeline_clusters
+PDN	Pot_A_Piece_07	34608	2494	13131	20	12	10	10	6	2	2	75	27667	0.799	13131	69	10	13131,12042,1622,1248,1127,1052,183,165,103,90	MATCH	10
