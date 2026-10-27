@@ -2291,3 +2291,30 @@ produce nothing to score, not how any existing edgeline scores.
 
 Next: unchanged from ticket 29 — a threshold set from the outcome per piece, and then whether the boundary
 of the region the growth returns lies on the real broken edge.
+
+## 2026-10-27 — the merge is not the wall, and the normals help only when their ball is small (ticket 33)
+
+Sherd 2 was pushed as far as the current switches allow: with the floor lowered to 36 points it grows two
+regions of 43 and 39 points and writes two surfaces, 226 and 203 points, **12.1 and 11.8 mm across a 28.3 mm
+sherd, covering 30.0 % and 35.4 % of it within 2 mm**. They are not two faces of one wall — their points sit
+6.36 mm apart along the Surface_0 normal and **11.856 mm across it** (a real Pot A pair: 3.5-7.1 along,
+0.24-0.27 across). Sherd 9 grows **no region at any setting tried**, down to a floor of 39 points on a
+1,972-point cloud. The merge is not the blocker: lowering its required boundary pairs from 3 to 2 (SFS_MERGE_MIN_PAIRS)
+changed nothing in any cell, and the criterion that refuses is still unlogged.
+
+The normals lead was tested and half-refuted. At the shipped 0.6 mm spacing the normals the scan carries are
+**worse** than the pipeline's own (3.87-9.95 deg from the mesh against 3.39-9.01, worse on all five pieces);
+at arm C's smaller sampling radius the same carry gives **1.79-3.46 deg**, better than the pipeline anywhere.
+The cause is the averaging ball, not the source: averaging unit normals over 0.6 mm mixes directions across a
+surface folding over 0.7-5.3 mm. A nearest-normal carry is untested.
+
+The trade is explicit: the finer spacing that lifted sherd 2's fragments over the floor cost pieces 3, 5 and 7
+**all** of their surfaces (one region each). No setting yet tried gives a face on 2 or 9 without taking one
+away from a sherd that had one.
+
+Weight: none on the 281/292 tally. It tells us the Juglet's breakline question is blocked upstream of the
+breakline — two of nine sherds still have no line to walk.
+
+Next: nearest-normal carry at the shipped spacing, one cell; if the normals land near the 0.41-1.64 deg the
+input clouds carry, run the growth at 3.4 deg on it for pieces 2 and 9 with Pot A as control. A fragment-merge
+repair would have to change the 1.0 mm boundary criterion (a hardcoded metric), not the pair count.
