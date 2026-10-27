@@ -58,12 +58,12 @@ done
 for k in 0 1; do
   p=$CELL/surfaces/${PIECE}_Surface_$k.ply
   if [ -f "$p" ]; then
-    n=$(grep -m1 '^element vertex' "$p" | awk '${print $3}')
+    n=$(grep -m1 '^element vertex' "$p" | awk '{print $3}')
     eval "N$k=${n:-0}"
   fi
 done
 if [ -f "$CELL/surfaces/${PIECE}_unclustered.ply" ]; then
-  UNC=$(grep -m1 '^element vertex' "$CELL/surfaces/${PIECE}_unclustered.ply" | awk '${print $3}')
+  UNC=$(grep -m1 '^element vertex' "$CELL/surfaces/${PIECE}_unclustered.ply" | awk '{print $3}')
 fi
 
 if [ -d "$ST" ]; then
@@ -113,9 +113,9 @@ for f in "$CELL/breaklines"/*_Breakline_*.pcd; do
   [ -f "$f" ] || continue
   b=$(basename "$f")
   sk=$(echo "$b" | sed -e 's/.*_Breakline_\([01]\)\.pcd$/\1/')
-  pts=$(grep -m1 '^POINTS' "$f" | awk '${print $2}')
-  segs=$(grep -m1 '^#' "$f" | awk '${print $2}')
-  hpts=$(grep -m1 '^#' "$f" | awk '${print $3}')
+  pts=$(grep -m1 '^POINTS' "$f" | awk '{print $2}')
+  segs=$(grep -m1 '^#' "$f" | awk '{print $2}')
+  hpts=$(grep -m1 '^#' "$f" | awk '{print $3}')
   xf="${f%.pcd}.xyz"
   if [ -f "$xf" ]; then xl=$(wc -l < "$xf"); else xl=0; fi
   printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \

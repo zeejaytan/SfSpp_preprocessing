@@ -58,20 +58,20 @@ for k in 0 1; do
     if [ -f "$ST/Temp/Data/$POT/${PIECE}_Surface_$k.xyz" ]; then
       cp -f "$ST/Temp/Data/$POT/${PIECE}_Surface_$k.xyz" "$CELL/surfaces/"
     fi
-    n=$(grep -m1 '^element vertex' "$src" | awk '${print $3}' | tr -d '\n')
+    n=$(grep -m1 '^element vertex' "$src" | awk '{print $3}' | tr -d '\n')
     eval "S$k=yes"; eval "N$k=${n:-0}"
   fi
 done
 
 UNC=-1
 UNCP=$ST/Temp/Data/$POT/${PIECE}_unclustered.ply
-if [ -f "$UNCP" ]; then UNC=$(grep -m1 '^element vertex' "$UNCP" | awk '${print $3}'); [ -z "${UNC:-}" ] && UNC=-1; fi
+if [ -f "$UNCP" ]; then UNC=$(grep -m1 '^element vertex' "$UNCP" | awk '{print $3}'); [ -z "${UNC:-}" ] && UNC=-1; fi
 
 if [ -d "$DUMPROOT/$TAG/$PIECE" ]; then
   for f in "$DUMPROOT/$TAG/$PIECE"/*.ply; do
     [ -f "$f" ] || continue
     printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$TAG" "$POT" "$PIECE" "$(basename "$f")" \
-      "$(grep -m1 '^element vertex' "$f" | awk '${print $3}')" "$(wc -c < "$f")" >> "$CELLROOT/dumpcounts30.tsv"
+      "$(grep -m1 '^element vertex' "$f" | awk '{print $3}')" "$(wc -c < "$f")" >> "$CELLROOT/dumpcounts30.tsv"
   done
 fi
 

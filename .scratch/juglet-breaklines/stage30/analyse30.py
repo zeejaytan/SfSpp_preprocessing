@@ -299,10 +299,12 @@ def main(argv):
         pred = math.degrees(s / rho) if rho > 0 else float("nan")
         floor = float("nan")
         nfloor = 0
+        nverts = 0
         mpath = mesh_of.get((tag, piece), "")
         if mpath and os.path.isfile(mpath):
             verts, vnorm, nfaces = read_obj_normals(mpath)
             floor, nfloor = mesh_floor(pts, nrm, verts, vnorm, rng)
+            nverts = int(verts.shape[0])
         else:
             nfaces = -1
         rec = {"cloud": key, "arm": tag, "piece": piece, "n": n, "props": ",".join(props),
@@ -310,11 +312,11 @@ def main(argv):
                "rho_p75": st30["p75"], "rho_share_at_cap": st30["share_at_cap"],
                "rho_k10": st10["median"], "pred_deg": pred, "measured_p50": measured,
                "ratio": measured / pred if pred else float("nan"),
-               "theta_q": q72, "mesh_floor_deg": floor, "mesh_verts": nfloor,
+               "theta_q": q72, "mesh_floor_deg": floor, "mesh_verts": nverts,
                "mesh_faces": nfaces, "zero_normals": zero_normals,
                "n_pairs": ast.get("n_pairs"), "n_angles_nan": ast.get("n_nan"),
                "p10": ast.get("p10"), "p90": ast.get("p90"),
-               "share_le_3p4": ast.get("le_3.4")}
+               "share_le_3p4": ast.get("le_3.4"), "r1_file": os.path.basename(r1path) if r1path else ""}
         loaded[key] = rec
         rows.append(rec)
         print("[A30] %-22s n=%-7d s=%.4f rho30=%.3f rho10=%.3f pred=%.3f measured_p50=%.3f "
@@ -334,7 +336,7 @@ def main(argv):
                       r["pred_deg"], r["measured_p50"], r["ratio"], r["theta_q"],
                       r["mesh_floor_deg"], r["mesh_verts"], r["mesh_faces"],
                       r["r1_eq_r2"], r["zero_normals"], r["n_pairs"], r["n_angles_nan"],
-                      r["p10"], r["p90"], r["share_le_3p4"], ""])
+                      r["p10"], r["p90"], r["share_le_3p4"], r["r1_file"]])
     write_tsv(os.path.join(out, "tableA30.tsv"), hdr, table)
 
     preds = [r["pred_deg"] for r in rows]
