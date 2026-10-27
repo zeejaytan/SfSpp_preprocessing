@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=s27dedupe
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+#
+# Ticket 27: what fraction of a sherd's points reaches a written surface, and what changes when
+# finishImprovedSurface stops writing the same position twice (SFS_DEDUPE=on).
+# Mesh arms, all ten pieces:  OLD (pre-change binary) | A (my commit, switches unset) |
+# A2 (the same binary file as A again = run-to-run control) | P (A's binary + SFS_DUMP_STAGE) |
+# B (A's binary + SFS_DEDUPE=on).
+# Second pass, the eight pieces that write a surface: our own edgeline stage on each arm's
+# surfaces, so Breakline_0 dot counts are compared off against on.
+set -uo pipefail
+export LC_ALL=C
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+COMMIT=__NEWCOMMIT__
+OLDCOMMIT=__OLDCOMMIT__
+TAG=__TAG__
+
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DSET=$CANON/Dataset
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+INSTR=$RUN/instruments
+STAGER=$INSTR/stage_piece_p27.sh
+CELLRUN=$INSTR/run_cell27.sh
+EDGERUN=$INSTR/run_edge27.sh
+DEDUPE=$INSTR/dedupe27.py
+MEASURE=$INSTR/measure_pairs26.py
+CELLROOT=$RUN/out/cells
+BIND="--bind /data:/data"
+mkdir -p "$RUN/out/bin" "$RUN/out/dump" "$CELLROOT" "$RUN/logs"
+: > "$CELLROOT/cells27.tsv"
+: > "$CELLROOT/cells27_edge.tsv"
+: > "$CELLROOT/geometry_counts.tsv"
+
+say() { echo "[S27] $(date +%H:%M:%S) $*"; }
+say "run=$RUNID commit=$COMMIT old=$OLDCOMMIT tag=$TAG host=$(hostname)"
+say "job=$SLURM_JOB_ID nodelist=$SLURM_JOB_NODELIST cpus=$SLURM_CPUS_PER_TASK"
+
+pot_pieces() {
+  printf "%s\t%s\n" \
+    Pot_A Pot_A_Piece_01 Pot_A Pot_A_Piece_02 Pot_A Pot_A_Piece_07 Pot_A Pot_A_Piece_08 \
+    Juglet Juglet_Piece_1 Juglet Juglet_Piece_4 Juglet Juglet_Piece_6 Juglet Juglet_Piece_7 \
+    Juglet Juglet_Piece_2 Juglet Juglet_Piece_9
+}
+pot_of() { case "$1" in Pot_A_*) echo Pot_A;; *) echo Juglet;; esac }
+cloud_of() { POT=$(pot_of "$1"); if [ "$POT" = Pot_A ]; then echo "$CORP/Point/Pot_A/$1_Point.pcd"; else echo "$DSET/Point/$POT/$1_Point.pcd"; fi; }
+mesh_of() { POT=$(pot_of "$1"); if [ "$POT" = Pot_A ]; then echo "$CORP/Mesh/$1_Mesh.obj"; else echo "$DSET/Mesh/$POT/$1_Mesh.obj"; fi; }
+axis_of() { POT=$(pot_of "$1"); if [ "$POT" = Pot_A ]; then echo "$DSET/Axes/Pot_A/$1_Axis.xyz"; else echo "$BOOT/$1_boot_Axis.xyz"; fi; }
+
+# ---- corpus before (read-only proof) -------------------------------------------------
+corpus_tree() {
+  find "$CORP" -type f -printf "%p\t%s\t%T@\n" 2>/dev/null | sort
+  if [ -e /opt/sfs-pristine ]; then echo "opt-sfs-pristine PRESENT"; else echo "opt-sfs-pristine ABSENT"; fi
+}
+corpus_md5() {
+  while read -r pot piece; do
+    [ -n "$piece" ] || continue
+    md5sum "$(cloud_of "$piece")" "$(mesh_of "$piece")" "$(axis_of "$piece")" 2>&1
+  done < <(pot_pieces)
+}
+say "corpus tree before"
+corpus_tree > "$RUN/out/corpus_before.tsv"
+say "corpus md5 before (10 pieces x cloud+mesh+axis)"
+corpus_md5 > "$RUN/out/corpus_before.md5"
+say "corpus before: $(wc -l < "$RUN/out/corpus_before.tsv") tree lines, $(wc -l < "$RUN/out/corpus_before.md5") md5 lines"
+
+# ---- build --------------------------------------------------------------------------
+build_arm() {
+  local name=$1 sha=$2 want_edge=$3 dir=$RUN/out/build/$name src=$RUN/out/build/$name/src
+  rm -rf "$dir"; mkdir -p "$src"
+  git -C "$CANON" archive "$sha" | tar -x -C "$src" || { say "BUILD $name FATAL archive $sha"; return 4; }
+  mkdir -p "$src/build"
+  ( cd "$src/build" && $APT exec $BIND "$SIF" bash -c "cmake -DCMAKE_BUILD_TYPE=Release .. >/dev/null && make -j8 MeshPreprocessingHeadless" ) \
+      > "$RUN/logs/build_$name.log" 2>&1
+  local rc=$?
+  local out=$src/build/MeshPreprocessingHeadless
+  if [ ! -s "$out" ]; then say "BUILD $name FATAL mesh binary missing rc=$rc"; tail -20 "$RUN/logs/build_$name.log"; return 5; fi
+  cp -f "$out" "$RUN/out/bin/MeshPreprocessingHeadless.$name"
+  say "BUILD $name mesh rc=$rc bytes=$(wc -c < "$RUN/out/bin/MeshPreprocessingHeadless.$name") md5=$(md5sum "$RUN/out/bin/MeshPreprocessingHeadless.$name" | awk '{print $1}')"
+  if [ "$want_edge" = yes ]; then
+    ( cd "$src/build" && $APT exec $BIND "$SIF" bash -c "make -j8 EdgeLineExtractionHeadless" ) \
+        > "$RUN/logs/build_edge_$name.log" 2>&1
+    local erc=$?
+    if [ -s "$src/build/EdgeLineExtractionHeadless" ]; then
+      cp -f "$src/build/EdgeLineExtractionHeadless" "$RUN/out/bin/EdgeLineExtractionHeadless.$name"
+      say "BUILD $name edge rc=$erc bytes=$(wc -c < "$RUN/out/bin/EdgeLineExtractionHeadless.$name") md5=$(md5sum "$RUN/out/bin/EdgeLineExtractionHeadless.$name" | awk '{print $1}')"
+    else
+      say "BUILD $name edge FATAL rc=$erc (mesh grid still runs; edgeline pass skipped)"
+      tail -20 "$RUN/logs/build_edge_$name.log"
+    fi
+  fi
+  rm -rf "$src"
+  return 0
+}
+
+build_arm OLD "$OLDCOMMIT" no || { say "FATAL OLD build failed"; exit 6; }
+build_arm A "$COMMIT" yes || { say "FATAL A build failed"; exit 6; }
+cp -f "$RUN/out/bin/MeshPreprocessingHeadless.A" "$RUN/out/bin/MeshPreprocessingHeadless.A2"
+say "A2 = byte copy of A md5=$(md5sum "$RUN/out/bin/MeshPreprocessingHeadless.A2" | awk '{print $1}')"
+
+# ---- mesh pass ----------------------------------------------------------------------
+run_mesh_cell() {
+  local tag=$1 piece=$2 pot envs=""
+  pot=$(pot_of "$piece")
+  case "$tag" in
+    P) envs="SFS_DUMP_STAGE=$RUN/out/dump/P SFS_DUMP_PIECES=$piece" ;;
+    B) envs="SFS_DEDUPE=on" ;;
+  esac
+  CELLROOT="$CELLROOT" POT="$pot" PIECE="$piece" AXIS="$(axis_of "$piece")" \
+  BIN="$RUN/out/bin/MeshPreprocessingHeadless.$tag" SIF="$SIF" APT="$APT" STAGER="$STAGER" \
+  COMMIT="$COMMIT" ENVS="$envs" bash "$CELLRUN" "$tag"
+}
+
+{
+  for tag in OLD A A2 P B; do
+    while read -r pot piece; do [ -n "$piece" ] && printf "%s\t%s\n" "$tag" "$piece"; done < <(pot_pieces)
+  done
+} > "$RUN/out/cells_mesh.list"
+say "mesh grid: $(wc -l < "$RUN/out/cells_mesh.list") cells"
+mkdir -p "$RUN/out/dump/P"
+cat > "$RUN/out/dump/P/README.txt" <<'EOF'
+Ticket 27, arm P: SFS_DUMP_STAGE armed and SFS_DEDUPE unset -- today's defaults with every rung of
+the segmentation written. Part A reads r2_clusters_premerge.json (points entering the segmentation,
+region sizes, points_in_no_cluster) and r5_write.json (points per written surface and how many of
+them are distinct positions). Both rungs are written inside the 30-retry loop, so a retrying piece
+keeps only its last retry; the per-retry history is in that cell's logs/lines27.log [RETRY-23].
+EOF
+export -f run_mesh_cell pot_of cloud_of mesh_of axis_of
+xargs -a "$RUN/out/cells_mesh.list" -d "\n" -n 1 -P 8 bash -c 'set -- $1; run_mesh_cell "$1" "$2"' _ \
+  2>&1 | tee -a "$RUN/logs/mesh_pass.log"
+say "mesh pass done: $(wc -l < "$CELLROOT/cells27.tsv") rows"
+
+# ---- our own edgeline stage, off against on -----------------------------------------
+EDGE=$RUN/out/bin/EdgeLineExtractionHeadless.A
+run_edge_cell() {
+  local tag=$1 piece=$2 pot
+  pot=$(pot_of "$piece")
+  [ -f "$EDGE" ] || { say "EDGE skip $tag/$piece: no edgeline binary"; return 0; }
+  CELLROOT="$CELLROOT" POT="$pot" PIECE="$piece" EDGEBIN="$EDGE" SIF="$SIF" APT="$APT" \
+  MESH="$(mesh_of "$piece")" AXIS="$(axis_of "$piece")" COMMIT="$COMMIT" bash "$EDGERUN" "$tag"
+}
+{
+  for tag in OLD A A2 B; do
+    for piece in Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_07 Pot_A_Piece_08 \
+                 Juglet_Piece_1 Juglet_Piece_4 Juglet_Piece_6 Juglet_Piece_7; do
+      printf "%s\t%s\n" "$tag" "$piece"
+    done
+  done
+} > "$RUN/out/cells_edge.list"
+say "edgeline grid: $(wc -l < "$RUN/out/cells_edge.list") cells at -P 3"
+export -f run_edge_cell pot_of mesh_of axis_of
+xargs -a "$RUN/out/cells_edge.list" -d "\n" -n 1 -P 3 bash -c 'set -- $1; run_edge_cell "$1" "$2"' _ \
+  2>&1 | tee -a "$RUN/logs/edge_pass.log"
+say "edgeline pass done: $(wc -l < "$CELLROOT/cells27_edge.tsv") cells"
+
+# ---- measurements -------------------------------------------------------------------
+say "measuring"
+$PY "$MEASURE" "$CELLROOT" > "$RUN/logs/measure26.log" 2>&1; say "measure rc=$?"
+$PY "$DEDUPE" surfaces "$CELLROOT" > "$RUN/logs/dedupe_surfaces.log" 2>&1; say "surfaces rc=$?"
+$PY "$DEDUPE" seteq "$CELLROOT" > "$RUN/logs/dedupe_seteq.log" 2>&1; say "seteq rc=$?"
+$PY "$DEDUPE" partA "$RUN/out/dump/P" > "$RUN/logs/dedupe_partA.log" 2>&1; say "partA rc=$?"
+$PY "$DEDUPE" dots "$CELLROOT" > "$RUN/logs/dedupe_dots.log" 2>&1; say "dots rc=$?"
+grep -h "\\[DEDUPE-27\\]" "$CELLROOT"/*/*/*/logs/mesh.log 2>/dev/null | sort | uniq -c > "$RUN/out/dedupe27_lines.txt"
+tail -40 "$RUN/logs/dedupe_partA.log"; tail -20 "$RUN/logs/dedupe_seteq.log"
+
+# ---- corpus after (read-only proof) -------------------------------------------------
+say "corpus tree after"
+corpus_tree > "$RUN/out/corpus_after.tsv"
+corpus_md5 > "$RUN/out/corpus_after.md5"
+diff -q "$RUN/out/corpus_before.tsv" "$RUN/out/corpus_after.tsv" && say "CORPUS TREE UNCHANGED" || say "CORPUS TREE CHANGED -- see out/corpus_after.tsv"
+diff -q "$RUN/out/corpus_before.md5" "$RUN/out/corpus_after.md5" && say "CORPUS MD5 UNCHANGED" || say "CORPUS MD5 CHANGED -- see out/corpus_after.md5"
+grep "opt-sfs-pristine" "$RUN/out/corpus_after.tsv"
+
+# ---- deletion record (geometry dies with the ticket; the record survives) -----------
+{
+  echo "# Ticket 27 run $RUNID -- geometry deleted at the end of this job."
+  echo "# Every staged tree and every edgeline stage was removed after its cell finished,"
+  echo "# counted per extension before deletion. class = tag/pot/piece/{stage,edgestage}."
+  echo "# KEPT: logs/ (slurm + per-cell mesh.log, lines27.log, edge.log), cells27.tsv,"
+  echo "# cells27_edge.tsv, measure26.tsv, breakdots.tsv, breaklines/*.pcd/.xyz,"
+  echo "# surfaces/*.ply + *.xyz, out/dump/P sidecars, corpus before/after, binaries."
+  echo "# class\textension\tfiles\tbytes"
+  cat "$CELLROOT/geometry_counts.tsv" 2>/dev/null || true
+  echo "# total deleted: $(awk -F'\t' '{f+=$3; b+=$4} END {print f+0" files, "b+0" bytes"}' "$CELLROOT/geometry_counts.tsv" 2>/dev/null)"
+} > "$RUN/out/GEOMETRY_DELETED.txt"
+say "geometry deleted: $(tail -1 "$RUN/out/GEOMETRY_DELETED.txt")"
+
+# ---- index row ----------------------------------------------------------------------
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$SLURM_JOB_ID" "$COMMIT" "$TAG" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+tail -2 /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv | sed -e 's/^/[S27] index: /'
+say "done"
