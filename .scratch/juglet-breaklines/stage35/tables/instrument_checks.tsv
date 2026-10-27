@@ -1,0 +1,65 @@
+check	source	recorded	measured	abs_diff	rel_diff	match
+ticket20 v_raw piece 9	C_mesh.tsv	2094	2094	0	0	identical
+ticket20 f piece 9	C_mesh.tsv	4184	4184	0	0	identical
+ticket20 area_mm2 piece 9	C_mesh.tsv	373.757	373.757	0	0	identical
+ticket20 rays piece 9	C_mesh.tsv	787	787	0	0	identical
+ticket20 thick_med_mm piece 9	C_mesh.tsv	2.59484	2.59484	0	0	identical
+ticket20 thick_p10_mm piece 9	C_mesh.tsv	2.06616	2.06616	0	0	identical
+ticket20 thick_p90_mm piece 9	C_mesh.tsv	8.18262	8.18262	0	0	identical
+ticket20 frac_1to3 piece 9	C_mesh.tsv	0.613811	0.613811	0	0	identical
+ticket20 hits_per_ray_max piece 9	C_mesh.tsv	8	8	0	0	identical
+ticket20 rays_with_2plus piece 9	C_mesh.tsv	783	783	0	0	identical
+ticket20 v_raw piece 2	C_mesh.tsv	2565	2565	0	0	identical
+ticket20 f piece 2	C_mesh.tsv	5126	5126	0	0	identical
+ticket20 area_mm2 piece 2	C_mesh.tsv	491.067	491.067	0	0	identical
+ticket20 rays piece 2	C_mesh.tsv	1031	1031	0	0	identical
+ticket20 thick_med_mm piece 2	C_mesh.tsv	2.69305	2.69305	0	0	identical
+ticket20 thick_p10_mm piece 2	C_mesh.tsv	2.13945	2.13945	0	0	identical
+ticket20 thick_p90_mm piece 2	C_mesh.tsv	6.75069	6.75069	0	0	identical
+ticket20 frac_1to3 piece 2	C_mesh.tsv	0.598249	0.598249	0	0	identical
+ticket20 hits_per_ray_max piece 2	C_mesh.tsv	10	10	0	0	identical
+ticket20 rays_with_2plus piece 2	C_mesh.tsv	1027	1027	0	0	identical
+ticket20 v_raw piece 3	C_mesh.tsv	3493	3493	0	0	identical
+ticket20 f piece 3	C_mesh.tsv	6982	6982	0	0	identical
+ticket20 area_mm2 piece 3	C_mesh.tsv	752.904	752.904	0	0	identical
+ticket20 rays piece 3	C_mesh.tsv	1467	1467	0	0	identical
+ticket20 thick_med_mm piece 3	C_mesh.tsv	2.4516	2.4516	0	0	identical
+ticket20 thick_p10_mm piece 3	C_mesh.tsv	1.85722	1.85722	0	0	identical
+ticket20 thick_p90_mm piece 3	C_mesh.tsv	7.13893	7.13893	0	0	identical
+ticket20 frac_1to3 piece 3	C_mesh.tsv	0.67054	0.67054	0	0	identical
+ticket20 hits_per_ray_max piece 3	C_mesh.tsv	9	9	0	0	identical
+ticket20 rays_with_2plus piece 3	C_mesh.tsv	1460	1460	0	0	identical
+ticket20 v_raw piece 5	C_mesh.tsv	6211	6211	0	0	identical
+ticket20 f piece 5	C_mesh.tsv	12418	12418	0	0	identical
+ticket20 area_mm2 piece 5	C_mesh.tsv	1401.63	1401.63	0	0	identical
+ticket20 rays piece 5	C_mesh.tsv	1007	1007	0	0	identical
+ticket20 thick_med_mm piece 5	C_mesh.tsv	2.8998	2.8998	0	0	identical
+ticket20 thick_p10_mm piece 5	C_mesh.tsv	2.31574	2.31574	0	0	identical
+ticket20 thick_p90_mm piece 5	C_mesh.tsv	6.51743	6.51743	0	0	identical
+ticket20 frac_1to3 piece 5	C_mesh.tsv	0.541294	0.541294	0	0	identical
+ticket20 hits_per_ray_max piece 5	C_mesh.tsv	9	9	0	0	identical
+ticket20 rays_with_2plus piece 5	C_mesh.tsv	1005	1005	0	0	identical
+ticket20 v_raw piece 7	C_mesh.tsv	8421	8421	0	0	identical
+ticket20 f piece 7	C_mesh.tsv	16838	16838	0	0	identical
+ticket20 area_mm2 piece 7	C_mesh.tsv	1980.18	1980.18	0	0	identical
+ticket20 rays piece 7	C_mesh.tsv	851	851	0	0	identical
+ticket20 thick_med_mm piece 7	C_mesh.tsv	3.26316	3.26316	0	0	identical
+ticket20 thick_p10_mm piece 7	C_mesh.tsv	2.32523	2.32523	0	0	identical
+ticket20 thick_p90_mm piece 7	C_mesh.tsv	5.78525	5.78525	0	0	identical
+ticket20 frac_1to3 piece 7	C_mesh.tsv	0.338824	0.338824	0	0	identical
+ticket20 hits_per_ray_max piece 7	C_mesh.tsv	8	8	0	0	identical
+ticket20 rays_with_2plus piece 7	C_mesh.tsv	847	847	0	0	identical
+ticket20 v_raw piece 07	C_mesh.tsv	63522	10593	52929	0.833	DIFFERS
+ticket20 f piece 07	C_mesh.tsv	21174	21174	0	0	identical
+ticket20 area_mm2 piece 07	C_mesh.tsv	2005.19	2005.19	0	0	identical
+ticket20 rays piece 07	C_mesh.tsv	860	860	0	0	identical
+ticket20 thick_med_mm piece 07	C_mesh.tsv	4.05609	4.05609	0	0	identical
+ticket20 thick_p10_mm piece 07	C_mesh.tsv	3.50109	3.50109	0	0	identical
+ticket20 thick_p90_mm piece 07	C_mesh.tsv	11.9737	11.9737	0	0	identical
+ticket20 frac_1to3 piece 07	C_mesh.tsv	0.00930233	0.00930233	0	0	identical
+ticket20 hits_per_ray_max piece 07	C_mesh.tsv	2	2	0	0	identical
+ticket20 rays_with_2plus piece 07	C_mesh.tsv	860	860	0	0	identical
+ticket28 greedy largest piece 3	tickets 28/33	169	268	99	0.586	DIFFERS
+ticket28 greedy largest piece 5	tickets 28/33	679	679	0	0	identical
+ticket28 greedy largest piece 2	tickets 28/33	36	36	0	0	identical
+ticket28 greedy largest piece 9	tickets 28/33	16	17	1	0.0625	DIFFERS
