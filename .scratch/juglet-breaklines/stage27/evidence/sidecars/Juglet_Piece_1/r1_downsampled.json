@@ -1,0 +1,1 @@
+{ "rung": "r1_downsampled", "piece": "Juglet_Piece_1", "points_out": 14546, "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/dump/P/Juglet_Piece_1/r1_downsampled.ply", "spacing_policy": "fixed", "S_mm": 0.600000, "diag_mm": 0.000000, "s0_mm": 0.000000, "sampling_radius_mm": 0.600000, "downsample_target": 0, "points_in": 24294 }

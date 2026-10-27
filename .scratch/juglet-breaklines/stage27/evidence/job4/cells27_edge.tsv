@@ -1,0 +1,18 @@
+# Ticket 27 job 4 -- edgeline cells per (arm, piece, surface): exit, elapsed, dots, segments.
+# tag<TAB>pot<TAB>piece<TAB>commit<TAB>edge_exit<TAB>elapsed_s
+A	Pot_A	Pot_A_Piece_08	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	3
+A	Pot_A	Pot_A_Piece_02	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	10
+B	Pot_A	Pot_A_Piece_02	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	6
+A	Pot_A	Pot_A_Piece_07	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	3
+B	Pot_A	Pot_A_Piece_07	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	2
+B	Pot_A	Pot_A_Piece_01	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	11
+B	Pot_A	Pot_A_Piece_08	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	2
+A	Pot_A	Pot_A_Piece_01	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	16
+A	Juglet	Juglet_Piece_4	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	1
+B	Juglet	Juglet_Piece_4	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	1
+A	Juglet	Juglet_Piece_6	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	2
+A	Juglet	Juglet_Piece_1	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	4
+B	Juglet	Juglet_Piece_1	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	4
+B	Juglet	Juglet_Piece_6	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	1
+A	Juglet	Juglet_Piece_7	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	1
+B	Juglet	Juglet_Piece_7	69c0c9c6fa8bea3d22d8573c721f067174042ded	0	1

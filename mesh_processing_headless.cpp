@@ -225,9 +225,22 @@ struct myclass {
 } myobject1;
 
 
+// TICKET 27: this orders the de-duplication's copy of a finished surface. It used to compare x
+// alone, which cannot put equal (x,y,z) positions next to each other, so the adjacent-equality
+// loop in finishImprovedSurface could not group them. No other code sorts with it.
 struct myclass2 {
-	bool operator() (pcl::PointNormal i, pcl::PointNormal j) { return (i.x < j.x); }
+	bool operator() (pcl::PointNormal i, pcl::PointNormal j)
+	{
+		if (i.x != j.x) return (i.x < j.x);
+		if (i.y != j.y) return (i.y < j.y);
+		return (i.z < j.z);
+	}
 } myobject2;
+
+// TICKET 27: SFS_DEDUPE=on writes each distinct position of a finished surface once. Unset, empty,
+// "off" or anything else keeps today's cloud, duplicates included. Declared here because
+// finishImprovedSurface reads it and is defined further down.
+static bool g_dedupeOn27 = false;
 
 
 class Timer
@@ -1162,7 +1175,8 @@ void fitSplineSurfaceToCluster(pcl::PointCloud<PointNormal>::Ptr segmentedSurfac
 
 void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud,
 	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud_other,
-	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud)
+	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud,
+	int surfaceIndex27 = -1) // TICKET 27: which written surface this call finishes, for the log line
 {
 	if (improvedSurfacePointCloud_other->points.size() > improvedSurfacePointCloud->points.size())
 	{
@@ -1194,6 +1208,8 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 	}
 	std::sort(vectorPointNormal.begin(), vectorPointNormal.end(), myobject2);
 
+	const long dedupeIn27 = (long)vectorPointNormal.size();
+	long dedupeOut27 = 0;
 	if (vectorPointNormal.size() > 0)
 	{
 		for (size_t i = 0; i < vectorPointNormal.size() - 1; i++)
@@ -1207,10 +1223,26 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 				improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[i]);
 			}
 		}
+		// TICKET 27: the last sorted element has no successor to differ from, so it is always kept.
+		// The loop stops at size()-1 and used to drop it.
+		improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[vectorPointNormal.size() - 1]);
 
 		improvedSurfacePointCloudNoDuplicates->width = improvedSurfacePointCloudNoDuplicates->points.size();
 		improvedSurfacePointCloudNoDuplicates->height = 1;
+		dedupeOut27 = (long)improvedSurfacePointCloudNoDuplicates->points.size();
+
+		// TICKET 27: with the switch on, the de-duplicated cloud is what the callers export; with it
+		// unset nothing is assigned and the surface is the cloud this function built.
+		if (g_dedupeOn27)
+		{
+			improvedSurfacePointCloud->points = improvedSurfacePointCloudNoDuplicates->points;
+			improvedSurfacePointCloud->width = improvedSurfacePointCloudNoDuplicates->width;
+			improvedSurfacePointCloud->height = improvedSurfacePointCloudNoDuplicates->height;
+		}
 	}
+	std::cout << "[DEDUPE-27] surface=" << surfaceIndex27
+		<< " mode=" << (g_dedupeOn27 ? "on" : "off")
+		<< " in=" << dedupeIn27 << " out=" << dedupeOut27 << std::endl;
 }
 
 // TICKET 22: SFS_SPACING_POLICY=piece needs the piece's bounding-box diagonal and its
@@ -2140,7 +2172,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	const long window26OwnBefore = (long)improvedSurfacePointCloud->points.size();
 	const long window26OtherBefore = (long)improvedSurfacePointCloud_other->points.size();
 
-	finishImprovedSurface(improvedSurfacePointCloud, improvedSurfacePointCloud_other, segmentedSurfacePointCloud);
+	finishImprovedSurface(improvedSurfacePointCloud, improvedSurfacePointCloud_other, segmentedSurfacePointCloud, surfaceIndex);
 
 	window26PrintFinal(surfaceIndex, window26OwnBefore, window26OtherBefore, (long)improvedSurfacePointCloud->points.size());
 	if (g_dumpOn25 && surfaceIndex >= 0 && surfaceIndex < 2)
@@ -2272,8 +2304,8 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	window26Print(0, window26[0], window26AdmittedOwn[0], window26AdmittedOther[0], window26Candidates);
 	window26Print(1, window26[1], window26AdmittedOwn[1], window26AdmittedOther[1], window26Candidates);
 
-	finishImprovedSurface(improvedSurfacePointCloud1, improvedSurfacePointCloud1_other, segmentedSurfacePointCloud1);
-	finishImprovedSurface(improvedSurfacePointCloud2, improvedSurfacePointCloud2_other, segmentedSurfacePointCloud2);
+	finishImprovedSurface(improvedSurfacePointCloud1, improvedSurfacePointCloud1_other, segmentedSurfacePointCloud1, 0);
+	finishImprovedSurface(improvedSurfacePointCloud2, improvedSurfacePointCloud2_other, segmentedSurfacePointCloud2, 1);
 
 	window26PrintFinal(0, window26OwnBefore[0], window26OtherBefore[0], (long)improvedSurfacePointCloud1->points.size());
 	window26PrintFinal(1, window26OwnBefore[1], window26OtherBefore[1], (long)improvedSurfacePointCloud2->points.size());
@@ -4199,6 +4231,10 @@ int main(int argc, char** argv) {
         g_windowClampLoMM = 0.5;
         g_windowClampHiMM = 6.0;
         g_windowReport.clear();
+        // TICKET 27: SFS_DEDUPE=on exports each distinct position of a written surface once.
+        // Unset, empty, "off" and anything else keep today's apples-to-apples surface.
+        g_dedupeOn27 = false;
+        if (const char* e27 = std::getenv("SFS_DEDUPE")) { if (*e27 && std::string(e27) == "on") g_dedupeOn27 = true; }
         if (const char* e26 = std::getenv("SFS_WINDOW_MODE")) { if (*e26) g_windowMode = e26; }
         if (const char* e26 = std::getenv("SFS_WINDOW_K")) { if (*e26) g_windowK = std::stod(e26); }
         if (const char* e26 = std::getenv("SFS_WINDOW_CLAMP_MM"))
