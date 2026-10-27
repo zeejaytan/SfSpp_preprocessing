@@ -2,7 +2,7 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 27-unclaimed-on-pot-a-and-distinct-dots, in /c/PR/worktrees/sfs/27
 
@@ -292,3 +292,111 @@ the end of the job with a counted manifest in `out/GEOMETRY_DELETED_edge27.txt` 
 429 854 724 bytes**: `pcd` 42 files 233 828 474 bytes, `obj` 16 files 114 093 434, `ply` 64 files
 60 643 546, `xyz` 32 files 21 289 270; breaklines (`.pcd`/`.ply`/`.xyz`), logs, `kept_inputs.txt`, the
 tables and both arm binaries kept. Its index row was appended with `verdict` and `human_note` empty.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**The duplication is a storage defect, not a measurement defect: the edgeline already writes each position
+once, so de-duplicating the surfaces changes no dot count (14 of 16 identical, the other two by a single dot)
+and no pair statistic beyond the run-to-run band. What it does move is *where the dots sit* — 11 of 16 position
+sets differ, by up to 2.1 mm — which tells us our breakline dots are a function of the surface's vertex order
+and not of its geometry alone.**
+
+### Part A — the number that was owed: how much of a Pot A sherd is in no surviving region
+
+| piece | points in | regions | floor used | in no region | fraction |
+|---|---|---|---|---|---|
+| Pot A 01 | 85 136 | 12 | 170 | 13 780 | **0.1619** |
+| Pot A 02 | 49 528 | 5 | 99 | 5 174 | **0.1045** |
+| Pot A 07 | 8 598 | 8 | 50 | 1 874 | **0.2180** |
+| Pot A 08 | 7 682 | 5 | 50 | 1 690 | **0.2200** |
+| Juglet 1 | 14 546 | 22 | 50 | 7 829 | 0.5382 |
+| Juglet 4 | 1 530 | 2 | 50 | 1 237 | 0.8085 |
+| Juglet 6 | 2 351 | 2 | 50 | 1 773 | 0.7541 |
+| Juglet 7 | 4 254 | 5 | 50 | 3 455 | 0.8122 |
+| Juglet 2 | 1 031 | 0 | 50 | 1 031 | 1.0000 |
+| Juglet 9 | 787 | 0 | 50 | 787 | 1.0000 |
+
+So **Pot A discards 10–22 % of its own cloud and still works**, while the Juglet discards 54–100 %. "Unclaimed"
+is a real property of the method on both vessels, three to five times worse on ours — and therefore **not, by
+itself, the failure**. The failure stays what ticket 28 measured: the size of the largest surviving region.
+Two floors are worth noting: on the two million-point clouds the adaptive floor is itself 170 and 99
+(`dynMinCluster = max(50, Npts/500)`), not 50, so "the floor of 50" is only the Juglet's number.
+
+### Part B — the de-duplication, made real
+
+| surface | off: written / distinct (ratio) | on: written / distinct (ratio) |
+|---|---|---|
+| Pot A 01 Surface_0 | 66 761 / 33 986 (1.964) | 33 989 / 33 989 (1.000) |
+| Pot A 01 Surface_1 | 57 293 / 29 742 (1.926) | 29 749 / 29 749 (1.000) |
+| Juglet 7 Surface_0 | 1 012 / 609 (1.662) | 609 / 609 (1.000) |
+| Juglet 4 Surface_0 | 182 / 131 (1.389) | 131 / 131 (1.000) |
+
+Every `on` surface carries each position exactly once. The switch defaults to `off` and reproduces today.
+
+### The invariant holds, to the width of the run-to-run band
+
+The rule set for this ticket was: with the switch on, the **set** of distinct positions per surface must be the
+same as the off arm's. Across all five arm pairs, **exactly 4 of 16 surfaces differ — and they are the same four
+in every pair**: Pot_A_Piece_01 surfaces 0 and 1, Pot_A_Piece_02 surfaces 0 and 1. Crucially, the **same binary
+run twice (A vs A2) already differs on those four**, by 1–14 positions with a nearest-neighbour maximum of
+0.62–0.76 mm; the switch-on arm differs from the off arm by 1–20 positions over the same 0.49–0.76 mm. All eight
+Juglet surfaces and both smaller Pot A pieces are **exactly equal in all five pairs**. The cause is the 30
+unseeded ray casts (`std::random_device rd`), so the honest statement is: *de-duplication changes the distinct
+sets no more than running the same binary twice does.*
+
+The Pot A wall statistics are likewise unmoved: 01 through the normal 7.089 → 7.061 mm, across it 0.271 → 0.276
+mm, coincidence 0.000 in every arm.
+
+### Item 7 — the dots, which is where the surprise is
+
+The edgeline stage, run on the kept surfaces of both arms (16 cells, all exit 0):
+
+- **Dot counts barely move**: 14 of 16 identical; Pot A 01 Surface_0 203 → 204, Pot A 02 Surface_0 162 → 163.
+- **Every dot is already a distinct position in both arms** (n == distinct in all 32 arm-rows). So the duplicate
+  surface vertices never reach the breakline: the edgeline stage writes the boundary once regardless. **That is
+  the answer to the question the ticket asked, and it is "no".**
+- **But the positions move**: only 5 of 16 sets are identical. The rest differ along the same boundary — median
+  shift 0.06–0.61 mm, maximum 0.99–2.15 mm, i.e. from a small fraction of a dot spacing to a couple of spacings.
+
+### What I take from it
+
+1. **Leave `SFS_DEDUPE` off by default.** Not because it is wrong — it does exactly what it says and costs
+   nothing measurable — but because switching a default on this evidence would move every breakline dot by a
+   fraction of a spacing with **no measured benefit**, on one vessel and four pot pieces. The duplication is a
+   known storage defect: it triples nothing, it just means the surface files are about twice the size they need
+   to be.
+2. **The finding that outranks the ticket: our breakline dots are not a stable function of the sherd.** Same
+   geometry, same binary, dots landing in different places along the same edge. Any dot-level comparison
+   against the authors' breaklines therefore carries a noise floor of roughly half a dot spacing — which is the
+   kind of number E1 needs before it reads another tally as a difference.
+
+### verified: the command or file:line behind each load-bearing claim
+
+- `cat out/partA27.tsv` in run `20261027-1534_df523dd_p27-dedupe-grid` → the ten rows of the Part A table,
+  with `floor_used` 170 / 99 / 50 / 50 on the Pot A pieces, `min_eff 50`, `count_scale 1.0`, `spacing 0.6`.
+- `awk` over `out/cells/surfaces27.tsv` → Pot_A_01 s0 A `n_ply=66761 distinct=33986 dup=32775 ratio=1.964`,
+  B `n_ply=33989 distinct=33989 dup=0 ratio=1.000`; Juglet_7 s0 A `1012/609/403/1.662`, B `609/609/0/1.000`.
+- `awk` over `out/cells/seteq27.tsv` → `A/A2`, `A/OLD`, `B/A`, `B/A2`, `P/A` each 16 rows with exactly 4
+  `set_equal=no`, and the unequal rows are Pot_A_Piece_01 s0/s1 and Pot_A_Piece_02 s0/s1 in every pair;
+  `A/A2` nn_max 0.619525 / 0.632331 / 0.714881 / 0.761401 mm.
+- `git diff --stat main...HEAD` → `mesh_processing_headless.cpp` **41 insertions, 5 deletions**, plus
+  `.scratch/juglet-breaklines/stage27/**` and the ticket; nothing else.
+- `awk` over `out/dotsets27.tsv` of run `20261027-1559_69c0c9c_p27-dedupe-edge` → 5 of 16 `set_equal=yes`;
+  **no row with n != distinct**; the only count differences are `Pot_A_Piece_01 s0 203->204` and
+  `Pot_A_Piece_02 s0 162->163`; nn_med up to 0.605012 mm (Juglet 7 s0), nn_max up to 2.146120 mm (Juglet 7 s1).
+- `grep p27-dedupe-edge …/runs/index.tsv` → the fourth job's row present, six fields, verdict and human_note
+  empty; `corpus_before.md5` = `corpus_after.md5` and the 1 803-line tree listing identical; `/opt/sfs-pristine`
+  logged ABSENT.
+- `cat -n .scratch/juglet-breaklines/stage27/run_edge27.sh` → lines 25–28 copy only `Surface_{0,1}.xyz` and
+  `_SampledWithNormals.ply` into the edgestage, which is why item 7 failed on the first attempt; the script's own
+  header comment (lines 3–5) lists the same inputs and omits `_unclustered.ply`, so the comment was wrong too,
+  and the staging fix corrects both.
+
+### What this does not settle
+
+**No same-binary repeat of the edgeline stage was run**, so the dedupe's share of the 0.6–2.1 mm dot shift is not
+separable from the mesh stage's own ordering. Fixing that needs one repeat job on the same arm — cheap, and worth
+doing before anyone reads a dot-level difference of under a millimetre as a finding. Separately, whether the
+assembler ever loads `Surfaces/*.xyz` (its `class/data_path.h` carries such paths) was not established here, so
+"the duplication cannot matter downstream" is **not** claimed; what is claimed is that it does not change the
+breakline dots.
