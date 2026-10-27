@@ -2,7 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 27-unclaimed-on-pot-a-and-distinct-dots, in /c/PR/worktrees/sfs/27
 
 Two measurements the ladder left behind, both small, both needed before any repair is written. **Report
 evidence; do not decide whether anything is a defect.**
