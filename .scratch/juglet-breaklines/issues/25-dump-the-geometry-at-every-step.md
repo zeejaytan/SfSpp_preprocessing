@@ -1,7 +1,7 @@
 # 25: dump the geometry at every step, with the cluster label on each point
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
-**Blocked by:** 24
+**Blocked by:** 26 (ticket 24 merged as f3760fa; 26 edits the same file and the rungs it dumps)
 **Status:** ready-for-agent
 **Working in:** chat on Thinkbook16 (2026-10-27)
 
