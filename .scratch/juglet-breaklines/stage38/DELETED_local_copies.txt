@@ -1,0 +1,22 @@
+# Local copies deleted from the ticket-38 worktree before it closed
+# kinds: __pycache__/*.pyc (compiled, never kept) and run-directory logs whose same-named
+#        file lives in the cluster run directory named beside them
+# files=17 bytes=384942
+
+17483	.scratch/juglet-breaklines/stage38/instruments/__pycache__/fig38.cpython-313.pyc	(laptop-side build/fetch log; derivable by re-running the job)
+34051	.scratch/juglet-breaklines/stage38/instruments/__pycache__/grow38.cpython-313.pyc	(laptop-side build/fetch log; derivable by re-running the job)
+67255	.scratch/juglet-breaklines/stage38/instruments/__pycache__/measure34.cpython-313.pyc	(laptop-side build/fetch log; derivable by re-running the job)
+68053	.scratch/juglet-breaklines/stage38/instruments/__pycache__/mesh38.cpython-313.pyc	(laptop-side build/fetch log; derivable by re-running the job)
+29054	.scratch/juglet-breaklines/stage38/instruments/__pycache__/replica37.cpython-313.pyc	(laptop-side build/fetch log; derivable by re-running the job)
+68639	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/logs/build-new.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/logs/build-new.log
+0	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/logs/fetch.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/logs/fetch.log
+0	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/logs/slurm-33890365.err	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/logs/slurm-33890365.err
+12940	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/logs/slurm-33890365.out	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/logs/slurm-33890365.out
+339	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/logs/submit.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/logs/submit.log
+24513	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/out/phase1.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/out/phase1.log
+14050	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/out/phase2.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/out/phase2.log
+193	.scratch/juglet-breaklines/stage38/run-20261027-1615_92d6871/out/phase3.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/out/phase3.log
+13198	.scratch/juglet-breaklines/stage38/run-20261028-0414_2a34d86/out/cells-pipeline/Juglet_Piece_2_x1/logs/mesh.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Juglet_Piece_2_x1/logs/mesh.log
+9315	.scratch/juglet-breaklines/stage38/run-20261028-0414_2a34d86/out/cells-pipeline/Juglet_Piece_2_x10/logs/mesh.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Juglet_Piece_2_x10/logs/mesh.log
+12929	.scratch/juglet-breaklines/stage38/run-20261028-0414_2a34d86/out/cells-pipeline/Juglet_Piece_9_x1/logs/mesh.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Juglet_Piece_9_x1/logs/mesh.log
+12930	.scratch/juglet-breaklines/stage38/run-20261028-0414_2a34d86/out/cells-pipeline/Pot_A_Piece_07_real/logs/mesh.log	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/logs/mesh.log
