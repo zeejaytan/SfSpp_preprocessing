@@ -1,0 +1,65 @@
+# ticket 34 -- geometry written by this run, recorded BEFORE the delete.
+# The two binaries stay at out/bin-orig and out/bin-new; everything below is reproducible
+# from the two commits and the corpus by out/commands.txt.
+key	ext	files	bytes
+ext	.1	2	216574
+ext	.backup_with_tps	2	241812
+ext	.bin	16	278592
+ext	.c	8	212016
+ext	.check_cache	8	680
+ext	.cmake	96	210031
+ext	.cpp	166	60939511
+ext	.csv	18	47892
+ext	.d	6	766235
+ext	.def	16	70818
+ext	.diff	2	15866
+ext	.err	366	762748
+ext	.flag	2	0
+ext	.gz	2	66578
+ext	.h	78	9355622
+ext	.html	6	10750098
+ext	.json	136	507112
+ext	.list	4	16622
+ext	.lock	28	0
+ext	.log	304	4339630
+ext	.m	430	852968
+ext	.make	122	469836
+ext	.marks	6	16
+ext	.md	828	8068406
+ext	.md5	32	56234
+ext	.npy	148	1986982
+ext	.npz	10	143476
+ext	.o	6	9507896
+ext	.obj	2	10449956
+ext	.out	440	4895700
+ext	.patch	26	201812
+ext	.pcd	198	48965888
+ext	.pid	12	76
+ext	.ply	2	5954
+ext	.png	70	21626898
+ext	.py	640	3348764
+ext	.pyc	12	246192
+ext	.sbatch	384	1126282
+ext	.sh	334	1403572
+ext	.tgz	4	72390
+ext	.tmpl	28	307880
+ext	.ts	26	3252
+ext	.tsv	106	1338108
+ext	.txt	498	1043302
+ext	.xyz	616	147103722
+ext	.yaml	10	459842
+ext	none	48	25786817
+#
+total	all	6304	378270658
+# per-file list omitted: 6304 files, the per-extension totals above are complete
+#
+# KEPT: out/cells34.tsv, out/surfaces34.tsv, out/pairs34.tsv, out/carried34.tsv,
+# out/replay34.tsv, out/defaults34.tsv, out/defaults2.tsv, out/lines34.tsv,
+# out/pairs30.tsv, out/bin-orig, out/bin-new, out/commands.txt,
+# out/cells.list, out/inputs_before.md5, out/inputs_after.md5, out/corpus_before.txt,
+# out/corpus_after.txt, out/pristine.txt, out/cells/<tag>/<pot>/<piece>/{cell.tsv,logs/,
+# surfaces/,measure/}, logs/
+#
+# deleted at 2026-10-27T10:52:43Z: 6288 files, 380436810 bytes (the two build trees)
+# after the delete: 0 files remain, build/ is gone
+# per-cell stage and rung-dump counts: out/cells/<tag>/<pot>/<piece>/logs/geometry_counts.tsv

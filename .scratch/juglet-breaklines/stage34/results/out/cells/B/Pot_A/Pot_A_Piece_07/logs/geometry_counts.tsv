@@ -1,0 +1,11 @@
+path	ext	files	bytes
+B/Pot_A/Pot_A_Piece_07/stage	other	3	466
+B/Pot_A/Pot_A_Piece_07/stage	obj	1	3095000
+B/Pot_A/Pot_A_Piece_07/stage	pcd	3	28205751
+B/Pot_A/Pot_A_Piece_07/stage	ply	7	3313449
+B/Pot_A/Pot_A_Piece_07/stage	xyz	5	1860929
+B/Pot_A/Pot_A_Piece_07/dump	json	5	3078
+B/Pot_A/Pot_A_Piece_07/dump	ply	5	2725596
+# ticket 34 rung dump, counted above, deleted after the measurement read it
+dump_bytes 2736866
+after: 0 files, present=no

@@ -1,0 +1,1 @@
+rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3

@@ -1,0 +1,13 @@
+# ticket 34: geometry that reached this laptop and was removed again.
+# WRITTEN AFTER THE FACT -- honest about it: no pre-delete count was taken of the local copy.
+# The authoritative counted record for the run itself is written BEFORE its delete, in the run
+# directory: out/GEOMETRY_DELETED.txt (build trees) and per-cell logs/geometry_counts.tsv (stage
+# and rung dump), /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1046_4099ee3_t34-nearest-carry.
+# Counts below are the run directory's inventory of the files that were fetched and then deleted here.
+run	20261027-1046_4099ee3_t34-nearest-carry
+fetched-and-deleted	/out/cells/<arm>/<pot>/<piece>/surfaces/*.ply	280 files	455610693 bytes
+fetched-and-deleted	/out/cells/<arm>/<pot>/<piece>/logs/mesh.log	70 files	1847045 bytes
+fetched-and-deleted	/out/bin-orig, /out/bin-new	2 files	3164392 bytes
+kept	/out/*.tsv, /out/cells/<arm>/<pot>/<piece>/{cell.tsv,logs/{lines34.log,measure.log,paper.txt,splitter.txt,stage.log,geometry_counts.tsv},measure/*.tsv}, /logs/	tables and logs only
+baseline-job	20261027-2159_bb3f67d_t34-mean-baseline	out/*.tsv and logs only were fetched; no surface, no binary left the cluster
+verify	2026-10-27: results/ holds 0 .ply, 0 mesh.log, 0 binary, 3.4 MB of tables and logs

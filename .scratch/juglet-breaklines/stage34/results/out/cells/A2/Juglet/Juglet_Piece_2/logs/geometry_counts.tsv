@@ -1,0 +1,11 @@
+path	ext	files	bytes
+A2/Juglet/Juglet_Piece_2/stage	other	2	458
+A2/Juglet/Juglet_Piece_2/stage	obj	1	159681
+A2/Juglet/Juglet_Piece_2/stage	pcd	2	212791
+A2/Juglet/Juglet_Piece_2/stage	ply	3	230223
+A2/Juglet/Juglet_Piece_2/stage	xyz	3	144554
+A2/Juglet/Juglet_Piece_2/dump	json	5	2054
+A2/Juglet/Juglet_Piece_2/dump	ply	5	338233
+# ticket 34 rung dump, counted above, deleted after the measurement read it
+dump_bytes 348479
+after: 0 files, present=no
