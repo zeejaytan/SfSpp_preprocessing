@@ -194,6 +194,15 @@ binaries (3,164,392 B) deleted after the tables were extracted; `stage34/results
 records that this local record was reconstructed after the fact and that no pre-delete count of the laptop copy
 was taken. The run directories' own records are the ones that satisfy the rule.
 
+
+### Second deletion, at close: the per-cell duplicates of the aggregate tables
+
+`ticket_close.sh` refused on 225 ignored files, 570,128 bytes, all of them
+`stage34/results/out/cells/<arm>/<pot>/<piece>/logs/{lines34,measure,stage}.log` — the per-cell copies of the
+lines already aggregated into `out/lines34.tsv` (505 rows), `out/cells34.tsv`, `out/surfaces34.tsv` and
+`out/pairs30.tsv`. Removed rather than committed, because the aggregates are the record and the per-cell files
+are the same lines repeated 70 times. The four aggregate tables stay and are what the reading cites.
+
 ### verified: the command or file:line behind each load-bearing claim
 
 - `awk -F'\t' '$6"\t"$7"\t"$8"\t"$5"' out/carried34.tsv` -> A/A2/AO identical (2.364556 / 8.100984 / 6.106812 / 4.002534 / 3.392134 / 9.011419); B/C 0.402294 / 1.402148 / 1.168996 / 0.889034 / 0.848680 / 1.541745; Pot_A 0.455450-0.610801.
