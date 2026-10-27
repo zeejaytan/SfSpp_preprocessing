@@ -19,6 +19,10 @@
 # surfaces, so Breakline_0 dot counts are compared off against on.
 set -uo pipefail
 export LC_ALL=C
+# Every grid cell runs in a "bash -c" child started by xargs, and a child sees only EXPORTED
+# names. Without this the runner path arrived empty inside the child and job 33860394 printed
+# "bash: : No such file or directory" fifty times while running no cell at all.
+set -a
 
 RUN=__RUNDIR__
 RUNID=__RUNID__
@@ -112,10 +116,19 @@ build_arm OLD "$OLDCOMMIT" no || { say "FATAL OLD build failed"; exit 6; }
 build_arm A "$COMMIT" yes || { say "FATAL A build failed"; exit 6; }
 cp -f "$RUN/out/bin/MeshPreprocessingHeadless.A" "$RUN/out/bin/MeshPreprocessingHeadless.A2"
 say "A2 = byte copy of A md5=$(md5sum "$RUN/out/bin/MeshPreprocessingHeadless.A2" | awk '{print $1}')"
+# The two switch arms are the SAME binary as A, told apart only by the environment, so a difference
+# between them and A cannot come from the compiler. Job 33860394 had no .P or .B file and would have
+# run neither arm.
+for arm in P B; do
+  cp -f "$RUN/out/bin/MeshPreprocessingHeadless.A" "$RUN/out/bin/MeshPreprocessingHeadless.$arm"
+  say "$arm = byte copy of A md5=$(md5sum "$RUN/out/bin/MeshPreprocessingHeadless.$arm" | awk '{print $1}')"
+done
 
 # ---- mesh pass ----------------------------------------------------------------------
 run_mesh_cell() {
   local tag=$1 piece=$2 pot envs=""
+  [ -f "$CELLRUN" ] && [ -n "$RUN" ] || { echo "[S27] CELL FAIL $tag/$piece CELLRUN='$CELLRUN' RUN='$RUN'" >&2; return 1; }
+  [ -f "$RUN/out/bin/MeshPreprocessingHeadless.$tag" ] || { echo "[S27] CELL FAIL $tag/$piece: no binary MeshPreprocessingHeadless.$tag" >&2; return 1; }
   pot=$(pot_of "$piece")
   case "$tag" in
     P) envs="SFS_DUMP_STAGE=$RUN/out/dump/P SFS_DUMP_PIECES=$piece" ;;
@@ -140,15 +153,16 @@ region sizes, points_in_no_cluster) and r5_write.json (points per written surfac
 them are distinct positions). Both rungs are written inside the 30-retry loop, so a retrying piece
 keeps only its last retry; the per-retry history is in that cell's logs/lines27.log [RETRY-23].
 EOF
-export -f run_mesh_cell pot_of cloud_of mesh_of axis_of
+export -f say run_mesh_cell pot_of cloud_of mesh_of axis_of
 xargs -a "$RUN/out/cells_mesh.list" -d "\n" -n 1 -P 8 bash -c 'set -- $1; run_mesh_cell "$1" "$2"' _ \
   2>&1 | tee -a "$RUN/logs/mesh_pass.log"
-say "mesh pass done: $(wc -l < "$CELLROOT/cells27.tsv") rows"
+say "mesh pass done: $( [ -f "$CELLROOT/cells27.tsv" ] && wc -l < "$CELLROOT/cells27.tsv" || echo 0 ) rows"
 
 # ---- our own edgeline stage, off against on -----------------------------------------
 EDGE=$RUN/out/bin/EdgeLineExtractionHeadless.A
 run_edge_cell() {
   local tag=$1 piece=$2 pot
+  [ -f "$EDGERUN" ] && [ -n "$CELLROOT" ] || { echo "[S27] CELL FAIL $tag/$piece EDGERUN='$EDGERUN' CELLROOT='$CELLROOT'" >&2; return 1; }
   pot=$(pot_of "$piece")
   [ -f "$EDGE" ] || { say "EDGE skip $tag/$piece: no edgeline binary"; return 0; }
   CELLROOT="$CELLROOT" POT="$pot" PIECE="$piece" EDGEBIN="$EDGE" SIF="$SIF" APT="$APT" \
@@ -163,10 +177,10 @@ run_edge_cell() {
   done
 } > "$RUN/out/cells_edge.list"
 say "edgeline grid: $(wc -l < "$RUN/out/cells_edge.list") cells at -P 3"
-export -f run_edge_cell pot_of mesh_of axis_of
+export -f say run_edge_cell pot_of mesh_of axis_of
 xargs -a "$RUN/out/cells_edge.list" -d "\n" -n 1 -P 3 bash -c 'set -- $1; run_edge_cell "$1" "$2"' _ \
   2>&1 | tee -a "$RUN/logs/edge_pass.log"
-say "edgeline pass done: $(wc -l < "$CELLROOT/cells27_edge.tsv") cells"
+say "edgeline pass done: $( [ -f "$CELLROOT/cells27_edge.tsv" ] && wc -l < "$CELLROOT/cells27_edge.tsv" || echo 0 ) cells"
 
 # ---- measurements -------------------------------------------------------------------
 say "measuring"
