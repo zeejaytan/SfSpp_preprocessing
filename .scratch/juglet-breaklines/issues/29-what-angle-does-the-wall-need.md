@@ -250,3 +250,22 @@ append-only, so the failed row stays, marked void by the lead.
 - Anything about the second repair on the table: a second growth pass over the points no region keeps.
 - The paper's own 4.0° sits between the two vessels' needs, and the reason it was published is that the
   authors' sample is Pot-A-like. That is a reading of these numbers, not a claim about the paper's intent.
+## Deletion record — the borrowed dumps, deleted by the lead when this ticket closed
+
+The reading above says the geometry borrowed from tickets 25 and 28 dies with this ticket. Done, and counted by
+the lead rather than taken from the report:
+
+- **130 files, 15 882 729 bytes** removed, from
+  `runs/20261027-0337_d69f76f_t25-dump-grid2/out/dump/{B,D,E}/Juglet_Piece_{2,3,5,7}` (12 directories) and
+  `runs/20261027-1537_5227f8f_t28-pota07-dump/out/dump/Pot_A_Piece_07` (1 directory). The per-file manifest is
+  `out/GEOMETRY_DELETED_borrowed.txt` in this ticket's run directory, written before the `rm`.
+- `find` under both dump roots returns **0 files** afterwards, and the empty directories are gone.
+- Everything else in both run directories is kept: `run.json`, `submit.sbatch`, `logs/`, and the tables in
+  `out/`. 12 MB and 3.2 MB remain in those two run directories, all of it record.
+- **A discrepancy, recorded rather than smoothed:** the worker's report gave the borrowed total as
+  **15 935 977 bytes**, 53 248 more than my own `find -printf '%s'` total. I have recorded mine, because it is
+  the one I measured; the difference is not explained and does not change what was deleted (the same 130 paths,
+  listed one per line in the manifest).
+
+A pipeline run that needs these clouds again derives them inside its own job and deletes them on the way out,
+which is cheaper than keeping 16 MB of geometry alive between tickets.
