@@ -2,7 +2,7 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 28-step-one-in-python, in /c/PR/worktrees/sfs/28
 
@@ -98,3 +98,111 @@ A Python replica is not the shipped binary: it can agree with it on four pieces 
 nobody exercised. It says why growth produces what it produces and which figure moves the result; it does not
 say whether a tuned figure is the right repair, and it says nothing about merging, the 3 mm window, or
 reassembly.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**Piece 2 is not stuck at a step: the growth splits its 1 031 points into 661 pieces averaging 1.6 points, and
+the biggest is 36 — the floor of 50 is missed by a factor of 1.4, not by one hop. Every refusal that matters is
+the normal-angle test (4 703 rejections against 0 curvature rejections), and the paper's own 4° buys 41 points,
+not 50.**
+
+The arm-B grid row for each piece, as the replica printed it (θ 3.4, κ 1.0, n_b 10, floor 50):
+
+| piece | points in | regions grown | regions per point | largest | largest share of the cloud | largest depth | angle rejections | angle rejections per point | regions ≥ 50 |
+|---|---|---|---|---|---|---|---|---|---|
+| Juglet 2 | 1 031 | 661 | 0.64 | **36** | 3.5 % | 8 | 4 703 | 4.56 | **0** |
+| Juglet 3 | 1 467 | 825 | 0.56 | 169 | 11.5 % | 16 | 6 189 | 4.22 | 2 |
+| Juglet 5 | 3 021 | 1 467 | 0.49 | 679 | 22.5 % | 56 | 11 969 | 3.96 | 1 |
+| Juglet 7 | 4 254 | 1 951 | 0.46 | 326 | 7.7 % | 24 | 16 823 | 3.95 | 5 |
+| Pot A 07 | 8 598 | 1 276 | 0.15 | 3 093 | 36.0 % | 37 | 11 508 | 1.34 | 8 |
+
+### What the growth actually does
+
+It claims **every** point — the 661 regions of piece 2 sum to exactly 1 031, and `growth_floor_independent=True`
+on every piece in the calibration log. A region that ends under the floor is dropped, but its points were
+already marked claimed when they were admitted (`mesh_processing_headless.cpp` `growPaper234`: `pclaimed[sd] = 1`
+at the seed and `pclaimed[cand] = 1` on each admission; the floor test `if (preg.size() >= minClusterSize)` sits
+after the walk). So a seed that turns out to be a poor start burns its patch for the rest of the pass: there is
+no second attempt and no unclaimed point left to re-seed. That is why the cloud comes out partitioned into
+thousands of crumbs rather than split into a few regions.
+
+Fragmentation is not a Juglet property. Pot A 07 fragments too — 1 276 pieces for 8 598 points, hundreds of them
+of one or two points. What separates the vessels is the **largest** piece: Pot A has one of 3 093 to build on, and
+the Juglet's best sherd reaches 679.
+
+### The curvature gate can never fire
+
+The stored curvature is PCA surface variation, λ₀/(λ₀+λ₁+λ₂), which cannot exceed 1/3. The paper's τ_κ = 1 sits
+above that ceiling, so `if (pnormals->points[cand].curvature >= kappaThresh) continue;` rejected **nothing** in
+any of the 36 cells (`fail_curv = 0` throughout, piece 2's maximum curvature 0.178). The angle test is the only
+gate that ever decides anything, and on this material it decides everything.
+
+### The paper's figure does not rescue piece 2, and it costs elsewhere
+
+Moving 3.4° → 4.0° (the paper's own τ_θ, `C:/PR/papers/text/sfspp-2502.13986v1.md:151`) takes piece 2's largest
+region from 36 to 41 — still under the floor — while thinning the surviving regions on piece 7 from 5 to 3 and on
+Pot A from 8 to 6. So the figure the paper prints is neither enough for the Juglet nor free for the pot that
+works. This is the direct answer to "check against the paper and tune the figure": 4° is not the number for this
+material, and the reason it is not is measurable — the Juglet's neighbours disagree about the surface normal
+4.7 times per point where Pot A's disagree 1.3 times.
+
+### Two corrections to what I said earlier
+
+1. **My ticket-25 reading said the growth "leaves 78-82 % of each sherd unclaimed".** That was the fraction of
+   points in *surviving* regions. The growth claims every point; it is the floor, not the walk, that discards.
+   The 78-82 % figure stands as "the share of the sherd that ends up on no surviving region", and must not be
+   restated as "the growth never reached those points".
+2. **The E column of the grid is not a reproduction of the pipeline's chain-off arm.** `SFS_PAPER_CHAIN=0` takes
+   the `else` branch at `mesh_processing_headless.cpp:3443-3455` and runs `pcl::RegionGrowing`, not
+   `growPaper234`; the card is on `if (paperChain)` at `:3435`. The replica's E cells are its own growth on the
+   native cloud, which is a different experiment from the E dumps of ticket 25. Nothing downstream should read
+   the E column as "what the pipeline did at native density".
+
+### Is this why the pot works and the vessel does not?
+
+Partly, and this is the honest weight. The three differences that move in the same direction are: the angle
+rejection rate (4.7 vs 1.3 per point), the size of the largest region (3.5-22 % of the sherd vs 36 %), and the
+fact that the paper's constant was fixed for a density we do not have. But **Pot A would still work if it were
+smaller**, because it only needs one region of 50 out of 8 598 points — 0.6 % of the cloud — while piece 2 needs
+4.8 % of its cloud in one piece, and its best is 3.5 %. The failure is a race between the normals and the size,
+and this ticket measures the first half of that race and not the second.
+
+### What this changes
+
+The next measurement is not a repair. It is the **distribution of neighbour-pair normal angles** on each piece
+(and on Pot A as the control): if the Juglet's core is tight with a heavy tail, a θ between 4° and 8° exists that
+would let the growth cross between crumbs without fusing Pot A's walls; if the whole distribution is shifted, no
+single θ is right for both vessels and the normals must be repaired before any figure means anything. That is one
+cheap replica job and it turns "tune the figure" from a guess into a number.
+
+What must **not** be done on this evidence: lowering or removing the floor. Piece 2 would then produce its
+36-point patch, and ticket 23 already measured what a 21-32 point single surface is worth — 28-42 % of the cloud,
+a corner patch, not a wall.
+
+### verified: the command or file:line behind each load-bearing claim
+
+- `ssh spartan; grep -h "[CAL]" .../20261027-1539_5227f8f_t28-replica-grid/logs/calibration.log` → piece 3
+  `sizes_before` starts `[169, 99, 17, 10, …]`, `surv_ge_50=[169,99]` **MATCH**; piece 2 `[36, 15, 12, 12, 11,
+  9, 9, 8, 7, 7, 7, 6, 6, 6, 5, 5, 5, 5, 4×21, 3×33, 2×88, 1×501]`, `surv_ge_50=[]`, `growth_floor_independent=True`.
+- `awk` over `out/cells/cells28.tsv` → the five arm-B θ3.4 rows in the table above (npts, regions, largest, depth,
+  failA); `fail_curv` is 0 in all 36 rows.
+- `git diff --stat main...HEAD` on the branch → 8 files, 894 insertions; `mesh_processing_headless.cpp` is not
+  among them, so the pipeline is untouched.
+- `sed -n '2940,2995p' mesh_processing_headless.cpp` → seeds sorted by ascending curvature, `pclaimed[sd] = 1`
+  at the seed, `pclaimed[cand] = 1` on admission, angle test against the current front point, floor test after
+  the walk.
+- `sed -n '3425,3460p' mesh_processing_headless.cpp` → `if (paperChain) { growPaper234 … } else if (planeRule) …
+  else { pcl::RegionGrowing … }` — the chain-off path is PCL's region growing.
+- `python3 -c` on `…/20261027-1537_5227f8f_t28-pota07-dump/out/dump/Pot_A_Piece_07/r2_clusters_premerge.json`
+  → `clusters: [3093, 2850, 203, 170, 144, 120, 73, 71]`, `paper_chain: True`, `npts: 8598`; the replica's
+  Pot A `sizes_before` reads `[3093, 2850, 203, 170, **134**, 120, 73, 71, …]` — seven of eight identical, one
+  region ten points short, cause not established.
+- `grep t28 …/runs/index.tsv` → both rows six fields, `verdict` and `human_note` empty.
+- `cat out/corpus_before.txt | md5sum` vs after → identical, 1 803 rows; `/opt/sfs-pristine` recorded ABSENT.
+
+### What this does not settle
+
+The replica is not the shipped binary: it agrees with it exactly on three pieces and to one region of ten points
+on a fourth, which is strong, but a corner nobody exercised could still differ. Nothing here was measured on
+merging, the 3 mm admission window, or reassembly. And it says nothing about the other five sherds — only pieces
+2, 3, 5 and 7 were replicated.
