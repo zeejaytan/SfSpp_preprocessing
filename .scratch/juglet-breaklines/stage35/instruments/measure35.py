@@ -332,6 +332,14 @@ def ray_hits(V, F, origins, dirs, eps=1e-9):
         out.append(np.sort(t[m]))
     return out
 
+def sheets(t, tol=1e-4):
+    """merge duplicate hits on a shared triangle edge (a ray through the diagonal
+    of a quad hits both triangles at the same t); tol in mm"""
+    if t.size == 0:
+        return t
+    t = np.sort(t)
+    return t[np.r_[True, np.diff(t) > tol]]
+
 def scatter_max(n, idx, val):
     if len(idx) == 0:
         return np.zeros(n)
@@ -779,8 +787,10 @@ def process(p, figs_dir, fh, md5s):
     hits = ray_hits(Vw, Fw, p0 + nn * 1e-3, -nn)
     thick = np.full(len(hits), np.nan)
     counts = np.zeros(len(hits), int)
+    cmerge = np.zeros(len(hits), int)
     for r, t in enumerate(hits):
         counts[r] = t.size
+        cmerge[r] = sheets(t).size
         tt = t[t > 0.15]
         if tt.size:
             thick[r] = tt.min()
@@ -790,12 +800,14 @@ def process(p, figs_dir, fh, md5s):
                            f6(pct(th, 90)), f6(float(((th >= 1) & (th <= 3)).mean())),
                            int(np.median(counts)), int(counts.max()),
                            int((counts >= 2).sum()), int((counts >= 3).sum()),
-                           f6(float((counts >= 3).mean())), int(np.isfinite(thick).sum())])
+                           f6(float((counts >= 3).mean())), int(np.isfinite(thick).sum()),
+                           int(cmerge.max()), int((cmerge >= 3).sum())])
     log("%s: thickness on %d rays: med %.4f p10 %.4f p90 %.4f frac1-3 %.4f hits med %d max %d "
-        ">=2 sheets %d >=3 sheets %d"
+        ">=2 sheets %d >=3 sheets %d merged max %d"
         % (name, len(p0), pct(th, 50), pct(th, 10), pct(th, 90),
            float(((th >= 1) & (th <= 3)).mean()) if th.size else float("nan"),
-           int(np.median(counts)), counts.max(), int((counts >= 2).sum()), int((counts >= 3).sum())), fh)
+           int(np.median(counts)), counts.max(), int((counts >= 2).sum()), int((counts >= 3).sum()),
+           int(cmerge.max())), fh)
     # ---- cloud: carry normals from the scan, then growth ----
     PR, NR, ri = read_pcd(p["pcd"])
     if NR is None:
@@ -861,9 +873,12 @@ def selftest(fh):
     ok &= (t["euler"] == 2 and t["boundary_edges"] == 0 and t["watertight"] and abs(a - 600) < 1e-9
            and t["components"] == 1)
     Vs = V.copy(); Vs[:, 2] *= 0.2            # 2 mm slab
-    h = ray_hits(Vs, F, np.array([[5.0, 5.0, -5.0]]), np.array([[0.0, 0.0, 1.0]]))[0]
-    log("selftest slab: %d hits at %s (want 2: 5 7)" % (len(h), np.round(h, 6).tolist()), fh)
+    h = ray_hits(Vs, F, np.array([[4.7, 5.0, -5.0]]), np.array([[0.0, 0.0, 1.0]]))[0]
+    hd = ray_hits(Vs, F, np.array([[5.0, 5.0, -5.0]]), np.array([[0.0, 0.0, 1.0]]))[0]
+    log("selftest slab: %d hits at %s (want 2: 5 7); through-the-diagonal ray %d raw -> %d sheets"
+        % (len(h), np.round(h, 6).tolist(), len(hd), sheets(hd).size), fh)
     ok &= (len(h) == 2 and abs(h[0] - 5) < 1e-9 and abs(h[1] - 7) < 1e-9)
+    ok &= (len(hd) >= 2 and sheets(hd).size == 2)
     rng = np.random.default_rng(7)
     Q = rng.random((300, 3)) * 5.0
     g = grid_for(Q, 4)
@@ -968,7 +983,8 @@ def main():
      "thickness": ["piece_key", "piece", "cloud_file", "cloud_pts", "rays", "rays_with_a_hit",
                    "thick_med_mm", "thick_p10_mm", "thick_p90_mm", "frac_1to3mm",
                    "hits_per_ray_med", "hits_per_ray_max", "rays_2plus_sheets",
-                   "rays_gt2_sheets", "frac_rays_gt2_sheets", "rays_with_a_hit_0p15"],
+                   "rays_gt2_sheets", "frac_rays_gt2_sheets", "rays_with_a_hit_0p15",
+                   "hits_per_ray_max_merged", "rays_3plus_merged"],
      "carry": ["piece_key", "piece", "cloud_pts", "pcd_pts_used", "max_nn_dist_mm",
                "grid_cell_mm", "carry_vs_pca_med_deg", "carry_vs_pca_p90_deg"],
      "figures": ["piece", "view", "path", "bytes", "width_px", "height_px", "mm_per_px",
