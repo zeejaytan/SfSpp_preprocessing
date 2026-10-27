@@ -2244,3 +2244,23 @@ read, and that is the part to keep.
 
 Next: one same-binary repeat of the edgeline stage, to separate de-duplication from the mesh stage's ordering, so
 the dot-position noise floor is a number rather than a range.
+
+## 2026-10-27 — the angle the region growing applies is calibrated on the sample, not on the material (ticket 29)
+
+Every edgeline this project reports comes from a surface grown at `paperTheta = 3.4°`, and nothing had asked what
+that figure meets. Measured on the clouds the growth actually sees (k = 10, the growth's own candidate set), the
+median angle between neighbouring normals is **1.20° on Pot A 07** against **8.21–15.80°** on Juglet pieces
+2, 3, 5 and 7, so 3.4° admits **72.4 %** of the pot's neighbour pairs and **7.9–19.5 %** of the vessel's. A theta
+ladder on the calibrated replica leaves no overlap: the pot passes at 3.4° and nowhere else in 2–12°; the vessel's
+clouds all pass only at 12°.
+
+For the breakline question the consequence is direct: **on the sample the edgeline is the rim of a region that
+covers most of a face; on the vessel it is the rim of a band a fifth the size**, and that difference is a
+consequence of the threshold, not of the material. It bears on how the 283 of 291 coverage tally should be read —
+that tally was made on pot-like material, where the grown region is a face.
+
+Weight: none on the tally. This is a property of the growth's input, measured on nine distinct clouds; it scores no
+edgeline.
+
+Next: a theta derived from each cloud, and then whether the boundary of the region it grows lies on the sherd's
+real broken edge — the strip question above, still unmeasured.
