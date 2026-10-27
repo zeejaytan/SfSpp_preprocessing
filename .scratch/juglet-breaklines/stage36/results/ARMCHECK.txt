@@ -1,0 +1,23 @@
+# ticket 36 arm check -- read from each arm's own per-piece mesh logs
+# arm cells spacing_piece normal_set single_write verdict
+A 14 0/0 0/0 0/0 ok
+A2 14 0/0 0/0 0/0 ok
+B 14 14/14 0/0 0/0 ok
+C 14 14/14 14/14 0/0 ok
+D 14 14/14 14/14 14/14 ok
+# the pipeline's own first line of each kind, arm by arm
+# A [SPACING-22] policy=fixed S=0.6
+# A normalSource=reestimate normalSourceSet=no minPairs=3
+# A [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# A2 [SPACING-22] policy=fixed S=0.6
+# A2 normalSource=reestimate normalSourceSet=no minPairs=3
+# A2 [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# B [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# B normalSource=reestimate normalSourceSet=no minPairs=3
+# B [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# C [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# C normalSource=input normalSourceSet=yes minPairs=3
+# C [SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+# D [SPACING-22] policy=piece diagMM=63.0542 s0MM=0.338049 samples=200 rawMM=0.315271 S=0.338049
+# D normalSource=input normalSourceSet=yes minPairs=3
+# D [SWITCH-23] singleCluster=write floorCeiling=off countScaleAuto=no

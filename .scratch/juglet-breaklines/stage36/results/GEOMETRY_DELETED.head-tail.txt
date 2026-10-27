@@ -1,0 +1,8 @@
+# ticket 36 -- geometry written by this run, recorded BEFORE the delete.
+# The binary stays at out/bin-new; everything below is reproducible from 0a53dee287fd577643bae3fe57e52527e3b2864b and the
+# corpus by out/commands.txt.
+key	ext	files	bytes
+ext	.1	1	108287
+# ... 3893 further per-file lines elided; the full file is /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0013_0a53dee_t36-adaptive-spacing-r2/out/GEOMETRY_DELETED.txt
+# after the delete: 0 files remain, build/ is gone
+# per-cell stage and rung-dump counts: out/cells/<tag>/<pot>/<piece>/logs/geometry_counts.tsv
