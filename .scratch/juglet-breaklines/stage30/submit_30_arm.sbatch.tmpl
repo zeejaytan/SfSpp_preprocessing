@@ -1,0 +1,177 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 30 part C -- one pipeline arm on the SHIPPED binary: SFS_PAPER_THETA set to this
+# arm's theta and nothing else changed (SFS_SINGLE_CLUSTER, SFS_WINDOW_MODE and
+# SFS_SPACING_POLICY all unset). Each cell also runs our own edgeline stage on the surfaces
+# it wrote, so the piece carries a Breakline_0 count; nothing else is done with it.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+IXTAG=__IXTAG__
+THETA=__THETA__
+ROLE=__ROLE__
+PIECES="__PIECES__"
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+INSTR=$RUN/instruments
+CELLROOT=$RUN/out/arms
+STAGER=$INSTR/stage_piece_p30.sh
+LIST=$RUN/out/cells.list
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+BIND="--bind /data:/data"
+export CANON CORP BOOT SIF APT INSTR CELLROOT STAGER LIST PY NEW RUN RUNID IXTAG THETA ROLE SLURM_CPUS_PER_TASK
+
+cd "$RUN" || exit 1
+mkdir -p out/bin out/arms logs
+echo "[JOB] runid=$RUNID job=$SLURM_JOB_ID arm=$IXTAG role=$ROLE theta=$THETA commit=$NEW pieces=$PIECES"
+date -u +"start %Y-%m-%dT%H:%M:%SZ"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+if ! git -C "$CANON" cat-file -e "${NEW}^{commit}" 2>>logs/fetch.log; then
+  echo "[JOB] FATAL commit $NEW not in $CANON"; exit 2
+fi
+echo "[JOB] commit ok new=$(git -C "$CANON" rev-parse --short "$NEW")"
+
+pot_of() { case "$1" in Juglet_Piece_*) echo Juglet ;; Pot_A_Piece_*) echo Pot_A ;; *) echo UNKNOWN ;; esac; }
+cloud_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CORP/Point/Pot_A/$1_Point.pcd"; else echo "$CANON/Dataset/Point/Juglet/$1_Point.pcd"; fi; }
+mesh_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CORP/Mesh/$1_Mesh.obj"; else echo "$CANON/Dataset/Mesh/Juglet/$1_Mesh.obj"; fi; }
+axis_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CANON/Dataset/Axes/Pot_A/$1_Axis.xyz"; else echo "$BOOT/$1_boot_Axis.xyz"; fi; }
+
+hash_inputs() {
+  local out=$1 p f
+  : > "$out"
+  for p in $PIECES; do
+    for f in "$(cloud_of "$p")" "$(mesh_of "$p")" "$(axis_of "$p")"; do
+      if [ -f "$f" ]; then printf "%s\t%s\t%s\n" "$p" "$(md5sum "$f" | cut -d" " -f1)" "$f"
+      else printf "%s\tMISSING\t%s\n" "$p" "$f"; fi
+    done
+  done | sort > "$out"
+}
+
+corpus_tree() {
+  local out=$1
+  { find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then ls -R /opt/sfs-pristine | md5sum
+    else echo "opt-sfs-pristine ABSENT"; fi
+  } > "$out"
+}
+
+build_new() {
+  local dir=$RUN/build/new
+  rm -rf "$dir"; mkdir -p "$dir/src"
+  if ! git -C "$CANON" archive "$NEW" | tar -x -C "$dir/src"; then
+    echo "[BUILD] FAILED archive"; return 1
+  fi
+  ( cd "$dir/src" && mkdir -p build && cd build \
+      && "$APT" exec $BIND "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
+      && "$APT" exec $BIND "$SIF" make -j"${SLURM_CPUS_PER_TASK:-8}" MeshPreprocessingHeadless EdgeLineExtractionHeadless ) >> logs/build-new.log 2>&1
+  if [ ! -x "$dir/src/build/MeshPreprocessingHeadless" ] || [ ! -x "$dir/src/build/EdgeLineExtractionHeadless" ]; then
+    echo "[BUILD] FAILED make"; grep -E "error:|Error [0-9]" logs/build-new.log | head -40; return 1
+  fi
+  cp "$dir/src/build/MeshPreprocessingHeadless" out/bin/MeshPreprocessingHeadless.NEW
+  cp "$dir/src/build/EdgeLineExtractionHeadless" out/bin/EdgeLineExtractionHeadless.NEW
+  echo "[BUILD] ok sha=$NEW mesh_bytes=$(stat -c %s out/bin/MeshPreprocessingHeadless.NEW) mesh_md5=$(md5sum out/bin/MeshPreprocessingHeadless.NEW | cut -d" " -f1) edge_bytes=$(stat -c %s out/bin/EdgeLineExtractionHeadless.NEW) edge_md5=$(md5sum out/bin/EdgeLineExtractionHeadless.NEW | cut -d" " -f1)"
+}
+
+run_one() {
+  local piece=$1
+  [ -n "${piece:-}" ] || return 0
+  POT=$(pot_of "$piece"); PIECE=$piece; TAG=$IXTAG
+  AXIS=$(axis_of "$piece")
+  BIN=$RUN/out/bin/MeshPreprocessingHeadless.NEW
+  EDGEBIN=$RUN/out/bin/EdgeLineExtractionHeadless.NEW
+  MESH=$(mesh_of "$piece"); COMMIT=$NEW
+  export POT PIECE TAG AXIS BIN EDGEBIN MESH COMMIT
+  bash "$INSTR/run_arm30.sh" "$IXTAG"
+}
+export -f pot_of cloud_of mesh_of axis_of run_one
+
+: > "$LIST"
+for p in $PIECES; do printf "%s\n" "$p" >> "$LIST"; done
+echo "[JOB] cells in list: $(wc -l < "$LIST")"
+
+hash_inputs out/inputs_before.md5
+corpus_tree out/corpus_before.txt
+echo "[JOB] inputs hashed: $(wc -l < out/inputs_before.md5) rows, corpus $(wc -l < out/corpus_before.txt) rows"
+
+build_new || exit 3
+
+printf "role\ttag\tscheme\tpot\tpiece\tcommit\ttheta\tstage_exit\tmesh_exit\tedge_exit\telapsed_s\toutcome\tn0\tn1\tnpts\tunclustered_pts\tclusters\tsizes\tsurf0_points\tsurf1_points\tbreak0_pts\tbreak0_segs\tedge_elapsed_s\n" > "$CELLROOT/armcells30.tsv"
+printf "tag\tpot\tpiece\tbreakline\tfile\tpoints\tsegs\thpts\txyz_lines\n" > "$CELLROOT/breaks30.tsv"
+printf "key\text\tcount\tbytes\n" > "$CELLROOT/geometry_counts.tsv"
+printf "tag\tpiece\tms_elapsed\telapsed_s\toutcome\tsurf0_points\tsurf1_points\tbreak0_pts\n" > "$CELLROOT/extra30.tsv"
+date -u +"cells start %Y-%m-%dT%H:%M:%SZ"
+xargs -a "$LIST" -d "\n" -n 1 -P "${SLURM_CPUS_PER_TASK:-8}" bash -c 'run_one "$@"' _ >> logs/cells.log 2>&1
+RC=$?
+echo "[JOB] cells finished rc=$RC rows=$(($(wc -l < "$CELLROOT/armcells30.tsv") - 1)) of $(wc -l < "$LIST")"
+grep "^\[CELL\]" logs/cells.log || true
+date -u +"cells end %Y-%m-%dT%H:%M:%SZ"
+
+echo "[JOB] surfaces written per piece (arm $IXTAG theta=$THETA)"
+awk -F"\t" 'NR>1 {printf "%-22s outcome=%-5s surf0=%-8s surf1=%-8s npts=%-8s unclustered=%-8s clusters=%-4s break0=%s/%s\n", $5, $12, $13, $14, $15, $16, $17, $21, $22}' "$CELLROOT/armcells30.tsv"
+echo "[JOB] surface tally"
+awk -F"\t" 'NR>1 {o=$12; c[o]++} END {for (k in c) printf "%s\t%d\n", k, c[k]}' "$CELLROOT/armcells30.tsv"
+echo "[JOB] breakline tally"
+awk -F"\t" 'NR>1 {c[$4]++; if ($4=="0") b0++} END {printf "rows=%d breakline_0_rows=%d\n", NR-1, b0}' "$CELLROOT/breaks30.tsv"
+
+echo "[JOB] corrected pair statistic (nearest Surface_0 point: THROUGH its normal, ALONG it, coincidence at 1 micron)"
+"$PY" "$INSTR/measure_pair30.py" "$CELLROOT" 2>&1 | tee logs/measure30.log
+if [ -s "$CELLROOT/measure30.tsv" ]; then
+  echo "[JOB] measure table"
+  cat "$CELLROOT/measure30.tsv"
+else
+  echo "[JOB] FATAL measure30.tsv missing or empty"
+fi
+
+{
+  echo "# ticket 30 arm $IXTAG (theta=$THETA, role=$ROLE) -- geometry deleted when each cell finished."
+  echo "# KEPT: every cell's surfaces/*.ply and *.xyz (re-measured here), breaklines/ (the"
+  echo "# Breakline_0 count), every log, armcells30.tsv, breaks30.tsv, measure30.tsv."
+  echo -e "key\text\tcount\tbytes"
+  tail -n +2 "$CELLROOT/geometry_counts.tsv"
+  echo "#"
+  echo -e "ext\tfiles\tbytes"
+  awk -F"\t" 'NR>1 {c[$2]+=$3; b[$2]+=$4} END {for (e in c) printf "%s\t%d\t%d\n", e, c[e], b[e]}' "$CELLROOT/geometry_counts.tsv" | sort
+  echo "#"
+  echo -e "total\t$(awk -F"\t" 'NR>1 {c+=$3; b+=$4} END {print c"\t"b}' "$CELLROOT/geometry_counts.tsv")"
+  echo "# kept surfaces: $(find "$CELLROOT" -path "*/surfaces/*" -name "*.ply" | wc -l) ply, $(find "$CELLROOT" -path "*/surfaces/*" -name "*.xyz" | wc -l) xyz"
+  echo "# kept breaklines: $(find "$CELLROOT" -path "*/breaklines/*" -name "*.pcd" | wc -l) pcd"
+  echo "# stage or edgestage trees left on disk (expect 0): $(find "$CELLROOT" -maxdepth 3 -type d \( -name stage -o -name edgestage \) | wc -l)"
+} > out/GEOMETRY_DELETED.txt 2>&1
+head -20 out/GEOMETRY_DELETED.txt
+
+hash_inputs out/inputs_after.md5
+corpus_tree out/corpus_after.txt
+if diff -q out/inputs_before.md5 out/inputs_after.md5 > out/inputs.diff 2>&1; then
+  echo "[INPUTS] identical before and after: $(wc -l < out/inputs_before.md5) rows"
+else
+  echo "[INPUTS] DIFFERS"; cat out/inputs.diff
+fi
+if diff -q out/corpus_before.txt out/corpus_after.txt > out/corpus.diff 2>&1; then
+  echo "[CORPUS] identical before and after: $(wc -l < out/corpus_before.txt) rows (incl /opt/sfs-pristine line)"
+else
+  echo "[CORPUS] DIFFERS"; cat out/corpus.diff
+fi
+grep -m1 "opt-sfs-pristine" out/corpus_before.txt || true
+
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$SLURM_JOB_ID" "$NEW" "$IXTAG" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+echo "[INDEX] appended: $RUNID\t$SLURM_JOB_ID\t$NEW\t$IXTAG with empty verdict and human_note"
+tail -2 /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+
+rm -rf "$RUN/build"
+date -u +"end %Y-%m-%dT%H:%M:%SZ"
+echo "[JOB] done run=$RUNID arm=$IXTAG"
