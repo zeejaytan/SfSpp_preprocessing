@@ -3,7 +3,9 @@
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
 **Blocks:** 25 (same file, and 25 measures the rungs this ticket changes)
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 26-the-three-millimetre-window, in /c/PR/worktrees/sfs/26
 
 A ticket on the *method*. It makes the last hardcoded metric distance in the surface chain a **measured,
 per-piece** quantity — behind switches whose defaults reproduce today's output exactly — and measures what
