@@ -273,3 +273,19 @@ nesting is the admission window alone or also the `finishImprovedSurface` copy b
 sherds can actually carry 6 000-650 000 points — subdivision interpolates and invents no detail, so this
 measures the geometry the method needs, not the geometry the museum has. And nothing about Pot A at this
 instrument, whose reference cell did not run.
+
+## 2026-10-28 — the four surface PLYs my check needed are deleted, and the script that read them is kept
+
+The nesting table in the lead reading rests on my own measurement of the four surfaces the pipeline wrote
+(`Juglet_Piece_{2,9}_Surface_{0,1}.ply`). They were fetched to `artifacts/juglet-p38/` and are now deleted
+under the geometry rule — geometry dies with its ticket. The deletion, 4 files / 1 080 661 bytes:
+
+    p2_s0.ply 319604 · p2_s1.ply 315847 · p9_s0.ply 172248 · p9_s1.ply 272962
+
+They re-derive from run `20261028-0528_511461e_t38-surfaces` (the job is recorded in `index.tsv` line 316 and
+the numbers are in this ticket and in the run's `out/cells-pipeline/surfaces.tsv`), and the surfaces themselves
+are regenerable from the meshes because the sampler is deterministic.
+
+The script that produced the table is kept, because a `verified:` line cites it:
+`stage38/instruments/check38.py` (reads a binary/ascii PLY, reports distinct-point counts, the shared set at
+1e-4 mm, mean-normal dot and the signed through-distance histogram).
