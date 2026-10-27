@@ -236,3 +236,9 @@ counts move by a few tens (Pot A 07: 6,066/6,437 → 6,048/6,423). Shrinking the
   upper bounds.
 - The genuine-pair test divides at the wall thickness measured from the meshes (2–3 mm). A wall thinner than the
   window can still look like a pair, and a wall thinner than 0.5 mm would look like a non-pair.
+
+## 2026-10-28 — correction: the pair table's `med_across` column is void
+
+The pair statistic in stage26's instruments took the ABSOLUTE value of the signed offset before splitting a Surface_1 point's step into "along Surface_0's normal" and "across it", then rebuilt the across component from that absolute value. Wherever the second sheet lies BEHIND the first, the reported across is `sqr t(across_true^2 + 4 t^2)` — up to twice `med_nn` — and the identity `across <= nn` breaks on exactly those points. Found in ticket 38 from a row where across exceeded nn, proved on synthetic planes (a sheet 2.2 mm inside its partner reported 4.4000 mm), fixed in `stage38/instruments/measure34.py:295-308` which keeps `t` signed.
+
+**What it touches here: 1 row of 116** (`evidence/measure26.tsv`, worst +0.37 mm, `Juglet_Piece_2`). The ticket's conclusions do not depend on that row: its finding was about coverage and window width, and the `along` and `med_nn` columns it used are sound. Re-read its `med_across` numbers as void; nothing else changes.

@@ -230,3 +230,9 @@ that opens the small sherds squeezes the pot.
   or the growth rule itself.
 - Whether a second growth pass over the unclaimed points (92–95 % of the cloud here) would find a face, which
   is the queued repair and has never been run.
+
+## 2026-10-28 — correction: the pair table's `med_across` column is void
+
+The pair statistic in stage37's instruments took the ABSOLUTE value of the signed offset before splitting a Surface_1 point's step into "along Surface_0's normal" and "across it", then rebuilt the across component from that absolute value. Wherever the second sheet lies BEHIND the first, the reported across is `sqr t(across_true^2 + 4 t^2)` — up to twice `med_nn` — and the identity `across <= nn` breaks on exactly those points. Found in ticket 38 from a row where across exceeded nn, proved on synthetic planes (a sheet 2.2 mm inside its partner reported 4.4000 mm), fixed in `stage38/instruments/measure34.py:295-308` which keeps `t` signed.
+
+**What it touches here: 46 of 102 rows** across `phase1/out/pairs34.tsv` and the per-cell tables, worst `Pot_A_Piece_01` reported 14.18 mm across against a true **0.30 mm**. The ticket's own conclusions — that the adaptive step is safe, that Pot A gains a tighter pair on 07 and 08, that the pre-floor region distribution is unchanged in kind — rest on point counts, coverage and `along`, none of which the defect touched. Its quoted `across` values (07 0.126, 08 0.128, Pot A 0.24-0.27) are the affected column and read as void; the corrected values are smaller, in the same direction.

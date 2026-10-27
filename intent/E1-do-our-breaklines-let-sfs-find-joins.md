@@ -2428,3 +2428,11 @@ Weight: none on the 281/292 tally — no edgeline was scored here.
 Next: a criterion that is not a bare angle on neighbours (the second pass over "unclaimed" points is void — there are none), or a growth
 criterion that is not a bare angle on neighbours. Until one of them gives those two sherds a face, the Juglet
 end-to-end run cannot score more than seven of nine.
+
+## 2026-10-28 — a correction that reaches six tickets: the pair statistic's along-column was inflated
+
+Every pair measurement in this project since ticket 26 has used one instrument. On 2026-10-28 ticket 38 found, from a row where a component exceeded the vector it belonged to, that the instrument took the absolute value of the signed offset before splitting it into "through the wall" and "along the wall". Wherever the second sheet lies behind the first, the along-column is reported as twice-ish the true value; the fix keeps the signed component (`stage38/instruments/measure34.py:295-308`, self-tested in both directions).
+
+What it touches, counted per ticket by re-reading every table that carries the three columns: ticket 26 one row of 116; ticket 33 twelve of thirteen and forty of forty in two tables; ticket 34 every per-cell table; ticket 37 forty-six of one hundred and two. Ticket 30's numbers came from these instruments but it kept no table of its own; ticket 36's tables are clean (53 rows, none inflated). The direction is always the same — the reported across was too large — so Pot A's clean pairs are cleaner than reported (a reported 7.10-7.86 mm is truly 0.29-0.57 mm) and no "is a pair" verdict flips to "is not". One sentence does not survive: ticket 34's **"the Juglet never yields two real faces"** is withdrawn, and ticket 38 replaces it with a measurement — at even sampling the two large regions of sherds 2 and 9 sit 2.12-2.28 mm apart through the wall with 0.02-0.16 mm of lateral slip, i.e. one wall thickness apart.
+
+Next: unchanged — the admission window at dense sampling (ticket 38's proposal).

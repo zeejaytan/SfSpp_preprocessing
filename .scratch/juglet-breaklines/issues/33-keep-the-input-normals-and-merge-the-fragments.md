@@ -264,3 +264,9 @@ It does not test a nearest-normal carry, so "the ball is the cause" is a mechani
 does not explain sherd 9's silence at any setting. It does not establish that the merge's 1.0 mm boundary
 criterion is what refused the two fragments of piece 2 — that needs the binary to log refusals, which is a small
 change nobody has made. And it says nothing about pieces 1, 4, 6 and 8, which were not in this grid.
+
+## 2026-10-28 — correction: the pair table's `med_across` column is void
+
+The pair statistic in stage33's instruments took the ABSOLUTE value of the signed offset before splitting a Surface_1 point's step into "along Surface_0's normal" and "across it", then rebuilt the across component from that absolute value. Wherever the second sheet lies BEHIND the first, the reported across is `sqr t(across_true^2 + 4 t^2)` — up to twice `med_nn` — and the identity `across <= nn` breaks on exactly those points. Found in ticket 38 from a row where across exceeded nn, proved on synthetic planes (a sheet 2.2 mm inside its partner reported 4.4000 mm), fixed in `stage38/instruments/measure34.py:295-308` which keeps `t` signed.
+
+**What it touches here: 12 of 13 rows** in `results/pairs33.tsv` and **40 of 40** in `results/run3/out/pairs33.tsv`, plus 2 of 36 in `results/run3/out/measure30-run2.tsv`. The worst is `Pot_A_Piece_01`, reported 14.18 mm across, truly **0.30 mm**; Pot A's other pieces go from a reported 3.5-7.9 mm to **0.29-0.57 mm**. Those rows were the clean pairs of the ticket, and the corrected numbers say the same thing more strongly, so "Pot A 8 of 8 with clean facing pairs" stands. The Juglet rows it called patches in different places had a large `along` too (piece 5 2.94 mm, piece 7 4.19 mm), so that reading also stands. Treat every `med_across` in this ticket as void and read `med_along` where a distance was quoted.

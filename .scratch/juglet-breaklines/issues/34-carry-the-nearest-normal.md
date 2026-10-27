@@ -220,3 +220,8 @@ so nothing is lost; recorded because a deletion wider than its stated class is e
 - `git diff --stat main...HEAD` -> 662 files, of which `mesh_processing_headless.cpp` is 30 lines and the rest is `.scratch/juglet-breaklines/stage34/`.
 - `cmp inputs_before.md5 inputs_after.md5` -> identical, 221 rows; `cmp corpus_before.txt corpus_after.txt` -> identical, 1803 rows; `out/pristine.txt` -> `/opt/sfs-pristine` ABSENT.
 
+## 2026-10-28 — correction: the pair table's `med_across` column is void
+
+The pair statistic in stage34's instruments took the ABSOLUTE value of the signed offset before splitting a Surface_1 point's step into "along Surface_0's normal" and "across it", then rebuilt the across component from that absolute value. Wherever the second sheet lies BEHIND the first, the reported across is `sqr t(across_true^2 + 4 t^2)` — up to twice `med_nn` — and the identity `across <= nn` breaks on exactly those points. Found in ticket 38 from a row where across exceeded nn, proved on synthetic planes (a sheet 2.2 mm inside its partner reported 4.4000 mm), fixed in `stage38/instruments/measure34.py:295-308` which keeps `t` signed.
+
+**What it touches here: every per-cell `results/out/cells/*/*/measure/pairs.tsv`.** `Pot_A_Piece_01` was reported at 7.10 mm across and is **0.30 mm**; the other seven Pot A pieces go from 7.10-7.86 to **0.29-0.57**, and the two Juglet rows move by +0.39 and +0.18 mm. The ticket's claim that the nearest-normal carry is the repair of the NORMAL step did not rest on this column and stands. What does not stand is one sentence of its reading — **the "Juglet never yields two real faces" line is withdrawn**: it rested on this column, and ticket 38 measured two parallel sheets one wall thickness apart once the sampling is even.
