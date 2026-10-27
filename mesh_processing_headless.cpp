@@ -1060,6 +1060,16 @@ static double g_floorCeilingFrac = 0.0;
 static bool g_floorCeilingOn = false;
 static bool g_countScaleAuto = false;
 
+// TICKET 26: the admission window in the B-spline boundary step is a measurement, not the
+// literal 3 mm. SFS_WINDOW_MODE picks the scheme, SFS_WINDOW_K scales W1's residual,
+// SFS_WINDOW_CLAMP_MM bounds every scheme, SFS_WINDOW_REPORT appends one row per fitted
+// surface. Defaults reproduce the 3 mm window exactly.
+static std::string g_windowMode = "literal";
+static double g_windowK = 5.0;
+static double g_windowClampLoMM = 0.5;
+static double g_windowClampHiMM = 6.0;
+static std::string g_windowReport;
+
 // TICKET 23: per-piece record, filled by surfaceSegmentation and printed by main, so every
 // piece announces two surfaces, one, or none -- with the numbers that decided it.
 struct PieceStatus23
@@ -1247,7 +1257,276 @@ void measurePieceSpacing(const std::string& pcdFile, double& diagMM, double& s0M
 	s0MM = nnDist[nnDist.size() / 2];
 }
 
-void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>::Ptr meshPointCloud, pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud, pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud)
+// TICKET 26: what the window is worth on this piece. residualMM is W1's r -- the median
+// distance from the cluster's own points to its fitted spline; otherMM is W2's d -- the
+// shortest distance between the fitted surface and any other surviving cluster. Both are
+// NaN when the data to measure them is not there, and the caller says so rather than
+// substituting a plausible number.
+struct Window26Window
+{
+	double residualMM;
+	double otherGridMM;
+	double otherProjMM;
+	double otherMM;
+	double rawMM;
+	double clampedMM;
+	double clampLoMM;
+	double clampHiMM;
+	long residualN;
+	long otherN;
+	long ownN;
+	long otherPointsN;
+	std::string rule;
+	std::string reason;
+	Window26Window()
+		: residualMM(NAN), otherGridMM(NAN), otherProjMM(NAN), otherMM(NAN)
+		, rawMM(3.0), clampedMM(3.0), clampLoMM(0.5), clampHiMM(6.0)
+		, residualN(0), otherN(0), ownN(0), otherPointsN(0)
+		, rule("literal"), reason("ok") {}
+};
+
+static void window26FormatMM(char* buf, size_t n, double v)
+{
+	if (std::isfinite(v)) snprintf(buf, n, "%.6f", v);
+	else snprintf(buf, n, "na");
+}
+
+// W1's r: median distance from the cluster's own points to its fitted spline, measured with
+// the same inverse mapping the admission loop uses.
+static double window26ResidualMedianMM(pcl::on_nurbs::FittingSurface& fit, const pcl::PointCloud<PointNormal>::Ptr& cluster, long& used)
+{
+	used = 0;
+	if (!cluster || cluster->points.empty()) return NAN;
+	std::vector<double> dists;
+	dists.reserve(cluster->points.size());
+	for (size_t i = 0; i < cluster->points.size(); i++)
+	{
+		Eigen::Vector3d originalPt(cluster->points[i].x, cluster->points[i].y, cluster->points[i].z);
+		Eigen::Vector2d hintPt(0.5, 0.5);
+		Eigen::Vector3d pt, tu, tv, n;
+		double error;
+		Eigen::Vector2d paramsB = fit.inverseMapping(fit.m_nurbs, originalPt, hintPt, error, pt, tu, tv, 100, 1e-5);
+		double point[9];
+		fit.m_nurbs.Evaluate(paramsB(0), paramsB(1), 1, 3, point);
+		double dx = point[0] - originalPt(0);
+		double dy = point[1] - originalPt(1);
+		double dz = point[2] - originalPt(2);
+		double d = std::sqrt(dx * dx + dy * dy + dz * dz);
+		if (!std::isfinite(d)) continue;
+		dists.push_back(d);
+	}
+	if (dists.empty()) return NAN;
+	std::sort(dists.begin(), dists.end());
+	used = (long)dists.size();
+	return dists[dists.size() / 2];
+}
+
+// W2's d: the shortest distance between the fitted surface and any other surviving cluster.
+// Both directions are measured and the smaller reported -- (a) the fitted surface sampled on a
+// 33x33 grid over its own knot domain against the other cluster's points, (b) the other
+// cluster's points, strided deterministically to at most 2000, inverse-mapped onto the fit.
+static double window26OtherDistanceMM(pcl::on_nurbs::FittingSurface& fit, const pcl::PointCloud<PointNormal>::Ptr& other,
+	double& gridMM, double& projMM, long& used)
+{
+	gridMM = NAN;
+	projMM = NAN;
+	used = 0;
+	if (!other || other->points.empty()) return NAN;
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr otherXYZ(new pcl::PointCloud<pcl::PointXYZ>);
+	otherXYZ->points.reserve(other->points.size());
+	for (size_t i = 0; i < other->points.size(); i++)
+	{
+		pcl::PointXYZ p;
+		p.x = other->points[i].x;
+		p.y = other->points[i].y;
+		p.z = other->points[i].z;
+		otherXYZ->points.push_back(p);
+	}
+	otherXYZ->width = static_cast<int>(otherXYZ->points.size());
+	otherXYZ->height = 1;
+	pcl::KdTreeFLANN<pcl::PointXYZ> tree;
+	tree.setInputCloud(otherXYZ);
+
+	// the fit's parameter domain is [0,1]: PCL's on_nurbs surfaces are initialised over it, and
+	// the admission loop's own hint point is (0.5, 0.5).
+	double s0 = 0.0, s1 = 1.0, t0 = 0.0, t1 = 1.0;
+	const int GRID = 33;
+	double bestGrid = HUGE_VAL;
+	for (int i = 0; i < GRID; i++)
+	{
+		double s = s0 + (s1 - s0) * (double)i / (double)(GRID - 1);
+		for (int j = 0; j < GRID; j++)
+		{
+			double t = t0 + (t1 - t0) * (double)j / (double)(GRID - 1);
+			double point[9];
+			fit.m_nurbs.Evaluate(s, t, 1, 3, point);
+			if (!std::isfinite(point[0]) || !std::isfinite(point[1]) || !std::isfinite(point[2])) continue;
+			pcl::PointXYZ q;
+			q.x = (float)point[0];
+			q.y = (float)point[1];
+			q.z = (float)point[2];
+			std::vector<int> idx;
+			std::vector<float> sqd;
+			if (tree.nearestKSearch(q, 1, idx, sqd) > 0 && sqd[0] >= 0.0f)
+			{
+				double d = std::sqrt((double)sqd[0]);
+				if (d < bestGrid) bestGrid = d;
+			}
+		}
+	}
+	gridMM = (bestGrid == HUGE_VAL) ? NAN : bestGrid;
+
+	size_t stride = otherXYZ->points.size() / 2000;
+	if (stride < 1) stride = 1;
+	double bestProj = HUGE_VAL;
+	for (size_t i = 0; i < otherXYZ->points.size(); i += stride)
+	{
+		Eigen::Vector3d originalPt(otherXYZ->points[i].x, otherXYZ->points[i].y, otherXYZ->points[i].z);
+		Eigen::Vector2d hintPt(0.5, 0.5);
+		Eigen::Vector3d pt, tu, tv, n;
+		double error;
+		Eigen::Vector2d paramsB = fit.inverseMapping(fit.m_nurbs, originalPt, hintPt, error, pt, tu, tv, 100, 1e-5);
+		double point[9];
+		fit.m_nurbs.Evaluate(paramsB(0), paramsB(1), 1, 3, point);
+		double dx = point[0] - originalPt(0);
+		double dy = point[1] - originalPt(1);
+		double dz = point[2] - originalPt(2);
+		double d = std::sqrt(dx * dx + dy * dy + dz * dz);
+		if (!std::isfinite(d)) continue;
+		used++;
+		if (d < bestProj) bestProj = d;
+	}
+	projMM = (bestProj == HUGE_VAL) ? NAN : bestProj;
+
+	if (std::isfinite(gridMM) && std::isfinite(projMM)) return std::min(gridMM, projMM);
+	if (std::isfinite(gridMM)) return gridMM;
+	return projMM;
+}
+
+// TICKET 26: pick this fitted surface's window and clamp it. Unavailable measurements fall
+// back to the literal 3 mm and say which one was missing; nothing is substituted.
+static Window26Window window26Select(pcl::on_nurbs::FittingSurface& fit,
+	const pcl::PointCloud<PointNormal>::Ptr& ownCluster,
+	const pcl::PointCloud<PointNormal>::Ptr& otherCluster)
+{
+	Window26Window w;
+	w.clampLoMM = g_windowClampLoMM;
+	w.clampHiMM = g_windowClampHiMM;
+	w.ownN = (long)(ownCluster ? ownCluster->points.size() : 0);
+	w.otherPointsN = (long)(otherCluster ? otherCluster->points.size() : 0);
+
+	w.residualMM = window26ResidualMedianMM(fit, ownCluster, w.residualN);
+	w.otherMM = window26OtherDistanceMM(fit, otherCluster, w.otherGridMM, w.otherProjMM, w.otherN);
+	std::string missing;
+	if (!std::isfinite(w.residualMM)) missing = "residual_unavailable";
+	if (!std::isfinite(w.otherMM))
+	{
+		std::string o = (w.otherPointsN == 0) ? "no_other_cluster" : "other_unavailable";
+		missing = missing.empty() ? o : (missing + "+" + o);
+	}
+	if (!missing.empty()) w.reason = missing;
+
+	double raw = 3.0;
+	std::string rule = "literal";
+	const bool haveResidual = std::isfinite(w.residualMM);
+	const bool haveOther = std::isfinite(w.otherMM);
+	if (g_windowMode == "literal")
+	{
+		rule = "literal";
+	}
+	else if (g_windowMode == "residual")
+	{
+		if (haveResidual) { raw = g_windowK * w.residualMM; rule = "residual"; }
+		else { rule = "literal_fallback"; }
+	}
+	else if (g_windowMode == "other")
+	{
+		if (haveOther) { raw = 0.45 * w.otherMM; rule = "other"; }
+		else { rule = "literal_fallback"; }
+	}
+	else if (g_windowMode == "both")
+	{
+		if (haveResidual && haveOther) { raw = std::min(g_windowK * w.residualMM, 0.45 * w.otherMM); rule = "both"; }
+		else if (haveResidual) { raw = g_windowK * w.residualMM; rule = "both_residual_only"; }
+		else if (haveOther) { raw = 0.45 * w.otherMM; rule = "both_other_only"; }
+		else { rule = "literal_fallback"; }
+	}
+	else
+	{
+		rule = "literal_unknown_mode";
+	}
+	w.rule = rule;
+	w.rawMM = raw;
+	w.clampedMM = raw;
+	if (w.clampedMM < w.clampLoMM) w.clampedMM = w.clampLoMM;
+	if (w.clampedMM > w.clampHiMM) w.clampedMM = w.clampHiMM;
+	return w;
+}
+
+// TICKET 26: the specified line, once per fitted surface per piece, plus a detail line that
+// carries the parts the specified line has no room for, plus the optional TSV row.
+static void window26Print(int surfaceIndex, const Window26Window& w, long admittedOwn, long admittedOther, long candidates)
+{
+	char residualBuf[32], otherBuf[32], rawBuf[32], clampedBuf[32];
+	char gridBuf[32], projBuf[32];
+	window26FormatMM(residualBuf, sizeof(residualBuf), w.residualMM);
+	window26FormatMM(otherBuf, sizeof(otherBuf), w.otherMM);
+	window26FormatMM(rawBuf, sizeof(rawBuf), w.rawMM);
+	window26FormatMM(clampedBuf, sizeof(clampedBuf), w.clampedMM);
+	window26FormatMM(gridBuf, sizeof(gridBuf), w.otherGridMM);
+	window26FormatMM(projBuf, sizeof(projBuf), w.otherProjMM);
+
+	std::cout << "[WINDOW-26] piece=" << fileNameOnly << " surface=" << surfaceIndex
+		<< " mode=" << g_windowMode << " k=" << g_windowK
+		<< " residual_mm=" << residualBuf << " other_mm=" << otherBuf
+		<< " raw_mm=" << rawBuf << " clamped_mm=" << clampedBuf
+		<< " admitted_own=" << admittedOwn << " admitted_other=" << admittedOther << std::endl;
+
+	const bool clampBites = (w.clampedMM != w.rawMM);
+	std::cout << "[WINDOW-26-MEASURE] piece=" << fileNameOnly << " surface=" << surfaceIndex
+		<< " rule=" << w.rule << " reason=" << w.reason
+		<< " clamp_lo_mm=" << w.clampLoMM << " clamp_hi_mm=" << w.clampHiMM
+		<< " clamped=" << (clampBites ? "yes" : "no") << " clamped_from_mm=" << rawBuf
+		<< " residual_n=" << w.residualN << " other_n=" << w.otherN
+		<< " other_grid_mm=" << gridBuf << " other_proj_mm=" << projBuf
+		<< " own_cluster_points=" << w.ownN << " other_cluster_points=" << w.otherPointsN
+		<< " candidates=" << candidates << std::endl;
+
+	if (!g_windowReport.empty())
+	{
+		std::ofstream out(g_windowReport.c_str(), std::ios::app);
+		if (out.is_open())
+		{
+			out << fileNameOnly << '\t' << surfaceIndex << '\t' << g_windowMode << '\t' << g_windowK
+				<< '\t' << w.rule << '\t' << w.reason
+				<< '\t' << residualBuf << '\t' << otherBuf
+				<< '\t' << gridBuf << '\t' << projBuf
+				<< '\t' << rawBuf << '\t' << clampedBuf
+				<< '\t' << w.clampLoMM << '\t' << w.clampHiMM
+				<< '\t' << (clampBites ? "yes" : "no") << '\t' << rawBuf
+				<< '\t' << w.ownN << '\t' << w.otherPointsN << '\t' << candidates
+				<< '\t' << admittedOwn << '\t' << admittedOther
+				<< '\t' << w.residualN << '\t' << w.otherN << '\n';
+		}
+	}
+}
+
+// TICKET 26: what the surface actually is after finishImprovedSurface, which is where an empty
+// recruited set stops being empty.
+static void window26PrintFinal(int surfaceIndex, long ownBefore, long otherBefore, long finalPoints)
+{
+	std::cout << "[WINDOW-26-FINAL] piece=" << fileNameOnly << " surface=" << surfaceIndex
+		<< " admitted_own=" << ownBefore << " admitted_other=" << otherBefore
+		<< " other_copied_over=" << ((otherBefore > ownBefore) ? "yes" : "no")
+		<< " final_points=" << finalPoints << std::endl;
+}
+
+void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>::Ptr meshPointCloud,
+	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud,
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud,
+	int surfaceIndex = 0,
+	pcl::PointCloud<PointNormal>::Ptr otherSurvivingCloud = pcl::PointCloud<PointNormal>::Ptr())
 {
 
 	string line;
@@ -1262,6 +1541,13 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	FittedSplineSurface fitted;
 	fitSplineSurfaceToCluster(segmentedSurfacePointCloud, fitted);
 	pcl::on_nurbs::FittingSurface& fit = *fitted.fit;
+
+	// TICKET 26: the admission window for THIS fitted surface, measured on this piece.
+	// Literal mode still measures and prints both quantities; only the rule ignores them.
+	Window26Window window26 = window26Select(fit, segmentedSurfacePointCloud, otherSurvivingCloud);
+	const double windowLenMM = window26.clampedMM;
+	long window26AdmittedOwn = 0;
+	long window26AdmittedOther = 0;
 
 
 	//viewer.close();
@@ -1326,8 +1612,9 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 
 		angles.push_back(angleDiff);
 		dists.push_back(pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh));
-		if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < 3 && angleDiff > 140) // (angleDiff < 40)) // || angleDiff > 140)) //0.5) // 1 && (angleDiff < 30 || angleDiff > 150))
+		if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff > 140) // TICKET 26: the 3 mm literal is now this surface's clamped measured window (3.0 by default).
 		{
+			window26AdmittedOwn++;
 			pcl::PointNormal ptTmp;
 			ptTmp.x = ptOnOriginalMesh.x; // point[0];
 			ptTmp.y = ptOnOriginalMesh.y; // point[1];
@@ -1337,8 +1624,9 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			ptTmp.normal_z = meshPointCloud->points[i].normal_z; //-normalEst.z;
 			improvedSurfacePointCloud->points.push_back(ptTmp);
 		}
-		else if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < 3 && angleDiff < 40) // || angleDiff > 140)) //0.5) // 1 && (angleDiff < 30 || angleDiff > 150))
+		else if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff < 40) // TICKET 26: same window, other-angle branch.
 		{
+			window26AdmittedOther++;
 			pcl::PointNormal ptTmp;
 			ptTmp.x = ptOnOriginalMesh.x; // point[0];
 			ptTmp.y = ptOnOriginalMesh.y; // point[1];
@@ -1375,7 +1663,14 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	// pcl::io::savePCDFile("bSplineSurfacePoints.pcd", *bSplineSurface);
 
 
+	window26Print(surfaceIndex, window26, window26AdmittedOwn, window26AdmittedOther,
+		(long)meshPointCloud->points.size());
+	const long window26OwnBefore = (long)improvedSurfacePointCloud->points.size();
+	const long window26OtherBefore = (long)improvedSurfacePointCloud_other->points.size();
+
 	finishImprovedSurface(improvedSurfacePointCloud, improvedSurfacePointCloud_other, segmentedSurfacePointCloud);
+
+	window26PrintFinal(surfaceIndex, window26OwnBefore, window26OtherBefore, (long)improvedSurfacePointCloud->points.size());
 
 	projectedPointCloudWithNormals->width = static_cast<int>(projectedPointCloudWithNormals->points.size());
 	projectedPointCloudWithNormals->height = 1;
@@ -1388,7 +1683,9 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud1,
 	pcl::PointCloud<PointNormal>::Ptr segmentedSurfacePointCloud2,
 	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud1,
-	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud2)
+	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloud2,
+	pcl::PointCloud<PointNormal>::Ptr otherSurvivingCloud1 = pcl::PointCloud<PointNormal>::Ptr(),
+	pcl::PointCloud<PointNormal>::Ptr otherSurvivingCloud2 = pcl::PointCloud<PointNormal>::Ptr())
 {
 	FittedSplineSurface fitted1;
 	FittedSplineSurface fitted2;
@@ -1399,6 +1696,17 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePointCloud2_other(new pcl::PointCloud<pcl::PointNormal>);
 
 	pcl::on_nurbs::FittingSurface* fits[2] = { fitted1.fit, fitted2.fit };
+
+	// TICKET 26: one measured window per fitted surface. "Other surviving" is the caller's union
+	// of every other cluster when given, and the opposite cluster otherwise.
+	Window26Window window26[2];
+	window26[0] = window26Select(*fits[0], segmentedSurfacePointCloud1,
+		otherSurvivingCloud1 ? otherSurvivingCloud1 : segmentedSurfacePointCloud2);
+	window26[1] = window26Select(*fits[1], segmentedSurfacePointCloud2,
+		otherSurvivingCloud2 ? otherSurvivingCloud2 : segmentedSurfacePointCloud1);
+	double windowLenMM[2] = { window26[0].clampedMM, window26[1].clampedMM };
+	long window26AdmittedOwn[2] = { 0, 0 };
+	long window26AdmittedOther[2] = { 0, 0 };
 
 	for (size_t i = 0; i < meshPointCloud->points.size(); i++)
 	{
@@ -1448,7 +1756,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 
 		for (int k = 0; k < 2; k++)
 		{
-			if (!(dist[k] < 3)) continue;
+			if (!(dist[k] < windowLenMM[k])) continue; // TICKET 26: this surface's clamped measured window (3.0 by default).
 			if (!(dist[k] < dist[1 - k])) continue;
 
 			pcl::PointCloud<pcl::PointNormal>::Ptr own = (k == 0) ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2;
@@ -1456,6 +1764,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 
 			if (angleDiff[k] > 140)
 			{
+				window26AdmittedOwn[k]++;
 				pcl::PointNormal ptTmp;
 				ptTmp.x = meshPointCloud->points[i].x;
 				ptTmp.y = meshPointCloud->points[i].y;
@@ -1467,6 +1776,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 			}
 			else if (angleDiff[k] < 40)
 			{
+				window26AdmittedOther[k]++;
 				pcl::PointNormal ptTmp;
 				ptTmp.x = meshPointCloud->points[i].x;
 				ptTmp.y = meshPointCloud->points[i].y;
@@ -1479,8 +1789,17 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 		}
 	}
 
+	const long window26OwnBefore[2] = { (long)improvedSurfacePointCloud1->points.size(), (long)improvedSurfacePointCloud2->points.size() };
+	const long window26OtherBefore[2] = { (long)improvedSurfacePointCloud1_other->points.size(), (long)improvedSurfacePointCloud2_other->points.size() };
+	const long window26Candidates = (long)meshPointCloud->points.size();
+	window26Print(0, window26[0], window26AdmittedOwn[0], window26AdmittedOther[0], window26Candidates);
+	window26Print(1, window26[1], window26AdmittedOwn[1], window26AdmittedOther[1], window26Candidates);
+
 	finishImprovedSurface(improvedSurfacePointCloud1, improvedSurfacePointCloud1_other, segmentedSurfacePointCloud1);
 	finishImprovedSurface(improvedSurfacePointCloud2, improvedSurfacePointCloud2_other, segmentedSurfacePointCloud2);
+
+	window26PrintFinal(0, window26OwnBefore[0], window26OtherBefore[0], (long)improvedSurfacePointCloud1->points.size());
+	window26PrintFinal(1, window26OwnBefore[1], window26OtherBefore[1], (long)improvedSurfacePointCloud2->points.size());
 }
 
 void getBreakLineForDecorativeParts(string fileName)
@@ -2731,14 +3050,31 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             std::string reassignMode = "radius";
             if (const char* e = std::getenv("SFS_REASSIGN_MODE")) { if (*e) reassignMode = e; }
             std::cout << "[REASSIGN-22] mode=" << reassignMode << std::endl;
+            // TICKET 26: W2's "any other surviving cluster" is every cluster that is not the one
+            // being fitted, so it is built once here and handed to the fit.
+            pcl::PointCloud<pcl::PointNormal>::Ptr otherForCluster1(new pcl::PointCloud<pcl::PointNormal>);
+            pcl::PointCloud<pcl::PointNormal>::Ptr otherForCluster2(new pcl::PointCloud<pcl::PointNormal>);
+            for (size_t c26 = 0; c26 < clusters.size(); c26++)
+            {
+                for (size_t i26 = 0; i26 < clusters[c26].indices.size(); i26++)
+                {
+                    if (c26 != 0) otherForCluster1->points.push_back(cloudWithNormals->points[clusters[c26].indices[i26]]);
+                    if (c26 != 1) otherForCluster2->points.push_back(cloudWithNormals->points[clusters[c26].indices[i26]]);
+                }
+            }
+            otherForCluster1->width = static_cast<int>(otherForCluster1->points.size());
+            otherForCluster1->height = 1;
+            otherForCluster2->width = static_cast<int>(otherForCluster2->points.size());
+            otherForCluster2->height = 1;
+
             if (reassignMode == "own")
             {
-                improveSurfaceBoundaryByFittingBSplineSurfaceOwn(sampledPointCloudNormal, cloudWithNormals_Cluster1, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster1, improvedSurfacePoints_Cluster2);
+                improveSurfaceBoundaryByFittingBSplineSurfaceOwn(sampledPointCloudNormal, cloudWithNormals_Cluster1, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster1, improvedSurfacePoints_Cluster2, otherForCluster1, otherForCluster2);
             }
             else
             {
-                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
-                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2);
+                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1, 0, otherForCluster1);
+                improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2, 1, otherForCluster2);
             }
             // Both improved surfaces are written back only after every call has run.
             cloudWithNormals_Cluster1->points.clear();
@@ -3095,6 +3431,38 @@ int main(int argc, char** argv) {
         std::cout << "[SWITCH-23] singleCluster=" << g_singleClusterMode
                   << " floorCeiling=" << (g_floorCeilingOn ? std::to_string(g_floorCeilingFrac) : std::string("off"))
                   << " countScaleAuto=" << (g_countScaleAuto ? "yes" : "no") << std::endl;
+
+        // TICKET 26: how wide the admission window is. Every default here reproduces the
+        // 3 mm literal, so a run without these switches is the run before this ticket.
+        g_windowMode = "literal";
+        g_windowK = 5.0;
+        g_windowClampLoMM = 0.5;
+        g_windowClampHiMM = 6.0;
+        g_windowReport.clear();
+        if (const char* e26 = std::getenv("SFS_WINDOW_MODE")) { if (*e26) g_windowMode = e26; }
+        if (const char* e26 = std::getenv("SFS_WINDOW_K")) { if (*e26) g_windowK = std::stod(e26); }
+        if (const char* e26 = std::getenv("SFS_WINDOW_CLAMP_MM"))
+        {
+            if (*e26)
+            {
+                const std::string clamp26 = e26;
+                const size_t comma26 = clamp26.find(',');
+                if (comma26 != std::string::npos)
+                {
+                    g_windowClampLoMM = std::stod(clamp26.substr(0, comma26));
+                    g_windowClampHiMM = std::stod(clamp26.substr(comma26 + 1));
+                }
+                else
+                {
+                    std::cout << "[WINDOW-26-SWITCH] warn=clamp_unparsed value=" << clamp26
+                              << " kept=" << g_windowClampLoMM << "," << g_windowClampHiMM << std::endl;
+                }
+            }
+        }
+        if (const char* e26 = std::getenv("SFS_WINDOW_REPORT")) { if (*e26) g_windowReport = e26; }
+        std::cout << "[WINDOW-26-SWITCH] mode=" << g_windowMode << " k=" << g_windowK
+                  << " clampMM=" << g_windowClampLoMM << "," << g_windowClampHiMM
+                  << " report=" << (g_windowReport.empty() ? "none" : g_windowReport) << std::endl;
 
         // TICKET 24: how many neighbours a normal is estimated from. Every default here
         // reproduces today: mode=count ignores the radius and runs the untouched count rule.
