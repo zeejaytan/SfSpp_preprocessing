@@ -67,6 +67,33 @@ P9     x10    0.020342      0.020165     0.9913   547 195  0.0308    2
 `x10` stayed under the ticket's 1.2 M-point cap on both pieces (649 067 and 547 195), so no level fell back to
 "the finest spacing the mesh supports".
 
+The distribution, not only the median — nearest-neighbour spacing of every kept cloud, from `results/sample_*.json`
+(mm; these are the clouds item 4 grows regions on, so the spacing the 3.4 deg gate sees is this, not the request):
+
+```
+piece lvl   p10       p50       p90       points
+P2    x1    0.16535   0.20904   0.28499   6 259
+P2    x2    0.08329   0.10419   0.14411   25 240
+P2    x4    0.04219   0.05205   0.07286   102 166
+P2    x10   0.01700   0.02080   0.02946   649 067
+P9    x1    0.16296   0.20151   0.25803   5 257
+P9    x2    0.08206   0.10102   0.12983   21 315
+P9    x4    0.04125   0.05043   0.06463   86 329
+P9    x10   0.01654   0.02017   0.02589   547 195
+P3    x1    0.16737   0.21612   0.29699   9 613
+P3    x2    0.08377   0.10684   0.14929   39 605
+P3    x4    0.04203   0.05339   0.07531   161 173
+P5    x1    0.19484   0.23812   0.28410   15 095
+P5    x2    0.09824   0.11885   0.14119   60 812
+P5    x4    0.04941   0.05943   0.07033   246 575
+P7    x1    0.20369   0.25464   0.33688   17 698
+P7    x2    0.10292   0.12807   0.17060   71 219
+P7    x4    0.05170   0.06390   0.08601   287 814
+```
+
+For the contrast that matters, today's shipped clouds have the same p50 as x1 but a much wider tail: piece 2
+2 565 points, p10 0.1609 / p50 0.2109 / p90 0.4131 mm; piece 9 2 094 points, 0.1599 / 0.2034 / 0.3950 mm.
+
 **Lattice-floor control (the ticket worried that x10 would just put one point per sub-triangle).** The level-L
 mesh was *also* sampled at `s0/L` (a level-10 mesh sampled at 0.021 mm; the one-point-per-triangle floor would
 be 0.034 mm > `s0/10` on piece 2):
