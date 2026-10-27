@@ -157,4 +157,33 @@ cleared at the coarsest level, x1, on both pieces). Item 3's displacement number
 1.15 mm piece 9) are the incident-candidate artefact, not displacement; the exact per-parent measurement is
 described in the report and is not implemented.
 
+### After the fifth (final) job — 2026-10-28
+
+The paragraph above stands as the record of run 4; a fifth job was authorised and spent, and it supersedes the
+"not delivered" list where noted. Run of record for items 6-8 and the figures:
+`/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/` (job 33892259, commit
+`2a34d86a54467ac1f0238eed214bc11bdf7be208`), `TIMEOUT` at 00:40:11 with phase 3 mid-cell; its closing bookkeeping
+(corpus/inputs md5, geometry census and delete, run-meta, index row) was then executed by hand from that run's own
+`submit.sbatch` function bodies — bookkeeping only, no compute — because bash defers a `trap` until the foreground
+child returns and Slurm's 15 s kill window cut the shell off first.
+
+Now delivered: item 6 corrected and re-derived (the old `med_across` / `p90_across` columns are VOID — the step's
+absolute projection was reused to rebuild the perpendicular part, inflating it up to 2 x `med_nn`; on arm A the
+true residual is 0.02-0.16 mm against an along-axis step of 2.11-2.29 mm, i.e. the second-largest region is a sheet
+offset by about one wall thickness — Juglet 2 2.693 mm, Juglet 9 2.595 mm — and essentially parallel; arm B
+collapses along to 0.23-0.43 mm with a 0.47-0.91 mm residual; 41 rows including the controls and Pot A 07);
+item 7 partly — three real pipeline cells ran (Juglet 2 x1 8 clusters, Juglet 9 x1 7 clusters, Pot A 07 on the
+1 000 000-point released cloud 7 clusters, each `[STATUS-23] outcome=two` with 4 155/3 979, 2 229/3 512 and
+24 636/26 741 points in the two written surfaces); item 8 in full (the replay reproduces ticket 37's 9.0 % ink and
+82.7 % pale grey on piece 9 and 12.7 % / 28.6 % on Pot A 07, while the new redraw brings the pale-grey share of
+ink down to 0.09 and 0.06); the five-piece aggregate; and the two resolution figures re-rendered with the label
+and `floor_reached_at` fixes (the coarsest clearing level is x1 on both pieces: 873 and 1 410 points).
+
+Still open, in the report's own item 10: the x10 pipeline cells (P2 x10 sampled at 0.02080 mm in 153.2 s and its
+pipeline was started; the wall clock ended it, and P9 x10 never started — the guard read a day-scale counter from
+`squeue -o %L`, 88 474 s, so it skipped nothing); the per-surface extent / 2 mm coverage / folded angle for the
+three cells that ran (the surface-extension loop kept the `.xyz` instead of the `.ply`,
+`[PIPELINE] surface 0 is xyz, not a ply`); item 3 exact per-parent displacement (the delivered 1.81 / 1.15 mm are
+the candidate-triangle artefact; the analytic bound is <= 1e-6 mm); and `cloud_points` blank on the Pot_A row of
+`pipeline_cells.tsv` (`grep ^POINTS` on a binary PCD). Job budget 5 of 5; no sixth job.
 Status, `Answers:` and `intent/` are unchanged; no judgement about what the numbers mean is recorded anywhere.

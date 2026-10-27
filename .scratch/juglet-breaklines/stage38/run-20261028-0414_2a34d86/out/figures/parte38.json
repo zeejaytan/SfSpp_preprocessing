@@ -1,0 +1,588 @@
+{
+ "definition": {
+  "grey_chroma": 12,
+  "ink_thresh": 245,
+  "panel_split_white_px": 8
+ },
+ "measure_redraw": [
+  {
+   "axes_box": {
+    "bytes": 212477,
+    "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_9_partE_ranked_fullopacity.png",
+    "grey_share_of_ink_mean": 0.09370753022535776,
+    "ink_frac_mean": 0.2807507149403204,
+    "label": "Juglet_Piece_9 partE redraw axes box",
+    "panel_source": "axes boxes",
+    "panels": [
+     {
+      "area": 120756,
+      "colour_frac": 0.16398357017456688,
+      "grey_frac": 0.020951339892013646,
+      "grey_share_of_ink": 0.11329034569228014,
+      "ink": 22332,
+      "ink_frac": 0.18493491006658055,
+      "ink_per_point": 11.324543610547668,
+      "panel": 0,
+      "x0": 53,
+      "x1": 401,
+      "y0": 97,
+      "y1": 444
+     },
+     {
+      "area": 120756,
+      "colour_frac": 0.25787538507403357,
+      "grey_frac": 0.021638676339063898,
+      "grey_share_of_ink": 0.07741534085859035,
+      "ink": 33753,
+      "ink_frac": 0.2795140614130975,
+      "ink_per_point": 17.116125760649087,
+      "panel": 1,
+      "x0": 485,
+      "x1": 833,
+      "y0": 97,
+      "y1": 444
+     },
+     {
+      "area": 120756,
+      "colour_frac": 0.34364338003908707,
+      "grey_frac": 0.034159793302196165,
+      "grey_share_of_ink": 0.09041690412520276,
+      "ink": 45622,
+      "ink_frac": 0.37780317334128327,
+      "ink_per_point": 23.134888438133874,
+      "panel": 2,
+      "x0": 917,
+      "x1": 1265,
+      "y0": 97,
+      "y1": 444
+     }
+    ],
+    "panels_found": 3,
+    "pixel_height": 515,
+    "pixel_width": 1271,
+    "png": "Juglet_Piece_9_partE_ranked_fullopacity.png",
+    "points": 1972,
+    "whole": {
+     "area": 654565,
+     "colour_frac": 0.14301559050667237,
+     "grey_frac": 0.042493869974716034,
+     "grey_share_of_ink": 0.22906578383898277,
+     "ink": 121428,
+     "ink_frac": 0.18550946048138842
+    }
+   },
+   "plot_interior": {
+    "bytes": 212477,
+    "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_9_partE_ranked_fullopacity.png",
+    "grey_share_of_ink_mean": 0.02917629060531902,
+    "ink_frac_mean": 0.2727044068300435,
+    "label": "Juglet_Piece_9 partE redraw plot interior",
+    "panel_source": "axes boxes",
+    "panels": [
+     {
+      "area": 116622,
+      "colour_frac": 0.1697964363499168,
+      "grey_frac": 0.00389291900327554,
+      "grey_share_of_ink": 0.022413112164297,
+      "ink": 20256,
+      "ink_frac": 0.17368935535319235,
+      "ink_per_point": 10.271805273833671,
+      "panel": 0,
+      "x0": 56,
+      "x1": 398,
+      "y0": 100,
+      "y1": 441
+     },
+     {
+      "area": 116622,
+      "colour_frac": 0.2670165148942738,
+      "grey_frac": 0.004604620054535165,
+      "grey_share_of_ink": 0.016952362913154655,
+      "ink": 31677,
+      "ink_frac": 0.27162113494880896,
+      "ink_per_point": 16.06338742393509,
+      "panel": 1,
+      "x0": 488,
+      "x1": 830,
+      "y0": 100,
+      "y1": 441
+     },
+     {
+      "area": 116622,
+      "colour_frac": 0.3548472843888803,
+      "grey_frac": 0.017955445799248855,
+      "grey_share_of_ink": 0.048163396738505414,
+      "ink": 43477,
+      "ink_frac": 0.37280273018812915,
+      "ink_per_point": 22.047160243407706,
+      "panel": 2,
+      "x0": 920,
+      "x1": 1262,
+      "y0": 100,
+      "y1": 441
+     }
+    ],
+    "panels_found": 3,
+    "pixel_height": 515,
+    "pixel_width": 1271,
+    "png": "Juglet_Piece_9_partE_ranked_fullopacity.png",
+    "points": 1972,
+    "whole": {
+     "area": 654565,
+     "colour_frac": 0.14301559050667237,
+     "grey_frac": 0.042493869974716034,
+     "grey_share_of_ink": 0.22906578383898277,
+     "ink": 121428,
+     "ink_frac": 0.18550946048138842
+    }
+   }
+  },
+  {
+   "axes_box": {
+    "bytes": 431964,
+    "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Pot_A_Piece_07_partE_ranked_fullopacity.png",
+    "grey_share_of_ink_mean": 0.055990517726468604,
+    "ink_frac_mean": 0.2818907178783722,
+    "label": "Pot_A_Piece_07 partE redraw axes box",
+    "panel_source": "axes boxes",
+    "panels": [
+     {
+      "area": 291600,
+      "colour_frac": 0.3205932784636488,
+      "grey_frac": 0.012410836762688615,
+      "grey_share_of_ink": 0.03726931949250288,
+      "ink": 97104,
+      "ink_frac": 0.33300411522633744,
+      "ink_per_point": 2.8058252427184467,
+      "panel": 0,
+      "x0": 43,
+      "x1": 583,
+      "y0": 88,
+      "y1": 628
+     },
+     {
+      "area": 291600,
+      "colour_frac": 0.23713648834019205,
+      "grey_frac": 0.012345679012345678,
+      "grey_share_of_ink": 0.049485216291632876,
+      "ink": 72749,
+      "ink_frac": 0.24948216735253773,
+      "ink_per_point": 2.10208622283865,
+      "panel": 1,
+      "x0": 662,
+      "x1": 1202,
+      "y0": 88,
+      "y1": 628
+     },
+     {
+      "area": 291600,
+      "colour_frac": 0.24181069958847737,
+      "grey_frac": 0.021375171467764062,
+      "grey_share_of_ink": 0.08121701739527006,
+      "ink": 76745,
+      "ink_frac": 0.2631858710562414,
+      "ink_per_point": 2.217550855293574,
+      "panel": 2,
+      "x0": 1282,
+      "x1": 1822,
+      "y0": 88,
+      "y1": 628
+     }
+    ],
+    "panels_found": 3,
+    "pixel_height": 691,
+    "pixel_width": 1828,
+    "png": "Pot_A_Piece_07_partE_ranked_fullopacity.png",
+    "points": 34608,
+    "whole": {
+     "area": 1263148,
+     "colour_frac": 0.18491340682168678,
+     "grey_frac": 0.026384873348174562,
+     "grey_share_of_ink": 0.1248702702500178,
+     "ink": 266901,
+     "ink_frac": 0.21129828016986132
+    }
+   },
+   "plot_interior": {
+    "bytes": 431964,
+    "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Pot_A_Piece_07_partE_ranked_fullopacity.png",
+    "grey_share_of_ink_mean": 0.01698228517338113,
+    "ink_frac_mean": 0.27689521992640287,
+    "label": "Pot_A_Piece_07 partE redraw plot interior",
+    "panel_source": "axes boxes",
+    "panels": [
+     {
+      "area": 285156,
+      "colour_frac": 0.3278380956388784,
+      "grey_frac": 0.0013606587271528566,
+      "grey_share_of_ink": 0.004133243850734503,
+      "ink": 93873,
+      "ink_frac": 0.32919875436603124,
+      "ink_per_point": 2.7124653259361997,
+      "panel": 0,
+      "x0": 46,
+      "x1": 580,
+      "y0": 91,
+      "y1": 625
+     },
+     {
+      "area": 285156,
+      "colour_frac": 0.24249533588632188,
+      "grey_frac": 0.0012940285317510414,
+      "grey_share_of_ink": 0.005307977789924911,
+      "ink": 69518,
+      "ink_frac": 0.24378936441807292,
+      "ink_per_point": 2.008726306056403,
+      "panel": 1,
+      "x0": 665,
+      "x1": 1199,
+      "y0": 91,
+      "y1": 625
+     },
+     {
+      "area": 285156,
+      "colour_frac": 0.2470016412069183,
+      "grey_frac": 0.010695899788186115,
+      "grey_share_of_ink": 0.04150563387948397,
+      "ink": 73484,
+      "ink_frac": 0.25769754099510445,
+      "ink_per_point": 2.12332408691632,
+      "panel": 2,
+      "x0": 1285,
+      "x1": 1819,
+      "y0": 91,
+      "y1": 625
+     }
+    ],
+    "panels_found": 3,
+    "pixel_height": 691,
+    "pixel_width": 1828,
+    "png": "Pot_A_Piece_07_partE_ranked_fullopacity.png",
+    "points": 34608,
+    "whole": {
+     "area": 1263148,
+     "colour_frac": 0.18491340682168678,
+     "grey_frac": 0.026384873348174562,
+     "grey_share_of_ink": 0.1248702702500178,
+     "ink": 266901,
+     "ink_frac": 0.21129828016986132
+    }
+   }
+  }
+ ],
+ "measure_replay": [
+  {
+   "bytes": 195664,
+   "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_9_t37style_replay.png",
+   "grey_share_of_ink_mean": 0.9407708280101383,
+   "ink_frac_mean": 0.16451965952567463,
+   "label": "Juglet_Piece_9 t37-style replay",
+   "panel_source": "white-column split",
+   "panels": [
+    {
+     "area": 1000206,
+     "colour_frac": 0.02016284645363055,
+     "grey_frac": 0.09331077797973618,
+     "grey_share_of_ink": 0.8223124840304149,
+     "ink": 113497,
+     "ink_frac": 0.11347362443336673,
+     "ink_per_point": 57.55425963488844,
+     "panel": 0,
+     "x0": 13,
+     "x1": 1642,
+     "y0": 15,
+     "y1": 629
+    },
+    {
+     "area": 140021,
+     "colour_frac": 0.0,
+     "grey_frac": 0.017340256104441478,
+     "grey_share_of_ink": 1.0,
+     "ink": 2428,
+     "ink_frac": 0.017340256104441478,
+     "ink_per_point": 1.231237322515213,
+     "panel": 1,
+     "x0": 1651,
+     "x1": 1892,
+     "y0": 15,
+     "y1": 596
+    },
+    {
+     "area": 1224,
+     "colour_frac": 0.0,
+     "grey_frac": 0.3627450980392157,
+     "grey_share_of_ink": 1.0,
+     "ink": 444,
+     "ink_frac": 0.3627450980392157,
+     "ink_per_point": 0.22515212981744423,
+     "panel": 2,
+     "x0": 1905,
+     "x1": 1956,
+     "y0": 15,
+     "y1": 39
+    }
+   ],
+   "panels_found": 3,
+   "pixel_height": 657,
+   "pixel_width": 1972,
+   "png": "Juglet_Piece_9_t37style_replay.png",
+   "points": 1972,
+   "whole": {
+    "area": 1295604,
+    "colour_frac": 0.01556571298020074,
+    "grey_frac": 0.07425262657416927,
+    "grey_share_of_ink": 0.826697831896811,
+    "ink": 116369,
+    "ink_frac": 0.08981833955437
+   }
+  },
+  {
+   "bytes": 371084,
+   "file": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Pot_A_Piece_07_t37style_replay.png",
+   "grey_share_of_ink_mean": 0.520590995075957,
+   "ink_frac_mean": 0.2044495669662166,
+   "label": "Pot_A_Piece_07 t37-style replay",
+   "panel_source": "white-column split",
+   "panels": [
+    {
+     "area": 688704,
+     "colour_frac": 0.10826567001208066,
+     "grey_frac": 0.03839820880959019,
+     "grey_share_of_ink": 0.2618109456676699,
+     "ink": 101008,
+     "ink_frac": 0.14666387882167084,
+     "ink_per_point": 2.9186315302820156,
+     "panel": 0,
+     "x0": 19,
+     "x1": 863,
+     "y0": 16,
+     "y1": 832
+    },
+    {
+     "area": 1069776,
+     "colour_frac": 0.09653516250130868,
+     "grey_frac": 0.04136473429951691,
+     "grey_share_of_ink": 0.2999620395602012,
+     "ink": 147522,
+     "ink_frac": 0.1378998968008256,
+     "ink_per_point": 4.262656033287101,
+     "panel": 1,
+     "x0": 878,
+     "x1": 2189,
+     "y0": 16,
+     "y1": 832
+    },
+    {
+     "area": 1539,
+     "colour_frac": 0.0,
+     "grey_frac": 0.32878492527615333,
+     "grey_share_of_ink": 1.0,
+     "ink": 506,
+     "ink_frac": 0.32878492527615333,
+     "ink_per_point": 0.0146208969024503,
+     "panel": 2,
+     "x0": 2203,
+     "x1": 2260,
+     "y0": 16,
+     "y1": 43
+    }
+   ],
+   "panels_found": 3,
+   "pixel_height": 864,
+   "pixel_width": 2278,
+   "png": "Pot_A_Piece_07_t37style_replay.png",
+   "points": 34608,
+   "whole": {
+    "area": 1968192,
+    "colour_frac": 0.09035398985464833,
+    "grey_frac": 0.0361763486489123,
+    "grey_share_of_ink": 0.28591047077530957,
+    "ink": 249036,
+    "ink_frac": 0.12653033850356063
+   }
+  }
+ ],
+ "redraw": [
+  {
+   "alpha": 1.0,
+   "bytes": 212477,
+   "dpi": 110.0,
+   "largest_region": 16,
+   "marker_mm": 0.45,
+   "mm_per_px": [
+    0.063292,
+    0.063292
+   ],
+   "palette": "turbo, log over rank",
+   "panel_boxes": [
+    [
+     53,
+     401,
+     97,
+     444
+    ],
+    [
+     485,
+     833,
+     97,
+     444
+    ],
+    [
+     917,
+     1265,
+     97,
+     444
+    ]
+   ],
+   "piece": "Juglet_Piece_9",
+   "pixel_height": 515,
+   "pixel_width": 1271,
+   "plot_boxes": [
+    [
+     56,
+     398,
+     100,
+     441
+    ],
+    [
+     488,
+     830,
+     100,
+     441
+    ],
+    [
+     920,
+     1262,
+     100,
+     441
+    ]
+   ],
+   "ply": "Juglet_Piece_9_prefloor_regions.ply",
+   "png": "Juglet_Piece_9_partE_ranked_fullopacity.png",
+   "points": 1972,
+   "regions": 1465,
+   "scale_bar_mm": 5.0
+  },
+  {
+   "alpha": 1.0,
+   "bytes": 431964,
+   "dpi": 110.0,
+   "largest_region": 13131,
+   "marker_mm": 0.45,
+   "mm_per_px": [
+    0.11035,
+    0.11035
+   ],
+   "palette": "turbo, log over rank",
+   "panel_boxes": [
+    [
+     43,
+     583,
+     88,
+     628
+    ],
+    [
+     662,
+     1202,
+     88,
+     628
+    ],
+    [
+     1282,
+     1822,
+     88,
+     628
+    ]
+   ],
+   "piece": "Pot_A_Piece_07",
+   "pixel_height": 691,
+   "pixel_width": 1828,
+   "plot_boxes": [
+    [
+     46,
+     580,
+     91,
+     625
+    ],
+    [
+     665,
+     1199,
+     91,
+     625
+    ],
+    [
+     1285,
+     1819,
+     91,
+     625
+    ]
+   ],
+   "ply": "Pot_A_Piece_07_prefloor_regions.ply",
+   "png": "Pot_A_Piece_07_partE_ranked_fullopacity.png",
+   "points": 34608,
+   "regions": 2494,
+   "scale_bar_mm": 5.0
+  }
+ ],
+ "replay": [
+  {
+   "bytes": 195664,
+   "dpi": 244.4,
+   "largest_region": 16,
+   "mm_per_px": [
+    0.061095,
+    0.061095
+   ],
+   "piece": "Juglet_Piece_9 (ticket-37 style replay)",
+   "pixel_height": 657,
+   "pixel_width": 1972,
+   "ply": "Juglet_Piece_9_prefloor_regions.ply",
+   "png": "Juglet_Piece_9_t37style_replay.png",
+   "points": 1972,
+   "region_sizes_top8": {
+    "0": 16,
+    "1": 15,
+    "2": 13,
+    "3": 13,
+    "4": 11,
+    "5": 11,
+    "6": 11,
+    "7": 11
+   },
+   "regions": 1465,
+   "scale_bar_mm": 5.0,
+   "sidecar": null,
+   "target_mm_px": 0.05
+  },
+  {
+   "bytes": 371084,
+   "dpi": 269.8,
+   "largest_region": 13131,
+   "mm_per_px": [
+    0.108409,
+    0.108409
+   ],
+   "piece": "Pot_A_Piece_07 (ticket-37 style replay)",
+   "pixel_height": 864,
+   "pixel_width": 2278,
+   "ply": "Pot_A_Piece_07_prefloor_regions.ply",
+   "png": "Pot_A_Piece_07_t37style_replay.png",
+   "points": 34608,
+   "region_sizes_top8": {
+    "0": 13131,
+    "1": 12042,
+    "2": 1622,
+    "3": 1248,
+    "4": 1127,
+    "5": 1052,
+    "6": 183,
+    "7": 165
+   },
+   "regions": 2494,
+   "scale_bar_mm": 5.0,
+   "sidecar": null,
+   "target_mm_px": 0.085
+  }
+ ],
+ "t37_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1420_c6f6491_t37-prefigure/out/prefloor"
+}

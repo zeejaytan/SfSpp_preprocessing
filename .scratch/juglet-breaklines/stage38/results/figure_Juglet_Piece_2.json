@@ -1,12 +1,12 @@
 {
  "arm": "A",
- "bytes": 1216147,
+ "bytes": 1244389,
  "camera_half_mm": 13.732069999999998,
- "dpi": 400.6,
+ "dpi": 424.4,
  "floor_reached_at": {
-  "achieved_mm": 0.020800269763209783,
-  "largest": 190064,
-  "level": 10
+  "achieved_mm": 0.20904330739003849,
+  "largest": 873,
+  "level": 1
  },
  "levels_drawn": [
   1,
@@ -17,12 +17,12 @@
  "mesh": "Juglet_Piece_2_Mesh.obj",
  "mesh_vertices": 2565,
  "mm_per_px": [
-  0.051883,
-  0.051883
+  0.051744,
+  0.051744
  ],
  "piece": "Juglet_Piece_2",
- "pixel_height": 4404,
- "pixel_width": 3579,
+ "pixel_height": 4540,
+ "pixel_width": 3792,
  "png": "Juglet_Piece_2_resolution_by_density.png",
  "rows": [
   {

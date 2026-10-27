@@ -1,0 +1,19 @@
+[DUMP-25] piece=Pot_A_Piece_07 on=yes dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/
+[SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[DOWNSAMPLING RESTORE-244] Fixed radius=0.29288, input=1000000 points, Result=34608 points
+[0;m[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r1_downsampled.ply points=34608
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+Number of clusters is equal to 7
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r2_clusters_premerge.ply points=34608
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 7 clusters
+[PAPER-234] classify: face0 n=12888 interior_frac=0.0000 face1 n=11815 interior_frac=1.0000 satA=0.0000 satB=24703.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r3_after_merge.ply points=34608
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=7 sizes=11815,12888,2722,1059,1018,234,216 minCluster=69 minClusterFrom=69
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r4_after_reassign.ply points=34608
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r5_write.ply points=34608
+[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=11815,12888,2722,1059,1018,234,216 npts=34608 floor=69 floor_from=69 capped=no surf0_points=24636 surf1_points=26741 reason=two surfaces written

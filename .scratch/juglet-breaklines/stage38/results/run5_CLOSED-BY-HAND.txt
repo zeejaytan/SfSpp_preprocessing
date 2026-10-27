@@ -1,0 +1,3 @@
+# closed by hand after the timeout, not by the batch script
+job 33892259 TIMEOUT 00:40:11 (sacct); batch step CANCELLED signal 15, 15 s kill wait, no trap
+these files were produced by the function bodies extracted verbatim from this run own submit.sbatch

@@ -1,0 +1,42 @@
+{
+ "achieved_median_mm": 0.020879884098097934,
+ "achieved_p10_mm": 0.016913371786432197,
+ "achieved_p90_mm": 0.02894506134092818,
+ "gen_capped": false,
+ "gen_pitch_mm": 0.007029853333333333,
+ "gen_points": 24558700,
+ "jitter": 0.1,
+ "level": 10,
+ "m_max": 51,
+ "m_median": 5,
+ "m_min": 2,
+ "merge_history": [
+  {
+   "iteration": 0,
+   "median_mm": 0.013922468658457797,
+   "points": 1437207,
+   "ratio": 0.6601592758909052,
+   "voxel_mm": 0.02108956
+  },
+  {
+   "iteration": 1,
+   "median_mm": 0.020879884098097934,
+   "points": 645180,
+   "ratio": 0.9900578342126595,
+   "voxel_mm": 0.03194616931124537
+  }
+ ],
+ "merge_iterations": 2,
+ "mesh": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj",
+ "piece": "Juglet_Piece_2_fromx10",
+ "points": 645180,
+ "ratio_achieved_over_requested": 0.9900578342126595,
+ "requested_spacing_mm": 0.02108956,
+ "sampled_from_level": 10,
+ "sampled_mesh": "subdiv_x10",
+ "seed": 3801,
+ "surface_area_mm2": 491.06737657411884,
+ "triangles": 512600,
+ "triangles_m_equals_1": 0,
+ "voxel_mm": 0.03194616931124537
+}

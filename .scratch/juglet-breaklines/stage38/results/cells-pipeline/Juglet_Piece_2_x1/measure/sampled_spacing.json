@@ -1,0 +1,7 @@
+{
+ "median_mm": 0.20891809137554654,
+ "p10_mm": 0.1652701169726573,
+ "p90_mm": 0.2850146326803123,
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/stage_Juglet_Piece_2_x1/Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply",
+ "points": 6259
+}

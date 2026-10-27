@@ -1,0 +1,4 @@
+piece	pot	level	cloud_kind	cloud_points	requested_mm	achieved_mm	pipeline_rc	clusters	status_outcome	surf0_points	surf1_points	note
+Juglet_Piece_2	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	two	4155	3979	ok
+Juglet_Piece_9	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	two	2229	3512	ok
+Pot_A_Piece_07	Pot_A	real	REAL-RELEASED-CLOUD		na	na	0	7	two	24636	26741	ok

@@ -2,11 +2,18 @@
 
 Numbers only, from the runs; no verdict on what they mean (the ticket's Status and `intent/` are untouched).
 
-Run of record: `/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/`
-(job 33890365, commit `92d6871022fdf75f63170a5af65b30e31c9e843a`, built on `spartan-bm174.hpc.unimelb.edu.au`,
-`[JOB] instruments match commit 92d6871022fdf75f63170a5af65b30e31c9e843a (12 files)`).
-Everything below that survived is copied into `stage38/results/` and `stage38/run-20261027-1615_92d6871/`;
-the geometry those runs made was deleted on the cluster with counts recorded first (item 9).
+Two runs of record, both kept:
+
+- **run 4** `/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/` (job 33890365,
+  commit `92d6871022fdf75f63170a5af65b30e31c9e843a`, `spartan-bm174.hpc.unimelb.edu.au`): sections 1-5, the
+  control table and the ticket-37 anchors. Copied into `stage38/run-20261027-1615_92d6871/`.
+- **run 5** `/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/` (job 33892259,
+  commit `2a34d86a54467ac1f0238eed214bc11bdf7be208`): the corrected pair statistic, the real pipeline cells, the
+  Part E redraws, the five-piece aggregate and the re-rendered figures — sections 6-8 and everything in
+  `stage38/results/` that is marked run 5. It repeated phases 1 and 2 and reproduced their numbers.
+
+The geometry both runs made was deleted on the cluster with per-extension counts recorded before the delete
+(item 9).
 
 ## 1. Instrument proof, printed by the job on both target pieces
 
@@ -209,141 +216,231 @@ P9     x10 F     88 137  0.1611   17.2743   0.4126   3.229
 
 ## 6. Pair statistic, wherever two regions reach 50 points
 
-20 of 24 (piece, level, arm) cells have two regions at or over 50 — the exceptions are the four `scan`/`scan37`
-rows, where nothing reaches 50. `med_nn` = nearest distance from each Surface_1 (second) point to Surface_0;
-`along` = that displacement projected on Surface_0's normal at the nearest point; `across` = the component
-perpendicular to it; `coin` = fraction of pairs coincident within 1 micron. mm.
+**Corrected, and the earlier columns are VOID.** `measure34.pair_stats` took the absolute projection of the step
+on Surface_0's normal and rebuilt the perpendicular part from that scalar, so wherever the step ran against the
+normal the reported `across` came out as `sqrt(across^2 + 4t^2)` instead of the perpendicular residual — up to
+twice `med_nn`. Fixed (signed `t`, `along = |t|`, `across = |v - t a|`), self-tested on a synthetic
+anti-parallel pair (nn 2.2000 / along 2.2000 / across 0.0000) and a parallel one, and every row of
+`results/pair38.tsv` re-derived from the regenerated regions — no `across` column was carried forward.
+`med_nn`, `med_along`, `p90_along` and `coin` were correct as printed and are unchanged.
+
+41 rows (pieces 2 and 9, controls 3, 5, 7, and Pot_A 07). `med_nn` = nearest Surface_0 point to each Surface_1
+point; `med_along` = that step measured along Surface_0's own normal there; `med_across` = the part of the step
+perpendicular to that normal (the residual, i.e. how far off-parallel the two sheets are);
+`med_angle_deg` = folded angle between the two normals at that nearest point; `coin` = fraction coincident
+within 1 micron; `min_slack` = the smallest per-point `nn - across` (0 = tangent). mm.
+
+Arm A (analytic face normals) on the target pieces, every level (`results/pair38.tsv`):
 
 ```
-piece lvl arm  |S0|    |S1|    med_nn   med_along  p90_along  med_across  p90_across  coin
-P2    x1  A      873     722   2.18482   2.17138    2.51699    4.35093     5.07731   0.0000
-P2    x1  F      684     653   2.57304   2.42535    3.45468    4.98169     9.18776   0.0000
-P2    x2  A    6 088   3 427   2.15570   2.12676    2.39685    4.26837     4.79501   0.0000
-P2    x2  F    4 709   3 242   2.25157   2.14841    2.51854    0.14264     1.24151   0.0000
-P2    x4  A   27 522  26 983   2.28343   2.27144    2.56101    4.54712     5.15222   0.0000
-P2    x4  B   39 947  32 293   2.16853   2.01298    2.55516    4.10249     5.11719   0.0000
-P2    x4  F   23 715  20 883   2.31313   2.27768    2.61413    4.57646     5.30181   0.0000
-P2    x10 A  190 064 184 688   2.28374   2.26684    2.56496    4.54278     5.14802   0.0000
-P2    x10 B  328 220 254 407   0.97885   0.22575    1.44159    1.16185     3.07841   0.0000
-P2    x10 F  163 518 112 518   2.37570   2.33978    2.68854    4.70318     5.42948   0.0000
-P9    x1  A    1 410     277   2.18787   2.18015    2.42220    4.36254     4.84646   0.0000
-P9    x1  F      739     586   2.24925   0.15532    0.59881    2.29572     4.08046   0.0000
-P9    x2  A    6 012   2 292   2.19913   2.19262    2.41400    4.39219     4.82942   0.0000
-P9    x2  F    3 071   2 643   2.32267   0.18012    0.63482    2.36218     4.22026   0.0000
-P9    x4  A   25 021  21 353   2.19229   2.18326    2.43032    4.37702     4.89180   0.0000
-P9    x4  B   19 496  18 187   1.34052   0.43098    1.51816    1.80290     3.61994   0.0000
-P9    x4  F   13 156  10 511   2.06784   0.14175    0.46648    2.08544     3.87292   0.0000
-P9    x10 A  177 914 166 389   2.12194   2.11246    2.34059    4.22991     4.68368   0.0000
-P9    x10 B  264 761 235 216   1.04764   0.32650    2.16710    1.36003     4.34780   0.0000
-P9    x10 F   88 137  74 293   1.95841   0.13561    0.50367    1.97098     3.93734   0.0000
+piece lvl   |S0|     |S1|     med_nn   med_along  med_across  med_angle  min_slack  coin
+P2    x1         873      722  2.18482   2.17139    0.16143    9.702     0.86414   0.0
+P2    x2       6 088    3 427  2.15571   2.12676    0.08751   11.232     0.59549   0.0
+P2    x4      27 522   26 983  2.28343   2.27144    0.04359   12.633     0.83401   0.0
+P2    x10    190 064  184 688  2.28375   2.26684    0.02084   14.008     0.66736   0.0
+P9    x1       1 410      277  2.18787   2.18016    0.11676   14.258     1.34433   0.0
+P9    x2       6 012    2 292  2.19913   2.19262    0.06023   12.782     1.19270   0.0
+P9    x4      25 021   21 353  2.19229   2.18326    0.03362   13.069     0.63319   0.0
+P9    x10    177 914  166 389  2.12195   2.11247    0.03119   15.505     0.00820   0.0
+PotA  x1      13 131   12 042  3.92787   3.92247    0.11657    4.172     1.36374   0.0   (scan37 row, its own cloud)
 ```
 
-**No pair is coincident at 1 micron anywhere** (coin 0.0000 in all 20 rows). On arm A the two largest regions sit
-4.23-4.58 mm apart *across* Surface_0's normal and 2.11-2.28 mm *along* it at every level and on both pieces —
-i.e. on the two faces of the wall, not on a duplicate of one face.
-
-## 7. The real pipeline cell — NOT RUN
-
-No level was attempted: phase 3 died before it started.
+Arm B (the pipeline's own PCA normals at `pipeline_k`, with the viewpoint flip):
 
 ```
-out/phase3.log:
-/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/build/src/.scratch/juglet-breaklines/stage38/instruments/run_cell38.sh: line 15: STAGER: parameter null or not set
+P2 x4  B   39 947 /  32 293   2.16853 / 2.01298 / 0.46441 / 27.724   slack 0.000003
+P2 x10 B  328 220 / 254 407   0.97886 / 0.22576 / 0.66628 / 19.178
+P9 x4  B   19 496 /  18 187   1.34053 / 0.43098 / 0.90630 / 35.695
+P9 x10 B  264 761 / 235 216   1.04764 / 0.32650 / 0.53465 / 22.887
 ```
 
-The driver requires `STAGER` (the synthetic staging script) and `submit38.sbatch.tmpl` never exported it; the
-job's own log says `[JOB] WARN phase 3 driver failed rc=1 (see out/phase3.log); continuing`. Fixed after the run
-(`STAGER=$INSTR/stage_synth_p38.sh` + `export ... STAGER`), **not exercised**.
+Controls (arm A at x1): P3 1.97199 / 1.96323 / 0.11448 / 9.803; P5 2.58583 / 2.58289 / 0.10108 / 12.348;
+P7 3.35995 / 3.34192 / 0.15140 / 19.324. The `scan` rows on the shipped clouds: P5 (713 / 83)
+4.32313 / 0.70142 / 4.26585 / 18.283 and P7 (1 040 / 112) 5.64742 / 1.16699 / 5.50842 / 22.078.
 
-Every level that reaches the 50-point floor is known from item 4 — piece 2: x1 already (873 points), so the
-"finest level that reaches 50" is any level; piece 9: x1 (1 410). The ticket's intent (run the pipeline where the
-floor is first met) therefore points at **x1** for both pieces, not x10 — but the cell was specified at the finest
-level and x10 is also floor-clearing, so either is available for the next job.
+**Wall thickness from ticket 35's ray measurements: Juglet 2 = 2.693 mm, Juglet 9 = 2.595 mm, Pot A 07 =
+4.056 mm.** Arm A's `med_along` on both target pieces sits at 2.11-2.29 mm with a perpendicular residual of
+0.02-0.16 mm and 9.7-15.5 deg between the normals: the second-largest region is a sheet offset by roughly one
+wall thickness and essentially parallel to the first. Arm B collapses `med_along` to 0.23-0.43 mm while the
+residual rises to 0.47-0.91 mm — not a parallel offset. On the shipped-cloud `scan` rows of P5 and P7 the step is
+mostly perpendicular (along 0.70 and 1.17 mm against `nn` 4.32 and 5.65 mm). No pair anywhere is coincident at
+1 micron (coin 0.000000 on all 41 rows), and `nn - across` never goes negative.
 
-## 8. Part E redraws — NOT RUN
+## 7. The real pipeline cells
 
-Phase 2 aborted at the Pot_A anchor, before `parte38.py`, so neither redraw exists and no ink/grey/colour fraction
-was measured on a new PNG.
+Five cells were planned for the last job (33892259, run `20261028-0414_2a34d86`); **three ran**. Each staged its
+cloud inside the run directory, built the pipeline's own binary from commit `2a34d86`, ran it with
+`SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10`, and counted its geometry before
+deleting it.
 
 ```
-out/phase2.log:
-  File ".../instruments/grow38.py", line 94, in cmd_cell
-    orig_xyz, _orig_n = S.read_pcd_xyz(a.orig_cloud)
-  File ".../instruments/mesh38.py", line 342, in read_pcd_xyz
-    raise ValueError("%s: only ascii clouds here" % path)
-ValueError: /data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd: only ascii clouds here
+cell                  cloud                                  points   median mm  clusters  outcome   |S0|    |S1|
+Juglet_Piece_2  x1    SYNTHETIC (uniform covering)            6 259   0.20904       8       two    4 155   3 979
+Juglet_Piece_9  x1    SYNTHETIC (uniform covering)            5 257   0.20151       7       two    2 229   3 512
+Pot_A_Piece_07  real  the released cloud (1 000 000 points)  34 608   0.12307       7       two   24 636  26 741
 ```
 
-`mesh38.read_pcd_xyz` refused the released Pot A cloud because it is binary, not text. Fixed after the run (a
-binary body is handed to `measure34.read_pcd`, which parses both layouts) and **not exercised**. The pieces 3/5/7
-controls above ran in the same phase before the anchor and are valid.
+The pipeline's own lines (`results/cells-pipeline/<cell>/logs/lines38.log` in the run directory):
+
+```
+Juglet_Piece_2   [SPACING-22] policy=piece diagMM=28.2305 s0MM=0.209045 samples=200 rawMM=0.141153 S=0.209045
+                 Number of clusters is equal to 8
+                 [RETRY-23] retry=1 npts=6259 clusters_pre=8 clusters=4 sizes=1684,1620,62,52 minCluster=50
+                 [STATUS-23] outcome=two retries=1 clusters=4 sizes=1684,1620,62,52 npts=6259 floor=50
+                             floor_from=50 capped=no surf0_points=4155 surf1_points=3979 reason=two surfaces written
+Juglet_Piece_9   [SPACING-22] policy=piece diagMM=23.3454 s0MM=0.201486 samples=200 rawMM=0.116727 S=0.201486
+                 Number of clusters is equal to 7
+                 [RETRY-23] retry=1 npts=5256 clusters_pre=7 clusters=6 sizes=589,1497,327,166,158,89 minCluster=50
+                 [STATUS-23] outcome=two retries=1 clusters=6 sizes=589,1497,327,166,158,89 npts=5256 floor=50
+                             floor_from=50 capped=no surf0_points=2229 surf1_points=3512 reason=two surfaces written
+Pot_A_Piece_07   [SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+                 Number of clusters is equal to 7
+                 [RETRY-23] retry=1 npts=34608 clusters_pre=7 clusters=7 sizes=11815,12888,2722,1059,1018,234,216
+                             minCluster=69 minClusterFrom=69
+                 [STATUS-23] outcome=two retries=1 clusters=7 sizes=11815,12888,2722,1059,1018,234,216 npts=34608
+                             floor=69 floor_from=69 capped=no surf0_points=24636 surf1_points=26741 reason=two surfaces written
+```
+
+Rung-2 (pre-merge) dumps: P2 9 clusters largest 2 841 `[2841,1549,1212,264,144,74,62,61,52]`; P9 8 clusters
+largest 2 430 `[2430,1497,538,327,166,158,89,51]`; Pot_A 8 clusters largest 12 888
+`[12888,11815,4656,2722,1059,1018,234,216]`. SampledWithNormals spacing after the pipeline's own downsampling:
+0.20892 / 0.20154 / 0.12307 mm (Pot_A: the pipeline cut the 1 000 000-point release to 34 608 points).
+
+**The per-surface measurement did not run in any of the three.** `run_cell38.sh` picked the surface file with
+`for ext in ply xyz; do [ -f ... ] && F=...; done`, which keeps the LAST existing extension; the pipeline writes
+both `<piece>_Surface_<k>.ply` and `<piece>_Surface_<k>.xyz`
+(`.scratch/pota-repro/ticket278_files/mesh_processing_headless.cpp:2197-2211`), so `F` ended on the `.xyz` and
+the measurement was skipped:
+
+```
+[PIPELINE] surface 0 is xyz, not a ply: cannot measure normals, kept as written
+```
+
+Fixed after the run (prefer `.ply`) and **not exercised**. So the pipeline's own `surf0_points` / `surf1_points`
+are reported above, but extent, 2 mm coverage of the ORIGINAL cloud and folded angle to the ORIGINAL mesh for
+those two written surfaces do not exist.
+
+**Both x10 cells are missing.** Juglet_Piece_2 x10 sampled inside the job (649 067 points at 0.02080 mm, 153.2 s,
+md5 `ce37ceaf6cea4f70489e9202ba86e435`), staged, and its pipeline was started; the job hit its 40-minute wall
+during it (`sacct`: 33892259 TIMEOUT 00:40:11). Juglet_Piece_9 x10 never started. The driver's wall-clock guard
+did not protect them: `squeue -h -j $JOBID -o %L` answered with a day-scale counter from inside the step
+(89 572 / 89 328 / 89 084 / 88 474 s at the four cell boundaries), never below `MIN_LEFT_S=420`, so no cell was
+skipped. Item 7 asked for the finest level that reaches 50 points — that is x10, and it is not delivered; x1 is
+the coarsest level that clears the floor and is what ran.
+
+## 8. Part E redraws — fractions measured from the new PNGs
+
+Two renders per piece: a replay of the ticket-37 drawing (`*_t37style_replay.png`, through the same instrument
+path) to show the measurement reproduces ticket 37's numbers, and the redraw (`*_partE_ranked_fullopacity.png`,
+tail at full opacity, marker one step larger, continuous rank palette). Ink = fraction of panel pixels with any
+channel < 245; grey = ink pixels whose channel spread is <= 12; colour = ink pixels with a wider spread.
+Whole-panel box for the replay, axes-box panels for the redraw.
+
+```
+piece            render              ink (panels)              grey_share_of_ink  colour (panels)
+Juglet_Piece_9   replay (t37 style)  0.0898                    0.8267             0.0156
+Juglet_Piece_9   redraw              0.1849 0.2795 0.3778      0.0937 (mean)      0.1640 0.2579 0.3436
+Pot_A_Piece_07   replay (t37 style)  0.1265                    0.2859             0.0904
+Pot_A_Piece_07   redraw              0.3330 0.2495 0.2632      0.0560 (mean)      0.3206 0.2371 0.2418
+```
+
+Ticket 37's own figure measured 10.6 / 13.9 / 16.0 % ink with 82-83 % pale grey on piece 9, and 17.5 / 14.0 /
+12.5 % with 26-31 % on Pot A 07. The replay lands at 9.0 % ink / 82.7 % grey on piece 9 and 12.7 % / 28.6 % on
+Pot A 07. On the redraw the pale-grey share of ink drops from 0.83 to 0.09 (piece 9) and from 0.29 to 0.06
+(Pot A 07); the plot-interior variant gives the same picture (piece 9 mean ink 0.2727, grey share 0.0292;
+Pot A 07 0.2769, 0.0170). PNG sizes: piece 9 replay 195 664 B, redraw 212 477 B; Pot A 07 replay 371 084 B,
+redraw 431 964 B.
 
 ## 9. Corpus, pristine, deletion, jobs, branch
 
-- **Corpus and frozen inputs unchanged**: `out/corpus.diff` 0 bytes and `out/inputs.diff` 0 bytes; 215 md5 rows in
-  `out/inputs_before.md5` and 215 in `out/inputs_after.md5`; the job's own line `[JOB] corpus and frozen inputs unchanged`.
-- **`/opt/sfs-pristine`: ABSENT** on the compute node, recorded in `out/pristine.txt` (not created).
-- **Geometry deleted, counted first** (`out/geometry_counts_phase1-2-3.tsv`, then
+- **Corpus and frozen inputs unchanged in both closed runs**: `out/corpus.diff` 0 bytes, `out/inputs.diff` 0
+  bytes, 215 md5 rows in `out/inputs_before.md5` and 215 in `out/inputs_after.md5`.
+- **`/opt/sfs-pristine`: ABSENT** on the compute node, recorded in `out/pristine.txt` (197 B; not created).
+- **Geometry deleted, counted first.** Run 5 (`out/geometry_counts_phase1-2-3.tsv`, then
   `out/GEOMETRY_DELETED_phase1-2-3.txt`):
 
   ```
   ext   files  bytes
-  obj       2  1 248 259
-  pcd      20  143 952 030
-  ply      90  527 480 196
-  TOTAL   112  672 680 485     after deletion: 0 files
+  obj       3  1 407 940
+  pcd      22  183 320 145
+  ply     108  889 808 135
+  xyz       9  83 627 271
+  TOTAL   142  1 158 163 491      after deletion: 0 files (out/ 6.0 MB of tables, logs, jsons)
   ```
 
-  The first, aborted run (`20261027-1538_55477bf`) recorded 401 files / 103 262 155 bytes (pcd 99 / xyz 300 / ply 1)
-  and deleted them too. Tables, logs, sources, figures and the PLYs' numbers survive; the PLYs themselves do not.
+  Run 4 (`20261027-1615_92d6871`) had recorded 112 files / 672 680 485 B (obj 2 / 1 248 259, pcd 20 /
+  143 952 030, ply 90 / 527 480 196) and the aborted first run 401 files / 103 262 155 B; both deleted.
+  Tables, logs, sources and figures survive; the PLY/PCD/OBJ geometry does not.
+- **Run 5 was closed by hand** (the batch script was killed mid phase 3 and never reached its own closing block:
+  bash defers a `trap` until the foreground child returns and Slurm's 15 s kill window cut it off first). The
+  `corpus_tree`/`pristine_record`/`md5_corpus`/`geom_record`/`geom_delete` function bodies were lifted verbatim
+  out of that run's own `submit.sbatch` and executed on the login node — bookkeeping only, no compute — and
+  `out/CLOSED-BY-HAND.txt`, `out/run-meta_phase1-2-3.txt` (`phase_rc=timeout`, `closed_by=hand`) and the index
+  row were written.
 - **Jobs and states** (`sacct -X`):
 
   ```
-  33888878  t38-targets  FAILED  00:00:18  ExitCode 7:0   2026-10-28T02:38:54 -> 02:39:12
-  33889190  t38-targets  FAILED  00:00:11  ExitCode 7:0   2026-10-28T02:47:38 -> 02:47:49
-  33889547  t38-targets  FAILED  00:00:14  ExitCode 7:0   2026-10-28T02:55:52 -> 02:56:06
-  33890365  t38-all      FAILED  00:15:16  ExitCode 1:0   2026-10-28T03:15:30 -> 03:30:46
+  33888878  t38-targets  FAILED   00:00:18  ExitCode 7:0   2026-10-28T02:38:54 -> 02:39:12
+  33889190  t38-targets  FAILED   00:00:11  ExitCode 7:0   2026-10-28T02:47:38 -> 02:47:49
+  33889547  t38-targets  FAILED   00:00:14  ExitCode 7:0   2026-10-28T02:55:52 -> 02:56:06
+  33890365  t38-all      FAILED   00:15:16  ExitCode 1:0   2026-10-28T03:15:30 -> 03:30:46
+  33892259  t38-cell5    TIMEOUT  00:40:11  ExitCode 0:15   2026-10-28T04:15:12 -> 04:55:23
   ```
 
-  Budget: 4 of 4 used. Index rows appended for each run with `verdict` and `human_note` left empty; the last row is
-  `20261027-1615_92d6871_t38-resolution<TAB>33890365<TAB>92d6871022fdf75f63170a5af65b30e31c9e843a<TAB>t38-resolution<TAB><TAB>`.
+  Budget: 5 of 5 used (the fifth was authorised as the last). Index rows appended for every run with `verdict`
+  and `human_note` left empty; the last is
+  `20261028-0414_2a34d86_t38-resolution<TAB>33892259<TAB>2a34d86a54467ac1f0238eed214bc11bdf7be208<TAB>t38-resolution<TAB><TAB>`.
+- **Branch** `38-does-more-resolution-give-the-silent-sherds-a-face`, pushed; the head this report is built on is
+  `2a34d86a54467ac1f0238eed214bc11bdf7be208` (the commit that built run 5's binary and the instruments it ran),
+  with this report's own commit on top.
 
 ## 10. Not done, with the exact failing command
 
-1. **Item 7 (the real pipeline cell)** — not run.
-   `out/phase3.log: .../run_cell38.sh: line 15: STAGER: parameter null or not set`.
-2. **Item 8 (Part E redraws + measured ink/grey/colour)** — not run.
-   `ValueError: .../Pot_A_Piece_07_Point.pcd: only ascii clouds here` (grow38.py:94 -> mesh38.py:342).
-3. **Item 3's exact displacement** — the run measured the incident-candidate value (1.809-1.815 mm on piece 2,
-   1.125-1.150 mm on piece 9), which item 3 above shows is an artefact, not displacement. The exact measurement
-   needs `subdivide`/`subdivide_lattice` to return each new vertex's parent face and the distance to be taken
-   against that one triangle. Not implemented; the analytic value is <= 1e-6 mm.
-4. **The delivered figures carry two defects** (`results/*.png`), both fixed in the instrument after the run and
-   **not re-rendered** (denied the job budget):
-   - the per-row label block overprints the first panel's y tick labels (real tick labels are 6 characters wide
-     against the toy's 2; `wspace` 0.22 -> 0.62, label column 0.17 -> 0.21, label x 0.98 -> 0.94);
-   - the ladder title said `largest region reaches the floor at x10` when the floor is cleared at the **coarsest**
-     level (`floor_reached_at` kept the level with the biggest region instead of the coarsest level that clears
-     the floor; piece 2 x1 = 873 points, piece 9 x1 = 1 410). `figure_*.json` in `results/` inherits the wrong
-     `floor_reached_at` field for that reason.
-5. **The phase-2 aggregate and the controls' tables** never ran, so `regions38.tsv`/`largest38.tsv` cover pieces 2
-   and 9 only; pieces 3, 5, 7 exist as `[CELL]` lines in `out/phase2.log` and as jsons under `out/cells/`.
-6. **The figure ladder plots arm A only** (`arm=A` chosen for the PNG); arms F and B exist in the tables but not in
-   a picture.
+1. **Item 7 at the finest floor-clearing level (x10)** — the pipeline was started on the P2 x10 cloud and killed by
+   the wall clock; P9 x10 never started. `logs/slurm-33892259.err`:
+   `error: *** JOB 33892259 ON spartan-bm149 CANCELLED AT 2026-10-25T04:55:23 DUE TO TIME LIMIT ***`.
+   The guard meant to prevent this read a day-scale counter (`[PIPELINE] wall clock left: 88474s`) and never
+   skipped a cell.
+2. **Per-surface extent / 2 mm coverage / folded angle for the three cells that ran** — skipped by the extension
+   loop quoted in item 7. The fix is in `run_cell38.sh` (prefer `.ply`) and was not exercised (no job left).
+3. **Item 3's exact displacement** — not implemented. The run measured the incident-candidate value
+   (1.809-1.815 mm on piece 2, 1.125-1.150 mm on piece 9), which section 3 shows is an artefact of candidate-triangle
+   selection, not displacement; the analytic bound is <= 1e-6 mm. The exact figure needs `subdivide` /
+   `subdivide_lattice` to return each new vertex's parent face.
+4. **`cloud_points` is blank for the Pot_A cell** in `results/cells-pipeline/pipeline_cells.tsv`:
+   `pcd_points() { grep -m1 "^POINTS" "$1" | awk '{print $2}'; }` and GNU grep answers `Binary file ... matches`
+   for a binary PCD (reproduced: `grep -m1 "^POINTS" b.pcd` -> `Binary file b.pcd matches`, awk field `file`).
+   The header reads `POINTS 1000000` (`head -c 320 ... | strings`) and the pipeline's own line says
+   `npts=34608`; the released cloud is 1 000 000 points, 28 000 229 B, `DATA binary`.
+5. **No sixth job**: budget spent, the fifth ran to TIMEOUT.
+6. **The ladder plots show arm A only** (`arm=A` in the PNG); arms B and F exist in the tables but not in a figure.
+7. **The phase-1/2 numbers in sections 1-5 come from run 4** (`20261027-1615_92d6871`), not run 5. Run 5 repeated
+   phase 1 and 2 and reproduced them (anchors 1 765 / 1 906 regions and 1 465 / 1 562; `floor_reached_at` now the
+   coarsest clearing level, x1 = 873 and 1 410 points), but the tables quoted in sections 1-5 were not re-copied
+   from run 5's `out/` where they agree and were re-rendered where they did not (the two PNGs and
+   `figure_*.json` in `results/` are run 5's).
 
 ## Where the surviving numbers live
 
 ```
-stage38/results/regions38.tsv                    one row per (piece, level, arm): item 4's columns
-stage38/results/largest38.tsv                    item 5's columns + ext_x/y/z, diag, fold, normal source
-stage38/results/pair38.tsv                       item 6, 20 rows
+stage38/results/regions38.tsv                    run 5: one row per (piece, level, arm), item 4's columns, 46 rows
+stage38/results/largest38.tsv                    run 5: item 5's columns + ext_x/y/z, diag, fold, normal source
+stage38/results/pair38.tsv                       run 5: item 6, corrected, 41 rows
+stage38/results/pair38_NOTE.txt                  run 5: what each pair column means, and the VOID declaration
 stage38/results/ticket37_compare.json            the ticket-37 anchor comparison
-stage38/results/figure_Juglet_Piece_{2,9}.json   the figure's own record (mm/px, sizes, rows, floor_reached_at)
-stage38/results/Juglet_Piece_{2,9}_resolution_by_density.png   the two figures (defects in item 10.4)
+stage38/results/figure_Juglet_Piece_{2,9}.json   run 5: the figure's own record (mm/px, sizes, rows, floor_reached_at)
+stage38/results/Juglet_Piece_{2,9}_resolution_by_density.png        run 5 figures (label and floor fixes applied)
+stage38/results/Juglet_Piece_9_{partE_ranked_fullopacity,t37style_replay}.png   item 8, piece 9
+stage38/results/Pot_A_Piece_07_{partE_ranked_fullopacity,t37style_replay}.png   item 8, Pot A 07
+stage38/results/cells-pipeline/                  item 7: pipeline_cells.tsv + each cell's cell.tsv, measure jsons, logs
+stage38/results/sample_*.json, subdiv_*.json     run 5: achieved spacing per (piece, level), subdivision counts
+stage38/results/sampler_validate_*.json          run 5: the sampler proof, five pieces
 stage38/results/SAMPLER-GATE-DISCLOSURE_*.txt    item 1 in long form
-stage38/results/geometry_counts_phase1-2-3.tsv   item 9's counts
+stage38/results/geometry_counts_phase1-2-3.tsv   item 9's counts (run 5)
 stage38/results/GEOMETRY_DELETED_phase1-2-3.txt  the deletion record written before the delete
-stage38/results/phase_failures.tsv               phase -> rc (2->6, 3->1)
-stage38/run-20261027-1615_92d6871/out/*.json     every per-cell json, phase logs, corpus/inputs md5, run meta
-stage38/run-20261027-1615_92d6871/instruments/   the exact bytes the job ran (md5 equal to commit 92d6871)
+stage38/results/run5_CLOSED-BY-HAND.txt          why run 5's record was closed by hand, and how
+stage38/results/run5_meta.txt                    run 5's own run-meta line
+stage38/run-20261028-0414_2a34d86/               the whole run-5 record: out/, run.json, submit.sbatch, instruments/, logs/
+stage38/run-20261027-1615_92d6871/               the run-4 record, kept: every per-cell json, phase logs, md5s
+stage38/instruments/                             the sources (md5 equal to the run directories' copies)
 ```

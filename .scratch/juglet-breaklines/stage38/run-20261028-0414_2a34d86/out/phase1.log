@@ -1,0 +1,198 @@
+[TARGETS] instruments=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/src/.scratch/juglet-breaklines/stage38/instruments python=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+[SELFTEST] plane raw per-triangle lattice @0.5mm: n=8372 median_nn=0.3936 mm (0.787x requested, near-duplicate pairs across the shared edge)
+[SELFTEST] plane grid 800 triangles @0.5mm: n=5625 (one per s^2 of surface ~6400) median_nn=0.4954 mm ratio=0.991 voxel=0.5385 iters=3
+[SELFTEST] plane analytic normal |dot z| min=1.000000 (want 1.000000)
+[SELFTEST] subdiv L=2 faces=4 (want 4) area=0.500000000 (want 0.500000000) verts=6
+[SELFTEST] subdiv L=2 max vertex distance to parent triangle = 0.000e+00 mm
+[SELFTEST] subdiv L=4 faces=16 (want 16) area=0.500000000 (want 0.500000000) verts=15
+[SELFTEST] subdiv L=4 max vertex distance to parent triangle = 0.000e+00 mm
+[SELFTEST] midpoint vs lattice L=4: faces 16 vs 16, verts 15 vs 15, max dist 0.000e+00 / 0.000e+00
+[SELFTEST] subdiv_any L=10: faces=100 (want 100) area=0.500000000 (want 0.500000000) max off-parent=2.776e-17 mm
+[SELFTEST] 64-gon R=5mm ripples: edge_median=11.1803 fold_median=5.032 deg sag_median=0.24563 mm sag_max=0.24563
+[SELFTEST] PASS (0 failures)
+[SELFTEST] plane n=900 regions=1 (want 1)
+[SELFTEST] 60deg hinge regions=2 fail_angle/pt=0.131 fail_curv/pt=0.000
+[SELFTEST] distribution partition sum=900 n=900
+[SELFTEST] ranked: labels [0, 0, 1, 1, 1, 2] sizes (2,3,1) -> ranks [1, 1, 0, 0, 0, 2] order [1, 0, 2]
+[PAIR-SELFTEST] ok   dz=-2.2 nn=2.2000 along=2.2000 across=0.0000 (want 2.2000/2.2000/0.0000)
+[PAIR-SELFTEST] ok   dz=+2.2 nn=2.2000 along=2.2000 across=0.0000 (want 2.2000/2.2000/0.0000)
+[PAIR-SELFTEST] ok   tilted 12deg: across=0.0546 nn=3.0203 max(across-nn)=-2.500e+00 angle=12.000 deg
+[PAIR-SELFTEST] PASS (0 failures)
+[SELFTEST] PASS (0 failures)
+[TARGETS] === Juglet_Piece_2: sampler validation against the shipped cloud ===
+[VALIDATE] Juglet_Piece_2 mesh v=2565 f=5126 area=491.0674 mm2  edge_median=0.3387 edge_cv=1.107 angle_median=55.8 deg angle_min=0.1 deg frac(tri min angle<20 deg)=0.110
+[VALIDATE] shipped cloud: points=2565 median_nn=0.2109 p10=0.1609 p90=0.4131 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2109 mm -> points=6259 median_nn=0.2090 p10=0.1653 p90=0.2851 mm (voxel 0.3213 mm, 2 merge iterations) | count_ratio=2.4402 spacing_ratio=0.9911 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 491.0674 mm2 at that spacing carries 11041 points = 4.30x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2090 mm at request 0.2109 (ratio 0.9911) and 0.1042 mm at request 0.1054 (ratio 0.9885) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1115 (0.529 s) p99=0.2079 (0.986 s) max=0.2476 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 6259 points to the original triangles median=0.00114 (0.005 s) p99=0.02800 (0.133 s) p99.9=0.04991 max=0.14001 mm (0.664 s) [7 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.89927 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 25238 points for 6259 (1.008 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.557 points*s^2/area at the request, 0.558 at half of it, 0.542 at the density-implied spacing 0.4375 mm (1386 points = 0.540 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+SAMPLER GATE DISCLOSURE  piece=Juglet_Piece_2  gate_route=instrument-validated-disclosed
+The literal comparison the ticket names did not reproduce the shipped cloud on this piece.
+  route 1 sample at the shipped median NN: count_ratio=2.4401559454191033 spacing_ratio=0.9910822366441145
+  a uniform covering of the mesh's own area at that spacing would carry 11040.943387160814 points = 4.304461359516886x the shipped count
+  mesh: verts=2565 faces=5126 area=491.0673765741189 mm2
+  mesh shape: edge_median=0.3387241207826853 mm edge_cv=1.1068188193207673 angle_median=55.75563484983479 deg angle_min=0.08882895253007904 deg frac(tri min angle<20deg)=0.11002731174404994
+  route 2 spacing: achieved 0.2090148498171457 mm at request 0.21089556657264594 mm, and 0.1042334838148463 mm at request 0.10544778328632297 mm
+  route 2 cover: random surface points to the nearest cloud point median=0.11152139978418621 mm = 0.5287991663199383s, p99=0.9859566799610068s
+  route 2 surface: cloud to the original triangles median=0.005415204666163384s p99=0.13276779468775388s max=0.6639066307166359s (0.14001496503632135 mm; 7 points past 0.5 s re-measured over every triangle)
+  sampler density: 0.5568242657456403 points*s^2/area at the request, 0.5583780783294939 at half of it, 0.23231710462194402 for the shipped cloud
+  route 2 sample at the density-implied spacing 0.43754916251724163 mm: count_ratio=0.5403508771929825 spacing_ratio=1.0016924550309545
+  Readings: every synthetic cloud in this run reports ACHIEVED spacing beside requested;
+  no result below depends on the sampler's absolute density, only on the achieved spacing it prints.
+[TARGETS] Juglet_Piece_2 shipped median NN spacing s0=0.21089556657264594 mm (this is the level-1 spacing)
+[TARGETS] === Juglet_Piece_2: ticket-37 anchor -- re-grow ticket 37's own pre-floor cloud ===
+[FROMPLY] Juglet_Piece_2_prefloor_regions.ply -> Juglet_Piece_2_t37prefloor_cloud.pcd points=2399 median_nn=0.22172 p10=0.17585 p90=0.42231 mm
+[TARGETS] Juglet_Piece_2 ticket-37 cloud: 2399 points, median NN 0.22171824940903956 mm
+[CELL] Juglet_Piece_2_scan37_x1 arm=scan37 normals=cloud(t37prefloor) points=2399 spacing req=0.22172 ach=0.22172 -> regions=1765 largest=45 (1.88%) ge50=0 ge_pct5=0 fail_angle/pt=5.032 depth=7 cov2mm=0.2043 fold=0.425 deg pair=no
+[TARGETS] === Juglet_Piece_2: subdivision displacement (measured, not estimated) ===
+[SUBDIV] Juglet_Piece_2 x2: faces 5126 -> 20504, verts 2565 -> 10254, displacement max=1.809e+00 mm mean=8.309e-03 mm
+[SUBDIV] Juglet_Piece_2 original edges=7689 edge_median=0.3387 mm fold_median=8.259 p99=110.031 deg sagitta median=0.01349 p99=1.25396 max=382.82764 mm
+[SUBDIV] Juglet_Piece_2 x2 sub-vertex spacing median=0.10959 mm; elapsed=0.2s
+[SUBDIV] Juglet_Piece_2 x4: faces 5126 -> 82016, verts 2565 -> 41010, displacement max=1.811e+00 mm mean=6.426e-03 mm
+[SUBDIV] Juglet_Piece_2 original edges=7689 edge_median=0.3387 mm fold_median=8.259 p99=110.031 deg sagitta median=0.01349 p99=1.25396 max=382.82764 mm
+[SUBDIV] Juglet_Piece_2 x4 sub-vertex spacing median=0.05729 mm; elapsed=0.5s
+[SUBDIV] Juglet_Piece_2 x10: faces 5126 -> 512600, verts 2565 -> 256302, displacement max=1.815e+00 mm mean=6.312e-03 mm
+[SUBDIV] Juglet_Piece_2 original edges=7689 edge_median=0.3387 mm fold_median=8.259 p99=110.031 deg sagitta median=0.01349 p99=1.25396 max=382.82764 mm
+[SUBDIV] Juglet_Piece_2 x10 sub-vertex spacing median=0.02378 mm; elapsed=2.9s
+[TARGETS] === Juglet_Piece_2: clouds, one per level, drawn from the original triangles ===
+[SAMPLE] Juglet_Piece_2 x1 requested=0.21090 mm achieved median=0.20904 p10=0.16535 p90=0.28499 ratio=0.991 points=6259 voxel=0.32134 iters=2 area=491.07 mm2 elapsed=0.2s
+[SAMPLE] Juglet_Piece_2 x2 requested=0.10545 mm achieved median=0.10419 p10=0.08329 p90=0.14411 ratio=0.988 points=25240 voxel=0.16060 iters=2 area=491.07 mm2 elapsed=1.2s
+[SAMPLE] Juglet_Piece_2_fromx2 x2 requested=0.10545 mm achieved median=0.10447 p10=0.08370 p90=0.14349 ratio=0.991 points=25181 voxel=0.16051 iters=2 area=491.07 mm2 elapsed=0.8s
+[SAMPLE] Juglet_Piece_2 x4 requested=0.05272 mm achieved median=0.05205 p10=0.04219 p90=0.07286 ratio=0.987 points=102166 voxel=0.07998 iters=2 area=491.07 mm2 elapsed=8.9s
+[SAMPLE] Juglet_Piece_2_fromx4 x4 requested=0.05272 mm achieved median=0.05209 p10=0.04188 p90=0.07151 ratio=0.988 points=102111 voxel=0.08005 iters=2 area=491.07 mm2 elapsed=3.6s
+[SAMPLE] Juglet_Piece_2 x10 requested=0.02109 mm achieved median=0.02080 p10=0.01700 p90=0.02946 ratio=0.986 points=649067 voxel=0.03184 iters=2 area=491.07 mm2 elapsed=152.2s
+[SAMPLE] Juglet_Piece_2_fromx10 x10 requested=0.02109 mm achieved median=0.02088 p10=0.01691 p90=0.02895 ratio=0.990 points=645180 voxel=0.03195 iters=2 area=491.07 mm2 elapsed=26.1s
+[TARGETS] === Juglet_Piece_2: the ticket-37 anchor, arm scan on the shipped cloud at its own spacing ===
+[CELL] Juglet_Piece_2_scan_x1 arm=scan normals=cloud points=2565 spacing req=0.21090 ach=0.21090 -> regions=1906 largest=46 (1.79%) ge50=0 ge_pct5=0 fail_angle/pt=5.069 depth=7 cov2mm=0.2047 fold=0.431 deg pair=no
+[TARGETS] === Juglet_Piece_2: arms A and F at every level, arm B at x4 and x10 ===
+[CELL] pair identity across<=nn holds pointwise on 722 real points (min nn-across = 8.641e-01 mm)
+[CELL] Juglet_Piece_2_A_x1 arm=A normals=analytic points=6259 spacing req=0.21090 ach=0.20904 -> regions=2000 largest=873 (13.95%) ge50=9 ge_pct5=3 fail_angle/pt=3.129 depth=54 cov2mm=0.4581 fold=3.199 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 653 real points (min nn-across = 5.587e-01 mm)
+[CELL] Juglet_Piece_2_F_x1 arm=F normals=analytic+viewpoint points=6259 spacing req=0.21090 ach=0.20904 -> regions=2045 largest=684 (10.93%) ge50=10 ge_pct5=3 fail_angle/pt=3.191 depth=48 cov2mm=0.3559 fold=2.882 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 3427 real points (min nn-across = 5.955e-01 mm)
+[CELL] Juglet_Piece_2_A_x2 arm=A normals=analytic points=25240 spacing req=0.10545 ach=0.10419 -> regions=4539 largest=6088 (24.12%) ge50=35 ge_pct5=3 fail_angle/pt=2.270 depth=172 cov2mm=0.7290 fold=3.554 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 3242 real points (min nn-across = 2.352e-01 mm)
+[CELL] Juglet_Piece_2_F_x2 arm=F normals=analytic+viewpoint points=25240 spacing req=0.10545 ach=0.10419 -> regions=4630 largest=4709 (18.66%) ge50=44 ge_pct5=3 fail_angle/pt=2.319 depth=172 cov2mm=0.6386 fold=3.475 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 26983 real points (min nn-across = 8.340e-01 mm)
+[CELL] Juglet_Piece_2_A_x4 arm=A normals=analytic points=102166 spacing req=0.05272 ach=0.05205 -> regions=8430 largest=27522 (26.94%) ge50=93 ge_pct5=2 fail_angle/pt=1.451 depth=178 cov2mm=0.7201 fold=3.611 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 20883 real points (min nn-across = 7.799e-01 mm)
+[CELL] Juglet_Piece_2_F_x4 arm=F normals=analytic+viewpoint points=102166 spacing req=0.05272 ach=0.05205 -> regions=8578 largest=23715 (23.21%) ge50=123 ge_pct5=2 fail_angle/pt=1.486 depth=153 cov2mm=0.6203 fold=3.643 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 32293 real points (min nn-across = 2.985e-06 mm)
+[CELL] Juglet_Piece_2_B_x4 arm=B normals=pca20+viewpoint points=102166 spacing req=0.05272 ach=0.05205 -> regions=6641 largest=39947 (39.10%) ge50=32 ge_pct5=3 fail_angle/pt=1.197 depth=296 cov2mm=0.7696 fold=3.819 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 184688 real points (min nn-across = 6.674e-01 mm)
+[CELL] Juglet_Piece_2_A_x10 arm=A normals=analytic points=649067 spacing req=0.02109 ach=0.02080 -> regions=19313 largest=190064 (29.28%) ge50=444 ge_pct5=4 fail_angle/pt=0.690 depth=592 cov2mm=0.7388 fold=3.957 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 112518 real points (min nn-across = 7.291e-01 mm)
+[CELL] Juglet_Piece_2_F_x10 arm=F normals=analytic+viewpoint points=649067 spacing req=0.02109 ach=0.02080 -> regions=19565 largest=163518 (25.19%) ge50=497 ge_pct5=4 fail_angle/pt=0.706 depth=531 cov2mm=0.6288 fold=3.985 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 254407 real points (min nn-across = 1.887e-14 mm)
+[CELL] Juglet_Piece_2_B_x10 arm=B normals=pca20+viewpoint points=649067 spacing req=0.02109 ach=0.02080 -> regions=20335 largest=328220 (50.57%) ge50=66 ge_pct5=2 fail_angle/pt=0.617 depth=673 cov2mm=0.9041 fold=4.721 deg pair=yes
+[TARGETS] === Juglet_Piece_2: figure (arm A, one panel per level, same camera and scale) ===
+[FIG38] dpi solve: 424.4 dpi, converged within 5 pct of the 0.050000 mm/px target
+[FIG38] Juglet_Piece_2 arm A -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_2_resolution_by_density.png  levels=[1, 2, 4, 10] mm/px=0.0517 x 0.0517 px=3792x4540 bytes=1244389 floor_at={'level': 1, 'largest': 873, 'achieved_mm': 0.20904330739003849}
+[TARGETS] === Juglet_Piece_9: sampler validation against the shipped cloud ===
+[VALIDATE] Juglet_Piece_9 mesh v=2094 f=4184 area=373.7574 mm2  edge_median=0.3146 edge_cv=0.919 angle_median=55.6 deg angle_min=0.0 deg frac(tri min angle<20 deg)=0.105
+[VALIDATE] shipped cloud: points=2094 median_nn=0.2034 p10=0.1599 p90=0.3950 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2034 mm -> points=5257 median_nn=0.2015 p10=0.1630 p90=0.2580 mm (voxel 0.3113 mm, 2 merge iterations) | count_ratio=2.5105 spacing_ratio=0.9906 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 373.7574 mm2 at that spacing carries 9033 points = 4.31x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2015 mm at request 0.2034 (ratio 0.9906) and 0.1011 mm at request 0.1017 (ratio 0.9942) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1071 (0.527 s) p99=0.2014 (0.990 s) max=0.2442 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 5257 points to the original triangles median=0.00088 (0.004 s) p99=0.02638 (0.130 s) p99.9=0.05486 max=0.08530 mm (0.419 s) [3 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.18714 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 21277 points for 5257 (1.012 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.571 points*s^2/area at the request, 0.582 at half of it, 0.568 at the density-implied spacing 0.4225 mm (1194 points = 0.570 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+SAMPLER GATE DISCLOSURE  piece=Juglet_Piece_9  gate_route=instrument-validated-disclosed
+The literal comparison the ticket names did not reproduce the shipped cloud on this piece.
+  route 1 sample at the shipped median NN: count_ratio=2.5105062082139447 spacing_ratio=0.9906401131585472
+  a uniform covering of the mesh's own area at that spacing would carry 9032.80204349608 points = 4.313659046559732x the shipped count
+  mesh: verts=2094 faces=4184 area=373.7573691429208 mm2
+  mesh shape: edge_median=0.31462133586378405 mm edge_cv=0.9192519333673644 angle_median=55.55068754387662 deg angle_min=0.013359192131665396 deg frac(tri min angle<20deg)=0.10540152963671127
+  route 2 spacing: achieved 0.201511365190472 mm at request 0.2034153094689202 mm, and 0.10111434111085518 mm at request 0.1017076547344601 mm
+  route 2 cover: random surface points to the nearest cloud point median=0.10710361466051702 mm = 0.5265268132479545s, p99=0.9899538382415015s
+  route 2 surface: cloud to the original triangles median=0.004334706887355951s p99=0.12970003905540298s max=0.41935580072539985s (0.08530338998214404 mm; 3 points past 0.5 s re-measured over every triangle)
+  sampler density: 0.5711462154752823 points*s^2/area at the request, 0.5820310339479349 at half of it, 0.23182175253223336 for the shipped cloud
+  route 2 sample at the density-implied spacing 0.42248037833466734 mm: count_ratio=0.5702005730659025 spacing_ratio=0.9983377384805747
+  Readings: every synthetic cloud in this run reports ACHIEVED spacing beside requested;
+  no result below depends on the sampler's absolute density, only on the achieved spacing it prints.
+[TARGETS] Juglet_Piece_9 shipped median NN spacing s0=0.2034153094689202 mm (this is the level-1 spacing)
+[TARGETS] === Juglet_Piece_9: ticket-37 anchor -- re-grow ticket 37's own pre-floor cloud ===
+[FROMPLY] Juglet_Piece_9_prefloor_regions.ply -> Juglet_Piece_9_t37prefloor_cloud.pcd points=1972 median_nn=0.21069 p10=0.16831 p90=0.40683 mm
+[TARGETS] Juglet_Piece_9 ticket-37 cloud: 1972 points, median NN 0.21068896948508914 mm
+[CELL] Juglet_Piece_9_scan37_x1 arm=scan37 normals=cloud(t37prefloor) points=1972 spacing req=0.21069 ach=0.21069 -> regions=1465 largest=16 (0.81%) ge50=0 ge_pct5=0 fail_angle/pt=5.148 depth=7 cov2mm=0.0664 fold=0.806 deg pair=no
+[TARGETS] === Juglet_Piece_9: subdivision displacement (measured, not estimated) ===
+[SUBDIV] Juglet_Piece_9 x2: faces 4184 -> 16736, verts 2094 -> 8370, displacement max=1.125e+00 mm mean=4.371e-03 mm
+[SUBDIV] Juglet_Piece_9 original edges=6276 edge_median=0.3146 mm fold_median=9.015 p99=102.926 deg sagitta median=0.01395 p99=0.72254 max=590.23764 mm
+[SUBDIV] Juglet_Piece_9 x2 sub-vertex spacing median=0.10493 mm; elapsed=0.2s
+[SUBDIV] Juglet_Piece_9 x4: faces 4184 -> 66944, verts 2094 -> 33474, displacement max=1.130e+00 mm mean=2.903e-03 mm
+[SUBDIV] Juglet_Piece_9 original edges=6276 edge_median=0.3146 mm fold_median=9.015 p99=102.926 deg sagitta median=0.01395 p99=0.72254 max=590.23764 mm
+[SUBDIV] Juglet_Piece_9 x4 sub-vertex spacing median=0.05471 mm; elapsed=0.4s
+[SUBDIV] Juglet_Piece_9 x10: faces 4184 -> 418400, verts 2094 -> 209202, displacement max=1.150e+00 mm mean=2.865e-03 mm
+[SUBDIV] Juglet_Piece_9 original edges=6276 edge_median=0.3146 mm fold_median=9.015 p99=102.926 deg sagitta median=0.01395 p99=0.72254 max=590.23764 mm
+[SUBDIV] Juglet_Piece_9 x10 sub-vertex spacing median=0.02270 mm; elapsed=2.3s
+[TARGETS] === Juglet_Piece_9: clouds, one per level, drawn from the original triangles ===
+[SAMPLE] Juglet_Piece_9 x1 requested=0.20342 mm achieved median=0.20151 p10=0.16296 p90=0.25803 ratio=0.991 points=5257 voxel=0.31129 iters=2 area=373.76 mm2 elapsed=0.1s
+[SAMPLE] Juglet_Piece_9 x2 requested=0.10171 mm achieved median=0.10102 p10=0.08206 p90=0.12983 ratio=0.993 points=21315 voxel=0.15499 iters=2 area=373.76 mm2 elapsed=0.7s
+[SAMPLE] Juglet_Piece_9_fromx2 x2 requested=0.10171 mm achieved median=0.10072 p10=0.08165 p90=0.12932 ratio=0.990 points=21302 voxel=0.15483 iters=2 area=373.76 mm2 elapsed=0.5s
+[SAMPLE] Juglet_Piece_9 x4 requested=0.05085 mm achieved median=0.05043 p10=0.04125 p90=0.06463 ratio=0.992 points=86329 voxel=0.07703 iters=2 area=373.76 mm2 elapsed=5.5s
+[SAMPLE] Juglet_Piece_9_fromx4 x4 requested=0.05085 mm achieved median=0.05045 p10=0.04096 p90=0.06471 ratio=0.992 points=85872 voxel=0.07729 iters=2 area=373.76 mm2 elapsed=2.4s
+[SAMPLE] Juglet_Piece_9 x10 requested=0.02034 mm achieved median=0.02017 p10=0.01654 p90=0.02589 ratio=0.991 points=547195 voxel=0.03066 iters=2 area=373.76 mm2 elapsed=91.5s
+[SAMPLE] Juglet_Piece_9_fromx10 x10 requested=0.02034 mm achieved median=0.02023 p10=0.01650 p90=0.02598 ratio=0.994 points=542164 voxel=0.03081 iters=2 area=373.76 mm2 elapsed=16.9s
+[TARGETS] === Juglet_Piece_9: the ticket-37 anchor, arm scan on the shipped cloud at its own spacing ===
+[CELL] Juglet_Piece_9_scan_x1 arm=scan normals=cloud points=2094 spacing req=0.20342 ach=0.20342 -> regions=1562 largest=16 (0.76%) ge50=0 ge_pct5=0 fail_angle/pt=5.167 depth=7 cov2mm=0.0664 fold=0.806 deg pair=no
+[TARGETS] === Juglet_Piece_9: arms A and F at every level, arm B at x4 and x10 ===
+[CELL] pair identity across<=nn holds pointwise on 277 real points (min nn-across = 1.344e+00 mm)
+[CELL] Juglet_Piece_9_A_x1 arm=A normals=analytic points=5257 spacing req=0.20342 ach=0.20151 -> regions=1575 largest=1410 (26.82%) ge50=8 ge_pct5=2 fail_angle/pt=2.951 depth=43 cov2mm=0.5564 fold=2.851 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 586 real points (min nn-across = 2.586e-08 mm)
+[CELL] Juglet_Piece_9_F_x1 arm=F normals=analytic+viewpoint points=5257 spacing req=0.20342 ach=0.20151 -> regions=1623 largest=739 (14.06%) ge50=9 ge_pct5=2 fail_angle/pt=3.029 depth=31 cov2mm=0.3457 fold=2.590 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 2292 real points (min nn-across = 1.193e+00 mm)
+[CELL] Juglet_Piece_9_A_x2 arm=A normals=analytic points=21315 spacing req=0.10171 ach=0.10102 -> regions=3539 largest=6012 (28.21%) ge50=25 ge_pct5=3 fail_angle/pt=2.109 depth=73 cov2mm=0.5922 fold=3.100 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 2643 real points (min nn-across = 1.757e-09 mm)
+[CELL] Juglet_Piece_9_F_x2 arm=F normals=analytic+viewpoint points=21315 spacing req=0.10171 ach=0.10102 -> regions=3633 largest=3071 (14.41%) ge50=32 ge_pct5=3 fail_angle/pt=2.173 depth=56 cov2mm=0.3500 fold=2.828 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 21353 real points (min nn-across = 6.332e-01 mm)
+[CELL] Juglet_Piece_9_A_x4 arm=A normals=analytic points=86329 spacing req=0.05085 ach=0.05043 -> regions=6570 largest=25021 (28.98%) ge50=82 ge_pct5=3 fail_angle/pt=1.325 depth=153 cov2mm=0.6237 fold=3.289 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 10511 real points (min nn-across = 1.557e-09 mm)
+[CELL] Juglet_Piece_9_F_x4 arm=F normals=analytic+viewpoint points=86329 spacing req=0.05085 ach=0.05043 -> regions=6749 largest=13156 (15.24%) ge50=97 ge_pct5=5 fail_angle/pt=1.371 depth=153 cov2mm=0.4059 fold=2.965 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 18187 real points (min nn-across = 2.869e-12 mm)
+[CELL] Juglet_Piece_9_B_x4 arm=B normals=pca20+viewpoint points=86329 spacing req=0.05085 ach=0.05043 -> regions=5234 largest=19496 (22.58%) ge50=17 ge_pct5=4 fail_angle/pt=1.122 depth=148 cov2mm=0.7335 fold=3.437 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 166389 real points (min nn-across = 8.200e-03 mm)
+[CELL] Juglet_Piece_9_A_x10 arm=A normals=analytic points=547195 spacing req=0.02034 ach=0.02017 -> regions=13791 largest=177914 (32.51%) ge50=406 ge_pct5=3 fail_angle/pt=0.618 depth=722 cov2mm=0.8486 fold=4.564 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 74293 real points (min nn-across = 3.910e-12 mm)
+[CELL] Juglet_Piece_9_F_x10 arm=F normals=analytic+viewpoint points=547195 spacing req=0.02034 ach=0.02017 -> regions=14187 largest=88137 (16.11%) ge50=454 ge_pct5=6 fail_angle/pt=0.637 depth=230 cov2mm=0.4126 fold=3.229 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 235216 real points (min nn-across = 1.860e-15 mm)
+[CELL] Juglet_Piece_9_B_x10 arm=B normals=pca20+viewpoint points=547195 spacing req=0.02034 ach=0.02017 -> regions=12859 largest=264761 (48.39%) ge50=77 ge_pct5=2 fail_angle/pt=0.549 depth=658 cov2mm=0.9436 fold=3.920 deg pair=yes
+[TARGETS] === Juglet_Piece_9: figure (arm A, one panel per level, same camera and scale) ===
+[FIG38] dpi solve: 412.3 dpi, converged within 5 pct of the 0.035000 mm/px target
+[FIG38] Juglet_Piece_9 arm A -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_9_resolution_by_density.png  levels=[1, 2, 4, 10] mm/px=0.0362 x 0.0362 px=3681x4406 bytes=1590661 floor_at={'level': 1, 'largest': 1410, 'achieved_mm': 0.201511365190472}
+[TARGETS] === aggregate ===
+[AGG] 24 cells -> regions38.tsv 24 rows, largest38.tsv 24 rows, pair38.tsv 20 rows
+[AGG] Juglet_Piece_2_x1            arm=A n=6259    regions=2000   largest=873    ge50=9     cov2mm=0.4581 fold=3.199
+[AGG] Juglet_Piece_2_x1            arm=F n=6259    regions=2045   largest=684    ge50=10    cov2mm=0.3559 fold=2.882
+[AGG] Juglet_Piece_2_x1            arm=scan n=2565    regions=1906   largest=46     ge50=0     cov2mm=0.2047 fold=0.431
+[AGG] Juglet_Piece_2_x1            arm=scan37 n=2399    regions=1765   largest=45     ge50=0     cov2mm=0.2043 fold=0.425
+[AGG] Juglet_Piece_2_x2            arm=A n=25240   regions=4539   largest=6088   ge50=35    cov2mm=0.7290 fold=3.554
+[AGG] Juglet_Piece_2_x2            arm=F n=25240   regions=4630   largest=4709   ge50=44    cov2mm=0.6386 fold=3.475
+[AGG] Juglet_Piece_2_x4            arm=A n=102166  regions=8430   largest=27522  ge50=93    cov2mm=0.7201 fold=3.611
+[AGG] Juglet_Piece_2_x4            arm=B n=102166  regions=6641   largest=39947  ge50=32    cov2mm=0.7696 fold=3.819
+[AGG] Juglet_Piece_2_x4            arm=F n=102166  regions=8578   largest=23715  ge50=123   cov2mm=0.6203 fold=3.643
+[AGG] Juglet_Piece_2_x10           arm=A n=649067  regions=19313  largest=190064 ge50=444   cov2mm=0.7388 fold=3.957
+[AGG] Juglet_Piece_2_x10           arm=B n=649067  regions=20335  largest=328220 ge50=66    cov2mm=0.9041 fold=4.721
+[AGG] Juglet_Piece_2_x10           arm=F n=649067  regions=19565  largest=163518 ge50=497   cov2mm=0.6288 fold=3.985
+[AGG] Juglet_Piece_9_x1            arm=A n=5257    regions=1575   largest=1410   ge50=8     cov2mm=0.5564 fold=2.851
+[AGG] Juglet_Piece_9_x1            arm=F n=5257    regions=1623   largest=739    ge50=9     cov2mm=0.3457 fold=2.590
+[AGG] Juglet_Piece_9_x1            arm=scan n=2094    regions=1562   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x1            arm=scan37 n=1972    regions=1465   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x2            arm=A n=21315   regions=3539   largest=6012   ge50=25    cov2mm=0.5922 fold=3.100
+[AGG] Juglet_Piece_9_x2            arm=F n=21315   regions=3633   largest=3071   ge50=32    cov2mm=0.3500 fold=2.828
+[AGG] Juglet_Piece_9_x4            arm=A n=86329   regions=6570   largest=25021  ge50=82    cov2mm=0.6237 fold=3.289
+[AGG] Juglet_Piece_9_x4            arm=B n=86329   regions=5234   largest=19496  ge50=17    cov2mm=0.7335 fold=3.437
+[AGG] Juglet_Piece_9_x4            arm=F n=86329   regions=6749   largest=13156  ge50=97    cov2mm=0.4059 fold=2.965
+[AGG] Juglet_Piece_9_x10           arm=A n=547195  regions=13791  largest=177914 ge50=406   cov2mm=0.8486 fold=4.564
+[AGG] Juglet_Piece_9_x10           arm=B n=547195  regions=12859  largest=264761 ge50=77    cov2mm=0.9436 fold=3.920
+[AGG] Juglet_Piece_9_x10           arm=F n=547195  regions=14187  largest=88137  ge50=454   cov2mm=0.4126 fold=3.229
+[AGG] ticket37 anchor Juglet_Piece_2: points 2399/2565 regions 1765/1906 largest 45/46 (t37/mine)
+[AGG] ticket37 anchor Juglet_Piece_9: points 1972/2094 regions 1465/1562 largest 16/16 (t37/mine)
+[TARGETS] done

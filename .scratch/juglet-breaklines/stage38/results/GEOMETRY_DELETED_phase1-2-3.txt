@@ -1,4 +1,4 @@
-# geometry deleted by 20261027-1615_92d6871_t38-resolution phase 1,2,3, 2026-10-27T16:30:46Z
-geometry_files_before 112
+# geometry deleted by 20261028-0414_2a34d86_t38-resolution phase 1,2,3, 2026-10-27T17:57:50Z
+geometry_files_before 142
 geometry_files_after 0
 # kept: tsv json log py sh txt png (tables, numbers, sources, figures)
