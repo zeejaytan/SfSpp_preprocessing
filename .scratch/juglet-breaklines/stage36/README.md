@@ -65,3 +65,21 @@ out/cells/<tag>/<pot>/<piece>/  cell.tsv, logs/, surfaces/ (both .ply and .xyz),
 
 The stage and the ticket-25 rung dump are deleted per cell, after the measurement has read them,
 behind a count written first. Surfaces, logs and every table stay.
+
+## What actually ran (recorded after the grid)
+
+- `results/RESULTS-36.md` — the evidence for both jobs, including the 70-cell table, every exported
+  surface's geometry, the ticket-30 ruler rows, the deletion record and the index rows. Evidence only.
+- `results/cells36.tsv`, `results/surfaces34.tsv`, `results/pairs30.tsv`, `results/defaults2.tsv`,
+  `results/ARMCHECK.txt`, `results/GEOMETRY_DELETED.head-tail.txt` — the same tables, copied verbatim
+  from run 2's `out/`.
+
+Two jobs, both on `--partition=sapphire`, two-job budget respected:
+
+| run | job | state | why it exists |
+|---|---|---|---|
+| `20261028-0004_fe5b17f_t36-adaptive-spacing` | 33880164 | COMPLETED 00:03:26 | invalid — arms B and C ran with empty switch strings; kept as the record of that defect |
+| `20261028-0013_0a53dee_t36-adaptive-spacing-r2` | 33880555 | COMPLETED 00:03:59 | the 70-cell grid |
+
+The defect is the reason `submit36.sbatch.tmpl` carries the switch strings literally and the reason the job
+now runs the ARMCHECK gate before it appends an index row.
