@@ -1,0 +1,89 @@
+[S27B] 16:00:49 run=20261027-1559_69c0c9c_p27-dedupe-edge commit=69c0c9c6fa8bea3d22d8573c721f067174042ded tag=p27-dedupe-edge host=spartan-bm155.hpc.unimelb.edu.au
+[S27B] 16:00:49 job=33862863 nodelist=spartan-bm155 cpus=8
+[S27B] 16:00:49 corpus tree before
+[S27B] 16:00:49 corpus md5 before (8 pieces x cloud+mesh+axis)
+[S27B] 16:00:50 corpus before: 1803 tree lines, 24 md5 lines
+[S27B] 16:03:02 BUILD MeshPreprocessingHeadless rc=0 bytes=1573144 md5=660795ff38f259bc4d61811073962dd4
+[S27B] 16:03:02 BUILD EdgeLineExtractionHeadless rc=0 bytes=5339048 md5=cbf747dc3172fe0bbd188822df14092a
+[S27B] 16:03:02 B = byte copy of A: MeshPreprocessingHeadless md5=660795ff38f259bc4d61811073962dd4
+[S27B] 16:03:02 B = byte copy of A: EdgeLineExtractionHeadless md5=cbf747dc3172fe0bbd188822df14092a
+[S27B] 16:03:02 gate cell: A / Pot_A_Piece_08
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=2s surf0=yes(5528) surf1=yes(6097) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=5528 surf1_points=6097 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_08/edgestage/Temp/Data/Pot_A/Pot_A_Piece_08_Mesh.obj': File exists
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_08 edge_exit=0 elapsed=3s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_08/breaklines
+[S27B] 16:03:07 gate ok: 2 breakline files
+[S27B] 16:03:07 cells: 15 at -P 3 (plus the gate cell)
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=17s surf0=yes(42205) surf1=yes(46323) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42205 surf1_points=46323 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_02/edgestage/Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj': File exists
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_02 edge_exit=0 elapsed=10s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_02/breaklines
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=16s surf0=yes(21571) surf1=yes(23790) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=21571 surf1_points=23790 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_02/edgestage/Temp/Data/Pot_A/Pot_A_Piece_02_Mesh.obj': File exists
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_02 edge_exit=0 elapsed=6s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_02/breaklines
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(6066) surf1=yes(6437) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=52s surf0=yes(33983) surf1=yes(29739) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=33983 surf1_points=29739 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_07/edgestage/Temp/Data/Pot_A/Pot_A_Piece_07_Mesh.obj': File exists
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_01/edgestage/Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj': File exists
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=52s surf0=yes(66758) surf1=yes(57290) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66758 surf1_points=57290 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_01/edgestage/Temp/Data/Pot_A/Pot_A_Piece_01_Mesh.obj': File exists
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_07 edge_exit=0 elapsed=3s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_07/breaklines
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(3216) surf1=yes(3344) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=3216 surf1_points=3344 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_07/edgestage/Temp/Data/Pot_A/Pot_A_Piece_07_Mesh.obj': File exists
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_07 edge_exit=0 elapsed=2s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_07/breaklines
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=2s surf0=yes(2917) surf1=yes(3265) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=2917 surf1_points=3265 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_08/edgestage/Temp/Data/Pot_A/Pot_A_Piece_08_Mesh.obj': File exists
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_01 edge_exit=0 elapsed=11s rows=3 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_01/breaklines
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_08 edge_exit=0 elapsed=2s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Pot_A/Pot_A_Piece_08/breaklines
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_01 edge_exit=0 elapsed=16s rows=3 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Pot_A/Pot_A_Piece_01/breaklines
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(182) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=182 surf1_points=732 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_4/edgestage/Temp/Data/Juglet/Juglet_Piece_4_Mesh.obj': File exists
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_4 edge_exit=0 elapsed=1s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_4/breaklines
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(131) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=131 surf1_points=732 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_4/edgestage/Temp/Data/Juglet/Juglet_Piece_4_Mesh.obj': File exists
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_4 edge_exit=0 elapsed=1s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_4/breaklines
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=11s surf0=yes(3580) surf1=yes(12092) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=3580 surf1_points=12092 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_1/edgestage/Temp/Data/Juglet/Juglet_Piece_1_Mesh.obj': File exists
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=11s surf0=yes(2954) surf1=yes(8627) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=2954 surf1_points=8627 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_1/edgestage/Temp/Data/Juglet/Juglet_Piece_1_Mesh.obj': File exists
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=1s surf0=yes(608) surf1=yes(1016) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=608 surf1_points=1016 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_6/edgestage/Temp/Data/Juglet/Juglet_Piece_6_Mesh.obj': File exists
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_6 edge_exit=0 elapsed=2s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_6/breaklines
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_1 edge_exit=0 elapsed=4s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_1/breaklines
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=1s surf0=yes(395) surf1=yes(651) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=395 surf1_points=651 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_6/edgestage/Temp/Data/Juglet/Juglet_Piece_6_Mesh.obj': File exists
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_1 edge_exit=0 elapsed=4s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_1/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_6 edge_exit=0 elapsed=1s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_6/breaklines
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(1012) surf1=yes(829) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_7/edgestage/Temp/Data/Juglet/Juglet_Piece_7_Mesh.obj': File exists
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=2s surf0=yes(609) surf1=yes(566) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=609 surf1_points=566 reason=two surfaces written
+ln: failed to create symbolic link '/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_7/edgestage/Temp/Data/Juglet/Juglet_Piece_7_Mesh.obj': File exists
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_7 edge_exit=0 elapsed=1s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/A/Juglet/Juglet_Piece_7/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_7 edge_exit=0 elapsed=1s rows=2 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/B/Juglet/Juglet_Piece_7/breaklines
+[S27B] 16:04:30 cells done: mesh rows 16, edgeline cells 16
+[S27B] 16:04:30 measuring
+[S27B] 16:04:37 dots rc=0
+[S27B] 16:04:38 dotsets rc=0
+[S27-DOTSET] piece=Juglet_Piece_1 s=0 dots_off=57 dots_on=57 distinct_off=57 distinct_on=57 only_in_off=0 only_in_on=0 equal=yes nn_med=0.000000 nn_max=0.000000 pcd_off=57 pcd_on=57
+[S27-DOTSET] piece=Juglet_Piece_1 s=1 dots_off=92 dots_on=92 distinct_off=92 distinct_on=92 only_in_off=90 only_in_on=90 equal=no nn_med=0.012880 nn_max=0.053419 pcd_off=92 pcd_on=92
+[S27-DOTSET] piece=Juglet_Piece_4 s=0 dots_off=15 dots_on=15 distinct_off=15 distinct_on=15 only_in_off=15 only_in_on=15 equal=no nn_med=0.352771 nn_max=1.615948 pcd_off=15 pcd_on=15
+[S27-DOTSET] piece=Juglet_Piece_4 s=1 dots_off=40 dots_on=40 distinct_off=40 distinct_on=40 only_in_off=0 only_in_on=0 equal=yes nn_med=0.000000 nn_max=0.000000 pcd_off=40 pcd_on=40
+[S27-DOTSET] piece=Juglet_Piece_6 s=0 dots_off=31 dots_on=31 distinct_off=31 distinct_on=31 only_in_off=0 only_in_on=0 equal=yes nn_med=0.000000 nn_max=0.000000 pcd_off=31 pcd_on=31
+[S27-DOTSET] piece=Juglet_Piece_6 s=1 dots_off=38 dots_on=38 distinct_off=38 distinct_on=38 only_in_off=0 only_in_on=0 equal=yes nn_med=0.000000 nn_max=0.000000 pcd_off=38 pcd_on=38
+[S27-DOTSET] piece=Juglet_Piece_7 s=0 dots_off=34 dots_on=34 distinct_off=34 distinct_on=34 only_in_off=34 only_in_on=34 equal=no nn_med=0.605012 nn_max=1.562967 pcd_off=34 pcd_on=34
+[S27-DOTSET] piece=Juglet_Piece_7 s=1 dots_off=33 dots_on=33 distinct_off=33 distinct_on=33 only_in_off=33 only_in_on=33 equal=no nn_med=0.482582 nn_max=2.146120 pcd_off=33 pcd_on=33
+[S27-DOTSET] piece=Pot_A_Piece_01 s=0 dots_off=203 dots_on=204 distinct_off=203 distinct_on=204 only_in_off=203 only_in_on=204 equal=no nn_med=0.528615 nn_max=0.996435 pcd_off=203 pcd_on=204
+[S27-DOTSET] piece=Pot_A_Piece_01 s=1 dots_off=210 dots_on=210 distinct_off=210 distinct_on=210 only_in_off=0 only_in_on=0 equal=yes nn_med=0.000000 nn_max=0.000000 pcd_off=210 pcd_on=210
+[S27-DOTSET] piece=Pot_A_Piece_02 s=0 dots_off=162 dots_on=163 distinct_off=162 distinct_on=163 only_in_off=162 only_in_on=163 equal=no nn_med=0.264497 nn_max=2.124465 pcd_off=162 pcd_on=163
+[S27-DOTSET] piece=Pot_A_Piece_02 s=1 dots_off=168 dots_on=168 distinct_off=168 distinct_on=168 only_in_off=168 only_in_on=168 equal=no nn_med=0.331930 nn_max=1.862174 pcd_off=168 pcd_on=168
+[S27-DOTSET] piece=Pot_A_Piece_07 s=0 dots_off=63 dots_on=63 distinct_off=63 distinct_on=63 only_in_off=62 only_in_on=62 equal=no nn_med=0.064452 nn_max=0.147000 pcd_off=63 pcd_on=63
+[S27-DOTSET] piece=Pot_A_Piece_07 s=1 dots_off=65 dots_on=65 distinct_off=65 distinct_on=65 only_in_off=65 only_in_on=65 equal=no nn_med=0.253719 nn_max=0.643151 pcd_off=65 pcd_on=65
+[S27-DOTSET] piece=Pot_A_Piece_08 s=0 dots_off=57 dots_on=57 distinct_off=57 distinct_on=57 only_in_off=56 only_in_on=56 equal=no nn_med=0.095283 nn_max=0.268899 pcd_off=57 pcd_on=57
+[S27-DOTSET] piece=Pot_A_Piece_08 s=1 dots_off=61 dots_on=61 distinct_off=61 distinct_on=61 only_in_off=61 only_in_on=61 equal=no nn_med=0.515202 nn_max=1.303039 pcd_off=61 pcd_on=61
+[S27] dotsets: 16 rows -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1559_69c0c9c_p27-dedupe-edge/out/cells/dotsets27.tsv
+[S27B] 16:04:38 corpus tree after
+[S27B] 16:04:38 CORPUS TREE UNCHANGED
+[S27B] 16:04:38 CORPUS MD5 UNCHANGED
+opt-sfs-pristine ABSENT
+[S27B] 16:04:38 geometry deleted: # corpus before/after, submit.sbatch, run.json.
+[S27B] index: 20261027-1534_df523dd_p27-dedupe-grid	33860966	df523dd5f62a70d987fcd993ddbf2b659def566e	p27-dedupe-grid		
+[S27B] index: 20261027-1559_69c0c9c_p27-dedupe-edge	33862863	69c0c9c6fa8bea3d22d8573c721f067174042ded	p27-dedupe-edge		
+[S27B] 16:04:38 done
