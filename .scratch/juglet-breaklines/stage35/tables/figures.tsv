@@ -1,0 +1,33 @@
+piece	view	path	bytes	width_px	height_px	mm_per_px	scale_bar_mm	scale_bar_px	extent_pc1_pc2_pc3_mm
+Juglet 9	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_9_view1-pc1.png	46465	1400	1400	0.0174289	5.0	287	16.93,13.86,8.56
+Juglet 9	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_9_view2-pc2.png	47714	1400	1400	0.0207929	5.0	240	16.93,13.86,8.56
+Juglet 9	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_9_view3-pc3.png	76687	1400	1400	0.0206908	5.0	242	16.93,13.86,8.56
+Juglet 9	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_9_view4-turning.png	85954	1400	1400	0.0206908	5.0	242	16.93,13.86,8.56
+Juglet 2	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_2_view1-pc1.png	54028	1400	1400	0.0153802	5.0	325	24.97,10.32,8.46
+Juglet 2	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_2_view2-pc2.png	55750	1400	1328	0.0220349	5.0	227	24.97,10.32,8.46
+Juglet 2	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_2_view3-pc3.png	53220	1400	834	0.0264212	5.0	189	24.97,10.32,8.46
+Juglet 2	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_2_view4-turning.png	58456	1400	834	0.0264212	5.0	189	24.97,10.32,8.46
+Juglet 3	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_3_view1-pc1.png	58640	1400	1400	0.0186774	5.0	268	23.50,18.72,14.99
+Juglet 3	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_3_view2-pc2.png	54786	1400	1400	0.0275295	5.0	182	23.50,18.72,14.99
+Juglet 3	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_3_view3-pc3.png	83646	1400	938	0.0285184	5.0	175	23.50,18.72,14.99
+Juglet 3	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_3_view4-turning.png	93031	1400	938	0.0285184	5.0	175	23.50,18.72,14.99
+Juglet 5	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_5_view1-pc1.png	88563	1400	1400	0.0232121	5.0	215	28.51,23.65,20.80
+Juglet 5	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_5_view2-pc2.png	83185	1400	1002	0.0314123	5.0	159	28.51,23.65,20.80
+Juglet 5	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_5_view3-pc3.png	151363	1400	1090	0.0331322	5.0	151	28.51,23.65,20.80
+Juglet 5	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_5_view4-turning.png	173289	1400	1090	0.0331322	5.0	151	28.51,23.65,20.80
+Juglet 7	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_7_view1-pc1.png	101738	1400	1329	0.0251103	5.0	199	27.05,26.09,22.89
+Juglet 7	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_7_view2-pc2.png	111612	1400	1400	0.0281298	5.0	178	27.05,26.09,22.89
+Juglet 7	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_7_view3-pc3.png	201105	1400	1400	0.0310878	5.0	161	27.05,26.09,22.89
+Juglet 7	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_7_view4-turning.png	236161	1400	1400	0.0310878	5.0	161	27.05,26.09,22.89
+Pot A 07	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_07_view1-pc1.png	68610	1400	973	0.0277708	5.0	180	42.83,28.63,27.94
+Pot A 07	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_07_view2-pc2.png	83164	1400	1102	0.0383233	5.0	130	42.83,28.63,27.94
+Pot A 07	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_07_view3-pc3.png	124293	1400	1400	0.0383066	5.0	131	42.83,28.63,27.94
+Pot A 07	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_07_view4-turning.png	164081	1400	1400	0.0383066	5.0	131	42.83,28.63,27.94
+Juglet 1	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_1_view1-pc1.png	237114	1400	1400	0.0337535	5.0	148	37.64,37.44,34.02
+Juglet 1	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_1_view2-pc2.png	209552	1400	1362	0.0362447	5.0	138	37.64,37.44,34.02
+Juglet 1	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_1_view3-pc3.png	221405	1400	1400	0.0406646	5.0	123	37.64,37.44,34.02
+Juglet 1	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Juglet_1_view4-turning.png	305045	1400	1400	0.0406646	5.0	123	37.64,37.44,34.02
+Pot A 01	view1-pc1	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_01_view1-pc1.png	140620	1400	603	0.0850842	5.0	59	119.16,106.73,64.92
+Pot A 01	view2-pc2	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_01_view2-pc2.png	132773	1400	839	0.0947711	5.0	53	119.16,106.73,64.92
+Pot A 01	view3-pc3	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_01_view3-pc3.png	417464	1400	1400	0.100312	5.0	50	119.16,106.73,64.92
+Pot A 01	view4-turning	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0024_de55998_t35-mesh/out/figures/Pot_A_01_view4-turning.png	736437	1400	1400	0.100312	5.0	50	119.16,106.73,64.92

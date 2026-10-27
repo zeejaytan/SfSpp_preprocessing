@@ -1,0 +1,9 @@
+piece_key	piece	cloud_file	cloud_pts	rays	rays_with_a_hit	thick_med_mm	thick_p10_mm	thick_p90_mm	frac_1to3mm	hits_per_ray_med	hits_per_ray_max	rays_2plus_sheets	rays_gt2_sheets	frac_rays_gt2_sheets	rays_with_a_hit_0p15	hits_per_ray_max_merged	rays_3plus_merged
+Juglet_9	Juglet 9	Juglet_Piece_9_SampledWithNormals.ply	787	787	785	2.59484	2.06616	8.18262	0.613811	2	8	783	32	0.0406607	782	8	30
+Juglet_2	Juglet 2	Juglet_Piece_2_SampledWithNormals.ply	1031	1031	1028	2.69305	2.13945	6.75069	0.598249	2	10	1027	44	0.042677	1028	10	42
+Juglet_3	Juglet 3	Juglet_Piece_3_SampledWithNormals.ply	1467	1467	1467	2.4516	1.85722	7.13893	0.67054	2	9	1460	59	0.0402181	1463	8	50
+Juglet_5	Juglet 5	Juglet_Piece_5_SampledWithNormals.ply	3021	1007	1006	2.8998	2.31574	6.51743	0.541294	2	9	1005	44	0.0436941	1005	6	40
+Juglet_7	Juglet 7	Juglet_Piece_7_SampledWithNormals.ply	4254	851	851	3.26316	2.32523	5.78525	0.338824	2	8	847	42	0.0493537	850	8	39
+Pot_A_07	Pot A 07	Pot_A_Piece_07_SampledWithNormals.ply	8598	860	860	4.05609	3.50109	11.9737	0.00930233	2	2	860	0	0	860	2	0
+Juglet_1	Juglet 1	Juglet_Piece_1_SampledWithNormals.ply	14546	809	808	2.35376	1.66574	18.0882	0.584718	2	10	606	329	0.406675	602	10	323
+Pot_A_01	Pot A 01	Pot_A_Piece_01_SampledWithNormals.ply	85136	804	804	8.2857	5.40824	21.0378	0	2	6	804	80	0.0995025	804	6	80
