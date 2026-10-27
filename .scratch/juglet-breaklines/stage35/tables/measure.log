@@ -1,0 +1,126 @@
+[00:24:17] python 3.11.15 numpy 2.4.6
+[00:24:17] selftest cube: euler 2 boundary 0 watertight True area 600.000 (want 2/0/True/600)
+[00:24:17] selftest slab: 2 hits at [5.0, 7.0] (want 2: 5 7); through-the-diagonal ray 4 raw -> 2 sheets
+[00:24:17] selftest grid: kNN max err 0 bad 0, 280 pairs max d 0.5986 (want 0/0/<=0.6)
+[00:24:17] selftest scatter_max: [3.0, 0.0, 2.0, 0.0, 0.0] (want 3 0 2 0 0)
+[00:24:17] selftest ply: shape (2, 4) names ['x', 'y', 'z', 'nx'] (want (2,4))
+[00:24:17] selftest pcd binary: n 2 stride-ok, P1 [4.0, 5.0, 6.0] N1 [0.0, 1.0, 0.0] (want [4,5,6] [0,1,0])
+[00:24:17] selftest pcd ascii: n 2 P1 [4.0, 5.0, 6.0] N1 [0.0, 1.0, 0.0] (want [4,5,6] [0,1,0])
+[00:24:17] selftest obj: 4 v 2 f -> [[0, 1, 2], [1, 3, 2]] (want 4 2 [[0,1,2],[1,3,2]])
+[00:24:17] selftest png: 123 B
+[00:24:17] SELFTEST PASS
+[00:24:17] md5 before: 24 files
+[00:24:17] Juglet 9: OBJ 2094 v 4184 f -> welded 2094 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 373.757 mm2 0.0s
+[00:24:17] Juglet 9: turning r=0.6 mm over 2094 vertices: 12682 pairs, pair med 21.981 p90 55.775 max 89.978, vertex-max med 50.707 p90 80.047 max 89.978, 2007 verts above 3.4 deg
+[00:24:17] Juglet 9: turning r=1.0 mm over 2094 vertices: 31387 pairs, pair med 26.989 p90 68.461 max 89.985, vertex-max med 69.310 p90 88.849 max 89.985, 2071 verts above 3.4 deg
+[00:24:17] Juglet 9: view1 1400x1400 mm/px 0.01743 bar 287 px 46465 B
+[00:24:18] Juglet 9: view2 1400x1400 mm/px 0.02079 bar 240 px 47714 B
+[00:24:18] Juglet 9: view3 1400x1400 mm/px 0.02069 bar 242 px 76687 B
+[00:24:18] Juglet 9: view4-turning 1400x1400 bar 242 px 85954 B
+[00:24:18] Juglet 9: thickness on 787 rays: med 2.5948 p10 2.0662 p90 8.1826 frac1-3 0.6138 hits med 2 max 8 >=2 sheets 783 >=3 sheets 32 merged max 8
+[00:24:18] Juglet 9: PCD ascii 2094 points (x,y,z,normal_x,normal_y,normal_z), 2094 usable normals
+[00:24:19] Juglet 9: carry max nearest 0.0000 mm (grid cell 3.9448); cloud kNN k=11 cell 10.8735 nn med 0.3633
+[00:24:19] Juglet 9: growth normals=pca curvature=recomputed(k=10) -> 541 regions, largest 17; 3.4 deg symmetric rule: 543 components, largest 17 pts (2.2%), 320 edges kept
+[00:24:19] Juglet 9: growth normals=pca curvature=ply-column -> 543 regions, largest 17; 3.4 deg symmetric rule: 543 components, largest 17 pts (2.2%), 320 edges kept
+[00:24:19] Juglet 9: growth normals=carry curvature=recomputed(k=10) -> 574 regions, largest 33; 3.4 deg symmetric rule: 581 components, largest 22 pts (2.8%), 245 edges kept
+[00:24:19] Juglet 9: growth normals=carry curvature=ply-column -> 577 regions, largest 33; 3.4 deg symmetric rule: 581 components, largest 22 pts (2.8%), 245 edges kept
+[00:24:19] Juglet 2: OBJ 2565 v 5126 f -> welded 2565 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 491.067 mm2 0.0s
+[00:24:19] Juglet 2: turning r=0.6 mm over 2565 vertices: 14381 pairs, pair med 21.497 p90 55.739 max 89.997, vertex-max med 49.848 p90 80.806 max 89.997, 2432 verts above 3.4 deg
+[00:24:19] Juglet 2: turning r=1.0 mm over 2565 vertices: 36058 pairs, pair med 26.711 p90 68.542 max 89.997, vertex-max med 68.733 p90 88.886 max 89.997, 2541 verts above 3.4 deg
+[00:24:19] Juglet 2: view1 1400x1400 mm/px 0.01538 bar 325 px 54028 B
+[00:24:20] Juglet 2: view2 1400x1328 mm/px 0.02203 bar 227 px 55750 B
+[00:24:20] Juglet 2: view3 1400x834 mm/px 0.02642 bar 189 px 53220 B
+[00:24:20] Juglet 2: view4-turning 1400x834 bar 189 px 58456 B
+[00:24:20] Juglet 2: thickness on 1031 rays: med 2.6930 p10 2.1395 p90 6.7507 frac1-3 0.5982 hits med 2 max 10 >=2 sheets 1027 >=3 sheets 44 merged max 10
+[00:24:20] Juglet 2: PCD ascii 2565 points (x,y,z,normal_x,normal_y,normal_z), 2565 usable normals
+[00:24:22] Juglet 2: carry max nearest 0.0000 mm (grid cell 3.7883); cloud kNN k=11 cell 10.1986 nn med 0.3898
+[00:24:22] Juglet 2: growth normals=pca curvature=recomputed(k=10) -> 660 regions, largest 36; 3.4 deg symmetric rule: 661 components, largest 36 pts (3.5%), 559 edges kept
+[00:24:22] Juglet 2: growth normals=pca curvature=ply-column -> 663 regions, largest 36; 3.4 deg symmetric rule: 661 components, largest 36 pts (3.5%), 559 edges kept
+[00:24:22] Juglet 2: growth normals=carry curvature=recomputed(k=10) -> 709 regions, largest 39; 3.4 deg symmetric rule: 710 components, largest 39 pts (3.8%), 467 edges kept
+[00:24:22] Juglet 2: growth normals=carry curvature=ply-column -> 711 regions, largest 39; 3.4 deg symmetric rule: 710 components, largest 39 pts (3.8%), 467 edges kept
+[00:24:22] Juglet 3: OBJ 3493 v 6982 f -> welded 3493 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 752.904 mm2 0.0s
+[00:24:22] Juglet 3: turning r=0.6 mm over 3493 vertices: 18246 pairs, pair med 21.702 p90 57.265 max 89.993, vertex-max med 49.769 p90 80.163 max 89.993, 3182 verts above 3.4 deg
+[00:24:22] Juglet 3: turning r=1.0 mm over 3493 vertices: 45677 pairs, pair med 26.101 p90 68.110 max 89.996, vertex-max med 68.070 p90 88.691 max 89.996, 3392 verts above 3.4 deg
+[00:24:22] Juglet 3: view1 1400x1400 mm/px 0.01868 bar 268 px 58640 B
+[00:24:22] Juglet 3: view2 1400x1400 mm/px 0.02753 bar 182 px 54786 B
+[00:24:22] Juglet 3: view3 1400x938 mm/px 0.02852 bar 175 px 83646 B
+[00:24:23] Juglet 3: view4-turning 1400x938 bar 175 px 93031 B
+[00:24:23] Juglet 3: thickness on 1467 rays: med 2.4516 p10 1.8572 p90 7.1389 frac1-3 0.6705 hits med 2 max 9 >=2 sheets 1460 >=3 sheets 59 merged max 8
+[00:24:23] Juglet 3: PCD ascii 3493 points (x,y,z,normal_x,normal_y,normal_z), 3493 usable normals
+[00:24:27] Juglet 3: carry max nearest 0.0000 mm (grid cell 4.9434); cloud kNN k=11 cell 13.1564 nn med 0.4258
+[00:24:27] Juglet 3: growth normals=pca curvature=recomputed(k=10) -> 828 regions, largest 268; 3.4 deg symmetric rule: 828 components, largest 169 pts (11.5%), 1097 edges kept
+[00:24:27] Juglet 3: growth normals=pca curvature=ply-column -> 829 regions, largest 169; 3.4 deg symmetric rule: 828 components, largest 169 pts (11.5%), 1097 edges kept
+[00:24:27] Juglet 3: growth normals=carry curvature=recomputed(k=10) -> 878 regions, largest 316; 3.4 deg symmetric rule: 885 components, largest 306 pts (20.9%), 1031 edges kept
+[00:24:27] Juglet 3: growth normals=carry curvature=ply-column -> 880 regions, largest 316; 3.4 deg symmetric rule: 885 components, largest 306 pts (20.9%), 1031 edges kept
+[00:24:27] Juglet 5: OBJ 6211 v 12418 f -> welded 6211 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 1401.629 mm2 0.1s
+[00:24:27] Juglet 5: turning r=0.6 mm over 6211 vertices: 27725 pairs, pair med 19.474 p90 56.402 max 89.983, vertex-max med 27.941 p90 78.295 max 89.983, 5483 verts above 3.4 deg
+[00:24:27] Juglet 5: turning r=1.0 mm over 6211 vertices: 72187 pairs, pair med 22.468 p90 67.679 max 89.997, vertex-max med 53.550 p90 88.429 max 89.997, 6004 verts above 3.4 deg
+[00:24:27] Juglet 5: view1 1400x1400 mm/px 0.02321 bar 215 px 88563 B
+[00:24:28] Juglet 5: view2 1400x1002 mm/px 0.03141 bar 159 px 83185 B
+[00:24:28] Juglet 5: view3 1400x1090 mm/px 0.03313 bar 151 px 151363 B
+[00:24:28] Juglet 5: view4-turning 1400x1090 bar 151 px 173289 B
+[00:24:29] Juglet 5: thickness on 1007 rays: med 2.8998 p10 2.3157 p90 6.5174 frac1-3 0.5413 hits med 2 max 9 >=2 sheets 1005 >=3 sheets 44 merged max 6
+[00:24:29] Juglet 5: PCD ascii 6211 points (x,y,z,normal_x,normal_y,normal_z), 6211 usable normals
+[00:24:35] Juglet 5: carry max nearest 0.0000 mm (grid cell 5.2480); cloud kNN k=11 cell 6.6332 nn med 0.4363
+[00:24:35] Juglet 5: growth normals=pca curvature=recomputed(k=10) -> 1467 regions, largest 679; 3.4 deg symmetric rule: 1474 components, largest 678 pts (22.4%), 2891 edges kept
+[00:24:35] Juglet 5: growth normals=pca curvature=ply-column -> 1472 regions, largest 679; 3.4 deg symmetric rule: 1474 components, largest 678 pts (22.4%), 2891 edges kept
+[00:24:35] Juglet 5: growth normals=carry curvature=recomputed(k=10) -> 1562 regions, largest 652; 3.4 deg symmetric rule: 1559 components, largest 652 pts (21.6%), 2739 edges kept
+[00:24:35] Juglet 5: growth normals=carry curvature=ply-column -> 1564 regions, largest 652; 3.4 deg symmetric rule: 1559 components, largest 652 pts (21.6%), 2739 edges kept
+[00:24:35] Juglet 7: OBJ 8421 v 16838 f -> welded 8421 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 1980.180 mm2 0.1s
+[00:24:35] Juglet 7: turning r=0.6 mm over 8421 vertices: 35658 pairs, pair med 17.794 p90 57.778 max 89.995, vertex-max med 22.926 p90 79.930 max 89.995, 7438 verts above 3.4 deg
+[00:24:36] Juglet 7: turning r=1.0 mm over 8421 vertices: 91676 pairs, pair med 20.106 p90 65.719 max 89.996, vertex-max med 39.018 p90 88.392 max 89.996, 8247 verts above 3.4 deg
+[00:24:36] Juglet 7: view1 1400x1329 mm/px 0.02511 bar 199 px 101738 B
+[00:24:37] Juglet 7: view2 1400x1400 mm/px 0.02813 bar 178 px 111612 B
+[00:24:37] Juglet 7: view3 1400x1400 mm/px 0.03109 bar 161 px 201105 B
+[00:24:38] Juglet 7: view4-turning 1400x1400 bar 161 px 236161 B
+[00:24:39] Juglet 7: thickness on 851 rays: med 3.2632 p10 2.3252 p90 5.7853 frac1-3 0.3388 hits med 2 max 8 >=2 sheets 847 >=3 sheets 42 merged max 8
+[00:24:39] Juglet 7: PCD ascii 8421 points (x,y,z,normal_x,normal_y,normal_z), 8421 usable normals
+[00:24:56] Juglet 7: carry max nearest 0.0000 mm (grid cell 4.9705); cloud kNN k=15 cell 12.4576 nn med 0.4411
+[00:24:56] Juglet 7: growth normals=pca curvature=recomputed(k=14) -> 1949 regions, largest 326; 3.4 deg symmetric rule: 1961 components, largest 328 pts (7.7%), 4149 edges kept
+[00:24:56] Juglet 7: growth normals=pca curvature=ply-column -> 1955 regions, largest 326; 3.4 deg symmetric rule: 1961 components, largest 328 pts (7.7%), 4149 edges kept
+[00:24:56] Juglet 7: growth normals=carry curvature=recomputed(k=14) -> 2022 regions, largest 258; 3.4 deg symmetric rule: 2037 components, largest 259 pts (6.1%), 3926 edges kept
+[00:24:56] Juglet 7: growth normals=carry curvature=ply-column -> 2021 regions, largest 359; 3.4 deg symmetric rule: 2037 components, largest 259 pts (6.1%), 3926 edges kept
+[00:24:56] Pot A 07: OBJ 10593 v 21174 f -> welded 10593 v; euler 1 boundary_edges 10 loops 1 watertight False components 1 area 2005.190 mm2 0.2s
+[00:24:56] Pot A 07: turning r=0.6 mm over 10593 vertices: 87242 pairs, pair med 18.569 p90 54.101 max 89.997, vertex-max med 45.632 p90 78.125 max 89.997, 8967 verts above 3.4 deg
+[00:24:56] Pot A 07: turning r=1.0 mm over 10593 vertices: 222360 pairs, pair med 24.687 p90 70.097 max 89.998, vertex-max med 65.900 p90 89.230 max 89.998, 9646 verts above 3.4 deg
+[00:24:57] Pot A 07: view1 1400x973 mm/px 0.02777 bar 180 px 68610 B
+[00:24:57] Pot A 07: view2 1400x1102 mm/px 0.03832 bar 130 px 83164 B
+[00:24:58] Pot A 07: view3 1400x1400 mm/px 0.03831 bar 131 px 124293 B
+[00:24:58] Pot A 07: view4-turning 1400x1400 bar 131 px 164081 B
+[00:25:00] Pot A 07: thickness on 860 rays: med 4.0561 p10 3.5011 p90 11.9737 frac1-3 0.0093 hits med 2 max 2 >=2 sheets 860 >=3 sheets 0 merged max 2
+[00:25:00] Pot A 07: PCD binary 1000000 points (normal_x,normal_y,normal_z,x,y,z,_), 1000000 usable normals
+[00:25:54] Pot A 07: carry max nearest 0.0005 mm (grid cell 1.2985); cloud kNN k=29 cell 6.3198 nn med 0.2234
+[00:25:54] Pot A 07: growth normals=pca curvature=recomputed(k=28) -> 1276 regions, largest 3093; 3.4 deg symmetric rule: 1275 components, largest 3097 pts (36.0%), 31174 edges kept
+[00:25:54] Pot A 07: growth normals=pca curvature=ply-column -> 1277 regions, largest 3093; 3.4 deg symmetric rule: 1275 components, largest 3097 pts (36.0%), 31174 edges kept
+[00:25:54] Pot A 07: growth normals=carry curvature=recomputed(k=28) -> 1032 regions, largest 3185; 3.4 deg symmetric rule: 1036 components, largest 3185 pts (37.0%), 32230 edges kept
+[00:25:54] Pot A 07: growth normals=carry curvature=ply-column -> 1033 regions, largest 3185; 3.4 deg symmetric rule: 1036 components, largest 3185 pts (37.0%), 32230 edges kept
+[00:25:54] Juglet 1: OBJ 24294 v 48592 f -> welded 24294 v; euler -2 boundary_edges 0 loops 0 watertight True components 1 area 4987.155 mm2 0.3s
+[00:25:54] Juglet 1: turning r=0.6 mm over 24294 vertices: 61904 pairs, pair med 4.256 p90 17.512 max 89.982, vertex-max med 6.908 p90 30.482 max 89.982, 21475 verts above 3.4 deg
+[00:25:54] Juglet 1: turning r=1.0 mm over 24294 vertices: 183421 pairs, pair med 5.694 p90 24.413 max 89.985, vertex-max med 12.297 p90 60.671 max 89.985, 24127 verts above 3.4 deg
+[00:25:56] Juglet 1: view1 1400x1400 mm/px 0.03375 bar 148 px 237114 B
+[00:25:57] Juglet 1: view2 1400x1362 mm/px 0.03624 bar 138 px 209552 B
+[00:25:58] Juglet 1: view3 1400x1400 mm/px 0.04066 bar 123 px 221405 B
+[00:26:00] Juglet 1: view4-turning 1400x1400 bar 123 px 305045 B
+[00:26:04] Juglet 1: thickness on 809 rays: med 2.3538 p10 1.6657 p90 18.0882 frac1-3 0.5847 hits med 2 max 10 >=2 sheets 606 >=3 sheets 329 merged max 10
+[00:26:04] Juglet 1: PCD ascii 24294 points (x,y,z,normal_x,normal_y,normal_z), 24294 usable normals
+[00:27:11] Juglet 1: carry max nearest 0.0000 mm (grid cell 5.0173); cloud kNN k=49 cell 11.8941 nn med 0.4046
+[00:27:11] Juglet 1: growth normals=pca curvature=recomputed(k=48) -> 4036 regions, largest 3489; 3.4 deg symmetric rule: 4041 components, largest 3486 pts (24.0%), 23553 edges kept
+[00:27:12] Juglet 1: growth normals=pca curvature=ply-column -> 4036 regions, largest 3489; 3.4 deg symmetric rule: 4041 components, largest 3486 pts (24.0%), 23553 edges kept
+[00:27:12] Juglet 1: growth normals=carry curvature=recomputed(k=48) -> 4865 regions, largest 3340; 3.4 deg symmetric rule: 4863 components, largest 3304 pts (22.7%), 18555 edges kept
+[00:27:12] Juglet 1: growth normals=carry curvature=ply-column -> 4859 regions, largest 3343; 3.4 deg symmetric rule: 4863 components, largest 3304 pts (22.7%), 18555 edges kept
+[00:27:13] Pot A 01: OBJ 100064 v 200124 f -> welded 100064 v; euler 2 boundary_edges 0 loops 0 watertight True components 1 area 23273.575 mm2 1.6s
+[00:27:14] Pot A 01: turning r=0.6 mm over 100064 vertices: 505347 pairs, pair med 8.902 p90 37.415 max 89.993, vertex-max med 9.920 p90 53.395 max 89.993, 77487 verts above 3.4 deg
+[00:27:15] Pot A 01: turning r=1.0 mm over 100064 vertices: 1376096 pairs, pair med 11.683 p90 49.746 max 90.000, vertex-max med 18.526 p90 74.972 max 90.000, 88521 verts above 3.4 deg
+[00:27:19] Pot A 01: view1 1400x603 mm/px 0.08508 bar 59 px 140620 B
+[00:27:23] Pot A 01: view2 1400x839 mm/px 0.09477 bar 53 px 132773 B
+[00:27:28] Pot A 01: view3 1400x1400 mm/px 0.10031 bar 50 px 417464 B
+[00:27:33] Pot A 01: view4-turning 1400x1400 bar 50 px 736437 B
+[00:27:52] Pot A 01: thickness on 804 rays: med 8.2857 p10 5.4082 p90 21.0378 frac1-3 0.0000 hits med 2 max 6 >=2 sheets 804 >=3 sheets 80 merged max 6
+[00:27:52] Pot A 01: PCD binary 999810 points (normal_x,normal_y,normal_z,x,y,z,_), 999810 usable normals
+[00:33:56] Pot A 01: carry max nearest 0.0005 mm (grid cell 3.7519); cloud kNN k=51 cell 8.5246 nn med 0.3092
+[00:33:57] Pot A 01: growth normals=pca curvature=recomputed(k=50) -> 6883 regions, largest 32775; 3.4 deg symmetric rule: 6891 components, largest 32776 pts (38.5%), 325523 edges kept
+[00:33:58] Pot A 01: growth normals=pca curvature=ply-column -> 6877 regions, largest 32775; 3.4 deg symmetric rule: 6891 components, largest 32776 pts (38.5%), 325523 edges kept
+[00:33:58] Pot A 01: growth normals=carry curvature=recomputed(k=50) -> 6831 regions, largest 32206; 3.4 deg symmetric rule: 6850 components, largest 32205 pts (37.8%), 315254 edges kept
+[00:33:59] Pot A 01: growth normals=carry curvature=ply-column -> 6843 regions, largest 32206; 3.4 deg symmetric rule: 6850 components, largest 32205 pts (37.8%), 315254 edges kept
+[00:33:59] md5 after: 24 unchanged of 24
+[00:33:59] instrument checks: 64 rows, 61 identical, 3 differ
