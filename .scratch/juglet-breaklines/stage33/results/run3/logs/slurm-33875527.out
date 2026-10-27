@@ -1,0 +1,317 @@
+[JOB] runid=20261027-1009_c498293_t33-pota-grid job=33875527 tag=t33-pota-grid new=c4982932199a916b17b7e75fc1070348a5cc02a7 host=spartan-bm170.hpc.unimelb.edu.au
+start 2026-10-27T10:09:34Z
+[JOB] commit ok new=c498293
+[JOB] reused binaries:
+660795ff38f259bc4d61811073962dd4  /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out/bin-orig
+4331ef39237d13a266736383bf1b0c8e  /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out/bin-new
+/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out/bin-orig 1573144 bytes
+/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out/bin-new 1582312 bytes
+[JOB] inputs hashed: 216 rows, tree 1803 rows
+opt-sfs-pristine ABSENT
+[JOB] instrument selftests
+[SELFTEST] ok   pcd/binary normals-first [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [-7.0, 8.0, -9.0]]
+[SELFTEST] ok   pcd/ascii x-first 
+[SELFTEST] ok   ply/ascii 
+[SELFTEST] ok   fold/30deg 30.000000
+[SELFTEST] ok   coverage/2mm 
+[SELFTEST] ok   pairs/along along=4.000 across=0.000
+[SELFTEST] ok   pairs/coincidence coin=1.000
+[SELFTEST] ok   replay/merge gates=['merge'] final=1 pairs=16
+[SELFTEST] ok   replay/min_pairs gate=min_pairs pairs=0
+[SELFTEST] ok   replay/min_pairs_2 
+[SELFTEST] ok   replay/rhoN gate=rhoN
+[SELFTEST] ok   obj/triangle [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
+[SELFTEST] ok   pca/flat max curv=0
+[SELFTEST] PASS (0 failures) tmp=/tmp/m33-g_tei5z9
+[SELFTEST] ok   identical file md5_equal=1 sorted_identical=1
+[SELFTEST] ok   one coordinate moved 0.5: sorted_identical=0 max_abs_diff=0.500
+[SELFTEST] ok   two rows swapped: sorted_identical=1 md5_equal=0
+[SELFTEST] PASS
+[SELFTEST] PASS 5/5 through/across/coincidence on synthetic patches
+[JOB] cells: 40
+cells start 2026-10-27T10:09:40Z
+[JOB] xargs rc=0; cell.tsv written: 40 of 40
+[CELL] AO Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=17s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=18s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=18s npts=49528 floor=99 from=99 capped=no clusters_pre=5 clusters=3 sizes=20628,22543,1183 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=16s npts=49528 floor=99 from=99 capped=no clusters_pre=7 clusters=5 sizes=20914,22834,872,281,241 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_02 exit=0 meas=0 elapsed=17s npts=49528 floor=99 from=99 capped=no clusters_pre=7 clusters=5 sizes=20914,22834,872,281,241 s0=yes s1=yes frac=0.02 kept=no
+[CELL] C Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=51s npts=85136 floor=170 from=170 capped=no clusters_pre=14 clusters=13 sizes=32775,28101,3915,3440,841,785,436,434,417,393,334,325,191 s0=yes s1=yes frac=0.02 kept=no
+[CELL] B Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=51s npts=85136 floor=170 from=170 capped=no clusters_pre=14 clusters=13 sizes=32775,28101,3915,3440,841,785,436,434,417,393,334,325,191 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=51s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=51s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=4 sizes=19382,21172,929,156 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=14s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=5 sizes=19619,21390,951,255,169 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_01 exit=0 meas=0 elapsed=54s npts=85136 floor=170 from=170 capped=no clusters_pre=12 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=12s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=11s npts=38901 floor=77 from=77 capped=no clusters_pre=8 clusters=6 sizes=16296,17668,462,423,411,202 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=11s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=11s npts=38901 floor=77 from=77 capped=no clusters_pre=5 clusters=5 sizes=15932,17374,770,164,124 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_04 exit=0 meas=0 elapsed=13s npts=41296 floor=82 from=82 capped=no clusters_pre=8 clusters=6 sizes=17235,18767,1044,230,222,140 s0=yes s1=yes frac=0.02 kept=no
+[CELL] A Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=12s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_03 exit=0 meas=0 elapsed=16s npts=46784 floor=93 from=93 capped=no clusters_pre=5 clusters=5 sizes=19619,21390,951,255,169 s0=yes s1=yes frac=0.02 kept=no
+[CELL] AO Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=8s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=8s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=7s npts=27944 floor=55 from=55 capped=no clusters_pre=7 clusters=7 sizes=11195,12271,327,299,186,94,73 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=8s npts=27944 floor=55 from=55 capped=no clusters_pre=6 clusters=6 sizes=10739,11984,195,140,117,76 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=11s npts=38074 floor=76 from=76 capped=no clusters_pre=6 clusters=6 sizes=15585,16895,716,409,335,112 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_06 exit=0 meas=0 elapsed=8s npts=27944 floor=55 from=55 capped=no clusters_pre=7 clusters=7 sizes=11195,12271,327,299,186,94,73 s0=yes s1=yes frac=0.02 kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=11s npts=38074 floor=76 from=76 capped=no clusters_pre=5 clusters=5 sizes=15256,16570,588,304,281 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_05 exit=0 meas=0 elapsed=11s npts=38074 floor=76 from=76 capped=no clusters_pre=6 clusters=6 sizes=15585,16895,716,409,335,112 s0=yes s1=yes frac=0.02 kept=no
+[CELL] AO Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=2s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=3s npts=8598 floor=50 from=50 capped=no clusters_pre=7 clusters=7 sizes=2867,3137,225,212,199,133,75 s0=yes s1=yes frac=none kept=no
+[CELL] AO Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] A Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] A2 Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=2s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2611,2832,284,265 s0=yes s1=yes frac=none kept=no
+[CELL] B Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=3s npts=7682 floor=50 from=50 capped=no clusters_pre=5 clusters=4 sizes=2616,2880,276,260 s0=yes s1=yes frac=none kept=no
+[CELL] C Pot_A/Pot_A_Piece_07 exit=0 meas=0 elapsed=11s npts=34608 floor=210 from=210 capped=no clusters_pre=7 clusters=5 sizes=11952,13093,2849,1322,1061 s0=yes s1=yes frac=0.02 kept=no
+[CELL] C Pot_A/Pot_A_Piece_08 exit=0 meas=0 elapsed=12s npts=36097 floor=246 from=246 capped=no clusters_pre=4 clusters=4 sizes=12949,14251,2031,1635 s0=yes s1=yes frac=0.02 kept=no
+cells end 2026-10-27T10:11:22Z
+[JOB] cells33b.tsv rows=40
+[JOB] aggregate measurement tables (this run's cells)
+[M33] agg rows=1895 -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out
+[JOB] pair statistic, stage 30's reference instrument, over this run's cells
+[MEASURE30] cells=40 with_pair=40 ok=40 written=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1009_c498293_t33-pota-grid/out/cells/measure30.tsv count_mismatch=0
+[JOB] pair statistic, the same instrument, over the previous run's cells
+[MEASURE30] cells=36 with_pair=13 ok=13 written=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0953_9baddd5_t33-normals-merge/out/cells/measure30.tsv count_mismatch=0
+[JOB] defaults proof over all eight Pot A pieces
+[DEFAULTS2] surface rows=48, not identical=32; segmentation comparisons=16, differing=5
+[DEFAULTS2] AO A Pot_A_Piece_01 Pot_A_Piece_01_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_01 Pot_A_Piece_01_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_02 Pot_A_Piece_02_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_02 Pot_A_Piece_02_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_03 Pot_A_Piece_03_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_03 Pot_A_Piece_03_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_04 Pot_A_Piece_04_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_04 Pot_A_Piece_04_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_05 Pot_A_Piece_05_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_05 Pot_A_Piece_05_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_06 Pot_A_Piece_06_Surface_0.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] AO A Pot_A_Piece_06 Pot_A_Piece_06_Surface_1.ply md5_equal=0 sorted_identical=0 detail=columns compared: x,y,z,nx,ny,nz,curvature
+[DEFAULTS2] seg AO A Pot_A_Piece_03 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39773 surf1_points=43574 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39772 surf1_points=43575 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_05 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31580 surf1_points=34138 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31579 surf1_points=34140 reason=two surfaces written
+[DEFAULTS2] seg AO A Pot_A_Piece_06 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22575 surf1_points=24920 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22574 surf1_points=24921 reason=two surfaces written
+[DEFAULTS2] seg A A2 Pot_A_Piece_05 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31579 surf1_points=34140 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31573 surf1_points=34140 reason=two surfaces written
+[DEFAULTS2] seg A A2 Pot_A_Piece_06 1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22574 surf1_points=24921 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22571 surf1_points=24920 reason=two surfaces written
+[JOB] segmentation and switch lines, this run and the previous one
+[LINES33] rows=136
+[LINES33] rows=458
+[COUNTS33] cells=40 files=1202 bytes=3122877587
+[COUNTS33] cells=36 files=844 bytes=357894018
+[JOB] cells33b.tsv rows=41
+[JOB] surfaces33.tsv rows=81
+[JOB] pairs33.tsv rows=41
+[JOB] carried33.tsv rows=81
+[JOB] replay33.tsv rows=1696
+[JOB] defaults33b.tsv rows=65
+[JOB] measure30-run3.tsv rows=41
+[JOB] measure30-run2.tsv rows=37
+[JOB] lines33b.tsv rows=137
+[JOB] counts33b.tsv rows=321
+== cells33b.tsv
+tag	pot	piece	envs	frac	mesh_exit	meas_exit	elapsed_s	npts	retries	clusters_pre_merge	clusters_post_merge	sizes_post_merge	outcome	floor	floor_from	capped	surf0	surf1	surf0_points	surf1_points	surf0_bytes	kept
+A2	Pot_A	Pot_A_Piece_01	none	none	0	0	51	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66758	57293	5101649	no
+A2	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42200	46325	3203204	no
+A2	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39772	43575	3057836	no
+A2	Pot_A	Pot_A_Piece_04	none	none	0	0	11	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32684	35789	2551647	no
+A2	Pot_A	Pot_A_Piece_05	none	none	0	0	11	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31573	34140	2343439	no
+A2	Pot_A	Pot_A_Piece_06	none	none	0	0	8	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22571	24920	1744119	no
+A2	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	454642	no
+A2	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+AO	Pot_A	Pot_A_Piece_01	none	none	0	0	54	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66758	57293	5271564	no
+AO	Pot_A	Pot_A_Piece_02	none	none	0	0	17	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42200	46325	3289492	no
+AO	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39773	43574	3019152	no
+AO	Pot_A	Pot_A_Piece_04	none	none	0	0	12	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32684	35789	2551647	no
+AO	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31580	34138	2377667	no
+AO	Pot_A	Pot_A_Piece_06	none	none	0	0	8	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22575	24920	1790659	no
+AO	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	454642	no
+AO	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+A	Pot_A	Pot_A_Piece_01	none	none	0	0	51	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66758	57293	5237581	no
+A	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42200	46325	3289492	no
+A	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39772	43575	3078226	no
+A	Pot_A	Pot_A_Piece_04	none	none	0	0	11	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32684	35789	2568399	no
+A	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31579	34140	2377591	no
+A	Pot_A	Pot_A_Piece_06	none	none	0	0	8	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22574	24921	1779845	no
+A	Pot_A	Pot_A_Piece_07	none	none	0	0	2	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	454642	no
+A	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	437645	no
+B	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input	none	0	0	51	85136	1	14	13	32775,28101,3915,3440,841,785,436,434,417,393,334,325,191	two	170	170	no	yes	yes	66800	57907	5140351	no
+B	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input	none	0	0	16	49528	1	7	5	20914,22834,872,281,241	two	99	99	no	yes	yes	42489	46657	3268704	no
+B	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input	none	0	0	14	46784	1	5	5	19619,21390,951,255,169	two	93	93	no	yes	yes	40083	43800	3082042	no
+B	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input	none	0	0	11	38901	1	8	6	16296,17668,462,423,411,202	two	77	77	no	yes	yes	33061	36134	2597321	no
+B	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input	none	0	0	11	38074	1	6	6	15585,16895,716,409,335,112	two	76	76	no	yes	yes	31972	34469	2421760	no
+B	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input	none	0	0	7	27944	1	7	7	11195,12271,327,299,186,94,73	two	55	55	no	yes	yes	23100	25253	1831694	no
+B	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input	none	0	0	3	8598	1	7	7	2867,3137,225,212,199,133,75	two	50	50	no	yes	yes	6091	6487	456527	no
+B	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input	none	0	0	3	7682	1	5	4	2616,2880,276,260	two	50	50	no	yes	yes	5540	6122	435911	no
+C	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	51	85136	1	14	13	32775,28101,3915,3440,841,785,436,434,417,393,334,325,191	two	170	170	no	yes	yes	66799	57907	5242349	no
+C	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	17	49528	1	7	5	20914,22834,872,281,241	two	99	99	no	yes	yes	42492	46658	3268931	no
+C	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	16	46784	1	5	5	19619,21390,951,255,169	two	93	93	no	yes	yes	40082	43801	3082813	no
+C	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	13	41296	1	8	6	17235,18767,1044,230,222,140	two	82	82	no	yes	yes	35003	38359	2555717	no
+C	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	11	38074	1	6	6	15585,16895,716,409,335,112	two	76	76	no	yes	yes	31973	34472	2406255	no
+C	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	8	27944	1	7	7	11195,12271,327,299,186,94,73	two	55	55	no	yes	yes	23097	25254	1808354	no
+C	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	11	34608	1	7	5	11952,13093,2849,1322,1061	two	210	210	no	yes	yes	24777	26966	1867003	no
+C	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	12	36097	1	4	4	12949,14251,2031,1635	two	246	246	no	yes	yes	26948	29443	2129975	no
+== measure30-run3.tsv
+role	tag	scheme	pot	piece	status	n0	n1	med_nn_mm	med_along_mm	p90_along_mm	max_along_mm	med_across_mm	p90_across_mm	max_across_mm	coincidence_share_1um	surf0_points_log	surf1_points_log	count_match
+?	A	A	Pot_A	Pot_A_Piece_01	ok	66758	57293	7.095229	7.089063	9.944149	12.954713	0.270923	0.543656	4.474023	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_02	ok	42200	46325	3.646246	3.631941	4.458259	6.353303	0.251284	0.447072	3.722243	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_03	ok	39772	43575	3.683479	3.671327	4.409827	5.567134	0.244369	0.423656	3.539410	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_04	ok	32684	35789	3.668812	3.656679	4.146562	5.053718	0.237421	0.414596	3.006544	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_05	ok	31579	34140	3.778944	3.766858	4.354088	5.318628	0.250533	0.433211	3.159894	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_06	ok	22574	24921	3.563446	3.547096	3.745462	4.228921	0.256264	0.724289	2.899785	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	A	A	Pot_A	Pot_A_Piece_08	ok	5528	6097	3.618758	3.603650	3.816507	4.000407	0.250306	1.202003	2.891494	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_01	ok	66758	57293	7.095229	7.089063	9.944149	12.954713	0.270923	0.543656	4.474023	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_02	ok	42200	46325	3.646246	3.631941	4.458259	6.353303	0.251284	0.447072	3.722243	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_03	ok	39772	43575	3.683479	3.671327	4.409827	5.567134	0.244369	0.423656	3.539410	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_04	ok	32684	35789	3.668812	3.656679	4.146562	5.053718	0.237421	0.414596	3.006544	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_05	ok	31573	34140	3.778944	3.766851	4.354067	5.318628	0.250533	0.433211	3.159894	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_06	ok	22571	24920	3.563465	3.547105	3.745473	4.228921	0.256264	0.724289	2.899785	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	A2	A2	Pot_A	Pot_A_Piece_08	ok	5528	6097	3.618758	3.603650	3.816507	4.000407	0.250306	1.202003	2.891494	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_01	ok	66758	57293	7.095229	7.089063	9.944149	12.954713	0.270923	0.543656	4.474023	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_02	ok	42200	46325	3.646246	3.631941	4.458259	6.353303	0.251284	0.447072	3.722243	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_03	ok	39773	43574	3.683479	3.671327	4.409857	5.567134	0.244379	0.423672	3.539410	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_04	ok	32684	35789	3.668812	3.656679	4.146562	5.053718	0.237421	0.414596	3.006544	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_05	ok	31580	34138	3.778940	3.766865	4.354132	5.318628	0.250533	0.433210	3.159894	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_06	ok	22575	24920	3.563465	3.547105	3.745473	4.228921	0.256268	0.724289	2.899785	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	AO	AO	Pot_A	Pot_A_Piece_08	ok	5528	6097	3.618758	3.603650	3.816507	4.000407	0.250306	1.202003	2.891494	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_01	ok	66800	57907	7.084585	7.078858	9.965096	13.333213	0.265588	0.526397	4.654872	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_02	ok	42489	46657	3.645671	3.632234	4.471137	6.394815	0.247465	0.437033	3.790602	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_03	ok	40083	43800	3.683471	3.672115	4.418908	5.595302	0.243148	0.418803	3.587056	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_04	ok	33061	36134	3.669486	3.658371	4.154135	5.055205	0.236308	0.405896	2.945721	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_05	ok	31972	34469	3.778380	3.765723	4.356634	5.321534	0.248802	0.432929	3.501410	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_06	ok	23100	25253	3.562683	3.548413	3.745279	4.228961	0.253708	0.696406	3.056526	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_07	ok	6091	6487	3.967435	3.909857	4.281365	4.627635	0.248935	0.451573	3.617108	0.000000			
+?	B	B	Pot_A	Pot_A_Piece_08	ok	5540	6122	3.618736	3.602503	3.815704	3.997951	0.250013	1.230157	3.020436	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_01	ok	66799	57907	7.084585	7.078858	9.965096	13.333213	0.265588	0.526397	4.654872	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_02	ok	42492	46658	3.645613	3.632311	4.468462	6.394815	0.247502	0.437139	3.795523	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_03	ok	40082	43801	3.683471	3.672112	4.418901	5.595302	0.243151	0.419000	3.587056	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_04	ok	35003	38359	3.669224	3.658831	4.151451	5.055131	0.230797	0.396128	2.851228	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_05	ok	31973	34472	3.778353	3.765599	4.356561	5.321534	0.248802	0.432929	3.501410	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_06	ok	23097	25254	3.562393	3.548413	3.745276	4.228961	0.253709	0.696388	3.056526	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_07	ok	24777	26966	3.958494	3.891144	4.272313	4.625908	0.130820	1.490205	3.920753	0.000000			
+?	C	C	Pot_A	Pot_A_Piece_08	ok	26948	29443	3.603161	3.590666	3.814966	3.989041	0.133493	1.556683	2.671257	0.000000			
+== measure30-run2.tsv
+role	tag	scheme	pot	piece	status	n0	n1	med_nn_mm	med_along_mm	p90_along_mm	max_along_mm	med_across_mm	p90_across_mm	max_across_mm	coincidence_share_1um	surf0_points_log	surf1_points_log	count_match
+?	A	A	Juglet	Juglet_Piece_2	no_pair														
+?	A	A	Juglet	Juglet_Piece_3	no_pair														
+?	A	A	Juglet	Juglet_Piece_5	no_pair														
+?	A	A	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	A	A	Juglet	Juglet_Piece_9	no_pair														
+?	A	A	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	A2	A2	Juglet	Juglet_Piece_2	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_3	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_5	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	A2	A2	Juglet	Juglet_Piece_9	no_pair														
+?	A2	A2	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	AO	AO	Juglet	Juglet_Piece_2	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_3	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_5	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	AO	AO	Juglet	Juglet_Piece_9	no_pair														
+?	AO	AO	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	B	B	Juglet	Juglet_Piece_2	no_pair														
+?	B	B	Juglet	Juglet_Piece_3	no_pair														
+?	B	B	Juglet	Juglet_Piece_5	ok	235	1559	10.150219	2.944130	11.065285	18.633171	9.693411	17.396389	20.336455	0.091084			
+?	B	B	Juglet	Juglet_Piece_7	ok	295	2552	13.104205	4.188686	16.381709	21.347867	12.366719	17.741463	18.509094	0.102273			
+?	B	B	Juglet	Juglet_Piece_9	no_pair														
+?	B	B	Pot_A	Pot_A_Piece_07	ok	6091	6487	3.967435	3.909857	4.281365	4.627635	0.248935	0.451573	3.617108	0.000000			
+?	C	C	Juglet	Juglet_Piece_2	ok	226	203	13.387877	6.359683	8.675947	9.040148	11.856192	13.425996	14.542865	0.000000			
+?	C	C	Juglet	Juglet_Piece_3	no_pair														
+?	C	C	Juglet	Juglet_Piece_5	no_pair														
+?	C	C	Juglet	Juglet_Piece_7	no_pair														
+?	C	C	Juglet	Juglet_Piece_9	no_pair														
+?	C	C	Pot_A	Pot_A_Piece_07	ok	24777	26968	3.958435	3.890789	4.272099	4.625908	0.130835	1.491007	3.920753	0.000000			
+?	D	D	Juglet	Juglet_Piece_2	ok	226	203	13.387877	6.359683	8.675947	9.040148	11.856192	13.425996	14.542865	0.000000			
+?	D	D	Juglet	Juglet_Piece_3	no_pair														
+?	D	D	Juglet	Juglet_Piece_5	no_pair														
+?	D	D	Juglet	Juglet_Piece_7	no_pair														
+?	D	D	Juglet	Juglet_Piece_9	no_pair														
+?	D	D	Pot_A	Pot_A_Piece_07	ok	24777	26968	3.958435	3.890789	4.272099	4.625908	0.130835	1.491007	3.920753	0.000000			
+== defaults33b.tsv
+check	arm_a	arm_b	pot	piece	file	present_a	present_b	bytes_a	bytes_b	md5_a	md5_b	md5_equal	points_a	points_b	sorted_identical	max_abs_diff	detail
+surface	AO	A	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_SampledWithNormals.ply	1	1	6056071	6056071	b58f583996c154243ca6d41d3149f597	b58f583996c154243ca6d41d3149f597	1	85136	85136	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_Surface_0.ply	1	1	5271564	5237581	37d2e60e386d558f9497c1492b47b42a	43df51c2603689168aa24a72d45e4cc8	0	66758	66758	0	1.6296649e+37	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_Surface_1.ply	1	1	4389574	4359832	5d4497cfd1145ccfc9ac25e95e71266c	efa1baf71403f341e4c8f87c6f98bdc7	0	57293	57293	0	1.6296649e+37	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_01	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	AO	A	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_SampledWithNormals.ply	1	1	3537421	3537421	14dbb68ed0fe14fba5a419208f4a2cf1	14dbb68ed0fe14fba5a419208f4a2cf1	1	49528	49528	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_Surface_0.ply	1	1	3289492	3289492	a8c991cc9ec440ac934206c6d0c55679	4e37b92d575c75c88f80618cae4fa694	0	42200	42200	0	3.9869269e+37	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_Surface_1.ply	1	1	3557507	3557507	551977c302a2d04d58d66645185fb8cf	767cce80d5fbd667e67ad813bbd06be9	0	46325	46325	0	3.9869269e+37	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_02	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	AO	A	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_SampledWithNormals.ply	1	1	3288773	3288773	6eb95a1e41d2dedb2f62536f964eb6c4	6eb95a1e41d2dedb2f62536f964eb6c4	1	46784	46784	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_Surface_0.ply	1	1	3019152	3078226	60717a4fdd58a97a9a667cd1f9aa0ad9	4588eba90e777863c62132d128bba017	0	39773	39772	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_Surface_1.ply	1	1	3312768	3335248	381650ca32fd45782d2545a446930b84	6c0e994940c3eb1500b3bec13ee46c59	0	43574	43575	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_03	logs/lines33.log	1	1	0	0			0	2	2	0	0.0	1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39773 surf1_points=43574 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_03 outcome=two retries=1 clusters=4 sizes=19382,21172,929,156 npts=46784 floor=93 floor_from=93 capped=no surf0_points=39772 surf1_points=43575 reason=two surfaces written
+surface	AO	A	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_SampledWithNormals.ply	1	1	2758189	2758189	fd92f26bb7cc841f37017f5de1314758	fd92f26bb7cc841f37017f5de1314758	1	38901	38901	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_Surface_0.ply	1	1	2551647	2568399	501fbe4bc073bba25aff697d6144a144	d2bc81953ebbc8e6c2deeb0e67b7aa40	0	32684	32684	0	5.1599713e+34	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_Surface_1.ply	1	1	2691530	2709945	b1e0a048a5cc4138051f467050a0fc2d	0cd291704a546c2da6779fde0b67c223	0	35789	35789	0	5.1599713e+34	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_04	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	AO	A	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_SampledWithNormals.ply	1	1	2690086	2690086	5b598dc948e10fe00a6ef35e048155f9	5b598dc948e10fe00a6ef35e048155f9	1	38074	38074	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_Surface_0.ply	1	1	2377667	2377591	3c43e4362f379f2a086a364940366b1b	0fd2768b17d33cb37ab7a6fb0fa26d27	0	31580	31579	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_Surface_1.ply	1	1	2684456	2684614	3cd6de361a187e9dce19b95112b7ead4	7e224170ad6a5e744c3dfae5995cdfe5	0	34138	34140	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_05	logs/lines33.log	1	1	0	0			0	2	2	0	0.0	1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31580 surf1_points=34138 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31579 surf1_points=34140 reason=two surfaces written
+surface	AO	A	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_SampledWithNormals.ply	1	1	1990988	1990988	04bddcbcf3cd62c0b607eeef7c8c3b32	04bddcbcf3cd62c0b607eeef7c8c3b32	1	27944	27944	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_Surface_0.ply	1	1	1790659	1779845	1ffabc9c9c415828c665c0e3c8e36cdf	ca8a816b6f65bc3705fe00553c2d461d	0	22575	22574	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_Surface_1.ply	1	1	1855832	1915830	8bfa91c9129f486996a5c37f9d5e4f33	f5dd42173562c2d98eb10f060e0bfe57	0	24920	24921	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_06	logs/lines33.log	1	1	0	0			0	2	2	0	0.0	1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22575 surf1_points=24920 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22574 surf1_points=24921 reason=two surfaces written
+surface	AO	A	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_SampledWithNormals.ply	1	1	611993	611993	29536bde341dd14e22f11b5852eb75ee	29536bde341dd14e22f11b5852eb75ee	1	8598	8598	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_Surface_0.ply	1	1	454642	454642	8fb1f3a53fec0516c80c6f8126d79ead	23e58efe310bd15e4a071545cd543232	0	6066	6066	0	1.1894347e+32	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_Surface_1.ply	1	1	502471	502471	4eda82be543a511bd1bf3fd359aaf86d	947ec0ac414b9d657f1fd8e6b289aedb	0	6437	6437	0	1.1894347e+32	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_07	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	AO	A	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_SampledWithNormals.ply	1	1	548385	548385	d60db59e9fe0d76e8581067da96aa97b	d60db59e9fe0d76e8581067da96aa97b	1	7682	7682	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_Surface_0.ply	1	1	434728	437645	dc216a7fddef6c7767c32470776dbb57	ce8d612afea08c4df34f244237e6eccb	0	5528	5528	0	60279161000000.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	AO	A	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_Surface_1.ply	1	1	458396	461661	8142d30de666739f693f6c8f5260a1ce	7bb52611aac1344cc81910393d6882b9	0	6097	6097	0	60279161000000.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	AO	A	Pot_A	Pot_A_Piece_08	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_SampledWithNormals.ply	1	1	6056071	6056071	b58f583996c154243ca6d41d3149f597	b58f583996c154243ca6d41d3149f597	1	85136	85136	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_Surface_0.ply	1	1	5237581	5101649	43df51c2603689168aa24a72d45e4cc8	a7824016ae94c3ccf43e93367aed8ba5	0	66758	66758	0	1.6296649e+37	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_01	Pot_A_Piece_01_Surface_1.ply	1	1	4359832	4240864	efa1baf71403f341e4c8f87c6f98bdc7	70ff6b10d9b4dbf31d9b5f8b1b45979b	0	57293	57293	0	1.6296649e+37	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_01	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_SampledWithNormals.ply	1	1	3537421	3537421	14dbb68ed0fe14fba5a419208f4a2cf1	14dbb68ed0fe14fba5a419208f4a2cf1	1	49528	49528	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_Surface_0.ply	1	1	3289492	3203204	4e37b92d575c75c88f80618cae4fa694	3d52215dc608868d780aa716b33c11df	0	42200	42200	0	3.9869269e+37	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_02	Pot_A_Piece_02_Surface_1.ply	1	1	3557507	3462379	767cce80d5fbd667e67ad813bbd06be9	92a754c9cc23b352ea47ac1b750e60be	0	46325	46325	0	3.9869269e+37	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_02	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_SampledWithNormals.ply	1	1	3288773	3288773	6eb95a1e41d2dedb2f62536f964eb6c4	6eb95a1e41d2dedb2f62536f964eb6c4	1	46784	46784	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_Surface_0.ply	1	1	3078226	3057836	4588eba90e777863c62132d128bba017	c1b94b3a79ff725042d25b63322c3a55	0	39772	39772	0	1.2757557064339e-12	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_03	Pot_A_Piece_03_Surface_1.ply	1	1	3335248	3312844	6c0e994940c3eb1500b3bec13ee46c59	a43a0081feb8b31da7dd63e7e071d04d	0	43575	43575	0	84.953771	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_03	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_SampledWithNormals.ply	1	1	2758189	2758189	fd92f26bb7cc841f37017f5de1314758	fd92f26bb7cc841f37017f5de1314758	1	38901	38901	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_Surface_0.ply	1	1	2568399	2551647	d2bc81953ebbc8e6c2deeb0e67b7aa40	385f0ff0422fce3f5b42bb775166eea9	0	32684	32684	0	5.1599713e+34	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_04	Pot_A_Piece_04_Surface_1.ply	1	1	2709945	2691530	0cd291704a546c2da6779fde0b67c223	0885f394578d988f532e2769be027f5b	0	35789	35789	0	5.1599713e+34	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_04	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_SampledWithNormals.ply	1	1	2690086	2690086	5b598dc948e10fe00a6ef35e048155f9	5b598dc948e10fe00a6ef35e048155f9	1	38074	38074	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_Surface_0.ply	1	1	2377591	2343439	0fd2768b17d33cb37ab7a6fb0fa26d27	7249a586a0b20402e2125b89ade60567	0	31579	31573	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_05	Pot_A_Piece_05_Surface_1.ply	1	1	2684614	2615332	7e224170ad6a5e744c3dfae5995cdfe5	c5e977b0a1aef1ff1d977115bb1f98d4	0	34140	34140	0	60.410398	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_05	logs/lines33.log	1	1	0	0			0	2	2	0	0.0	1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31579 surf1_points=34140 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_05 outcome=two retries=1 clusters=5 sizes=15256,16570,588,304,281 npts=38074 floor=76 floor_from=76 capped=no surf0_points=31573 surf1_points=34140 reason=two surfaces written
+surface	A	A2	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_SampledWithNormals.ply	1	1	1990988	1990988	04bddcbcf3cd62c0b607eeef7c8c3b32	04bddcbcf3cd62c0b607eeef7c8c3b32	1	27944	27944	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_Surface_0.ply	1	1	1779845	1744119	ca8a816b6f65bc3705fe00553c2d461d	22d06f021f88c4c87e53f673247a8c0b	0	22574	22571	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_06	Pot_A_Piece_06_Surface_1.ply	1	1	1915830	1864962	f5dd42173562c2d98eb10f060e0bfe57	24ea2656a28b116d94ab569cb7bd06b0	0	24921	24920	0	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_06	logs/lines33.log	1	1	0	0			0	2	2	0	0.0	1 differing lines; A: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22574 surf1_points=24921 reason=two surfaces written | B: [0;m[STATUS-23] piece=Pot_A_Piece_06 outcome=two retries=1 clusters=6 sizes=10739,11984,195,140,117,76 npts=27944 floor=55 floor_from=55 capped=no surf0_points=22571 surf1_points=24920 reason=two surfaces written
+surface	A	A2	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_SampledWithNormals.ply	1	1	611993	611993	29536bde341dd14e22f11b5852eb75ee	29536bde341dd14e22f11b5852eb75ee	1	8598	8598	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_Surface_0.ply	1	1	454642	454642	23e58efe310bd15e4a071545cd543232	d1e128d255892ae25474778b2a50999d	0	6066	6066	0	3.4507754e-13	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_07	Pot_A_Piece_07_Surface_1.ply	1	1	502471	502471	947ec0ac414b9d657f1fd8e6b289aedb	d3bfdeddb5af45fbd2b14911b41705e2	0	6437	6437	0	3.4507754e-13	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_07	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+surface	A	A2	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_SampledWithNormals.ply	1	1	548385	548385	d60db59e9fe0d76e8581067da96aa97b	d60db59e9fe0d76e8581067da96aa97b	1	7682	7682	1	0.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_Surface_0.ply	1	1	437645	434728	ce8d612afea08c4df34f244237e6eccb	bc878d5f865a3427f732a8bbb2539186	0	5528	5528	0	60276548476000.0	columns compared: x,y,z,nx,ny,nz,curvature
+surface	A	A2	Pot_A	Pot_A_Piece_08	Pot_A_Piece_08_Surface_1.ply	1	1	461661	458396	7bb52611aac1344cc81910393d6882b9	b87c859b2d1c8724e1006755be30de97	0	6097	6097	0	60276548476000.0	columns compared: x,y,z,nx,ny,nz,curvature
+segmentation_lines	A	A2	Pot_A	Pot_A_Piece_08	logs/lines33.log	1	1	0	0			0	2	2	1	0.0	0 differing lines
+[JOB] geometry count, recorded BEFORE the delete
+file	C/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	2422669
+file	C/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	101
+file	C/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	2540259
+file	measure30.tsv	.tsv	4899
+deleted 81 files, 111392474 bytes; 0 files of that class remain
+[JOB] geometry deleted per the record above
+[INPUTS] identical before and after: 216 rows
+[CORPUS] identical before and after: 1803 rows incl the pristine line
+opt-sfs-pristine ABSENT
+[JOB] index row appended:
+20261027-1009_c498293_t33-pota-grid^I33875527^Ic4982932199a916b17b7e75fc1070348a5cc02a7^It33-pota-grid^I^I$
+end 2026-10-27T10:11:45Z
+[JOB] DONE rc 0
