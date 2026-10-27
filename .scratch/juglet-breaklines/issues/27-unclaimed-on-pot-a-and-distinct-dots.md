@@ -116,3 +116,115 @@ unset) so its numbers are today's behaviour.
 Part A says what fraction of a sherd is unclaimed on both vessels; it does not say whether high unclaimed is
 good or bad. Part B makes the dot count honest; it does not say whether our Breakline_0 follows the right
 edge — only how many dots it has once copies are removed. Neither part touches reassembly.
+
+## Worker result — 2026-10-27, job 33860966
+
+Run of record `/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid`, commit
+`df523dd`, pre-change `16ba55d`, arms OLD / A (defaults) / A2 (same binary again) / P (defaults +
+`SFS_DUMP_STAGE`) / B (`SFS_DEDUPE=on`), 50 mesh cells + 32 edgeline cells in one job. Tables in
+`.scratch/juglet-breaklines/stage27/evidence/`, instruments documented in `stage27/README.md`.
+Status left at `in-progress`: acceptance is the lead's, and item 6 below was not obtained.
+
+### Part A — what the sidecars say (arm P, today's defaults)
+
+`points_in_no_cluster` and the region sizes are verbatim from `r2_clusters_premerge.json`; the surface
+columns are `r5_write.json`. Fraction = `points_in_no_cluster / npts`, computed not estimated.
+
+| piece | points in | regions | region sizes | in no region | fraction | Surface_0 pts/distinct | Surface_1 pts/distinct |
+|---|---|---|---|---|---|---|---|
+| Pot_A_Piece_01 | 85136 | 12 | 32775 27551 3803 3375 815 730 697 570 379 285 203 173 | 13780 | 0.1619 | 66760 / 33985 | 57283 / 29732 |
+| Pot_A_Piece_02 | 49528 | 5 | 22543 20628 751 221 211 | 5174 | 0.1045 | 42198 / 21570 | 46332 / 23789 |
+| Pot_A_Piece_07 | 8598 | 8 | 3093 2850 203 170 144 120 73 71 | 1874 | 0.2180 | 6066 / 3216 | 6437 / 3344 |
+| Pot_A_Piece_08 | 7682 | 5 | 2832 2611 265 194 90 | 1690 | 0.2200 | 5528 / 2917 | 6097 / 3265 |
+| Juglet_Piece_1 | 14546 | 22 | 3489 626 411 349 274 164 151 143 133 106 103 102 86 84 81 80 64 58 57 53 53 50 | 7829 | 0.5382 | 3580 / 2954 | 12092 / 8627 |
+| Juglet_Piece_2 | 1031 | 0 | — (21 retries, no region) | 1031 | 1.0000 | no surface | no surface |
+| Juglet_Piece_4 | 1530 | 2 | 242 51 | 1237 | 0.8085 | 182 / 131 | 732 / 732 |
+| Juglet_Piece_6 | 2351 | 2 | 365 213 | 1773 | 0.7541 | 608 / 395 | 1016 / 651 |
+| Juglet_Piece_7 | 4254 | 5 | 326 263 77 68 65 | 3455 | 0.8122 | 1012 / 609 | 829 / 566 |
+| Juglet_Piece_9 | 787 | 0 | — (21 retries, no region) | 787 | 1.0000 | no surface | no surface |
+
+Same run, the rung-5 assignment: `points_on_surface_0 / points_on_surface_1 / points_on_neither` =
+33985 / 29732 / 21419 (A 01), 21570 / 23789 / 4169 (A 02), 3216 / 3344 / 2038 (A 07), 2917 / 3265 / 1500
+(A 08), 2954 / 5826 / 5766 (J 1), 131 / 680 / 719 (J 4), 395 / 471 / 1485 (J 6), 609 / 413 / 3232 (J 7),
+1031 / — / 1031 (J 2), 787 / — / 787 (J 9). On J 1, J 6 and J 7 the written Surface_1 carries **more
+distinct positions than the segmentation assigned to it** (8627 v 5826, 651 v 471, 566 v 413) because
+`finishImprovedSurface` also copies the other surface and appends the whole segmentation cloud.
+
+### Part B — copies in the written surfaces, off against on
+
+`n_ply` and distinct positions from `surfaces27.tsv` (`np.unique` on xyz). Every `on` surface has
+`duplicates = 0`, ratio 1.000.
+
+| piece | surface | off pts | off distinct | off dup | off ratio | on pts = on distinct |
+|---|---|---|---|---|---|---|
+| Pot_A_Piece_01 | 0 / 1 | 66761 / 57293 | 33986 / 29742 | 32775 / 27551 | 1.964 / 1.926 | 33989 / 29749 |
+| Pot_A_Piece_02 | 0 / 1 | 42203 / 46327 | 21575 / 23784 | 20628 / 22543 | 1.956 / 1.948 | 21570 / 23786 |
+| Pot_A_Piece_07 | 0 / 1 | 6066 / 6437 | 3216 / 3344 | 2850 / 3093 | 1.886 / 1.925 | 3216 / 3344 |
+| Pot_A_Piece_08 | 0 / 1 | 5528 / 6097 | 2917 / 3265 | 2611 / 2832 | 1.895 / 1.867 | 2917 / 3265 |
+| Juglet_Piece_1 | 0 / 1 | 3580 / 12092 | 2954 / 8627 | 626 / 3465 | 1.212 / 1.402 | 2954 / 8627 |
+| Juglet_Piece_4 | 0 / 1 | 182 / 732 | 131 / 732 | 51 / 0 | 1.389 / 1.000 | 131 / 732 |
+| Juglet_Piece_6 | 0 / 1 | 608 / 1016 | 395 / 651 | 213 / 365 | 1.539 / 1.561 | 395 / 651 |
+| Juglet_Piece_7 | 0 / 1 | 1012 / 829 | 609 / 566 | 403 / 263 | 1.662 / 1.465 | 609 / 566 |
+
+**Within-run chain (exact, every cell):** for the three off arms `n_ply == [DEDUPE-27] in=` and for the
+`on` arm `n_ply == out=`; the counts agree to the point.
+
+```
+off (A, Pot_A_Piece_01): [DEDUPE-27] surface=0 mode=off in=66761 out=33986
+                         [DEDUPE-27] surface=1 mode=off in=57293 out=29742
+on  (B, Pot_A_Piece_01): [DEDUPE-27] surface=0 mode=on in=66764 out=33989
+                         [DEDUPE-27] surface=1 mode=on in=57300 out=29749
+```
+
+**Defaults reproduce the pre-change binary, and the run-to-run spread in the same units** (`seteq27.tsv`,
+distinct-position sets, 16 surfaces per pair; `nn_max` is the largest nearest-neighbour distance between the
+two sets): A/OLD 12 of 16 exactly equal, worst cell 18 positions only in one set and `nn_max` 0.666714 mm;
+**A/A2 12 of 16 exactly equal, worst 18 positions and 0.761401 mm**; P/A 30 positions, 0.714881 mm; B/A 11
+positions, 0.714881 mm; B/A2 21 positions, 0.761401 mm. Every unequal cell is Pot A 01 or 02 — the two
+1 000 000-point clouds the unseeded ray casts move — while all eight Juglet surfaces and Pot A 07/08 are
+**exactly** equal in every pair, so the A-vs-A2 figure is the bar a difference must beat, and against it the
+`on` arm's distinct sets match the `off` arm's within the same 0-21 points.
+
+### Pot A pair statistics, the corrected ruler (through along Surface_0's own normal, across it)
+
+| piece | arm | n0 | n1 | med through | p90 through | max through | med across | p90 across | max across | coincidence at 1 µm |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 01 | A off | 66761 | 57293 | 7.089063 | 9.944138 | 12.954713 | 0.270913 | 0.543787 | 4.474023 | 0.000000 |
+| 01 | A2 off | 66763 | 57283 | 7.089063 | 9.943797 | 12.954713 | 0.270911 | 0.543634 | 4.474023 | 0.000000 |
+| 01 | B on | 33989 | 29749 | 7.060942 | 10.041428 | 12.954713 | 0.276117 | 0.655563 | 4.474023 | 0.000000 |
+| 02 | A off | 42203 | 46327 | 3.631630 | 4.458488 | 6.353303 | 0.251284 | 0.447085 | 3.722243 | 0.000000 |
+| 02 | B on | 21570 | 23786 | 3.626575 | 4.472346 | 6.353303 | 0.255074 | 0.490298 | 3.722243 | 0.000000 |
+| 07 | A off | 6066 | 6437 | 3.919588 | 4.297276 | 4.596343 | 0.248680 | 0.467674 | 3.556027 | 0.000000 |
+| 07 | B on | 3216 | 3344 | 3.904660 | 4.292938 | 4.596343 | 0.253443 | 1.089373 | 3.556027 | 0.000000 |
+| 08 | A off | 5528 | 6097 | 3.603650 | 3.816507 | 4.000407 | 0.250306 | 1.202003 | 2.891494 | 0.000000 |
+| 08 | B on | 2917 | 3265 | 3.589088 | 3.814568 | 4.000407 | 0.263740 | 1.534700 | 2.891494 | 0.000000 |
+
+All in mm; `med_nn` tracks `med through` to 0.014 mm at worst (01 off 7.095229 / on 7.067484).
+
+### Item 6, our own Breakline_0 dots, was NOT obtained
+
+All 32 edgeline cells (OLD/A/A2/B × the eight pieces that write a surface) exited **139 (SIGSEGV)** in 1-5 s
+and wrote only `(none-written)` rows into `dots27.tsv`. Failing command and message, from
+`out/cells/A/Pot_A/Pot_A_Piece_01/logs/edge.log`:
+
+```
+[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_01_unclustered.ply:1: parse error: couldn't read the magic string
+[pcl::PLYReader::read] problem parsing header!
+[pcl::KdTreeFLANN::setInputCloud] Cannot create a KDTree with an empty input cloud!
+instruments/run_edge27.sh: line 34: 161680 Segmentation fault (core dumped) "$APT" exec --bind /data:/data "$SIF" env POT_NAME="$POT" "$EDGEBIN"
+```
+
+Cause: the edgeline stage reads `Temp/Data/<pot>/<piece>_unclustered.ply` as well as the surfaces, and
+`run_cell27.sh` kept only `Surface_{0,1}` and `_SampledWithNormals.ply` before deleting the staged tree, so
+the file was absent. One-line fix for a future job (not submitted: the brief caps the grid at three jobs):
+keep `${PIECE}_unclustered.ply` into `<cell>/surfaces/` in `run_cell27.sh` and copy it into
+`$ES/Temp/Data/$POT/` in `run_edge27.sh`.
+
+### Record
+
+Corpus tree and md5 before/after identical (1 803 paths, 30 md5s, 228 922 and 3 982 bytes);
+`opt-sfs-pristine` recorded **ABSENT**, not created; `[S27] geometry deleted: 1252 files, 1 610 428 132 bytes`
+of staged trees, plus the 210 kept cell surfaces (130 `.ply` 151 883 930 bytes + 80 `.xyz` 62 987 058 bytes)
+and the 50 rung dumps (56 516 653 bytes) deleted afterwards with a counted manifest in the run directory's
+`out/GEOMETRY_DELETED_cells.txt`; logs, sidecar JSONs, tables and arm binaries kept. Index row appended with
+`verdict` and `human_note` empty.

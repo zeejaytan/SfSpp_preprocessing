@@ -1,0 +1,280 @@
+# TICKET 27 - geometry kept by the cell runner, then deleted by the worker after every table was computed (job 33860966 run dir).
+# manifest below lists every file with its size before deletion; tables that survive are named at the end.
+# format: bytes<TAB>tag<TAB>pot<TAB>piece<TAB>bucket<TAB>extension
+1079873	A2	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_SampledWithNormals.ply	ply
+280882	A2	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.ply	ply
+195063	A2	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.xyz	xyz
+946518	A2	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.ply	ply
+657500	A2	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.xyz	xyz
+76741	A2	Juglet	Juglet_Piece_2	surfaces/Juglet_Piece_2_SampledWithNormals.ply	ply
+112472	A2	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_SampledWithNormals.ply	ply
+14429	A2	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.ply	ply
+9458	A2	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.xyz	xyz
+58099	A2	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.ply	ply
+39354	A2	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.xyz	xyz
+173749	A2	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_SampledWithNormals.ply	ply
+48592	A2	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.ply	ply
+33797	A2	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.xyz	xyz
+81833	A2	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.ply	ply
+56292	A2	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.xyz	xyz
+314641	A2	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_SampledWithNormals.ply	ply
+81278	A2	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.ply	ply
+56777	A2	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.xyz	xyz
+66604	A2	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.ply	ply
+45518	A2	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.xyz	xyz
+59078	A2	Juglet	Juglet_Piece_9	surfaces/Juglet_Piece_9_SampledWithNormals.ply	ply
+6056071	A2	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_SampledWithNormals.ply	ply
+5205191	A2	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.ply	ply
+3681450	A2	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.xyz	xyz
+4331512	A2	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.ply	ply
+3019025	A2	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.xyz	xyz
+3537421	A2	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_SampledWithNormals.ply	ply
+3206742	A2	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.ply	ply
+2319374	A2	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.xyz	xyz
+3580289	A2	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.ply	ply
+2490174	A2	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.xyz	xyz
+611993	A2	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_SampledWithNormals.ply	ply
+457858	A2	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.ply	ply
+313429	A2	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.xyz	xyz
+505815	A2	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.ply	ply
+352558	A2	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.xyz	xyz
+548385	A2	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_SampledWithNormals.ply	ply
+434728	A2	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.ply	ply
+307573	A2	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.xyz	xyz
+458396	A2	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.ply	ply
+321456	A2	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.xyz	xyz
+1079873	A	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_SampledWithNormals.ply	ply
+280882	A	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.ply	ply
+195063	A	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.xyz	xyz
+946518	A	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.ply	ply
+657500	A	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.xyz	xyz
+76741	A	Juglet	Juglet_Piece_2	surfaces/Juglet_Piece_2_SampledWithNormals.ply	ply
+112472	A	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_SampledWithNormals.ply	ply
+14429	A	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.ply	ply
+9458	A	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.xyz	xyz
+58099	A	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.ply	ply
+39354	A	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.xyz	xyz
+173749	A	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_SampledWithNormals.ply	ply
+48592	A	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.ply	ply
+33797	A	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.xyz	xyz
+81833	A	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.ply	ply
+56292	A	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.xyz	xyz
+314641	A	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_SampledWithNormals.ply	ply
+80669	A	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.ply	ply
+56777	A	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.xyz	xyz
+66038	A	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.ply	ply
+45518	A	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.xyz	xyz
+59078	A	Juglet	Juglet_Piece_9	surfaces/Juglet_Piece_9_SampledWithNormals.ply	ply
+6056071	A	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_SampledWithNormals.ply	ply
+5033888	A	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.ply	ply
+3681334	A	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.xyz	xyz
+4181359	A	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.ply	ply
+3019556	A	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.xyz	xyz
+3537421	A	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_SampledWithNormals.ply	ply
+3331924	A	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.ply	ply
+2319708	A	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.xyz	xyz
+3581439	A	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.ply	ply
+2490114	A	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.xyz	xyz
+611993	A	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_SampledWithNormals.ply	ply
+457858	A	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.ply	ply
+313429	A	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.xyz	xyz
+505815	A	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.ply	ply
+352558	A	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.xyz	xyz
+548385	A	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_SampledWithNormals.ply	ply
+434728	A	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.ply	ply
+307573	A	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.xyz	xyz
+458396	A	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.ply	ply
+321456	A	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.xyz	xyz
+1079873	B	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_SampledWithNormals.ply	ply
+230543	B	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.ply	ply
+161333	B	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.xyz	xyz
+670136	B	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.ply	ply
+469277	B	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.xyz	xyz
+76741	B	Juglet	Juglet_Piece_2	surfaces/Juglet_Piece_2_SampledWithNormals.ply	ply
+112472	B	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_SampledWithNormals.ply	ply
+10248	B	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.ply	ply
+6809	B	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.xyz	xyz
+56139	B	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.ply	ply
+39354	B	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.xyz	xyz
+173749	B	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_SampledWithNormals.ply	ply
+31881	B	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.ply	ply
+21974	B	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.xyz	xyz
+52607	B	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.ply	ply
+36076	B	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.xyz	xyz
+314641	B	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_SampledWithNormals.ply	ply
+49147	B	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.ply	ply
+34146	B	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.xyz	xyz
+45714	B	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.ply	ply
+31034	B	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.xyz	xyz
+59078	B	Juglet	Juglet_Piece_9	surfaces/Juglet_Piece_9_SampledWithNormals.ply	ply
+6056071	B	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_SampledWithNormals.ply	ply
+2618422	B	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.ply	ply
+1874310	B	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.xyz	xyz
+2266297	B	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.ply	ply
+1568264	B	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.xyz	xyz
+3537421	B	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_SampledWithNormals.ply	ply
+1693237	B	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.ply	ply
+1185731	B	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.xyz	xyz
+1839627	B	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.ply	ply
+1278518	B	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.xyz	xyz
+611993	B	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_SampledWithNormals.ply	ply
+241353	B	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.ply	ply
+166224	B	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.xyz	xyz
+261312	B	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.ply	ply
+183115	B	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.xyz	xyz
+548385	B	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_SampledWithNormals.ply	ply
+229759	B	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.ply	ply
+162313	B	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.xyz	xyz
+246013	B	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.ply	ply
+172329	B	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.xyz	xyz
+1079873	OLD	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_SampledWithNormals.ply	ply
+260204	OLD	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.ply	ply
+195063	OLD	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.xyz	xyz
+886297	OLD	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.ply	ply
+657500	OLD	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.xyz	xyz
+76741	OLD	Juglet	Juglet_Piece_2	surfaces/Juglet_Piece_2_SampledWithNormals.ply	ply
+112472	OLD	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_SampledWithNormals.ply	ply
+14429	OLD	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.ply	ply
+9458	OLD	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.xyz	xyz
+58099	OLD	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.ply	ply
+39354	OLD	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.xyz	xyz
+173749	OLD	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_SampledWithNormals.ply	ply
+48592	OLD	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.ply	ply
+33797	OLD	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.xyz	xyz
+81833	OLD	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.ply	ply
+56292	OLD	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.xyz	xyz
+314641	OLD	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_SampledWithNormals.ply	ply
+81278	OLD	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.ply	ply
+56777	OLD	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.xyz	xyz
+66604	OLD	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.ply	ply
+45518	OLD	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.xyz	xyz
+59078	OLD	Juglet	Juglet_Piece_9	surfaces/Juglet_Piece_9_SampledWithNormals.ply	ply
+6056071	OLD	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_SampledWithNormals.ply	ply
+5072724	OLD	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.ply	ply
+3681336	OLD	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.xyz	xyz
+4301924	OLD	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.ply	ply
+3019132	OLD	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.xyz	xyz
+3537421	OLD	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_SampledWithNormals.ply	ply
+3311221	OLD	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.ply	ply
+2319653	OLD	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.xyz	xyz
+3604066	OLD	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.ply	ply
+2490172	OLD	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.xyz	xyz
+611993	OLD	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_SampledWithNormals.ply	ply
+451426	OLD	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.ply	ply
+313429	OLD	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.xyz	xyz
+499127	OLD	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.ply	ply
+352558	OLD	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.xyz	xyz
+548385	OLD	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_SampledWithNormals.ply	ply
+437645	OLD	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.ply	ply
+307573	OLD	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.xyz	xyz
+461661	OLD	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.ply	ply
+321456	OLD	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.xyz	xyz
+1079873	P	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_SampledWithNormals.ply	ply
+277928	P	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.ply	ply
+195063	P	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_0.xyz	xyz
+937915	P	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.ply	ply
+657500	P	Juglet	Juglet_Piece_1	surfaces/Juglet_Piece_1_Surface_1.xyz	xyz
+76741	P	Juglet	Juglet_Piece_2	surfaces/Juglet_Piece_2_SampledWithNormals.ply	ply
+112472	P	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_SampledWithNormals.ply	ply
+14167	P	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.ply	ply
+9458	P	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_0.xyz	xyz
+57119	P	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.ply	ply
+39354	P	Juglet	Juglet_Piece_4	surfaces/Juglet_Piece_4_Surface_1.xyz	xyz
+173749	P	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_SampledWithNormals.ply	ply
+48987	P	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.ply	ply
+33797	P	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_0.xyz	xyz
+82484	P	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.ply	ply
+56292	P	Juglet	Juglet_Piece_6	surfaces/Juglet_Piece_6_Surface_1.xyz	xyz
+314641	P	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_SampledWithNormals.ply	ply
+80669	P	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.ply	ply
+56777	P	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_0.xyz	xyz
+66038	P	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.ply	ply
+45518	P	Juglet	Juglet_Piece_7	surfaces/Juglet_Piece_7_Surface_1.xyz	xyz
+59078	P	Juglet	Juglet_Piece_9	surfaces/Juglet_Piece_9_SampledWithNormals.ply	ply
+6056071	P	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_SampledWithNormals.ply	ply
+5069022	P	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.ply	ply
+3681287	P	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_0.xyz	xyz
+4212571	P	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.ply	ply
+3019019	P	Pot_A	Pot_A_Piece_01	surfaces/Pot_A_Piece_01_Surface_1.xyz	xyz
+3537421	P	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_SampledWithNormals.ply	ply
+3289332	P	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.ply	ply
+2319430	P	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_0.xyz	xyz
+3558041	P	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.ply	ply
+2490387	P	Pot_A	Pot_A_Piece_02	surfaces/Pot_A_Piece_02_Surface_1.xyz	xyz
+611993	P	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_SampledWithNormals.ply	ply
+444994	P	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.ply	ply
+313429	P	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_0.xyz	xyz
+492439	P	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.ply	ply
+352558	P	Pot_A	Pot_A_Piece_07	surfaces/Pot_A_Piece_07_Surface_1.xyz	xyz
+548385	P	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_SampledWithNormals.ply	ply
+437645	P	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.ply	ply
+307573	P	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_0.xyz	xyz
+461661	P	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.ply	ply
+321456	P	Pot_A	Pot_A_Piece_08	surfaces/Pot_A_Piece_08_Surface_1.xyz	xyz
+# DELETION PROOF (read back after deletion)
+# deleted: 130 files ext=ply 151883930 bytes; 80 files ext=xyz 62987058 bytes; total 210 files 214870988 bytes
+# files still under */surfaces/* after deletion: 0
+# KEPT: per-cell logs (mesh.log, lines27.log, status_raw.tsv, edge.log); out/dump/P sidecar JSONs r1-r5 for 10 pieces;
+#       tables (cells27.tsv, cells27_edge.tsv, surfaces27.tsv, seteq27.tsv, measure26.tsv, dots27.tsv, dedupe27_lines.txt, partA27.tsv);
+#       out/bin arm binaries (OLD/A/A2/P/B/EdgeLineExtractionHeadless.A, md5 in out/bin/*.md5 if written); corpus before/after md5+tree; out/GEOMETRY_DELETED.txt (staged trees).
+# SECOND MANIFEST: rung dumps under out/dump (intermediate geometry written by SFS_DUMP_STAGE), deleted after the tables were computed; the sidecar JSONs stay.
+947837	ply
+941997	ply
+941669	ply
+948716	ply
+946095	ply
+67646	ply
+67652	ply
+67646	ply
+67649	ply
+67640	ply
+99753	ply
+99466	ply
+99460	ply
+99463	ply
+98936	ply
+154587	ply
+154015	ply
+154009	ply
+154012	ply
+153715	ply
+279714	ply
+278921	ply
+278915	ply
+278918	ply
+278686	ply
+51332	ply
+51338	ply
+51332	ply
+51335	ply
+51326	ply
+1607	tsv
+5520120	ply
+5449146	ply
+5448937	ply
+5448940	ply
+5456397	ply
+3238782	ply
+3194434	ply
+3194428	ply
+3194431	ply
+3193417	ply
+550661	ply
+543943	ply
+543937	ply
+543940	ply
+544095	ply
+498284	ply
+492298	ply
+492292	ply
+492295	ply
+492096	ply
+492	txt
+# deleted above; files under out/dump that are NOT .json after deletion: 0
+# json sidecars kept: 50 files, 31228 bytes
+# CORRECTION to the second manifest: it recorded size and extension but NOT the file name (my slip), and the
+# extension filter '! -name *.json' also caught two non-geometry files that the sweep then deleted:
+#   out/dump/P/partA27.tsv (1607 bytes) -- RESTORED from the laptop copy of the same run, byte-identical table;
+#   out/dump/P/README.txt   (492 bytes)  -- RESTORED from submit_27.sbatch.tmpl (its own heredoc, commit df523dd);
+#                                  it is a hand-written note, not a program output, so this is a faithful restoration.
+# Both are back in place and are NOT geometry; the manifest rows for them stand as deleted-and-restored, not deleted.

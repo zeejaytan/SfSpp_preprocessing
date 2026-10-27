@@ -62,3 +62,25 @@ Geometry (staged trees and edgeline stages) is deleted at the end of the job; th
 Nothing here is a verdict. Rung-2 and rung-5 sidecars are written **inside the 30-retry loop**, so a
 piece that retried keeps only its last retry; the per-retry history is in that cell's
 `logs/lines27.log` `[RETRY-23]` lines.
+
+## What ran (job ledger, 2026-10-27)
+
+| job | sacct | wall | what happened |
+|---|---|---|---|
+| 33860135 | FAILED 1:0 | 3 s | one `local` line expanded `$name` before assigning it, so `set -u` killed the build step |
+| 33860394 | COMPLETED 0:0 | 3:13 | ran no cell: the 50 `xargs` children did not inherit `CELLRUN` |
+| **33860966** | **COMPLETED 0:0** | **5:44** | **the run of record** — `20261027-1534_df523dd_p27-dedupe-grid`: 50 of 50 mesh cells `stage=0 mesh=0`, every measurement step rc=0 |
+
+The edgeline pass **failed in all 32 cells, exit 139 (SIGSEGV)**, so `dots27.tsv` holds only
+`(none-written)` rows and item 6 of the ticket was not obtained. The cause is in
+`out/cells/A/Pot_A/Pot_A_Piece_01/logs/edge.log`: the edgeline stage also reads
+`Temp/Data/<pot>/<piece>_unclustered.ply`, and `run_cell27.sh` kept only the surfaces before deleting the
+staged tree — `[pcl::PLYReader] ..._unclustered.ply:1: parse error: couldn't read the magic string`,
+`Cannot create a KDTree with an empty input cloud!`, then the segfault. Fix for a future job (one line):
+keep `${PIECE}_unclustered.ply` into `<cell>/surfaces/` and copy it into `$ES/Temp/Data/$POT/` in
+`run_edge27.sh`. The brief caps the grid at three jobs, so no fourth job was submitted.
+
+The numbers this grid produced are in `evidence/` and are written up under "Worker result" in the ticket
+file. Deletion of the kept geometry after the tables were computed is recorded in the run directory's
+`out/GEOMETRY_DELETED_cells.txt` (manifest of 210 cell surfaces plus 50 rung dumps, with the two
+non-geometry files the sweep caught and restored named in it).
