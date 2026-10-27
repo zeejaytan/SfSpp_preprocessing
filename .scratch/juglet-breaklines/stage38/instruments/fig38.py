@@ -78,10 +78,13 @@ def _draw(piece, mesh_xyz, rows, geometry, outpath, target_mm_px, dpi, arm):
     _lo, _hi, mid, half, span_p = geometry
     inch = (span_p / target_mm_px) / dpi
     nrow = len(rows)
-    fig = plt.figure(figsize=(inch * 3.0 + 1.5, inch * nrow + 1.9 + 0.9 * nrow), dpi=dpi)
+    fig = plt.figure(figsize=(inch * 3.0 + 2.1, inch * nrow + 1.9 + 0.9 * nrow), dpi=dpi)
+    # The tick labels of a real sherd are six characters wide (-522.5) against a toy's one or two,
+    # so the column gap and the label column are sized for the real case: at wspace 0.22 the row
+    # label and the first panel's y ticks overprint each other.
     gs = fig.add_gridspec(nrow + 1, 4, height_ratios=[1.0] * nrow + [1.25],
-                          width_ratios=[0.17, 1.0, 1.0, 1.0],
-                          hspace=0.55, wspace=0.22,
+                          width_ratios=[0.21, 1.0, 1.0, 1.0],
+                          hspace=0.55, wspace=0.62,
                           left=0.012, right=0.995, top=1.0 - 0.30 / (nrow + 1.4), bottom=0.035)
     axes = []
     for r, (level, meta, xyz, cid, fmt) in enumerate(rows):
@@ -97,7 +100,7 @@ def _draw(piece, mesh_xyz, rows, geometry, outpath, target_mm_px, dpi, arm):
                             (meta["requested_spacing_mm"], meta["achieved_spacing_mm"]))
                 lab = fig.add_subplot(gs[r, 0])
                 lab.axis("off")
-                lab.text(0.98, 0.5, tag, ha="right", va="center", transform=lab.transAxes,
+                lab.text(0.94, 0.5, tag, ha="right", va="center", transform=lab.transAxes,
                          fontsize=6.5, linespacing=1.15)
             axes.append(ax)
     fig.canvas.draw()
@@ -131,9 +134,13 @@ def _draw(piece, mesh_xyz, rows, geometry, outpath, target_mm_px, dpi, arm):
             axp.annotate("x%d" % lv, (x, max(1, y)), textcoords="offset points", xytext=(3, 4),
                          fontsize=6, color=col)
         if arm_key == arm:
+            # pts is sorted by DESCENDING achieved spacing, so this is the coarsest level whose
+            # largest region already clears the floor -- the level at which more resolution stops
+            # being the thing that decides whether the sherd surfaces at all.
             for x, y, lv in pts:
-                if y >= floor and (reached is None or y > reached[1]):
+                if y >= floor:
                     reached = (lv, y, x)
+                    break
         handles.append(Line2D([], [], color=col, marker="o", ms=4, lw=0.9, label=lab))
     axp.set_xlabel("achieved spacing (mm, halved and tenth-ed by the level)", fontsize=7)
     axp.set_ylabel("largest pre-floor region (points, log)", fontsize=7)

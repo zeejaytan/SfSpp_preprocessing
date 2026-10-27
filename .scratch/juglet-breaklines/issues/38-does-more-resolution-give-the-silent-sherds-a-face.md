@@ -133,3 +133,28 @@ report the ink/grey/colour fractions again from the new PNGs.
 9. Corpus and pristine md5 before/after; the geometry deletion record; the four (or fewer) job ids
    with `sacct` states; the branch head sha.
 10. Anything not done, with the command that failed.
+## Progress (work in progress, 2026-10-28)
+
+Numbers, evidence and the exact failures are in `.scratch/juglet-breaklines/stage38/REPORT.md`; the run of record
+is `/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/` (job 33890365, commit
+`92d6871022fdf75f63170a5af65b30e31c9e843a`). Four jobs were available and four were used, all `FAILED` in
+`sacct`; the last one completed phase 1 in full and died in phases 2 and 3.
+
+Delivered by the run: items 1-6 and 9 of "Evidence to report" — sampler gate on both target pieces (with the
+literal count test failing on an under-dense shipped cloud and route 2 passing), achieved spacing per
+(piece, level) 0.986-0.993 of the request, the full pre-floor distribution for 24 cells plus 12 control cells,
+the largest-region table against the original mesh, the 20 pair rows, corpus/inputs md5 unchanged (215 rows
+either side, `corpus.diff` and `inputs.diff` 0 bytes), `/opt/sfs-pristine` recorded ABSENT, the geometry deleted
+with counts recorded first (112 files / 672 680 485 bytes, plus 401 / 103 262 155 from the aborted first run),
+and the two figures (item 8's first half).
+
+Not delivered: item 7 (the real pipeline cell) — `run_cell38.sh: line 15: STAGER: parameter null or not set`; and
+item 8's Part E redraws — phase 2 aborted before them on `ValueError: ...Pot_A_Piece_07_Point.pcd: only ascii
+clouds here` (the released Pot A cloud is binary). Three instrument defects are fixed in the tree and were never
+exercised by a job: the binary PCD path, the missing `STAGER` export, and two figure defects (row labels
+overprinting the first panel's tick labels; `floor_reached_at` reporting x10 when the 50-point floor is already
+cleared at the coarsest level, x1, on both pieces). Item 3's displacement numbers as measured (1.81 mm piece 2,
+1.15 mm piece 9) are the incident-candidate artefact, not displacement; the exact per-parent measurement is
+described in the report and is not implemented.
+
+Status, `Answers:` and `intent/` are unchanged; no judgement about what the numbers mean is recorded anywhere.

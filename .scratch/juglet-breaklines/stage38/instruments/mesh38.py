@@ -327,7 +327,11 @@ def write_pcd(path, pts, nrm):
 
 
 def read_pcd_xyz(path):
-    """Minimal reader for the ascii clouds this instrument writes and the shipped clouds."""
+    """Reader for the ascii clouds this instrument writes and the shipped clouds.
+
+    The released Pot A cloud is binary (its 1,000,000-point scan is not text), so a binary body is
+    handed to measure34.read_pcd, which already parses both layouts; this instrument writes ascii.
+    """
     fields = None
     n = None
     body = []
@@ -339,7 +343,10 @@ def read_pcd_xyz(path):
                 n = int(line.split()[1])
             elif line.startswith("DATA"):
                 if "ascii" not in line:
-                    raise ValueError("%s: only ascii clouds here" % path)
+                    import measure34 as _M
+                    d = _M.read_pcd(path)
+                    return (np.asarray(d["xyz"], dtype=np.float64),
+                            None if d["normals"] is None else np.asarray(d["normals"], dtype=np.float64))
                 break
         for line in f:
             body.append(line)

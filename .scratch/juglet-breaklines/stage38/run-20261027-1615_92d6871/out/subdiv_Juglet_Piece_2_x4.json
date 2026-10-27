@@ -1,0 +1,21 @@
+{
+ "displacement_max_mm": 1.8111703724732837,
+ "displacement_mean_mm": 0.006425677430774337,
+ "level": 4,
+ "mesh": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj",
+ "orig_faces": 5126,
+ "orig_verts": 2565,
+ "piece": "Juglet_Piece_2",
+ "sub_faces": 82016,
+ "sub_vertex_spacing_mm": 0.057287247708322504,
+ "sub_verts": 41010,
+ "sutures": {
+  "edge_median_mm": 0.3387241207826853,
+  "edges": 7689,
+  "fold_median_deg": 8.259083940156364,
+  "fold_p99_deg": 110.0310554067896,
+  "sag_max_mm": 382.82764304943663,
+  "sag_median_mm": 0.013487235681353628,
+  "sag_p99_mm": 1.253956784932903
+ }
+}

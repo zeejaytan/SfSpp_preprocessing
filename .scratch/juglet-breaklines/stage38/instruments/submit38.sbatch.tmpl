@@ -95,7 +95,8 @@ if ! diff -q "$OUT/instruments_commit.md5" "$OUT/instruments_rundir.md5" > /dev/
 fi
 echo "[JOB] instruments match commit $NEW ($(wc -l < "$OUT/instruments_commit.md5") files)"
 FIGS37=${FIGS37:-$SRC/.scratch/juglet-breaklines/stage37/phase2/figures/figures37.json}
-export FIGS37 INSTR
+STAGER=$INSTR/stage_synth_p38.sh
+export FIGS37 INSTR STAGER
 [ -f "$FIGS37" ] || echo "[JOB] WARN no ticket-37 figures json at $FIGS37"
 
 corpus_tree() {

@@ -1,0 +1,63 @@
+{
+ "arm": "A",
+ "bytes": 1216147,
+ "camera_half_mm": 13.732069999999998,
+ "dpi": 400.6,
+ "floor_reached_at": {
+  "achieved_mm": 0.020800269763209783,
+  "largest": 190064,
+  "level": 10
+ },
+ "levels_drawn": [
+  1,
+  2,
+  4,
+  10
+ ],
+ "mesh": "Juglet_Piece_2_Mesh.obj",
+ "mesh_vertices": 2565,
+ "mm_per_px": [
+  0.051883,
+  0.051883
+ ],
+ "piece": "Juglet_Piece_2",
+ "pixel_height": 4404,
+ "pixel_width": 3579,
+ "png": "Juglet_Piece_2_resolution_by_density.png",
+ "rows": [
+  {
+   "achieved_mm": 0.20904330739003849,
+   "largest": 873,
+   "level": 1,
+   "points": 6259,
+   "regions": 2000,
+   "requested_mm": 0.21089557
+  },
+  {
+   "achieved_mm": 0.10419067262811252,
+   "largest": 6088,
+   "level": 2,
+   "points": 25240,
+   "regions": 4539,
+   "requested_mm": 0.10544778
+  },
+  {
+   "achieved_mm": 0.05205081931088574,
+   "largest": 27522,
+   "level": 4,
+   "points": 102166,
+   "regions": 8430,
+   "requested_mm": 0.05272389
+  },
+  {
+   "achieved_mm": 0.020800269763209783,
+   "largest": 190064,
+   "level": 10,
+   "points": 649067,
+   "regions": 19313,
+   "requested_mm": 0.02108956
+  }
+ ],
+ "scale_bar_mm": 5.0,
+ "target_mm_px": 0.05
+}
