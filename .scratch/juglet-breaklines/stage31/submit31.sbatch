@@ -69,9 +69,10 @@ for f in "$SRC/$STAGE/gate_probe_p31.py" "$SRC/$STAGE/compare_p31.py" \
          "$RUN_DIR/submit.sbatch"; do
     crlf_check "$f" || say "CRLF above is fatal for $f"
 done
-# The laptop's own files are kept byte for byte. They ARE CRLF and the CR must
-# still be there -- that is the byte-identity claim. python runs a CRLF source
-# file unchanged, so the original probe is run exactly as it was fetched.
+# The laptop's own files are kept byte for byte, so their CR counts are REPORTED
+# rather than gated: the measured output is CRLF, the scripts are not, and the
+# claim is that the bytes still match the p07 run's copies. python runs a CRLF
+# source file unchanged, so the original probe is run exactly as it was fetched.
 {
     echo "# the laptop files: md5 and CR count, byte-identity with the machine that scored this bundle"
     for f in orig/gate_probe_b0_p07.py orig/gate_probe_b0.py orig/README.txt \
@@ -183,7 +184,7 @@ cd "$RUN"
 # script resolve to files this job just unpacked. Nothing is patched.
 FAKE="$W/cwdcompat"
 BLD="$FAKE/C:/PR/structure-from-sherds-pp/artifacts/p07_stage1/pota_bl"
-GTD="$FAKE/C:/PR/structure-from-sherds-pp/artifacts/pota_gt"
+GTD="$FAKE/C:/PR/structure-from-sherds-pp/artifacts/pot_a_gt"   # the p07 entry's own gt dir name (lines 142-143 of the original)
 mkdir -p "$BLD" "$GTD"
 : > "$OUT/bl_md5.tsv"
 for N in 1 2 3 4 5 6 7 8; do
@@ -211,6 +212,7 @@ cd "$FAKE"
 say "cwd for the original probe: $(pwd)"
 "$PY_SCIPY" "$SRC/$STAGE/orig/gate_probe_b0_p07.py" p07 > "$OUT/gate_probe_orig_p07.out" 2>&1
 say "A original gate_probe_b0_p07.py (scipy cKDTree) exit=$?"
+say "A line count: $(wc -l < "$OUT/gate_probe_orig_p07.out") (17 = the laptop's own line count)"
 tail -1 "$OUT/gate_probe_orig_p07.out" | sed 's/^/[RUN] A last line: /'
 
 # ---- 7. B: the port, bruteforce, the shipped python3 without scipy ----
