@@ -1,0 +1,160 @@
+[S27] 15:35:01 run=20261027-1534_df523dd_p27-dedupe-grid commit=df523dd5f62a70d987fcd993ddbf2b659def566e old=16ba55d5185b4588c62f459a2e7f47f8817c46f1 tag=p27-dedupe-grid host=spartan-bm140.hpc.unimelb.edu.au
+[S27] 15:35:01 job=33860966 nodelist=spartan-bm140 cpus=8
+[S27] 15:35:01 corpus tree before
+[S27] 15:35:01 corpus md5 before (10 pieces x cloud+mesh+axis)
+[S27] 15:35:02 corpus before: 1803 tree lines, 30 md5 lines
+[S27] 15:36:19 BUILD OLD mesh rc=0 bytes=1568752 md5=1a89a870ae5ffc758a168df8f7f6d45c
+[S27] 15:37:24 BUILD A mesh rc=0 bytes=1573144 md5=660795ff38f259bc4d61811073962dd4
+[S27] 15:38:36 BUILD A edge rc=0 bytes=5339048 md5=cbf747dc3172fe0bbd188822df14092a
+[S27] 15:38:36 A2 = byte copy of A md5=660795ff38f259bc4d61811073962dd4
+[S27] 15:38:36 P = byte copy of A md5=660795ff38f259bc4d61811073962dd4
+[S27] 15:38:36 B = byte copy of A md5=660795ff38f259bc4d61811073962dd4
+[S27] 15:38:36 mesh grid: 50 cells
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=2s surf0=yes(182) surf1=yes(732) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=182 surf1_points=732 reason=two surfaces written
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=2s surf0=yes(608) surf1=yes(1016) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=608 surf1_points=1016 reason=two surfaces written
+[CELL] tag=OLD pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=3s surf0=yes(5528) surf1=yes(6097) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=5528 surf1_points=6097 reason=two surfaces written
+[CELL] tag=OLD pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=3s surf0=yes(6066) surf1=yes(6437) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(1012) surf1=yes(829) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_9 stage=0 mesh=0 elapsed=4s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(6066) surf1=yes(6437) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_2 stage=0 mesh=0 elapsed=4s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(182) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=182 surf1_points=732 reason=two surfaces written
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=2s surf0=yes(5528) surf1=yes(6097) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=5528 surf1_points=6097 reason=two surfaces written
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=1s surf0=yes(608) surf1=yes(1016) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=608 surf1_points=1016 reason=two surfaces written
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(1012) surf1=yes(829) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+[CELL] tag=OLD pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=12s surf0=yes(3580) surf1=yes(12092) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=3580 surf1_points=12092 reason=two surfaces written
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_2 stage=0 mesh=0 elapsed=5s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_9 stage=0 mesh=0 elapsed=3s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=A2 pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(6066) surf1=yes(6437) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+[CELL] tag=A pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=12s surf0=yes(3580) surf1=yes(12092) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=3580 surf1_points=12092 reason=two surfaces written
+[CELL] tag=OLD pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=19s surf0=yes(42202) surf1=yes(46328) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42202 surf1_points=46328 reason=two surfaces written
+[CELL] tag=A2 pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=2s surf0=yes(5528) surf1=yes(6097) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=5528 surf1_points=6097 reason=two surfaces written
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(182) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=182 surf1_points=732 reason=two surfaces written
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=19s surf0=yes(42203) surf1=yes(46327) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42203 surf1_points=46327 reason=two surfaces written
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=2s surf0=yes(608) surf1=yes(1016) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=608 surf1_points=1016 reason=two surfaces written
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(1012) surf1=yes(829) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_9 stage=0 mesh=0 elapsed=3s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_2 stage=0 mesh=0 elapsed=5s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=P pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(6066) surf1=yes(6437) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+[CELL] tag=A2 pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=12s surf0=yes(3580) surf1=yes(12092) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=3580 surf1_points=12092 reason=two surfaces written
+[CELL] tag=P pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=3s surf0=yes(5528) surf1=yes(6097) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=5528 surf1_points=6097 reason=two surfaces written
+[CELL] tag=A2 pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=18s surf0=yes(42197) surf1=yes(46328) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42197 surf1_points=46328 reason=two surfaces written
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(182) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=182 surf1_points=732 reason=two surfaces written
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=1s surf0=yes(608) surf1=yes(1016) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=608 surf1_points=1016 reason=two surfaces written
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(1012) surf1=yes(829) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_2 stage=0 mesh=0 elapsed=5s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_9 stage=0 mesh=0 elapsed=3s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=P pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=17s surf0=yes(42198) surf1=yes(46332) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=42198 surf1_points=46332 reason=two surfaces written
+[CELL] tag=P pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=12s surf0=yes(3580) surf1=yes(12092) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=3580 surf1_points=12092 reason=two surfaces written
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_07 stage=0 mesh=0 elapsed=2s surf0=yes(3216) surf1=yes(3344) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=3216 surf1_points=3344 reason=two surfaces written
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_08 stage=0 mesh=0 elapsed=2s surf0=yes(2917) surf1=yes(3265) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_08 outcome=two retries=1 clusters=4 sizes=2611,2832,284,265 npts=7682 floor=50 floor_from=50 capped=no surf0_points=2917 surf1_points=3265 reason=two surfaces written
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_4 stage=0 mesh=0 elapsed=1s surf0=yes(131) surf1=yes(732) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_4 outcome=two retries=1 clusters=2 sizes=51,242 npts=1530 floor=50 floor_from=50 capped=no surf0_points=131 surf1_points=732 reason=two surfaces written
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_6 stage=0 mesh=0 elapsed=1s surf0=yes(395) surf1=yes(651) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_6 outcome=two retries=1 clusters=2 sizes=213,365 npts=2351 floor=50 floor_from=50 capped=no surf0_points=395 surf1_points=651 reason=two surfaces written
+[CELL] tag=OLD pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=50s surf0=yes(66761) surf1=yes(57285) dedupe_lines=0
+0 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66761 surf1_points=57285 reason=two surfaces written
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_7 stage=0 mesh=0 elapsed=3s surf0=yes(609) surf1=yes(566) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=609 surf1_points=566 reason=two surfaces written
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_9 stage=0 mesh=0 elapsed=3s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_2 stage=0 mesh=0 elapsed=4s surf0=no(0) surf1=no(0) dedupe_lines=0
+0 [STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+[CELL] tag=B pot=Juglet piece=Juglet_Piece_1 stage=0 mesh=0 elapsed=11s surf0=yes(2954) surf1=yes(8627) dedupe_lines=2 [0;m[STATUS-23] piece=Juglet_Piece_1 outcome=two retries=1 clusters=18 sizes=626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50 npts=14546 floor=50 floor_from=50 capped=no surf0_points=2954 surf1_points=8627 reason=two surfaces written
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_02 stage=0 mesh=0 elapsed=18s surf0=yes(21570) surf1=yes(23786) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_02 outcome=two retries=1 clusters=3 sizes=20628,22543,1183 npts=49528 floor=99 floor_from=99 capped=no surf0_points=21570 surf1_points=23786 reason=two surfaces written
+[CELL] tag=A pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=56s surf0=yes(66761) surf1=yes(57293) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66761 surf1_points=57293 reason=two surfaces written
+[CELL] tag=A2 pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=56s surf0=yes(66763) surf1=yes(57283) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66763 surf1_points=57283 reason=two surfaces written
+[CELL] tag=P pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=60s surf0=yes(66760) surf1=yes(57283) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=66760 surf1_points=57283 reason=two surfaces written
+[CELL] tag=B pot=Pot_A piece=Pot_A_Piece_01 stage=0 mesh=0 elapsed=55s surf0=yes(33989) surf1=yes(29749) dedupe_lines=2 [0;m[STATUS-23] piece=Pot_A_Piece_01 outcome=two retries=1 clusters=11 sizes=32775,27551,3803,3375,900,815,730,570,379,285,173 npts=85136 floor=170 floor_from=170 capped=no surf0_points=33989 surf1_points=29749 reason=two surfaces written
+[S27] 15:40:10 mesh pass done: 68 rows
+[S27] 15:40:10 edgeline grid: 32 cells at -P 3
+[EDGE] tag=OLD pot=Pot_A piece=Pot_A_Piece_07 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Pot_A/Pot_A_Piece_07/breaklines
+[EDGE] tag=OLD pot=Pot_A piece=Pot_A_Piece_08 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Pot_A/Pot_A_Piece_08/breaklines
+[EDGE] tag=OLD pot=Juglet piece=Juglet_Piece_1 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Juglet/Juglet_Piece_1/breaklines
+[EDGE] tag=OLD pot=Pot_A piece=Pot_A_Piece_02 edge_exit=139 elapsed=4s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Pot_A/Pot_A_Piece_02/breaklines
+[EDGE] tag=OLD pot=Juglet piece=Juglet_Piece_4 edge_exit=139 elapsed=0s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Juglet/Juglet_Piece_4/breaklines
+[EDGE] tag=OLD pot=Juglet piece=Juglet_Piece_6 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Juglet/Juglet_Piece_6/breaklines
+[EDGE] tag=OLD pot=Pot_A piece=Pot_A_Piece_01 edge_exit=139 elapsed=5s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Pot_A/Pot_A_Piece_01/breaklines
+[EDGE] tag=OLD pot=Juglet piece=Juglet_Piece_7 edge_exit=139 elapsed=0s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/OLD/Juglet/Juglet_Piece_7/breaklines
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_07 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Pot_A/Pot_A_Piece_07/breaklines
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_08 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Pot_A/Pot_A_Piece_08/breaklines
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_02 edge_exit=139 elapsed=3s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Pot_A/Pot_A_Piece_02/breaklines
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_1 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Juglet/Juglet_Piece_1/breaklines
+[EDGE] tag=A pot=Pot_A piece=Pot_A_Piece_01 edge_exit=139 elapsed=5s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Pot_A/Pot_A_Piece_01/breaklines
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_6 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Juglet/Juglet_Piece_6/breaklines
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_4 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Juglet/Juglet_Piece_4/breaklines
+[EDGE] tag=A pot=Juglet piece=Juglet_Piece_7 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A/Juglet/Juglet_Piece_7/breaklines
+[EDGE] tag=A2 pot=Pot_A piece=Pot_A_Piece_07 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Pot_A/Pot_A_Piece_07/breaklines
+[EDGE] tag=A2 pot=Pot_A piece=Pot_A_Piece_08 edge_exit=139 elapsed=2s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Pot_A/Pot_A_Piece_08/breaklines
+[EDGE] tag=A2 pot=Pot_A piece=Pot_A_Piece_02 edge_exit=139 elapsed=4s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Pot_A/Pot_A_Piece_02/breaklines
+[EDGE] tag=A2 pot=Juglet piece=Juglet_Piece_1 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Juglet/Juglet_Piece_1/breaklines
+[EDGE] tag=A2 pot=Juglet piece=Juglet_Piece_4 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Juglet/Juglet_Piece_4/breaklines
+[EDGE] tag=A2 pot=Pot_A piece=Pot_A_Piece_01 edge_exit=139 elapsed=5s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Pot_A/Pot_A_Piece_01/breaklines
+[EDGE] tag=A2 pot=Juglet piece=Juglet_Piece_6 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Juglet/Juglet_Piece_6/breaklines
+[EDGE] tag=A2 pot=Juglet piece=Juglet_Piece_7 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/A2/Juglet/Juglet_Piece_7/breaklines
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_07 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Pot_A/Pot_A_Piece_07/breaklines
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_02 edge_exit=139 elapsed=2s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Pot_A/Pot_A_Piece_02/breaklines
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_08 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Pot_A/Pot_A_Piece_08/breaklines
+[EDGE] tag=B pot=Pot_A piece=Pot_A_Piece_01 edge_exit=139 elapsed=2s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Pot_A/Pot_A_Piece_01/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_1 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Juglet/Juglet_Piece_1/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_4 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Juglet/Juglet_Piece_4/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_6 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Juglet/Juglet_Piece_6/breaklines
+[EDGE] tag=B pot=Juglet piece=Juglet_Piece_7 edge_exit=139 elapsed=1s rows=1 dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/B/Juglet/Juglet_Piece_7/breaklines
+[S27] 15:40:30 edgeline pass done: 32 cells
+[S27] 15:40:30 measuring
+[S27] 15:40:36 measure rc=0
+[S27] 15:40:38 surfaces rc=0
+[S27] 15:40:41 seteq rc=0
+[S27] 15:40:42 partA rc=0
+[S27] 15:40:42 dots rc=0
+[S27-PARTA] pot=Pot_A piece=Pot_A_Piece_01 npts=85136 clusters=[32775,27551,3803,3375,815,730,697,570,379,285,203,173] points_in_no_cluster=13780 frac=0.1619 r2_retry=1 s0=66760/33985 s1=57283/29732 on_s0=33985 on_s1=29732 neither=21419 gate=pair r5_retry=1
+[S27-PARTA] pot=Pot_A piece=Pot_A_Piece_02 npts=49528 clusters=[22543,20628,751,221,211] points_in_no_cluster=5174 frac=0.1045 r2_retry=1 s0=42198/21570 s1=46332/23789 on_s0=21570 on_s1=23789 neither=4169 gate=pair r5_retry=1
+[S27-PARTA] pot=Pot_A piece=Pot_A_Piece_07 npts=8598 clusters=[3093,2850,203,170,144,120,73,71] points_in_no_cluster=1874 frac=0.2180 r2_retry=1 s0=6066/3216 s1=6437/3344 on_s0=3216 on_s1=3344 neither=2038 gate=pair r5_retry=1
+[S27-PARTA] pot=Pot_A piece=Pot_A_Piece_08 npts=7682 clusters=[2832,2611,265,194,90] points_in_no_cluster=1690 frac=0.2200 r2_retry=1 s0=5528/2917 s1=6097/3265 on_s0=2917 on_s1=3265 neither=1500 gate=pair r5_retry=1
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_1 npts=14546 clusters=[3489,626,411,349,274,164,151,143,133,106,103,102,86,84,81,80,64,58,57,53,53,50] points_in_no_cluster=7829 frac=0.5382 r2_retry=1 s0=3580/2954 s1=12092/8627 on_s0=2954 on_s1=5826 neither=5766 gate=pair r5_retry=1
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_2 npts=1031 clusters=[] points_in_no_cluster=1031 frac=1.0000 r2_retry=21 s0=-/- s1=-/- on_s0=0 on_s1=0 neither=1031 gate=none r5_retry=21
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_4 npts=1530 clusters=[242,51] points_in_no_cluster=1237 frac=0.8085 r2_retry=1 s0=182/131 s1=732/732 on_s0=131 on_s1=680 neither=719 gate=pair r5_retry=1
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_6 npts=2351 clusters=[365,213] points_in_no_cluster=1773 frac=0.7541 r2_retry=1 s0=608/395 s1=1016/651 on_s0=395 on_s1=471 neither=1485 gate=pair r5_retry=1
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_7 npts=4254 clusters=[326,263,77,68,65] points_in_no_cluster=3455 frac=0.8122 r2_retry=1 s0=1012/609 s1=829/566 on_s0=609 on_s1=413 neither=3232 gate=pair r5_retry=1
+[S27-PARTA] pot=Juglet piece=Juglet_Piece_9 npts=787 clusters=[] points_in_no_cluster=787 frac=1.0000 r2_retry=21 s0=-/- s1=-/- on_s0=0 on_s1=0 neither=787 gate=none r5_retry=21
+[S27] partA: 10 pieces -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/dump/P/partA27.tsv
+[S27-SETEQ] test=B ref=A piece=Pot_A_Piece_07 s=1 n_test=3344 n_ref=3344 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A piece=Pot_A_Piece_08 s=0 n_test=2917 n_ref=2917 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A piece=Pot_A_Piece_08 s=1 n_test=3265 n_ref=3265 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_1 s=0 n_test=2954 n_ref=2954 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_1 s=1 n_test=8627 n_ref=8627 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_4 s=0 n_test=131 n_ref=131 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_4 s=1 n_test=732 n_ref=732 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_6 s=0 n_test=395 n_ref=395 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_6 s=1 n_test=651 n_ref=651 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_7 s=0 n_test=609 n_ref=609 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Juglet_Piece_7 s=1 n_test=566 n_ref=566 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_01 s=0 n_test=33989 n_ref=33988 only_in_test=2 only_in_ref=1 equal=no nn_med=0.000000 nn_max=0.587273
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_01 s=1 n_test=29749 n_ref=29732 only_in_test=19 only_in_ref=2 equal=no nn_med=0.000000 nn_max=0.591588
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_02 s=0 n_test=21570 n_ref=21569 only_in_test=2 only_in_ref=1 equal=no nn_med=0.000000 nn_max=0.580824
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_02 s=1 n_test=23786 n_ref=23785 only_in_test=3 only_in_ref=2 equal=no nn_med=0.000000 nn_max=0.761401
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_07 s=0 n_test=3216 n_ref=3216 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_07 s=1 n_test=3344 n_ref=3344 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_08 s=0 n_test=2917 n_ref=2917 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27-SETEQ] test=B ref=A2 piece=Pot_A_Piece_08 s=1 n_test=3265 n_ref=3265 only_in_test=0 only_in_ref=0 equal=yes nn_med=0.000000 nn_max=0.000000
+[S27] seteq: 80 rows -> /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1534_df523dd_p27-dedupe-grid/out/cells/seteq27.tsv
+[S27] 15:40:42 corpus tree after
+[S27] 15:40:42 CORPUS TREE UNCHANGED
+[S27] 15:40:42 CORPUS MD5 UNCHANGED
+opt-sfs-pristine ABSENT
+[S27] 15:40:42 geometry deleted: # total deleted: 1252 files, 1610428132 bytes
+[S27] index: 20261027-1539_5227f8f_t28-replica-grid	33861235	5227f8fc0300f21908eb6c1ac86ebab6c26e3356	t28-replica-grid		
+[S27] index: 20261027-1534_df523dd_p27-dedupe-grid	33860966	df523dd5f62a70d987fcd993ddbf2b659def566e	p27-dedupe-grid		
+[S27] 15:40:42 done
