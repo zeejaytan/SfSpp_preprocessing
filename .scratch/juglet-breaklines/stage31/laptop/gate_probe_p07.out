@@ -1,0 +1,17 @@
+p07 mates: 15 (_0-only)
+  1-2: d<2.0/n>0.85 raw=32 abs=32 min_d=0.77; d<20.0/n>0.7 raw=33 abs=33 min_d=0.77
+  1-3: d<2.0/n>0.85 raw=47 abs=47 min_d=0.68; d<20.0/n>0.7 raw=60 abs=60 min_d=0.68
+  1-4: d<2.0/n>0.85 raw=34 abs=34 min_d=0.87; d<20.0/n>0.7 raw=40 abs=40 min_d=0.87
+  1-5: d<2.0/n>0.85 raw=30 abs=30 min_d=0.92; d<20.0/n>0.7 raw=42 abs=42 min_d=0.92
+  1-6: d<2.0/n>0.85 raw=16 abs=16 min_d=0.99; d<20.0/n>0.7 raw=18 abs=18 min_d=0.99
+  1-7: d<2.0/n>0.85 raw=27 abs=27 min_d=0.54; d<20.0/n>0.7 raw=30 abs=30 min_d=0.54
+  2-4: d<2.0/n>0.85 raw=6 abs=6 min_d=1.06; d<20.0/n>0.7 raw=22 abs=22 min_d=1.06
+  2-5: d<2.0/n>0.85 raw=21 abs=21 min_d=0.69; d<20.0/n>0.7 raw=33 abs=33 min_d=0.69
+  2-8: d<2.0/n>0.85 raw=18 abs=18 min_d=0.28; d<20.0/n>0.7 raw=22 abs=22 min_d=0.28
+  3-5: d<2.0/n>0.85 raw=30 abs=30 min_d=0.65; d<20.0/n>0.7 raw=31 abs=31 min_d=0.65
+  3-6: d<2.0/n>0.85 raw=11 abs=11 min_d=0.73; d<20.0/n>0.7 raw=12 abs=12 min_d=0.73
+  4-6: d<2.0/n>0.85 raw=14 abs=14 min_d=0.84; d<20.0/n>0.7 raw=25 abs=25 min_d=0.84
+  4-7: d<2.0/n>0.85 raw=13 abs=13 min_d=0.61; d<20.0/n>0.7 raw=26 abs=26 min_d=0.61
+  4-8: d<2.0/n>0.85 raw=17 abs=17 min_d=0.65; d<20.0/n>0.7 raw=28 abs=28 min_d=0.65
+  6-7: d<2.0/n>0.85 raw=22 abs=22 min_d=0.60; d<20.0/n>0.7 raw=44 abs=44 min_d=0.60
+STRICT pass rate at GT (_0-only): 15/15
