@@ -1,0 +1,8 @@
+# Ticket 31: the six files under orig/ and laptop/ were fetched byte for byte
+# from the cluster and are quoted by md5 in the ticket and in out/COMPARE.md.
+# Some of them are CRLF; git must not rewrite a single byte of them on checkout,
+# so text conversion is off for those two directories only. Files written for
+# this ticket (gate_probe_p31.py, compare_p31.py, submit31.sbatch) keep the
+# repository default.
+orig/*    -text
+laptop/*  -text
