@@ -1,6 +1,8 @@
 # 32: How big is a sherd next to its pot, and does the angle follow that ratio?
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 32-how-big-is-a-sherd-next-to-its-pot, in /c/PR/worktrees/sfs/32
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** none
