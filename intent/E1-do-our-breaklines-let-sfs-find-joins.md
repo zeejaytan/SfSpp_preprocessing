@@ -2143,3 +2143,24 @@ Weight: none on the 281/292 corpus tally — no corpus piece changes, and Pot A 
 arm. Next: the growth rule. The per-step dump (ticket 25) shows in colour where a second wall is born
 or lost, so the choice between "use the older region growing" and "fix the newer chain" is made on a
 picture plus a count rather than on inference.
+## 2026-10-27 — the admission window measured, and a defect in every surface this project writes (ticket 26)
+
+The 3 mm admission window in `improveSurfaceBoundaryByFittingBSplineSurface` (`:1329`, `:1340`) is not what
+merges the walls. Measured over 116 cells with the window as a per-piece quantity: at 0.5 mm a Juglet sherd's
+two surfaces still are not the two faces of one wall (the through/across split stays wrong on every piece that
+has two surfaces at all), and Pot A's pairs are unchanged — 8 of 8, 3.55-7.09 mm through the normal,
+0.24-0.27 mm along it, coincidence 0.0000. The only two genuine Juglet pairs remain the ones ticket 24 found,
+both in arms with the paper chain off. **Weight: none on the 283/291 tally.**
+
+One finding here bears on every edgeline number this project has. `finishImprovedSurface`
+(`mesh_processing_headless.cpp:1163`) is meant to remove duplicate points and does not: it builds
+`improvedSurfacePointCloudNoDuplicates` at `:1189` and never assigns it back, and its loop stops at
+`size() - 1` (`:1199`). Each exported surface therefore carries its own cluster's points twice — Pot A 01
+Surface_0 66,759 vertices against 33,985 distinct positions, Surface_1 57,281 against 29,731, Juglet piece 1
+Surface_0 3,580 against 2,955. Our Breakline_0 is the boundary of Surface_0, so **a dot count quoted from
+these surfaces is an upper bound**; whether the duplicates reach the edgeline dots was not measured. The bar
+itself is a coverage measure — a dot within 2 mm of the reference — and duplication does not change coverage,
+so 283 of 291 stands as a coverage tally, not as a claim about how many distinct dots a line carries.
+
+Next: the per-rung dump (ticket 25), then a small ticket to repair the de-duplication and re-measure whether
+any edgeline count moves.
