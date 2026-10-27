@@ -2185,3 +2185,28 @@ measurement on one vessel, not a revision of the corpus tally.
 
 Next: measure whether the boundary of the grown band lies on the sherd's real broken edge, on the pieces
 that write a surface (1, 4, 6, 7), and repair the de-duplication so the count is of distinct dots.
+
+## 2026-10-27 — the growth claims every point, and my unclaimed figure was measuring the floor (ticket 28)
+
+The figure in the section above, "78–82 % of each sherd's points in no region at all", is wrong in a way that
+matters for what an edgeline is. A calibrated Python replica of the growth step (it reproduces pieces 3, 5 and 7
+exactly, and Pot A 07 to one region of ten points) shows the walk claims **every** point: piece 2's 1 031 points
+come out as 661 regions summing to exactly 1 031. What happens to the 78–82 % is the **floor**: a region that ends
+under `minCluster` is discarded from the output, and its points were already marked claimed when they were
+admitted, so there is no second attempt. The number is "the share of the sherd on no surviving region", not "the
+share the growth never reached".
+
+Why that bears on breaklines: `Breakline_0` is the boundary of `Surface_0`, and on this vessel `Surface_0` is
+often a **crumb** rather than a face — piece 2's largest region is 36 points (3.5 % of its cloud), piece 3's 169
+(11.5 %), piece 7's 326 (7.7 %). The 281/292 line tally was measured on corpus pieces whose regions cover far more
+of the sherd, so it says nothing about a boundary that is the rim of a 36-point crumb. The angle test is the only
+gate that ever fires (4 703 rejections on piece 2 against 0 curvature rejections; the curvature gate cannot fire at
+all, since PCA surface variation is bounded by 1/3 and the paper's κ is 1), and the paper's own 4° does not rescue
+piece 2 (41 points) while costing piece 7 two regions and Pot A two.
+
+Weight: none on the 281/292 tally — no edgeline is re-scored. What it does settle is that a breakline question
+asked of these surfaces is being asked of a fragment of the sherd, so the strip question below has to name which
+crumb it is measuring.
+
+Next: the neighbour-angle distribution on pieces 2, 3, 5, 7 and Pot A 07, because that is what decides whether a
+θ exists that serves both vessels — and until it does, no strip measurement has a stable object to be the edge of.
