@@ -1291,6 +1291,446 @@ static void window26FormatMM(char* buf, size_t n, double v)
 	else snprintf(buf, n, "na");
 }
 
+// ============================================================================
+// TICKET 25: dump the geometry at every step. Observation only, one switch.
+//
+// SFS_DUMP_STAGE=<dir> arms it: rung files go to <dir>/<piece>/r<N>_<name>.ply with a
+// r<N>_<name>.json sidecar stating the values the step actually used. Unset (the
+// default) writes nothing at all -- no directory is created, no file is opened.
+// SFS_DUMP_PIECES=<name,name,...> restricts which pieces are dumped.
+//
+// Nothing below changes a threshold, a tolerance, a growth rule, a merge rule, a
+// reassignment rule or a write rule. Every label written here is a copy of one the
+// step had already decided, and the reason code only records which branch of the
+// existing code that point took.
+//
+// Rungs, all five over the same point set except rung 1:
+//   r1_downsampled        the cloud the clustering will read (written by the density call)
+//   r2_clusters_premerge  cluster id per point, as growPaper234 left it, before any merge
+//   r3_after_merge        cluster id per point after mergePaper234 + classifyAndOrderPaper234
+//   r4_after_reassign     cluster id per point + the admission decision of the boundary step
+//   r5_write              which written surface carries each point's position, and which none
+// ============================================================================
+static const int DR25_NONE = 0;          // r1: no label exists yet
+static const int DR25_CLAIMED = 1;       // r2/r3: claimed by a cluster that is still its own
+static const int DR25_MERGED = 2;        // r3: its pre-merge cluster was absorbed into another
+static const int DR25_ADMIT_OWN = 3;     // r4: admitted to its own cluster's surface
+static const int DR25_ADMIT_OTHER = 4;   // r4: admitted to the other cluster's surface only
+static const int DR25_REJECT_DIST = 5;   // r4: rejected, further from the spline than the window
+static const int DR25_REJECT_NORMAL = 6; // r4: inside the window, angle in [40,140] deg
+static const int DR25_WRITTEN = 7;       // r5: a vertex of a written surface carries this position
+static const int DR25_NOT_WRITTEN = 8;   // r5: no written surface carries this position
+
+static std::string g_dumpStageRoot25;             // SFS_DUMP_STAGE, empty = off
+static std::vector<std::string> g_dumpPieceList25; // SFS_DUMP_PIECES
+static std::string g_dumpPieceName25;
+static std::string g_dumpPieceDir25;
+static bool g_dumpOn25 = false;
+
+// Per-point and per-pass records the steps fill while the switch is armed.
+static std::vector<int> g_r4Code25;       // rung 4 decision per point of the segmentation cloud
+static Window26Window g_r4Window25[2];    // the window each fit actually used
+static long g_r4Own25[2] = { 0, 0 };
+static long g_r4Other25[2] = { 0, 0 };
+static long g_r4Cand25[2] = { 0, 0 };
+static long g_r4Final25[2] = { 0, 0 };
+static int g_r4OtherCopied25[2] = { 0, 0 };
+static int g_r4Passes25 = 0;
+
+struct DumpPairStats25
+{
+	long pairs;
+	double nDot;
+	double curvInto, curvFrom;
+	double inNDot, inCDiff;
+	bool fired;
+	DumpPairStats25() : pairs(0), nDot(NAN), curvInto(NAN), curvFrom(NAN)
+		, inNDot(NAN), inCDiff(NAN), fired(false) {}
+};
+static DumpPairStats25 g_pairStats25;
+
+struct DumpMergeEvent25
+{
+	int pass;
+	int idInto, idFrom;
+	int sizeIntoBefore, sizeFromBefore;
+	std::vector<int> tagsInto, tagsFrom;
+	DumpPairStats25 stats;
+};
+static std::vector<DumpMergeEvent25> g_mergeEvents25;
+static int g_mergePasses25 = 0;
+static long g_mergeTested25 = 0;
+
+// TICKET 25: per-point labels indexed by the point's own position, so the caller's re-sort
+// and its interior-face swap cannot move them. Orig is the cluster the point entered the
+// merge in; winner is the pre-merge id of the cluster that survived into its final cluster.
+static std::vector<int> g_pointOrigTags25;
+static std::vector<int> g_pointWinnerTags25;
+// -1 when the classify step did not run, 1 when it swapped the two faces, 0 when it kept them.
+static int g_classifySwap25 = -1;
+
+struct DumpPoint25 { float x, y, z, nx, ny, nz; };
+
+// A position key with plain float comparison: every coordinate here is copied from the
+// same source values, so exact equality is the right test and no bit pattern is needed.
+struct DumpPos25
+{
+	float x, y, z;
+	bool operator<(const DumpPos25& o) const
+	{
+		if (x != o.x) return x < o.x;
+		if (y != o.y) return y < o.y;
+		return z < o.z;
+	}
+};
+
+static std::string dumpFmt25(double v)
+{
+	if (!std::isfinite(v)) return std::string("null");
+	char buf[64];
+	snprintf(buf, sizeof(buf), "%.6f", v);
+	return std::string(buf);
+}
+
+static std::string dumpJsonStr25(const std::string& s)
+{
+	std::string out = "\"";
+	for (size_t i = 0; i < s.size(); ++i)
+	{
+		const char c = s[i];
+		if (c == '"' || c == '\\') { out += '\\'; out += c; }
+		else if (c == '\n') out += "\\n";
+		else out += c;
+	}
+	out += "\"";
+	return out;
+}
+
+static std::string dumpIntList25(const std::vector<int>& v)
+{
+	std::ostringstream o;
+	o << "[";
+	for (size_t i = 0; i < v.size(); ++i) { if (i) o << ", "; o << v[i]; }
+	o << "]";
+	return o.str();
+}
+
+static std::string dumpSizesJson25(const std::vector<pcl::PointIndices>& clusters)
+{
+	std::ostringstream o;
+	o << "[";
+	for (size_t i = 0; i < clusters.size(); ++i) { if (i) o << ", "; o << clusters[i].indices.size(); }
+	o << "]";
+	return o.str();
+}
+
+static std::string dumpMergesJson25()
+{
+	std::ostringstream o;
+	o << "[";
+	for (size_t i = 0; i < g_mergeEvents25.size(); ++i)
+	{
+		const DumpMergeEvent25& e = g_mergeEvents25[i];
+		if (i) o << ", ";
+		o << "{ \"pass\": " << e.pass
+			<< ", \"into_id\": " << e.idInto << ", \"from_id\": " << e.idFrom
+			<< ", \"into_size_before\": " << e.sizeIntoBefore << ", \"from_size_before\": " << e.sizeFromBefore
+			<< ", \"into_tags\": " << dumpIntList25(e.tagsInto)
+			<< ", \"from_tags\": " << dumpIntList25(e.tagsFrom)
+			<< ", \"boundary_pairs\": " << e.stats.pairs
+			<< ", \"normal_dot\": " << dumpFmt25(e.stats.nDot)
+			<< ", \"curv_into\": " << dumpFmt25(e.stats.curvInto)
+			<< ", \"curv_from\": " << dumpFmt25(e.stats.curvFrom)
+			<< ", \"internal_normal_dot\": " << dumpFmt25(e.stats.inNDot)
+			<< ", \"internal_curv_diff\": " << dumpFmt25(e.stats.inCDiff)
+			<< " }";
+	}
+	o << "]";
+	return o.str();
+}
+
+// Selection is per piece. An unset SFS_DUMP_STAGE disables everything, so this is also
+// the one place that decides whether a dump directory is ever created.
+static bool dumpPieceSelected25(const std::string& piece)
+{
+	if (g_dumpStageRoot25.empty()) return false;
+	if (g_dumpPieceList25.empty()) return true;
+	for (size_t i = 0; i < g_dumpPieceList25.size(); ++i)
+		if (g_dumpPieceList25[i] == piece) return true;
+	return false;
+}
+
+static void dumpReadSwitch25()
+{
+	g_dumpStageRoot25.clear();
+	g_dumpPieceList25.clear();
+	if (const char* e = std::getenv("SFS_DUMP_STAGE")) { if (*e) g_dumpStageRoot25 = e; }
+	if (const char* e = std::getenv("SFS_DUMP_PIECES"))
+	{
+		if (*e)
+		{
+			const std::string s = e;
+			size_t start = 0;
+			while (start <= s.size())
+			{
+				size_t comma = s.find(',', start);
+				if (comma == std::string::npos) comma = s.size();
+				std::string tok = s.substr(start, comma - start);
+				while (!tok.empty() && (tok[0] == ' ' || tok[0] == '\t')) tok.erase(0, 1);
+				while (!tok.empty() && (tok[tok.size() - 1] == ' ' || tok[tok.size() - 1] == '\t')) tok.erase(tok.size() - 1);
+				if (!tok.empty()) g_dumpPieceList25.push_back(tok);
+				if (comma == s.size()) break;
+				start = comma + 1;
+			}
+		}
+	}
+}
+
+// Called once per piece before any step runs.
+static void dumpBeginPiece25(const std::string& piece)
+{
+	g_dumpOn25 = false;
+	g_dumpPieceName25 = piece;
+	g_dumpPieceDir25.clear();
+	dumpReadSwitch25();
+	if (g_dumpStageRoot25.empty()) return;
+	if (!dumpPieceSelected25(piece))
+	{
+		std::cout << "[DUMP-25] piece=" << piece << " on=no reason=not-selected" << std::endl;
+		return;
+	}
+	std::string dir = g_dumpStageRoot25;
+	if (dir[dir.size() - 1] != '/' && dir[dir.size() - 1] != '\\') dir += "/";
+	dir += piece;
+	dir += "/";
+	std::error_code ec25;
+	std::experimental::filesystem::create_directories(std::experimental::filesystem::path(dir), ec25);
+	g_dumpPieceDir25 = dir;
+	g_dumpOn25 = true;
+	std::cout << "[DUMP-25] piece=" << piece << " on=yes dir=" << dir << std::endl;
+}
+
+static void dumpWritePly25(const std::string& base, const std::vector<DumpPoint25>& pts,
+	const std::vector<int>& cid, const std::vector<int>& reason)
+{
+	if (!g_dumpOn25) return;
+	if (cid.size() != pts.size() || reason.size() != pts.size())
+	{
+		std::cerr << "[DUMP-25] REFUSED " << base << ".ply: " << pts.size() << " points but "
+			<< cid.size() << " cluster ids and " << reason.size() << " reason codes" << std::endl;
+		return;
+	}
+	const std::string path = g_dumpPieceDir25 + base + ".ply";
+	std::ofstream o(path.c_str(), std::ios::out | std::ios::trunc | std::ios::binary);
+	if (!o.is_open()) { std::cerr << "[DUMP-25] CANNOT WRITE " << path << std::endl; return; }
+	o << "ply\nformat ascii 1.0\n";
+	o << "comment ticket-25 geometry dump piece=" << g_dumpPieceName25 << " rung=" << base << "\n";
+	o << "element vertex " << pts.size() << "\n";
+	o << "property float x\nproperty float y\nproperty float z\n";
+	o << "property float nx\nproperty float ny\nproperty float nz\n";
+	o << "property int cluster_id\nproperty uchar reason\nend_header\n";
+	char buf[256];
+	for (size_t i = 0; i < pts.size(); ++i)
+	{
+		snprintf(buf, sizeof(buf), "%.6f %.6f %.6f %.6f %.6f %.6f %d %d",
+			(double)pts[i].x, (double)pts[i].y, (double)pts[i].z,
+			(double)pts[i].nx, (double)pts[i].ny, (double)pts[i].nz, cid[i], reason[i]);
+		o << buf << "\n";
+	}
+	o.close();
+	std::cout << "[DUMP-25] wrote " << path << " points=" << pts.size() << std::endl;
+}
+
+static void dumpWriteJson25(const std::string& base, const std::string& fields)
+{
+	if (!g_dumpOn25) return;
+	const std::string path = g_dumpPieceDir25 + base + ".json";
+	std::ofstream o(path.c_str(), std::ios::out | std::ios::trunc | std::ios::binary);
+	if (!o.is_open()) { std::cerr << "[DUMP-25] CANNOT WRITE " << path << std::endl; return; }
+	o << "{ \"rung\": " << dumpJsonStr25(base) << ", \"piece\": " << dumpJsonStr25(g_dumpPieceName25)
+		<< ", " << fields << " }\n";
+	o.close();
+}
+
+// TICKET 25: the input cloud's own point count, read from its PCD header.
+static long dumpPcdPoints25(const std::string& path)
+{
+	std::ifstream f(path.c_str(), std::ios::in | std::ios::binary);
+	if (!f.is_open()) return -1;
+	std::string line;
+	for (int i = 0; i < 30 && std::getline(f, line); ++i)
+	{
+		if (line.compare(0, 6, "POINTS") == 0) return std::strtol(line.c_str() + 6, NULL, 10);
+		if (line.compare(0, 4, "DATA") == 0) break;
+	}
+	return -1;
+}
+
+// The density call's own output, read back: rung 1 is the cloud the next step loads.
+static void dumpRung1_25(const std::string& plyPath, const std::string& fields)
+{
+	if (!g_dumpOn25) return;
+	pcl::PointCloud<pcl::PointNormal>::Ptr c(new pcl::PointCloud<pcl::PointNormal>);
+	if (pcl::io::loadPLYFile<pcl::PointNormal>(plyPath, *c) != 0)
+	{
+		std::cerr << "[DUMP-25] cannot read " << plyPath << " for rung 1" << std::endl;
+		return;
+	}
+	std::vector<DumpPoint25> pts;
+	std::vector<int> cid, reason;
+	for (size_t i = 0; i < c->points.size(); ++i)
+	{
+		DumpPoint25 p;
+		p.x = c->points[i].x; p.y = c->points[i].y; p.z = c->points[i].z;
+		p.nx = c->points[i].normal_x; p.ny = c->points[i].normal_y; p.nz = c->points[i].normal_z;
+		pts.push_back(p);
+		cid.push_back(-1);
+		reason.push_back(DR25_NONE);
+	}
+	dumpWritePly25("r1_downsampled", pts, cid, reason);
+	std::ostringstream o;
+	o << "\"points_out\": " << c->points.size()
+		<< ", \"ply\": " << dumpJsonStr25(g_dumpPieceDir25 + "r1_downsampled.ply")
+		<< ", " << fields;
+	dumpWriteJson25("r1_downsampled", o.str());
+}
+
+// Rungs 2-5 are all over the segmentation cloud, in its own point order, so the four
+// files can be diffed point by point. A point whose normal was dropped upstream keeps
+// its position and carries a zero normal; the count is reported, not silently filled.
+static void dumpRungXYZ25(const std::string& base, const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+	const pcl::PointCloud<pcl::Normal>::Ptr& normals,
+	const std::vector<int>& cid, const std::vector<int>& reason)
+{
+	if (!g_dumpOn25) return;
+	if (cid.size() != cloud->points.size() || reason.size() != cloud->points.size())
+	{
+		std::cerr << "[DUMP-25] REFUSED " << base << ".ply: cloud has " << cloud->points.size()
+			<< " points, labels " << cid.size() << "/" << reason.size() << std::endl;
+		return;
+	}
+	std::vector<DumpPoint25> pts;
+	pts.reserve(cloud->points.size());
+	for (size_t i = 0; i < cloud->points.size(); ++i)
+	{
+		DumpPoint25 p;
+		p.x = cloud->points[i].x; p.y = cloud->points[i].y; p.z = cloud->points[i].z;
+		if (i < normals->points.size())
+		{
+			p.nx = normals->points[i].normal_x; p.ny = normals->points[i].normal_y; p.nz = normals->points[i].normal_z;
+		}
+		else { p.nx = 0.0f; p.ny = 0.0f; p.nz = 0.0f; }
+		pts.push_back(p);
+	}
+	dumpWritePly25(base, pts, cid, reason);
+}
+
+// TICKET 25: one fitted surface's window, exactly as ticket 26 printed it for that call.
+static std::string dumpWindow25(int surface, const Window26Window& w)
+{
+	std::ostringstream o;
+	o << "{ \"surface\": " << surface
+		<< ", \"raw_mm\": " << dumpFmt25(w.rawMM)
+		<< ", \"clamped_mm\": " << dumpFmt25(w.clampedMM)
+		<< ", \"clamp_lo_mm\": " << dumpFmt25(w.clampLoMM)
+		<< ", \"clamp_hi_mm\": " << dumpFmt25(w.clampHiMM)
+		<< ", \"rule\": " << dumpJsonStr25(w.rule)
+		<< ", \"reason\": " << dumpJsonStr25(w.reason)
+		<< ", \"residual_mm\": " << dumpFmt25(w.residualMM)
+		<< ", \"other_mm\": " << dumpFmt25(w.otherMM)
+		<< ", \"residual_n\": " << w.residualN
+		<< ", \"other_n\": " << w.otherN
+		<< ", \"own_n\": " << w.ownN
+		<< ", \"other_points_n\": " << w.otherPointsN
+		<< " }";
+	return o.str();
+}
+
+// TICKET 25: how many points carry each reason code, so a sidecar reads without a script.
+static std::string dumpReasonCounts25(const std::vector<int>& reasons)
+{
+	long c25[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	for (size_t i = 0; i < reasons.size(); ++i)
+	{
+		const int r25 = reasons[i];
+		if (r25 >= 0 && r25 <= 8) ++c25[r25];
+	}
+	std::ostringstream o;
+	o << "{ \"none\": " << c25[0] << ", \"claimed\": " << c25[1]
+		<< ", \"merged\": " << c25[2] << ", \"admitted_own\": " << c25[3]
+		<< ", \"admitted_other\": " << c25[4] << ", \"rejected_distance\": " << c25[5]
+		<< ", \"rejected_normal\": " << c25[6] << ", \"written\": " << c25[7]
+		<< ", \"not_written\": " << c25[8] << " }";
+	return o.str();
+}
+
+// Rung 5 asks the written clouds themselves which positions they carry: the export is
+// what the rest of the pipeline reads, so nothing here is inferred from the labels.
+static void dumpRung5_25(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+	const pcl::PointCloud<pcl::Normal>::Ptr& normals,
+	const std::vector<pcl::PointCloud<pcl::PointNormal>::Ptr>& surfaces,
+	const std::string& gate, int retry, const std::vector<pcl::PointIndices>& clusters,
+	const std::string& fields)
+{
+	if (!g_dumpOn25) return;
+	std::vector<std::vector<DumpPos25> > keys(surfaces.size());
+	std::ostringstream o;
+	o << "\"surface_vertices\": [";
+	for (size_t s = 0; s < surfaces.size(); ++s)
+	{
+		long distinct = 0;
+		if (surfaces[s])
+		{
+			keys[s].reserve(surfaces[s]->points.size());
+			for (size_t i = 0; i < surfaces[s]->points.size(); ++i)
+			{
+				DumpPos25 k;
+				k.x = surfaces[s]->points[i].x; k.y = surfaces[s]->points[i].y; k.z = surfaces[s]->points[i].z;
+				if (std::isfinite(k.x) && std::isfinite(k.y) && std::isfinite(k.z)) keys[s].push_back(k);
+			}
+			std::sort(keys[s].begin(), keys[s].end());
+			distinct = (long)(std::unique(keys[s].begin(), keys[s].end()) - keys[s].begin());
+			if (s) o << ", ";
+			o << "{ \"surface\": " << s << ", \"vertices\": " << surfaces[s]->points.size()
+				<< ", \"distinct_positions\": " << distinct << " }";
+		}
+		else
+		{
+			if (s) o << ", ";
+			o << "{ \"surface\": " << s << ", \"vertices\": 0, \"distinct_positions\": 0 }";
+		}
+	}
+	o << "], \"write_gate\": " << dumpJsonStr25(gate)
+		<< ", \"retry\": " << retry
+		<< ", \"clusters\": " << dumpSizesJson25(clusters)
+		<< ", \"points\": " << cloud->points.size()
+		<< ", \"points_without_normal\": " << (cloud->points.size() > normals->points.size() ? cloud->points.size() - normals->points.size() : 0)
+		<< ", " << fields;
+	std::vector<int> cid(cloud->points.size(), -1);
+	std::vector<int> reason(cloud->points.size(), DR25_NOT_WRITTEN);
+	long reached0 = 0, reached1 = 0;
+	for (size_t i = 0; i < cloud->points.size(); ++i)
+	{
+		DumpPos25 q;
+		q.x = cloud->points[i].x; q.y = cloud->points[i].y; q.z = cloud->points[i].z;
+		for (size_t s = 0; s < keys.size(); ++s)
+		{
+			if (!surfaces[s]) continue;
+			if (std::binary_search(keys[s].begin(), keys[s].end(), q))
+			{
+				cid[i] = (int)s;
+				reason[i] = DR25_WRITTEN;
+				if (s == 0) ++reached0; else ++reached1;
+				break;
+			}
+		}
+	}
+	o << ", \"points_on_surface_0\": " << reached0 << ", \"points_on_surface_1\": " << reached1
+		<< ", \"points_on_neither\": " << (long)cloud->points.size() - reached0 - reached1;
+	dumpRungXYZ25("r5_write", cloud, normals, cid, reason);
+	dumpWriteJson25("r5_write", o.str());
+}
+
 // W1's r: median distance from the cluster's own points to its fitted spline, measured with
 // the same inverse mapping the admission loop uses.
 static double window26ResidualMedianMM(pcl::on_nurbs::FittingSurface& fit, const pcl::PointCloud<PointNormal>::Ptr& cluster, long& used)
@@ -1637,6 +2077,25 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			improvedSurfacePointCloud_other->points.push_back(ptTmp);
 		}
 
+		// TICKET 25: the same two tests that just admitted or dropped this point, recorded
+		// for rung 4. A point touched by both surfaces keeps its strongest claim.
+		if (g_dumpOn25 && (size_t)i < g_r4Code25.size())
+		{
+			const double d25 = pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh);
+			int code25 = DR25_REJECT_NORMAL;
+			int rank25 = 1;
+			if (d25 >= windowLenMM) { code25 = DR25_REJECT_DIST; rank25 = 2; }
+			else if (angleDiff > 140) { code25 = DR25_ADMIT_OWN; rank25 = 4; }
+			else if (angleDiff < 40) { code25 = DR25_ADMIT_OTHER; rank25 = 3; }
+			const int prev25 = g_r4Code25[i];
+			int prevRank25 = 0;
+			if (prev25 == DR25_ADMIT_OWN) prevRank25 = 4;
+			else if (prev25 == DR25_ADMIT_OTHER) prevRank25 = 3;
+			else if (prev25 == DR25_REJECT_DIST) prevRank25 = 2;
+			else if (prev25 == DR25_REJECT_NORMAL) prevRank25 = 1;
+			if (rank25 > prevRank25) g_r4Code25[i] = code25;
+		}
+
 		pcl::PointNormal ptTmp_b;
 		ptTmp_b.x = ptOnFittedSurface.x; // point[0];
 		ptTmp_b.y = ptOnFittedSurface.y; // point[1];
@@ -1665,12 +2124,26 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 
 	window26Print(surfaceIndex, window26, window26AdmittedOwn, window26AdmittedOther,
 		(long)meshPointCloud->points.size());
+	if (g_dumpOn25 && surfaceIndex >= 0 && surfaceIndex < 2)
+	{
+		// TICKET 25: rung 4's sidecar gets the window this call actually used, not a recompute.
+		g_r4Window25[surfaceIndex] = window26;
+		g_r4Own25[surfaceIndex] = window26AdmittedOwn;
+		g_r4Other25[surfaceIndex] = window26AdmittedOther;
+		g_r4Cand25[surfaceIndex] = (long)meshPointCloud->points.size();
+		++g_r4Passes25;
+	}
 	const long window26OwnBefore = (long)improvedSurfacePointCloud->points.size();
 	const long window26OtherBefore = (long)improvedSurfacePointCloud_other->points.size();
 
 	finishImprovedSurface(improvedSurfacePointCloud, improvedSurfacePointCloud_other, segmentedSurfacePointCloud);
 
 	window26PrintFinal(surfaceIndex, window26OwnBefore, window26OtherBefore, (long)improvedSurfacePointCloud->points.size());
+	if (g_dumpOn25 && surfaceIndex >= 0 && surfaceIndex < 2)
+	{
+		g_r4Final25[surfaceIndex] = (long)improvedSurfacePointCloud->points.size();
+		g_r4OtherCopied25[surfaceIndex] = (window26OtherBefore > window26OwnBefore) ? 1 : 0;
+	}
 
 	projectedPointCloudWithNormals->width = static_cast<int>(projectedPointCloudWithNormals->points.size());
 	projectedPointCloudWithNormals->height = 1;
@@ -2604,6 +3077,7 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k2)
 {
     if (A.empty() || B.empty()) return false;
+    if (g_dumpOn25) g_pairStats25 = DumpPairStats25();   // TICKET 25: observation only
     // ---- Step 1: boundary subsets, pairs within rhoD, need >= 3 ----
     std::vector<int> bA, bB;
     for (int id : A) if (isBnd[id]) bA.push_back(id);
@@ -2630,6 +3104,7 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
         }
     }
     if (pairs.size() < 3) return false;
+    if (g_dumpOn25) g_pairStats25.pairs = (long)pairs.size();
     // ---- Step 2: k2-average normals + mean curvature over pair members ----
     pcl::PointCloud<pcl::PointXYZ>::Ptr cA(new pcl::PointCloud<pcl::PointXYZ>), cB(new pcl::PointCloud<pcl::PointXYZ>);
     for (int id : A) cA->points.push_back(pcloud->points[id]);
@@ -2649,7 +3124,9 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     float nA = sNA.norm(), nB = sNB.norm();
     if (nA < 1e-9f || nB < 1e-9f) return false;
     sNA /= nA; sNB /= nB;
+    if (g_dumpOn25) g_pairStats25.nDot = (double)sNA.dot(sNB);
     if (sNA.dot(sNB) < rhoN) return false;
+    if (g_dumpOn25) { g_pairStats25.curvInto = sCA / (double)pairs.size(); g_pairStats25.curvFrom = sCB / (double)pairs.size(); }
     if (std::fabs(sCA / pairs.size() - sCB / pairs.size()) >= rhoC) return false;
     // ---- Step 3: internal median-point verification ----
     int ia = medianInternal234(pcloud, A, axisA);
@@ -2659,8 +3136,11 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     Eigen::Vector3f nb(pnormals->points[ib].normal_x, pnormals->points[ib].normal_y, pnormals->points[ib].normal_z);
     float la = na.norm(), lb = nb.norm();
     if (la < 1e-9f || lb < 1e-9f) return false;
+    if (g_dumpOn25) g_pairStats25.inNDot = (double)(na.dot(nb) / (la * lb));
     if (na.dot(nb) / (la * lb) < rhoInN) return false;
+    if (g_dumpOn25) g_pairStats25.inCDiff = std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature));
     if (std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature)) >= rhoInC) return false;
+    if (g_dumpOn25) g_pairStats25.fired = true;
     return true;
 }
 
@@ -2672,6 +3152,21 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     std::cout << "[PAPER-234] appendix-A merge: rhoD=" << rhoD << " rhoN=" << rhoN << " rhoC=" << rhoC
               << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2 << std::endl;
     const int NP = static_cast<int>(pcloud->points.size());
+    // TICKET 25: each cluster's pre-merge ids, carried through every pass and its
+    // compaction, so a merge can be reported by identity instead of by size.
+    std::vector<std::vector<int> > tags25(pclusters.size());
+    for (size_t c25 = 0; c25 < pclusters.size(); ++c25) tags25[c25].push_back(static_cast<int>(c25));
+    if (g_dumpOn25)
+    {
+        g_mergeEvents25.clear();
+        g_mergeTested25 = 0;
+        g_mergePasses25 = 0;
+        g_pointOrigTags25.assign(NP, -1);
+        g_pointWinnerTags25.clear();
+        for (size_t c25 = 0; c25 < pclusters.size(); ++c25)
+            for (size_t k25 = 0; k25 < pclusters[c25].indices.size(); ++k25)
+                g_pointOrigTags25[pclusters[c25].indices[k25]] = static_cast<int>(c25);
+    }
     pcl::KdTreeFLANN<pcl::PointXYZ> allTree;
     allTree.setInputCloud(pcloud);
     std::vector<int> rr; std::vector<float> dd;
@@ -2702,10 +3197,26 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
             if (dead[i]) continue;
             for (size_t j = i + 1; j < pclusters.size(); ++j) {
                 if (dead[j]) continue;
-                if (tryMergePair234(pcloud, pnormals, pclusters[i].indices, pclusters[j].indices, isBnd,
-                        axes[i], axes[j], rhoD, rhoN, rhoC, rhoInN, rhoInC, k2)) {
+                const bool merged25 = tryMergePair234(pcloud, pnormals, pclusters[i].indices, pclusters[j].indices, isBnd,
+                        axes[i], axes[j], rhoD, rhoN, rhoC, rhoInN, rhoInC, k2);
+                if (g_dumpOn25) ++g_mergeTested25;
+                if (merged25) {
                     std::cout << "[PAPER-234] pass " << pass << ": merge " << pclusters[j].indices.size() << " into " << pclusters[i].indices.size() << std::endl;
+                    if (g_dumpOn25)
+                    {
+                        DumpMergeEvent25 ev25;
+                        ev25.pass = pass;
+                        ev25.idInto = static_cast<int>(i);
+                        ev25.idFrom = static_cast<int>(j);
+                        ev25.sizeIntoBefore = static_cast<int>(pclusters[i].indices.size());
+                        ev25.sizeFromBefore = static_cast<int>(pclusters[j].indices.size());
+                        ev25.tagsInto = tags25[i];
+                        ev25.tagsFrom = tags25[j];
+                        ev25.stats = g_pairStats25;
+                        g_mergeEvents25.push_back(ev25);
+                    }
                     pclusters[i].indices.insert(pclusters[i].indices.end(), pclusters[j].indices.begin(), pclusters[j].indices.end());
+                    tags25[i].insert(tags25[i].end(), tags25[j].begin(), tags25[j].end());
                     dead[j] = 1;
                     any = true;
                 }
@@ -2713,11 +3224,26 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
         }
         if (any) {
             std::vector<pcl::PointIndices> kept;
-            for (size_t i = 0; i < pclusters.size(); ++i) if (!dead[i]) kept.push_back(pclusters[i]);
+            std::vector<std::vector<int> > keptTags25;
+            for (size_t i = 0; i < pclusters.size(); ++i) if (!dead[i]) { kept.push_back(pclusters[i]); keptTags25.push_back(tags25[i]); }
             pclusters.swap(kept);
+            tags25.swap(keptTags25);
         }
         std::cout << "[PAPER-234] pass " << pass << " done: " << pclusters.size() << " clusters" << std::endl;
+        if (g_dumpOn25) g_mergePasses25 = pass;
         if (pass > 25) break;
+    }
+    if (g_dumpOn25)
+    {
+        g_pointWinnerTags25.assign(NP, -1);
+        for (size_t c25 = 0; c25 < pclusters.size(); ++c25)
+        {
+            int winner25 = -1;
+            for (size_t k25 = 0; k25 < tags25[c25].size(); ++k25)
+                if (winner25 < 0 || tags25[c25][k25] < winner25) winner25 = tags25[c25][k25];
+            for (size_t k25 = 0; k25 < pclusters[c25].indices.size(); ++k25)
+                g_pointWinnerTags25[pclusters[c25].indices[k25]] = winner25;
+        }
     }
 }
 
@@ -2780,8 +3306,10 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
         pcl::PointIndices tmp = pclusters[0];
         pclusters[0] = pclusters[1];
         pclusters[1] = tmp;
+        if (g_dumpOn25) g_classifySwap25 = 1;
         std::cout << "[PAPER-234] classify: swapped -> Surface_0=interior" << std::endl;
     } else {
+        if (g_dumpOn25) g_classifySwap25 = 0;
         std::cout << "[PAPER-234] classify: kept -> Surface_0=interior" << std::endl;
     }
 }
@@ -2949,6 +3477,60 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             }
         }
 
+        // TICKET 25 rung 2: the clusters growth handed to the merge, with the floor that was
+        // actually applied to reach them. Cluster id is this array's index, -1 = never claimed.
+        if (g_dumpOn25)
+        {
+            std::vector<int> cid25(cloud->points.size(), -1);
+            std::vector<int> why25(cloud->points.size(), DR25_NONE);
+            for (size_t c = 0; c < clusters.size(); ++c)
+            {
+                for (size_t k = 0; k < clusters[c].indices.size(); ++k)
+                {
+                    const int idx25 = clusters[c].indices[k];
+                    if (idx25 < 0 || static_cast<size_t>(idx25) >= cid25.size()) continue;
+                    cid25[idx25] = static_cast<int>(c);
+                    why25[idx25] = DR25_CLAIMED;
+                }
+            }
+            long unclaimed25 = 0;
+            for (size_t i = 0; i < cid25.size(); ++i) if (cid25[i] < 0) ++unclaimed25;
+            dumpRungXYZ25("r2_clusters_premerge", cloud, normals, cid25, why25);
+            std::ostringstream o25;
+            o25 << "\"retry\": " << currentIteration
+                << ", \"npts\": " << Npts
+                << ", \"clusters\": " << dumpSizesJson25(clusters)
+                << ", \"min_cluster\": " << minCluster
+                << ", \"min_cluster_eff\": " << minClusterEff
+                << ", \"floor_applied\": " << dynMinCluster
+                << ", \"floor_from\": " << dynMinClusterFrom23
+                << ", \"floor_capped\": " << (capped23 ? "true" : "false")
+                << ", \"count_scale\": " << dumpFmt25(g_countScale)
+                << ", \"spacing_mm\": " << dumpFmt25(g_effectiveSpacingMM)
+                << ", \"paper_chain\": " << (paperChain ? "true" : "false")
+                << ", \"plane_rule\": " << (planeRule ? "true" : "false")
+                << ", \"theta\": " << dumpFmt25(paperTheta)
+                << ", \"kappa\": " << dumpFmt25(paperKappa)
+                << ", \"nb\": " << paperNB
+                << ", \"points_in_no_cluster\": " << unclaimed25
+                << ", \"reason_counts\": " << dumpReasonCounts25(why25);
+            dumpWriteJson25("r2_clusters_premerge", o25.str());
+        }
+
+        // TICKET 25: clear what the later rungs of this retry record.
+        if (g_dumpOn25)
+        {
+            g_r4Code25.assign(cloud->points.size(), -1);
+            for (int s25 = 0; s25 < 2; ++s25)
+            {
+                g_r4Window25[s25] = Window26Window();
+                g_r4Own25[s25] = 0; g_r4Other25[s25] = 0; g_r4Cand25[s25] = 0;
+                g_r4Final25[s25] = 0; g_r4OtherCopied25[s25] = 0;
+            }
+            g_r4Passes25 = 0;
+            g_classifySwap25 = -1;
+        }
+
         // 병합 함수 호출
         if (paperChain) {
             std::cout << "Calling mergePaper234 function." << std::endl;
@@ -2961,6 +3543,64 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         } else {
         std::cout << "Calling mergeClusters function." << std::endl;
         mergeClusters(cloudWithNormals, clusters);
+        }
+
+        // TICKET 25 rung 3: what the merge and the interior classification left. Without the
+        // paper chain there is no merge record to read, and the sidecar says so rather than
+        // reporting every point as newly merged.
+        if (g_dumpOn25)
+        {
+            std::vector<int> cid25(cloud->points.size(), -1);
+            std::vector<int> why25(cloud->points.size(), DR25_NONE);
+            const bool tracked25 = (!g_pointOrigTags25.empty() && g_pointOrigTags25.size() == cid25.size());
+            for (size_t c = 0; c < clusters.size(); ++c)
+            {
+                for (size_t k = 0; k < clusters[c].indices.size(); ++k)
+                {
+                    const int idx25 = clusters[c].indices[k];
+                    if (idx25 < 0 || static_cast<size_t>(idx25) >= cid25.size()) continue;
+                    cid25[idx25] = static_cast<int>(c);
+                    if (!tracked25) { why25[idx25] = DR25_CLAIMED; continue; }
+                    const int orig25 = g_pointOrigTags25[idx25];
+                    const int win25 = (static_cast<size_t>(idx25) < g_pointWinnerTags25.size()) ? g_pointWinnerTags25[idx25] : -1;
+                    why25[idx25] = (orig25 == win25) ? DR25_CLAIMED : DR25_MERGED;
+                }
+            }
+            long unclaimed25 = 0;
+            for (size_t i = 0; i < cid25.size(); ++i) if (cid25[i] < 0) ++unclaimed25;
+            dumpRungXYZ25("r3_after_merge", cloud, normals, cid25, why25);
+            std::ostringstream tagJo25;
+            tagJo25 << "[";
+            for (size_t c = 0; c < clusters.size(); ++c)
+            {
+                std::vector<int> ids25;
+                if (tracked25)
+                {
+                    for (size_t k = 0; k < clusters[c].indices.size(); ++k)
+                    {
+                        const int idx25 = clusters[c].indices[k];
+                        if (idx25 < 0 || static_cast<size_t>(idx25) >= g_pointOrigTags25.size()) continue;
+                        ids25.push_back(g_pointOrigTags25[idx25]);
+                    }
+                    std::sort(ids25.begin(), ids25.end());
+                    ids25.erase(std::unique(ids25.begin(), ids25.end()), ids25.end());
+                }
+                if (c) tagJo25 << ", ";
+                tagJo25 << dumpIntList25(ids25);
+            }
+            tagJo25 << "]";
+            std::ostringstream o25;
+            o25 << "\"retry\": " << currentIteration
+                << ", \"clusters\": " << dumpSizesJson25(clusters)
+                << ", \"cluster_pre_merge_tags\": " << tagJo25.str()
+                << ", \"merge_tracking\": " << dumpJsonStr25(tracked25 ? std::string("paper-chain") : std::string("unavailable-mergeclusters"))
+                << ", \"merge_passes\": " << (tracked25 ? g_mergePasses25 : 0)
+                << ", \"merge_pairs_tested\": " << (tracked25 ? g_mergeTested25 : 0)
+                << ", \"merges\": " << (tracked25 ? dumpMergesJson25() : std::string("[]"))
+                << ", \"classify_swap\": " << (g_classifySwap25 < 0 ? std::string("none") : (g_classifySwap25 ? std::string("swapped") : std::string("kept")))
+                << ", \"points_in_no_cluster\": " << unclaimed25
+                << ", \"reason_counts\": " << dumpReasonCounts25(why25);
+            dumpWriteJson25("r3_after_merge", o25.str());
         }
 
         // TICKET 23: one line per retry with the numbers the retry ended on, so a piece that
@@ -3076,6 +3716,42 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1, 0, otherForCluster1);
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2, 1, otherForCluster2);
             }
+            // TICKET 25 rung 4: the window each fit used and what became of every point.
+            if (g_dumpOn25)
+            {
+                std::vector<int> cid25(cloud->points.size(), -1);
+                for (size_t c = 0; c < clusters.size(); ++c)
+                {
+                    for (size_t k = 0; k < clusters[c].indices.size(); ++k)
+                    {
+                        const int idx25 = clusters[c].indices[k];
+                        if (idx25 < 0 || static_cast<size_t>(idx25) >= cid25.size()) continue;
+                        cid25[idx25] = static_cast<int>(c);
+                    }
+                }
+                std::vector<int> why25(cloud->points.size(), DR25_NONE);
+                for (size_t i = 0; i < why25.size() && i < g_r4Code25.size(); ++i)
+                    if (g_r4Code25[i] >= 0) why25[i] = g_r4Code25[i];
+                dumpRungXYZ25("r4_after_reassign", cloud, normals, cid25, why25);
+                std::ostringstream o25;
+                o25 << "\"retry\": " << currentIteration
+                    << ", \"fitted\": true"
+                    << ", \"reassign_mode\": " << dumpJsonStr25(reassignMode)
+                    << ", \"normals_flipped\": " << (flipNormals ? "true" : "false")
+                    << ", \"passes\": " << g_r4Passes25
+                    << ", \"windows\": [";
+                for (int s25 = 0; s25 < g_r4Passes25 && s25 < 2; ++s25) { if (s25) o25 << ", "; o25 << dumpWindow25(s25, g_r4Window25[s25]); }
+                o25 << "]"
+                    << ", \"admitted_own\": [" << g_r4Own25[0] << ", " << g_r4Own25[1] << "]"
+                    << ", \"admitted_other\": [" << g_r4Other25[0] << ", " << g_r4Other25[1] << "]"
+                    << ", \"candidates\": [" << g_r4Cand25[0] << ", " << g_r4Cand25[1] << "]"
+                    << ", \"final_points\": [" << g_r4Final25[0] << ", " << g_r4Final25[1] << "]"
+                    << ", \"other_copied_over\": [" << g_r4OtherCopied25[0] << ", " << g_r4OtherCopied25[1] << "]"
+                    << ", \"clusters\": " << dumpSizesJson25(clusters)
+                    << ", \"reason_counts\": " << dumpReasonCounts25(why25);
+                dumpWriteJson25("r4_after_reassign", o25.str());
+            }
+
             // Both improved surfaces are written back only after every call has run.
             cloudWithNormals_Cluster1->points.clear();
             pcl::copyPointCloud(*improvedSurfacePoints_Cluster1, *cloudWithNormals_Cluster1);
@@ -3101,6 +3777,19 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             std::cout << "[DEBUG] Saving surface cluster PLY files in ASCII mode..." << std::endl;
             pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_0.ply", *cloudWithNormals_Cluster1, false); // ASCII mode
             pcl::io::savePLYFile(tmp_path + "tmpSurfaceCluster_Improved_1.ply", *cloudWithNormals_Cluster2, false); // ASCII mode
+
+            // TICKET 25 rung 5: the two clouds that were just written, asked directly which of
+            // this step's points they carry, rather than inferring it from the labels.
+            if (g_dumpOn25)
+            {
+                std::vector<pcl::PointCloud<pcl::PointNormal>::Ptr> surfaces25;
+                surfaces25.push_back(cloudWithNormals_Cluster1);
+                surfaces25.push_back(cloudWithNormals_Cluster2);
+                std::ostringstream fields25;
+                fields25 << "\"fitted\": true, \"reassign_mode\": " << dumpJsonStr25(reassignMode)
+                         << ", \"normals_flipped\": " << (flipNormals ? "true" : "false");
+                dumpRung5_25(cloud, normals, surfaces25, "pair", currentIteration, clusters, fields25.str());
+            }
 
             // Getting file name without path and extension
             const size_t last_slash_idx = tmp_path.find_last_of("/");
@@ -3160,6 +3849,50 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                           << " wrote=none surface0=none" << std::endl;
             }
 
+            // TICKET 25 rungs 4 and 5 for one surviving cluster. The fit runs only in write mode,
+            // and both sidecars state which case this was instead of implying a reassignment.
+            if (g_dumpOn25)
+            {
+                const bool fitted25 = (g_singleClusterMode == "write");
+                std::vector<int> cid25(cloud->points.size(), -1);
+                for (size_t k = 0; k < clusters[0].indices.size(); ++k)
+                {
+                    const int idx25 = clusters[0].indices[k];
+                    if (idx25 < 0 || static_cast<size_t>(idx25) >= cid25.size()) continue;
+                    cid25[idx25] = 0;
+                }
+                std::vector<int> why25(cloud->points.size(), DR25_NONE);
+                for (size_t i = 0; i < why25.size(); ++i)
+                {
+                    if (cid25[i] < 0) continue;
+                    if (fitted25 && i < g_r4Code25.size() && g_r4Code25[i] >= 0) why25[i] = g_r4Code25[i];
+                    else why25[i] = DR25_CLAIMED;
+                }
+                dumpRungXYZ25("r4_after_reassign", cloud, normals, cid25, why25);
+                std::ostringstream o25;
+                o25 << "\"retry\": " << currentIteration
+                    << ", \"fitted\": " << (fitted25 ? "true" : "false")
+                    << ", \"reassign_mode\": \"single\""
+                    << ", \"normals_flipped\": false"
+                    << ", \"passes\": " << g_r4Passes25
+                    << ", \"windows\": [";
+                for (int s25 = 0; s25 < g_r4Passes25 && s25 < 2; ++s25) { if (s25) o25 << ", "; o25 << dumpWindow25(s25, g_r4Window25[s25]); }
+                o25 << "]"
+                    << ", \"admitted_own\": [" << g_r4Own25[0] << "]"
+                    << ", \"admitted_other\": [" << g_r4Other25[0] << "]"
+                    << ", \"candidates\": [" << g_r4Cand25[0] << "]"
+                    << ", \"final_points\": [" << g_r4Final25[0] << "]"
+                    << ", \"clusters\": " << dumpSizesJson25(clusters)
+                    << ", \"reason_counts\": " << dumpReasonCounts25(why25);
+                dumpWriteJson25("r4_after_reassign", o25.str());
+
+                std::vector<pcl::PointCloud<pcl::PointNormal>::Ptr> surfaces25;
+                if (fitted25) surfaces25.push_back(cloudWithNormals_Cluster1);
+                std::ostringstream fields25;
+                fields25 << "\"fitted\": " << (fitted25 ? "true" : "false") << ", \"reassign_mode\": \"single\"";
+                dumpRung5_25(cloud, normals, surfaces25, fitted25 ? "single" : "single-off", currentIteration, clusters, fields25.str());
+            }
+
             // Getting file name without path and extension
             const size_t last_slash_idx = tmp_path.find_last_of("/");
             if (std::string::npos != last_slash_idx)
@@ -3173,6 +3906,26 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             }
 
             break;
+        }
+
+        // TICKET 25: with fewer than two clusters this retry fits nothing and writes nothing,
+        // so rungs 4 and 5 record that decision rather than leaving the rungs missing.
+        if (g_dumpOn25 && clusters.size() < 2)
+        {
+            std::vector<int> cid25(cloud->points.size(), -1);
+            std::vector<int> why25(cloud->points.size(), DR25_NONE);
+            dumpRungXYZ25("r4_after_reassign", cloud, normals, cid25, why25);
+            std::ostringstream o25;
+            o25 << "\"retry\": " << currentIteration
+                << ", \"fitted\": false, \"reassign_mode\": \"none\", \"normals_flipped\": false"
+                << ", \"passes\": 0, \"windows\": []"
+                << ", \"clusters\": " << dumpSizesJson25(clusters)
+                << ", \"reason_counts\": " << dumpReasonCounts25(why25);
+            dumpWriteJson25("r4_after_reassign", o25.str());
+            std::vector<pcl::PointCloud<pcl::PointNormal>::Ptr> surfaces25;
+            std::ostringstream fields25;
+            fields25 << "\"fitted\": false, \"reassign_mode\": \"none\"";
+            dumpRung5_25(cloud, normals, surfaces25, "none", currentIteration, clusters, fields25.str());
         }
 
         //------------------------------------------------------
@@ -3379,6 +4132,9 @@ int main(int argc, char** argv) {
         }
         
         setInputFile(inputFilePath, dataPath);
+        // TICKET 25: the only place the dump switch is read, and the only place a dump
+        // directory is ever created. Unset SFS_DUMP_STAGE means nothing below runs.
+        dumpBeginPiece25(baseName);
         // POTA-244: default restores pre-48fb588 fixed 0.6mm radius (no target loop).
         // SFS_DOWNSAMPLE_TARGET=N overrides: 19000 = 48fb588 adaptive, <0 = skip (raw cloud).
         int dsTarget244 = 0;
@@ -3524,6 +4280,20 @@ int main(int argc, char** argv) {
         g_status23 = PieceStatus23();
         g_status23.piece = fileNameOnly;
         std::string downsampledFilePath = downsamplePointCloud(inputFilePath, samplingRadius244, dsTarget244);
+
+        // TICKET 25 rung 1: the cloud every later step loads, with the density policy that made it.
+        if (g_dumpOn25)
+        {
+            std::ostringstream o25;
+            o25 << "\"spacing_policy\": " << dumpJsonStr25(spacingPolicy)
+                << ", \"S_mm\": " << dumpFmt25(g_effectiveSpacingMM)
+                << ", \"diag_mm\": " << dumpFmt25(g_pieceDiagMM)
+                << ", \"s0_mm\": " << dumpFmt25(g_pieceS0MM)
+                << ", \"sampling_radius_mm\": " << dumpFmt25(static_cast<double>(samplingRadius244))
+                << ", \"downsample_target\": " << dsTarget244
+                << ", \"points_in\": " << dumpPcdPoints25(inputFilePath);
+            dumpRung1_25(downsampledFilePath, o25.str());
+        }
         
         std::cout << "Starting processing on: " << inputFilePath << std::endl;
         
