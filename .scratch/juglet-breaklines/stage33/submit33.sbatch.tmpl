@@ -203,7 +203,7 @@ echo "[JOB] cells: $(wc -l < "$OUT/cells.list")"
       C)  e="SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<0.02|0.015|0.01|0.0075|0.005, first that lands the floor at <=2%>" ;;
       D)  e="SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<same ladder>" ;;
     esac
-    echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc"'_Axis.xyz'" SFS_DUMP_STAGE=<cell>/dump $e $BIN"
+    echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc"'_Axis.xyz'" SFS_DUMP_STAGE=<cell>/dump $e <BIN-of-the-arm>"
   done < "$OUT/cells.list"
 } > "$OUT/commands.txt"
 
