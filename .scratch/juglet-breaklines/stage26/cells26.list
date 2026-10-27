@@ -1,0 +1,116 @@
+W0L	Juglet_Piece_1	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_1	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_1	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_1	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_1	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_1	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_2	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_2	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_2	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_2	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_2	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_2	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_3	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_3	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_3	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_3	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_3	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_3	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_4	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_4	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_4	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_4	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_4	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_4	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_5	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_5	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_5	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_5	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_5	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_5	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_6	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_6	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_6	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_6	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_6	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_6	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_7	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_7	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_7	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_7	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_7	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_7	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_8	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_8	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_8	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_8	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_8	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_8	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0L	Juglet_Piece_9	grid	W0	SFS_PAPER_CHAIN=0
+W1k3L	Juglet_Piece_9	grid	W1k3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+W1k5L	Juglet_Piece_9	grid	W1k5	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W1k8L	Juglet_Piece_9	grid	W1k8	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+W2L	Juglet_Piece_9	grid	W2	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=other
+W3L	Juglet_Piece_9	grid	W3	SFS_PAPER_CHAIN=0 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_1	grid	W0	
+W3T	Juglet_Piece_1	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_2	grid	W0	
+W3T	Juglet_Piece_2	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_3	grid	W0	
+W3T	Juglet_Piece_3	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_4	grid	W0	
+W3T	Juglet_Piece_4	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_5	grid	W0	
+W3T	Juglet_Piece_5	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_6	grid	W0	
+W3T	Juglet_Piece_6	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_7	grid	W0	
+W3T	Juglet_Piece_7	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_8	grid	W0	
+W3T	Juglet_Piece_8	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0T	Juglet_Piece_9	grid	W0	
+W3T	Juglet_Piece_9	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_01	grid	W0	
+W1k5A	Pot_A_Piece_01	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_01	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_02	grid	W0	
+W1k5A	Pot_A_Piece_02	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_02	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_03	grid	W0	
+W1k5A	Pot_A_Piece_03	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_03	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_04	grid	W0	
+W1k5A	Pot_A_Piece_04	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_04	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_05	grid	W0	
+W1k5A	Pot_A_Piece_05	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_05	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_06	grid	W0	
+W1k5A	Pot_A_Piece_06	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_06	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_07	grid	W0	
+W1k5A	Pot_A_Piece_07	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_07	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+W0A	Pot_A_Piece_08	grid	W0	
+W1k5A	Pot_A_Piece_08	grid	W1k5	SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+W3A	Pot_A_Piece_08	grid	W3	SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+RN_W0	Juglet_Piece_7	ref_native	W0	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1
+RN_W1k3	Juglet_Piece_7	ref_native	W1k3	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1 SFS_WINDOW_MODE=residual SFS_WINDOW_K=3
+RN_W1k5	Juglet_Piece_7	ref_native	W1k5	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1 SFS_WINDOW_MODE=residual SFS_WINDOW_K=5
+RN_W1k8	Juglet_Piece_7	ref_native	W1k8	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1 SFS_WINDOW_MODE=residual SFS_WINDOW_K=8
+RN_W2	Juglet_Piece_7	ref_native	W2	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1 SFS_WINDOW_MODE=other
+RN_W3	Juglet_Piece_7	ref_native	W3	SFS_PAPER_CHAIN=0 SFS_DOWNSAMPLE_TARGET=-1 SFS_WINDOW_MODE=both SFS_WINDOW_K=5
+A_old	Juglet_Piece_1	proof_old	W0	
+A2	Juglet_Piece_1	proof_a2	W0	
+A_old	Juglet_Piece_4	proof_old	W0	
+A2	Juglet_Piece_4	proof_a2	W0	
+A_old	Juglet_Piece_6	proof_old	W0	
+A2	Juglet_Piece_6	proof_a2	W0	
+A_old	Juglet_Piece_7	proof_old	W0	
+A2	Juglet_Piece_7	proof_a2	W0	
+A_old	Pot_A_Piece_01	proof_old	W0	
+A2	Pot_A_Piece_01	proof_a2	W0	
+A_old	Pot_A_Piece_02	proof_old	W0	
+A2	Pot_A_Piece_02	proof_a2	W0	
+A_old	Pot_A_Piece_03	proof_old	W0	
+A2	Pot_A_Piece_03	proof_a2	W0	
