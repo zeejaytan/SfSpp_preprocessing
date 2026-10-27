@@ -1,0 +1,14 @@
+{
+ "cov_2mm": 0.7325692454632283,
+ "diag": 22.024726450133052,
+ "ext_x": 6.782699000000001,
+ "ext_y": 13.0204401,
+ "ext_z": 16.418030000000044,
+ "fold_deg": 2.8033206206864536,
+ "mesh": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj",
+ "normal_src": "ply",
+ "orig_cloud": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd",
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/stage_Juglet_Piece_9_x1/Temp/Data/Juglet/Juglet_Piece_9_Surface_1.ply",
+ "points": 3512,
+ "tag": "Juglet_Piece_9_x1_Surface_1"
+}

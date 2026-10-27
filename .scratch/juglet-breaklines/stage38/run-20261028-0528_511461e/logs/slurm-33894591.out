@@ -1,0 +1,5 @@
+[JOB] runid=20261028-0528_511461e_t38-surfaces job=33894591 tag=t38-surfaces phase=3 new=511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a host=spartan-bm140.hpc.unimelb.edu.au
+[JOB] instruments match commit 511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a (12 files)
+[JOB] ---- phase 3 ----
+[BUILD] new from 511461ebd6ea0dae124c70c3d6a85c0a7dcc1a9a
+[BUILD] new ok 1582080 bytes md5=180e68467eac391279675fdc3ffedfe1

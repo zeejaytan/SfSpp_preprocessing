@@ -1,0 +1,766 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+-- The C compiler identification is GNU 11.5.0
+-- The CXX compiler identification is GNU 11.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning (dev) at CMakeLists.txt:12 (find_package):
+  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.
+  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+
+  Environment variable PCL_ROOT is set to:
+
+    /usr/local
+
+  For compatibility, CMake is ignoring the variable.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at /usr/local/share/pcl-1.9/PCLConfig.cmake:38 (cmake_policy):
+  The OLD behavior for policy CMP0074 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:12 (find_package)
+
+
+-- Checking for module 'eigen3'
+--   Found eigen3, version 3.4.0
+-- Found Eigen: /usr/include/eigen3  
+-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.40.0") found components: system filesystem thread date_time iostreams chrono atomic regex 
+-- Checking for module 'flann'
+--   Found flann, version 1.9.1
+-- FLANN found (include: , lib: flann;flann_cpp)
+-- FLANN found (include: , lib: flann;flann_cpp)
+** WARNING ** io features related to pcap will be disabled
+** WARNING ** io features related to png will be disabled
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (libusb-1.0)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:281 (find_package_handle_standard_args)
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:326 (find_libusb)
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:526 (find_external_library)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found libusb-1.0: /usr/include  
+** WARNING ** io features related to libusb-1.0 will be disabled
+-- Found Qhull: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so  
+-- QHULL found (include: /usr/include, lib: optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so)
+-- looking for PCL_COMMON
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_COMMON)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_COMMON: /usr/local/lib/libpcl_common.so  
+-- looking for PCL_KDTREE
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_KDTREE)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_KDTREE: /usr/local/lib/libpcl_kdtree.so  
+-- looking for PCL_OCTREE
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_OCTREE)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_OCTREE: /usr/local/lib/libpcl_octree.so  
+-- looking for PCL_SEARCH
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_SEARCH)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_SEARCH: /usr/local/lib/libpcl_search.so  
+-- looking for PCL_SAMPLE_CONSENSUS
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SAMPLE_CONSENSUS) does not match the name of the calling package
+  (PCL).  This can lead to problems in calling code that expects
+  `find_package` result variables (e.g., `_FOUND`) to follow a certain
+  pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_SAMPLE_CONSENSUS: /usr/local/lib/libpcl_sample_consensus.so  
+-- looking for PCL_FILTERS
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_FILTERS) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_FILTERS: /usr/local/lib/libpcl_filters.so  
+-- looking for PCL_2D
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_2D)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:597 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_2D: /usr/local/include/pcl-1.9  
+-- looking for PCL_GEOMETRY
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_GEOMETRY) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:597 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_GEOMETRY: /usr/local/include/pcl-1.9  
+-- looking for PCL_IO
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_IO)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_IO: /usr/local/lib/libpcl_io.so  
+-- looking for PCL_FEATURES
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_FEATURES) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_FEATURES: /usr/local/lib/libpcl_features.so  
+-- looking for PCL_ML
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_ML)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_ML: /usr/local/lib/libpcl_ml.so  
+-- looking for PCL_SEGMENTATION
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SEGMENTATION) does not match the name of the calling package (PCL).
+  This can lead to problems in calling code that expects `find_package`
+  result variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_SEGMENTATION: /usr/local/lib/libpcl_segmentation.so  
+-- looking for PCL_SURFACE
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_SURFACE) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_SURFACE: /usr/local/lib/libpcl_surface.so  
+-- looking for PCL_REGISTRATION
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_REGISTRATION) does not match the name of the calling package (PCL).
+  This can lead to problems in calling code that expects `find_package`
+  result variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_REGISTRATION: /usr/local/lib/libpcl_registration.so  
+-- looking for PCL_KEYPOINTS
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_KEYPOINTS) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_KEYPOINTS: /usr/local/lib/libpcl_keypoints.so  
+-- looking for PCL_TRACKING
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args`
+  (PCL_TRACKING) does not match the name of the calling package (PCL).  This
+  can lead to problems in calling code that expects `find_package` result
+  variables (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_TRACKING: /usr/local/lib/libpcl_tracking.so  
+-- looking for PCL_STEREO
+CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (PCL_STEREO)
+  does not match the name of the calling package (PCL).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /usr/local/share/pcl-1.9/PCLConfig.cmake:594 (find_package_handle_standard_args)
+  CMakeLists.txt:12 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found PCL_STEREO: /usr/local/lib/libpcl_stereo.so  
+-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_stereo;/usr/lib64/libboost_system.so;/usr/lib64/libboost_filesystem.so;/usr/lib64/libboost_thread.so;/usr/lib64/libboost_date_time.so;/usr/lib64/libboost_iostreams.so;/usr/lib64/libboost_chrono.so;/usr/lib64/libboost_atomic.so;/usr/lib64/libboost_regex.so;optimized;/usr/lib64/libqhull_p.so;debug;/usr/lib64/libqhull_p.so;flann;flann_cpp (Required is at least version "1.9.1") 
+CMake Deprecation Warning at /usr/local/share/pcl-1.9/PCLConfig.cmake:38 (cmake_policy):
+  The OLD behavior for policy CMP0074 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+Call Stack (most recent call first):
+  CMakeLists.txt:13 (find_package)
+
+
+-- Using header-only CGAL
+-- Targeting Unix Makefiles
+-- Using /usr/bin/c++ compiler.
+-- Found GMP: /lib64/libgmp.so  
+-- Found MPFR: /lib64/libmpfr.so  
+-- Found Boost: /usr/include (found suitable version "1.75.0", minimum required is "1.66")  
+-- Boost include dirs: /usr/include
+-- Boost libraries:    
+-- Using gcc version 4 or later. Adding -frounding-math
+-- Configuring done (2.9s)
+-- Generating done (0.1s)
+-- Build files have been written to: /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/build
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+[ 50%] Building CXX object CMakeFiles/MeshPreprocessingHeadless.dir/mesh_processing_headless.cpp.o
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:158:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h:18,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:214:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:80:6: warning: #warning "A deprecated header has been included." [-Wcpp]
+   80 | #    warning "A deprecated header has been included."
+      |      ^~~~~~~
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/thread/thread_time.hpp:9,
+                 from /usr/include/boost/thread/lock_types.hpp:18,
+                 from /usr/include/boost/thread/pthread/thread_data.hpp:12,
+                 from /usr/include/boost/thread/thread_only.hpp:17,
+                 from /usr/include/boost/thread/thread.hpp:12,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:13:
+/usr/include/boost/bind.hpp:36:1: note: '#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.'
+   36 | BOOST_PRAGMA_MESSAGE(
+      | ^~~~~~~~~~~~~~~~~~~~
+/usr/include/boost/detail/iterator.hpp:13:1: note: '#pragma message: This header is deprecated. Use <iterator> instead.'
+   13 | BOOST_HEADER_DEPRECATED("<iterator>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Polygon_mesh_processing/smooth_mesh.h:21,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:158:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: '#pragma message: Warning: The header `<CGAL/Polygon_mesh_processing/smooth_mesh.h>` is deprecated. Please use `<CGAL/Polygon_mesh_processing/angle_and_area_smoothing.h>` instead. '
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+In file included from /usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22,
+                 from /usr/include/boost/smart_ptr/detail/yield_k.hpp:23,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14,
+                 from /usr/include/boost/smart_ptr/detail/spinlock.hpp:42,
+                 from /usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25,
+                 from /usr/include/boost/smart_ptr/shared_ptr.hpp:29,
+                 from /usr/include/boost/shared_ptr.hpp:17,
+                 from /usr/include/boost/date_time/time_clock.hpp:17,
+                 from /usr/include/boost/thread/thread_time.hpp:9,
+                 from /usr/include/boost/thread/lock_types.hpp:18,
+                 from /usr/include/boost/thread/pthread/thread_data.hpp:12,
+                 from /usr/include/boost/thread/thread_only.hpp:17,
+                 from /usr/include/boost/thread/thread.hpp:12,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:13:
+/usr/include/boost/function_output_iterator.hpp:14:1: note: '#pragma message: This header is deprecated. Use <boost/iterator/function_output_iterator.hpp> instead.'
+   14 | BOOST_HEADER_DEPRECATED("<boost/iterator/function_output_iterator.hpp>")
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h:18,
+                 from /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:214:
+/usr/include/CGAL/Installation/internal/deprecation_warning.h:81:54: note: '#pragma message: Warning: The header `<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h>` is deprecated. Please use `<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>` instead. '
+   81 | #    pragma message (CGAL_INTERNAL_DEPRECATED_MESSAGE)
+      |                                                      ^
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'int estimateNormalsRadius(std::__cxx11::list<std::pair<CGAL::Point_3<CGAL::Epick>, CGAL::Vector_3<CGAL::Epick> > >&, double, int, int, std::vector<int>&, int&, int&, double&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:460:47: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  460 |                 pcl::PointXYZ q; q.x = (float)x; q.y = (float)y; q.z = (float)z;
+      |                                               ^
+      |                                        --------
+      |                                        static_cast<float> (x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:460:63: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  460 |                 pcl::PointXYZ q; q.x = (float)x; q.y = (float)y; q.z = (float)z;
+      |                                                               ^
+      |                                                        --------
+      |                                                        static_cast<float> (y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:460:79: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  460 |                 pcl::PointXYZ q; q.x = (float)x; q.y = (float)y; q.z = (float)z;
+      |                                                                               ^
+      |                                                                        --------
+      |                                                                        static_cast<float> (z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:463:53: warning: use of old-style cast to 'uint32_t' {aka 'unsigned int'} [-Wold-style-cast]
+  463 |         cloud->width = (uint32_t)cloud->points.size();
+      |                                                     ^
+      |                        ----------
+      |                        static_cast<uint32_t> (       )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:466:50: warning: use of old-style cast to 'int' [-Wold-style-cast]
+  466 |         const int nAll = (int)cloud->points.size();
+      |                                                  ^
+      |                          -----
+      |                          static_cast<int> (       )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:477:60: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  477 |                         nn.push_back(std::sqrt((double)d2[1]));
+      |                                                            ^
+      |                                                -------------
+      |                                                static_cast<double> (d2[1])
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:498:70: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  498 |                 int got = tree.radiusSearch(cloud->points[i], (float)rEff, idx, sqd, 0);
+      |                                                                      ^~~~
+      |                                                               -----------
+      |                                                               static_cast<float> (rEff)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:515:30: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  515 |                 c /= (double)got;
+      |                              ^~~
+      |                      -----------
+      |                      static_cast<double> (got)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:522:32: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  522 |                 cov /= (double)got;
+      |                                ^~~
+      |                        -----------
+      |                        static_cast<double> (got)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void printNormalLine24(size_t, const std::vector<int>&, int, int, int, int, double)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:587:71: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  587 |                 const int p90 = v[(size_t)(0.9 * (double)(v.size() - 1))];
+      |                                                                       ^
+      |                                                  --------
+      |                                                  static_cast<double> ( )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:587:72: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+  587 |                 const int p90 = v[(size_t)(0.9 * (double)(v.size() - 1))];
+      |                                                                        ^
+      |                                   --------
+      |                                   static_cast<size_t> (                 )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:590:67: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  590 |                           << " nbrMean=" << (sum / (double)v.size())
+      |                                                                   ^
+      |                                                    ----------------
+      |                                                    static_cast<double> (v.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'bool getNormalsOnSurface(pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, const Ptr&, float)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:679:70: warning: use of old-style cast to 'int' [-Wold-style-cast]
+  679 |         int nb_neighbors = std::max(5, std::min(20, (int)points.size() / 1000));
+      |                                                                      ^
+      |                                                     -----
+      |                                                     static_cast<int> ()
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:719:71: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  719 |                         q33.x = (float)CGAL::to_double(it33->first.x());
+      |                                                                       ^
+      |                                 -------
+      |                                 static_cast<float> (                   )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:720:71: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  720 |                         q33.y = (float)CGAL::to_double(it33->first.y());
+      |                                                                       ^
+      |                                 -------
+      |                                 static_cast<float> (                   )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:721:71: warning: use of old-style cast to 'float' [-Wold-style-cast]
+  721 |                         q33.z = (float)CGAL::to_double(it33->first.z());
+      |                                                                       ^
+      |                                 -------
+      |                                 static_cast<float> (                   )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:731:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  731 |                                         const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:731:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  731 |                                         const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:732:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  732 |                                                                       (double)s33.normal_y * (double)s33.normal_y +
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:732:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  732 |                                                                       (double)s33.normal_y * (double)s33.normal_y +
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:733:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  733 |                                                                       (double)s33.normal_z * (double)s33.normal_z);
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:733:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  733 |                                                                       (double)s33.normal_z * (double)s33.normal_z);
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:735:61: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  735 |                                         nx33 += (double)s33.normal_x / ln33;
+      |                                                             ^~~~~~~~
+      |                                                 --------------------
+      |                                                 static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:736:61: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  736 |                                         ny33 += (double)s33.normal_y / ln33;
+      |                                                             ^~~~~~~~
+      |                                                 --------------------
+      |                                                 static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:737:61: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  737 |                                         nz33 += (double)s33.normal_z / ln33;
+      |                                                             ^~~~~~~~
+      |                                                 --------------------
+      |                                                 static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:748:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  748 |                                         const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:748:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  748 |                                         const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:749:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  749 |                                                                       (double)s33.normal_y * (double)s33.normal_y +
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:749:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  749 |                                                                       (double)s33.normal_y * (double)s33.normal_y +
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:750:83: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  750 |                                                                       (double)s33.normal_z * (double)s33.normal_z);
+      |                                                                                   ^~~~~~~~
+      |                                                                       --------------------
+      |                                                                       static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:750:106: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  750 |                                                                       (double)s33.normal_z * (double)s33.normal_z);
+      |                                                                                                          ^~~~~~~~
+      |                                                                                              --------------------
+      |                                                                                              static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:753:68: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  753 |                                                 nx33 = (double)s33.normal_x / ln33;
+      |                                                                    ^~~~~~~~
+      |                                                        --------------------
+      |                                                        static_cast<double> (s33.normal_x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:754:68: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  754 |                                                 ny33 = (double)s33.normal_y / ln33;
+      |                                                                    ^~~~~~~~
+      |                                                        --------------------
+      |                                                        static_cast<double> (s33.normal_y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:755:68: warning: use of old-style cast to 'double' [-Wold-style-cast]
+  755 |                                                 nz33 = (double)s33.normal_z / ln33;
+      |                                                                    ^~~~~~~~
+      |                                                        --------------------
+      |                                                        static_cast<double> (s33.normal_z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:895:85: warning: use of old-style cast to 'int' [-Wold-style-cast]
+  895 |         int curv_k = std::max(10, std::min(50, (int)surfaceWithNormals->points.size() / 300));
+      |                                                                                     ^
+      |                                                -----
+      |                                                static_cast<int> (                    )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'std::string downsamplePointCloud(std::string, float, int)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1048:48: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1048 |         if (downsampledCloud->size() > (size_t)upperBound) {
+      |                                                ^~~~~~~~~~
+      |                                        ------------------
+      |                                        static_cast<size_t> (upperBound)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1051:55: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 1051 |         } else if (downsampledCloud->size() < (size_t)lowerBound) {
+      |                                                       ^~~~~~~~~~
+      |                                               ------------------
+      |                                               static_cast<size_t> (lowerBound)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void finishImprovedSurface(pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, int)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1385:62: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 1385 |         const long dedupeIn27 = (long)vectorPointNormal.size();
+      |                                                              ^
+      |                                 ------
+      |                                 static_cast<long> (           )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1406:88: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 1406 |                 dedupeOut27 = (long)improvedSurfacePointCloudNoDuplicates->points.size();
+      |                                                                                        ^
+      |                               ------
+      |                               static_cast<long> (                                       )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void dumpWritePly25(const string&, const std::vector<DumpPoint25>&, const std::vector<int>&, const std::vector<int>&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1746:40: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1746 |                         (double)pts[i].x, (double)pts[i].y, (double)pts[i].z,
+      |                                        ^
+      |                         ----------------
+      |                         static_cast<double> (pts[i].x)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1746:58: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1746 |                         (double)pts[i].x, (double)pts[i].y, (double)pts[i].z,
+      |                                                          ^
+      |                                           ----------------
+      |                                           static_cast<double> (pts[i].y)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1746:76: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1746 |                         (double)pts[i].x, (double)pts[i].y, (double)pts[i].z,
+      |                                                                            ^
+      |                                                             ----------------
+      |                                                             static_cast<double> (pts[i].z)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1747:40: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1747 |                         (double)pts[i].nx, (double)pts[i].ny, (double)pts[i].nz, cid[i], reason[i]);
+      |                                        ^~
+      |                         -----------------
+      |                         static_cast<double> (pts[i].nx)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1747:59: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1747 |                         (double)pts[i].nx, (double)pts[i].ny, (double)pts[i].nz, cid[i], reason[i]);
+      |                                                           ^~
+      |                                            -----------------
+      |                                            static_cast<double> (pts[i].ny)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1747:78: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 1747 |                         (double)pts[i].nx, (double)pts[i].ny, (double)pts[i].nz, cid[i], reason[i]);
+      |                                                                              ^~
+      |                                                               -----------------
+      |                                                               static_cast<double> (pts[i].nz)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void dumpRung5_25(const Ptr&, const Ptr&, const std::vector<boost::shared_ptr<pcl::PointCloud<pcl::PointNormal> > >&, const string&, int, const std::vector<pcl::PointIndices>&, const string&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1902:104: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 1902 |                         distinct = (long)(std::unique(keys[s].begin(), keys[s].end()) - keys[s].begin());
+      |                                                                                                        ^
+      |                                    ------
+      |                                    static_cast<long> (                                                  )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1931:47: warning: use of old-style cast to 'int' [-Wold-style-cast]
+ 1931 |                                 cid[i] = (int)s;
+      |                                               ^
+      |                                          ------
+      |                                          static_cast<int> (s)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1939:76: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 1939 |                 << ", \"points_on_neither\": " << (long)cloud->points.size() - reached0 - reached1;
+      |                                                                            ^
+      |                                                   ------
+      |                                                   static_cast<long> (       )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'double window26ResidualMedianMM(pcl::on_nurbs::FittingSurface&, const Ptr&, long int&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:1970:33: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 1970 |         used = (long)dists.size();
+      |                                 ^
+      |                ------------------
+      |                static_cast<long> (dists.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'double window26OtherDistanceMM(pcl::on_nurbs::FittingSurface&, const Ptr&, double&, double&, long int&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2008:53: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 2008 |                 double s = s0 + (s1 - s0) * (double)i / (double)(GRID - 1);
+      |                                                     ^
+      |                                             ---------
+      |                                             static_cast<double> (i)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2008:74: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 2008 |                 double s = s0 + (s1 - s0) * (double)i / (double)(GRID - 1);
+      |                                                                          ^
+      |                                                         ------------------
+      |                                                         static_cast<double> ((GRID - 1))
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2011:61: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 2011 |                         double t = t0 + (t1 - t0) * (double)j / (double)(GRID - 1);
+      |                                                             ^
+      |                                                     ---------
+      |                                                     static_cast<double> (j)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2011:82: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 2011 |                         double t = t0 + (t1 - t0) * (double)j / (double)(GRID - 1);
+      |                                                                                  ^
+      |                                                                 ------------------
+      |                                                                 static_cast<double> ((GRID - 1))
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2016:45: warning: use of old-style cast to 'float' [-Wold-style-cast]
+ 2016 |                         q.x = (float)point[0];
+      |                                             ^
+      |                               ---------------
+      |                               static_cast<float> (point[0])
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2017:45: warning: use of old-style cast to 'float' [-Wold-style-cast]
+ 2017 |                         q.y = (float)point[1];
+      |                                             ^
+      |                               ---------------
+      |                               static_cast<float> (point[1])
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2018:45: warning: use of old-style cast to 'float' [-Wold-style-cast]
+ 2018 |                         q.z = (float)point[2];
+      |                                             ^
+      |                               ---------------
+      |                               static_cast<float> (point[2])
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2023:67: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 2023 |                                 double d = std::sqrt((double)sqd[0]);
+      |                                                                   ^
+      |                                                      --------------
+      |                                                      static_cast<double> (sqd[0])
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'Window26Window window26Select(pcl::on_nurbs::FittingSurface&, const Ptr&, const Ptr&)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2066:67: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2066 |         w.ownN = (long)(ownCluster ? ownCluster->points.size() : 0);
+      |                                                                   ^
+      |                  ------
+      |                  static_cast<long> (                               )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2067:79: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2067 |         w.otherPointsN = (long)(otherCluster ? otherCluster->points.size() : 0);
+      |                                                                               ^
+      |                          ------
+      |                          static_cast<long> (                                   )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, int, pcl::PointCloud<pcl::PointNormal>::Ptr)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2292:43: warning: use of old-style cast to 'size_t' {aka 'long unsigned int'} [-Wold-style-cast]
+ 2292 |                 if (g_dumpOn25 && (size_t)i < g_r4Code25.size())
+      |                                           ^
+      |                                   ---------
+      |                                   static_cast<size_t> (i)
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2336:51: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2336 |                 (long)meshPointCloud->points.size());
+      |                                                   ^
+      |                 ------
+      |                 static_cast<long> (                )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2343:78: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2343 |                 g_r4Cand25[surfaceIndex] = (long)meshPointCloud->points.size();
+      |                                                                              ^
+      |                                            ------
+      |                                            static_cast<long> (                )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2346:85: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2346 |         const long window26OwnBefore = (long)improvedSurfacePointCloud->points.size();
+      |                                                                                     ^
+      |                                        ------
+      |                                        static_cast<long> (                           )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2347:93: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2347 |         const long window26OtherBefore = (long)improvedSurfacePointCloud_other->points.size();
+      |                                                                                             ^
+      |                                          ------
+      |                                          static_cast<long> (                                 )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2351:127: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2351 |         window26PrintFinal(surfaceIndex, window26OwnBefore, window26OtherBefore, (long)improvedSurfacePointCloud->points.size());
+      |                                                                                                                               ^
+      |                                                                                  ------
+      |                                                                                  static_cast<long> (                           )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2354:90: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2354 |                 g_r4Final25[surfaceIndex] = (long)improvedSurfacePointCloud->points.size();
+      |                                                                                          ^
+      |                                             ------
+      |                                             static_cast<long> (                           )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr, pcl::PointCloud<pcl::PointNormal>::Ptr)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2475:91: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2475 |         const long window26OwnBefore[2] = { (long)improvedSurfacePointCloud1->points.size(), (long)improvedSurfacePointCloud2->points.size() };
+      |                                                                                           ^
+      |                                             ------
+      |                                             static_cast<long> (                            )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2475:140: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2475 |         const long window26OwnBefore[2] = { (long)improvedSurfacePointCloud1->points.size(), (long)improvedSurfacePointCloud2->points.size() };
+      |                                                                                                                                            ^
+      |                                                                                              ------
+      |                                                                                              static_cast<long> (                            )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2476:99: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2476 |         const long window26OtherBefore[2] = { (long)improvedSurfacePointCloud1_other->points.size(), (long)improvedSurfacePointCloud2_other->points.size() };
+      |                                                                                                   ^
+      |                                               ------
+      |                                               static_cast<long> (                                  )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2476:154: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2476 |         const long window26OtherBefore[2] = { (long)improvedSurfacePointCloud1_other->points.size(), (long)improvedSurfacePointCloud2_other->points.size() };
+      |                                                                                                                                                          ^
+      |                                                                                                      ------
+      |                                                                                                      static_cast<long> (                                  )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2477:75: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2477 |         const long window26Candidates = (long)meshPointCloud->points.size();
+      |                                                                           ^
+      |                                         ------
+      |                                         static_cast<long> (                )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2484:123: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2484 |         window26PrintFinal(0, window26OwnBefore[0], window26OtherBefore[0], (long)improvedSurfacePointCloud1->points.size());
+      |                                                                                                                           ^
+      |                                                                             ------
+      |                                                                             static_cast<long> (                            )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:2485:123: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 2485 |         window26PrintFinal(1, window26OwnBefore[1], window26OtherBefore[1], (long)improvedSurfacePointCloud2->points.size());
+      |                                                                                                                           ^
+      |                                                                             ------
+      |                                                                             static_cast<long> (                            )
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp: In function 'bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::Normal>::Ptr, const std::vector<int>&, const std::vector<int>&, const std::vector<char>&, const Vector3f&, const Vector3f&, double, double, double, double, double, int)':
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3316:25: warning: use of old-style cast to 'int' [-Wold-style-cast]
+ 3316 |     if ((int)pairs.size() < g_mergeMinPairs) return false;   // TICKET 33: SFS_MERGE_MIN_PAIRS, default 3
+      |                         ^
+      |         -----------------
+      |         static_cast<int> (pairs.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3317:60: warning: use of old-style cast to 'long int' [-Wold-style-cast]
+ 3317 |     if (g_dumpOn25) g_pairStats25.pairs = (long)pairs.size();
+      |                                                            ^
+      |                                           ------------------
+      |                                           static_cast<long> (pairs.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3337:61: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 3337 |     if (g_dumpOn25) g_pairStats25.nDot = (double)sNA.dot(sNB);
+      |                                                             ^
+      |                                          --------------------
+      |                                          static_cast<double> (sNA.dot(sNB))
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3339:73: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 3339 |     if (g_dumpOn25) { g_pairStats25.curvInto = sCA / (double)pairs.size(); g_pairStats25.curvFrom = sCB / (double)pairs.size(); }
+      |                                                                         ^
+      |                                                      --------------------
+      |                                                      static_cast<double> (pairs.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3339:126: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 3339 |     if (g_dumpOn25) { g_pairStats25.curvInto = sCA / (double)pairs.size(); g_pairStats25.curvFrom = sCB / (double)pairs.size(); }
+      |                                                                                                                              ^
+      |                                                                                                           --------------------
+      |                                                                                                           static_cast<double> (pairs.size())
+/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/build/new/src/mesh_processing_headless.cpp:3349:75: warning: use of old-style cast to 'double' [-Wold-style-cast]
+ 3349 |     if (g_dumpOn25) g_pairStats25.inNDot = (double)(na.dot(nb) / (la * lb));
+      |                                                                           ^
+      |                                            --------
+      |                                            static_cast<double> (           )
+[100%] Linking CXX executable MeshPreprocessingHeadless
+[100%] Built target MeshPreprocessingHeadless

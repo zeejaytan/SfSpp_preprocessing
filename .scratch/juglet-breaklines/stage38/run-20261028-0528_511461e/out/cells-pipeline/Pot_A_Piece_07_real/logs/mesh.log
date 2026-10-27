@@ -1,0 +1,107 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Copied Point file: Pot_A_Piece_07_Point.pcd
+Copied Mesh file: Pot_A_Piece_07_Mesh.obj
+
+Selected file: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+[DUMP-25] piece=Pot_A_Piece_07 on=yes dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/
+[SPACING-22] policy=piece diagMM=58.5761 s0MM=0.021169 samples=200 rawMM=0.292881 S=0.292881
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+[NORMAL-24-SWITCH] mode=count radiusMMraw=0 radiusMM=0.000000 radiusFrom=fixed mult=2 s0MM=0.021169 diagMM=58.5761 radiusOverDiag=no minK=5 maxK=20 nbrsFile=none dumpDir=none
+[DOWNSAMPLING RESULT] Target=1000000 points, Bounds=[800000-1200000], Result=842506 points, Radius(leaf)=0.02780
+[DEBUG getNormalsOnSurface] Starting function. Input points: 842506
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 842506
+[ADAPTIVE CGAL] Using 20 neighbors for 842506 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[NORMAL-24] piece=Pot_A_Piece_07 call=0 mode=count n=842506 k=20
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 842506
+[DEBUG getNormalsOnSurface] Computing curvature for 842506 points...
+[ADAPTIVE CURVATURE] Using K=50 for 842506 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r1_downsampled.ply points=842506
+Starting processing on: Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+Starting surface segmentation on: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=3.40000 curv=1.00000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10 normalSource=reestimate normalSourceSet=no minPairs=3
+[DEBUG] Loading PLY file: Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 842506
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 842506
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 842506
+[DEBUG getNormalsOnSurface] Starting function. Input points: 842506
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 842506
+[ADAPTIVE CGAL] Using 20 neighbors for 842506 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[NORMAL-24] piece=Pot_A_Piece_07 call=1 mode=count n=842506 k=20
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 842506
+[DEBUG getNormalsOnSurface] Computing curvature for 842506 points...
+[ADAPTIVE CURVATURE] Using K=50 for 842506 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 842506
+[DEBUG] Extracting normals from sampled cloud...
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+
+Total points: 842506
+Number of clusters is equal to 2
+Points in 
+Cluster 1 : 780686
+Cluster 2 : 34471
+Points in two clusters / Total Points in Pointcloud: 96.7539%
+Points in two clusters / Total Points in all clusters: 100.0000%
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r2_clusters_premerge.ply points=842506
+Calling mergePaper234 function.
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1 done: 2 clusters
+[PAPER-234] classify: face0 n=780686 interior_frac=0.4894 face1 n=34471 interior_frac=0.0370 satA=415251.0000 satB=399906.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r3_after_merge.ply points=842506
+[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=842506 clusters_pre=2 clusters=2 sizes=780686,34471 minCluster=1685 minClusterFrom=1685
+Sampled indices: 415474 26045 463485 678876 730878 36940 584993 608611 467796 302852 629020 599573 202722 272874 357847 177815 226297 603053 8651 619327 450982 285608 143293 529463 355750 402463 592331 597824 713338 16187 
+Normals flipped: false
+[REASSIGN-22] mode=radius
+  loading cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+[WINDOW-26] piece=Pot_A_Piece_07 surface=0 mode=literal k=5.0000 residual_mm=1.165073 other_mm=0.001354 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=102090 admitted_other=77736
+[WINDOW-26-MEASURE] piece=Pot_A_Piece_07 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=780686 other_n=2028 other_grid_mm=0.042964 other_proj_mm=0.001354 own_cluster_points=780686 other_cluster_points=34471 candidates=842506
+[DEDUPE-27] surface=0 mode=off in=882776 out=797756
+[WINDOW-26-FINAL] piece=Pot_A_Piece_07 surface=0 admitted_own=102090 admitted_other=77736 other_copied_over=no final_points=882776
+  loading cloudForSpline.pcd
+  10000 points in data set
+  surface fitting ...
+[WINDOW-26] piece=Pot_A_Piece_07 surface=1 mode=literal k=5.0000 residual_mm=0.012402 other_mm=0.016874 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=4 admitted_other=47549
+[WINDOW-26-MEASURE] piece=Pot_A_Piece_07 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=34471 other_n=2002 other_grid_mm=0.016874 other_proj_mm=0.057911 own_cluster_points=34471 other_cluster_points=780686 candidates=842506
+[DEDUPE-27] surface=1 mode=off in=82020 out=47571
+[WINDOW-26-FINAL] piece=Pot_A_Piece_07 surface=1 admitted_own=4 admitted_other=47549 other_copied_over=yes final_points=82020
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r4_after_reassign.ply points=842506
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0528_511461e_t38-surfaces/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r5_write.ply points=842506

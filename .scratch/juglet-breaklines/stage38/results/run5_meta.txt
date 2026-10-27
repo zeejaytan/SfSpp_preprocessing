@@ -1,0 +1,10 @@
+runid=20261028-0414_2a34d86_t38-resolution
+jobid=33892259
+commit=2a34d86a54467ac1f0238eed214bc11bdf7be208
+tag=t38-resolution
+phase=1,2,3
+host=spartan-login3.hpc.unimelb.edu.au
+utc=2026-10-27T17:57:50Z
+phase_rc=timeout
+phase_failures=3 (wall clock, see logs/slurm-33892259.err)
+closed_by=hand, the same function bodies as submit.sbatch (the batch script was killed mid phase 3)

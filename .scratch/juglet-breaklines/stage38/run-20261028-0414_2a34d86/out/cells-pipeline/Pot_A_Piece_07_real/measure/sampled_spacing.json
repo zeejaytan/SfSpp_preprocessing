@@ -1,0 +1,7 @@
+{
+ "median_mm": 0.12307263431685475,
+ "p10_mm": 0.05107608901473714,
+ "p90_mm": 0.21055250659644695,
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/stage_Pot_A_Piece_07_real/Temp/Data/Pot_A/Pot_A_Piece_07_SampledWithNormals.ply",
+ "points": 34608
+}

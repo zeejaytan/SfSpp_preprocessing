@@ -1,0 +1,23 @@
+{
+ "clusters": 8,
+ "ge10": 8,
+ "ge20": 8,
+ "ge30": 8,
+ "ge50": 8,
+ "ge_pct1": 6,
+ "ge_pct10": 3,
+ "ge_pct5": 4,
+ "largest": 12888,
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/cells-pipeline/Pot_A_Piece_07_real/dump/Pot_A_Piece_07/r2_clusters_premerge.ply",
+ "points": 34608,
+ "sizes_top20": [
+  12888,
+  11815,
+  4656,
+  2722,
+  1059,
+  1018,
+  234,
+  216
+ ]
+}

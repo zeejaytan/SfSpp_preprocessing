@@ -1,0 +1,13 @@
+SAMPLER GATE DISCLOSURE  piece=Juglet_Piece_9  gate_route=instrument-validated-disclosed
+The literal comparison the ticket names did not reproduce the shipped cloud on this piece.
+  route 1 sample at the shipped median NN: count_ratio=2.5105062082139447 spacing_ratio=0.9906401131585472
+  a uniform covering of the mesh's own area at that spacing would carry 9032.80204349608 points = 4.313659046559732x the shipped count
+  mesh: verts=2094 faces=4184 area=373.7573691429208 mm2
+  mesh shape: edge_median=0.31462133586378405 mm edge_cv=0.9192519333673644 angle_median=55.55068754387662 deg angle_min=0.013359192131665396 deg frac(tri min angle<20deg)=0.10540152963671127
+  route 2 spacing: achieved 0.201511365190472 mm at request 0.2034153094689202 mm, and 0.10111434111085518 mm at request 0.1017076547344601 mm
+  route 2 cover: random surface points to the nearest cloud point median=0.10710361466051702 mm = 0.5265268132479545s, p99=0.9899538382415015s
+  route 2 surface: cloud to the original triangles median=0.004334706887355951s p99=0.12970003905540298s max=0.41935580072539985s (0.08530338998214404 mm; 3 points past 0.5 s re-measured over every triangle)
+  sampler density: 0.5711462154752823 points*s^2/area at the request, 0.5820310339479349 at half of it, 0.23182175253223336 for the shipped cloud
+  route 2 sample at the density-implied spacing 0.42248037833466734 mm: count_ratio=0.5702005730659025 spacing_ratio=0.9983377384805747
+  Readings: every synthetic cloud in this run reports ACHIEVED spacing beside requested;
+  no result below depends on the sampler's absolute density, only on the achieved spacing it prints.

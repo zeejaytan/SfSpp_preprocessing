@@ -1,0 +1,59 @@
+pair38.tsv -- how the second-largest region sits relative to the largest one.
+
+med_nn      nearest Surface_0 point to each Surface_1 point; the step length, unsplit
+med_along   |t|, that step measured along Surface_0 own normal at the nearest point
+med_across  |v - t a|, the part of the step perpendicular to that normal: the perpendicular
+            residual, i.e. how far off-parallel the two sheets are; med_angle_deg is the folded
+            angle between the two normals at that nearest point
+coin        fraction of Surface_1 points whose nearest Surface_0 point is within 1 micron
+min_nn_minus_across  the smallest per-point slack in the identity across <= nn (must be >= 0)
+
+VOID COLUMNS.  Every med_across / p90_across printed before 2026-10-27 by an earlier stage of this
+ticket is VOID: measure34.pair_stats reconstructed the perpendicular part from |t| instead of t,
+which inflates across to sqrt(across^2 + 4 t^2) on every point whose step runs against the normal
+(up to 2*med_nn).  On the arm-A cells the printed med_across was 4.23-4.58 mm where the correct
+value is 0.24-0.43 mm.  med_nn, med_along, p90_along and coin were correct as printed and are
+unchanged.  Every row below was re-derived from the regenerated regions with the fixed code.
+
+rows: 41
+Juglet_Piece_2           arm=A      x1  along 2.1714 mm  across 0.1614 mm  angle 9.702 deg
+Juglet_Piece_2           arm=F      x1  along 2.4254 mm  across 0.7877 mm  angle 10.442 deg
+Juglet_Piece_2           arm=A      x2  along 2.1268 mm  across 0.0875 mm  angle 11.232 deg
+Juglet_Piece_2           arm=F      x2  along 2.1484 mm  across 0.1426 mm  angle 9.189 deg
+Juglet_Piece_2           arm=A      x4  along 2.2714 mm  across 0.0436 mm  angle 12.633 deg
+Juglet_Piece_2           arm=B      x4  along 2.0130 mm  across 0.4644 mm  angle 27.724 deg
+Juglet_Piece_2           arm=F      x4  along 2.2777 mm  across 0.0579 mm  angle 11.154 deg
+Juglet_Piece_2           arm=A      x10 along 2.2668 mm  across 0.0208 mm  angle 14.008 deg
+Juglet_Piece_2           arm=B      x10 along 0.2258 mm  across 0.6663 mm  angle 19.178 deg
+Juglet_Piece_2           arm=F      x10 along 2.3398 mm  across 0.0837 mm  angle 13.185 deg
+Juglet_Piece_3           arm=A      x1  along 1.9632 mm  across 0.1145 mm  angle 9.803 deg
+Juglet_Piece_3           arm=F      x1  along 1.9624 mm  across 0.1145 mm  angle 9.786 deg
+Juglet_Piece_3           arm=A      x2  along 1.9508 mm  across 0.0601 mm  angle 11.347 deg
+Juglet_Piece_3           arm=F      x2  along 1.9434 mm  across 0.0600 mm  angle 11.127 deg
+Juglet_Piece_3           arm=A      x4  along 2.0314 mm  across 0.0313 mm  angle 10.632 deg
+Juglet_Piece_3           arm=F      x4  along 1.9922 mm  across 0.0311 mm  angle 10.307 deg
+Juglet_Piece_5           arm=A      x1  along 2.5829 mm  across 0.1011 mm  angle 12.348 deg
+Juglet_Piece_5           arm=F      x1  along 2.5829 mm  across 0.1011 mm  angle 12.348 deg
+Juglet_Piece_5           arm=scan   x1  along 0.7014 mm  across 4.2658 mm  angle 18.283 deg
+Juglet_Piece_5           arm=A      x2  along 2.3291 mm  across 0.0631 mm  angle 13.470 deg
+Juglet_Piece_5           arm=F      x2  along 2.3291 mm  across 0.0631 mm  angle 13.470 deg
+Juglet_Piece_5           arm=A      x4  along 2.5813 mm  across 0.0348 mm  angle 12.745 deg
+Juglet_Piece_5           arm=F      x4  along 2.5783 mm  across 0.0344 mm  angle 12.470 deg
+Juglet_Piece_7           arm=A      x1  along 3.3419 mm  across 0.1514 mm  angle 19.324 deg
+Juglet_Piece_7           arm=F      x1  along 0.8948 mm  across 4.6535 mm  angle 18.259 deg
+Juglet_Piece_7           arm=scan   x1  along 1.1670 mm  across 5.5084 mm  angle 22.078 deg
+Juglet_Piece_7           arm=A      x2  along 3.2801 mm  across 0.0834 mm  angle 12.625 deg
+Juglet_Piece_7           arm=F      x2  along 0.6895 mm  across 4.1105 mm  angle 16.103 deg
+Juglet_Piece_7           arm=A      x4  along 3.0894 mm  across 0.0435 mm  angle 13.537 deg
+Juglet_Piece_7           arm=F      x4  along 3.2357 mm  across 0.0427 mm  angle 13.395 deg
+Juglet_Piece_9           arm=A      x1  along 2.1802 mm  across 0.1168 mm  angle 14.258 deg
+Juglet_Piece_9           arm=F      x1  along 0.1553 mm  across 2.2403 mm  angle 9.732 deg
+Juglet_Piece_9           arm=A      x2  along 2.1926 mm  across 0.0602 mm  angle 12.782 deg
+Juglet_Piece_9           arm=F      x2  along 0.1801 mm  across 2.3080 mm  angle 10.912 deg
+Juglet_Piece_9           arm=A      x4  along 2.1833 mm  across 0.0336 mm  angle 13.069 deg
+Juglet_Piece_9           arm=B      x4  along 0.4310 mm  across 0.9063 mm  angle 35.695 deg
+Juglet_Piece_9           arm=F      x4  along 0.1418 mm  across 2.0577 mm  angle 10.960 deg
+Juglet_Piece_9           arm=A      x10 along 2.1125 mm  across 0.0312 mm  angle 15.505 deg
+Juglet_Piece_9           arm=B      x10 along 0.3265 mm  across 0.5347 mm  angle 22.887 deg
+Juglet_Piece_9           arm=F      x10 along 0.1356 mm  across 1.9433 mm  angle 10.966 deg
+Pot_A_Piece_07           arm=scan37 x1  along 3.9225 mm  across 0.1166 mm  angle 4.172 deg

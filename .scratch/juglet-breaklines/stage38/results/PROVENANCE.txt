@@ -1,0 +1,40 @@
+stage38/results — provenance of every file
+
+Everything here was copied out of a run directory on the cluster. Two runs are represented; where the same
+file name exists in both, the run-5 copy is the one kept, and the run-4 copy remains inside its own run
+directory (stage38/run-20261027-1615_92d6871/).
+
+run 5 = /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/ (job 33892259,
+         commit 2a34d86a54467ac1f0238eed214bc11bdf7be208), TIMEOUT 00:40:11, record closed by hand
+run 4 = /data/gpfs/projects/punim2657/SfSpp/runs/20261027-1615_92d6871_t38-resolution/ (job 33890365,
+         commit 92d6871022fdf75f63170a5af65b30e31c9e843a)
+
+file / directory                              source
+--------------------------------------------  ------------------------------------------------
+regions38.tsv, largest38.tsv, pair38.tsv       run 5 out/ (copy md5 equal to the run dir)
+pair38_NOTE.txt, ticket37_compare.json         run 5 out/
+figure_Juglet_Piece_{2,9}.json                 run 5 out/figures/ (floor_reached_at fixed)
+Juglet_Piece_{2,9}_resolution_by_density.png   run 5 out/figures/ (label + floor fixes applied)
+Juglet_Piece_9_t37style_replay.png             run 5 out/figures/
+Juglet_Piece_9_partE_ranked_fullopacity.png    run 5 out/figures/
+Pot_A_Piece_07_t37style_replay.png             run 5 out/figures/
+Pot_A_Piece_07_partE_ranked_fullopacity.png    run 5 out/figures/
+parte38.json                                   run 5 out/figures/ (ink/grey/colour measurements)
+sampler_validate_*.json                        run 5 out/ (5 pieces)
+sample_*.json                                  run 5 out/ (17 clouds, achieved spacing)
+subdiv_*.json                                  run 5 out/ (6 subdivided meshes)
+SAMPLER-GATE-DISCLOSURE_*.txt                  run 5 out/
+geometry_counts_phase1-2-3.tsv                 run 5 out/ (written before the delete)
+GEOMETRY_DELETED_phase1-2-3.txt                run 5 out/
+run5_CLOSED-BY-HAND.txt                        run 5 out/CLOSED-BY-HAND.txt
+run5_meta.txt                                  run 5 out/run-meta_phase1-2-3.txt
+cells-pipeline/pipeline_cells.tsv              run 5 out/cells-pipeline/
+cells-pipeline/<cell>/cell.tsv                 run 5 out/cells-pipeline/<cell>/
+cells-pipeline/<cell>/measure/*.json           run 5 out/cells-pipeline/<cell>/measure/ (rung-2 sizes,
+                                               SampledWithNormals spacing)
+
+cells-pipeline/<cell>/logs/lines38.log (quoted in REPORT.md, not copied for size) stays in the run directory
+and in stage38/run-20261028-0414_2a34d86/out/cells-pipeline/<cell>/logs/.
+
+Geometry (PCD/PLY/OBJ/XYZ) is not here and no longer exists on the cluster: it was counted per extension and
+deleted at the end of each run (REPORT.md item 9).

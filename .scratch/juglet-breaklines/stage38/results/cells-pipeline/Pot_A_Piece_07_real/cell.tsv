@@ -1,0 +1,23 @@
+piece	Pot_A_Piece_07
+pot	Pot_A
+level	real
+cloud_kind	REAL-RELEASED-CLOUD
+cloud	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Point/Pot_A/Pot_A_Piece_07_Point.pcd
+cloud_md5	0a7fc1f2dc221e29788bfb8505d043e5
+cloud_points	
+cloud_achieved_spacing_mm	na
+requested_spacing_mm	na
+pipeline_rc	0
+pipeline_clusters	7
+spacing_policy	piece
+spacing_s0MM	0.021169
+spacing_S	0.292881
+count_minCluster	50
+status_npts	34608
+status_floor	69
+status_outcome	two
+status_surf0_points	24636
+status_surf1_points	26741
+retry_sizes	11815,12888,2722,1059,1018,234,216
+downsampling	
+downsampling_radius	

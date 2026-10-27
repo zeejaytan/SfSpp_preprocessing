@@ -1,0 +1,87 @@
+[JOB] runid=20261028-0414_2a34d86_t38-resolution job=33892259 tag=t38-resolution phase=1,2,3 new=2a34d86a54467ac1f0238eed214bc11bdf7be208 host=spartan-bm149.hpc.unimelb.edu.au
+[JOB] instruments match commit 2a34d86a54467ac1f0238eed214bc11bdf7be208 (12 files)
+[JOB] ---- phase 1 ----
+[CELL] pair identity across<=nn holds pointwise on 18187 real points (min nn-across = 2.869e-12 mm)
+[CELL] Juglet_Piece_9_B_x4 arm=B normals=pca20+viewpoint points=86329 spacing req=0.05085 ach=0.05043 -> regions=5234 largest=19496 (22.58%) ge50=17 ge_pct5=4 fail_angle/pt=1.122 depth=148 cov2mm=0.7335 fold=3.437 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 166389 real points (min nn-across = 8.200e-03 mm)
+[CELL] Juglet_Piece_9_A_x10 arm=A normals=analytic points=547195 spacing req=0.02034 ach=0.02017 -> regions=13791 largest=177914 (32.51%) ge50=406 ge_pct5=3 fail_angle/pt=0.618 depth=722 cov2mm=0.8486 fold=4.564 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 74293 real points (min nn-across = 3.910e-12 mm)
+[CELL] Juglet_Piece_9_F_x10 arm=F normals=analytic+viewpoint points=547195 spacing req=0.02034 ach=0.02017 -> regions=14187 largest=88137 (16.11%) ge50=454 ge_pct5=6 fail_angle/pt=0.637 depth=230 cov2mm=0.4126 fold=3.229 deg pair=yes
+[CELL] pair identity across<=nn holds pointwise on 235216 real points (min nn-across = 1.860e-15 mm)
+[CELL] Juglet_Piece_9_B_x10 arm=B normals=pca20+viewpoint points=547195 spacing req=0.02034 ach=0.02017 -> regions=12859 largest=264761 (48.39%) ge50=77 ge_pct5=2 fail_angle/pt=0.549 depth=658 cov2mm=0.9436 fold=3.920 deg pair=yes
+[TARGETS] === Juglet_Piece_9: figure (arm A, one panel per level, same camera and scale) ===
+[FIG38] dpi solve: 412.3 dpi, converged within 5 pct of the 0.035000 mm/px target
+[FIG38] Juglet_Piece_9 arm A -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-0414_2a34d86_t38-resolution/out/figures/Juglet_Piece_9_resolution_by_density.png  levels=[1, 2, 4, 10] mm/px=0.0362 x 0.0362 px=3681x4406 bytes=1590661 floor_at={'level': 1, 'largest': 1410, 'achieved_mm': 0.201511365190472}
+[TARGETS] === aggregate ===
+[AGG] 24 cells -> regions38.tsv 24 rows, largest38.tsv 24 rows, pair38.tsv 20 rows
+[AGG] Juglet_Piece_2_x1            arm=A n=6259    regions=2000   largest=873    ge50=9     cov2mm=0.4581 fold=3.199
+[AGG] Juglet_Piece_2_x1            arm=F n=6259    regions=2045   largest=684    ge50=10    cov2mm=0.3559 fold=2.882
+[AGG] Juglet_Piece_2_x1            arm=scan n=2565    regions=1906   largest=46     ge50=0     cov2mm=0.2047 fold=0.431
+[AGG] Juglet_Piece_2_x1            arm=scan37 n=2399    regions=1765   largest=45     ge50=0     cov2mm=0.2043 fold=0.425
+[AGG] Juglet_Piece_2_x2            arm=A n=25240   regions=4539   largest=6088   ge50=35    cov2mm=0.7290 fold=3.554
+[AGG] Juglet_Piece_2_x2            arm=F n=25240   regions=4630   largest=4709   ge50=44    cov2mm=0.6386 fold=3.475
+[AGG] Juglet_Piece_2_x4            arm=A n=102166  regions=8430   largest=27522  ge50=93    cov2mm=0.7201 fold=3.611
+[AGG] Juglet_Piece_2_x4            arm=B n=102166  regions=6641   largest=39947  ge50=32    cov2mm=0.7696 fold=3.819
+[AGG] Juglet_Piece_2_x4            arm=F n=102166  regions=8578   largest=23715  ge50=123   cov2mm=0.6203 fold=3.643
+[AGG] Juglet_Piece_2_x10           arm=A n=649067  regions=19313  largest=190064 ge50=444   cov2mm=0.7388 fold=3.957
+[AGG] Juglet_Piece_2_x10           arm=B n=649067  regions=20335  largest=328220 ge50=66    cov2mm=0.9041 fold=4.721
+[AGG] Juglet_Piece_2_x10           arm=F n=649067  regions=19565  largest=163518 ge50=497   cov2mm=0.6288 fold=3.985
+[AGG] Juglet_Piece_9_x1            arm=A n=5257    regions=1575   largest=1410   ge50=8     cov2mm=0.5564 fold=2.851
+[AGG] Juglet_Piece_9_x1            arm=F n=5257    regions=1623   largest=739    ge50=9     cov2mm=0.3457 fold=2.590
+[AGG] Juglet_Piece_9_x1            arm=scan n=2094    regions=1562   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x1            arm=scan37 n=1972    regions=1465   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x2            arm=A n=21315   regions=3539   largest=6012   ge50=25    cov2mm=0.5922 fold=3.100
+[AGG] Juglet_Piece_9_x2            arm=F n=21315   regions=3633   largest=3071   ge50=32    cov2mm=0.3500 fold=2.828
+[AGG] Juglet_Piece_9_x4            arm=A n=86329   regions=6570   largest=25021  ge50=82    cov2mm=0.6237 fold=3.289
+[AGG] Juglet_Piece_9_x4            arm=B n=86329   regions=5234   largest=19496  ge50=17    cov2mm=0.7335 fold=3.437
+[AGG] Juglet_Piece_9_x4            arm=F n=86329   regions=6749   largest=13156  ge50=97    cov2mm=0.4059 fold=2.965
+[AGG] Juglet_Piece_9_x10           arm=A n=547195  regions=13791  largest=177914 ge50=406   cov2mm=0.8486 fold=4.564
+[AGG] Juglet_Piece_9_x10           arm=B n=547195  regions=12859  largest=264761 ge50=77    cov2mm=0.9436 fold=3.920
+[AGG] Juglet_Piece_9_x10           arm=F n=547195  regions=14187  largest=88137  ge50=454   cov2mm=0.4126 fold=3.229
+[AGG] ticket37 anchor Juglet_Piece_2: points 2399/2565 regions 1765/1906 largest 45/46 (t37/mine)
+[AGG] ticket37 anchor Juglet_Piece_9: points 1972/2094 regions 1465/1562 largest 16/16 (t37/mine)
+[TARGETS] done
+[JOB] ---- phase 2 ----
+[AGG] Juglet_Piece_2_x10           arm=A n=649067  regions=19313  largest=190064 ge50=444   cov2mm=0.7388 fold=3.957
+[AGG] Juglet_Piece_2_x10           arm=B n=649067  regions=20335  largest=328220 ge50=66    cov2mm=0.9041 fold=4.721
+[AGG] Juglet_Piece_2_x10           arm=F n=649067  regions=19565  largest=163518 ge50=497   cov2mm=0.6288 fold=3.985
+[AGG] Juglet_Piece_3_x1            arm=A n=9613    regions=2548   largest=3383   ge50=9     cov2mm=0.7547 fold=2.086
+[AGG] Juglet_Piece_3_x1            arm=F n=9613    regions=2590   largest=3233   ge50=9     cov2mm=0.7401 fold=2.077
+[AGG] Juglet_Piece_3_x1            arm=scan n=3493    regions=2400   largest=350    ge50=1     cov2mm=0.6304 fold=0.466
+[AGG] Juglet_Piece_3_x2            arm=A n=39605   regions=5656   largest=14327  ge50=32    cov2mm=0.7681 fold=2.283
+[AGG] Juglet_Piece_3_x2            arm=F n=39605   regions=5741   largest=13669  ge50=43    cov2mm=0.7484 fold=2.267
+[AGG] Juglet_Piece_3_x4            arm=A n=161173  regions=10618  largest=59840  ge50=115   cov2mm=0.7893 fold=2.402
+[AGG] Juglet_Piece_3_x4            arm=F n=161173  regions=10779  largest=56832  ge50=132   cov2mm=0.7672 fold=2.383
+[AGG] Juglet_Piece_5_x1            arm=A n=15095   regions=3646   largest=6232   ge50=16    cov2mm=0.5110 fold=2.054
+[AGG] Juglet_Piece_5_x1            arm=F n=15095   regions=3684   largest=6222   ge50=15    cov2mm=0.5105 fold=2.053
+[AGG] Juglet_Piece_5_x1            arm=scan n=6211    regions=3750   largest=713    ge50=3     cov2mm=0.3257 fold=0.389
+[AGG] Juglet_Piece_5_x2            arm=A n=60812   regions=7047   largest=25791  ge50=77    cov2mm=0.5395 fold=2.328
+[AGG] Juglet_Piece_5_x2            arm=F n=60812   regions=7138   largest=25647  ge50=77    cov2mm=0.5241 fold=2.325
+[AGG] Juglet_Piece_5_x4            arm=A n=246575  regions=12171  largest=105677 ge50=163   cov2mm=0.5439 fold=2.461
+[AGG] Juglet_Piece_5_x4            arm=F n=246575  regions=12406  largest=104939 ge50=180   cov2mm=0.5286 fold=2.453
+[AGG] Juglet_Piece_7_x1            arm=A n=17698   regions=4169   largest=6809   ge50=26    cov2mm=0.4897 fold=2.259
+[AGG] Juglet_Piece_7_x1            arm=F n=17698   regions=4261   largest=5077   ge50=25    cov2mm=0.3583 fold=2.212
+[AGG] Juglet_Piece_7_x1            arm=scan n=8421    regions=4724   largest=1040   ge50=4     cov2mm=0.3364 fold=0.454
+[AGG] Juglet_Piece_7_x2            arm=A n=71219   regions=7994   largest=30515  ge50=76    cov2mm=0.5313 fold=2.757
+[AGG] Juglet_Piece_7_x2            arm=F n=71219   regions=8187   largest=21978  ge50=91    cov2mm=0.3801 fold=2.684
+[AGG] Juglet_Piece_7_x4            arm=A n=287814  regions=13665  largest=125923 ge50=163   cov2mm=0.5389 fold=2.970
+[AGG] Juglet_Piece_7_x4            arm=F n=287814  regions=14067  largest=91026  ge50=212   cov2mm=0.3902 fold=2.897
+[AGG] Juglet_Piece_9_x1            arm=A n=5257    regions=1575   largest=1410   ge50=8     cov2mm=0.5564 fold=2.851
+[AGG] Juglet_Piece_9_x1            arm=F n=5257    regions=1623   largest=739    ge50=9     cov2mm=0.3457 fold=2.590
+[AGG] Juglet_Piece_9_x1            arm=scan n=2094    regions=1562   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x1            arm=scan37 n=1972    regions=1465   largest=16     ge50=0     cov2mm=0.0664 fold=0.806
+[AGG] Juglet_Piece_9_x2            arm=A n=21315   regions=3539   largest=6012   ge50=25    cov2mm=0.5922 fold=3.100
+[AGG] Juglet_Piece_9_x2            arm=F n=21315   regions=3633   largest=3071   ge50=32    cov2mm=0.3500 fold=2.828
+[AGG] Juglet_Piece_9_x4            arm=A n=86329   regions=6570   largest=25021  ge50=82    cov2mm=0.6237 fold=3.289
+[AGG] Juglet_Piece_9_x4            arm=B n=86329   regions=5234   largest=19496  ge50=17    cov2mm=0.7335 fold=3.437
+[AGG] Juglet_Piece_9_x4            arm=F n=86329   regions=6749   largest=13156  ge50=97    cov2mm=0.4059 fold=2.965
+[AGG] Juglet_Piece_9_x10           arm=A n=547195  regions=13791  largest=177914 ge50=406   cov2mm=0.8486 fold=4.564
+[AGG] Juglet_Piece_9_x10           arm=B n=547195  regions=12859  largest=264761 ge50=77    cov2mm=0.9436 fold=3.920
+[AGG] Juglet_Piece_9_x10           arm=F n=547195  regions=14187  largest=88137  ge50=454   cov2mm=0.4126 fold=3.229
+[AGG] Pot_A_Piece_07_x1            arm=scan37 n=34608   regions=2494   largest=13131  ge50=10    cov2mm=0.5145 fold=0.391
+[AGG] ticket37 anchor Juglet_Piece_2: points 2399/2565 regions 1765/1906 largest 45/46 (t37/mine)
+[AGG] ticket37 anchor Juglet_Piece_9: points 1972/2094 regions 1465/1562 largest 16/16 (t37/mine)
+[CONTROLS] done
+[JOB] ---- phase 3 ----
+[BUILD] new from 2a34d86a54467ac1f0238eed214bc11bdf7be208
+[BUILD] new ok 1582080 bytes md5=180e68467eac391279675fdc3ffedfe1
