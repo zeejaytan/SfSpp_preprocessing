@@ -1,0 +1,5 @@
+Ticket 35: track the measurement log and drop the scratch message file
+
+ticket_close refused: the log is gitignored and would die with the worktree, and
+_msg.txt was left behind by the merge commit on main. Neither carries a number the
+reading rests on, but the log is the record of the run that produced the tables.
