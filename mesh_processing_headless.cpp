@@ -1382,6 +1382,10 @@ struct DumpPos25
 		if (y != o.y) return y < o.y;
 		return z < o.z;
 	}
+	bool operator==(const DumpPos25& o) const
+	{
+		return x == o.x && y == o.y && z == o.z;
+	}
 };
 
 static std::string dumpFmt25(double v)
