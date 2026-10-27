@@ -1,8 +1,8 @@
 # 34: Carry the nearest normal, not an average — does the growth then grow a face?
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
-**Branch:** —
+**Branch:** 34-carry-the-nearest-normal, in /c/PR/worktrees/sfs/34
 **Answers:** U19, E1
 **Blocked by:** none
 **Blocks:** none
