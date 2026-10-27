@@ -124,6 +124,15 @@ meaningful. `edge_cv` is 1.107 / 0.919 — the edge lengths are far from uniform
 All rows at `theta=3.4 deg`, `kappa=3.4`, `nb=30`, `curvature_k=clamp(n/300,10,50)`; `share` = largest/points;
 `fail_angle/pt` = angle refusals per point; `depth` = growth-tree depth of the largest region.
 
+**`x1` is not today's cloud, and `level` is not `density`.** Today's cloud *is* the mesh's vertex set (2 565 /
+2 094 points); `x1` is a uniform covering at the same median spacing (6 259 / 5 257 points). The two have the same
+`median_nn` (0.2109 against 0.2090 mm on piece 2, 0.2034 against 0.2015 on piece 9) — and yet the largest region
+goes **46 -> 873** on piece 2 and **16 -> 1 410** on piece 9, at 2.44x / 2.51x the point count (`density_index`
+0.232 against ~3.94 points per s^2). So part of what this ladder measures is **coverage at a given median spacing**,
+not median spacing itself: the shipped draw leaves gaps the 3.4 deg gate reads as buried surface, and a covering of
+the same surface at the same spacing does not. Every arm and every level below is a *covering*; the `scan` /
+`scan37` rows are the only ones grown on a shipped cloud, and they are labelled as such in every table.
+
 ```
 piece  lvl arm   points   req mm   ach mm   regions  largest  share   ge10 ge20 ge30 ge50  pct1 pct5 pct10  fail_angle/pt  depth
 P2     x1  A      6 259  0.21090  0.20904   2 000     873   0.1395   45   27   17    9     7    3    2      3.128775     54
