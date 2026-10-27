@@ -1,0 +1,133 @@
+# 38: Does more resolution give the two silent sherds a face?
+
+**Status:** ready-for-agent
+**Answers:** U19
+**Blocked by:** none
+**Blocks:** none
+
+## Why this exists
+
+Ticket 37 measured that at native spacing, with the scan's own normals, sherd 2 grows 1 765
+regions whose largest is 45 points and sherd 9 grows 1 465 whose largest is 16, against a floor
+of 50. The conservator's reading is that the difference from the sample pot is **resolution**:
+Pot A 07 carries 34 608 points at 0.2929 mm spacing, drawn from a released 1 000 000-point scan,
+while piece 9 carries 1 972 points at 0.2035 mm and its whole mesh has 2 094 vertices.
+
+The arithmetic supports him. The growth's criterion is an **angle between neighbouring normals**,
+and turning per step is roughly spacing / local folding radius, so the same surface passes or
+fails the same 3.4 deg gate depending on how finely it is sampled. These sherds fold over
+0.67-5.25 mm (ticket 32), which gives ~9-13 deg per step at 0.20 mm and would give ~3.4 deg at
+~0.06 mm. We have only ever measured a 2.4x increase (ticket 36, adaptive spacing), never the
+3-4x the arithmetic asks for.
+
+This ticket tests that directly, by subdividing the sherd meshes to x2, x4 and x10 before sampling.
+
+## What must be built (instruments only, no change to the pipeline's behaviour)
+
+1. **A mesh sampler with analytic normals.** Sample a triangle mesh at a requested spacing with
+   points on the faces and the FACE normal at each point. Barycentric, area-weighted, deterministic
+   seed. This is the ideal-normals arm: it separates spacing from normal estimation.
+2. **Midpoint subdivision** of a triangle mesh at level L (each triangle into L^2 sub-triangles).
+   Report the surface displacement this introduces: linear subdivision cuts a curved corner by
+   about (edge^2)/(8R), which at edge 0.2 mm and R 1 mm is ~5 microns. State the measured max
+   displacement from the original surface, not the estimate.
+3. **The existing replica** (C:/PR/SfSpp_preprocessing/.scratch/juglet-breaklines/stage28 and
+   stage29 instruments, unchanged in behaviour) to grow regions at 3.4 deg on the sampled cloud and
+   report the full pre-floor distribution.
+
+**Instrument proof before any result is used**: sampling the ORIGINAL mesh at its own spacing must
+reproduce the shipped cloud - point count within 5 % and median nearest-neighbour spacing within
+5 % of `Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd` and `Juglet_Piece_2_Point.pcd`. Print the
+comparison. If it does not reproduce them, say so and stop; a sampler that cannot reproduce the
+shipped cloud cannot be trusted two levels finer.
+
+## Design
+
+Pieces: **Juglet 2 and 9** (targets), **Juglet 3, 5, 7** (controls: 7 already surfaces, 3 and 5 are
+one-cluster cases), and **Pot_A 07 as the always-works reference at its own unchanged resolution**.
+
+Levels and the spacing each level asks for (achieved spacing is measured, not assumed):
+
+| level | sub-triangles | sampling spacing |
+|---|---|---|
+| x1 | 1 | 0.2035-0.3420 mm (native, as shipped) |
+| x2 | 4 | native / 2 |
+| x4 | 16 | native / 4 |
+| x10 | 100 | native / 10 |
+
+Arms per (piece, level):
+
+- **A**: replica at 3.4 deg on the sampled cloud with **analytic face normals**.
+- **B**: replica at 3.4 deg with the pipeline's own PCA re-estimation at that density
+  (neighbours = max(5, min(20, n/1000)) as in `mesh_processing_headless.cpp:420`). Target pieces
+  2 and 9 only, at x4 and x10.
+
+x10 on pieces 2 and 9 only. If a x10 cloud exceeds 1.2 M points, sample at the finest spacing the
+mesh supports and report the achieved spacing beside the requested one - do not silently change the
+level.
+
+**One real pipeline cell** at the finest level that shows a region >= 50: stage that synthetic cloud
+as a run input (in the run directory, never into the frozen corpus), run the unmodified pipeline,
+and report the pipeline's own `[STATUS-23]`/`Number of clusters` lines. If no level produces a
+region >= 50, skip this - there is nothing for the pipeline to reproduce.
+
+## What counts as the answer (the lead decides; the worker reports evidence)
+
+For each (piece, level) report the distribution BEFORE any floor:
+
+- number of regions, largest region size and its share of the cloud
+- how many regions reach 10 / 20 / 30 / 50 points and 1 % / 5 % / 10 % of the cloud
+- angle refusals per point and the depth reached by the largest region
+- for the largest region: extent (mm), the fraction of the ORIGINAL piece's cloud within 2 mm of it,
+  and its median folded angle to the ORIGINAL mesh
+- where two regions both reach 50 points, the corrected pair statistic: for each Surface_1 point,
+  nearest Surface_0 point, component ALONG that point's normal and ACROSS it, coincidence at 1 micron
+
+## Figure
+
+One figure per target piece: a panel per level (x1, x2, x4, x10) drawing the largest region against
+the original mesh, same camera and scale within a piece, 5 mm bar, mm/px printed, and below it a
+small plot of largest-region size against achieved spacing with the 50-point floor and the level at
+which 3.4 deg would be met marked.
+
+**Part E - a second look at the ticket-37 figure, for the conservator's question.** He asked why the
+grey dots on piece 9 leave white space where Pot A 07's dots fill the surface. The measured answer so
+far: ink covers 10.6/13.9/16.0 % of piece 9's three panels against Pot A 07's 17.5/14.0/12.5 %, but
+**82-83 % of piece 9's ink is pale grey** (regions ranked ninth and below, drawn at alpha 0.55)
+against 26-31 % on Pot A 07. So redraw piece 9 (and Pot A 07 beside it) with (a) the tail at full
+opacity and a marker one step larger, and (b) a continuous rank palette so all 1 465 regions can be
+seen rather than pooled into grey. Same camera and scale as the ticket-37 figure. Two PNGs, and
+report the ink/grey/colour fractions again from the new PNGs.
+
+## Constraints
+
+- **No change to tracked pipeline behaviour.** Instruments and tables live under
+  `.scratch/juglet-breaklines/stage38/`; if the pipeline itself must change to accept a synthetic
+  cloud, stop and report instead.
+- Compute nodes only. Never the login node, never the laptop.
+- The frozen corpus `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp` and
+  `/opt/sfs-pristine` (record ABSENT if absent) are read-only; md5 before and after, compared.
+- Synthetic clouds are **labelled synthetic in every table, figure and filename**. They are a probe
+  of the criterion's spacing dependence, not new data about the sherd.
+- Geometry dies with the ticket: point clouds and meshes deleted at the end with a counted record
+  written BEFORE the delete. Keep: tables, logs, the sampler and subdivision sources, the figures.
+- At most **four** jobs; split by piece group, never by level. CRLF-check every script before
+  submitting (two grids have already died on "set: pipefail: invalid option name").
+- Run directory convention as usual, index row with `verdict` and `human_note` left EMPTY.
+- Report evidence, not verdicts: no "this shows", no "the cause is", no Status change.
+
+## Evidence to report
+
+1. The instrument proof (sampled original vs shipped cloud: counts, spacing p50, ratio).
+2. Achieved spacing per (piece, level), measured, beside the requested one.
+3. The max displacement of each subdivided surface from the original mesh (mm).
+4. The full pre-floor distribution table per (piece, level, arm), with the floor marked.
+5. The largest-region table: size, extent, 2 mm coverage of the original cloud, folded angle to the
+   original mesh, per (piece, level).
+6. The pair statistic wherever two regions reach 50 points.
+7. The real pipeline cell at the finest level that reaches 50 points, with its own log lines, or a
+   statement that no level did.
+8. Figures with paths, sizes, mm/px; plus the Part E redraws and their ink/grey/colour fractions.
+9. Corpus and pristine md5 before/after; the geometry deletion record; the four (or fewer) job ids
+   with `sacct` states; the branch head sha.
+10. Anything not done, with the command that failed.
