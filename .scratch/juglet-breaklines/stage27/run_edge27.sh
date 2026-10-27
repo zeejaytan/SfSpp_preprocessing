@@ -22,10 +22,14 @@ rm -rf "$ES"
 mkdir -p "$ES/Dataset/Axes" "$ES/Dataset/Mesh/$POT" "$ES/Dataset/Surfaces/$POT" \
          "$ES/Dataset/Breaklines/$POT" "$ES/Temp/Data/$POT" "$ES/Temp/Temp_edge/$POT" \
          "$ES/Temp/Temp/$POT" "$ES/Segments"
-for k in 0 1; do
-  [ -f "$CELL/surfaces/${PIECE}_Surface_$k.xyz" ] && cp -f "$CELL/surfaces/${PIECE}_Surface_$k.xyz" "$ES/Temp/Data/$POT/"
+# every input the mesh cell kept: the two surface .xyz this pass walks, SampledWithNormals.ply,
+# and the unclustered cloud it snaps every boundary dot to (edgeline_extraction_headless.cpp:1273)
+for f in "$CELL/surfaces/${PIECE}"_*; do
+  [ -f "$f" ] || continue
+  cp -f "$f" "$ES/Temp/Data/$POT/"
 done
-[ -f "$CELL/surfaces/${PIECE}_SampledWithNormals.ply" ] && cp -f "$CELL/surfaces/${PIECE}_SampledWithNormals.ply" "$ES/Temp/Data/$POT/"
+UNCL=$ES/Temp/Data/$POT/${PIECE}_unclustered.ply
+printf "%s\n" "[EDGE] unclustered input: $( [ -s "$UNCL" ] && echo "present $(wc -c < "$UNCL") bytes" || echo MISSING )" >> "$CELL/logs/kept_inputs.txt"
 ln -s "$MESH" "$ES/Temp/Data/$POT/${PIECE}_Mesh.obj"
 cp -f "$AXIS" "$ES/Dataset/Axes/${PIECE}_Axis.xyz"
 ELOG=$CELL/logs/edge.log

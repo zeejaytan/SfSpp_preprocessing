@@ -13,6 +13,9 @@ Subcommands
                         region sizes, points_in_no_cluster and its fraction, points on each written
                         surface and how many of them are distinct positions.
   dots     <cellroot>   Breakline_0/1 dot counts per (arm, piece) from our own edgeline stage.
+  dotsets  <cellroot>   arm A against arm B, our own Breakline_0/1 dots per (piece, surface):
+                        written dots, distinct positions, position-set equality and the
+                        nearest-neighbour distance between the two sets in mm.
 Writes one TSV beside the input root and prints one [S27-...] line per table.
 """
 import glob
@@ -273,6 +276,81 @@ def cmd_dots(cellroot):
         print("[S27-DOTS1] " + " ".join(line))
 
 
+def read_pcd(path):
+    """ASCII PCD -> (xyz float64 (N,3), declared point count)."""
+    xyz = []
+    npts = 0
+    data = 0
+    with open(path, "r", errors="replace") as fh:
+        for line in fh:
+            s = line.strip()
+            if not data:
+                if s.startswith("POINTS"):
+                    npts = int(s.split()[1])
+                elif s.startswith("DATA"):
+                    data = 1
+                continue
+            parts = s.split()
+            if len(parts) < 3:
+                continue
+            xyz.append((float(parts[0]), float(parts[1]), float(parts[2])))
+    return np.asarray(xyz, dtype=np.float64).reshape(-1, 3), npts
+
+
+def breaklines_of(cell):
+    """surface number -> path of this cell's Breakline_<k>.pcd."""
+    res = {}
+    for path in sorted(glob.glob(os.path.join(cell, "breaklines", "*_Breakline_*.pcd"))):
+        try:
+            k = int(os.path.basename(path).rsplit("_Breakline_", 1)[1].split(".")[0])
+        except (IndexError, ValueError):
+            continue
+        res[k] = path
+    return res
+
+
+def cmd_dotsets(cellroot):
+    """Arm A (SFS_DEDUPE unset) against arm B (SFS_DEDUPE=on): our own breakline dots, per piece
+    and surface -- written dots, distinct positions, whether the two position SETS are the same,
+    and the nearest-neighbour distance between them in mm (the surface comparison's ruler)."""
+    cells = {(t, p, d): c for t, p, d, c in cell_dirs(cellroot)}
+    pieces = sorted({(p, d) for (t, p, d) in cells})
+    out = os.path.join(cellroot, "dotsets27.tsv")
+    rows = []
+    with open(out, "w") as fh:
+        fh.write("pot\tpiece\tsurface\tn_off\tn_on\tdistinct_off\tdistinct_on\tonly_in_off"
+                 "\tonly_in_on\tset_equal\tnn_med_mm\tnn_p90_mm\tnn_max_mm\tpcd_points_off"
+                 "\tpcd_points_on\n")
+        for pot, piece in pieces:
+            ca, cb = cells.get(("A", pot, piece)), cells.get(("B", pot, piece))
+            if ca is None or cb is None:
+                continue
+            ba, bb = breaklines_of(ca), breaklines_of(cb)
+            for k in sorted(set(ba) | set(bb)):
+                pa, pb = ba.get(k), bb.get(k)
+                xa, na = read_pcd(pa) if pa else (np.zeros((0, 3)), 0)
+                xb, nb = read_pcd(pb) if pb else (np.zeros((0, 3)), 0)
+                ua, ub = unique_positions(xa), unique_positions(xb)
+                c = compare(ua, ub)
+                row = dict(pot=pot, piece=piece, surface=k, na=len(xa), nb=len(xb),
+                           da=len(ua), db=len(ub), pa=na, pb=nb)
+                if c is None:
+                    row.update(only_a=-1, only_b=-1, exact_equal="no-dots", nn_med=float("nan"),
+                               nn_p90=float("nan"), nn_max=float("nan"))
+                else:
+                    row.update(only_a=c["only_a"], only_b=c["only_b"], exact_equal=c["exact_equal"],
+                               nn_med=c["nn_med"], nn_p90=c["nn_p90"], nn_max=c["nn_max"])
+                rows.append(row)
+                fh.write("%(pot)s\t%(piece)s\t%(surface)d\t%(na)d\t%(nb)d\t%(da)d\t%(db)d"
+                         "\t%(only_a)d\t%(only_b)d\t%(exact_equal)s\t%(nn_med).6f\t%(nn_p90).6f"
+                         "\t%(nn_max).6f\t%(pa)d\t%(pb)d\n" % row)
+    for r in rows:
+        print("[S27-DOTSET] piece=%(piece)s s=%(surface)d dots_off=%(na)d dots_on=%(nb)d "
+              "distinct_off=%(da)d distinct_on=%(db)d only_in_off=%(only_a)d only_in_on=%(only_b)d "
+              "equal=%(exact_equal)s nn_med=%(nn_med).6f nn_max=%(nn_max).6f pcd_off=%(pa)d pcd_on=%(pb)d" % r)
+    print("[S27] dotsets: %d rows -> %s" % (len(rows), out))
+
+
 def main(argv):
     if len(argv) < 3:
         print(__doc__)
@@ -280,7 +358,8 @@ def main(argv):
     cmd, root = argv[1], argv[2]
     if not os.path.isdir(root):
         raise SystemExit("[S27] not a directory: %s" % root)
-    {"surfaces": cmd_surfaces, "seteq": cmd_seteq, "partA": cmd_partA, "dots": cmd_dots}[cmd](root)
+    {"surfaces": cmd_surfaces, "seteq": cmd_seteq, "partA": cmd_partA, "dots": cmd_dots,
+     "dotsets": cmd_dotsets}[cmd](root)
     return 0
 
 

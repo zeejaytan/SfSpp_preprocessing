@@ -57,6 +57,34 @@ is why no cross-arm comparison in this ticket is reported without that spread be
 Geometry (staged trees and edgeline stages) is deleted at the end of the job; the counted record is
 `out/GEOMETRY_DELETED.txt`. Logs, sidecars, tables, surfaces and breaklines are kept.
 
+## Job 4 (item 7), authorised after the report
+
+The lead authorised **one more job on this branch** for item 6/7 alone — our own `Breakline_0` dots off
+against on — after the report showed all 32 edgeline cells had died on a *staging* bug. Scope: the eight
+pieces that write a surface (Pot A 01/02/07/08, Juglet 1/4/6/7), arms A (`SFS_DEDUPE` unset) and B
+(`SFS_DEDUPE=on`), and nothing else.
+
+The fix is the one line the report named, and it is now in the instruments rather than in a note:
+
+* `run_cell27.sh` keeps **every** `<piece>_*` file the mesh stage left in `Temp/Data/<pot>/`, not just
+  `Surface_{0,1}` and `_SampledWithNormals.ply`. `<piece>_unclustered.ply` is written at
+  `mesh_processing_headless.cpp:4007`, and the edgeline stage loads it at
+  `edgeline_extraction_headless.cpp:1273` and builds a KD-tree on it at `:1275`. The per-cell count and
+  bytes of what was kept are in that cell's `logs/kept_inputs.txt`.
+* `run_edge27.sh` stages all of them into `$ES/Temp/Data/$POT/` and appends one line to
+  `kept_inputs.txt` saying whether the unclustered cloud arrived.
+
+Each cell is a mesh stage **then** an edgeline stage on that cell's own surfaces, because the edgeline pass
+consumes the surfaces, the unclustered cloud and `SampledWithNormals.ply` — there is nothing to run the
+edgeline stage on otherwise. A gate cell (`A` / Pot A 08) runs first: if it writes no `Breakline` file the
+job stops, records the command and the first 20 lines of its `edge.log` in `out/EDGE_GATE_FAIL.txt`, and
+does not iterate.
+
+`dotsets27.tsv` (`dedupe27.py dotsets`) is the table this job exists for: per piece and surface, dots off,
+dots on, distinct positions each, position-set equality, and the nearest-neighbour distance between the two
+sets in mm — the same ruler the surface comparison uses. Self-tested both ways: an identical pair reports
+`equal=yes nn_med=0`, and the same cloud shifted by 1 µm reports `equal=no` with `nn_med=0.001000`.
+
 ## Reading the numbers
 
 Nothing here is a verdict. Rung-2 and rung-5 sidecars are written **inside the 30-retry loop**, so a

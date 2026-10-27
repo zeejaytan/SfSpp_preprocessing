@@ -40,9 +40,16 @@ for k in 0 1; do
     eval "S$k=yes"; eval "N$k=${n:-0}"
   fi
 done
-# the edgeline pass reads this beside the surface files
-SWN=$ST/Temp/Data/$POT/${PIECE}_SampledWithNormals.ply
-[ -f "$SWN" ] && cp -f "$SWN" "$CELL/surfaces/"
+# Every <piece>_* file the mesh stage left in Temp/Data/<pot>/ is kept, because the edgeline pass
+# reads more than the surfaces: <piece>_SampledWithNormals.ply and <piece>_unclustered.ply (written
+# at mesh_processing_headless.cpp:4007). Job 33860966 kept only the former, so
+# edgeline_extraction_headless.cpp:1273 loaded nothing and the KD-tree at :1275 killed all 32 cells.
+: > "$CELL/logs/kept_inputs.txt"
+for f in "$ST/Temp/Data/$POT/${PIECE}"_*; do
+  [ -f "$f" ] || continue
+  cp -f "$f" "$CELL/surfaces/"
+  printf "%s\t%s\n" "$(basename "$f")" "$(wc -c < "$f")" >> "$CELL/logs/kept_inputs.txt"
+done
 DEDN=$(grep -c '\[DEDUPE-27\]' "$LOG" 2>/dev/null || echo 0)
 STATUSLINE=$(grep -m1 '\[STATUS-23\]' "$LOG" 2>/dev/null | tr '\t' ' ')
 # counted deletion of the staged tree (geometry dies here; the record survives)
