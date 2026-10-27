@@ -237,6 +237,11 @@ struct myclass2 {
 	}
 } myobject2;
 
+// TICKET 27: SFS_DEDUPE=on writes each distinct position of a finished surface once. Unset, empty,
+// "off" or anything else keeps today's cloud, duplicates included. Declared here because
+// finishImprovedSurface reads it and is defined further down.
+static bool g_dedupeOn27 = false;
+
 
 class Timer
 {
@@ -1353,10 +1358,6 @@ static std::vector<std::string> g_dumpPieceList25; // SFS_DUMP_PIECES
 static std::string g_dumpPieceName25;
 static std::string g_dumpPieceDir25;
 static bool g_dumpOn25 = false;
-
-// TICKET 27: SFS_DEDUPE=on writes each distinct position of a finished surface once. Unset, empty,
-// "off" or anything else keeps today's cloud, duplicates included.
-static bool g_dedupeOn27 = false;
 
 // Per-point and per-pass records the steps fill while the switch is armed.
 static std::vector<int> g_r4Code25;       // rung 4 decision per point of the segmentation cloud
