@@ -1,0 +1,13 @@
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=OLD npts=1012/1012 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=OLD npts=829/829 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=A2 npts=1012/1012 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=A2 npts=829/829 pointset_equal=yes only_a=0 only_b=0 nn_max=na
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=D npts=1012/2005 pointset_equal=no only_a=761 only_b=1754 nn_max=12.448121/20.873935
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=D npts=829/1462 pointset_equal=no only_a=658 only_b=1291 nn_max=16.679384/18.756751
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=DOLD npts=1012/2005 pointset_equal=no only_a=761 only_b=1754 nn_max=12.448121/20.873935
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=DOLD npts=829/1462 pointset_equal=no only_a=658 only_b=1291 nn_max=16.679384/18.756751
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=E npts=1012/4204 pointset_equal=no only_a=1012 only_b=4204 nn_max=0.519348/21.275414
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=E npts=829/2638 pointset_equal=no only_a=829 only_b=2638 nn_max=3.891707/16.225766
+[PROOF25] piece=Juglet_Piece_7 surface=0 a=A b=EOLD npts=1012/4204 pointset_equal=no only_a=1012 only_b=4204 nn_max=0.519348/21.275414
+[PROOF25] piece=Juglet_Piece_7 surface=1 a=A b=EOLD npts=829/2638 pointset_equal=no only_a=829 only_b=2638 nn_max=3.891707/16.225766
+[PROOF25] comparisons=12 differing=8 reference=A others=OLD,A2,D,DOLD,E,EOLD
