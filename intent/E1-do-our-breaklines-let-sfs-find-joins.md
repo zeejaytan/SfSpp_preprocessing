@@ -2371,3 +2371,33 @@ Weight: none on the 281/292 tally.
 
 Next: what the two silent sherds actually are, measured on their meshes (ticket 35), and then the angle the
 slide needs at native spacing — where a 1 mm fold radius turns ~12 deg per 0.21 mm step against a 3.4 deg gate.
+## 2026-10-28 — on two of nine sherds there is no surface for a breakline to be the edge of (ticket 35)
+
+The two sherds that never produce a face were finally measured on their own meshes. Both are watertight closed
+solids — Euler characteristic 2, zero boundary edges, zero boundary loops — while the sample pot's only open mesh
+in the same set is Pot A 07, with one 9-edge loop of 1.57691 mm. Rendered as per-vertex turning within 0.6 mm, the
+pot is one large flat field with a red rim at the broken edge and the two sherds are red over most of their face
+with small blue islands: the set of points a 3.4 deg growth rule can hold together is **fragmented**, not merely
+small.
+
+Ticket 28's replica — validated against the pipeline's own cluster sizes on pieces 3, 5, 7 and Pot A 07 — puts a
+number on it for the first time. The largest region the gate can hold is **36 points** on Juglet 2 (39 with the
+scan's own nearest-carried normals) and **17 / 33** on Juglet 9, against a floor of 50. The growth makes 541-711
+fragments on those clouds and the best of them is a third of the size the floor requires, so no floor setting
+between 17 and 50 can give either sherd a face, and the 228/277-point patches a lowered floor buys are 28 %/42 %
+corner patches already measured in ticket 32.
+
+For the breakline question this is one step upstream of it: a sherd with no surface has no Breakline_0, so two of
+nine pieces cannot be asked the question at all. The tally of 281 of 292 is unaffected — those pieces were never
+in it.
+
+Two leads, recorded as leads and not as results: piece 9's rays cross up to 8 sheets with p90 thickness 8.18 mm
+against a median of 2.59 mm, which reads as a compound feature; and Juglet 1 is the only genus-2 mesh in the set,
+so this vessel demonstrably has a handle — and the paper excludes "special parts such as the handle, nose, or
+ornament" from its own evaluation (`C:/PR/papers/text/sfspp-2502.13986v1.md:329`).
+
+Weight: none on the 281/292 tally.
+
+Next: why the compliant set is fragmented on these two sherds and one field on the pot — a compound feature, or
+the growth rule itself. Ticket 37 runs the adaptive step as the default and draws the regions that die under the
+floor.
