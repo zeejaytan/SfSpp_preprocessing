@@ -2401,3 +2401,29 @@ Weight: none on the 281/292 tally.
 Next: why the compliant set is fragmented on these two sherds and one field on the pot — a compound feature, or
 the growth rule itself. Ticket 37 runs the adaptive step as the default and draws the regions that die under the
 floor.
+
+## 2026-10-28 — the sampling step is adaptive by default, and on two sherds there is still no line to walk (ticket 37)
+
+The one-line change is at `mesh_processing_headless.cpp:4356`: `std::string spacingPolicy = "piece";`. With
+`SFS_SPACING_POLICY=fixed` the new binary still writes the same `SampledWithNormals.ply` md5 on 7 of 7 pieces, so the
+old behaviour is reachable and the default is the only thing that moved. What the default now buys, measured on 55
+cells: Juglet piece 1's large surface goes 3 580 → **10 800** points, Pot A 07 6 066 → **24 636**, and two Pot A wall
+pairs tighten across (07 0.2487 → **0.1264 mm**, 08 0.2503 → **0.1285**).
+
+What it does not buy is a surface on the two sherds where there is no region to build one from. With the adaptive step
+and the scan's own normals, the replica — re-validated against the pipeline on 4 of 4 cells it can check — grows 1 765
+regions on piece 2 whose **largest is 45 points** and 1 465 on piece 9 whose **largest is 16**, against a floor of 50.
+The drawn regions are the reading that matters: Pot A 07's two largest regions hold **72.7 %** of its cloud, and the
+eight largest on pieces 2 and 9 hold **7.5 %** and **5.1 %**, with **92.5 %** and **94.9 %** of their points in no region
+at all. A breakline is the boundary of a surface; on these two sherds the material for one is chips at the rim.
+
+The finer step also has a cost that touches the lines this question is about: piece 1's two surfaces now lie on each
+other (along 0.007 mm, coincidence 0.46 — the ticket-27 de-duplication defect showing harder at finer spacing), so its
+`Breakline_0` is the boundary of one of two coincident sheets. No breakline score has been taken at the new default;
+these are the surfaces the lines would come from.
+
+Weight: none on the 281/292 tally — no edgeline was scored here.
+
+Next: a second growth pass over the points that belong to no region (92-95 % of the two silent sherds), or a growth
+criterion that is not a bare angle on neighbours. Until one of them gives those two sherds a face, the Juglet
+end-to-end run cannot score more than seven of nine.
