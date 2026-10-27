@@ -32,6 +32,7 @@ RUN=__RUNDIR__
 RUNID=__RUNID__
 NEW=__NEWCOMMIT__
 PHASE=__PHASE__
+PHASES_TAG=$(echo "$PHASE" | tr ',' '-')
 IXTAG=__IXTAG__
 CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
 CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
@@ -186,28 +187,33 @@ geom_delete() {
     echo "geometry_files_before $before"
     echo "geometry_files_after $after"
     echo "# kept: tsv json log py sh txt png (tables, numbers, sources, figures)"
-  } > "$OUT/GEOMETRY_DELETED_phase$PHASE.txt"
-  cat "$OUT/GEOMETRY_DELETED_phase$PHASE.txt"
+  } > "$OUT/GEOMETRY_DELETED_phase$PHASES_TAG.txt"
+  cat "$OUT/GEOMETRY_DELETED_phase$PHASES_TAG.txt"
 }
 
-case "$PHASE" in
-  1)
-    bash "$INSTR/run_targets38.sh" > "$OUT/phase1.log" 2>&1; rc=$?
-    ;;
-  2)
-    bash "$INSTR/run_controls38.sh" > "$OUT/phase2.log" 2>&1; rc=$?
-    ;;
-  3)
-    build_arm new "$NEW" || fail 5 "binary build failed (see logs/build-new.log)"
-    BIN=$OUT/bin-new; export BIN
-    bash "$INSTR/run_cell38.sh" > "$OUT/phase3.log" 2>&1; rc=$?
-    ;;
-  *)
-    fail 6 "unknown phase $PHASE"
-    ;;
-esac
-tail -40 "$OUT/phase$PHASE.log" 2>/dev/null || true
-[ "$rc" -eq 0 ] || fail 7 "phase $PHASE driver rc=$rc (see out/phase$PHASE.log)"
+# PHASE may be a comma-separated list (for example 1,2): the phases run in the order given inside
+# one job, each writing its own out/phase<N>.log, and the first non-zero rc stops the job.
+for PH in $(echo "$PHASE" | tr ',' ' '); do
+  echo "[JOB] ---- phase $PH ----"
+  case "$PH" in
+    1)
+      bash "$INSTR/run_targets38.sh" > "$OUT/phase1.log" 2>&1; rc=$?
+      ;;
+    2)
+      bash "$INSTR/run_controls38.sh" > "$OUT/phase2.log" 2>&1; rc=$?
+      ;;
+    3)
+      build_arm new "$NEW" || fail 5 "binary build failed (see logs/build-new.log)"
+      BIN=$OUT/bin-new; export BIN
+      bash "$INSTR/run_cell38.sh" > "$OUT/phase3.log" 2>&1; rc=$?
+      ;;
+    *)
+      fail 6 "unknown phase $PH"
+      ;;
+  esac
+  tail -40 "$OUT/phase$PH.log" 2>/dev/null || true
+  [ "$rc" -eq 0 ] || fail 7 "phase $PH driver rc=$rc (see out/phase$PH.log)"
+done
 
 corpus_tree "$OUT/corpus_after.tsv"
 md5_corpus "$OUT/inputs_after.md5"
@@ -220,7 +226,7 @@ else
   echo "[JOB] corpus and frozen inputs unchanged"
 fi
 
-geom_record "$OUT/geometry_counts_phase$PHASE.tsv"
+geom_record "$OUT/geometry_counts_phase$PHASES_TAG.tsv"
 geom_delete
 
 {
@@ -232,7 +238,7 @@ geom_delete
   echo "host=$(hostname)"
   echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo "phase_rc=$rc"
-} > "$OUT/run-meta_phase$PHASE.txt"
+} > "$OUT/run-meta_phase$PHASES_TAG.txt"
 
 printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
 echo "[JOB] index row appended (verdict and human_note left empty)"

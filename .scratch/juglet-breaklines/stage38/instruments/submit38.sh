@@ -11,7 +11,10 @@ if [ -z "$RUN" ] || [ -z "$TAG" ] || [ -z "$JOBNAME" ] || [ -z "$WALL" ] || [ -z
   echo "usage: submit38.sh <rundir> <tag> <jobname> <walltime> <commit_sha> <phase 1|2|3> [--dry]" >&2
   exit 2
 fi
-case "$PHASE" in 1|2|3) ;; *) echo "[SUBMIT] FATAL phase must be 1, 2 or 3 (got '$PHASE')" >&2; exit 2 ;; esac
+for _p in $(echo "$PHASE" | tr ',' ' '); do
+  case "$_p" in 1|2|3) ;; *) echo "[SUBMIT] FATAL phase must be 1, 2 or 3 or a comma list of them (got '$PHASE')" >&2; exit 2 ;; esac
+done
+case "$PHASE" in *,*) PHASE_TAG=$(echo "$PHASE" | tr ',' '-') ;; *) PHASE_TAG=$PHASE ;; esac
 case "$SHA" in *[!0-9a-f]*) echo "[SUBMIT] FATAL sha is not lowercase hex: $SHA" >&2; exit 2 ;; esac
 [ "${#SHA}" -ge 40 ] || { echo "[SUBMIT] FATAL sha shorter than 40 chars: $SHA" >&2; exit 2; }
 [ -d "$RUN" ] || { echo "[SUBMIT] FATAL no run dir $RUN" >&2; exit 2; }
@@ -75,4 +78,4 @@ if [ "$DRY" = "--dry" ]; then
   echo "[SUBMIT] dry run, not submitting"
   exit 0
 fi
-cd "$RUN" && sbatch submit.sbatch | tee "$RUN/logs/sbatch_phase$PHASE.txt"
+cd "$RUN" && sbatch submit.sbatch | tee "$RUN/logs/sbatch_phase$PHASE_TAG.txt"
