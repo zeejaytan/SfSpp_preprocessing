@@ -47,6 +47,24 @@ rec = {
         "coverage_radius_mm": 2.0,
         "seed": 32,
     },
+    "part_e": {
+        "why": "the lead's addition: the same fragmentation question asked of the pipeline "
+               "itself rather than of the python replica, so the pipeline's own fragment count "
+               "at a forced-low floor can be quoted",
+        "pieces": ["Juglet_Piece_2", "Juglet_Piece_3", "Juglet_Piece_9"],
+        "floors_requested": [0.03, 0.02, 0.01],
+        "switches_plain": "SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 "
+                          "SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<fraction>",
+        "switches_single": "the same plus SFS_SINGLE_CLUSTER=write",
+        "why_two_arms": "ticket 23 measured that a lone cluster is written as Surface_0 only "
+                        "with SFS_SINGLE_CLUSTER=write, so the plain arm is reported as it "
+                        "stands and the single arm supplies the coverage and extent columns",
+        "cells": 18,
+        "build": "cmake -DCMAKE_BUILD_TYPE=Release and make -j8 MeshPreprocessingHeadless "
+                 "inside pcl_191_nurbs.sif, from this commit",
+        "geometry_deleted": "the build tree, recorded in out/GEOMETRY_DELETED_BUILD.txt before "
+                            "the delete",
+    },
     "inputs": {
         "dataset_root": ds,
         "corpus_root": corp,

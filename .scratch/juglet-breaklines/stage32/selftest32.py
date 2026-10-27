@@ -138,11 +138,33 @@ def main(argv):
     uniq = np.unique(ijk, axis=0).shape[0]
     check("voxel_subsample", np.array_equal(i1, i2) and i1.size == uniq,
           "%d of %d points kept, %d cells, deterministic" % (i1.size, g.shape[0], uniq))
-    pa_pcd = PA.pa_paths(a.corpus, 3)["pcd"]
-    cb = io32.read_pcd(pa_pcd)
-    check("pcd_binary_count", cb["data"] == "binary" and cb["header_points"] == 1000000,
-          "header %d, body %d, fields %s" % (cb["header_points"], cb["n_points"],
-                                             ",".join(cb["fields"])))
+    # read_pcd takes the point count from the body length, not from the POINTS header (the
+    # synthetic check above proves that with a 5-vs-2 header). Here the body count is proved
+    # against the released manifest on two pieces. A first version of this check assumed every
+    # released header says 1000000; measured on the cluster, Pot A 01 says 999810 and Pot A 03
+    # says 1000087, both equal to their body and to the manifest, and the assumption cost job
+    # 33869853.
+    man = {}
+    mpath = os.path.join(a.corpus, "Point", "MANIFEST_released.tsv")
+    if os.path.exists(mpath):
+        with open(mpath) as fh:
+            mh = fh.readline().rstrip("\n").split("\t")
+            for ln in fh:
+                f = ln.rstrip("\n").split("\t")
+                if len(f) >= len(mh) and len(f) > 2:
+                    try:
+                        man[f[1]] = int(f[2])
+                    except ValueError:
+                        pass
+    for pn in (1, 3):
+        pc = PA.pa_paths(a.corpus, pn)
+        name = os.path.basename(pc["pcd"])[: -len("_Point.pcd")]
+        c = io32.read_pcd(pc["pcd"])
+        ok = c["data"] == "binary" and c["n_points"] == man.get(name, -1)
+        check("pcd_binary_count_" + name[-2:], ok,
+              "header %d, body %d, manifest %s, fields %s"
+              % (c["header_points"], c["n_points"], man.get(name, "missing"),
+                 ",".join(c["fields"])))
     print("[ST32] result=%s (%d failures)" % ("PASS" if not FAILS else "FAIL",
                                               len(FAILS)))
     return 0 if not FAILS else 1
