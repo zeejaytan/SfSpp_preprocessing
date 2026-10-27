@@ -2177,8 +2177,10 @@ authors' lines, not a statement that the strip's rim is the right rim.
 
 The same run measured two further things that bear on any dot count: the 3 mm boundary reassignment
 multiplies a region 1.2× to 4.8×, and the written surfaces carry 1.2× to 1.45× more vertices than distinct
-positions (piece 5 chain off 1 845 vertices against 1 022 distinct). Both mean a dot count taken from these
-surfaces is an upper bound on distinct dots, which is why the duplication repair stays queued.
+positions (piece 5 chain off 1 845 vertices against 1 022 distinct). **Corrected 2026-10-27 (ticket 27):** the
+duplication does *not* inflate a dot count — the edgeline writes each position once whatever the surface holds, so
+a dot count is a count of places along the edge. The duplication repair is a storage fix, not a counting fix; see
+the section dated 2026-10-27 below.
 
 Weight: none on the 281/292 tally — nothing here re-scores an edgeline. The strip question is a new
 measurement on one vessel, not a revision of the corpus tally.
@@ -2210,3 +2212,35 @@ crumb it is measuring.
 
 Next: the neighbour-angle distribution on pieces 2, 3, 5, 7 and Pot A 07, because that is what decides whether a
 θ exists that serves both vessels — and until it does, no strip measurement has a stable object to be the edge of.
+
+## 2026-10-27 — a dot count is not inflated by the duplicate surface vertices, and the dots are not stable (ticket 27)
+
+Two corrections and one new fact, all measured rather than argued.
+
+**The correction to the paragraph above.** I wrote that the surfaces carry 1.2× to 1.45× more vertices than
+distinct positions, so "a dot count taken from these surfaces is an upper bound on distinct dots". The first half
+is right and the second is wrong: the edgeline stage writes **each position once** whether or not the surface it
+reads was de-duplicated. On 16 cells (Pot A 01/02/07/08 and Juglet 1/4/6/7, surfaces 0 and 1, de-duplication off
+against on) there is **no breakline in which a dot position repeats** — `n == distinct` in all 32 arm-rows — and
+the dot counts are identical in 14 of 16 rows, the other two differing by a single dot. So a dot count off these
+surfaces is a count of places along the edge, not of copies.
+
+**The new fact, and it matters for any dot-level comparison.** The *positions* of the dots are not stable. Same
+sherd, same binary, two arms that differ only in whether the surface was de-duplicated: only 5 of 16 dot sets are
+identical, the rest are shifted along the same boundary by a median of 0.06–0.61 mm and up to 2.15 mm — from a
+fraction of a dot spacing to a couple of spacings. The edgeline follows the surface's *vertex list*, not only its
+geometry, so a dot-level comparison against the authors' lines carries a noise floor of about half a dot spacing.
+No same-binary repeat of the edgeline stage has been run, so how much of that is de-duplication and how much is the
+mesh stage's own ordering is not separated; until it is, a sub-millimetre dot difference is not a finding.
+
+**Why the whole-cloud picture is not the culprit, measured on the other vessel.** In the same session, today's
+defaults leave **10–22 % of each Pot A sherd's points in no surviving region** (01: 0.1619 of 85 136; 02: 0.1045;
+07: 0.2180; 08: 0.2200) against 54–100 % on the Juglet (1: 0.5382; 4: 0.8085; 6: 0.7541; 7: 0.8122; 2 and 9:
+1.0000, no region at all). Pot A works while discarding a fifth of its cloud, so the discard fraction is not what
+breaks the vessel — the size of the largest surviving region is, which is the section above.
+
+Weight: none on the 281/292 tally. The noise-floor number does bound how finely any future dot-level tally can be
+read, and that is the part to keep.
+
+Next: one same-binary repeat of the edgeline stage, to separate de-duplication from the mesh stage's ordering, so
+the dot-position noise floor is a number rather than a range.
