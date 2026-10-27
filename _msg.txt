@@ -1,0 +1,16 @@
+Ticket 35 done: the floor is 50 and the largest region the gate can hold is 36
+
+The two silent sherds are not failing to grow a region. Ticket 28's replica, run
+on the shipped 0.6 mm clouds, holds at most 36 points on piece 2 (39 with the
+scan's own normals) and 17-33 on piece 9; the floor deletes everything under 50.
+Pieces 3, 5, 7 and Pot A reproduce the pipeline's own cluster sizes exactly, which
+is what makes the replica trustworthy there and only there.
+
+The meshes had never been looked at. Both silent sherds are closed solids (Euler 2,
+no boundary edge); Pot A 07 is the only open mesh in the set. The turning renders
+show the pot as one large flat field with a red rim and the sherds as a scatter of
+blue islands in red - the compliant set is fragmented, not merely small.
+
+Recorded as leads, not results: piece 9's multi-sheet rays (p90 8.18 mm against a
+2.59 mm median, up to 8 sheets) and Juglet 1 being the only genus-2 mesh, i.e. this
+vessel has a handle and the paper excludes handles from its own evaluation.
