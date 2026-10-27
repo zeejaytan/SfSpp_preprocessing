@@ -597,11 +597,50 @@ static void printNormalLine24(size_t npts, const std::vector<int>& used, int kCo
 	std::cout << std::endl;
 }
 
+// TICKET 33: where a sampled point's normal comes from.
+//   reestimate (default) = today: PCA over the sampled cloud, then MST orientation.
+//   input                = carry the incoming cloud's stored normals through the sampling: the
+//                          unit normals of source points within one sampling radius are averaged
+//                          and normalised, the nearest source point's normal is the fallback, and
+//                          a point with no usable source normal is counted, never silently filled.
+// MST is NOT applied in input mode: orienting would flip a carried normal onto a hemisphere the
+// scan did not choose, and the carried sign must stay the scan's own.
+static std::string g_normalSource = "reestimate";
+static bool g_normalSourceGiven = false;
+// TICKET 33: the appendix-A merge's boundary-pair minimum. 3 is the literal today's code carries.
+static int g_mergeMinPairs = 3;
+
+// TICKET 33: folded angle in degrees between two directions (|dot|, so a sign is not counted).
+static double n33FoldDeg(double ax, double ay, double az, double bx, double by, double bz)
+{
+	const double la = std::sqrt(ax * ax + ay * ay + az * az);
+	const double lb = std::sqrt(bx * bx + by * by + bz * bz);
+	if (!(la > 0.0) || !(lb > 0.0)) return std::numeric_limits<double>::quiet_NaN();
+	double d = (ax * bx + ay * by + az * bz) / (la * lb);
+	if (d < -1.0) d = -1.0;
+	if (d > 1.0) d = 1.0;
+	return std::acos(std::fabs(d)) * (180.0 / 3.14159265358979323846);
+}
+
+// TICKET 33: median of the finite entries; 0 when nothing finite was measured.
+static double n33Median(std::vector<double> v)
+{
+	v.erase(std::remove_if(v.begin(), v.end(), [](double x) { return !std::isfinite(x); }), v.end());
+	if (v.empty()) return 0.0;
+	std::sort(v.begin(), v.end());
+	return v[v.size() / 2];
+}
+
 // Forward declarations for curvature computation
 std::vector<int> getKNNPoints(const Eigen::Vector3f& center_point, const pcl::PointCloud<pcl::PointNormal>::Ptr& cloud, int K);
 std::pair<float, float> getCurvature(const Eigen::Vector3f& center_point, const Eigen::Vector3f& center_normal, const std::vector<Eigen::Vector3f>& knn_points);
 
-bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::PointCloud<pcl::PointNormal>::Ptr surfaceWithNormals)
+// TICKET 33: carrySource33/carryRadius33 are the incoming cloud (with its stored normals) and the
+// ball radius the sampling used. They are ignored unless SFS_NORMAL_SOURCE=input, so the default
+// path is untouched.
+bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::PointCloud<pcl::PointNormal>::Ptr surfaceWithNormals,
+                         const pcl::PointCloud<pcl::PointNormal>::Ptr& carrySource33 = pcl::PointCloud<pcl::PointNormal>::Ptr(),
+                         float carryRadius33 = 0.0F)
 {
 	std::cout << "[DEBUG getNormalsOnSurface] Starting function. Input points: " << sampledPointCloud->points.size() << std::endl;
 	string fragmentMeshFile = "fileForNormalEst";
@@ -647,7 +686,90 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	double n24spacing = 0.0;
 	int n24orientK = nb_neighbors;
 
-	if (n24radius)
+	// TICKET 33: input mode carries the source cloud's normals through the sampling instead of
+	// estimating them here. A PCA estimate at the same points is still computed, but only so the
+	// log line can say how far the carried normal is from the one this function would have made.
+	const bool n33carry = (g_normalSource == "input" && carrySource33 && !carrySource33->points.empty());
+	if (n33carry)
+	{
+		std::list<PointVectorPair> pcaRef33(points.begin(), points.end());
+		CGAL::pca_estimate_normals<Concurrency_tag>
+			(pcaRef33, nb_neighbors,
+				CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
+				normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+
+		pcl::KdTreeFLANN<pcl::PointNormal> kd33;
+		kd33.setInputCloud(carrySource33);
+		std::vector<int> idx33; std::vector<float> d33;
+		std::vector<double> dev33;
+		long carried33 = 0, nearest33 = 0, missing33 = 0;
+		std::list<PointVectorPair>::iterator it33 = points.begin();
+		for (std::list<PointVectorPair>::iterator rf33 = pcaRef33.begin(); rf33 != pcaRef33.end(); ++rf33, ++it33)
+		{
+			pcl::PointNormal q33;
+			q33.x = (float)CGAL::to_double(it33->first.x());
+			q33.y = (float)CGAL::to_double(it33->first.y());
+			q33.z = (float)CGAL::to_double(it33->first.z());
+			double nx33 = 0.0, ny33 = 0.0, nz33 = 0.0;
+			bool have33 = false;
+			if (carryRadius33 > 0.0F)
+			{
+				idx33.clear(); d33.clear();
+				const int got33 = kd33.radiusSearch(q33, carryRadius33, idx33, d33);
+				for (int k33 = 0; k33 < got33; ++k33)
+				{
+					const pcl::PointNormal& s33 = carrySource33->points[idx33[k33]];
+					const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+					                              (double)s33.normal_y * (double)s33.normal_y +
+					                              (double)s33.normal_z * (double)s33.normal_z);
+					if (!std::isfinite(ln33) || ln33 <= 1.0e-12) continue;
+					nx33 += (double)s33.normal_x / ln33;
+					ny33 += (double)s33.normal_y / ln33;
+					nz33 += (double)s33.normal_z / ln33;
+				}
+				const double la33 = std::sqrt(nx33 * nx33 + ny33 * ny33 + nz33 * nz33);
+				if (la33 > 1.0e-6) { nx33 /= la33; ny33 /= la33; nz33 /= la33; have33 = true; ++carried33; }
+			}
+			if (!have33)
+			{
+				idx33.clear(); d33.clear();
+				if (kd33.nearestKSearch(q33, 1, idx33, d33) > 0)
+				{
+					const pcl::PointNormal& s33 = carrySource33->points[idx33[0]];
+					const double ln33 = std::sqrt((double)s33.normal_x * (double)s33.normal_x +
+					                              (double)s33.normal_y * (double)s33.normal_y +
+					                              (double)s33.normal_z * (double)s33.normal_z);
+					if (std::isfinite(ln33) && ln33 > 1.0e-12)
+					{
+						nx33 = (double)s33.normal_x / ln33;
+						ny33 = (double)s33.normal_y / ln33;
+						nz33 = (double)s33.normal_z / ln33;
+						have33 = true;
+						++nearest33;
+					}
+				}
+			}
+			if (!have33)
+			{
+				// No usable source normal: counted, and filled from the PCA estimate at this point.
+				++missing33;
+				nx33 = rf33->second.x(); ny33 = rf33->second.y(); nz33 = rf33->second.z();
+			}
+			// The carried direction keeps the source normal's own sign: nothing is flipped here.
+			it33->second = VectorCGAL(nx33, ny33, nz33);
+			dev33.push_back(n33FoldDeg(nx33, ny33, nz33,
+			                           rf33->second.x(), rf33->second.y(), rf33->second.z()));
+		}
+		std::cout << "[NORMAL-33] piece=" << (fileNameOnly.empty() ? "NA" : fileNameOnly)
+		          << " call=" << g_normalCall
+		          << " source=input npts=" << points.size()
+		          << " carried=" << carried33 << " nearest=" << nearest33 << " missing=" << missing33
+		          << " median_dev_to_pca_deg=" << n33Median(dev33)
+		          << " missing_fill=pca mst=not_applied"
+		          << " carry_radius_mm=" << carryRadius33
+		          << " source_n=" << carrySource33->points.size() << std::endl;
+	}
+	else if (n24radius)
 	{
 		const int n24minK = std::max(3, std::min(g_normalMinK, g_normalMaxK));
 		n24orientK = estimateNormalsRadius(points, g_normalRadiusMM, n24minK, g_normalMaxK,
@@ -663,18 +785,34 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	}
 	std::cout << "[DEBUG getNormalsOnSurface] PCA normal estimation complete." << std::endl;
 
-	// Orients normals.
-	std::cout << "[DEBUG getNormalsOnSurface] Orienting normals with MST..." << std::endl;
-	std::list<PointVectorPair>::iterator unoriented_points_begin =
-		CGAL::mst_orient_normals(points, n24orientK,
-			CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
-			normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
-	std::cout << "[DEBUG getNormalsOnSurface] MST orientation complete." << std::endl;
-	printNormalLine24(n24npts, n24used, nb_neighbors, n24orientK, n24floored, n24capped, n24spacing);
-	const int n24callId = g_normalCall;
-	++g_normalCall;
-	points.erase(unoriented_points_begin, points.end());
-	std::cout << "[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: " << points.size() << std::endl;
+	int n24callId = g_normalCall;
+	if (!n33carry)
+	{
+		// Orients normals.
+		std::cout << "[DEBUG getNormalsOnSurface] Orienting normals with MST..." << std::endl;
+		std::list<PointVectorPair>::iterator unoriented_points_begin =
+			CGAL::mst_orient_normals(points, n24orientK,
+				CGAL::parameters::point_map(CGAL::First_of_pair_property_map<PointVectorPair>()).
+				normal_map(CGAL::Second_of_pair_property_map<PointVectorPair>()));
+		std::cout << "[DEBUG getNormalsOnSurface] MST orientation complete." << std::endl;
+		printNormalLine24(n24npts, n24used, nb_neighbors, n24orientK, n24floored, n24capped, n24spacing);
+		if (g_normalSourceGiven)
+		{
+			// TICKET 33: the switch was set to today's value; say so per call, as the ticket asks.
+			std::cout << "[NORMAL-33] piece=" << (fileNameOnly.empty() ? "NA" : fileNameOnly)
+			          << " call=" << n24callId
+			          << " source=reestimate npts=" << n24npts
+			          << " carried=0 nearest=0 missing=0 median_dev_to_pca_deg=0"
+			          << " missing_fill=none mst=applied carry_radius_mm=0 source_n=0" << std::endl;
+		}
+		++g_normalCall;
+		points.erase(unoriented_points_begin, points.end());
+		std::cout << "[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: " << points.size() << std::endl;
+	}
+	else
+	{
+		++g_normalCall;
+	}
 
 
 	/// Saves point set.
@@ -818,6 +956,25 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 		return "";
 	}
 
+	// TICKET 33: input mode also needs the same file's stored normals. A second, separate load keeps
+	// the default path's two clouds byte-for-byte as they were; the carry matches source points by
+	// position (KD-tree), so nothing depends on the two loads sharing an index order.
+	pcl::PointCloud<pcl::PointNormal>::Ptr source33;
+	float n33radius = samplingRadius;
+	if (g_normalSource == "input")
+	{
+		source33.reset(new pcl::PointCloud<pcl::PointNormal>);
+		if (pcl::io::loadPCDFile<pcl::PointNormal>(inputPcdFile, *source33) == -1)
+		{
+			std::cerr << "[NORMAL-33] piece=" << fileNameOnly
+			          << " FATAL SFS_NORMAL_SOURCE=input but the stored normals could not be read from "
+			          << inputPcdFile << std::endl;
+			std::exit(3);
+		}
+		std::cout << "[NORMAL-33] piece=" << fileNameOnly << " source_cloud=" << inputPcdFile
+		          << " source_n=" << source33->points.size() << std::endl;
+	}
+
 	// Convert XYZ to PointNormal (normals will be computed later)
 	pcl::copyPointCloud(*originalPointCloudXYZ, *originalPointCloud);
 
@@ -830,7 +987,9 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 		// Use raw cloud directly - copy to downsampledCloud
 		pcl::copyPointCloud(*originalCloudWithNormals, *downsampledCloud);
 		pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
-		getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+		// TICKET 33: nothing was sampled here, so the carried normal is the source point's own.
+		n33radius = 0.0F;
+		getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals, source33, n33radius);
 
 		pcl::PLYWriter writer;
 		outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
@@ -896,6 +1055,9 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
         }
     }
 
+    // TICKET 33: the radius the sampler settled on is the ball the carry averages over.
+    n33radius = leaf;
+
     // Log downsampling result
     std::cout << "[DOWNSAMPLING RESULT] Target=" << targetSamples << " points, "
               << "Bounds=[" << lowerBound << "-" << upperBound << "], "
@@ -904,7 +1066,7 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 	} // end POTA-244 adaptive branch (targetSamples > 0)
 
 	pcl::copyPointCloud(*downsampledCloud, *downsampledCloudPoints);
-    getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals);
+    getNormalsOnSurface(downsampledCloudPoints, downsampledCloudWithNormals, source33, n33radius);
 
 	pcl::PLYWriter writer;
 	outputFile = outPath + fileNameOnly + "_SampledWithNormals.ply";
@@ -3139,7 +3301,7 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
             pairs.push_back(std::make_pair(a, b));
         }
     }
-    if (pairs.size() < 3) return false;
+    if ((int)pairs.size() < g_mergeMinPairs) return false;   // TICKET 33: SFS_MERGE_MIN_PAIRS, default 3
     if (g_dumpOn25) g_pairStats25.pairs = (long)pairs.size();
     // ---- Step 2: k2-average normals + mean curvature over pair members ----
     pcl::PointCloud<pcl::PointXYZ>::Ptr cA(new pcl::PointCloud<pcl::PointXYZ>), cB(new pcl::PointCloud<pcl::PointXYZ>);
@@ -3186,7 +3348,8 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     double rhoD, double rhoN, double rhoC, double rhoInN, double rhoInC, int k1, int k2)
 {
     std::cout << "[PAPER-234] appendix-A merge: rhoD=" << rhoD << " rhoN=" << rhoN << " rhoC=" << rhoC
-              << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2 << std::endl;
+              << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2
+              << " minPairs=" << g_mergeMinPairs << std::endl;
     const int NP = static_cast<int>(pcloud->points.size());
     // TICKET 25: each cluster's pre-merge ids, carried through every pass and its
     // compaction, so a merge can be reported by identity instead of by size.
@@ -3411,7 +3574,9 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         pcl::PointCloud<pcl::PointNormal>::Ptr sampledPointCloudNormal(new pcl::PointCloud<pcl::PointNormal>);
         std::cout << "[DEBUG] Calling getNormalsOnSurface..." << std::endl;
         std::cout << "[DEBUG] Input cloud size: " << cloud->points.size() << std::endl;
-        getNormalsOnSurface(cloud, sampledPointCloudNormal);
+        // TICKET 33: in input mode this second call carries the normals the PLY already holds
+        // (radius 0 = the point's own stored normal, no re-estimate and no MST).
+        getNormalsOnSurface(cloud, sampledPointCloudNormal, cloudWithNormals, 0.0F);
         std::cout << "[DEBUG] getNormalsOnSurface completed successfully. Result points: " << sampledPointCloudNormal->points.size() << std::endl;
 
         std::cout << "[DEBUG] Extracting normals from sampled cloud..." << std::endl;
@@ -4279,6 +4444,17 @@ int main(int argc, char** argv) {
         if (const char* e24 = std::getenv("SFS_NBRS_FILE")) { if (*e24) g_nbrsFile = e24; }
         g_normalDumpDir.clear();
         if (const char* e24 = std::getenv("SFS_NORMAL_DUMP_DIR")) { if (*e24) g_normalDumpDir = e24; }
+        // TICKET 33: reestimate (default) is today's behaviour; input carries the cloud's stored normals.
+        if (const char* e33 = std::getenv("SFS_NORMAL_SOURCE"))
+        {
+            if (*e33) { g_normalSource = e33; g_normalSourceGiven = true; }
+        }
+        if (g_normalSource != "reestimate" && g_normalSource != "input")
+        {
+            std::cerr << "[NORMAL-33] FATAL unknown SFS_NORMAL_SOURCE=" << g_normalSource
+                      << " (reestimate|input)" << std::endl;
+            std::exit(2);
+        }
         if (g_normalMode == "radius" && (g_pieceS0MM <= 0.0 || g_pieceDiagMM <= 0.0))
         {
             double d24 = 0.0, s24 = 0.0;
@@ -4367,11 +4543,21 @@ int main(int argc, char** argv) {
         if (const char* e = std::getenv("SFS_PAPER_RHOC")) { if (*e) paperRhoC = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_RHOINN")) { if (*e) paperRhoInN = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_RHOINC")) { if (*e) paperRhoInC = std::stod(e); }
+        // TICKET 33: the appendix-A merge's boundary-pair minimum, replacing the literal 3.
+        g_mergeMinPairs = 3;
+        if (const char* e33 = std::getenv("SFS_MERGE_MIN_PAIRS")) { if (*e33) g_mergeMinPairs = std::stoi(e33); }
+        if (g_mergeMinPairs < 1)
+        {
+            std::cerr << "[PAPER-234] FATAL SFS_MERGE_MIN_PAIRS=" << g_mergeMinPairs << " (>=1)" << std::endl;
+            std::exit(2);
+        }
         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;
         std::cout << "[SPLITTER-234] rule=" << (planeRule ? "PLANE-CONTINUITY" : "PCL-REGION-GROWING")
                   << " smoothDeg=" << smoothnessAngleThreshold << " curv=" << curvatureThreshold
                   << " joinDeg=" << planeJoinDeg << " distMM=" << planeDistMM << " window=" << planeWindow
-                  << " paper=" << (paperChain ? "PAPER-CHAIN" : "off") << " theta=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
+                  << " paper=" << (paperChain ? "PAPER-CHAIN" : "off") << " theta=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB
+                  << " normalSource=" << g_normalSource << " normalSourceSet=" << (g_normalSourceGiven ? "yes" : "no")
+                  << " minPairs=" << g_mergeMinPairs << std::endl;
         surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold,
             planeRule, planeJoinDeg, planeDistMM, planeWindow,
             paperChain, paperTheta, paperKappa, paperNB, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC);
