@@ -22,8 +22,12 @@
 #          arm B (the pipeline's PCA re-estimation) at x4 and x10.  Then the two figures.
 # PHASE 2  controls 3, 5, 7 at x1 x2 x4; Pot A 07 re-grown from ticket 37's own pre-floor cloud;
 #          part E -- the two redraws the conservator asked for, and the ink measurement.
-# PHASE 3  ONE real pipeline cell: the pipeline, built from this commit, is handed the synthetic
-#          cloud of the finest level that reaches 50 points, staged inside this run directory.
+# PHASE 3  five real pipeline cells, the pipeline built from this commit and handed each cloud
+#          staged inside this run directory: arm A's x1 and x10 cloud for each target sherd, and
+#          Pot A 07 on the frozen released binary cloud as the reference from the other density
+#          group.  For each: the pipeline's own cluster count, its [STATUS-23] outcome, and for
+#          every surface it writes the point count, extent, 2 mm coverage of the ORIGINAL cloud
+#          and folded angle to the ORIGINAL mesh.
 #
 # Nothing in the pipeline is modified.  No geometry leaves this run directory's own staging.
 set -uo pipefail
@@ -224,34 +228,45 @@ for PH in $(echo "$PHASE" | tr ',' ' '); do
   fi
 done
 
-corpus_tree "$OUT/corpus_after.tsv"
-md5_corpus "$OUT/inputs_after.md5"
-diff "$OUT/corpus_before.tsv" "$OUT/corpus_after.tsv" > "$OUT/corpus.diff" || true
-diff "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" || true
-if [ -s "$OUT/corpus.diff" ] || [ -s "$OUT/inputs.diff" ]; then
-  echo "[JOB] WARN the corpus or the frozen inputs changed during this job"
-  cat "$OUT/corpus.diff" "$OUT/inputs.diff"
-else
-  echo "[JOB] corpus and frozen inputs unchanged"
-fi
+# The closing bookkeeping runs once, and also on a termination signal: if Slurm ends this job at the
+# wall clock, the corpus is still proved unchanged, the geometry is still counted, deleted and the
+# index row still appended, so a timeout cannot leave half a record behind.
+FINISHED=0
+finish() {
+  [ "$FINISHED" -eq 1 ] && return 0
+  FINISHED=1
+  corpus_tree "$OUT/corpus_after.tsv"
+  md5_corpus "$OUT/inputs_after.md5"
+  diff "$OUT/corpus_before.tsv" "$OUT/corpus_after.tsv" > "$OUT/corpus.diff" || true
+  diff "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" || true
+  if [ -s "$OUT/corpus.diff" ] || [ -s "$OUT/inputs.diff" ]; then
+    echo "[JOB] WARN the corpus or the frozen inputs changed during this job"
+    cat "$OUT/corpus.diff" "$OUT/inputs.diff"
+  else
+    echo "[JOB] corpus and frozen inputs unchanged"
+  fi
 
-geom_record "$OUT/geometry_counts_phase$PHASES_TAG.tsv"
-geom_delete
+  geom_record "$OUT/geometry_counts_phase$PHASES_TAG.tsv"
+  geom_delete
 
-{
-  echo "runid=$RUNID"
-  echo "jobid=$JOBID"
-  echo "commit=$NEW"
-  echo "tag=$IXTAG"
-  echo "phase=$PHASE"
-  echo "host=$(hostname)"
-  echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  echo "phase_rc=$rc"
-  echo "phase_failures=$(cat "$OUT/phase_failures.tsv" 2>/dev/null | tr '\n' ' ')"
-} > "$OUT/run-meta_phase$PHASES_TAG.txt"
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "phase=$PHASE"
+    echo "host=$(hostname)"
+    echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "phase_rc=${rc:-na}"
+    echo "phase_failures=$(cat "$OUT/phase_failures.tsv" 2>/dev/null | tr '\n' ' ')"
+  } > "$OUT/run-meta_phase$PHASES_TAG.txt"
 
-printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
-echo "[JOB] index row appended (verdict and human_note left empty)"
+  printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+  echo "[JOB] index row appended (verdict and human_note left empty)"
+}
+trap 'echo "[JOB] signal caught: closing the record before exiting"; finish; exit 143' TERM INT
+
+finish
 if [ "$RC_ANY" -ne 0 ]; then
   echo "[JOB] FAILED: one or more phases returned non-zero:"
   cat "$OUT/phase_failures.tsv"
