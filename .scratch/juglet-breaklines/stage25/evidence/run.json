@@ -1,0 +1,40 @@
+{
+  "ticket": 25,
+  "runid": "20261027-0337_d69f76f_t25-dump-grid2",
+  "tag": "t25-dump-grid2",
+  "commit_new": "d69f76fd7b3645811f35815ab3062c58ff988d1c",
+  "commit_old": "d543e18627c02354732bd9e7f33eb21d8dbbbce2",
+  "old_note": "the tip of main (a398d8a) was not on origin when this job was written, so the pre-change binary is built from d543e18, whose mesh_processing_headless.cpp is identical (git diff a398d8a d543e18 -- mesh_processing_headless.cpp is empty; the two commits differ only in the ticket file)",
+  "purpose": "ticket 25: per-step geometry ladder for four Juglet pieces, three dump arms, plus the unset-defaults identity proof and its run-to-run control",
+  "pieces": [
+    "Juglet_Piece_2",
+    "Juglet_Piece_3",
+    "Juglet_Piece_5",
+    "Juglet_Piece_7"
+  ],
+  "tags": [
+    "B",
+    "D",
+    "E",
+    "A",
+    "A2",
+    "OLD",
+    "DOLD",
+    "EOLD"
+  ],
+  "arms": {
+    "B": "SFS_DUMP_STAGE set; defaults (0.6 mm density step, paper chain on)",
+    "D": "SFS_DUMP_STAGE set; SFS_PAPER_CHAIN=0",
+    "E": "SFS_DUMP_STAGE set; SFS_PAPER_CHAIN=0 and SFS_DOWNSAMPLE_TARGET=-1 (native density)",
+    "A": "SFS_DUMP_STAGE unset; new binary; first run",
+    "A2": "SFS_DUMP_STAGE unset; new binary; second run (run-to-run control)",
+    "OLD": "SFS_DUMP_STAGE unset; pre-change binary",
+    "DOLD": "SFS_DUMP_STAGE unset; pre-change binary; SFS_PAPER_CHAIN=0",
+    "EOLD": "SFS_DUMP_STAGE unset; pre-change binary; SFS_PAPER_CHAIN=0 and SFS_DOWNSAMPLE_TARGET=-1"
+  },
+  "identity_statistic": "sorted multiset of six-column point lines (x y z nx ny nz) per written surface, compared between arms; md5 is NOT used because the exported PLY carries an uninitialised curvature column",
+  "geometry_deletion": "each cell deletes its staged tree when it finishes and appends per-extension counts and bytes to out/cells/geometry_counts.tsv; out/GEOMETRY_DELETED.txt totals them. Kept: out/dump/** and every cell's surfaces/, because the ladder dumps are the deliverable",
+  "container": "/data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif with apptainer 1.3.3",
+  "build": "git archive <sha> | tar -x into <run>/build/<arm>/src, then cmake -DCMAKE_BUILD_TYPE=Release and make MeshPreprocessingHeadless inside the container",
+  "submitted_by": "worker session for ticket 25 (delegated subagent), sbatch only; no laptop or login-node scoring"
+}

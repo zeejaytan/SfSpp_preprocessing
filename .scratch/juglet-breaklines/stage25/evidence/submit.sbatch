@@ -1,0 +1,192 @@
+#!/bin/bash
+#SBATCH --job-name=t25-grid2
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=01:00:00
+#SBATCH --output=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/logs/slurm-%j.out
+#SBATCH --error=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2/logs/slurm-%j.err
+# ticket 25 -- dump the geometry at every step.
+#
+# For each piece: arms B (defaults), D (chain off) and E (chain off, native density) with
+# SFS_DUMP_STAGE set, plus A and A2 with it unset (the defaults proof and its run-to-run
+# control) and OLD (the pre-change binary, unset), and DOLD/EOLD (the chain-off arms on the
+# pre-change binary, unset) so the same surface comparison also covers those two arms.
+# Built from the read-only canonical checkout: NEW = this branch, OLD = main before it.
+set -uo pipefail
+
+RUN=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0337_d69f76f_t25-dump-grid2
+RUNID=20261027-0337_d69f76f_t25-dump-grid2
+NEW=d69f76fd7b3645811f35815ab3062c58ff988d1c
+OLD=d543e18627c02354732bd9e7f33eb21d8dbbbce2
+IXTAG=t25-dump-grid2
+PIECES="Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_5 Juglet_Piece_7"
+TAGS="B D E A A2 OLD DOLD EOLD"
+PROOFARMS="A OLD A2 D DOLD E EOLD"
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+INSTR=$RUN/instruments
+CELLROOT=$RUN/out/cells
+DUMPROOT=$RUN/out/dump
+STAGER=$INSTR/stage_piece_p25.sh
+LIST=$RUN/out/cells.list
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+BIND="--bind /data:/data"
+export CANON CORP BOOT SIF APT INSTR CELLROOT DUMPROOT STAGER LIST PY NEW OLD RUN RUNID SLURM_CPUS_PER_TASK
+
+cd "$RUN" || exit 1
+mkdir -p out/bin out/cells logs
+echo "[JOB] runid=$RUNID job=$SLURM_JOB_ID new=$NEW old=$OLD cpus=${SLURM_CPUS_PER_TASK:-?} pieces=$PIECES"
+date -u +"start %Y-%m-%dT%H:%M:%SZ"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+for c in "$NEW" "$OLD"; do
+  if ! git -C "$CANON" cat-file -e "${c}^{commit}" 2>>logs/fetch.log; then
+    echo "[JOB] FATAL commit $c not in $CANON"; exit 2
+  fi
+done
+echo "[JOB] commits ok new=$(git -C "$CANON" rev-parse --short "$NEW") old=$(git -C "$CANON" rev-parse --short "$OLD")"
+
+pot_of() { case "$1" in Juglet_Piece_*) echo Juglet ;; Pot_A_Piece_*) echo Pot_A ;; *) echo UNKNOWN ;; esac; }
+cloud_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CORP/Point/Pot_A/$1_Point.pcd"; else echo "$CANON/Dataset/Point/Juglet/$1_Point.pcd"; fi; }
+mesh_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CORP/Mesh/$1_Mesh.obj"; else echo "$CANON/Dataset/Mesh/Juglet/$1_Mesh.obj"; fi; }
+axis_of() { if [ "$(pot_of "$1")" = Pot_A ]; then echo "$CANON/Dataset/Axes/Pot_A/$1_Axis.xyz"; else echo "$BOOT/$1_boot_Axis.xyz"; fi; }
+
+hash_inputs() {
+  local out=$1 p f
+  : > "$out"
+  for p in $PIECES; do
+    for f in "$(cloud_of "$p")" "$(mesh_of "$p")" "$(axis_of "$p")"; do
+      if [ -f "$f" ]; then
+        printf "%s\t%s\t%s\n" "$p" "$(md5sum "$f" | cut -d" " -f1)" "$f"
+      else
+        printf "%s\tMISSING\t%s\n" "$p" "$f"
+      fi
+    done
+  done | sort > "$out"
+}
+
+corpus_tree() {
+  local out=$1
+  { find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then ls -R /opt/sfs-pristine | md5sum
+    else echo "opt-sfs-pristine ABSENT"; fi
+  } > "$out"
+}
+
+build_arm() {
+  local name=$1 sha=$2 dir=$RUN/build/$1
+  rm -rf "$dir"; mkdir -p "$dir/src"
+  if ! git -C "$CANON" archive "$sha" | tar -x -C "$dir/src"; then
+    echo "[BUILD] FAILED archive $name"; return 1
+  fi
+  ( cd "$dir/src" && mkdir -p build && cd build \
+      && "$APT" exec $BIND "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
+      && "$APT" exec $BIND "$SIF" make -j"${SLURM_CPUS_PER_TASK:-8}" MeshPreprocessingHeadless ) >> logs/build-$name.log 2>&1
+  if [ ! -x "$dir/src/build/MeshPreprocessingHeadless" ]; then
+    echo "[BUILD] FAILED make $name"
+    grep -E "error:|Error [0-9]" logs/build-$name.log | head -40
+    return 1
+  fi
+  cp "$dir/src/build/MeshPreprocessingHeadless" "out/bin/MeshPreprocessingHeadless.$name"
+  echo "[BUILD] ok $name sha=$sha bytes=$(stat -c %s out/bin/MeshPreprocessingHeadless.$name) md5=$(md5sum out/bin/MeshPreprocessingHeadless.$name | cut -d" " -f1)"
+}
+
+run_one() {
+  local tag piece arm
+  IFS=$'\t' read -r tag piece <<< "$1"
+  [ -n "${tag:-}" ] || return 0
+  case "$tag" in OLD|DOLD|EOLD) arm=OLD ;; *) arm=NEW ;; esac
+  POT=$(pot_of "$piece")
+  PIECE=$piece; TAG=$tag
+  AXIS=$(axis_of "$piece"); BIN=$RUN/out/bin/MeshPreprocessingHeadless.$arm
+  if [ "$arm" = "OLD" ]; then COMMIT=$OLD; else COMMIT=$NEW; fi
+  export POT PIECE TAG AXIS BIN COMMIT
+  bash "$INSTR/run_cell25.sh" "$tag"
+}
+export -f pot_of cloud_of mesh_of axis_of run_one
+
+: > "$LIST"
+for p in $PIECES; do
+  for t in $TAGS; do
+    printf "%s\t%s\n" "$t" "$p" >> "$LIST"
+  done
+done
+echo "[JOB] cells in list: $(wc -l < "$LIST")"
+
+hash_inputs out/inputs_before.md5
+corpus_tree out/corpus_before.txt
+echo "[JOB] inputs hashed: $(wc -l < out/inputs_before.md5) rows, corpus $(wc -l < out/corpus_before.txt) rows"
+
+build_arm NEW "$NEW" || exit 3
+build_arm OLD "$OLD" || exit 3
+
+printf "tag\tpiece\tpot\tarm\tdump_env\tenvs\tmesh_exit\telapsed_s\tdump_files\tr1\tr2\tr3\tr4\tr5\tdumproot_exists\tstray_rung_files\tstage_dump_dirs\tdump_wrote\tdump_refused\tsurf0\tsurf1\toutcome\tclusters\n" > "$CELLROOT/cells25.tsv"
+: > "$CELLROOT/geometry_counts.tsv"
+: > "$CELLROOT/status23.tsv"
+: > "$CELLROOT/extra25.tsv"
+date -u +"cells start %Y-%m-%dT%H:%M:%SZ"
+xargs -a "$LIST" -d "\n" -n 1 -P "${SLURM_CPUS_PER_TASK:-8}" bash -c 'run_one "$@"' _ >> logs/cells.log 2>&1
+RC=$?
+echo "[JOB] cells finished rc=$RC rows=$(($(wc -l < "$CELLROOT/cells25.tsv") - 1))"
+grep "^\[CELL\]" logs/cells.log || true
+date -u +"cells end %Y-%m-%dT%H:%M:%SZ"
+
+echo "[JOB] ladder"
+"$PY" "$INSTR/ladder25.py" "$RUN" 2>&1 | tee logs/ladder.log | tail -5
+
+echo "[JOB] defaults proof (A vs OLD, A vs A2); statistic = sorted six-column point set, md5 NOT used"
+"$PY" "$INSTR/defaults_proof25.py" "$RUN" $PROOFARMS 2>&1 | tee logs/proof.log | tail -40
+
+echo "[JOB] dump file check (json parses, ply header count matches body, label columns present)"
+"$PY" "$INSTR/json_check25.py" "$RUN" 2>&1 | tee logs/jsoncheck.log | tail -6
+
+echo "[JOB] figures"
+"$PY" "$INSTR/figures25.py" "$RUN" 2>&1 | tee logs/figures.log | tail -20
+
+{
+  echo "# ticket 25 -- geometry deleted when each cell finished, with counts and bytes."
+  echo "# KEPT: out/dump/** (the five rungs per arm and piece -- the deliverable), every"
+  echo "# cell's surfaces/*.ply and *.xyz, and every log."
+  echo -e "tag_pot_piece\text\tcount\tbytes"
+  cat "$CELLROOT/geometry_counts.tsv"
+  echo "#"
+  echo -e "ext\tfiles\tbytes"
+  awk -F"\t" '{c[$2]+=$3; b[$2]+=$4} END {for (e in c) printf "%s\t%d\t%d\n", e, c[e], b[e]}' "$CELLROOT/geometry_counts.tsv" | sort
+  echo "#"
+  echo -e "total\t$(awk -F"\t" '{c+=$3; b+=$4} END {print c"\t"b}' "$CELLROOT/geometry_counts.tsv")"
+  echo "# kept rung dumps: $(find "$DUMPROOT" -name "*.ply" | wc -l) ply, $(find "$DUMPROOT" -name "*.json" | wc -l) json, $(du -sb "$DUMPROOT" | cut -f1) bytes"
+  echo "# kept surfaces: $(find "$CELLROOT" -path "*/surfaces/*" -name "*.ply" | wc -l) ply, $(find "$CELLROOT" -path "*/surfaces/*" -name "*.xyz" | wc -l) xyz"
+  echo "# stage trees left on disk (expect 0): $(find "$CELLROOT" -maxdepth 2 -type d -name stage | wc -l)"
+  echo "# geometry outside surfaces/ still present (expect 0):"
+  find "$CELLROOT" -path "*/surfaces/*" -prune -o -type f \( -name "*.pcd" -o -name "*.obj" -o -name "*.xyz" \) -print | wc -l
+} > out/GEOMETRY_DELETED.txt 2>&1
+head -20 out/GEOMETRY_DELETED.txt
+
+hash_inputs out/inputs_after.md5
+corpus_tree out/corpus_after.txt
+if diff -q out/inputs_before.md5 out/inputs_after.md5 > out/inputs.diff 2>&1; then
+  echo "[INPUTS] identical before and after: $(wc -l < out/inputs_before.md5) rows"
+else
+  echo "[INPUTS] DIFFERS"; cat out/inputs.diff
+fi
+if diff -q out/corpus_before.txt out/corpus_after.txt > out/corpus.diff 2>&1; then
+  echo "[CORPUS] identical before and after: $(wc -l < out/corpus_before.txt) rows (incl /opt/sfs-pristine line)"
+else
+  echo "[CORPUS] DIFFERS"; cat out/corpus.diff
+fi
+grep -m1 "opt-sfs-pristine" out/corpus_before.txt || true
+
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$SLURM_JOB_ID" "$NEW" "$IXTAG" >> /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+echo "[INDEX] appended: $RUNID\t$SLURM_JOB_ID\t$NEW\t$IXTAG"
+tail -2 /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+
+rm -rf "$RUN/build"
+date -u +"end %Y-%m-%dT%H:%M:%SZ"
+echo "[JOB] done run=$RUNID"
