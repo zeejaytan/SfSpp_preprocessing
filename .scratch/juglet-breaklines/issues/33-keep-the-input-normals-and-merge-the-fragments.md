@@ -1,8 +1,8 @@
 # 33: Can the normals the scan already carries — and a merge of the fragments — give sherds 2 and 9 a face?
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
-**Branch:** —
+**Branch:** 33-keep-the-input-normals-and-merge-the-fragments, in /c/PR/worktrees/sfs/33
 **Answers:** U19, E1
 **Blocked by:** none
 **Blocks:** none
