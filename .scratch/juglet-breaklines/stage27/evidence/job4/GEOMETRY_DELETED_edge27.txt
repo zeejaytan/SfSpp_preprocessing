@@ -1,0 +1,40 @@
+# Ticket 27 run 20261027-1559_69c0c9c_p27-dedupe-edge -- cell surfaces deleted at the end of this job.
+# The edgeline pass consumed each cell's surfaces; the dots it wrote are kept, the
+# surfaces themselves are not. Counted per extension before deletion.
+# class = tag/pot/piece/surfaces
+Juglet/Juglet_Piece_1/surfaces/surfaces	obj	2	3311180
+Juglet/Juglet_Piece_1/surfaces/surfaces	pcd	4	3742608
+Juglet/Juglet_Piece_1/surfaces/surfaces	ply	8	5469143
+Juglet/Juglet_Piece_1/surfaces/surfaces	xyz	4	1483173
+Juglet/Juglet_Piece_4/surfaces/surfaces	obj	2	457130
+Juglet/Juglet_Piece_4/surfaces/surfaces	pcd	4	568246
+Juglet/Juglet_Piece_4/surfaces/surfaces	ply	8	549212
+Juglet/Juglet_Piece_4/surfaces/surfaces	xyz	4	94975
+Juglet/Juglet_Piece_6/surfaces/surfaces	obj	2	654468
+Juglet/Juglet_Piece_6/surfaces/surfaces	pcd	4	806794
+Juglet/Juglet_Piece_6/surfaces/surfaces	ply	8	825719
+Juglet/Juglet_Piece_6/surfaces/surfaces	xyz	4	148139
+Juglet/Juglet_Piece_7/surfaces/surfaces	obj	2	1083756
+Juglet/Juglet_Piece_7/surfaces/surfaces	pcd	6	1408262
+Juglet/Juglet_Piece_7/surfaces/surfaces	ply	8	1382090
+Juglet/Juglet_Piece_7/surfaces/surfaces	xyz	4	167475
+Pot_A/Pot_A_Piece_01/surfaces/surfaces	obj	2	61976726
+Pot_A/Pot_A_Piece_01/surfaces/surfaces	pcd	10	57996800
+Pot_A/Pot_A_Piece_01/surfaces/surfaces	ply	8	28481507
+Pot_A/Pot_A_Piece_01/surfaces/surfaces	xyz	4	10142280
+Pot_A/Pot_A_Piece_02/surfaces/surfaces	obj	2	34328686
+Pot_A/Pot_A_Piece_02/surfaces/surfaces	pcd	6	56777362
+Pot_A/Pot_A_Piece_02/surfaces/surfaces	ply	8	18239160
+Pot_A/Pot_A_Piece_02/surfaces/surfaces	xyz	4	7274231
+Pot_A/Pot_A_Piece_07/surfaces/surfaces	obj	2	6190000
+Pot_A/Pot_A_Piece_07/surfaces/surfaces	pcd	4	56276872
+Pot_A/Pot_A_Piece_07/surfaces/surfaces	ply	8	2967748
+Pot_A/Pot_A_Piece_07/surfaces/surfaces	xyz	4	1015326
+Pot_A/Pot_A_Piece_08/surfaces/surfaces	obj	2	6091488
+Pot_A/Pot_A_Piece_08/surfaces/surfaces	pcd	4	56251530
+Pot_A/Pot_A_Piece_08/surfaces/surfaces	ply	8	2728967
+Pot_A/Pot_A_Piece_08/surfaces/surfaces	xyz	4	963671
+# total deleted: 154 files, 429854724 bytes
+# KEPT: logs/ (mesh.log, edge.log, kept_inputs.txt), cells27.tsv, cells27_edge.tsv,
+# breakdots.tsv, breaklines/*.pcd/.ply/.xyz, dots27.tsv, dotsets27.tsv, out/bin,
+# corpus before/after, submit.sbatch, run.json.

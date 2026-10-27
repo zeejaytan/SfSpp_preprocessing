@@ -201,7 +201,7 @@ positions, 0.714881 mm; B/A2 21 positions, 0.761401 mm. Every unequal cell is Po
 
 All in mm; `med_nn` tracks `med through` to 0.014 mm at worst (01 off 7.095229 / on 7.067484).
 
-### Item 6, our own Breakline_0 dots, was NOT obtained
+### Item 6 in the grid: our own Breakline_0 dots were NOT obtained (a staging bug, fixed afterwards)
 
 All 32 edgeline cells (OLD/A/A2/B × the eight pieces that write a surface) exited **139 (SIGSEGV)** in 1-5 s
 and wrote only `(none-written)` rows into `dots27.tsv`. Failing command and message, from
@@ -216,9 +216,65 @@ instruments/run_edge27.sh: line 34: 161680 Segmentation fault (core dumped) "$AP
 
 Cause: the edgeline stage reads `Temp/Data/<pot>/<piece>_unclustered.ply` as well as the surfaces, and
 `run_cell27.sh` kept only `Surface_{0,1}` and `_SampledWithNormals.ply` before deleting the staged tree, so
-the file was absent. One-line fix for a future job (not submitted: the brief caps the grid at three jobs):
-keep `${PIECE}_unclustered.ply` into `<cell>/surfaces/` in `run_cell27.sh` and copy it into
-`$ES/Temp/Data/$POT/` in `run_edge27.sh`.
+the file was absent. One-line fix for a future job (not submitted at the time: the brief capped the grid at
+three jobs): keep `${PIECE}_unclustered.ply` into `<cell>/surfaces/` in `run_cell27.sh` and copy it into
+`$ES/Temp/Data/$POT/` in `run_edge27.sh`. The lead then authorised one fourth job for this item alone; the
+fix is in both scripts as committed at `69c0c9c` and the measurement below is that job.
+
+### Item 7 — the same dots, re-run after the fix (job 33862863)
+
+The lead authorised one fourth job for this item alone, with the fix applied. Run of record
+`20261027-1559_69c0c9c_p27-dedupe-edge`, commit `69c0c9c`, both binaries built once from that commit
+(`MeshPreprocessingHeadless` md5 `660795ff38f259bc4d61811073962dd4`, `EdgeLineExtractionHeadless` md5
+`cbf747dc3172fe0bbd188822df14092a`); arm B is a byte copy of arm A told apart only by `SFS_DEDUPE=on`.
+16 of 16 edgeline cells `edge_exit=0`, the gate cell (A / Pot A 08) wrote 2 breakline files. Tables:
+`out/dots27.tsv` and `out/dotsets27.tsv`, copied to `evidence/job4/`.
+
+In `dotsets27.tsv`: `n` = dots in the written PCD, `distinct` = distinct positions (`np.unique`),
+`only_in` = positions present in one arm's set and absent from the other's, `nn_*` = nearest-neighbour
+distance from the other arm's set, in mm.
+
+| piece | surface | dots off | dots on | distinct off | distinct on | only in off | only in on | set equal | nn med | nn p90 | nn max |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Pot_A_Piece_01 | 0 | 203 | 204 | 203 | 204 | 203 | 204 | no | 0.528615 | 0.837040 | 0.996435 |
+| Pot_A_Piece_01 | 1 | 210 | 210 | 210 | 210 | 0 | 0 | yes | 0.000000 | 0.000000 | 0.000000 |
+| Pot_A_Piece_02 | 0 | 162 | 163 | 162 | 163 | 162 | 163 | no | 0.264497 | 0.752876 | 2.124465 |
+| Pot_A_Piece_02 | 1 | 168 | 168 | 168 | 168 | 168 | 168 | no | 0.331930 | 0.532454 | 1.862174 |
+| Pot_A_Piece_07 | 0 | 63 | 63 | 63 | 63 | 62 | 62 | no | 0.064452 | 0.143388 | 0.147000 |
+| Pot_A_Piece_07 | 1 | 65 | 65 | 65 | 65 | 65 | 65 | no | 0.253719 | 0.577089 | 0.643151 |
+| Pot_A_Piece_08 | 0 | 57 | 57 | 57 | 57 | 56 | 56 | no | 0.095283 | 0.223914 | 0.268899 |
+| Pot_A_Piece_08 | 1 | 61 | 61 | 61 | 61 | 61 | 61 | no | 0.515202 | 0.792192 | 1.303039 |
+| Juglet_Piece_1 | 0 | 57 | 57 | 57 | 57 | 0 | 0 | yes | 0.000000 | 0.000000 | 0.000000 |
+| Juglet_Piece_1 | 1 | 92 | 92 | 92 | 92 | 90 | 90 | no | 0.012880 | 0.021951 | 0.053419 |
+| Juglet_Piece_4 | 0 | 15 | 15 | 15 | 15 | 15 | 15 | no | 0.352771 | 0.531117 | 1.615948 |
+| Juglet_Piece_4 | 1 | 40 | 40 | 40 | 40 | 0 | 0 | yes | 0.000000 | 0.000000 | 0.000000 |
+| Juglet_Piece_6 | 0 | 31 | 31 | 31 | 31 | 0 | 0 | yes | 0.000000 | 0.000000 | 0.000000 |
+| Juglet_Piece_6 | 1 | 38 | 38 | 38 | 38 | 0 | 0 | yes | 0.000000 | 0.000000 | 0.000000 |
+| Juglet_Piece_7 | 0 | 34 | 34 | 34 | 34 | 34 | 34 | no | 0.605012 | 0.898125 | 1.562967 |
+| Juglet_Piece_7 | 1 | 33 | 33 | 33 | 33 | 33 | 33 | no | 0.482582 | 0.733650 | 2.146120 |
+
+As facts, not as a verdict:
+
+* **Dot count.** 14 of 16 rows write the same number of dots in both arms; Pot A 01 surface 0 writes 203
+  off and 204 on, Pot A 02 surface 0 162 and 163 — one dot apart, one either way.
+* **Every dot is a distinct position in both arms**: `n == distinct` in all 32 arm-rows, so neither arm
+  writes a repeated position inside one line. Both lines are reported: `_Breakline_0` is the boundary of
+  Surface_0 (the interior face), `_Breakline_1` the boundary of Surface_1.
+* **Position sets.** 5 of 16 rows are exactly the same set of positions (Pot A 01 surface 1; Juglet 1
+  surface 0, Juglet 4 surface 1, Juglet 6 both surfaces). The other 11 differ, from 56 of 57 positions
+  (Pot A 08 surface 0, `nn_max` 0.268899 mm) to all 34 and all 33 positions of Juglet 7
+  (`nn_max` 1.562967 and 2.146120 mm).
+* **What the two arms are.** Each arm is its own mesh-stage run, and the mesh stage draws 30 sample
+  indices from an unseeded generator (`std::random_device rd; std::mt19937 gen(rd());`,
+  `mesh_processing_headless.cpp:2768-2778`), so an off-vs-on difference here carries the switch **and** a
+  fresh draw. No same-binary repeat arm exists for the edgeline stage in this session — the 32 edgeline
+  cells of job 33860966 all died of the staging bug — so the **dot-level run-to-run spread is
+  unmeasured**; what is measured in the same session on the same pieces is the surface-level spread,
+  A/A2 `nn_max` 0.491304-0.761401 mm on Pot A 01/02 and exactly equal on all eight Juglet surfaces
+  (`seteq27.tsv`).
+* **One extra file.** Pot A 01 also writes `Pot_A_Piece_01_Breakline_1_stepring.pcd`, 312 dots off and 305
+  on; `dotsets27.tsv` maps surface k to `*_Breakline_<k>.pcd` only, so the step ring is counted in
+  `dots27.tsv` but not compared.
 
 ### Record
 
@@ -228,3 +284,11 @@ of staged trees, plus the 210 kept cell surfaces (130 `.ply` 151 883 930 bytes +
 and the 50 rung dumps (56 516 653 bytes) deleted afterwards with a counted manifest in the run directory's
 `out/GEOMETRY_DELETED_cells.txt`; logs, sidecar JSONs, tables and arm binaries kept. Index row appended with
 `verdict` and `human_note` empty.
+
+Job 33862863 (item 7): corpus tree and md5 also identical before and after its own run (`out/corpus_before.tsv`
+and `out/corpus_after.tsv` 1 803 lines each, `corpus_before.md5` = `corpus_after.md5`, 24 lines, `cmp` clean);
+`opt-sfs-pristine` again recorded **ABSENT** and not created; the 16 cells' kept `surfaces/` were deleted at
+the end of the job with a counted manifest in `out/GEOMETRY_DELETED_edge27.txt` — **154 files,
+429 854 724 bytes**: `pcd` 42 files 233 828 474 bytes, `obj` 16 files 114 093 434, `ply` 64 files
+60 643 546, `xyz` 32 files 21 289 270; breaklines (`.pcd`/`.ply`/`.xyz`), logs, `kept_inputs.txt`, the
+tables and both arm binaries kept. Its index row was appended with `verdict` and `human_note` empty.
