@@ -116,8 +116,13 @@ def main(argv):
         fixed = 0
         for r in rows:
             if not r[ip] or r[ip] == "0":
-                f = os.path.join(out, "cells", r[0], r[1], r[2], "surfaces", r[3])
-                v = ply_vertices(f)
+                cands = [os.path.join(out, "dump", r[0], r[2], r[3]),
+                         os.path.join(out, "cells", r[0], r[1], r[2], "surfaces", r[3])]
+                v = ""
+                for f in cands:
+                    v = ply_vertices(f)
+                    if v != "":
+                        break
                 if v != "":
                     r[ip] = v
                     fixed += 1

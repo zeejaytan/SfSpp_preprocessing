@@ -8,8 +8,9 @@
 #        logs/, one row in armcells30.tsv and one row per Breakline in breaks30.tsv.
 # deletes: the staged tree and the edgestage, with a counted record per extension.
 set -uo pipefail
-TAG=$1
+TAG=${1:-}
 : "${CELLROOT:?}" "${POT:?}" "${PIECE:?}" "${AXIS:?}" "${BIN:?}" "${EDGEBIN:?}" "${SIF:?}" "${APT:?}" "${STAGER:?}" "${MESH:?}" "${COMMIT:?}" "${THETA:?}"
+if [ -z "$TAG" ]; then echo "[CELL] FATAL empty tag: run_arm30.sh <tag>" >&2; exit 9; fi
 ROLE=${ROLE:-test}
 CELL=$CELLROOT/$TAG/$POT/$PIECE
 ST=$CELL/stage
@@ -114,8 +115,10 @@ for f in "$CELL/breaklines"/*_Breakline_*.pcd; do
   b=$(basename "$f")
   sk=$(echo "$b" | sed -e 's/.*_Breakline_\([01]\)\.pcd$/\1/')
   pts=$(grep -m1 '^POINTS' "$f" | awk '{print $2}')
-  segs=$(grep -m1 '^#' "$f" | awk '{print $2}')
-  hpts=$(grep -m1 '^#' "$f" | awk '{print $3}')
+  # the PCD's first comment is the format line; the SECOND carries "<segs> <span> <flag>",
+  # then one "# <start> <end> <flag>" line per segment. Parsing the first line read ".PCD"/"v0.7".
+  segs=$(grep '^#' "$f" | sed -n '2p' | awk '{print $2}')
+  hpts=$(grep '^#' "$f" | sed -n '2p' | awk '{print $3}')
   xf="${f%.pcd}.xyz"
   if [ -f "$xf" ]; then xl=$(wc -l < "$xf"); else xl=0; fi
   printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \

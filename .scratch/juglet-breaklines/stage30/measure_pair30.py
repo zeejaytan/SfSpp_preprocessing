@@ -106,6 +106,7 @@ def cell_meta(tsv):
             row = dict(zip(head, f))
             key = (row.get("tag", ""), row.get("pot", ""), row.get("piece", ""))
             meta[key] = row
+            meta[("~", row.get("pot", ""), row.get("piece", ""))] = row
     return meta
 
 
@@ -164,16 +165,30 @@ def main(argv):
             "max_across_mm", "coincidence_share_1um", "surf0_points_log", "surf1_points_log",
             "count_match"]
     out = []
-    cells = sorted(glob.glob(os.path.join(root, "*", "*", "*")))
+    # find every cell that has a surfaces/ directory, so the arm layout
+    # (<root>/<pot>/<piece>/surfaces) and the dump-cell layout
+    # (<root>/<tag>/<pot>/<piece>/surfaces) are both read correctly.
+    cells = []
+    for dirpath, dirnames, _files in os.walk(root):
+        if os.path.basename(dirpath) == "surfaces":
+            cells.append(os.path.dirname(dirpath))
+            dirnames[:] = []
+    cells = sorted(cells)
+    rootabs = os.path.abspath(root)
     for cell in cells:
-        parts = cell.replace("\\", "/").split("/")
-        piece, pot, tag = parts[-1], parts[-2], parts[-3]
+        piece = os.path.basename(cell)
+        pot = os.path.basename(os.path.dirname(cell))
+        upper = os.path.dirname(os.path.dirname(cell))
+        tag = "" if os.path.abspath(upper) == rootabs else os.path.basename(upper)
         sdir = os.path.join(cell, "surfaces")
         f0 = glob.glob(os.path.join(sdir, "*_Surface_0.ply"))
         f1 = glob.glob(os.path.join(sdir, "*_Surface_1.ply"))
-        row = meta.get((tag, pot, piece), {})
+        row = (meta.get((tag, pot, piece)) or meta.get(("", pot, piece))
+               or meta.get(("~", pot, piece)) or {})
         role = row.get("role", "?")
         scheme = row.get("scheme", tag)
+        if not tag:
+            tag = row.get("tag", "")
         rec = [role, tag, scheme, pot, piece]
         if not f0 or not f1:
             rec += ["no_pair"] + [""] * 14
