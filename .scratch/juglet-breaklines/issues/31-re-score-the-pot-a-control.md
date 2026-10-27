@@ -1,6 +1,8 @@
 # 31 — Re-score the Pot A control on a compute node
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 31-re-score-the-pot-a-control, in /c/PR/worktrees/sfs/31
 **Answers:** none (a verification debt, not a research question)
 **Blocked by:** none
 **Blocks:** quoting the 15/15 Pot A control anywhere
