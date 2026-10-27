@@ -117,9 +117,17 @@ def cmd_cell(a):
         m0 = rank == 0
         m1 = rank == 1
         p = M.pair_stats(xyz[m0], nu[m0], xyz[m1], nu[m1])
+        pw = M.pair_pointwise(xyz[m0], nu[m0], xyz[m1], nu[m1])
+        slack = float(np.min(pw["d"] - pw["across"]))
+        if slack < -1e-9:
+            raise SystemExit("[CELL] pair identity broken on %s: min(nn-across)=%.3e mm"
+                             % (tag, slack))
+        p["min_nn_minus_across"] = slack
         p["region0_size"] = int(m0.sum())
         p["region1_size"] = int(m1.sum())
         pair = p
+        print("[CELL] pair identity across<=nn holds pointwise on %d real points "
+              "(min nn-across = %.3e mm)" % (len(pw["d"]), slack))
     row = {"piece": a.piece, "level": int(a.level), "arm": a.arm,
            "cloud": a.cloud, "mesh": a.mesh, "orig_cloud": a.orig_cloud,
            "points": int(len(xyz)), "normal_src": src, "k_pca": int(kp), "k_curv": int(kc),
@@ -159,7 +167,25 @@ COLS_REG = ["piece", "level", "arm", "points", "requested_spacing_mm", "achieved
 COLS_BIG = ["piece", "level", "arm", "points", "largest", "largest_share", "ext_x", "ext_y",
             "ext_z", "diag", "cov_2mm", "fold_deg", "normal_src_meas"]
 COLS_PAIR = ["piece", "level", "arm", "region0_size", "region1_size", "med_nn", "med_along",
-             "p90_along", "med_across", "p90_across", "coin"]
+             "p90_along", "med_across", "p90_across", "med_angle_deg", "p90_angle_deg",
+             "min_nn_minus_across", "coin"]
+PAIR_NOTE = """pair38.tsv -- how the second-largest region sits relative to the largest one.
+
+med_nn      nearest Surface_0 point to each Surface_1 point; the step length, unsplit
+med_along   |t|, that step measured along Surface_0 own normal at the nearest point
+med_across  |v - t a|, the part of the step perpendicular to that normal: the perpendicular
+            residual, i.e. how far off-parallel the two sheets are; med_angle_deg is the folded
+            angle between the two normals at that nearest point
+coin        fraction of Surface_1 points whose nearest Surface_0 point is within 1 micron
+min_nn_minus_across  the smallest per-point slack in the identity across <= nn (must be >= 0)
+
+VOID COLUMNS.  Every med_across / p90_across printed before 2026-10-27 by an earlier stage of this
+ticket is VOID: measure34.pair_stats reconstructed the perpendicular part from |t| instead of t,
+which inflates across to sqrt(across^2 + 4 t^2) on every point whose step runs against the normal
+(up to 2*med_nn).  On the arm-A cells the printed med_across was 4.23-4.58 mm where the correct
+value is 0.24-0.43 mm.  med_nn, med_along, p90_along and coin were correct as printed and are
+unchanged.  Every row below was re-derived from the regenerated regions with the fixed code.
+"""
 
 
 def _fmt(v):
@@ -172,7 +198,7 @@ def _write_tsv(path, rows, cols):
     with open(path, "w") as f:
         f.write("\t".join(cols) + "\n")
         for r in rows:
-            f.write("\t".join(_fmt(r[c]) for c in cols) + "\n")
+            f.write("\t".join(_fmt(r.get(c, "")) for c in cols) + "\n")
     return len(rows)
 
 
@@ -193,6 +219,21 @@ def cmd_fromply(a):
     print("[FROMPLY] %s -> %s points=%d median_nn=%.5f p10=%.5f p90=%.5f mm"
           % (os.path.basename(a.ply), os.path.basename(a.out), len(xyz), sp["median"],
              sp["p10"], sp["p90"]))
+    return 0
+
+
+def cmd_surface(a):
+    """Measure a surface the pipeline wrote: point count, extent, the fraction of the ORIGINAL
+    cloud within 2 mm of it, and the folded angle between its normals and the ORIGINAL mesh."""
+    verts, vnorm = M.read_obj(a.mesh)
+    orig_xyz, _n = S.read_pcd_xyz(a.orig_cloud)
+    row = M.surface_row(a.ply, orig_xyz, verts, vnorm)
+    row.update({"ply": a.ply, "tag": a.tag, "orig_cloud": a.orig_cloud, "mesh": a.mesh})
+    os.makedirs(a.outdir, exist_ok=True)
+    with open(os.path.join(a.outdir, "surface_%s.json" % a.tag), "w") as f:
+        json.dump(row, f, indent=1, sort_keys=True)
+    print("[SURFACE] %s points=%d diag=%.3f mm cov2mm=%.4f fold=%.3f deg (normals %s)"
+          % (a.tag, row["points"], row["diag"], row["cov_2mm"], row["fold_deg"], row["normal_src"]))
     return 0
 
 
@@ -224,6 +265,19 @@ def cmd_aggregate(a):
     if not pr:
         with open(os.path.join(a.outdir, "pair38.tsv"), "w") as f:
             f.write("\t".join(COLS_PAIR) + "\n")
+    with open(os.path.join(a.outdir, "pair38_NOTE.txt"), "w") as f:
+        f.write(PAIR_NOTE)
+        f.write("\nrows: %d\n" % n3)
+        for c in cells:
+            if c.get("pair"):
+                f.write("%-24s arm=%-6s x%-2d along %.4f mm  across %.4f mm  angle %.3f deg\n"
+                        % (c["piece"], c["arm"], c["level"], c["pair"]["med_along"],
+                           c["pair"]["med_across"], c["pair"].get("med_angle_deg", float("nan"))))
+    for c in cells:
+        pq = c.get("pair")
+        if pq and pq["med_across"] > pq["med_nn"] + 1e-9:
+            raise SystemExit("[AGG] pair identity broken on %s x%d %s: across %.4f > nn %.4f"
+                             % (c["piece"], c["level"], c["arm"], pq["med_across"], pq["med_nn"]))
     print("[AGG] %d cells -> regions38.tsv %d rows, largest38.tsv %d rows, pair38.tsv %d rows"
           % (len(cells), n1, n2, n3))
     for c in cells:
@@ -301,6 +355,7 @@ def cmd_selftest(a):
     if rk[2] != 0 or rk[0] != 1 or rk[5] != 2:
         bad += 1
         print("[SELFTEST] FAIL ranked")
+    bad += M.pair_selftest()
     print("[SELFTEST] %s (%d failures)" % ("PASS" if bad == 0 else "FAIL", bad))
     return 0 if bad == 0 else 1
 
@@ -327,6 +382,10 @@ def main(argv=None):
     s.add_argument("--cells", required=True); s.add_argument("--outdir", required=True)
     s.add_argument("--figures37", default="")
     s.set_defaults(fn=cmd_aggregate)
+    s = sub.add_parser("surface")
+    for k in ("--ply", "--mesh", "--orig-cloud", "--tag", "--outdir"):
+        s.add_argument(k, required=True)
+    s.set_defaults(fn=cmd_surface)
     a = ap.parse_args(argv)
     if not getattr(a, "fn", None):
         ap.print_help()

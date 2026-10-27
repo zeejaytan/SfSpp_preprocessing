@@ -292,21 +292,71 @@ def surface_row(path, cloud_xyz, verts, vnorm):
             "normal_src": src}
 
 
-def pair_stats(p0, n0, p1, n1):
-    """Corrected pair statistic (ticket 24 retired the mean-normal dot test): for every
-    Surface_1 point take the nearest Surface_0 point and split that step along Surface_0's
-    own normal and across it."""
+def pair_pointwise(p0, n0, p1, n1):
+    """The pair statistic point by point.  t is kept SIGNED: along = |t| says how far the
+    second region sits from the first along the first's normal, across = |v - t a| is the
+    residual perpendicular to that normal.  Reconstructing the perpendicular part from |t|
+    instead of t inflates across to sqrt(across^2 + 4 t^2) wherever the step runs against the
+    normal (measured 2026-10-27: a sheet 2.2 mm inside reports across 4.4000 mm), which breaks
+    the identity across <= nn on exactly those points."""
     d, idx = cKDTree(p0).query(p1, k=1)
     v = p1 - p0[idx]
     a = unit(n0)[idx]
-    along = np.abs(np.einsum("ij,ij->i", v, a))
-    across = np.linalg.norm(v - along[:, None] * a, axis=1)
+    t = np.einsum("ij,ij->i", v, a)
+    return {"d": d, "idx": idx, "t": t, "along": np.abs(t),
+            "across": np.linalg.norm(v - t[:, None] * a, axis=1),
+            "angle_deg": folded_angle_deg(n1, a)}
+
+
+def pair_stats(p0, n0, p1, n1):
+    """Corrected pair statistic (ticket 24 retired the mean-normal dot test): for every
+    Surface_1 point take the nearest Surface_0 point and split that step along Surface_0's
+    own normal and across it.  angle_deg is folded |dot| of the two normals at that nearest
+    point: how far off-parallel the two sheets are."""
+    pw = pair_pointwise(p0, n0, p1, n1)
+    d, along, across, ang = pw["d"], pw["along"], pw["across"], pw["angle_deg"]
     return {"n0": int(len(p0)), "n1": int(len(p1)),
             "med_nn": float(np.median(d)),
             "med_along": float(np.median(along)), "p90_along": float(np.percentile(along, 90)),
             "med_across": float(np.median(across)),
             "p90_across": float(np.percentile(across, 90)),
+            "med_angle_deg": float(np.median(ang)),
+            "p90_angle_deg": float(np.percentile(ang, 90)),
+            "min_nn_minus_across": float(np.min(d - across)),
             "coin": float(np.count_nonzero(d <= COINCIDENCE_MM)) / float(len(p1))}
+
+
+def pair_selftest():
+    """The cases that would have caught the reported-across defect.  A Surface_1 shifted 2.2 mm
+    along Surface_0's normal reports nn = along = 2.2 and across 0.0000 whichever side it sits
+    on; the shipped version reported 4.4000 for the inner side.  Then a sheet tilted 12 deg about
+    y, where across must stay > 0 and <= nn point by point."""
+    bad = 0
+    g = np.stack(np.meshgrid(np.arange(6.0), np.arange(6.0)), axis=-1).reshape(-1, 2)
+    p0 = np.column_stack([g, np.zeros(len(g))])
+    n0 = np.tile(np.array([0.0, 0.0, 1.0]), (len(g), 1))
+    for dz in (-2.2, 2.2):
+        s = pair_stats(p0, n0, p0 + np.array([0.0, 0.0, dz]), n0)
+        ok = (abs(s["med_across"]) < 1e-6 and abs(s["med_along"] - 2.2) < 1e-6
+              and abs(s["med_nn"] - 2.2) < 1e-6)
+        print("[PAIR-SELFTEST] %s dz=%+.1f nn=%.4f along=%.4f across=%.4f (want 2.2000/2.2000/0.0000)"
+              % ("ok  " if ok else "FAIL", dz, s["med_nn"], s["med_along"], s["med_across"]))
+        if not ok:
+            bad += 1
+    th = np.radians(12.0)
+    rot = np.array([[np.cos(th), 0.0, np.sin(th)], [0.0, 1.0, 0.0], [-np.sin(th), 0.0, np.cos(th)]])
+    p2 = p0.dot(rot) + np.array([0.0, 0.0, 2.5])
+    n2 = np.tile(np.array([np.sin(th), 0.0, np.cos(th)]), (len(g), 1))
+    pw = pair_pointwise(p0, n0, p2, n2)
+    s2 = pair_stats(p0, n0, p2, n2)
+    slack = float(np.max(pw["across"] - pw["d"]))
+    ok2 = slack <= 1e-9 and s2["med_across"] > 0.0 and s2["med_angle_deg"] > 1.0
+    print("[PAIR-SELFTEST] %s tilted 12deg: across=%.4f nn=%.4f max(across-nn)=%.3e angle=%.3f deg"
+          % ("ok  " if ok2 else "FAIL", s2["med_across"], s2["med_nn"], slack, s2["med_angle_deg"]))
+    if not ok2:
+        bad += 1
+    print("[PAIR-SELFTEST] %s (%d failures)" % ("PASS" if bad == 0 else "FAIL", bad))
+    return bad
 
 
 # ------------------------------------------------------------------ replay
