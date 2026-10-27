@@ -1,6 +1,8 @@
 # 30 — Should the growth's criterion be an angle at all?
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 30-should-the-criterion-be-an-angle, in /c/PR/worktrees/sfs/30
 **Answers:** U19
 **Blocked by:** none (ticket 29 merged as 8a50992; this ticket edits no C++)
 **Blocks:** any change to the growth rule, and the end-to-end run behind it
