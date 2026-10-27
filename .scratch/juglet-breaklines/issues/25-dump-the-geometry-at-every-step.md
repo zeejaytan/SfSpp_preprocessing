@@ -2,8 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none — ticket 26 is merged (`0902718`); this ticket edits the same file and builds on it
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 25-dump-the-geometry-at-every-step, in /c/PR/worktrees/sfs/25
 
 A ticket on the **instrument**, not on the method. It adds a per-step dump behind one switch whose default
 writes nothing extra, so that any later repair can be checked at the rung it acts on and a failure can be
