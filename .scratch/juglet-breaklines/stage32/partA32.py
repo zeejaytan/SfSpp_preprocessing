@@ -218,7 +218,8 @@ def cell_vessel(corpus, dataset, pot, outdir, seed):
     rec = {"cell": "A_VESSEL_%s" % pot, "arm": "VESSEL", "piece": "vessel_%s" % pot,
            "pot": pot, "pieces": names, "gt_root": gt_root,
            "n_pieces": len(names), "graph_md5": io32.md5_file(
-               os.path.join(gt_root, "%s_simple_graph.txt" % pot)),
+               os.path.join(gt_root, "%s_simple_graph.txt"
+                            % ("Pot_A" if pot == "PotA" else pot))),
            "per_mode": per_mode, "mode_selected": sel,
            "mode_selected_by": "smallest union bbox diagonal (reported for all three)",
            "vessel_mm": per_mode[sel]["diag_mm"],

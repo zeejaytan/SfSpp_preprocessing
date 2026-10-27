@@ -1,0 +1,278 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 32 -- FIXUP job, run after the grid job.
+# The grid left exactly one phase-A cell unwritten: A|VESSEL|PotA, because its recorded graph
+# md5 built "PotA_simple_graph.txt" while the corpus file is "Pot_A_simple_graph.txt" (the
+# placement itself already read the right name). This job recomputes that one cell, then
+# regenerates the two tables and the figure over a byte-for-byte copy of the grid's cells, so
+# one directory carries the complete table and the complete figure.
+# No source is built and no binary is run: nothing here measures a mesh.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+IXTAG=__IXTAG__
+SRCRUNID=__SRCRUN__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DS=$CANON/Dataset
+DUMP=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0637_66c84dc_t30-clouds/out/dump
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+INSTR=$RUN/instruments
+OUT=$RUN/out
+SRCRUN=/data/gpfs/projects/punim2657/SfSpp/runs/$SRCRUNID
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+JOBID=na
+if [ -n "${SLURM_JOB_ID:-}" ]; then JOBID=$SLURM_JOB_ID; fi
+P=8
+if [ -n "${SLURM_CPUS_PER_TASK:-}" ]; then P=$SLURM_CPUS_PER_TASK; fi
+export CANON CORP DS DUMP PY INSTR OUT RUN RUNID NEW IXTAG SRCRUN SRCRUNID RUNS IDX JOBID P
+export OMP_NUM_THREADS=$P OPENBLAS_NUM_THREADS=$P MKL_NUM_THREADS=$P
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT/cells" logs
+
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "source_runid=$SRCRUNID"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG commit=$NEW host=$(hostname) source=$SRCRUNID"
+date -u +"start %Y-%m-%dT%H:%M:%SZ"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+if ! git -C "$CANON" cat-file -e "${NEW}^{commit}" 2>>logs/fetch.log; then
+  fail 2 "commit $NEW not in $CANON"
+fi
+echo "[JOB] commit ok $(git -C "$CANON" rev-parse --short "$NEW")"
+
+hash_inputs() {
+  local out=$1 f
+  {
+    for f in "$DS"/Point/Juglet/*.pcd "$DS"/Mesh/Juglet/*.obj "$DS"/Juglet_GT/*.txt \
+             "$CORP"/Point/Pot_A/*.pcd "$CORP"/Mesh/Pot_A/*.obj "$CORP/Ground Truth"/*.txt \
+             "$DUMP"/B/*/r2_clusters_premerge.ply "$DUMP"/E/*/r2_clusters_premerge.ply \
+             "$DUMP"/PA/*/r2_clusters_premerge.ply; do
+      if [ -f "$f" ]; then
+        printf "%s\t%s\t%s\n" "$(md5sum "$f" | cut -d" " -f1)" "$(stat -c %s "$f")" "$f"
+      else
+        printf "MISSING\t0\t%s\n" "$f"
+      fi
+    done
+  } | sort -k3 > "$out"
+}
+
+corpus_tree() {
+  local out=$1
+  {
+    find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    find "$DS" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then
+      echo "opt-sfs-pristine PRESENT $(ls -R /opt/sfs-pristine | md5sum | cut -d' ' -f1)"
+    else
+      echo "opt-sfs-pristine ABSENT"
+    fi
+  } > "$out"
+}
+
+pristine_record() {
+  local out=$1
+  {
+    echo "# /opt/sfs-pristine, recorded from the compute node"
+    if [ -d /opt/sfs-pristine ]; then
+      echo "status PRESENT"
+      ls -la /opt/sfs-pristine
+    else
+      echo "status ABSENT"
+      ls -d /opt/sfs-pristine 2>&1 || true
+      stat /opt/sfs-pristine 2>&1 || true
+    fi
+  } > "$out"
+}
+
+hash_inputs "$OUT/inputs_before.md5"
+corpus_tree "$OUT/corpus_before.txt"
+pristine_record "$OUT/pristine.txt"
+echo "[JOB] inputs hashed: $(wc -l < "$OUT/inputs_before.md5") rows; corpus: $(wc -l < "$OUT/corpus_before.txt") lines"
+
+SRCJOB=$(grep -o '[0-9][0-9]*' "$SRCRUN/logs/sbatch.txt" 2>/dev/null | head -1)
+[ -n "${SRCJOB:-}" ] || SRCJOB=na
+echo "[JOB] source run $SRCRUNID (slurm job $SRCJOB)"
+
+{
+  echo "# ticket 32 fixup: the grid's cells, copied byte-for-byte."
+  echo "# source run: $SRCRUN"
+  echo "# source slurm job: $SRCJOB (from its logs/sbatch.txt)"
+  echo "# superseded in the source run and regenerated here: sizes32.tsv windows32.tsv vessel32.tsv figure32.png"
+} > "$OUT/CELLS-COPIED.txt"
+if [ -d "$SRCRUN/out/cells" ]; then
+  SRC_N=$(ls "$SRCRUN/out/cells/"*.json 2>/dev/null | wc -l)
+else
+  SRC_N=0
+fi
+echo "# source cells found: $SRC_N" >> "$OUT/CELLS-COPIED.txt"
+if [ "$SRC_N" -lt 60 ]; then
+  fail 3 "source cells missing under $SRCRUN/out/cells (found $SRC_N)"
+fi
+cp -f "$SRCRUN/out/cells/"*.json "$OUT/cells/" || fail 3 "cp of the source cells failed"
+(
+  cd "$SRCRUN/out/cells" && md5sum *.json | sort -k2
+) > logs/cells_src.md5
+(
+  cd "$OUT/cells" && md5sum *.json | sort -k2
+) > logs/cells_dst.md5
+if ! diff -q logs/cells_src.md5 logs/cells_dst.md5 > /dev/null 2>&1; then
+  diff logs/cells_src.md5 logs/cells_dst.md5 >> "$OUT/CELLS-COPIED.txt" || true
+  fail 4 "copied cells differ from the source run"
+fi
+{
+  echo "# copied OK: $(wc -l < logs/cells_dst.md5) cells, md5 lists identical"
+  cat logs/cells_dst.md5
+} >> "$OUT/CELLS-COPIED.txt"
+echo "[JOB] copied $(wc -l < logs/cells_dst.md5) cells, md5 lists identical"
+{
+  echo "# md5 of the source run's tables and figure, superseded by this run's"
+  for f in sizes32.tsv windows32.tsv vessel32.tsv figure32.png; do
+    if [ -f "${SRCRUN}/out/$f" ]; then
+      printf "%s\t%s\n" "$(md5sum "${SRCRUN}/out/$f" | cut -d' ' -f1)" "$f"
+    else
+      printf "MISSING\t%s\n" "$f"
+    fi
+  done
+} > "$OUT/SUPERSEDED.md5"
+cat "$OUT/SUPERSEDED.md5"
+
+echo "[JOB] the one cell: A|VESSEL|PotA"
+{
+  echo "# ticket 32 fixup -- the exact command for the one cell recomputed here"
+  echo "VESSEL_PotA	$PY $INSTR/partA32.py --arm VESSEL --piece PotA --dataset $DS --corpus $CORP --outdir $OUT --seed 32"
+} > "$OUT/commands.txt"
+"$PY" "$INSTR/partA32.py" --arm VESSEL --piece PotA --dataset "$DS" --corpus "$CORP" \
+  --outdir "$OUT" --seed 32 >> logs/cells.log 2>&1
+RC=$?
+echo "[CELL] stage=A arm=VESSEL piece=PotA rc=$RC $(date -u +%H:%M:%SZ)" | tee -a logs/cells.log
+[ "$RC" -eq 0 ] || fail 5 "partA32.py --arm VESSEL --piece PotA rc=$RC (see logs/cells.log)"
+if [ ! -s "$OUT/cells/A_VESSEL_PotA.json" ]; then
+  fail 5 "A_VESSEL_PotA.json missing or empty"
+fi
+"$PY" - "$OUT/cells/A_VESSEL_PotA.json" <<'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1]))
+print("[VESSEL] pot=%s pieces=%d mode=%s vessel_mm=%.6f sides_mm=%s"
+      % (d["pot"], d["n_pieces"], d["mode_selected"], d["vessel_mm"],
+         ["%.4f" % v for v in d["vessel_sides_mm"]]))
+for m, v in d["per_mode"].items():
+    print("[VESSEL]   mode %-5s diag_mm=%.6f sides=%s" % (m, v["diag_mm"],
+          ["%.4f" % x for x in v["sides_mm"]]))
+mc = d["mate_check"]
+print("[VESSEL] mate_check n_pieces=%d n_pairs=%d n_mates=%d closest_is_mate=%d "
+      "mate_min_median_mm=%.4f nonmate_min_median_mm=%.4f min_mm=%.4f"
+      % (mc["n_pieces"], mc["n_pairs"], mc["n_mates"], mc["n_pieces_whose_closest_is_a_mate"],
+         mc["mate_min_median_mm"], mc["nonmate_min_median_mm"], mc["nonmate_min_min_mm"]))
+PYEOF
+RC=$?
+[ "$RC" -eq 0 ] || fail 5 "reading A_VESSEL_PotA.json failed rc=$RC"
+
+echo "[JOB] tables"
+{
+  echo "TABLES	$PY $INSTR/table32.py --outdir $OUT"
+  echo "FIGURE	$PY $INSTR/figure32.py --outdir $OUT"
+} >> "$OUT/commands.txt"
+"$PY" "$INSTR/table32.py" --outdir "$OUT" > logs/table.log 2>&1
+RC=$?
+[ "$RC" -eq 0 ] || fail 6 "table32.py rc=$RC (see logs/table.log); run dir keeps the cell copy"
+tail -3 logs/table.log
+echo "[JOB] figure"
+"$PY" "$INSTR/figure32.py" --outdir "$OUT" > logs/figure.log 2>&1
+RC=$?
+[ "$RC" -eq 0 ] || fail 7 "figure32.py rc=$RC (see logs/figure.log)"
+tail -3 logs/figure.log
+if [ ! -s "$OUT/figure32.png" ]; then
+  fail 7 "figure32.png missing or empty"
+fi
+"$PY" - "$OUT" <<'PYEOF'
+import struct, sys, os
+out = sys.argv[1]
+for name in ("sizes32.tsv", "windows32.tsv", "vessel32.tsv", "figure32.png"):
+    p = os.path.join(out, name)
+    print("[CHECK] %-14s %s bytes" % (name, os.path.getsize(p) if os.path.exists(p) else "MISSING"))
+b = open(os.path.join(out, "figure32.png"), "rb").read()
+w, h = struct.unpack(">II", b[16:24])
+i = b.find(b"pHYs")
+dpi = None
+if i > 0:
+    px, py, u = struct.unpack(">IIB", b[i + 4:i + 13])
+    dpi = round(px * 0.0254, 2) if u == 1 else None
+print("[CHECK] figure32.png %d x %d px, dpi=%s" % (w, h, dpi))
+rows = [l.rstrip("\n").split("\t") for l in open(os.path.join(out, "sizes32.tsv"))]
+h_ = rows[0]
+iv = h_.index("vessel_mm")
+ir = h_.index("ratio")
+ia = h_.index("arm")
+na_v = [r[0] for r in rows[1:] if r[ia].startswith("PA") and r[iv] == "na"]
+na_r = [r[0] for r in rows[1:] if r[ia].startswith("PA") and r[ir] == "na"]
+print("[CHECK] sizes32.tsv rows=%d (with header); Pot A vessel_mm na: %d; ratio na: %d"
+      % (len(rows) - 1, len(na_v), len(na_r)))
+if na_v or na_r:
+    raise SystemExit("pot A vessel_mm or ratio still na: %r %r" % (na_v, na_r))
+w2 = [l.rstrip("\n").split("\t") for l in open(os.path.join(out, "windows32.tsv"))]
+print("[CHECK] windows32.tsv rows=%d" % (len(w2) - 1))
+PYEOF
+RC=$?
+[ "$RC" -eq 0 ] || fail 8 "post-table check failed rc=$RC"
+
+hash_inputs "$OUT/inputs_after.md5"
+corpus_tree "$OUT/corpus_after.txt"
+if diff -q "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > /dev/null; then
+  echo "[INPUTS] identical before and after: $(wc -l < "$OUT/inputs_after.md5") rows"
+else
+  diff "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" || true
+  echo "[INPUTS] CHANGED, see out/inputs.diff"
+fi
+if diff -q "$OUT/corpus_before.txt" "$OUT/corpus_after.txt" > /dev/null; then
+  echo "[CORPUS] identical before and after: $(wc -l < "$OUT/corpus_after.txt") rows incl the pristine line"
+else
+  diff "$OUT/corpus_before.txt" "$OUT/corpus_after.txt" > "$OUT/corpus.diff" || true
+  echo "[CORPUS] CHANGED, see out/corpus.diff"
+fi
+grep -m1 'opt-sfs-pristine' "$OUT/corpus_after.txt"
+
+{
+  echo "# ticket 32 fixup -- what this run directory holds"
+  echo "#   out/sizes32.tsv, out/windows32.tsv, out/vessel32.tsv, out/figure32.png: complete, regenerated here"
+  echo "#   out/cells/*.json: the grid's 70 cells copied byte-for-byte (md5s in out/CELLS-COPIED.txt)"
+  echo "#                     plus A_VESSEL_PotA.json computed here"
+  echo "#   out/SUPERSEDED.md5: the source run's tables and figure these replace"
+  echo "#   logs/ (slurm out/err, cells.log, table.log, figure.log, cells_src.md5, cells_dst.md5)"
+  echo "#   no geometry was written: no npz, no build tree, nothing deleted"
+} > "$OUT/README.txt"
+cat "$OUT/README.txt"
+
+echo "[JOB] index row appended:"
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+tail -1 "$IDX" | cat -A | head -1
+date -u +"end %Y-%m-%dT%H:%M:%SZ"
+echo "[JOB] DONE rc 0"
+exit 0
