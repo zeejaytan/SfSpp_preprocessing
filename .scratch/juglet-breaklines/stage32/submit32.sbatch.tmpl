@@ -1,0 +1,447 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 32 -- sherd size against vessel size, and curvature radius over fixed physical
+# windows. No source is built and no binary is run: every number comes from python over
+# the frozen corpus and the frozen Dataset/ trees, read-only.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+IXTAG=__IXTAG__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DS=$CANON/Dataset
+DUMP=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0637_66c84dc_t30-clouds/out/dump
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+INSTR=$RUN/instruments
+OUT=$RUN/out
+ECELLS=$OUT/ecells
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+JOBID=${SLURM_JOB_ID:-na}
+P=${SLURM_CPUS_PER_TASK:-8}
+export CANON CORP DS DUMP BOOT SIF APT ECELLS PY INSTR OUT RUN RUNID NEW IXTAG RUNS IDX JOBID P SLURM_CPUS_PER_TASK
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT/cells" "$OUT/geom" "$ECELLS" logs
+
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG commit=$NEW host=$(hostname)"
+date -u +"start %Y-%m-%dT%H:%M:%SZ"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+if ! git -C "$CANON" cat-file -e "${NEW}^{commit}" 2>>logs/fetch.log; then
+  fail 2 "commit $NEW not in $CANON"
+fi
+echo "[JOB] commit ok new=$(git -C "$CANON" rev-parse --short "$NEW")"
+
+hash_inputs() {
+  local out=$1 f
+  {
+    for f in "$DS"/Point/Juglet/*.pcd "$DS"/Mesh/Juglet/*.obj "$DS"/Juglet_GT/*.txt \
+             "$CORP"/Point/Pot_A/*.pcd "$CORP"/Mesh/Pot_A/*.obj "$CORP/Ground Truth"/*.txt \
+             "$DUMP"/B/*/r2_clusters_premerge.ply "$DUMP"/E/*/r2_clusters_premerge.ply \
+             "$DUMP"/PA/*/r2_clusters_premerge.ply; do
+      if [ -f "$f" ]; then
+        printf "%s\t%s\t%s\n" "$(md5sum "$f" | cut -d" " -f1)" "$(stat -c %s "$f")" "$f"
+      else
+        printf "MISSING\t0\t%s\n" "$f"
+      fi
+    done
+  } | sort -k3 > "$out"
+}
+
+corpus_tree() {
+  local out=$1
+  {
+    find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    find "$DS" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then
+      echo "opt-sfs-pristine PRESENT $(ls -R /opt/sfs-pristine | md5sum | cut -d' ' -f1)"
+    else
+      echo "opt-sfs-pristine ABSENT"
+    fi
+  } > "$out"
+}
+
+pristine_record() {
+  local out=$1
+  {
+    echo "# /opt/sfs-pristine, recorded from the compute node"
+    if [ -d /opt/sfs-pristine ]; then
+      echo "status PRESENT"
+      ls -la /opt/sfs-pristine
+    else
+      echo "status ABSENT"
+      ls -d /opt/sfs-pristine 2>&1 || true
+      stat /opt/sfs-pristine 2>&1 || true
+    fi
+  } > "$out"
+}
+
+run_one() {
+  local spec="$1" stage arm piece rest rc
+  [ -n "${spec:-}" ] || return 0
+  stage="${spec%%|*}"
+  rest="${spec#*|}"
+  arm="${rest%%|*}"
+  piece="${rest##*|}"
+  case "$stage" in
+    A) "$PY" "$INSTR/partA32.py" --arm "$arm" --piece "$piece" --dataset "$DS" \
+         --corpus "$CORP" --outdir "$OUT" --seed 32 ;;
+    B) "$PY" "$INSTR/partB32.py" --arm "$arm" --piece "$piece" --dataset "$DS" \
+         --corpus "$CORP" --outdir "$OUT" --seed 32 ;;
+    D) "$PY" "$INSTR/partD32.py" --arm "$arm" --piece "$piece" --dataset "$DS" \
+         --corpus "$CORP" --outdir "$OUT" --dump "$DUMP" ;;
+    *) echo "[CELL] unknown stage $stage in spec $spec"; return 9 ;;
+  esac
+  rc=$?
+  echo "[CELL] stage=$stage arm=$arm piece=$piece rc=$rc $(date -u +%H:%M:%SZ)"
+  return "$rc"
+}
+export -f run_one
+
+commands_of() {
+  local lf=$1 spec stage arm piece rest
+  while IFS= read -r spec; do
+    [ -n "$spec" ] || continue
+    stage="${spec%%|*}"
+    rest="${spec#*|}"
+    arm="${rest%%|*}"
+    piece="${rest##*|}"
+    case "$stage" in
+      A) echo "$spec\t$PY $INSTR/partA32.py --arm $arm --piece $piece --dataset $DS --corpus $CORP --outdir $OUT --seed 32" ;;
+      B) echo "$spec\t$PY $INSTR/partB32.py --arm $arm --piece $piece --dataset $DS --corpus $CORP --outdir $OUT --seed 32" ;;
+      D) echo "$spec\t$PY $INSTR/partD32.py --arm $arm --piece $piece --dataset $DS --corpus $CORP --outdir $OUT --dump $DUMP" ;;
+    esac
+  done < "$lf"
+}
+
+missing_cells() {
+  local lf=$1 spec stage arm piece rest
+  while IFS= read -r spec; do
+    [ -n "$spec" ] || continue
+    stage="${spec%%|*}"
+    rest="${spec#*|}"
+    arm="${rest%%|*}"
+    piece="${rest##*|}"
+    if [ ! -s "$OUT/cells/$stage"'_'"$arm"'_'"$piece.json" ]; then
+      echo "$spec"
+    fi
+  done < "$lf"
+  return 0
+}
+
+cp "$INSTR/list_a.txt" "$OUT/list_a.txt"
+cp "$INSTR/list_bd.txt" "$OUT/list_bd.txt"
+{
+  echo "# stage32 cell commands, one per line: <spec> TAB <exact command run>"
+  echo "# spec = stage|arm|piece; stage A = part A cell, B = window cell, D = growth cell"
+  commands_of "$OUT/list_a.txt"
+  commands_of "$OUT/list_bd.txt"
+} > "$OUT/commands.txt"
+
+hash_inputs "$OUT/inputs_before.md5"
+corpus_tree "$OUT/corpus_before.txt"
+pristine_record "$OUT/pristine.txt"
+echo "[JOB] inputs hashed: $(wc -l < "$OUT/inputs_before.md5") rows, tree $(wc -l < "$OUT/corpus_before.txt") rows"
+grep -m1 "opt-sfs-pristine" "$OUT/corpus_before.txt" || true
+cat "$OUT/pristine.txt"
+
+echo "[JOB] instruments selftest"
+"$PY" "$INSTR/selftest32.py" --dataset "$DS" --corpus "$CORP" --dump "$DUMP" 2>&1 | tee logs/selftest.log
+SRC_RC=${PIPESTATUS[0]}
+if [ "$SRC_RC" -ne 0 ]; then
+  fail 5 "selftest32.py rc=$SRC_RC (logs/selftest.log); no measurement was taken"
+fi
+
+# ------------------------------------------------------------------ part E
+# The lead's PART E: the same fragmentation question asked of the pipeline itself, not of the
+# python replica, at floors 0.03 / 0.02 / 0.01 of the cloud (ticket 23's switches, which only act
+# together: SFS_FLOOR_CEILING is read only when SFS_COUNT_SCALE=auto). Two arms per (piece, floor):
+#   plain  = the lead's exact switch set.
+#   single = the same set plus SFS_SINGLE_CLUSTER=write, the switch ticket 23 measured as the one
+#            that lets a lone cluster be written as Surface_0; without it the coverage and extent
+#            columns the lead asked for would be empty by construction.
+# Both arms are reported as separate labelled rows and nothing is chosen between them.
+EPIECES="Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_9"
+ETAGS="F003 F002 F001 F003S F002S F001S"
+export EPIECES ETAGS
+
+build_arm() {
+  local name=$1 sha=$2 rc
+  echo "[BUILD] $name from $sha"
+  mkdir -p "build/$name/src/build"
+  git -C "$CANON" archive "$sha" | tar -x -C "build/$name/src" || { echo "[BUILD] archive FAILED $sha"; return 1; }
+  ( cd "build/$name/src/build" \
+    && "$APT" exec --bind /data:/data "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
+    && "$APT" exec --bind /data:/data "$SIF" make -j"$P" MeshPreprocessingHeadless \
+  ) > "logs/build-$name.log" 2>&1
+  rc=$?
+  if [ "$rc" -eq 0 ] && [ -x "build/$name/src/build/MeshPreprocessingHeadless" ]; then
+    cp -f "build/$name/src/build/MeshPreprocessingHeadless" "out/bin-$name"
+    echo "[BUILD] $name ok $(stat -c %s "out/bin-$name") bytes"
+    return 0
+  fi
+  echo "[BUILD] $name FAILED rc=$rc -- tail of logs/build-$name.log:"
+  tail -25 "logs/build-$name.log"
+  return 1
+}
+
+arms_env() {
+  case "$1" in
+    F003) echo "SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.03" ;;
+    F002) echo "SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.02" ;;
+    F001) echo "SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.01" ;;
+    F003S) echo "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.03" ;;
+    F002S) echo "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.02" ;;
+    F001S) echo "SFS_SINGLE_CLUSTER=write SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=0.01" ;;
+    *) echo "" ;;
+  esac
+}
+
+run_e_one() {
+  local line="$1" tag piece
+  [ -n "${line:-}" ] || return 0
+  read -r tag piece <<< "$line"
+  POT=Juglet
+  PIECE=$piece
+  TAG=$tag
+  ENVS=$(arms_env "$tag")
+  AXIS=$BOOT/${piece}_boot_Axis.xyz
+  BIN=$RUN/build/new/src/build/MeshPreprocessingHeadless
+  STAGER=$INSTR/stage_piece_p23.sh
+  COMMIT=$NEW
+  CELLROOT=$ECELLS
+  export POT PIECE TAG ENVS AXIS BIN STAGER COMMIT CELLROOT
+  bash "$INSTR/run_cell23.sh" "$tag"
+}
+export -f build_arm arms_env run_e_one
+
+echo "[JOB] part E: build the pipeline from $NEW inside $SIF"
+if build_arm new "$NEW"; then
+  out/bin-new --help > logs/binary-help.log 2>&1 || true
+  : > "$OUT/ecells.list"
+  for ep in $EPIECES; do for et in $ETAGS; do echo "$et $ep" >> "$OUT/ecells.list"; done; done
+  printf "tag\tpot\tpiece\tenvs\tmesh_exit\telapsed_s\tnpts\tretries\tclusters\tsizes\toutcome\tfloor\tfloor_from\tcapped\tsurf0\tsurf1\tsurf0_points\tsurf1_points\tswitch\tfloor_line\tsingle\tstatus\tspacing\tcount\twarn_missing\tsurf0_bytes\n" > "$ECELLS/cells23.tsv"
+  printf "cell\text\tcount\tbytes\n" > "$ECELLS/geometry_counts.tsv"
+  {
+    echo "# ticket 32 part E: the exact pipeline command of every cell"
+    echo "# plain = SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<0.03|0.02|0.01>"
+    echo "# single = the same plus SFS_SINGLE_CLUSTER=write"
+    while read -r t pp; do
+      echo "cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=Juglet SFS_AXIS_FILE=<stage>/Dataset/Axes/$pp"'_Axis.xyz'" SFS_STATUS_FILE=$ECELLS/$t/Juglet/$pp/status_raw.tsv $(arms_env "$t") $RUN/build/new/src/build/MeshPreprocessingHeadless"
+    done < "$OUT/ecells.list"
+  } > "$OUT/commands_e.txt"
+  echo "[JOB] part E cells: $(wc -l < "$OUT/ecells.list")"
+  date -u +"part E start %Y-%m-%dT%H:%M:%SZ"
+  xargs -a "$OUT/ecells.list" -d "\n" -n 1 -P "$P" bash -c 'run_e_one "$1"' _ >> logs/cells_e.log 2>&1
+  RC_E=$?
+  echo "[JOB] part E xargs rc=$RC_E; cells that wrote a cell.tsv: $(ls "$ECELLS"/*/*/*/cell.tsv 2>/dev/null | wc -l) of $(wc -l < "$OUT/ecells.list")"
+  grep -h '^\[CELL\]' logs/cells_e.log 2>/dev/null || true
+  "$PY" "$INSTR/coverage23.py" "$ECELLS" "$ECELLS/coverage23.tsv" > logs/coverage.log 2>&1
+  echo "[JOB] coverage23.py rc=$? :: $(tail -2 logs/coverage.log 2>/dev/null | tr '\n' ' ')"
+  "$PY" "$INSTR/partE32.py" --cells "$ECELLS" --dataset "$DS" --out "$OUT/partE32.tsv" > logs/parte.log 2>&1
+  echo "[JOB] partE32.py rc=$? :: $(tail -3 logs/parte.log 2>/dev/null | tr '\n' ' ')"
+  if [ -s "$OUT/partE32.tsv" ]; then
+    echo "[JOB] part E table: $(( $(wc -l < "$OUT/partE32.tsv") - 1 )) rows"
+    head -2 "$OUT/partE32.tsv"
+  else
+    echo "part E wrote no table; see logs/parte.log, logs/cells_e.log and logs/coverage.log" > "$OUT/PART-E-FAILED.txt"
+  fi
+else
+  echo "the pipeline did not build from $NEW; see logs/build-new.log" > "$OUT/PART-E-FAILED.txt"
+fi
+
+{
+  echo "# ticket 32 part E -- the build tree, recorded BEFORE the delete."
+  echo "# The binary itself is kept at out/bin-new ($([ -f "$RUN/out/bin-new" ] && stat -c %s "$RUN/out/bin-new" || echo 0) bytes);"
+  echo "# everything below is reproducible from the corpus and the commit by out/commands_e.txt."
+  echo -e "key\text\tfiles\tbytes"
+  "$PY" - "$RUN" <<'PYEOF'
+import os, sys
+from collections import defaultdict
+run = sys.argv[1]
+rows = []
+for root, _d, fs in os.walk(os.path.join(run, "build")):
+    for f in fs:
+        p = os.path.join(root, f)
+        try:
+            n = os.path.getsize(p)
+        except OSError:
+            continue
+        rows.append((os.path.relpath(p, run), os.path.splitext(f)[1].lower(), n))
+rows.sort()
+c = defaultdict(int)
+b = defaultdict(int)
+for rel, ext, n in rows:
+    c[ext or "none"] += 1
+    b[ext or "none"] += n
+for ext in sorted(c):
+    print("ext\t%s\t%d\t%d" % (ext, c[ext], b[ext]))
+print("#")
+print("total\tall\t%d\t%d" % (len(rows), sum(b.values())))
+if len(rows) <= 4000:
+    for rel, ext, n in rows:
+        print("file\t%s\t%s\t%d" % (rel, ext or "none", n))
+else:
+    print("# per-file list omitted: %d files, the per-extension totals above are complete" % len(rows))
+PYEOF
+  echo "#"
+  echo "# KEPT from part E: out/partE32.tsv, out/ecells/cells23.tsv, out/ecells/geometry_counts.tsv,"
+  echo "# out/ecells/coverage23.tsv, out/ecells/<tag>/Juglet/<piece>/ (cell.tsv, logs/, surfaces/),"
+  echo "# out/commands_e.txt, out/ecells.list, out/bin-new, logs/{build-new.log,cells_e.log,coverage.log,parte.log}"
+} > "$OUT/GEOMETRY_DELETED_BUILD.txt" 2>&1
+head -10 "$OUT/GEOMETRY_DELETED_BUILD.txt"
+E_BYTES=$(du -sb "$RUN/build" 2>/dev/null | cut -f1)
+E_FILES=$(find "$RUN/build" -type f 2>/dev/null | wc -l)
+rm -rf "$RUN/build"
+find "$ECELLS" -type d -name stage -prune -exec rm -rf {} + 2>/dev/null || true
+if [ -d "$RUN/build" ]; then E_AFTER=present; else E_AFTER=gone; fi
+{
+  echo "#"
+  echo "# deleted at $(date -u +%Y-%m-%dT%H:%M:%SZ): $E_FILES files, $E_BYTES bytes (the build tree; each cell's stage dir was deleted by run_cell23.sh and counted in ecells/geometry_counts.tsv)"
+  echo "# after the delete: $(find "$RUN/build" -type f 2>/dev/null | wc -l) files remain, build/ is $E_AFTER"
+} >> "$OUT/GEOMETRY_DELETED_BUILD.txt"
+tail -3 "$OUT/GEOMETRY_DELETED_BUILD.txt"
+echo "[JOB] part E build deleted: $E_FILES files, $E_BYTES bytes"
+
+echo "[JOB] phase A: size, mesh area and the two vessel extents ($(wc -l < "$OUT/list_a.txt") cells)"
+date -u +"cells_a start %Y-%m-%dT%H:%M:%SZ"
+xargs -a "$OUT/list_a.txt" -d "\n" -n 1 -P "$P" bash -c 'run_one "$@"' _ >> logs/cells.log 2>&1
+RC_A=$?
+echo "[JOB] phase A xargs rc=$RC_A"
+missing_cells "$OUT/list_a.txt" > "$OUT/cells_missing_a.txt"
+echo "[JOB] cells written: $(ls "$OUT"/cells/*.json 2>/dev/null | wc -l); missing: $(wc -l < "$OUT/cells_missing_a.txt")"
+cat "$OUT/cells_missing_a.txt"
+echo "[JOB] subsampled clouds: $(ls "$OUT"/geom/pa025/*.npz 2>/dev/null | wc -l) of 8"
+date -u +"cells_a end %Y-%m-%dT%H:%M:%SZ"
+
+echo "[JOB] phase B+D: windows and growth ($(wc -l < "$OUT/list_bd.txt") cells)"
+date -u +"cells_bd start %Y-%m-%dT%H:%M:%SZ"
+xargs -a "$OUT/list_bd.txt" -d "\n" -n 1 -P "$P" bash -c 'run_one "$@"' _ >> logs/cells.log 2>&1
+RC_BD=$?
+echo "[JOB] phase B+D xargs rc=$RC_BD"
+missing_cells "$OUT/list_bd.txt" > "$OUT/cells_missing_bd.txt"
+echo "[JOB] phase B+D missing: $(wc -l < "$OUT/cells_missing_bd.txt")"
+cat "$OUT/cells_missing_bd.txt"
+echo "[JOB] cells present in total: $(ls "$OUT"/cells/*.json 2>/dev/null | wc -l)"
+date -u +"cells_bd end %Y-%m-%dT%H:%M:%SZ"
+
+echo "[JOB] tables"
+"$PY" "$INSTR/table32.py" --outdir "$OUT" 2>&1 | tee logs/table.log
+TBL_RC=${PIPESTATUS[0]}
+[ "$TBL_RC" -eq 0 ] || fail 6 "table32.py rc=$TBL_RC (logs/table.log)"
+
+echo "[JOB] figure"
+"$PY" "$INSTR/figure32.py" --outdir "$OUT" 2>&1 | tee logs/figure.log
+FIG_RC=${PIPESTATUS[0]}
+[ "$FIG_RC" -eq 0 ] || fail 7 "figure32.py rc=$FIG_RC (logs/figure.log)"
+[ -s "$OUT/figure32.png" ] || fail 7 "figure32.png missing or empty"
+
+echo "[JOB] tables and figure written"
+for t in sizes32.tsv windows32.tsv vessel32.tsv derive32.tsv growth32.tsv floorsweep32.tsv anchors32.tsv; do
+  if [ -f "$OUT/$t" ]; then echo "[JOB] $t rows=$(wc -l < "$OUT/$t")"; else echo "[JOB] $t MISSING"; fi
+done
+cat "$OUT/sizes32.tsv"
+cat "$OUT/vessel32.tsv"
+echo "[JOB] floor sweep head"
+head -25 "$OUT/floorsweep32.tsv"
+echo "[JOB] anchors"
+cat "$OUT/anchors32.tsv"
+
+{
+  echo "# ticket 32 -- geometry written by this run, recorded BEFORE the delete."
+  echo "# Everything here is reproducible from the corpus by the command list in out/commands.txt."
+  echo -e "key\text\tfiles\tbytes"
+  "$PY" - "$OUT" <<'PYEOF'
+import os, sys
+from collections import defaultdict
+out = sys.argv[1]
+gd = os.path.join(out, "geom")
+rows = []
+for root, _d, fs in os.walk(gd):
+    for f in fs:
+        p = os.path.join(root, f)
+        rows.append((os.path.relpath(p, out), os.path.splitext(f)[1].lower(),
+                     os.path.getsize(p)))
+rows.sort()
+c = defaultdict(int)
+b = defaultdict(int)
+for rel, ext, n in rows:
+    c[ext or "none"] += 1
+    b[ext or "none"] += n
+for ext in sorted(c):
+    print("ext\t%s\t%d\t%d" % (ext, c[ext], b[ext]))
+print("#")
+print("total\tall\t%d\t%d" % (len(rows), sum(b.values())))
+for rel, ext, n in rows:
+    print("file\t%s\t%s\t%d" % (rel, ext or "none", n))
+PYEOF
+  echo "#"
+  echo "# KEPT: out/sizes32.tsv, out/windows32.tsv, out/vessel32.tsv, out/derive32.tsv,"
+  echo "# out/growth32.tsv, out/floorsweep32.tsv, out/anchors32.tsv, out/cells/*.json,"
+  echo "# out/cells/index.tsv, out/commands.txt, out/list_*.txt, out/inputs_before.md5,"
+  echo "# out/inputs_after.md5, out/corpus_before.txt, out/corpus_after.txt, out/pristine.txt,"
+  echo "# out/figure32.png, logs/ (slurm out/err, cells.log, selftest.log, table.log, figure.log)"
+} > "$OUT/GEOMETRY_DELETED.txt" 2>&1
+head -12 "$OUT/GEOMETRY_DELETED.txt"
+BEFORE_BYTES=$(du -sb "$OUT/geom" 2>/dev/null | cut -f1)
+BEFORE_FILES=$(find "$OUT/geom" -type f 2>/dev/null | wc -l)
+rm -rf "$OUT/geom"
+AFTER_FILES=$(find "$OUT/geom" -type f 2>/dev/null | wc -l)
+if [ -d "$OUT/geom" ]; then AFTER_DIR=present; else AFTER_DIR=gone; fi
+{
+  echo "#"
+  echo "# deleted at $(date -u +%Y-%m-%dT%H:%M:%SZ): $BEFORE_FILES files, $BEFORE_BYTES bytes"
+  echo "# after the delete: $AFTER_FILES files remain, out/geom is $AFTER_DIR"
+} >> "$OUT/GEOMETRY_DELETED.txt"
+tail -4 "$OUT/GEOMETRY_DELETED.txt"
+echo "[JOB] geometry deleted: $BEFORE_FILES files, $BEFORE_BYTES bytes"
+
+hash_inputs "$OUT/inputs_after.md5"
+corpus_tree "$OUT/corpus_after.txt"
+if diff -q "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" 2>&1; then
+  echo "[INPUTS] identical before and after: $(wc -l < "$OUT/inputs_before.md5") rows"
+else
+  echo "[INPUTS] DIFFERS"; cat "$OUT/inputs.diff"
+fi
+if diff -q "$OUT/corpus_before.txt" "$OUT/corpus_after.txt" > "$OUT/corpus.diff" 2>&1; then
+  echo "[CORPUS] identical before and after: $(wc -l < "$OUT/corpus_before.txt") rows incl the pristine line"
+else
+  echo "[CORPUS] DIFFERS"; cat "$OUT/corpus.diff"
+fi
+grep -m1 "opt-sfs-pristine" "$OUT/corpus_after.txt" || true
+
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+echo "[JOB] index row appended:"
+tail -1 "$IDX" | cat -A | head -1
+date -u +"end %Y-%m-%dT%H:%M:%SZ"
+echo "[JOB] DONE rc 0"
