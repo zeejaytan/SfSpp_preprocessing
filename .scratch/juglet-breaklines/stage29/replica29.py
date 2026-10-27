@@ -403,6 +403,7 @@ def main(argv):
             "sidecar_theta=%.2f sidecar_nb=%d sidecar_floor=%d dump_clusters=%s"
             % (cd["cloud"], c["n"], c["curv_k"], c["zero_normals"],
                c["side"].get("paper_chain"), float(c["side"].get("theta", -1)),
+               int(c["side"].get("nb", -1)),
                int(c["side"].get("min_cluster", -1)), joinlist(c["dump_sizes"])))
     write_tsv(os.path.join(out, "preflight.tsv"),
               ["cloud", "r1_r2_xyz_normals_identical", "nbr_sample_rows",
@@ -665,7 +666,7 @@ def draw_figure(a, thetas, clouds, loaded, astats, growth, path):
                         cd["arm"], c["n"], a.nb, st["n_pairs"]), fontsize=7.5)
         ax.tick_params(labelsize=6)
         if first:
-            ax.set_ylabel("% of pairs per %.2f deg bin (log)" % binw, fontsize=6.5)
+            ax.set_ylabel("%% of pairs per %.2f deg bin (log)" % binw, fontsize=6.5)
             y0 = 0.06
             ax.plot([0.60, 0.60 + 10.0 / xmax], [y0, y0],
                     transform=ax.transAxes, color="black", linewidth=2.5,
@@ -702,13 +703,14 @@ def draw_figure(a, thetas, clouds, loaded, astats, growth, path):
     ax_ct.set_xlim(min(thetas), max(thetas))
     ax_ct.grid(alpha=0.25, linewidth=0.5)
     ax_ct.tick_params(labelsize=6)
-    ymax_ct = max(1.0, max(max(growth(cd["cloud"], t)["surviving"]
-                               for t in thetas) for cd in clouds))
-    ax_ct.plot([0.05, 0.05 + 8.0 / (ymax_ct * 1.06)], [0.06, 0.06],
-               transform=ax_ct.transAxes, color="black", linewidth=2.5,
-               clip_on=False)
-    ax_ct.text(0.05 + 4.0 / (ymax_ct * 1.06), 0.095, "8 regions",
-               transform=ax_ct.transAxes, ha="center", fontsize=6.5)
+    ymax_ct = max(1.0, float(POTA_MIN_SURV),
+                  max(max(growth(cd["cloud"], t)["surviving"]
+                          for t in thetas) for cd in clouds))
+    ax_ct.set_ylim(0.0, ymax_ct * 1.06)
+    ax_ct.plot([0.05, 0.35], [0.06, 0.06], transform=ax_ct.transAxes,
+               color="black", linewidth=2.5, clip_on=False)
+    ax_ct.text(0.20, 0.012, "8 regions", transform=ax_ct.transAxes,
+               ha="center", fontsize=6.5)
     handles = [Patch(facecolor=ARM_COLOUR[k], alpha=0.45,
                      edgecolor=ARM_COLOUR[k], label=ARM_LABEL[k])
                for k in ("B", "D", "E", "PA")]
@@ -781,7 +783,7 @@ def write_summary(a, out, thetas, cal_rows, fig_info):
     L.append("")
     L.append("- kappa %.3f, nb %d, floor %d points, thetas %s."
              % (a.kappa, a.nb, a.floor, ", ".join("%.2f" % t for t in thetas)))
-    L.append("- curvature recomputed as :732 does: k = max(10, min(50, npts/300)),")
+    L.append("- curvature recomputed as mesh_processing_headless.cpp:745-747 does: k = max(10, min(50, npts/300)),")
     L.append("  curvature = lambda_min / trace(cov) <= 1/3, so the curvature gate "
              "cannot refuse while kappa = 1.")
     L.append("- part A pair set: each point's nb nearest neighbours, self "

@@ -109,7 +109,7 @@ grep -m1 "opt-sfs-pristine" out/corpus_before.txt || true
 echo "[JOB] corpus files listed before: $(wc -l < out/corpus_before.txt)"
 
 echo "[JOB] PART C first, then A, B, D and the figure"
-"$PY" "$INS/replica29.py" survey \
+"$PY" "$INS/replica29.py" \
   --grid-root "$GRID" --pota-root "$POTA" --outdir "$OUT" --figure "$FIG" \
   --kappa 1.0 --nb 10 --floor 50 \
   --thetas 2.0 3.4 4.0 5.0 6.0 8.0 10.0 12.0 \
