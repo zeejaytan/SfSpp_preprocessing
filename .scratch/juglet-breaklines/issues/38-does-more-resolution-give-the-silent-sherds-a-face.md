@@ -1,6 +1,8 @@
 # 38: Does more resolution give the two silent sherds a face?
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-28)
+**Branch:** 38-does-more-resolution-give-the-silent-sherds-a-face, in /c/PR/worktrees/sfs/38
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** none
