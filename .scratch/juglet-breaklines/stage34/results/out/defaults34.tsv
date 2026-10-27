@@ -1,0 +1,29 @@
+pot	piece	surface	orig_present	new_present	bytes_orig	bytes_new	byte_identical	points_orig	points_new	points_identical	max_abs_diff_mm
+Juglet	Juglet_Piece_1	0	1	1	277928	280882	0	3580	3580	1	0.000000
+Juglet	Juglet_Piece_1	1	1	1	937915	946518	0	12092	12092	1	0.000000
+Juglet	Juglet_Piece_2	0	0	0							
+Juglet	Juglet_Piece_2	1	0	0							
+Juglet	Juglet_Piece_3	0	0	0							
+Juglet	Juglet_Piece_3	1	0	0							
+Juglet	Juglet_Piece_5	0	0	0							
+Juglet	Juglet_Piece_5	1	0	0							
+Juglet	Juglet_Piece_7	0	1	1	81278	80669	0	1012	1012	1	0.000000
+Juglet	Juglet_Piece_7	1	1	1	66604	66038	0	829	829	1	0.000000
+Juglet	Juglet_Piece_9	0	0	0							
+Juglet	Juglet_Piece_9	1	0	0							
+Pot_A	Pot_A_Piece_01	0	1	1	5204967	5136080	0	66760	66764	0	nan
+Pot_A	Pot_A_Piece_01	1	1	1	4360279	4271035	0	57299	57299	1	0.000000
+Pot_A	Pot_A_Piece_02	0	1	1	3205959	3310665	0	42199	42207	0	nan
+Pot_A	Pot_A_Piece_02	1	1	1	3534030	3557502	0	46329	46325	0	nan
+Pot_A	Pot_A_Piece_03	0	1	1	3058995	3059075	0	39774	39775	0	nan
+Pot_A	Pot_A_Piece_03	1	1	1	3314150	3314226	0	43576	43577	0	nan
+Pot_A	Pot_A_Piece_04	0	1	1	2500648	2551566	0	32685	32683	0	nan
+Pot_A	Pot_A_Piece_04	1	1	1	2652612	2622033	0	35789	35789	0	82.766699
+Pot_A	Pot_A_Piece_05	0	1	1	2392621	2391477	0	31576	31575	0	nan
+Pot_A	Pot_A_Piece_05	1	1	1	2651245	2666966	0	34137	34139	0	nan
+Pot_A	Pot_A_Piece_06	0	1	1	1767856	1756023	0	22572	22572	1	0.000000
+Pot_A	Pot_A_Piece_06	1	1	1	1878770	1889801	0	24919	24919	0	67.108398
+Pot_A	Pot_A_Piece_07	0	1	1	457858	457858	0	6066	6066	1	0.000000
+Pot_A	Pot_A_Piece_07	1	1	1	505815	505815	0	6437	6437	1	0.000000
+Pot_A	Pot_A_Piece_08	0	1	1	405558	434728	0	5528	5528	1	0.000000
+Pot_A	Pot_A_Piece_08	1	1	1	425746	458396	0	6097	6097	1	0.000000

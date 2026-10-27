@@ -1,0 +1,1 @@
+rule=PCL-REGION-GROWING smoothDeg=4.50000 curv=1.50000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10 normalSource=reestimate normalSourceSet=no minPairs=3

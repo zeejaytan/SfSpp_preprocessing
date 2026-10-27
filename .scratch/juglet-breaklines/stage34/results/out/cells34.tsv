@@ -1,0 +1,71 @@
+tag	pot	piece	envs	frac	mesh_exit	meas_exit	elapsed_s	npts	retries	clusters_pre_merge	clusters_post_merge	sizes_post_merge	outcome	floor	floor_from	capped	surf0	surf1	surf0_points	surf1_points	surf0_bytes	kept
+A2	Juglet	Juglet_Piece_1	none	none	0	0	12	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	266112	no
+A2	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_5	none	none	0	0	2	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_7	none	none	0	0	4	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	81278	no
+A2	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Pot_A	Pot_A_Piece_01	none	none	0	0	60	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66762	57281	5137137	no
+A2	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42207	46325	3310665	no
+A2	Pot_A	Pot_A_Piece_03	none	none	0	0	17	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39772	43577	3039462	no
+A2	Pot_A	Pot_A_Piece_04	none	none	0	0	13	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32683	35789	2568317	no
+A2	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31578	34140	2391707	no
+A2	Pot_A	Pot_A_Piece_06	none	none	0	0	10	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22574	24919	1778749	no
+A2	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+A2	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+A	Juglet	Juglet_Piece_1	none	none	0	0	13	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	280882	no
+A	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_7	none	none	0	0	3	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	80669	no
+A	Juglet	Juglet_Piece_9	none	none	0	0	3	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_1	none	none	0	0	12	14546	1	22	18	626,3489,429,411,349,284,228,143,106,103,86,84,81,80,58,57,53,50	two	50	50	no	yes	yes	3580	12092	277928	no
+AO	Juglet	Juglet_Piece_2	none	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_7	none	none	0	0	3	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	81278	no
+AO	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Pot_A	Pot_A_Piece_01	none	none	0	0	58	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66760	57299	5204967	no
+AO	Pot_A	Pot_A_Piece_02	none	none	0	0	18	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42199	46329	3205959	no
+AO	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39774	43576	3058995	no
+AO	Pot_A	Pot_A_Piece_04	none	none	0	0	12	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32685	35789	2500648	no
+AO	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31576	34137	2392621	no
+AO	Pot_A	Pot_A_Piece_06	none	none	0	0	9	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22572	24919	1767856	no
+AO	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+AO	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	405558	no
+A	Pot_A	Pot_A_Piece_01	none	none	0	0	61	85136	1	12	11	32775,27551,3803,3375,900,815,730,570,379,285,173	two	170	170	no	yes	yes	66764	57299	5136080	no
+A	Pot_A	Pot_A_Piece_02	none	none	0	0	19	49528	1	5	3	20628,22543,1183	two	99	99	no	yes	yes	42207	46325	3310665	no
+A	Pot_A	Pot_A_Piece_03	none	none	0	0	16	46784	1	5	4	19382,21172,929,156	two	93	93	no	yes	yes	39775	43577	3059075	no
+A	Pot_A	Pot_A_Piece_04	none	none	0	0	12	38901	1	5	5	15932,17374,770,164,124	two	77	77	no	yes	yes	32683	35789	2551566	no
+A	Pot_A	Pot_A_Piece_05	none	none	0	0	12	38074	1	5	5	15256,16570,588,304,281	two	76	76	no	yes	yes	31575	34139	2391477	no
+A	Pot_A	Pot_A_Piece_06	none	none	0	0	10	27944	1	6	6	10739,11984,195,140,117,76	two	55	55	no	yes	yes	22572	24919	1756023	no
+A	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	457858	no
+A	Pot_A	Pot_A_Piece_08	none	none	0	0	2	7682	1	5	4	2611,2832,284,265	two	50	50	no	yes	yes	5528	6097	434728	no
+B	Juglet	Juglet_Piece_1	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	16	14546	1	18	15	354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50	two	50	50	no	yes	yes	1422	8147	110313	no
+B	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	1	1467	1	1	1	316	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	3021	1	2	2	65,652	two	50	50	no	yes	yes	250	1620	20401	no
+B	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	4254	1	9	5	295,445,225,73,71	two	50	50	no	yes	yes	1049	1197	83156	no
+B	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	57	85136	1	11	11	32206,28179,3743,3401,891,757,486,336,304,291,240	two	170	170	no	yes	yes	66262	58058	5199373	no
+B	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	16	49528	1	7	6	20705,22696,686,385,245,184	two	99	99	no	yes	yes	42260	46490	3293964	no
+B	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	15	46784	1	5	5	19526,21518,916,135,128	two	93	93	no	yes	yes	39988	43937	3074786	no
+B	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	11	38901	1	11	8	16283,17794,510,303,235,197,174,98	two	77	77	no	yes	yes	33062	36297	2532290	no
+B	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	11	38074	1	7	6	15594,17028,713,462,429,129	two	76	76	no	yes	yes	32003	34637	2375045	no
+B	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	7	27944	1	9	7	11196,12418,393,316,219,104,62	two	55	55	no	yes	yes	23120	25465	1821326	no
+B	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	3	8598	1	7	7	2961,3185,312,244,143,125,67	two	50	50	no	yes	yes	6215	6557	471931	no
+B	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest	none	0	0	2	7682	1	7	5	2649,2969,271,265,50	two	50	50	no	yes	yes	5577	6251	438650	no
+C	Juglet	Juglet_Piece_1	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	16	14546	1	18	15	354,3340,228,172,158,154,146,136,131,106,88,76,66,58,50	two	50	50	no	yes	yes	1422	8147	109245	no
+C	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	5	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+C	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	2	1467	1	1	1	316	one	50	50	no	yes	no	797	-1	63538	no
+C	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	2	3021	1	2	2	65,652	two	50	50	no	yes	yes	250	1620	19846	no
+C	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	4254	1	9	5	295,445,225,73,71	two	50	50	no	yes	yes	1049	1197	83156	no
+C	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+C	Pot_A	Pot_A_Piece_01	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	52	85136	1	11	11	32206,28179,3743,3401,891,757,486,336,304,291,240	two	170	170	no	yes	yes	66262	58058	5199373	no
+C	Pot_A	Pot_A_Piece_02	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	16	49528	1	7	6	20705,22696,686,385,245,184	two	99	99	no	yes	yes	42260	46490	3293964	no
+C	Pot_A	Pot_A_Piece_03	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	15	46784	1	5	5	19526,21518,916,135,128	two	93	93	no	yes	yes	39988	43938	2993871	no
+C	Pot_A	Pot_A_Piece_04	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	11	38901	1	11	8	16283,17794,510,303,235,197,174,98	two	77	77	no	yes	yes	33060	36297	2580993	no
+C	Pot_A	Pot_A_Piece_05	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	11	38074	1	7	6	15594,17028,713,462,429,129	two	76	76	no	yes	yes	32003	34637	2424272	no
+C	Pot_A	Pot_A_Piece_06	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	8	27944	1	9	7	11196,12418,393,316,219,104,62	two	55	55	no	yes	yes	23119	25465	1765273	no
+C	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	8598	1	7	7	2961,3185,312,244,143,125,67	two	50	50	no	yes	yes	6215	6557	468677	no
+C	Pot_A	Pot_A_Piece_08	SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write	none	0	0	3	7682	1	7	5	2649,2969,271,265,50	two	50	50	no	yes	yes	5577	6251	438650	no

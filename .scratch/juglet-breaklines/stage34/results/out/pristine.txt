@@ -1,0 +1,4 @@
+# /opt/sfs-pristine, recorded from the compute node
+status ABSENT
+ls: cannot access '/opt/sfs-pristine': No such file or directory
+stat: cannot statx '/opt/sfs-pristine': No such file or directory
