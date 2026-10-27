@@ -1,0 +1,17 @@
+pot	piece	surface	ref	npts_new	npts_ref	md5_equal	med_mm_new_to_ref	max_mm_new_to_ref	med_mm_ref_to_new	max_mm_ref_to_new
+Juglet	Juglet_Piece_1	0	A_old	3580	3580	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_1	0	A2	3580	3580	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_1	1	A_old	12092	12092	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_1	1	A2	12092	12092	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_4	0	A_old	182	182	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_4	0	A2	182	182	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_4	1	A_old	732	732	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_4	1	A2	732	732	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_6	0	A_old	608	608	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_6	0	A2	608	608	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_6	1	A_old	1016	1016	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_6	1	A2	1016	1016	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_7	0	A_old	1012	1012	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_7	0	A2	1012	1012	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_7	1	A_old	829	829	no	0.000000	0.000000	0.000000	0.000000
+Juglet	Juglet_Piece_7	1	A2	829	829	no	0.000000	0.000000	0.000000	0.000000
