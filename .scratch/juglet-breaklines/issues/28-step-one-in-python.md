@@ -2,7 +2,9 @@
 
 **Answers:** U19 (vessel level), E1 (preprocessing half)
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-27)
+**Branch:** 28-step-one-in-python, in /c/PR/worktrees/sfs/28
 
 Piece 2 is the plainest failure on the vessel: 1 031 points go into the region growing and **every region it
 grows is discarded** — the rung-2 sidecar reads `"clusters": []`, `points_in_no_cluster: 1031`, with the
