@@ -1,6 +1,6 @@
 # 36: The adaptive spacing without the count scaling, on the honest normals
 
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 36-adaptive-spacing-with-the-honest-normals, in /c/PR/worktrees/sfs/36
 **Answers:** U19, E1
