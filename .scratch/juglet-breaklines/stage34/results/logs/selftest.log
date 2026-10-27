@@ -1,0 +1,14 @@
+[SELFTEST] ok   pcd/binary normals-first [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [-7.0, 8.0, -9.0]]
+[SELFTEST] ok   pcd/ascii x-first 
+[SELFTEST] ok   ply/ascii 
+[SELFTEST] ok   fold/30deg 30.000000
+[SELFTEST] ok   coverage/2mm 
+[SELFTEST] ok   pairs/along along=4.000 across=0.000
+[SELFTEST] ok   pairs/coincidence coin=1.000
+[SELFTEST] ok   replay/merge gates=['merge'] final=1 pairs=16
+[SELFTEST] ok   replay/min_pairs gate=min_pairs pairs=0
+[SELFTEST] ok   replay/min_pairs_2 
+[SELFTEST] ok   replay/rhoN gate=rhoN
+[SELFTEST] ok   obj/triangle [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
+[SELFTEST] ok   pca/flat max curv=0
+[SELFTEST] PASS (0 failures) tmp=/tmp/m34-mu5bbf49

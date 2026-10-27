@@ -1,0 +1,4 @@
+[SELFTEST] ok   identical file md5_equal=1 sorted_identical=1
+[SELFTEST] ok   one coordinate moved 0.5: sorted_identical=0 max_abs_diff=0.500
+[SELFTEST] ok   two rows swapped: sorted_identical=1 md5_equal=0
+[SELFTEST] PASS
