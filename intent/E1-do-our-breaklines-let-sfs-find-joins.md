@@ -2346,3 +2346,28 @@ clouds, piece 3's single surface and Pot A 07 as controls — because any new cr
 turning per step rather than on a constant. Separately, whether piece 3's single surface is one wall or a
 median surface between the two (a 3 mm admission radius on a 2.45 mm wall cannot tell them apart).
 
+## 2026-10-27 — the sampling step is adaptive now, and two sherds are silent for another reason (ticket 36)
+
+The conservator has asked since the start for the fixed 0.6 mm sampling step to be adaptive: on a sherd
+23-63 mm across it leaves too few points to mean anything. The switch was built in ticket 22 and then left off,
+so every arm from 24 to 34 ran at the literal 0.6 mm — which means the "27-51 deg per step" arithmetic that
+closed the normals route was arithmetic at a step that discards two thirds of the samples on the two smallest
+sherds.
+
+Run with unscaled counts and the scan's own normals, the adaptive rule resolves to each sherd's **native**
+spacing (0.203-0.338 mm) and more than doubles the points entering clustering: Juglet 2 1031 -> 2397,
+Juglet 9 787 -> 1971, Juglet 1 14546 -> 23077. **Sherds 2 and 9 still return zero regions at 21 retries in all
+five arms**, floor 50 unchanged. Sparsity is refused as the cause of their silence.
+
+Adaptive spacing is otherwise safe and better: Pot A stays **8 of 8** two-surface with pairs 3.55-7.08 mm along /
+0.13-0.27 across / coincidence 0.0000 (three of its pieces get a finer step and better pairs), the Juglet's
+existing surfaces grow, and the fold-to-mesh of the honest normals falls to 0.41-1.59 deg. The one regression is
+piece 1's pair collapsing to coincident (along 0.000 / across 0.000 / coincidence 0.531) - the ticket-27
+de-duplication defect showing harder at a finer spacing.
+
+For the breakline question this changes nothing directly: a sherd with no surface has no edge line to walk.
+
+Weight: none on the 281/292 tally.
+
+Next: what the two silent sherds actually are, measured on their meshes (ticket 35), and then the angle the
+slide needs at native spacing — where a 1 mm fold radius turns ~12 deg per 0.21 mm step against a 3.4 deg gate.
