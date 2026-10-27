@@ -970,12 +970,12 @@ def main():
                   "weld_tol_mm", "f", "e", "euler_chi", "boundary_edges", "nonmanifold_edges",
                   "boundary_loops", "watertight", "components", "area_mm2", "bbox_pc_x",
                   "bbox_pc_y", "bbox_pc_z"],
-     "boundary_loops": ["piece_key", "loop", "n_edges", "length_mm", "closed", "start_xyz"],
-     "turning_mesh": ["piece_key", "piece", "radius_mm", "n_vertices", "sampled", "n_pairs",
+     "loops": ["piece_key", "loop", "n_edges", "length_mm", "closed", "start_xyz"],
+     "turn_mesh": ["piece_key", "piece", "radius_mm", "n_vertices", "sampled", "n_pairs",
                       "pair_med_deg", "pair_p90_deg", "pair_max_deg", "frac_pairs_gt_3p4",
                       "vert_max_med_deg", "vert_max_p90_deg", "vert_max_max_deg",
                       "frac_verts_gt_3p4", "n_verts_gt_3p4"],
-     "turning_cloud_growth": ["piece_key", "piece", "cloud_pts", "normals", "curvature",
+     "growth": ["piece_key", "piece", "cloud_pts", "normals", "curvature",
                               "k_nn", "theta_deg", "kappa", "nb", "n_edges", "edge_med_deg",
                               "edge_p90_deg", "edge_max_deg", "greedy_n_regions",
                               "greedy_largest", "greedy_top6", "comp_n_components",
@@ -990,9 +990,11 @@ def main():
      "figures": ["piece", "view", "path", "bytes", "width_px", "height_px", "mm_per_px",
                  "scale_bar_mm", "scale_bar_px", "extent_pc1_pc2_pc3_mm"],
     }
+    FILES = {"loops": "boundary_loops", "turn_mesh": "turning_mesh",
+             "growth": "turning_cloud_growth"}
     def dump():
         for tname, cols in COLS.items():
-            with open(os.path.join(tables, tname + ".tsv"), "w") as f:
+            with open(os.path.join(tables, FILES.get(tname, tname) + ".tsv"), "w") as f:
                 f.write(tsv(cols, allT[tname]))
         with open(os.path.join(args.out, "state.json"), "w") as f:
             json.dump(allT, f, indent=1)
