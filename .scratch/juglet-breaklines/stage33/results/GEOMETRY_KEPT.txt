@@ -1,0 +1,2 @@
+# cells whose stage and rung dump were NOT deleted because the measurement failed
+# count 0

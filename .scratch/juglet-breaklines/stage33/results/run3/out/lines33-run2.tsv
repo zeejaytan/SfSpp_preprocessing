@@ -1,0 +1,459 @@
+arm	pot	piece	kind	line
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_2	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+A	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+A	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=3021 clusters_pre=1 clusters=1 sizes=679 minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_5	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=679 npts=3021 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=679 floor=50 from=50 singleCluster=off
+A	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_7	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+A	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+A	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_2	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+A2	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+A2	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=3021 clusters_pre=1 clusters=1 sizes=679 minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_5	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=679 npts=3021 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=679 floor=50 from=50 singleCluster=off
+A2	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_7	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+A2	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+A2	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+A2	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_2	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+AO	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=268 minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=268 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=268 floor=50 from=50 singleCluster=off
+AO	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=3021 clusters_pre=1 clusters=1 sizes=679 minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_5	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=679 npts=3021 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=679 floor=50 from=50 singleCluster=off
+AO	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=5 clusters=4 sizes=403,263,68,65 minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_7	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=4 sizes=403,263,68,65 npts=4254 floor=50 floor_from=50 capped=no surf0_points=1012 surf1_points=829 reason=two surfaces written
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+AO	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+AO	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=8 clusters=7 sizes=2850,3093,203,191,170,144,73 minCluster=50 minClusterFrom=50
+AO	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2850,3093,203,191,170,144,73 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6066 surf1_points=6437 reason=two surfaces written
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_2 source_cloud=Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd source_n=2565
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=0 source=input npts=1031 carried=1031 nearest=0 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=2565
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=1 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=2 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=2 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=3 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=3 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=4 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=4 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=5 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=5 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=6 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=6 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=7 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=7 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=8 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=8 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=9 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=9 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=10 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=10 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=11 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=11 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=12 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=12 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=13 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=13 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=14 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=14 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=15 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=15 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=16 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=16 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=17 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=17 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=18 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=18 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=19 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=19 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=20 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=20 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=21 source=input npts=1031 carried=0 nearest=1031 missing=0 median_dev_to_pca_deg=7.73226 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1031
+B	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=21 npts=1031 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_2	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_2 outcome=none retries=21 clusters=0 sizes=none npts=1031 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+B	Juglet	Juglet_Piece_3	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_3 source_cloud=Dataset/Point/Juglet/Juglet_Piece_3_Point.pcd source_n=3493
+B	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=0 source=input npts=1467 carried=1467 nearest=0 missing=0 median_dev_to_pca_deg=5.73999 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=3493
+B	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=1 source=input npts=1467 carried=0 nearest=1467 missing=0 median_dev_to_pca_deg=5.73999 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1467
+B	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=1467 clusters_pre=2 clusters=1 sizes=275 minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=275 npts=1467 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=275 floor=50 from=50 singleCluster=off
+B	Juglet	Juglet_Piece_5	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_5 source_cloud=Dataset/Point/Juglet/Juglet_Piece_5_Point.pcd source_n=6211
+B	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=0 source=input npts=3021 carried=3021 nearest=0 missing=0 median_dev_to_pca_deg=4.03482 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=6211
+B	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=1 source=input npts=3021 carried=0 nearest=3021 missing=0 median_dev_to_pca_deg=4.03482 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=3021
+B	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=3021 clusters_pre=2 clusters=2 sizes=82,659 minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_5	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_5 outcome=two retries=1 clusters=2 sizes=82,659 npts=3021 floor=50 floor_from=50 capped=no surf0_points=235 surf1_points=1559 reason=two surfaces written
+B	Juglet	Juglet_Piece_7	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_7 source_cloud=Dataset/Point/Juglet/Juglet_Piece_7_Point.pcd source_n=8421
+B	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=0 source=input npts=4254 carried=4254 nearest=0 missing=0 median_dev_to_pca_deg=3.58219 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=8421
+B	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=1 source=input npts=4254 carried=0 nearest=4254 missing=0 median_dev_to_pca_deg=3.58219 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=4254
+B	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=4254 clusters_pre=6 clusters=3 sizes=80,912,56 minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_7	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_7 outcome=two retries=1 clusters=3 sizes=80,912,56 npts=4254 floor=50 floor_from=50 capped=no surf0_points=295 surf1_points=2552 reason=two surfaces written
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_9 source_cloud=Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd source_n=2094
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=0 source=input npts=787 carried=787 nearest=0 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=2094
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=1 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=2 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=3 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=4 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=5 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=6 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=7 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=8 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=9 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=10 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=11 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=12 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=13 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=14 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=15 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=16 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=17 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=18 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=19 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=20 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=21 source=input npts=787 carried=0 nearest=787 missing=0 median_dev_to_pca_deg=7.64315 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=787
+B	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=787 clusters_pre=0 clusters=0 sizes=none minCluster=50 minClusterFrom=50
+B	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=787 floor=50 floor_from=50 capped=no surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=50 from=50 singleCluster=off
+B	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[0;m[NORMAL-33] piece=Pot_A_Piece_07 source_cloud=Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd source_n=1000000
+B	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=0 source=input npts=8598 carried=8598 nearest=0 missing=0 median_dev_to_pca_deg=0.46406 missing_fill=pca mst=not_applied carry_radius_mm=0.60000 source_n=1000000
+B	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=1 source=input npts=8598 carried=0 nearest=8598 missing=0 median_dev_to_pca_deg=0.46406 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=8598
+B	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=8598 clusters_pre=7 clusters=7 sizes=2867,3137,225,212,199,133,75 minCluster=50 minClusterFrom=50
+B	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=7 sizes=2867,3137,225,212,199,133,75 npts=8598 floor=50 floor_from=50 capped=no surf0_points=6091 surf1_points=6487 reason=two surfaces written
+C	Juglet	Juglet_Piece_2	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_2 source_cloud=Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd source_n=2565
+C	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=0 source=input npts=2399 carried=2399 nearest=0 missing=0 median_dev_to_pca_deg=5.87539 missing_fill=pca mst=not_applied carry_radius_mm=0.21090 source_n=2565
+C	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=1 source=input npts=2399 carried=0 nearest=2399 missing=0 median_dev_to_pca_deg=5.87539 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=2399
+C	Juglet	Juglet_Piece_2	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_2 npts=2399 frac=0.01500 cap=36 minCluster=36 from=405 clamped=yes
+C	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=2399 clusters_pre=2 clusters=2 sizes=43,39 minCluster=36 minClusterFrom=405
+C	Juglet	Juglet_Piece_2	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_2 outcome=two retries=1 clusters=2 sizes=43,39 npts=2399 floor=36 floor_from=405 capped=yes surf0_points=226 surf1_points=203 reason=two surfaces written
+C	Juglet	Juglet_Piece_3	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_3 source_cloud=Dataset/Point/Juglet/Juglet_Piece_3_Point.pcd source_n=3493
+C	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=0 source=input npts=3253 carried=3253 nearest=0 missing=0 median_dev_to_pca_deg=5.21400 missing_fill=pca mst=not_applied carry_radius_mm=0.21528 source_n=3493
+C	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=1 source=input npts=3253 carried=0 nearest=3253 missing=0 median_dev_to_pca_deg=5.21400 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=3253
+C	Juglet	Juglet_Piece_3	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_3 npts=3253 frac=0.02000 cap=65 minCluster=65 from=388 clamped=yes
+C	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=3253 clusters_pre=1 clusters=1 sizes=352 minCluster=65 minClusterFrom=388
+C	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=352 npts=3253 floor=65 floor_from=388 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=352 floor=65 from=388 singleCluster=off
+C	Juglet	Juglet_Piece_5	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_5 source_cloud=Dataset/Point/Juglet/Juglet_Piece_5_Point.pcd source_n=6211
+C	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=0 source=input npts=5668 carried=5668 nearest=0 missing=0 median_dev_to_pca_deg=3.93776 missing_fill=pca mst=not_applied carry_radius_mm=0.23857 source_n=6211
+C	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=1 source=input npts=5668 carried=0 nearest=5668 missing=0 median_dev_to_pca_deg=3.93776 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=5668
+C	Juglet	Juglet_Piece_5	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_5 npts=5668 frac=0.02000 cap=113 minCluster=113 from=316 clamped=yes
+C	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=5668 clusters_pre=1 clusters=1 sizes=699 minCluster=113 minClusterFrom=316
+C	Juglet	Juglet_Piece_5	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=699 npts=5668 floor=113 floor_from=316 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=699 floor=113 from=316 singleCluster=off
+C	Juglet	Juglet_Piece_7	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_7 source_cloud=Dataset/Point/Juglet/Juglet_Piece_7_Point.pcd source_n=8421
+C	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=0 source=input npts=7471 carried=7471 nearest=0 missing=0 median_dev_to_pca_deg=3.17650 missing_fill=pca mst=not_applied carry_radius_mm=0.25799 source_n=8421
+C	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=1 source=input npts=7471 carried=0 nearest=7471 missing=0 median_dev_to_pca_deg=3.17650 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=7471
+C	Juglet	Juglet_Piece_7	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_7 npts=7471 frac=0.02000 cap=149 minCluster=149 from=270 clamped=yes
+C	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=7471 clusters_pre=1 clusters=1 sizes=1004 minCluster=149 minClusterFrom=270
+C	Juglet	Juglet_Piece_7	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_7 outcome=none retries=1 clusters=1 sizes=1004 npts=7471 floor=149 floor_from=270 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=1004 floor=149 from=270 singleCluster=off
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_9 source_cloud=Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd source_n=2094
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=0 source=input npts=1972 carried=1972 nearest=0 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.20346 source_n=2094
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=1 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=2 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=3 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=4 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=5 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=6 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=7 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=8 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=9 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=10 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=11 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=12 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=13 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=14 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=15 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=16 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=17 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=18 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=19 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=20 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=21 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+C	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+C	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+C	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=1972 floor=39 floor_from=435 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=39 from=435 singleCluster=off
+C	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[0;m[NORMAL-33] piece=Pot_A_Piece_07 source_cloud=Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd source_n=1000000
+C	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=0 source=input npts=34608 carried=34608 nearest=0 missing=0 median_dev_to_pca_deg=0.40511 missing_fill=pca mst=not_applied carry_radius_mm=0.29288 source_n=1000000
+C	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=1 source=input npts=34608 carried=0 nearest=34608 missing=0 median_dev_to_pca_deg=0.40510 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=34608
+C	Pot_A	Pot_A_Piece_07	[FLOOR-23]	[FLOOR-23] piece=Pot_A_Piece_07 npts=34608 frac=0.02000 cap=692 minCluster=210 from=210 clamped=no
+C	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=5 sizes=11952,13093,2849,1322,1061 minCluster=210 minClusterFrom=210
+C	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=5 sizes=11952,13093,2849,1322,1061 npts=34608 floor=210 floor_from=210 capped=no surf0_points=24777 surf1_points=26968 reason=two surfaces written
+D	Juglet	Juglet_Piece_2	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_2 source_cloud=Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd source_n=2565
+D	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=0 source=input npts=2399 carried=2399 nearest=0 missing=0 median_dev_to_pca_deg=5.87539 missing_fill=pca mst=not_applied carry_radius_mm=0.21090 source_n=2565
+D	Juglet	Juglet_Piece_2	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_2 call=1 source=input npts=2399 carried=0 nearest=2399 missing=0 median_dev_to_pca_deg=5.87539 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=2399
+D	Juglet	Juglet_Piece_2	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_2 npts=2399 frac=0.01500 cap=36 minCluster=36 from=405 clamped=yes
+D	Juglet	Juglet_Piece_2	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=2399 clusters_pre=2 clusters=2 sizes=43,39 minCluster=36 minClusterFrom=405
+D	Juglet	Juglet_Piece_2	[STATUS-23]	[0;m[STATUS-23] piece=Juglet_Piece_2 outcome=two retries=1 clusters=2 sizes=43,39 npts=2399 floor=36 floor_from=405 capped=yes surf0_points=226 surf1_points=203 reason=two surfaces written
+D	Juglet	Juglet_Piece_3	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_3 source_cloud=Dataset/Point/Juglet/Juglet_Piece_3_Point.pcd source_n=3493
+D	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=0 source=input npts=3253 carried=3253 nearest=0 missing=0 median_dev_to_pca_deg=5.21400 missing_fill=pca mst=not_applied carry_radius_mm=0.21528 source_n=3493
+D	Juglet	Juglet_Piece_3	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_3 call=1 source=input npts=3253 carried=0 nearest=3253 missing=0 median_dev_to_pca_deg=5.21400 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=3253
+D	Juglet	Juglet_Piece_3	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_3 npts=3253 frac=0.02000 cap=65 minCluster=65 from=388 clamped=yes
+D	Juglet	Juglet_Piece_3	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_3 retry=1 npts=3253 clusters_pre=1 clusters=1 sizes=352 minCluster=65 minClusterFrom=388
+D	Juglet	Juglet_Piece_3	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_3 outcome=none retries=1 clusters=1 sizes=352 npts=3253 floor=65 floor_from=388 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=352 floor=65 from=388 singleCluster=off
+D	Juglet	Juglet_Piece_5	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_5 source_cloud=Dataset/Point/Juglet/Juglet_Piece_5_Point.pcd source_n=6211
+D	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=0 source=input npts=5668 carried=5668 nearest=0 missing=0 median_dev_to_pca_deg=3.93776 missing_fill=pca mst=not_applied carry_radius_mm=0.23857 source_n=6211
+D	Juglet	Juglet_Piece_5	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_5 call=1 source=input npts=5668 carried=0 nearest=5668 missing=0 median_dev_to_pca_deg=3.93776 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=5668
+D	Juglet	Juglet_Piece_5	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_5 npts=5668 frac=0.02000 cap=113 minCluster=113 from=316 clamped=yes
+D	Juglet	Juglet_Piece_5	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_5 retry=1 npts=5668 clusters_pre=1 clusters=1 sizes=699 minCluster=113 minClusterFrom=316
+D	Juglet	Juglet_Piece_5	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_5 outcome=none retries=1 clusters=1 sizes=699 npts=5668 floor=113 floor_from=316 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=699 floor=113 from=316 singleCluster=off
+D	Juglet	Juglet_Piece_7	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_7 source_cloud=Dataset/Point/Juglet/Juglet_Piece_7_Point.pcd source_n=8421
+D	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=0 source=input npts=7471 carried=7471 nearest=0 missing=0 median_dev_to_pca_deg=3.17650 missing_fill=pca mst=not_applied carry_radius_mm=0.25799 source_n=8421
+D	Juglet	Juglet_Piece_7	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_7 call=1 source=input npts=7471 carried=0 nearest=7471 missing=0 median_dev_to_pca_deg=3.17650 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=7471
+D	Juglet	Juglet_Piece_7	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_7 npts=7471 frac=0.02000 cap=149 minCluster=149 from=270 clamped=yes
+D	Juglet	Juglet_Piece_7	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_7 retry=1 npts=7471 clusters_pre=1 clusters=1 sizes=1004 minCluster=149 minClusterFrom=270
+D	Juglet	Juglet_Piece_7	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_7 outcome=none retries=1 clusters=1 sizes=1004 npts=7471 floor=149 floor_from=270 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=1 sizes=1004 floor=149 from=270 singleCluster=off
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[0;m[NORMAL-33] piece=Juglet_Piece_9 source_cloud=Dataset/Point/Juglet/Juglet_Piece_9_Point.pcd source_n=2094
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=0 source=input npts=1972 carried=1972 nearest=0 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.20346 source_n=2094
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=1 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=2 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=2 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=3 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=3 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=4 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=4 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=5 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=5 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=6 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=6 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=7 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=7 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=8 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=8 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=9 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=9 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=10 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=10 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=11 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=11 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=12 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=12 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=13 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=13 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=14 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=14 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=15 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=15 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=16 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=16 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=17 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=17 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=18 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=18 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=19 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=19 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=20 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=20 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[NORMAL-33]	[NORMAL-33] piece=Juglet_Piece_9 call=21 source=input npts=1972 carried=0 nearest=1972 missing=0 median_dev_to_pca_deg=5.55909 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=1972
+D	Juglet	Juglet_Piece_9	[FLOOR-23]	[FLOOR-23] piece=Juglet_Piece_9 npts=1972 frac=0.02000 cap=39 minCluster=39 from=435 clamped=yes
+D	Juglet	Juglet_Piece_9	[RETRY-23]	[RETRY-23] piece=Juglet_Piece_9 retry=21 npts=1972 clusters_pre=0 clusters=0 sizes=none minCluster=39 minClusterFrom=435
+D	Juglet	Juglet_Piece_9	[STATUS-23]	[STATUS-23] piece=Juglet_Piece_9 outcome=none retries=21 clusters=0 sizes=none npts=1972 floor=39 floor_from=435 capped=yes surf0_points=-1 surf1_points=-1 reason=no temp surface; final clusters=0 sizes=none floor=39 from=435 singleCluster=off
+D	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[0;m[NORMAL-33] piece=Pot_A_Piece_07 source_cloud=Dataset/Point/Pot_A/Pot_A_Piece_07_Point.pcd source_n=1000000
+D	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=0 source=input npts=34608 carried=34608 nearest=0 missing=0 median_dev_to_pca_deg=0.40511 missing_fill=pca mst=not_applied carry_radius_mm=0.29288 source_n=1000000
+D	Pot_A	Pot_A_Piece_07	[NORMAL-33]	[NORMAL-33] piece=Pot_A_Piece_07 call=1 source=input npts=34608 carried=0 nearest=34608 missing=0 median_dev_to_pca_deg=0.40510 missing_fill=pca mst=not_applied carry_radius_mm=0.00000 source_n=34608
+D	Pot_A	Pot_A_Piece_07	[FLOOR-23]	[FLOOR-23] piece=Pot_A_Piece_07 npts=34608 frac=0.02000 cap=692 minCluster=210 from=210 clamped=no
+D	Pot_A	Pot_A_Piece_07	[RETRY-23]	[RETRY-23] piece=Pot_A_Piece_07 retry=1 npts=34608 clusters_pre=7 clusters=5 sizes=11952,13093,2849,1322,1061 minCluster=210 minClusterFrom=210
+D	Pot_A	Pot_A_Piece_07	[STATUS-23]	[0;m[STATUS-23] piece=Pot_A_Piece_07 outcome=two retries=1 clusters=5 sizes=11952,13093,2849,1322,1061 npts=34608 floor=210 floor_from=210 capped=no surf0_points=24777 surf1_points=26968 reason=two surfaces written

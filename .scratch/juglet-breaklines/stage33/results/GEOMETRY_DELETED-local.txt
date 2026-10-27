@@ -1,0 +1,31 @@
+# ticket 33 -- local diagnostic copies downloaded to the laptop, recorded BEFORE the delete.
+# these are copies of cells that live in the two Spartan run dirs; nothing here is unique.
+ext	files	bytes
+.log	6	9801
+.ply	18	6085937
+total	24	6095738
+# files
+file	results\localcells\A2\Juglet\Juglet_Piece_7\logs\lines33.log	.log	1623
+file	results\localcells\A2\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_SampledWithNormals.ply	.ply	314641
+file	results\localcells\A2\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_0.ply	.ply	81278
+file	results\localcells\A2\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_1.ply	.ply	66604
+file	results\localcells\A2\Pot_A\Pot_A_Piece_07\logs\lines33.log	.log	1648
+file	results\localcells\A2\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	results\localcells\A2\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_0.ply	.ply	451426
+file	results\localcells\A2\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_1.ply	.ply	499127
+file	results\localcells\AO\Juglet\Juglet_Piece_7\logs\lines33.log	.log	1623
+file	results\localcells\AO\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_SampledWithNormals.ply	.ply	314641
+file	results\localcells\AO\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_0.ply	.ply	80669
+file	results\localcells\AO\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_1.ply	.ply	66038
+file	results\localcells\AO\Pot_A\Pot_A_Piece_07\logs\lines33.log	.log	1648
+file	results\localcells\AO\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	results\localcells\AO\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_0.ply	.ply	454642
+file	results\localcells\AO\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_1.ply	.ply	502471
+file	results\localcells\A\Juglet\Juglet_Piece_7\logs\lines33.log	.log	1617
+file	results\localcells\A\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_SampledWithNormals.ply	.ply	314641
+file	results\localcells\A\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_0.ply	.ply	80241
+file	results\localcells\A\Juglet\Juglet_Piece_7\surfaces\Juglet_Piece_7_Surface_1.ply	.ply	66426
+file	results\localcells\A\Pot_A\Pot_A_Piece_07\logs\lines33.log	.log	1642
+file	results\localcells\A\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	results\localcells\A\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_0.ply	.ply	454642
+file	results\localcells\A\Pot_A\Pot_A_Piece_07\surfaces\Pot_A_Piece_07_Surface_1.ply	.ply	502471

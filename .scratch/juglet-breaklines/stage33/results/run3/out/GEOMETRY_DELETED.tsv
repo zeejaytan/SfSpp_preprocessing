@@ -1,0 +1,96 @@
+# ticket 33 second submission -- geometry under out/cells, recorded BEFORE the delete.
+# Kept: every surfaces/<piece>_Surface_{0,1}.{ply,xyz}, cell.tsv, logs/, measure/.
+# Deleted: the rung dumps (r1/r2/r3 .ply/.json), the downsampler's SampledWithNormals.ply,
+#          the unclustered cloud, and any stage tree a cell left behind.
+key	ext	files	bytes
+ext	.ply	40	111383392
+ext	.tsv	41	9082
+#
+total	to-delete	81	111392474
+total	kept	680	0
+# files to delete, listed in full below
+file	path	ext	bytes
+file	A/Pot_A/Pot_A_Piece_01/status_raw.tsv	.tsv	130
+file	A/Pot_A/Pot_A_Piece_01/surfaces/Pot_A_Piece_01_SampledWithNormals.ply	.ply	6056071
+file	A/Pot_A/Pot_A_Piece_02/status_raw.tsv	.tsv	94
+file	A/Pot_A/Pot_A_Piece_02/surfaces/Pot_A_Piece_02_SampledWithNormals.ply	.ply	3537421
+file	A/Pot_A/Pot_A_Piece_03/status_raw.tsv	.tsv	97
+file	A/Pot_A/Pot_A_Piece_03/surfaces/Pot_A_Piece_03_SampledWithNormals.ply	.ply	3288773
+file	A/Pot_A/Pot_A_Piece_04/status_raw.tsv	.tsv	101
+file	A/Pot_A/Pot_A_Piece_04/surfaces/Pot_A_Piece_04_SampledWithNormals.ply	.ply	2758189
+file	A/Pot_A/Pot_A_Piece_05/status_raw.tsv	.tsv	101
+file	A/Pot_A/Pot_A_Piece_05/surfaces/Pot_A_Piece_05_SampledWithNormals.ply	.ply	2690086
+file	A/Pot_A/Pot_A_Piece_06/status_raw.tsv	.tsv	104
+file	A/Pot_A/Pot_A_Piece_06/surfaces/Pot_A_Piece_06_SampledWithNormals.ply	.ply	1990988
+file	A/Pot_A/Pot_A_Piece_07/status_raw.tsv	.tsv	103
+file	A/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	A/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	92
+file	A/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	548385
+file	A2/Pot_A/Pot_A_Piece_01/status_raw.tsv	.tsv	130
+file	A2/Pot_A/Pot_A_Piece_01/surfaces/Pot_A_Piece_01_SampledWithNormals.ply	.ply	6056071
+file	A2/Pot_A/Pot_A_Piece_02/status_raw.tsv	.tsv	94
+file	A2/Pot_A/Pot_A_Piece_02/surfaces/Pot_A_Piece_02_SampledWithNormals.ply	.ply	3537421
+file	A2/Pot_A/Pot_A_Piece_03/status_raw.tsv	.tsv	97
+file	A2/Pot_A/Pot_A_Piece_03/surfaces/Pot_A_Piece_03_SampledWithNormals.ply	.ply	3288773
+file	A2/Pot_A/Pot_A_Piece_04/status_raw.tsv	.tsv	101
+file	A2/Pot_A/Pot_A_Piece_04/surfaces/Pot_A_Piece_04_SampledWithNormals.ply	.ply	2758189
+file	A2/Pot_A/Pot_A_Piece_05/status_raw.tsv	.tsv	101
+file	A2/Pot_A/Pot_A_Piece_05/surfaces/Pot_A_Piece_05_SampledWithNormals.ply	.ply	2690086
+file	A2/Pot_A/Pot_A_Piece_06/status_raw.tsv	.tsv	104
+file	A2/Pot_A/Pot_A_Piece_06/surfaces/Pot_A_Piece_06_SampledWithNormals.ply	.ply	1990988
+file	A2/Pot_A/Pot_A_Piece_07/status_raw.tsv	.tsv	103
+file	A2/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	A2/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	92
+file	A2/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	548385
+file	AO/Pot_A/Pot_A_Piece_01/status_raw.tsv	.tsv	130
+file	AO/Pot_A/Pot_A_Piece_01/surfaces/Pot_A_Piece_01_SampledWithNormals.ply	.ply	6056071
+file	AO/Pot_A/Pot_A_Piece_02/status_raw.tsv	.tsv	94
+file	AO/Pot_A/Pot_A_Piece_02/surfaces/Pot_A_Piece_02_SampledWithNormals.ply	.ply	3537421
+file	AO/Pot_A/Pot_A_Piece_03/status_raw.tsv	.tsv	97
+file	AO/Pot_A/Pot_A_Piece_03/surfaces/Pot_A_Piece_03_SampledWithNormals.ply	.ply	3288773
+file	AO/Pot_A/Pot_A_Piece_04/status_raw.tsv	.tsv	101
+file	AO/Pot_A/Pot_A_Piece_04/surfaces/Pot_A_Piece_04_SampledWithNormals.ply	.ply	2758189
+file	AO/Pot_A/Pot_A_Piece_05/status_raw.tsv	.tsv	101
+file	AO/Pot_A/Pot_A_Piece_05/surfaces/Pot_A_Piece_05_SampledWithNormals.ply	.ply	2690086
+file	AO/Pot_A/Pot_A_Piece_06/status_raw.tsv	.tsv	104
+file	AO/Pot_A/Pot_A_Piece_06/surfaces/Pot_A_Piece_06_SampledWithNormals.ply	.ply	1990988
+file	AO/Pot_A/Pot_A_Piece_07/status_raw.tsv	.tsv	103
+file	AO/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	611993
+file	AO/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	92
+file	AO/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	548385
+file	B/Pot_A/Pot_A_Piece_01/status_raw.tsv	.tsv	138
+file	B/Pot_A/Pot_A_Piece_01/surfaces/Pot_A_Piece_01_SampledWithNormals.ply	.ply	6055950
+file	B/Pot_A/Pot_A_Piece_02/status_raw.tsv	.tsv	101
+file	B/Pot_A/Pot_A_Piece_02/surfaces/Pot_A_Piece_02_SampledWithNormals.ply	.ply	3537562
+file	B/Pot_A/Pot_A_Piece_03/status_raw.tsv	.tsv	101
+file	B/Pot_A/Pot_A_Piece_03/surfaces/Pot_A_Piece_03_SampledWithNormals.ply	.ply	3288285
+file	B/Pot_A/Pot_A_Piece_04/status_raw.tsv	.tsv	105
+file	B/Pot_A/Pot_A_Piece_04/surfaces/Pot_A_Piece_04_SampledWithNormals.ply	.ply	2758051
+file	B/Pot_A/Pot_A_Piece_05/status_raw.tsv	.tsv	105
+file	B/Pot_A/Pot_A_Piece_05/surfaces/Pot_A_Piece_05_SampledWithNormals.ply	.ply	2689851
+file	B/Pot_A/Pot_A_Piece_06/status_raw.tsv	.tsv	107
+file	B/Pot_A/Pot_A_Piece_06/surfaces/Pot_A_Piece_06_SampledWithNormals.ply	.ply	1990623
+file	B/Pot_A/Pot_A_Piece_07/status_raw.tsv	.tsv	103
+file	B/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	612021
+file	B/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	92
+file	B/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	548396
+file	C/Pot_A/Pot_A_Piece_01/status_raw.tsv	.tsv	138
+file	C/Pot_A/Pot_A_Piece_01/surfaces/Pot_A_Piece_01_SampledWithNormals.ply	.ply	6055950
+file	C/Pot_A/Pot_A_Piece_02/status_raw.tsv	.tsv	101
+file	C/Pot_A/Pot_A_Piece_02/surfaces/Pot_A_Piece_02_SampledWithNormals.ply	.ply	3537562
+file	C/Pot_A/Pot_A_Piece_03/status_raw.tsv	.tsv	101
+file	C/Pot_A/Pot_A_Piece_03/surfaces/Pot_A_Piece_03_SampledWithNormals.ply	.ply	3288285
+file	C/Pot_A/Pot_A_Piece_04/status_raw.tsv	.tsv	106
+file	C/Pot_A/Pot_A_Piece_04/surfaces/Pot_A_Piece_04_SampledWithNormals.ply	.ply	2931736
+file	C/Pot_A/Pot_A_Piece_05/status_raw.tsv	.tsv	105
+file	C/Pot_A/Pot_A_Piece_05/surfaces/Pot_A_Piece_05_SampledWithNormals.ply	.ply	2689851
+file	C/Pot_A/Pot_A_Piece_06/status_raw.tsv	.tsv	107
+file	C/Pot_A/Pot_A_Piece_06/surfaces/Pot_A_Piece_06_SampledWithNormals.ply	.ply	1990623
+file	C/Pot_A/Pot_A_Piece_07/status_raw.tsv	.tsv	106
+file	C/Pot_A/Pot_A_Piece_07/surfaces/Pot_A_Piece_07_SampledWithNormals.ply	.ply	2422669
+file	C/Pot_A/Pot_A_Piece_08/status_raw.tsv	.tsv	101
+file	C/Pot_A/Pot_A_Piece_08/surfaces/Pot_A_Piece_08_SampledWithNormals.ply	.ply	2540259
+file	measure30.tsv	.tsv	4899
+#
+# deleted at 2026-10-27T10:11:44Z: the counted lines above are the record
+# survived: surfaces/<piece>_Surface_{0,1}.{ply,xyz}, cell.tsv, logs/, measure/, and every table in out/
