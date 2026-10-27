@@ -1,6 +1,7 @@
 # 31 — Re-score the Pot A control on a compute node
 
-**Status:** ready-for-agent
+**Status:** done
+**Branch:** 31-re-score-the-pot-a-control, in /c/PR/worktrees/sfs/31
 **Answers:** none (a verification debt, not a research question)
 **Blocked by:** none
 **Blocks:** quoting the 15/15 Pot A control anywhere
@@ -96,3 +97,64 @@ laptop asterisk.
 - It does not touch the Juglet, and it does not make the end-to-end run's stage 2 any less paused.
 - A port that agrees exactly is evidence that the port is faithful; it is not evidence that the
   original probe measured the right thing.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**What was owed.** The 15/15 Pot A control was measured on the laptop (ticket 07 stage 1), which breaks the
+workspace rule that a re-score belongs on a compute node. The bundle is still on the cluster with the same md5,
+so this ticket was a port plus an equivalence test, not a re-run.
+
+**What came back, and what I checked myself.** The probe now runs on a compute node in an environment that has
+numpy 2.4.6 and **no scipy** (`/data/gpfs/projects/punim2657/.conda/envs/graphify/bin/python3`, 3.11.15 —
+`out/env.txt`). Three outputs were produced in one job: the laptop's own unmodified script under a scipy
+environment, the port's brute-force search under the shipped python, and the port forced onto scipy's cKDTree.
+**All three reproduce the laptop's file exactly** once line endings are normalised:
+
+```
+1-2: d<2.0/n>0.85 raw=32 abs=32 min_d=0.77; d<20.0/n>0.7 raw=33 abs=33 min_d=0.77
+...
+STRICT pass rate at GT (_0-only): 15/15
+```
+
+Every one of the fifteen pairs agrees on raw inliers, absolute inliers and `min_d`, at both gates (2.0 mm /
+0.85 and 20° / 0.7), on both nodes and in both environments. The only textual difference is the first line's
+bundle label (`p31` where the laptop printed `p07`), which is the key the probe was asked for, not a
+measurement.
+
+**A false alarm of my own, recorded because of its shape.** My first check diffed the two files without
+normalising line endings and reported sixteen changed lines — line endings only: the laptop's file is CRLF
+(1 339 B, 17 CR, md5 `a718e0171c40214477bb841f9fbd1d8d`) and the port writes LF. That is the exact failure
+the workspace has paid for before: a ruler artefact read as a result. The identity claim above is therefore
+stated as *after normalising line endings*, and the branch preserves the laptop's bytes unchanged (the
+committed blob is still 1 339 B with 17 CR and the same md5).
+
+**verified:**
+- `git diff --stat main..origin/31-re-score-the-pot-a-control` → 11 files, +1452/−1; the only path outside
+  `.scratch/juglet-breaklines/stage31/` is this ticket file's own claim lines. No C++, no pipeline, no corpus.
+- `sacct -j 33868310,33868341,33868381` → **all COMPLETED 0:0** on spartan-bm059 / bm140 / bm173 (18 s, 9 s,
+  9 s). None of the three failed; the two earlier ones were plumbing fixes, and both are kept as runs.
+- `tr -d '\r' < laptop | sed '1s/.*//'` diffed against each node output → **IDENTICAL** for
+  `gate_probe_orig_p07.out` (the original script), `gate_probe_p31.out` (the port) and
+  `gate_probe_p31_ckdtree.out` (the port on scipy).
+- `git show HEAD:.scratch/juglet-breaklines/stage31/laptop/gate_probe_p07.out` → 1 339 B, 17 CR, md5
+  `a718e017…` — the laptop's bytes, preserved.
+- `cmp out/corpus_md5_before.tsv out/corpus_md5_after.tsv` → identical, 49 rows each; `canonical_before` /
+  `canonical_after` identical at HEAD `158ddc6`; `out/pristine.txt` → `/opt/sfs-pristine` **ABSENT**.
+- `out/selftest_p31_noscipy.out` → 15 PASS lines, `0 failure(s)`; the scipy cross-check reports
+  `d/ckdtree/dist: PASS max_abs_delta=0.000e+00`, `0 of 300 differ`. The chunked brute force is bitwise
+  identical to the per-point reference at one chunk and at tiny chunks.
+- `out/deleted_geometry_manifest.txt` → written before the delete, `# files=87 bytes=28457514`, and
+  `work/` no longer exists.
+- `runs/index.tsv` → three rows for this ticket, six tab-separated fields each, `verdict` and
+  `human_note` **empty**.
+
+**What this changes.** The 15/15 can now be quoted without the laptop asterisk, and — more useful — the probe is
+shown to be machine- and library-independent to the last digit. Any future disagreement between two runs of it
+is therefore a real difference in the inputs, not a floating-point courtesy.
+
+**What this does not settle.** A faithful port is not a correct ruler: this says the numbers do not depend on
+where they were computed, not that the probe measures the right thing (its gates, its `_0`-only restriction and
+its "max inlier over segment pairs" rule are the original's, unchanged and unexamined here). It re-scores **one**
+bundle from **one** job on **one** pot; it does not re-run the pipeline, so it says nothing about whether
+today's code still produces those breaklines. And it does not move the Juglet end-to-end run: that still waits
+on a sherd giving two real faces.
