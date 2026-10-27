@@ -1,0 +1,37 @@
+tag	pot	piece	envs	frac	mesh_exit	meas_exit	elapsed_s	npts	retries	clusters_pre_merge	clusters_post_merge	sizes_post_merge	outcome	floor	floor_from	capped	surf0	surf1	surf0_points	surf1_points	surf0_bytes	kept
+A2	Juglet	Juglet_Piece_2	none	none	0	0	6	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A2	Juglet	Juglet_Piece_7	none	none	0	0	4	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	81278	no
+A2	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A2	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	451426	no
+A	Juglet	Juglet_Piece_2	none	none	0	0	6	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_3	none	none	0	0	1	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+A	Juglet	Juglet_Piece_7	none	none	0	0	4	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	80241	no
+A	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_2	none	none	0	0	6	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_3	none	none	0	0	2	1467	1	2	1	268	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_5	none	none	0	0	1	3021	1	1	1	679	none	50	50	no	no	no	-1	-1	0	no
+AO	Juglet	Juglet_Piece_7	none	none	0	0	4	4254	1	5	4	403,263,68,65	two	50	50	no	yes	yes	1012	829	80669	no
+AO	Juglet	Juglet_Piece_9	none	none	0	0	4	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+AO	Pot_A	Pot_A_Piece_07	none	none	0	0	2	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	454642	no
+A	Pot_A	Pot_A_Piece_07	none	none	0	0	3	8598	1	8	7	2850,3093,203,191,170,144,73	two	50	50	no	yes	yes	6066	6437	454642	no
+B	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input	none	0	0	6	1031	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input	none	0	0	1	1467	1	2	1	275	none	50	50	no	no	no	-1	-1	0	no
+B	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input	none	0	0	2	3021	1	2	2	82,659	two	50	50	no	yes	yes	235	1559	19163	no
+B	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input	none	0	0	3	4254	1	6	3	80,912,56	two	50	50	no	yes	yes	295	2552	23621	no
+B	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input	none	0	0	5	787	21	0	0	none	none	50	50	no	no	no	-1	-1	0	no
+B	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input	none	0	0	3	8598	1	7	7	2867,3137,225,212,199,133,75	two	50	50	no	yes	yes	6091	6487	459751	no
+C	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.015	0	0	22	2399	1	2	2	43,39	two	36	405	yes	yes	yes	226	203	18232	no
+C	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	1	3253	1	1	1	352	none	65	388	yes	no	no	-1	-1	0	no
+C	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	2	5668	1	1	1	699	none	113	316	yes	no	no	-1	-1	0	no
+C	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	2	7471	1	1	1	1004	none	149	270	yes	no	no	-1	-1	0	no
+C	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	14	1972	21	0	0	none	none	39	435	yes	no	no	-1	-1	0	no
+C	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	12	34608	1	7	5	11952,13093,2849,1322,1061	two	210	210	no	yes	yes	24777	26968	1867000	no
+D	Juglet	Juglet_Piece_2	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.015	0	0	22	2399	1	2	2	43,39	two	36	405	yes	yes	yes	226	203	16585	no
+D	Juglet	Juglet_Piece_3	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	1	3253	1	1	1	352	none	65	388	yes	no	no	-1	-1	0	no
+D	Juglet	Juglet_Piece_5	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	1	5668	1	1	1	699	none	113	316	yes	no	no	-1	-1	0	no
+D	Juglet	Juglet_Piece_7	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	2	7471	1	1	1	1004	none	149	270	yes	no	no	-1	-1	0	no
+D	Juglet	Juglet_Piece_9	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	15	1972	21	0	0	none	none	39	435	yes	no	no	-1	-1	0	no
+D	Pot_A	Pot_A_Piece_07	SFS_NORMAL_SOURCE=input SFS_MERGE_MIN_PAIRS=2 SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto	0.02	0	0	13	34608	1	7	5	11952,13093,2849,1322,1061	two	210	210	no	yes	yes	24777	26968	1854175	no

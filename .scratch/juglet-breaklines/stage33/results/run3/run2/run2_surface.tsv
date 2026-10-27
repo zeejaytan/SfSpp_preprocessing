@@ -1,0 +1,73 @@
+surface	present	tag	pot	piece	points	ext_x	ext_y	ext_z	diag	cov_2mm	fold_deg	normal_src
+0	0	A	Juglet	Juglet_Piece_2								
+1	0	A	Juglet	Juglet_Piece_2								
+0	0	A	Juglet	Juglet_Piece_3								
+1	0	A	Juglet	Juglet_Piece_3								
+0	0	A	Juglet	Juglet_Piece_5								
+1	0	A	Juglet	Juglet_Piece_5								
+0	1	A	Juglet	Juglet_Piece_7	1012	14.664598	7.256799	22.080020	27.481609	0.196889	1.124358	ply
+1	1	A	Juglet	Juglet_Piece_7	829	15.660200	20.431000	11.612000	28.240152	0.167795	1.157469	ply
+0	0	A	Juglet	Juglet_Piece_9								
+1	0	A	Juglet	Juglet_Piece_9								
+0	1	A	Pot_A	Pot_A_Piece_07	6066	25.801941	39.828600	25.726990	53.980881	0.486417	0.566072	ply
+1	1	A	Pot_A	Pot_A_Piece_07	6437	26.884399	40.556100	26.403020	55.359621	0.523167	0.483995	ply
+0	0	A2	Juglet	Juglet_Piece_2								
+1	0	A2	Juglet	Juglet_Piece_2								
+0	0	A2	Juglet	Juglet_Piece_3								
+1	0	A2	Juglet	Juglet_Piece_3								
+0	0	A2	Juglet	Juglet_Piece_5								
+1	0	A2	Juglet	Juglet_Piece_5								
+0	1	A2	Juglet	Juglet_Piece_7	1012	14.664598	7.256799	22.080020	27.481609	0.196889	1.124358	ply
+1	1	A2	Juglet	Juglet_Piece_7	829	15.660200	20.431000	11.612000	28.240152	0.167795	1.157469	ply
+0	0	A2	Juglet	Juglet_Piece_9								
+1	0	A2	Juglet	Juglet_Piece_9								
+0	1	A2	Pot_A	Pot_A_Piece_07	6066	25.801941	39.828600	25.726990	53.980881	0.486417	0.566072	ply
+1	1	A2	Pot_A	Pot_A_Piece_07	6437	26.884399	40.556100	26.403020	55.359621	0.523167	0.483995	ply
+0	0	AO	Juglet	Juglet_Piece_2								
+1	0	AO	Juglet	Juglet_Piece_2								
+0	0	AO	Juglet	Juglet_Piece_3								
+1	0	AO	Juglet	Juglet_Piece_3								
+0	0	AO	Juglet	Juglet_Piece_5								
+1	0	AO	Juglet	Juglet_Piece_5								
+0	1	AO	Juglet	Juglet_Piece_7	1012	14.664598	7.256799	22.080020	27.481609	0.196889	1.124358	ply
+1	1	AO	Juglet	Juglet_Piece_7	829	15.660200	20.431000	11.612000	28.240152	0.167795	1.157469	ply
+0	0	AO	Juglet	Juglet_Piece_9								
+1	0	AO	Juglet	Juglet_Piece_9								
+0	1	AO	Pot_A	Pot_A_Piece_07	6066	25.801941	39.828600	25.726990	53.980881	0.486417	0.566072	ply
+1	1	AO	Pot_A	Pot_A_Piece_07	6437	26.884399	40.556100	26.403020	55.359621	0.523167	0.483995	ply
+0	0	B	Juglet	Juglet_Piece_2								
+1	0	B	Juglet	Juglet_Piece_2								
+0	0	B	Juglet	Juglet_Piece_3								
+1	0	B	Juglet	Juglet_Piece_3								
+0	1	B	Juglet	Juglet_Piece_5	235	4.772202	11.251900	9.694030	15.599788	0.112381	0.980713	ply
+1	1	B	Juglet	Juglet_Piece_5	1559	22.849098	25.373100	20.086000	39.614680	0.467397	0.875236	ply
+0	1	B	Juglet	Juglet_Piece_7	295	10.466202	12.645400	3.596990	16.804341	0.091438	1.155040	ply
+1	1	B	Juglet	Juglet_Piece_7	2552	21.845799	26.779000	25.773990	43.112090	0.495666	1.508527	ply
+0	0	B	Juglet	Juglet_Piece_9								
+1	0	B	Juglet	Juglet_Piece_9								
+0	1	B	Pot_A	Pot_A_Piece_07	6091	24.547651	39.731699	25.587000	53.253072	0.481583	0.580449	ply
+1	1	B	Pot_A	Pot_A_Piece_07	6487	26.823100	40.188700	25.703010	54.728923	0.522067	0.458417	ply
+0	1	C	Juglet	Juglet_Piece_2	226	4.872101	8.332500	7.330010	12.120106	0.299805	1.596996	ply
+1	1	C	Juglet	Juglet_Piece_2	203	5.217201	7.592100	7.358030	11.789816	0.353606	1.640637	ply
+0	0	C	Juglet	Juglet_Piece_3								
+1	0	C	Juglet	Juglet_Piece_3								
+0	0	C	Juglet	Juglet_Piece_5								
+1	0	C	Juglet	Juglet_Piece_5								
+0	0	C	Juglet	Juglet_Piece_7								
+1	0	C	Juglet	Juglet_Piece_7								
+0	0	C	Juglet	Juglet_Piece_9								
+1	0	C	Juglet	Juglet_Piece_9								
+0	1	C	Pot_A	Pot_A_Piece_07	24777	24.753210	39.953501	25.774020	53.603207	0.484717	0.497571	ply
+1	1	C	Pot_A	Pot_A_Piece_07	26968	27.223301	41.211502	26.265990	55.941025	0.529817	0.421347	ply
+0	1	D	Juglet	Juglet_Piece_2	226	4.872101	8.332500	7.330010	12.120106	0.299805	1.596996	ply
+1	1	D	Juglet	Juglet_Piece_2	203	5.217201	7.592100	7.358030	11.789816	0.353606	1.640637	ply
+0	0	D	Juglet	Juglet_Piece_3								
+1	0	D	Juglet	Juglet_Piece_3								
+0	0	D	Juglet	Juglet_Piece_5								
+1	0	D	Juglet	Juglet_Piece_5								
+0	0	D	Juglet	Juglet_Piece_7								
+1	0	D	Juglet	Juglet_Piece_7								
+0	0	D	Juglet	Juglet_Piece_9								
+1	0	D	Juglet	Juglet_Piece_9								
+0	1	D	Pot_A	Pot_A_Piece_07	24777	24.753210	39.953501	25.774020	53.603207	0.484717	0.497571	ply
+1	1	D	Pot_A	Pot_A_Piece_07	26968	27.223301	41.211502	26.265990	55.941025	0.529817	0.421347	ply

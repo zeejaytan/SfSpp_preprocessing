@@ -1,0 +1,37 @@
+role	tag	scheme	pot	piece	status	n0	n1	med_nn_mm	med_along_mm	p90_along_mm	max_along_mm	med_across_mm	p90_across_mm	max_across_mm	coincidence_share_1um	surf0_points_log	surf1_points_log	count_match
+?	A	A	Juglet	Juglet_Piece_2	no_pair														
+?	A	A	Juglet	Juglet_Piece_3	no_pair														
+?	A	A	Juglet	Juglet_Piece_5	no_pair														
+?	A	A	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	A	A	Juglet	Juglet_Piece_9	no_pair														
+?	A	A	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	A2	A2	Juglet	Juglet_Piece_2	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_3	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_5	no_pair														
+?	A2	A2	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	A2	A2	Juglet	Juglet_Piece_9	no_pair														
+?	A2	A2	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	AO	AO	Juglet	Juglet_Piece_2	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_3	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_5	no_pair														
+?	AO	AO	Juglet	Juglet_Piece_7	ok	1012	829	4.339349	0.643408	4.001059	8.127458	4.295400	10.693149	14.039432	0.262967			
+?	AO	AO	Juglet	Juglet_Piece_9	no_pair														
+?	AO	AO	Pot_A	Pot_A_Piece_07	ok	6066	6437	3.960535	3.919588	4.297276	4.596343	0.248680	0.467674	3.556027	0.000000			
+?	B	B	Juglet	Juglet_Piece_2	no_pair														
+?	B	B	Juglet	Juglet_Piece_3	no_pair														
+?	B	B	Juglet	Juglet_Piece_5	ok	235	1559	10.150219	2.944130	11.065285	18.633171	9.693411	17.396389	20.336455	0.091084			
+?	B	B	Juglet	Juglet_Piece_7	ok	295	2552	13.104205	4.188686	16.381709	21.347867	12.366719	17.741463	18.509094	0.102273			
+?	B	B	Juglet	Juglet_Piece_9	no_pair														
+?	B	B	Pot_A	Pot_A_Piece_07	ok	6091	6487	3.967435	3.909857	4.281365	4.627635	0.248935	0.451573	3.617108	0.000000			
+?	C	C	Juglet	Juglet_Piece_2	ok	226	203	13.387877	6.359683	8.675947	9.040148	11.856192	13.425996	14.542865	0.000000			
+?	C	C	Juglet	Juglet_Piece_3	no_pair														
+?	C	C	Juglet	Juglet_Piece_5	no_pair														
+?	C	C	Juglet	Juglet_Piece_7	no_pair														
+?	C	C	Juglet	Juglet_Piece_9	no_pair														
+?	C	C	Pot_A	Pot_A_Piece_07	ok	24777	26968	3.958435	3.890789	4.272099	4.625908	0.130835	1.491007	3.920753	0.000000			
+?	D	D	Juglet	Juglet_Piece_2	ok	226	203	13.387877	6.359683	8.675947	9.040148	11.856192	13.425996	14.542865	0.000000			
+?	D	D	Juglet	Juglet_Piece_3	no_pair														
+?	D	D	Juglet	Juglet_Piece_5	no_pair														
+?	D	D	Juglet	Juglet_Piece_7	no_pair														
+?	D	D	Juglet	Juglet_Piece_9	no_pair														
+?	D	D	Pot_A	Pot_A_Piece_07	ok	24777	26968	3.958435	3.890789	4.272099	4.625908	0.130835	1.491007	3.920753	0.000000			

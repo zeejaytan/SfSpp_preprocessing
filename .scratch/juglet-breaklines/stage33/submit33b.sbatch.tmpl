@@ -1,0 +1,351 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=logs/slurm-%j.out
+#SBATCH --error=logs/slurm-%j.err
+#
+# Ticket 33, second submission. Builds nothing: it reuses the two binaries the previous job
+# built from the same two commits (md5 recorded in out/binaries.md5), runs the Pot A grid the
+# ticket's acceptance criterion 5 asks for (arms B and C on all eight pieces), repeats arms
+# AO/A/A2 on all eight so the defaults proof covers the whole pot and a second, independent run
+# of the SAME binary is on record, then re-measures every pair with stage 30's reference
+# instrument (pair_ref30.py, byte-identical to stage30/measure_pair30.py at this commit) and
+# compares the arms file by file.
+#
+# No parameter expansion is written with braces in this file: a brace-less form that bash
+# reads unambiguously is used instead, so that no renderer can leave a stray "}" behind.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+IXTAG=__IXTAG__
+SRC1=__SRC1__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DS=$CANON/Dataset
+BOOT=/data/gpfs/projects/punim2657/SfSpp/runs/20261027-0055_d8af9d2_p07-juglet-stage1/out/boot
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+INSTR=$RUN/instruments
+OUT=$RUN/out
+ECELLS=$OUT/cells
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+JOBID=$(env | sed -n 's/^SLURM_JOB_ID=//p')
+[ -n "$JOBID" ] || JOBID=na
+P=$(env | sed -n 's/^SLURM_CPUS_PER_TASK=//p')
+[ -n "$P" ] || P=8
+export CANON CORP DS BOOT SIF APT PY INSTR OUT ECELLS RUN RUNID NEW IXTAG SRC1 RUNS IDX JOBID P
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT" "$ECELLS" logs
+
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "reused=$SRC1"
+    echo "tag=$IXTAG"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG new=$NEW host=$(hostname)"
+date -u +"start %Y-%m-%dT%H:%M:%SZ"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+if ! git -C "$CANON" cat-file -e "$NEW" 2>>logs/fetch.log; then
+  fail 2 "commit $NEW not in $CANON"
+fi
+echo "[JOB] commit ok new=$(git -C "$CANON" rev-parse --short "$NEW")"
+
+for b in bin-orig bin-new; do
+  if [ ! -x "$SRC1/$b" ]; then fail 6 "the binary $SRC1/$b is missing: this job builds nothing on purpose"; fi
+  cp -f "$SRC1/$b" "$OUT/$b" || fail 6 "could not copy $SRC1/$b"
+done
+echo "[JOB] reused binaries:"
+md5sum "$OUT/bin-orig" "$OUT/bin-new" | tee "$OUT/binaries.md5"
+stat -c '%n %s bytes' "$OUT/bin-orig" "$OUT/bin-new"
+
+hash_inputs() {
+  local out=$1 f
+  {
+    for f in "$DS"/Point/Juglet/*.pcd "$DS"/Mesh/Juglet/*.obj \
+             "$CORP"/Point/Pot_A/*.pcd "$CORP"/Mesh/Pot_A/*.obj \
+             "$CORP"/Axes/*.xyz "$BOOT"/*_boot_Axis.xyz \
+             "$SIF" "$INSTR"/measure33.py "$INSTR"/run_cell33.sh \
+             "$INSTR"/stage_piece_p33.sh "$INSTR"/compare33.py "$INSTR"/pair_ref30.py \
+             "$OUT"/bin-orig "$OUT"/bin-new; do
+      if [ -f "$f" ]; then
+        printf "%s\t%s\t%s\n" "$(md5sum "$f" | cut -d' ' -f1)" "$(stat -c %s "$f")" "$f"
+      else
+        printf "MISSING\t0\t%s\n" "$f"
+      fi
+    done
+  } | sort -k3 > "$out"
+}
+
+corpus_tree() {
+  local out=$1
+  {
+    find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    find "$DS" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then
+      echo "opt-sfs-pristine PRESENT $(ls -R /opt/sfs-pristine | md5sum | cut -d' ' -f1)"
+    else
+      echo "opt-sfs-pristine ABSENT"
+    fi
+  } > "$out"
+}
+
+pristine_record() {
+  local out=$1
+  {
+    echo "# /opt/sfs-pristine, recorded from the compute node"
+    if [ -d /opt/sfs-pristine ]; then
+      echo "status PRESENT"
+      ls -la /opt/sfs-pristine
+    else
+      echo "status ABSENT"
+      ls -d /opt/sfs-pristine 2>&1 || true
+      stat /opt/sfs-pristine 2>&1 || true
+    fi
+  } > "$out"
+}
+
+run_cell_one() {
+  local line="$1" tag pot piece
+  [ -n "$line" ] || return 0
+  read -r tag pot piece <<< "$line"
+  POT="$pot"; PIECE="$piece"; TAG="$tag"
+  CEIL_LADDER=""
+  case "$tag" in
+    AO) BIN="$OUT/bin-orig"; ENVS="" ;;
+    A)  BIN="$OUT/bin-new";  ENVS="" ;;
+    A2) BIN="$OUT/bin-new";  ENVS="" ;;
+    B)  BIN="$OUT/bin-new";  ENVS="SFS_NORMAL_SOURCE=input" ;;
+    C)  BIN="$OUT/bin-new";  ENVS="SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto";
+        CEIL_LADDER="0.02 0.015 0.01 0.0075 0.005" ;;
+    *) echo "[CELL] unknown arm $tag in spec $line"; return 9 ;;
+  esac
+  if [ "$pot" = "Pot_A" ]; then AXIS="$CORP/Axes/"$piece"_Axis.xyz"
+  else AXIS="$BOOT/"$piece"_boot_Axis.xyz"; fi
+  STAGER="$INSTR/stage_piece_p33.sh"
+  COMMIT="$NEW"
+  CELLROOT="$ECELLS"
+  MEAS="$INSTR/measure33.py"
+  export POT PIECE TAG BIN ENVS AXIS STAGER COMMIT CELLROOT MEAS CEIL_LADDER
+  bash "$INSTR/run_cell33.sh" "$tag"
+}
+export -f run_cell_one
+
+hash_inputs "$OUT/inputs_before.md5"
+corpus_tree "$OUT/corpus_before.txt"
+pristine_record "$OUT/pristine.txt"
+echo "[JOB] inputs hashed: $(wc -l < "$OUT/inputs_before.md5") rows, tree $(wc -l < "$OUT/corpus_before.txt") rows"
+grep -m1 "opt-sfs-pristine" "$OUT/corpus_before.txt" || true
+
+echo "[JOB] instrument selftests"
+"$PY" "$INSTR/measure33.py" selftest 2>&1 | tee logs/selftest-measure33.log || fail 5 "measure33.py selftest failed (logs/selftest-measure33.log)"
+"$PY" "$INSTR/compare33.py" selftest 2>&1 | tee logs/selftest-compare33.log || fail 5 "compare33.py selftest failed (logs/selftest-compare33.log)"
+"$PY" "$INSTR/pair_ref30.py" --selftest 2>&1 | tee logs/selftest-pair30.log || fail 5 "pair_ref30.py selftest failed (logs/selftest-pair30.log)"
+
+PIECES="Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08"
+ARMS="AO A A2 B C"
+: > "$OUT/cells.list"
+for pc in $PIECES; do
+  for ar in $ARMS; do echo "$ar Pot_A $pc" >> "$OUT/cells.list"; done
+done
+echo "[JOB] cells: $(wc -l < "$OUT/cells.list")"
+{
+  echo "# ticket 33 second grid, one cell per line: the exact env the binary ran with"
+  echo "# tag pot piece | switches"
+  while read -r t pt pc; do
+    case "$t" in
+      AO) e="(none) -- the PRE-CHANGE binary, built from 50c3827 in the previous run" ;;
+      A)  e="(none) -- this ticket's binary" ;;
+      A2) e="(none) -- this ticket's binary, a second independent run" ;;
+      B)  e="SFS_NORMAL_SOURCE=input" ;;
+      C)  e="SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<0.02|0.015|0.01|0.0075|0.005, first that lands the floor at <=2%>" ;;
+    esac
+    echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc"_Axis.xyz" SFS_DUMP_STAGE=<cell>/dump $e <BIN-of-the-arm>"
+  done < "$OUT/cells.list"
+} > "$OUT/commands.txt"
+
+date -u +"cells start %Y-%m-%dT%H:%M:%SZ"
+xargs -a "$OUT/cells.list" -d "\n" -n 1 -P "$P" bash -c 'run_cell_one "$1"' _ >> logs/cells.log 2>&1
+XRC=$?
+echo "[JOB] xargs rc=$XRC; cell.tsv written: $(ls "$ECELLS"/*/*/*/cell.tsv 2>/dev/null | wc -l) of $(wc -l < "$OUT/cells.list")"
+grep -h '^\[CELL\]' logs/cells.log 2>/dev/null || true
+date -u +"cells end %Y-%m-%dT%H:%M:%SZ"
+
+printf "tag\tpot\tpiece\tenvs\tfrac\tmesh_exit\tmeas_exit\telapsed_s\tnpts\tretries\tclusters_pre_merge\tclusters_post_merge\tsizes_post_merge\toutcome\tfloor\tfloor_from\tcapped\tsurf0\tsurf1\tsurf0_points\tsurf1_points\tsurf0_bytes\tkept\n" > "$OUT/cells33b.tsv"
+for f in "$ECELLS"/*/*/*/cell.tsv; do
+  [ -f "$f" ] && cat "$f" >> "$OUT/cells33b.tsv"
+done
+CELLROWS=$(( $(wc -l < "$OUT/cells33b.tsv") - 1 ))
+echo "[JOB] cells33b.tsv rows=$CELLROWS"
+
+echo "[JOB] aggregate measurement tables (this run's cells)"
+"$PY" "$INSTR/measure33.py" agg --cellroot "$ECELLS" --out "$OUT" 2>&1 | tee logs/agg.log
+
+echo "[JOB] pair statistic, stage 30's reference instrument, over this run's cells"
+"$PY" "$INSTR/pair_ref30.py" "$ECELLS" 2>&1 | tee logs/pair-run3.log || fail 7 "pair_ref30.py failed on $ECELLS"
+cp -f "$ECELLS/measure30.tsv" "$OUT/measure30-run3.tsv" || fail 7 "no measure30.tsv from this run's cells"
+
+echo "[JOB] pair statistic, the same instrument, over the previous run's cells"
+"$PY" "$INSTR/pair_ref30.py" "$SRC1/cells" 2>&1 | tee logs/pair-run2.log || fail 7 "pair_ref30.py failed on $SRC1/cells"
+cp -f "$SRC1/cells/measure30.tsv" "$OUT/measure30-run2.tsv" || fail 7 "no measure30.tsv from the previous run's cells"
+rm -f "$SRC1/cells/measure30.tsv"
+
+echo "[JOB] defaults proof over all eight Pot A pieces"
+"$PY" "$INSTR/compare33.py" defaults2 --cells "$ECELLS" --out "$OUT/defaults33b.tsv" 2>&1 | tee logs/defaults.log
+echo "[JOB] segmentation and switch lines, this run and the previous one"
+"$PY" "$INSTR/compare33.py" lines33 --cells "$ECELLS" --out "$OUT/lines33b.tsv" 2>&1 | tee logs/lines-run3.log
+"$PY" "$INSTR/compare33.py" lines33 --cells "$SRC1/cells" --out "$OUT/lines33-run2.tsv" 2>&1 | tee logs/lines-run2.log
+"$PY" "$INSTR/compare33.py" counts33 --cells "$ECELLS" --out "$OUT/counts33b.tsv" 2>&1 | tee logs/counts-run3.log
+"$PY" "$INSTR/compare33.py" counts33 --cells "$SRC1/cells" --out "$OUT/counts33-run2.tsv" 2>&1 | tee logs/counts-run2.log
+
+for t in cells33b.tsv surfaces33.tsv pairs33.tsv carried33.tsv replay33.tsv defaults33b.tsv measure30-run3.tsv measure30-run2.tsv lines33b.tsv counts33b.tsv; do
+  if [ -f "$OUT/$t" ]; then echo "[JOB] $t rows=$(wc -l < "$OUT/$t")"; else echo "[JOB] $t MISSING"; fi
+done
+{
+  echo "== cells33b.tsv"
+  cat "$OUT/cells33b.tsv"
+  echo "== measure30-run3.tsv"
+  cat "$OUT/measure30-run3.tsv"
+  echo "== measure30-run2.tsv"
+  cat "$OUT/measure30-run2.tsv"
+  echo "== defaults33b.tsv"
+  cat "$OUT/defaults33b.tsv"
+} 2>&1 | head -300
+
+echo "[JOB] geometry count, recorded BEFORE the delete"
+{
+  echo "# ticket 33 second submission -- geometry under out/cells, recorded BEFORE the delete."
+  echo "# Kept: every surfaces/<piece>_Surface_{0,1}.{ply,xyz}, cell.tsv, logs/, measure/."
+  echo "# Deleted: the rung dumps (r1/r2/r3 .ply/.json), the downsampler's SampledWithNormals.ply,"
+  echo "#          the unclustered cloud, and any stage tree a cell left behind."
+  echo -e "key\text\tfiles\tbytes"
+  "$PY" - "$ECELLS" <<'PYEOF'
+import os, sys
+from collections import defaultdict
+root = sys.argv[1]
+def is_keep(rel, name):
+    parts = rel.split(os.sep)
+    if name == "cell.tsv":
+        return True
+    if "logs" in parts or "measure" in parts:
+        return not name.lower().endswith((".ply", ".pcd", ".obj", ".xyz"))
+    if "surfaces" in parts:
+        return ("_Surface_0." in name or "_Surface_1." in name)
+    return False
+dele, kept = [], 0
+for dirpath, _d, fs in os.walk(root):
+    for f in fs:
+        p = os.path.join(dirpath, f)
+        rel = os.path.relpath(p, root)
+        try:
+            n = os.path.getsize(p)
+        except OSError:
+            continue
+        if is_keep(rel, f):
+            kept += 1
+            continue
+        dele.append((rel, os.path.splitext(f)[1].lower() or "none", n))
+dele.sort()
+c, b = defaultdict(int), defaultdict(int)
+for rel, ext, n in dele:
+    c[ext] += 1
+    b[ext] += n
+for ext in sorted(c):
+    print("ext\t%s\t%d\t%d" % (ext, c[ext], b[ext]))
+print("#")
+print("total\tto-delete\t%d\t%d" % (len(dele), sum(b.values())))
+print("total\tkept\t%d\t0" % kept)
+print("# files to delete, listed in full below")
+print("file\tpath\text\tbytes")
+for rel, ext, n in dele:
+    print("file\t%s\t%s\t%d" % (rel, ext, n))
+PYEOF
+} > "$OUT/GEOMETRY_DELETED.tsv" 2>&1
+tail -4 "$OUT/GEOMETRY_DELETED.tsv"
+
+"$PY" - "$ECELLS" <<'PYEOF'
+import os, sys
+root = sys.argv[1]
+def is_keep(rel, name):
+    parts = rel.split(os.sep)
+    if name == "cell.tsv":
+        return True
+    if "logs" in parts or "measure" in parts:
+        return not name.lower().endswith((".ply", ".pcd", ".obj", ".xyz"))
+    if "surfaces" in parts:
+        return ("_Surface_0." in name or "_Surface_1." in name)
+    return False
+n = nb = 0
+for dirpath, _d, fs in os.walk(root):
+    for f in fs:
+        p = os.path.join(dirpath, f)
+        if is_keep(os.path.relpath(p, root), f):
+            continue
+        try:
+            nb += os.path.getsize(p)
+        except OSError:
+            pass
+        os.remove(p)
+        n += 1
+for dirpath, dnames, fnames in os.walk(root, topdown=False):
+    if not dnames and not fnames and dirpath != root:
+        try:
+            os.rmdir(dirpath)
+        except OSError:
+            pass
+left = 0
+for dirpath, _d, fs in os.walk(root):
+    for f in fs:
+        p = os.path.join(dirpath, f)
+        if not is_keep(os.path.relpath(p, root), f):
+            left += 1
+print("deleted %d files, %d bytes; %d files of that class remain" % (n, nb, left))
+PYEOF
+{
+  echo "#"
+  echo "# deleted at $(date -u +%Y-%m-%dT%H:%M:%SZ): the counted lines above are the record"
+  echo "# survived: surfaces/<piece>_Surface_{0,1}.{ply,xyz}, cell.tsv, logs/, measure/, and every table in out/"
+} >> "$OUT/GEOMETRY_DELETED.tsv"
+echo "[JOB] geometry deleted per the record above"
+
+hash_inputs "$OUT/inputs_after.md5"
+corpus_tree "$OUT/corpus_after.txt"
+if diff -q "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" 2>&1; then
+  echo "[INPUTS] identical before and after: $(wc -l < "$OUT/inputs_before.md5") rows"
+else
+  echo "[INPUTS] DIFFERS"; cat "$OUT/inputs.diff"
+fi
+if diff -q "$OUT/corpus_before.txt" "$OUT/corpus_after.txt" > "$OUT/corpus.diff" 2>&1; then
+  echo "[CORPUS] identical before and after: $(wc -l < "$OUT/corpus_before.txt") rows incl the pristine line"
+else
+  echo "[CORPUS] DIFFERS"; cat "$OUT/corpus.diff"
+fi
+grep -m1 "opt-sfs-pristine" "$OUT/corpus_after.txt" || true
+
+printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+echo "[JOB] index row appended:"
+tail -1 "$IDX" | cat -A | head -1
+date -u +"end %Y-%m-%dT%H:%M:%SZ"
+echo "[JOB] DONE rc 0"
