@@ -228,6 +228,78 @@ def nn_spacing(pts):
             "mean": float(np.mean(d))}
 
 
+def _unit(nrm):
+    n = np.linalg.norm(nrm, axis=1)
+    n[n < 1e-12] = 1.0
+    return nrm / n[:, None]
+
+
+def voxel_merge(pts, nrm, h):
+    """One point per occupied voxel of edge h: the mean of the points it holds.
+
+    Needed because neighbouring triangles' lattices do not line up: sampling each triangle
+    independently leaves pairs of points arbitrarily close across every shared edge, which drags
+    the median nearest-neighbour distance down by a factor of three and inflates the count. This
+    is the same rule as PCL's UniformSampling, which is what the pipeline itself applies at the
+    spacing it chooses (mesh_processing_headless.cpp:4531).
+    """
+    q = np.floor(np.asarray(pts, float) / h).astype(np.int64)
+    lo = q.min(axis=0)
+    span = q.max(axis=0) - lo + 1
+    if int(span.max()) >= (1 << 21):
+        raise ValueError("voxel grid too large for packed keys: span=%s" % (tuple(int(s) for s in span),))
+    q -= lo
+    key = (q[:, 0] << 42) | (q[:, 1] << 21) | q[:, 2]
+    uniq, inv = np.unique(key, return_inverse=True)
+    n = len(uniq)
+    cnt = np.bincount(inv, minlength=n).astype(np.float64)
+    out = np.empty((n, 3))
+    nout = np.empty((n, 3))
+    for k in range(3):
+        out[:, k] = np.bincount(inv, weights=pts[:, k], minlength=n) / cnt
+        nout[:, k] = np.bincount(inv, weights=nrm[:, k], minlength=n) / cnt
+    return out, _unit(nout), cnt
+
+
+def sample_at(v, fc, spacing, seed=3801, jitter=0.10, max_iter=4, tol=0.02, cap=1.2e7):
+    """Sample the surface so that the MEDIAN nearest-neighbour distance equals `spacing`.
+
+    The voxel edge is solved rather than assumed: a voxel grid's median nearest-neighbour
+    distance lands near the edge but depends on how the surface meets the grid, so the edge is
+    divided by the measured ratio and the merge repeated, and the iteration closest to the
+    request is kept. Every table reports ACHIEVED spacing beside requested.
+    """
+    A = float(face_frames(v, fc)[4].sum())
+    p_gen = spacing / 3.0
+    capped = False
+    if A / (p_gen ** 2) > cap:
+        p_gen = float(np.sqrt(A / cap))
+        capped = True
+    raw = _sample_fast(v, fc, p_gen, seed=seed, jitter=jitter)
+    h = float(spacing)
+    hist = []
+    best = None
+    for it in range(max_iter):
+        pts, nrm, cnt = voxel_merge(raw[0], raw[1], h)
+        sp = nn_spacing(pts)
+        ratio = sp["median"] / float(spacing)
+        hist.append({"iteration": it, "voxel_mm": float(h), "points": int(len(pts)),
+                     "median_mm": sp["median"], "ratio": float(ratio)})
+        if best is None or abs(ratio - 1.0) < abs(best[0] - 1.0):
+            best = (float(ratio), float(h), pts, nrm, sp, int(len(pts)))
+        if abs(ratio - 1.0) <= tol:
+            break
+        h = h / max(0.5, min(1.5, ratio))
+    ratio, h, pts, nrm, sp, npts = best
+    m = raw[3]
+    return {"pts": pts, "nrm": nrm, "sp": sp, "voxel_mm": h, "requested_mm": float(spacing),
+            "gen_pitch_mm": float(p_gen), "gen_points": int(len(raw[0])), "gen_capped": capped,
+            "gen_m_median": int(np.median(m)), "gen_m_min": int(m.min()), "gen_m_max": int(m.max()),
+            "gen_triangles": int(len(m)), "gen_triangles_m_equals_1": int((m == 1).sum()),
+            "iterations": len(hist), "history": hist, "area_mm2": A, "points": npts,
+            "ratio_achieved_over_requested": ratio}
+
+
 def write_pcd(path, pts, nrm):
     n = len(pts)
     with open(path, "w") as f:
@@ -389,22 +461,45 @@ def sutures(v, fc):
 # ------------------------------------------------------------------ commands
 def cmd_selftest(a):
     bad = 0
-    # 1. a flat 40x40 mm square, sampled at 0.5 mm, must give spacing near 0.5 and a count near 6400
+    # 1a. the raw per-triangle lattice, on a square split into two triangles: points on opposite
+    #     sides of the shared diagonal come arbitrarily close, so its median falls far below the
+    #     requested spacing.  This is the regression: a previous version of this instrument used
+    #     the raw lattice and reported 0.07 mm at a requested 0.21 mm on a real sherd.
     v = np.array([[0.0, 0, 0], [40, 0, 0], [40, 40, 0], [0, 40, 0]])
     fc = np.array([[0, 1, 2], [0, 2, 3]], dtype=np.int64)
-    pts, nrm, fidx, m, area = _sample_fast(v, fc, 0.5, seed=1, jitter=0.10)
-    sp = nn_spacing(pts)
-    print("[SELFTEST] plane 40x40 @0.5mm: n=%d expected~6400 achieved_median=%.4f mm (want 0.45-0.55) ratio=%.3f"
-          % (sp["n"], sp["median"], sp["median"] / 0.5))
-    # the cells are equal in (u,v), not in Euclidean area, so a lattice on a right-isosceles
-    # triangle lands 0.8-0.9x the requested spacing; every table reports the ACHIEVED spacing
-    if not (0.75 <= sp["median"] / 0.5 <= 1.10):
+    raw = _sample_fast(v, fc, 0.5, seed=1, jitter=0.10)
+    spr = nn_spacing(raw[0])
+    print("[SELFTEST] plane raw per-triangle lattice @0.5mm: n=%d median_nn=%.4f mm (%.3fx "
+          "requested, near-duplicate pairs across the shared edge)" \
+          % (spr["n"], spr["median"], spr["median"] / 0.5))
+    # 1b. the same square as a 20x20 grid of quads (800 triangles, many shared edges): the voxel
+    #     merge must restore one point per s^2 of surface and a median at the requested spacing
+    n = 20
+    xs = np.linspace(0.0, 40.0, n + 1)
+    vs = np.stack([np.repeat(xs, n + 1), np.tile(xs, n + 1), np.zeros((n + 1) ** 2)], axis=1)
+    fs = []
+    for i in range(n):
+        for j in range(n):
+            a0 = i * (n + 1) + j
+            b0 = (i + 1) * (n + 1) + j
+            fs.append((a0, b0, b0 + 1))
+            fs.append((a0, b0 + 1, a0 + 1))
+    fs = np.asarray(fs, dtype=np.int64)
+    s = sample_at(vs, fs, 0.5, seed=1, jitter=0.10)
+    spx = s["sp"]
+    want_n = 1600.0 / 0.25
+    print("[SELFTEST] plane grid %d triangles @0.5mm: n=%d (one per s^2 of surface ~%.0f) "
+          "median_nn=%.4f mm ratio=%.3f voxel=%.4f iters=%d"
+          % (len(fs), s["points"], want_n, spx["median"], spx["median"] / 0.5,
+             s["voxel_mm"], s["iterations"]))
+    if not (0.95 <= spx["median"] / 0.5 <= 1.05):
         bad += 1
-        print("[SELFTEST] FAIL plane spacing %.4f mm at requested 0.5" % sp["median"])
-    if not (0.90 * 6400 <= sp["n"] <= 1.60 * 6400):
+        print("[SELFTEST] FAIL plane grid spacing %.4f mm at requested 0.5" % spx["median"])
+    if not (0.80 * want_n <= s["points"] <= 1.20 * want_n):
         bad += 1
-        print("[SELFTEST] FAIL plane count %d at requested 6400" % sp["n"])
-    dot = np.abs(nrm @ np.array([0.0, 0.0, 1.0]))
+        print("[SELFTEST] FAIL plane grid count %d at one per s^2 of surface %.0f"
+              % (s["points"], want_n))
+    dot = np.abs(s["nrm"] @ np.array([0.0, 0.0, 1.0]))
     print("[SELFTEST] plane analytic normal |dot z| min=%.6f (want 1.000000)" % float(dot.min()))
     if dot.min() < 1 - 1e-9:
         bad += 1
@@ -476,32 +571,41 @@ def _tri_stats(v, fc):
 def cmd_validate(a):
     """Validate the sampler before any synthetic cloud is used.
 
-    Route 1 (literal, the comparison the ticket names): sample the ORIGINAL mesh at the
-    shipped cloud's own median nearest-neighbour distance and compare point count and median
-    spacing with the shipped cloud.  The Juglet clouds ARE their meshes' vertex sets, so this
-    route also asks whether the vertices are a uniform sampling at their own median spacing --
-    true only for a near-regular triangulation, which is why the mesh shape statistics are
-    printed beside it.
-    Route 2 (density-implied): the spacing at which a uniform covering of the same surface
-    would carry the cloud's own point count, s = sqrt(2A/(sqrt(3)N)); sampling at s must return
-    that count (area mapping and units) and an achieved median spacing of s (spacing
-    semantics).
-    Route 1 is the verdict.  Route 2 is printed and recorded so a route-1 mismatch can be
-    attributed to the input's irregularity or to the sampler, with numbers, instead of being
-    reported as a bare FAIL.
+    Route 1 (literal, the comparison the ticket names): sample the ORIGINAL mesh at the shipped
+    cloud's own median nearest-neighbour distance and compare point count and median spacing
+    with the shipped cloud.  The Juglet clouds ARE their meshes' vertex sets, so this route also
+    asks whether those vertices are a uniform sampling at their own median spacing -- true only
+    for a near-regular triangulation.  The count a uniform covering would carry at that spacing
+    and the mesh's own shape statistics are printed beside it, so a mismatch is attributable.
+    Route 2 (instrument checks, independent of the input's regularity):
+      spacing  the achieved median nearest-neighbour distance equals the request within 5%
+      density  points * achieved_spacing^2 / surface_area sits in 0.8-1.6 (a uniform sampler
+               carries about one point per spacing^2 of surface whatever the orientation; this
+               catches double counting across shared edges and unit errors)
+      surface  20000 sampled points lie within 0.6 voxel edges of the ORIGINAL triangles (the
+               merge averages points inside a voxel, so a small offset is expected; a large one
+               means the cloud is not on the sherd)
+    Route 1 is the verdict whenever it holds.  Route 2 is printed and recorded so that a route-1
+    count mismatch can be attributed to the input's irregularity or to the sampler, with
+    numbers, instead of being reported as a bare FAIL.
     """
     v, fc = read_obj(a.mesh)
     xyz, nrm = read_pcd_xyz(a.cloud)
     ship = nn_spacing(xyz)
     A = float(face_frames(v, fc)[4].sum())
     ts = _tri_stats(v, fc)
-    s_dens = float(np.sqrt(2.0 * A / (np.sqrt(3.0) * ship["n"])))
-    uniform_at_median = float(2.0 * A / (np.sqrt(3.0) * ship["median"] ** 2))
+    N = float(ship["n"])
+    s_dens = float(np.sqrt(A / N))
+    uniform_at_median = float(A / ship["median"] ** 2)
 
-    pts, fnrm, fidx, m, area = _sample_fast(v, fc, ship["median"], seed=a.seed, jitter=a.jitter)
-    got = nn_spacing(pts)
-    pts2, fnrm2, fidx2, m2, area2 = _sample_fast(v, fc, s_dens, seed=a.seed, jitter=a.jitter)
-    got2 = nn_spacing(pts2)
+    r1 = sample_at(v, fc, ship["median"], seed=a.seed, jitter=a.jitter)
+    got = r1["sp"]
+    r2 = sample_at(v, fc, s_dens, seed=a.seed, jitter=a.jitter)
+    got2 = r2["sp"]
+    density_index = r1["points"] * got["median"] ** 2 / A
+    step = max(1, len(r1["pts"]) // 20000)
+    sub = r1["pts"][::step]
+    off = dist_to_mesh(sub, v, fc, k=6)
 
     os.makedirs(a.outdir, exist_ok=True)
     row = {"piece": a.piece, "mesh": a.mesh, "cloud": a.cloud,
@@ -511,19 +615,34 @@ def cmd_validate(a):
            "shipped_p10_mm": ship["p10"], "shipped_p90_mm": ship["p90"],
            "sampled_points": got["n"], "sampled_median_mm": got["median"],
            "sampled_p10_mm": got["p10"], "sampled_p90_mm": got["p90"],
-           "count_ratio": got["n"] / float(ship["n"]),
+           "count_ratio": got["n"] / N,
            "spacing_ratio": got["median"] / ship["median"],
+           "sampled_voxel_mm": r1["voxel_mm"], "sampled_merge_iterations": r1["iterations"],
+           "sampled_merge_history": r1["history"],
            "uniform_points_at_shipped_median": uniform_at_median,
-           "uniform_over_shipped": uniform_at_median / float(ship["n"]),
+           "uniform_over_shipped": uniform_at_median / N,
+           "density_index": density_index,
+           "offset_check_points": int(len(sub)),
+           "offset_median_mm": float(np.median(off)),
+           "offset_p99_mm": float(np.percentile(off, 99)),
+           "offset_max_mm": float(off.max()),
+           "offset_limit_mm": 0.6 * r1["voxel_mm"],
            "density_spacing_mm": s_dens,
            "dens_sampled_points": got2["n"], "dens_median_mm": got2["median"],
-           "dens_count_ratio": got2["n"] / float(ship["n"]),
+           "dens_count_ratio": got2["n"] / N,
            "dens_spacing_ratio": got2["median"] / s_dens,
+           "dens_density_index": r2["points"] * got2["median"] ** 2 / A,
            "jitter": a.jitter, "seed": a.seed}
     row.update(ts)
     ok1 = 0.95 <= row["count_ratio"] <= 1.05 and 0.95 <= row["spacing_ratio"] <= 1.05
-    ok2 = 0.95 <= row["dens_count_ratio"] <= 1.05 and 0.95 <= row["dens_spacing_ratio"] <= 1.05
-    row["gate_route"] = "literal" if ok1 else ("density-disclosed" if ok2 else "FAIL")
+    ok_spacing = 0.95 <= row["spacing_ratio"] <= 1.05
+    ok_density = 0.80 <= density_index <= 1.60
+    ok_surface = row["offset_max_mm"] <= row["offset_limit_mm"]
+    ok2 = ok_spacing and ok_density and ok_surface
+    row["check_spacing"] = bool(ok_spacing)
+    row["check_density"] = bool(ok_density)
+    row["check_surface"] = bool(ok_surface)
+    row["gate_route"] = "literal" if ok1 else ("instrument-validated-disclosed" if ok2 else "FAIL")
     with open(os.path.join(a.outdir, "sampler_validate_%s.json" % a.piece), "w") as f:
         json.dump(row, f, indent=1, sort_keys=True)
     print("[VALIDATE] %s mesh v=%d f=%d area=%.4f mm2  edge_median=%.4f edge_cv=%.3f "
@@ -533,24 +652,27 @@ def cmd_validate(a):
     print("[VALIDATE] shipped cloud: points=%d median_nn=%.4f p10=%.4f p90=%.4f mm"
           % (ship["n"], ship["median"], ship["p10"], ship["p90"]))
     print("[VALIDATE] route 1 literal: sampled at %.4f mm -> points=%d median_nn=%.4f "
-          "p10=%.4f p90=%.4f mm | count_ratio=%.4f spacing_ratio=%.4f (accept 0.95-1.05)"
-          % (ship["median"], got["n"], got["median"], got["p10"], got["p90"],
-             row["count_ratio"], row["spacing_ratio"]))
-    print("[VALIDATE] route 1 context: a uniform covering of %.4f mm2 at that spacing would "
-          "carry %.0f points = %.2fx the shipped count"
-          % (A, uniform_at_median, row["uniform_over_shipped"]))
-    print("[VALIDATE] route 2 density-implied: s_dens=%.4f mm -> points=%d median_nn=%.4f mm "
+          "p10=%.4f p90=%.4f mm (voxel %.4f mm, %d merge iterations) "
           "| count_ratio=%.4f spacing_ratio=%.4f (accept 0.95-1.05)"
-          % (s_dens, got2["n"], got2["median"], row["dens_count_ratio"],
-             row["dens_spacing_ratio"]))
-    print("[VALIDATE] gate_route=%s literal=%s density=%s"
+          % (ship["median"], got["n"], got["median"], got["p10"], got["p90"],
+             r1["voxel_mm"], r1["iterations"], row["count_ratio"], row["spacing_ratio"]))
+    print("[VALIDATE] route 1 context: a uniform covering of %.4f mm2 at that spacing carries "
+          "%.0f points = %.2fx the shipped count" % (A, uniform_at_median, row["uniform_over_shipped"]))
+    print("[VALIDATE] route 2 checks: spacing ratio=%.4f %s | density index=%.3f (accept "
+          "0.80-1.60) %s | offset from the original triangles median=%.5f p99=%.5f max=%.5f mm "
+          "limit=%.5f %s"
+          % (row["spacing_ratio"], "PASS" if ok_spacing else "FAIL", density_index,
+             "PASS" if ok_density else "FAIL", row["offset_median_mm"], row["offset_p99_mm"],
+             row["offset_max_mm"], row["offset_limit_mm"], "PASS" if ok_surface else "FAIL"))
+    print("[VALIDATE] at the density-implied spacing %.4f mm the sampler gives %d points "
+          "(%.3f x the shipped count) with median %.4f mm"
+          % (s_dens, got2["n"], row["dens_count_ratio"], got2["median"]))
+    print("[VALIDATE] gate_route=%s literal=%s route2=%s"
           % (row["gate_route"], "PASS" if ok1 else "FAIL", "PASS" if ok2 else "FAIL"))
     if not ok1:
         print("[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; the numbers "
               "above say whether the sampler or the input's irregularity is responsible")
     return 0 if (ok1 or ok2) else 4
-
-
 def cmd_subdiv(a):
     v, fc = read_obj(a.mesh)
     t0 = time.time()
@@ -589,27 +711,32 @@ def cmd_sample(a):
     if lf > 1:
         vv, ff = subdivide(v, fc, lf)
     t0 = time.time()
-    pts, nrm, fidx, m, area = _sample_fast(vv, ff, a.spacing, seed=a.seed, jitter=a.jitter)
-    sp = nn_spacing(pts)
+    s = sample_at(vv, ff, a.spacing, seed=a.seed, jitter=a.jitter)
+    sp = s["sp"]
     os.makedirs(a.outdir, exist_ok=True)
     if a.out:
-        write_pcd(a.out, pts, nrm)
-    mrow = {"m_median": int(np.median(m)), "m_min": int(m.min()), "m_max": int(m.max()),
-            "triangles": int(len(m)), "triangles_m_equals_1": int((m == 1).sum())}
+        write_pcd(a.out, s["pts"], s["nrm"])
     row = {"piece": a.piece, "level": a.level, "requested_spacing_mm": a.spacing,
            "achieved_median_mm": sp["median"], "achieved_p10_mm": sp["p10"],
-           "achieved_p90_mm": sp["p90"], "points": int(len(pts)),
-           "ratio_achieved_over_requested": sp["median"] / a.spacing,
+           "achieved_p90_mm": sp["p90"], "points": int(s["points"]),
+           "ratio_achieved_over_requested": s["ratio_achieved_over_requested"],
+           "voxel_mm": s["voxel_mm"], "merge_iterations": s["iterations"],
+           "merge_history": s["history"], "surface_area_mm2": s["area_mm2"],
+           "gen_pitch_mm": s["gen_pitch_mm"], "gen_points": s["gen_points"],
+           "gen_capped": s["gen_capped"], "m_median": s["gen_m_median"],
+           "m_min": s["gen_m_min"], "m_max": s["gen_m_max"],
+           "triangles": s["gen_triangles"],
+           "triangles_m_equals_1": s["gen_triangles_m_equals_1"],
            "mesh": a.mesh, "sampled_from_level": lf,
            "sampled_mesh": ("subdiv_x%d" % lf) if lf > 1 else "original",
-           "jitter": a.jitter, "seed": a.seed, "fidx_tris_used": int(len(np.unique(fidx)))}
-    row.update(mrow)
+           "jitter": a.jitter, "seed": a.seed}
     with open(os.path.join(a.outdir, "sample_%s_x%d.json" % (a.piece, a.level or 1)), "w") as f:
         json.dump(row, f, indent=1, sort_keys=True)
     print("[SAMPLE] %s x%d requested=%.5f mm achieved median=%.5f p10=%.5f p90=%.5f ratio=%.3f "
-          "points=%d elapsed=%.1fs"
+          "points=%d voxel=%.5f iters=%d area=%.2f mm2 elapsed=%.1fs"
           % (a.piece, a.level or 1, a.spacing, sp["median"], sp["p10"], sp["p90"],
-             sp["median"] / a.spacing, len(pts), time.time() - t0))
+             s["ratio_achieved_over_requested"], s["points"], s["voxel_mm"], s["iterations"],
+             s["area_mm2"], time.time() - t0))
     return 0
 
 
