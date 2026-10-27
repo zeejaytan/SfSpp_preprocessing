@@ -2318,3 +2318,31 @@ breakline — two of nine sherds still have no line to walk.
 Next: nearest-normal carry at the shipped spacing, one cell; if the normals land near the 0.41-1.64 deg the
 input clouds carry, run the growth at 3.4 deg on it for pieces 2 and 9 with Pot A as control. A fragment-merge
 repair would have to change the 1.0 mm boundary criterion (a hardcoded metric), not the pair count.
+
+## 2026-10-27 — the normals are innocent, and the growth's angle is the wall (ticket 34)
+
+The nearest-normal carry finished what ticket 33 started and it is decisive. Carrying the normal of the
+nearest source point, with no averaging, puts the cloud's own normals back on the working cloud at
+**0.40-1.54 deg** from the mesh on the Juglet (pipeline 2.36-9.01; the mean carry 3.87-9.95), inside the
+0.41-1.64 band the input clouds themselves carry. The normal step is deterministic (three arms identical to
+six decimals) and the mean path is bit-for-bit the old one.
+
+And sherds **2 and 9 still grow zero regions** — 21 retries each, every arm, nothing to write even with the
+single-cluster write on. So the gate is the defect, not the normals: at 0.6 mm spacing a surface folding over
+0.67-1.25 mm (piece 2, ticket 32) turns by roughly 27-51 deg between neighbouring points, an order of
+magnitude above the 3.4 deg the growth allows. No normal estimate can pass a gate finer than the geometry's
+own turning. That is ticket 30's curvature hypothesis arriving by a different road.
+
+What the honest normals did fix is instructive: piece 3 writes a single **797-point surface covering 97.5 %**
+of its cloud at **0.89 deg** from the mesh (against the 28 % / 42 % corner patches a lowered floor buys), piece
+5 grows two regions where the pipeline keeps one, piece 1 and 7 reorganise. Pot A is untouched: **8 of 8**
+two-surface in all five arms, pairs 3.5-7.1 mm along / 0.24-0.27 across / coincidence 0.0000.
+
+Weight: none on the 281/292 tally, and this is the piece of evidence that closes the "estimate the normals
+better" route for the Juglet.
+
+Next: with the normals now honest, measure what angle the slide needs — a theta ladder on the nearest-carry
+clouds, piece 3's single surface and Pot A 07 as controls — because any new criterion has to be built on the
+turning per step rather than on a constant. Separately, whether piece 3's single surface is one wall or a
+median surface between the two (a 3 mm admission radius on a 2.45 mm wall cannot tell them apart).
+
