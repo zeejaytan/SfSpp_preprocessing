@@ -11,12 +11,15 @@
 #SBATCH --error=logs/slurm-%j.err
 #
 # Ticket 33, second submission. Builds nothing: it reuses the two binaries the previous job
-# built from the same two commits (md5 recorded in out/inputs_before.md5 and out/binaries.md5),
-# runs the Pot A grid the ticket's acceptance criterion 5 asks for (arms B and C on all eight
-# pieces), repeats arms AO/A/A2 on all eight so the defaults proof covers the whole pot and a
-# second, independent run of the SAME binary is on record, then re-measures every pair with
-# stage 30's reference instrument (pair_ref30.py, byte-identical to stage30/measure_pair30.py)
-# and compares the arms file by file.
+# built from the same two commits (md5 recorded in out/binaries.md5), runs the Pot A grid the
+# ticket's acceptance criterion 5 asks for (arms B and C on all eight pieces), repeats arms
+# AO/A/A2 on all eight so the defaults proof covers the whole pot and a second, independent run
+# of the SAME binary is on record, then re-measures every pair with stage 30's reference
+# instrument (pair_ref30.py, byte-identical to stage30/measure_pair30.py at this commit) and
+# compares the arms file by file.
+#
+# No parameter expansion is written with braces in this file: a brace-less form that bash
+# reads unambiguously is used instead, so that no renderer can leave a stray "}" behind.
 set -uo pipefail
 
 RUN=__RUNDIR__
@@ -36,8 +39,10 @@ OUT=$RUN/out
 ECELLS=$OUT/cells
 RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
 IDX=$RUNS/index.tsv
-JOBID=$SLURM_JOB_ID:-na}
-P=$SLURM_CPUS_PER_TASK:-8}
+JOBID=$(env | sed -n 's/^SLURM_JOB_ID=//p')
+[ -n "$JOBID" ] || JOBID=na
+P=$(env | sed -n 's/^SLURM_CPUS_PER_TASK=//p')
+[ -n "$P" ] || P=8
 export CANON CORP DS BOOT SIF APT PY INSTR OUT ECELLS RUN RUNID NEW IXTAG SRC1 RUNS IDX JOBID P
 
 cd "$RUN" || exit 1
@@ -63,7 +68,7 @@ echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG new=$NEW host=$(hostname)"
 date -u +"start %Y-%m-%dT%H:%M:%SZ"
 
 git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
-if ! git -C "$CANON" cat-file -e "$NEW}^{commit}" 2>>logs/fetch.log; then
+if ! git -C "$CANON" cat-file -e "$NEW" 2>>logs/fetch.log; then
   fail 2 "commit $NEW not in $CANON"
 fi
 echo "[JOB] commit ok new=$(git -C "$CANON" rev-parse --short "$NEW")"
@@ -124,7 +129,7 @@ pristine_record() {
 
 run_cell_one() {
   local line="$1" tag pot piece
-  [ -n "$line:-}" ] || return 0
+  [ -n "$line" ] || return 0
   read -r tag pot piece <<< "$line"
   POT="$pot"; PIECE="$piece"; TAG="$tag"
   CEIL_LADDER=""
@@ -137,8 +142,8 @@ run_cell_one() {
         CEIL_LADDER="0.02 0.015 0.01 0.0075 0.005" ;;
     *) echo "[CELL] unknown arm $tag in spec $line"; return 9 ;;
   esac
-  if [ "$pot" = "Pot_A" ]; then AXIS="$CORP/Axes/$piece}_Axis.xyz"
-  else AXIS="$BOOT/$piece}_boot_Axis.xyz"; fi
+  if [ "$pot" = "Pot_A" ]; then AXIS="$CORP/Axes/"$piece"_Axis.xyz"
+  else AXIS="$BOOT/"$piece"_boot_Axis.xyz"; fi
   STAGER="$INSTR/stage_piece_p33.sh"
   COMMIT="$NEW"
   CELLROOT="$ECELLS"
@@ -155,12 +160,9 @@ echo "[JOB] inputs hashed: $(wc -l < "$OUT/inputs_before.md5") rows, tree $(wc -
 grep -m1 "opt-sfs-pristine" "$OUT/corpus_before.txt" || true
 
 echo "[JOB] instrument selftests"
-"$PY" "$INSTR/measure33.py" selftest 2>&1 | tee logs/selftest-measure33.log
-[ "$PIPESTATUS[0]}" -eq 0 ] || fail 5 "measure33.py selftest failed (logs/selftest-measure33.log)"
-"$PY" "$INSTR/compare33.py" selftest 2>&1 | tee logs/selftest-compare33.log
-[ "$PIPESTATUS[0]}" -eq 0 ] || fail 5 "compare33.py selftest failed (logs/selftest-compare33.log)"
-"$PY" "$INSTR/pair_ref30.py" --selftest 2>&1 | tee logs/selftest-pair30.log
-[ "$PIPESTATUS[0]}" -eq 0 ] || fail 5 "pair_ref30.py selftest failed (logs/selftest-pair30.log)"
+"$PY" "$INSTR/measure33.py" selftest 2>&1 | tee logs/selftest-measure33.log || fail 5 "measure33.py selftest failed (logs/selftest-measure33.log)"
+"$PY" "$INSTR/compare33.py" selftest 2>&1 | tee logs/selftest-compare33.log || fail 5 "compare33.py selftest failed (logs/selftest-compare33.log)"
+"$PY" "$INSTR/pair_ref30.py" --selftest 2>&1 | tee logs/selftest-pair30.log || fail 5 "pair_ref30.py selftest failed (logs/selftest-pair30.log)"
 
 PIECES="Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08"
 ARMS="AO A A2 B C"
@@ -180,7 +182,7 @@ echo "[JOB] cells: $(wc -l < "$OUT/cells.list")"
       B)  e="SFS_NORMAL_SOURCE=input" ;;
       C)  e="SFS_NORMAL_SOURCE=input SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_COUNT_SCALE=auto SFS_FLOOR_CEILING=<0.02|0.015|0.01|0.0075|0.005, first that lands the floor at <=2%>" ;;
     esac
-    echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc}"'_Axis.xyz'" SFS_DUMP_STAGE=<cell>/dump $e <BIN-of-the-arm>"
+    echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc"_Axis.xyz" SFS_DUMP_STAGE=<cell>/dump $e <BIN-of-the-arm>"
   done < "$OUT/cells.list"
 } > "$OUT/commands.txt"
 
@@ -230,7 +232,7 @@ done
   cat "$OUT/measure30-run2.tsv"
   echo "== defaults33b.tsv"
   cat "$OUT/defaults33b.tsv"
-} 2>&1 | head -200
+} 2>&1 | head -300
 
 echo "[JOB] geometry count, recorded BEFORE the delete"
 {
@@ -243,13 +245,11 @@ echo "[JOB] geometry count, recorded BEFORE the delete"
 import os, sys
 from collections import defaultdict
 root = sys.argv[1]
-keep_names = ("cell.tsv",)
-keep_dirs = ("logs", "measure")
 def is_keep(rel, name):
     parts = rel.split(os.sep)
-    if name in keep_names:
+    if name == "cell.tsv":
         return True
-    if any(p in keep_dirs for p in parts):
+    if "logs" in parts or "measure" in parts:
         return not name.lower().endswith((".ply", ".pcd", ".obj", ".xyz"))
     if "surfaces" in parts:
         return ("_Surface_0." in name or "_Surface_1." in name)
@@ -288,13 +288,11 @@ tail -4 "$OUT/GEOMETRY_DELETED.tsv"
 "$PY" - "$ECELLS" <<'PYEOF'
 import os, sys
 root = sys.argv[1]
-keep_names = ("cell.tsv",)
-keep_dirs = ("logs", "measure")
 def is_keep(rel, name):
     parts = rel.split(os.sep)
-    if name in keep_names:
+    if name == "cell.tsv":
         return True
-    if any(p in keep_dirs for p in parts):
+    if "logs" in parts or "measure" in parts:
         return not name.lower().endswith((".ply", ".pcd", ".obj", ".xyz"))
     if "surfaces" in parts:
         return ("_Surface_0." in name or "_Surface_1." in name)
