@@ -1,0 +1,9 @@
+theta_deg	B_juglet_clouds_pass	B_of	B_fail	B_kgate_min	B_max_surv	B_all4	D_juglet_clouds_pass	D_of	D_fail	D_kgate_min	D_max_surv	D_all4	E_juglet_clouds_pass	E_of	E_fail	E_kgate_min	E_max_surv	E_all4	potA_regions_ge_floor	potA_largest	potA_second_largest	potA_two_big_intact	potA_kgate	potA_pass	both_B	both_D	both_E
+2.00	0	/4	p2,p3,p5,p7	0.0000	1	not-all	0	/4	p2,p3,p5,p7	0.0000	1	not-all	0	/4	p2,p3,p5,p7	0.0000	3	not-all	6	3043	2761	False	0.717027	False	not-both	not-both	not-both
+3.40	0	/4	p2,p3,p5,p7	0.0000	5	not-all	0	/4	p2,p3,p5,p7	0.0000	5	not-all	0	/4	p2,p3,p5,p7	0.0000	4	not-all	8	3093	2850	True	0.780879	True	not-both	not-both	not-both
+4.00	0	/4	p2,p3,p5,p7	0.0000	3	not-all	0	/4	p2,p3,p5,p7	0.0000	3	not-all	0	/4	p2,p3,p5,p7	0.0000	4	not-all	6	3106	2874	True	0.794022	False	not-both	not-both	not-both
+5.00	0	/4	p2,p3,p5,p7	0.0000	4	not-all	0	/4	p2,p3,p5,p7	0.0000	4	not-all	0	/4	p2,p3,p5,p7	0.0000	9	not-all	6	3130	2910	True	0.819377	False	not-both	not-both	not-both
+6.00	1	/4	p2,p3,p5	0.1251	5	not-all	1	/4	p2,p3,p5	0.1251	5	not-all	0	/4	p2,p3,p5,p7	0.0000	7	not-all	7	3144	2936	True	0.849267	False	not-both	not-both	not-both
+8.00	2	/4	p2,p3	0.2735	6	not-all	2	/4	p2,p3	0.2735	6	not-all	2	/4	p2,p3	0.2803	13	not-all	6	3168	2979	True	0.877995	False	not-both	not-both	not-both
+10.00	2	/4	p2,p3	0.4526	4	not-all	2	/4	p2,p3	0.4526	4	not-all	4	/4	-	0.5559	9	ALL4	5	3281	3030	True	0.894743	False	not-both	not-both	not-both
+12.00	4	/4	-	0.5015	5	ALL4	4	/4	-	0.5015	5	ALL4	4	/4	-	0.7696	6	ALL4	3	4529	3103	True	0.922656	False	not-both	not-both	not-both
