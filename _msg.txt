@@ -1,0 +1,24 @@
+Ticket 32 done: the sherd-to-vessel ratio does not predict the angle
+
+The conservator asked whether the sherd/vessel size ratio could be tuned on. Measured on both
+pots: Juglet ratios 0.275-0.738 (mean 0.443), Pot A 0.193-0.617 (mean 0.413). They overlap, and
+the two Juglet pieces that produce no surface (2 at 0.331, 9 at 0.275) are relatively larger than
+two Pot A pieces that work (07 at 0.209, 08 at 0.193) - so the ratio is not a knob.
+
+Vessel size had never been recorded anywhere for either pot: 85.441470 mm (Juglet, sides
+41.508968 / 36.772109 / 65.000479) and 279.789935 mm (Pot A, 193.418983 / 194.118357 / 56.476264),
+by applying each pot's own ground-truth transforms; the other two conventions scatter the pieces
+1.3-1.5 m apart, so the convention is identified, not chosen.
+
+At fixed physical windows (1/2/3/5 mm) the vessel's median angle is 19.8-25.8 deg at 1 mm against
+the pot's 0.84-1.60 deg, so sparsity is not the cause either; the angle tracks a fitted radius of
+0.67-5.25 mm against vessel radii of 42.72 and 139.89 mm, i.e. local folding at a broken edge.
+
+Asked of the pipeline itself, the 50-point floor is the mechanism that turns fragments into
+"no surface" (piece 2: 32 points at floor 24; piece 9: 21 points at floor 20) but it is not the
+repair - what gets written is an 11.5 mm and a 13.8 mm corner patch, and at floor 10 the replica's
+largest region is 46 and 16 points against the pot's unchanged 3093.
+
+One lead recorded as a lead, not a result: the shipped clouds' normals sit 0.41-1.64 deg from the
+mesh while the pipeline's re-estimated normals sit 3.39-8.10 deg against the growth's 3.4 deg gate.
+Different producers, different jobs - to be measured inside one job before anything rests on it.
