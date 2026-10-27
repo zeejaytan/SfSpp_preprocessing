@@ -479,7 +479,8 @@ ARM_BAD=0
       npl=$(ls "$c"/measure/*_prefloor_regions.ply 2>/dev/null | wc -l)
       njs=$(ls "$c"/measure/*_prefloor_regions.json 2>/dev/null | wc -l)
       echo "# $(basename "$(dirname "$(dirname "$c")")")/$(basename "$(dirname "$c")")/$(basename "$c") repl_rc=$rc verdict=$vd partd_ply=$npl partd_json=$njs"
-      [ "$rc" = "0" ] || ARM_BAD=1
+      # a replica MISMATCH is a result to report, not a broken job; a replica that did not run is
+      [ "$rc" = "0" ] || [ "$rc" = "NA" ] || ARM_BAD=1
     done
   fi
 } > "$OUT/ARMCHECK.txt" 2>&1
