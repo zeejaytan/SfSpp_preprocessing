@@ -1,7 +1,6 @@
 # 30 — Should the growth's criterion be an angle at all?
 
 **Status:** done — every measurement below was taken in this ticket's own runs; no verdict recorded here (the lead's call).
-**Working in:** chat on Thinkbook16 (2026-10-27)
 **Branch:** 30-should-the-criterion-be-an-angle, in /c/PR/worktrees/sfs/30
 **Answers:** U19
 **Blocked by:** none (ticket 29 merged as 8a50992; this ticket edits no C++)
@@ -406,3 +405,87 @@ copies only; the corpus and the released clouds are untouched.
   unmeasured strip question.
 - Rule Q cannot fail by construction, so a win for it is weaker evidence than a win for Rule C,
   and the two are reported separately for that reason.
+
+## Lead reading — 2026-10-27 (verified first-hand, not taken from the worker's report)
+
+**The hypothesis is supported, and the rule built on it fails — both, and for a reason worth keeping.**
+
+Curvature does track the angle these clouds carry. Across the nine clouds the predicted angle
+`s / rho` and the measured median pair angle move together: **Pearson 0.9408, Spearman 0.8833**, and
+the ratio between them varies *less* than the measured angle itself does (cv 0.31–0.33 against
+0.40–0.42 depending on whether the standard deviation is the population's or the sample's; the
+ordering is the same either way). So the answer to this ticket's question is **no, the criterion
+should not be a bare angle constant** — the angle a cloud carries is largely set by how tightly
+curved it is.
+
+**But one free constant fitted on Pot A cannot be carried across.** The pot's own measured angle is
+**2.008×** its curvature prediction, while the eight Juglet clouds sit at **0.745–1.666×**. Fitting
+`c = 3.4 / 0.5967 = 5.698` on the pot therefore lands theta at **28–103°** on the vessel — six
+times the angle the vessel actually carries. Rule Q, which transfers the pot's acceptance fraction
+instead, lands at **15.4–30.7°**. Both are far past the point where the sherd survives as more than
+one region.
+
+**And that is what the arms show.** At 71.56° and at 23.29° the growth returns **exactly one
+cluster on all nine Juglet pieces** and, with the one-cluster write unset as the ticket requires,
+writes **nothing**: 0 of 9 surfaces in both arms. The failure is not "the threshold is too high to
+be useful" — it is the sherd collapsing into a single blob, which is the opposite complaint to the
+one this whole line of work started from. The control arm proves the null is the theta's doing and
+not the instrument's: **3.4° in the same harness gives 4 of 9**, and its counts reproduce ticket
+23's arms exactly (Juglet piece 1 3 580 / 12 092, piece 4 182 / 732, piece 6 608 / 1 016, piece 7
+1 012 / 829 — I read two of those headers off the kept PLYs myself).
+
+**The number that makes it sharp, and that neither rule contained:** the pot's usable threshold is
+**2.8× its own median pair angle** (3.4 against 1.20), while the vessel's usable bracket is
+**0.8–1.5×** at 12° (where ticket 29's ladder still had 3 or more regions on all four clouds) and
+collapses by **1.5–2.8×** at 23.3°. Any rule of the form *theta = a × (some cloud statistic)* with
+`a` fitted so the pot lands on 3.4 inherits 2.8 and will always overshoot the vessel. **No
+multiplicative rule calibrated on the pot can work, whatever statistic it multiplies.**
+
+**What the ticket also exposed, for free:** the mesh-normal noise floor is **0.71°** on the pot
+against **3.39–8.10°** on the eight Juglet clouds, and on seven of eight of them that floor is
+already at or above the shipped 3.4°. The pot is noise-dominated (its angle is 1.7× its floor), the
+vessel is not (its floor is a quarter to a half of its angle). Any threshold below a cloud's own
+floor is measuring noise — which is precisely what a constant of 3.4 does on seven of these eight
+clouds.
+
+**verified:** (all re-read by me in the run directories, not taken from the report)
+- `git diff --stat main..origin/30-should-the-criterion-be-an-angle` → 25 files; everything outside
+  this ticket and `.scratch/juglet-breaklines/stage30/` in that diff is ticket 31's work landing on
+  main after this branch was cut, not this ticket editing anything. **No C++ change, no image.**
+- `sacct -j 33868337,33868514,33868765,33868766,33868808` → **all five COMPLETED 0:0**, on
+  spartan-bm071 / bm151 / bm069 / bm071 / bm071.
+- Recomputed Pearson from `out/tableA30_v2.tsv` myself → **0.940773**, and `c = 3.4 / 0.596701 =
+  5.697996`, theta_C per cloud **3.4 / 101.95 / 103.00 / 41.18 / 28.08 / 87.93 / 85.16 / 48.88 /
+  41.18**.
+- `cv(ratio) = 0.3115` against `cv(measured) = 0.3997` with the population standard deviation
+  (the report quotes 0.3304 / 0.4240 with the sample's — same ordering, different convention).
+- `grep -ho "outcome=[a-z]*" logs/*.log` per arm → arm 2 **9 none**, arm 3 **9 none**, arm 4
+  **4 two / 5 none**, arm 1 **8 two**; `grep clusters=` → arm 2 and arm 3 give **1 cluster on all
+  nine pieces**. The one-cluster collapse is in the logs, not inferred.
+- PLY headers against the repaired tables: arm 4 piece 1 Surface_0 **3 580** vertices and Surface_1
+  **12 092**; arm 1 Pot A 01 Surface_0 **66 763** — all three match the tables, so the repair that
+  ran on the login node produced numbers the kept files confirm.
+- `runs/index.tsv` → five rows for this ticket, six fields each, `verdict` and `human_note`
+  **empty**; `out/arms/geometry_counts.tsv` is a per-key, per-extension count and byte total,
+  written before the delete.
+
+**What this changes.** The line of work that says "make 3.4 adaptive by scaling it" is now closed by
+measurement rather than by preference. What replaces it cannot be a multiple of the pot's tuning.
+Two candidates survive the evidence: set the threshold from **the outcome** (the largest angle that
+still leaves two or more regions, searched per piece inside the retry loop that already exists), or
+**change the criterion** (grow in curvature space rather than on neighbour angle). Both are
+algorithm changes; neither is another constant.
+
+**What this does not settle.**
+- The usable bracket on the vessel is only bounded: it works at 12° and collapses by 23.3°. Nothing
+  here says where inside that band the crossover is.
+- The noise floor that separates the two vessels by an order of magnitude was measured **against the
+  meshes**, which is an instrument, not an input: production has clouds only. A deployable rule has
+  to estimate that floor from the cloud itself (the k = 10 against k = 30 normal disagreement ticket
+  20 measured does separate the two vessels the same way), and that has not been done.
+- **One pot, one vessel, nine clouds.** The ratio 2.008 versus 0.745–1.666 is a fact about these two
+  objects; whether it is a fact about pot-scale and sherd-scale material is exactly the question a
+  second pot and a second vessel would answer, and they are not in hand.
+- Still no assembly, so still no seating score. And the fourth arm was added by the worker, not the
+  ticket: without it the two nulls could not be told apart from "these clouds never split". That was
+  the right call and it is recorded where it belongs.
