@@ -1,8 +1,8 @@
 # 35: What are sherds 2 and 9 really? Look at the meshes, and measure the shape
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-10-27)
-**Branch:** —
+**Branch:** 35-what-are-sherds-2-and-9, in /c/PR/worktrees/sfs/35
 **Answers:** U19, E1
 **Blocked by:** none
 **Blocks:** none
