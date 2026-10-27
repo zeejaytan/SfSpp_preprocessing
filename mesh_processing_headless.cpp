@@ -607,6 +607,12 @@ static void printNormalLine24(size_t npts, const std::vector<int>& used, int kCo
 // scan did not choose, and the carried sign must stay the scan's own.
 static std::string g_normalSource = "reestimate";
 static bool g_normalSourceGiven = false;
+// TICKET 34: how the carried normal is chosen, effective only when SFS_NORMAL_SOURCE=input.
+//   mean    (default) = ticket 33: average the unit normals inside one sampling radius.
+//   nearest           = the nearest source point's unit normal verbatim: no averaging ball, no
+//                       MST, the source sign kept. A point with no usable source normal is
+//                       counted and reported, never silently filled.
+static std::string g_normalCarry = "mean";
 // TICKET 33: the appendix-A merge's boundary-pair minimum. 3 is the literal today's code carries.
 static int g_mergeMinPairs = 3;
 
@@ -692,6 +698,9 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 	const bool n33carry = (g_normalSource == "input" && carrySource33 && !carrySource33->points.empty());
 	if (n33carry)
 	{
+		// TICKET 34: in nearest mode the averaging ball is skipped entirely, so every point takes
+		// the single nearest source point's normal below; nothing else about the carry changes.
+		const bool n34nearest = (g_normalCarry == "nearest");
 		std::list<PointVectorPair> pcaRef33(points.begin(), points.end());
 		CGAL::pca_estimate_normals<Concurrency_tag>
 			(pcaRef33, nb_neighbors,
@@ -712,7 +721,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 			q33.z = (float)CGAL::to_double(it33->first.z());
 			double nx33 = 0.0, ny33 = 0.0, nz33 = 0.0;
 			bool have33 = false;
-			if (carryRadius33 > 0.0F)
+			if (!n34nearest && carryRadius33 > 0.0F)
 			{
 				idx33.clear(); d33.clear();
 				const int got33 = kd33.radiusSearch(q33, carryRadius33, idx33, d33);
@@ -746,6 +755,9 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 						nz33 = (double)s33.normal_z / ln33;
 						have33 = true;
 						++nearest33;
+						// In nearest mode this lookup IS the carry: every point that takes one is
+						// counted as carried, so carried=npts is the proof the lookup ran.
+						if (n34nearest) ++carried33;
 					}
 				}
 			}
@@ -762,7 +774,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 		}
 		std::cout << "[NORMAL-33] piece=" << (fileNameOnly.empty() ? "NA" : fileNameOnly)
 		          << " call=" << g_normalCall
-		          << " source=input npts=" << points.size()
+		          << " source=input carry=" << g_normalCarry << " npts=" << points.size()
 		          << " carried=" << carried33 << " nearest=" << nearest33 << " missing=" << missing33
 		          << " median_dev_to_pca_deg=" << n33Median(dev33)
 		          << " missing_fill=pca mst=not_applied"
@@ -801,7 +813,7 @@ bool getNormalsOnSurface(pcl::PointCloud<Point>::Ptr sampledPointCloud, pcl::Poi
 			// TICKET 33: the switch was set to today's value; say so per call, as the ticket asks.
 			std::cout << "[NORMAL-33] piece=" << (fileNameOnly.empty() ? "NA" : fileNameOnly)
 			          << " call=" << n24callId
-			          << " source=reestimate npts=" << n24npts
+			          << " source=reestimate carry=" << g_normalCarry << " npts=" << n24npts
 			          << " carried=0 nearest=0 missing=0 median_dev_to_pca_deg=0"
 			          << " missing_fill=none mst=applied carry_radius_mm=0 source_n=0" << std::endl;
 		}
@@ -4453,6 +4465,18 @@ int main(int argc, char** argv) {
         {
             std::cerr << "[NORMAL-33] FATAL unknown SFS_NORMAL_SOURCE=" << g_normalSource
                       << " (reestimate|input)" << std::endl;
+            std::exit(2);
+        }
+        // TICKET 34: mean (default) is ticket 33's averaging ball; nearest is the single nearest
+        // source point's normal. Only effective when SFS_NORMAL_SOURCE=input.
+        if (const char* e34 = std::getenv("SFS_NORMAL_CARRY"))
+        {
+            if (*e34) g_normalCarry = e34;
+        }
+        if (g_normalCarry != "mean" && g_normalCarry != "nearest")
+        {
+            std::cerr << "[NORMAL-34] FATAL unknown SFS_NORMAL_CARRY=" << g_normalCarry
+                      << " (mean|nearest)" << std::endl;
             std::exit(2);
         }
         if (g_normalMode == "radius" && (g_pieceS0MM <= 0.0 || g_pieceDiagMM <= 0.0))
