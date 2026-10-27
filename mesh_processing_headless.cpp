@@ -3601,7 +3601,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 << ", \"merge_passes\": " << (tracked25 ? g_mergePasses25 : 0)
                 << ", \"merge_pairs_tested\": " << (tracked25 ? g_mergeTested25 : 0)
                 << ", \"merges\": " << (tracked25 ? dumpMergesJson25() : std::string("[]"))
-                << ", \"classify_swap\": " << (g_classifySwap25 < 0 ? std::string("none") : (g_classifySwap25 ? std::string("swapped") : std::string("kept")))
+                << ", \"classify_swap\": " << dumpJsonStr25(g_classifySwap25 < 0 ? std::string("none") : (g_classifySwap25 ? std::string("swapped") : std::string("kept")))
                 << ", \"points_in_no_cluster\": " << unclaimed25
                 << ", \"reason_counts\": " << dumpReasonCounts25(why25);
             dumpWriteJson25("r3_after_merge", o25.str());
