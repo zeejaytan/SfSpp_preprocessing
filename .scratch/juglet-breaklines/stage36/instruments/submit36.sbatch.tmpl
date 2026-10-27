@@ -135,9 +135,11 @@ build_arm() {
   return 1
 }
 
-SPACING="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200"
-CARRY="SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest"
-
+# The arm switches are spelled out literally below, on purpose.  They were variables in the first
+# version of this file (run 20261028-0004, job 33880164), and an exported function runs inside a
+# child shell of xargs that never saw them: arms B and C expanded to the empty string and ran as
+# copies of A, while D kept only the literal SFS_SINGLE_CLUSTER=write.  A literal cannot be
+# dropped by a missing export.
 run_cell_one() {
   local line="$1" tag pot piece
   [ -n "${line:-}" ] || return 0
@@ -146,9 +148,9 @@ run_cell_one() {
   case "$tag" in
     A)  ENVS="" ;;
     A2) ENVS="" ;;
-    B)  ENVS="$SPACING" ;;
-    C)  ENVS="$SPACING $CARRY" ;;
-    D)  ENVS="$SPACING $CARRY SFS_SINGLE_CLUSTER=write" ;;
+    B)  ENVS="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200" ;;
+    C)  ENVS="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest" ;;
+    D)  ENVS="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write" ;;
     *) echo "[CELL] unknown arm $tag in spec $line"; return 9 ;;
   esac
   if [ "$pot" = "Pot_A" ]; then AXIS="$CORP/Axes/${piece}_Axis.xyz"
@@ -203,9 +205,9 @@ echo "[JOB] cells: $(wc -l < "$OUT/cells.list")"
     case "$t" in
       A)  e="(none) -- the shipped default" ;;
       A2) e="(none) -- the shipped default, repeat" ;;
-      B)  e="$SPACING" ;;
-      C)  e="$SPACING $CARRY" ;;
-      D)  e="$SPACING $CARRY SFS_SINGLE_CLUSTER=write" ;;
+      B)  e="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200" ;;
+      C)  e="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest" ;;
+      D)  e="SFS_SPACING_POLICY=piece SFS_SPACING_SAMPLES=200 SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest SFS_SINGLE_CLUSTER=write" ;;
     esac
     echo "$t|$pt|$pc	TAB	cd <stage> && $APT exec --bind /data:/data $SIF env POT_NAME=$pt SFS_AXIS_FILE=<stage>/Dataset/Axes/$pc"'_Axis.xyz'" SFS_DUMP_STAGE=<cell>/dump $e <BIN>"
   done < "$OUT/cells.list"
@@ -329,6 +331,63 @@ else
   echo "[CORPUS] DIFFERS"; cat "$OUT/corpus.diff"
 fi
 grep -m1 "opt-sfs-pristine" "$OUT/corpus_after.txt" || true
+
+# --- arm check: did each arm really run the switches it names? ---------------------------
+# Worth checking, and run 20261028-0004 is why: the arm switches were passed through shell
+# variables that the xargs child never saw, so arms B and C expanded to the empty string and ran as
+# copies of A.  The log lines below are the pipeline's own report of what it read.
+ARM_BAD=0
+{
+  echo "# ticket 36 arm check -- read from each arm's own per-piece mesh logs"
+  echo "# arm cells spacing_piece normal_set single_write verdict"
+  for ar in $ARMS; do
+    n=0; sp=0; ns=0; sc=0
+    for f in "$ECELLS/$ar"/*/*/logs/mesh.log; do
+      [ -f "$f" ] || continue
+      n=$((n + 1))
+      grep -q '^\[SPACING-22\] policy=piece' "$f" && sp=$((sp + 1))
+      grep -q 'normalSourceSet=yes' "$f" && ns=$((ns + 1))
+      grep -q '^\[SWITCH-23\] singleCluster=write' "$f" && sc=$((sc + 1))
+    done
+    case "$ar" in
+      A|A2) w_sp=0;    w_ns=0;    w_sc=0 ;;
+      B)    w_sp=$n;   w_ns=0;    w_sc=0 ;;
+      C)    w_sp=$n;   w_ns=$n;   w_sc=0 ;;
+      D)    w_sp=$n;   w_ns=$n;   w_sc=$n ;;
+      *)    w_sp=$n;   w_ns=$n;   w_sc=$n ;;
+    esac
+    if [ "$sp" = "$w_sp" ] && [ "$ns" = "$w_ns" ] && [ "$sc" = "$w_sc" ]; then
+      v=ok
+    else
+      v=MISMATCH; ARM_BAD=1
+    fi
+    echo "$ar $n $sp/$w_sp $ns/$w_ns $sc/$w_sc $v"
+  done
+  echo "# the pipeline's own first line of each kind, arm by arm"
+  for ar in $ARMS; do
+    f=$(ls "$ECELLS/$ar"/*/*/logs/mesh.log 2>/dev/null | head -1)
+    [ -n "$f" ] || continue
+    echo "# $ar $(grep -m1 '^\[SPACING-22\]' "$f")"
+    echo "# $ar $(grep -m1 'normalSourceSet=' "$f" | sed 's/.*\(normalSource=\)/\1/')"
+    echo "# $ar $(grep -m1 '^\[SWITCH-23\]' "$f")"
+  done
+} > "$OUT/ARMCHECK.txt" 2>&1
+cat "$OUT/ARMCHECK.txt"
+if [ "$ARM_BAD" -ne 0 ]; then
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "rc=12"
+    echo "reason: at least one arm did not run the switches it names; out/ARMCHECK.txt says which"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=12 an arm ran the wrong switches (out/ARMCHECK.txt); no index row written"
+  date -u +"end %Y-%m-%dT%H:%M:%SZ"
+  exit 12
+fi
+echo "[JOB] arm check: every arm ran its own switches"
 
 printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
 echo "[JOB] index row appended:"
