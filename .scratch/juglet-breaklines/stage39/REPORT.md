@@ -303,7 +303,9 @@ Two facts about the lines themselves, so they are not read as more than they say
   `[REASSIGN-22]`.
 - `other_copied_over` is `(otherBefore > ownBefore) ? "yes" : "no"` — a count comparison, not a copy flag.
 
-The pipeline's other lines for the same cells, from `logs/lines39.log` (ESC-prefixed in the file):
+The pipeline's other lines for the same cells, quoted from each cell's `logs/mesh.log` (ESC-prefixed there;
+`logs/lines39.log` is the driver's own grep of them and carries the `[SPACING-22]`, `[DOWNSAMPLING RESULT]` and
+`[PAPER-234]` lines but not the `[DEDUPE-27]` ones, which are read from `mesh.log` directly):
 
 ```
 [SPACING-22] policy=piece diagMM=28.2305 s0MM=0.209045 samples=200 rawMM=0.141153 S=0.209045          (piece 2, both arms)
@@ -407,11 +409,15 @@ after masking the arm name and the dump path, in exactly these classes — `[REA
   commit `ed0fc16…`, python 3.10.20, numpy 2.2.6, scipy 1.15.2, apptainer 1.3.3. Build of the arm's binary:
   `logs/build-new.log` 68 342 B, ends `[100%] Linking CXX executable MeshPreprocessingHeadless` /
   `[100%] Built target MeshPreprocessingHeadless`; the binary is 1 582 080 B, md5 `180e68467eac391279675fdc3ffedfe1`.
-- **Branch**: `39-does-own-mode-keep-the-two-faces-apart`, head `ed0fc16328efdb13991e2d9dba843fe7bddb174e`
-  pushed to `origin` (the commit the job built from), with this report's own commit on top.
+- **Branch**: `39-does-own-mode-keep-the-two-faces-apart`. The job built from
+  `ed0fc16328efdb13991e2d9dba843fe7bddb174e` (its 11 `stage39/instruments/` files); this report, the run
+  record and the ticket's progress note are committed on top and pushed to `origin`.
   `git diff --stat main -- mesh_processing_headless.cpp` is **empty**: no tracked pipeline behaviour was
-  changed, as the ticket requires. `git diff --name-status main...HEAD` is the ticket's own claim (3
-  insertions, 1 deletion, no Status change) plus the 11 `stage39/instruments/` files.
+  changed, as the ticket requires. `git diff --name-only main...HEAD` is 105 files — the 11 instruments, the
+  93 report-and-results files, and the ticket's own markdown. The ticket's `**Status:**` line reads
+  `in-progress`; that line and its two `Working in` / `Branch` companions were written by
+  `scripts/ticket_start.sh` when the ticket was opened (`git diff b02c476^ b02c476`), and nothing this ticket
+  committed has touched it since.
 
 ## 8. Not done, with the exact command or line
 
