@@ -91,7 +91,7 @@ cloud_path() {
   echo "$GEOM/${p}_synthetic_x${l}_spacing_${s}.pcd"
 }
 cloud_spacing() {
-  "$PY" -c 'import re,sys; print(re.search(r"spacing_([0-9.]+)\\.pcd$", sys.argv[1]).group(1))' "$1"
+  "$PY" -c 'import re,sys; print(re.search(r"spacing_([0-9.]+)[.]pcd$", sys.argv[1]).group(1))' "$1"
 }
 
 START_S=$(date +%s)
