@@ -131,3 +131,16 @@ Two further paths, laptop only, not in any run directory:
 | results_fig/out/measure/sampler_validate_Juglet_Piece_9.json | 3 036 |
 | results_fig/out/measure/spacing39_Juglet_Piece_9_x1.txt | 11 |
 | edgeon_compare.png | 650 161 |
+
+## Added after the close was first refused (2026-10-28)
+
+`ticket_close.sh` would not delete two compiled bytecode files that git ignores, so they are
+recorded here and then removed. Both are build artefacts of importing instruments that are
+themselves already tracked under `stage39/instruments/`, so deleting them loses nothing.
+
+| path (relative to worktree) | bytes | regenerates from |
+|---|---|---|
+| .scratch/juglet-breaklines/stage39/instruments/__pycache__/measure34.cpython-313.pyc | 67325 | stage39/instruments/measure34.py (tracked) |
+| .scratch/juglet-breaklines/stage39/instruments/__pycache__/nest39.cpython-313.pyc | 13051 | stage39/instruments/nest39.py (tracked) |
+
+class: python bytecode (`*.pyc`); 2 files / **80 376 bytes**; no geometry in this class.
