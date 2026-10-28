@@ -1,0 +1,19 @@
+{
+ "matched": 0,
+ "mean_normal_dot": -0.9993570511406065,
+ "median_point_normal_angle_deg": null,
+ "n0": 4155,
+ "n0_distinct": 2471,
+ "n1": 3762,
+ "n1_distinct": 2142,
+ "normal_src_a": "ply",
+ "normal_src_b": "ply",
+ "round_mm": 0.0001,
+ "shared": 0,
+ "shared_over_a": 0.0,
+ "shared_over_b": 0.0,
+ "shared_over_smaller": 0.0,
+ "surface_a": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armB/surfaces/Juglet_Piece_2_Surface_0.ply",
+ "surface_b": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armB/surfaces/Juglet_Piece_2_Surface_1.ply",
+ "tag": "Juglet_Piece_2_x1_armB"
+}

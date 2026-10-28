@@ -1,0 +1,4 @@
+# geometry deleted by 20261028-1624_ed0fc16_t39-ownmode phase 1, 2026-10-28T05:27:17Z
+geometry_files_before 14
+geometry_files_after 0
+# kept: tsv json log py sh txt png (tables, numbers, sources, figures)

@@ -1,0 +1,8 @@
+host spartan-bm073.hpc.unimelb.edu.au
+utc 2026-10-28T05:25:40Z
+commit ed0fc16328efdb13991e2d9dba843fe7bddb174e
+python 3.10.20
+numpy 2.2.6
+scipy 1.15.2
+apptainer version 1.3.3
+1

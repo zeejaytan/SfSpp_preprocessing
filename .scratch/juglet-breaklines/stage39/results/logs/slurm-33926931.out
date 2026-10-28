@@ -1,0 +1,75 @@
+[JOB] runid=20261028-1624_ed0fc16_t39-ownmode job=33926931 tag=t39-ownmode phase=1 new=ed0fc16328efdb13991e2d9dba843fe7bddb174e host=spartan-bm073.hpc.unimelb.edu.au
+[JOB] instruments match commit ed0fc16328efdb13991e2d9dba843fe7bddb174e (8 files)
+[JOB] ---- phase 1 ----
+[BUILD] new from ed0fc16328efdb13991e2d9dba843fe7bddb174e
+[BUILD] new ok 1582080 bytes md5=180e68467eac391279675fdc3ffedfe1
+reassign_line	[REASSIGN-22] mode=own
+count_minCluster	50
+status_npts	5256
+status_floor	50
+status_outcome	two
+status_surf0_points	2087
+status_surf1_points	3510
+retry_sizes	589,1497,327,166,158,89
+downsampling	5256
+[CELL39] === the surfaces this arm wrote, measured against the ORIGINAL cloud and mesh ===
+[CELL39] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB/Temp/Data/Juglet/Juglet_Piece_9_Surface_0.ply (163395 bytes)
+[SURFACE] Juglet_Piece_9_x1_armB_Surface_0 points=2087 diag=18.643 mm cov2mm=0.6829 fold=3.320 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armB_Surface_0 points=2087 distinct=1498 (normals ply)
+[CELL39] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB/Temp/Data/Juglet/Juglet_Piece_9_Surface_1.ply (274522 bytes)
+[SURFACE] Juglet_Piece_9_x1_armB_Surface_1 points=3510 diag=21.976 mm cov2mm=0.7302 fold=2.802 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armB_Surface_1 points=3510 distinct=2013 (normals ply)
+[CELL39] === the pair statistic between the two surfaces this arm wrote ===
+[SURFACEPAIR] Juglet_Piece_9_x1_armB n0=2087 n1=3510 med_nn=2.1758 along=2.1345 across=0.1877 angle=13.927 deg coin=0.000000 t_signed=-2.1345 (normals a:ply b:ply)
+[NEST] Juglet_Piece_9_x1_armB n0=2087 (distinct 1498) n1=3510 (distinct 2013) shared=0 of_a=0.0000 of_b=0.0000 of_smaller=0.0000 meandot=-0.9999 ang=na deg (normals a:ply b:ply)
+[CELL39] SampledWithNormals: points=5256 median_nn=0.20154 mm
+[CELL39] === count the geometry this arm produced, then delete it ===
+ext	files	bytes
+json	5	2775
+obj	1	128277
+other	3	539
+pcd	3	536219
+ply	12	3510888
+TOTAL	29	5225160
+xyz	5	1046462
+[CELL39] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump after the counted record above
+[CELL39] === every cell, as recorded ===
+piece	arm	pot	level	cloud_kind	cloud_points	requested_mm	achieved_mm	pipeline_rc	clusters	spacing_policy	status_outcome	surf0_points	surf1_points	ctrl38_surf0	ctrl38_surf1	ctrl38_reproduced	note
+Juglet_Piece_2	A	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3979	4155	3979	yes	ok
+Juglet_Piece_2	B	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3762	4155	3979	na	ok
+Juglet_Piece_9	A	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2229	3512	2229	3512	yes	ok
+Juglet_Piece_9	B	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2087	3510	2229	3512	na	ok
+[CELL39] === the surfaces ===
+piece	arm	surface	points	distinct	ext_x	ext_y	ext_z	diag	cov_2mm	fold_deg	normal_src	ply_bytes
+Juglet_Piece_2	A	0	4155	2471	7.022998000000001	24.7381	9.660949999999957	27.470530526739072	0.7680311890838206	3.104152556785976	ply	319604
+Juglet_Piece_2	A	1	3979	3979	8.167999000000002	24.7381	9.53496999999993	27.74176368176507	1.0	3.013485934784664	ply	315847
+Juglet_Piece_2	B	0	4155	2471	7.022998000000001	24.7381	9.660949999999957	27.470530526739072	0.7680311890838206	3.104152556785976	ply	323511
+Juglet_Piece_2	B	1	3762	2142	6.161200999999998	22.20069	9.220950000000016	24.816465363564596	0.791812865497076	2.901643836867422	ply	300439
+Juglet_Piece_9	A	0	2229	2229	5.927202999999999	8.74016	16.418030000000044	19.521112706751897	0.8137535816618912	2.9662320393249444	ply	173888
+Juglet_Piece_9	A	1	3512	2015	6.782699000000001	13.0204401	16.418030000000044	22.024726450133052	0.7325692454632283	2.8033206206864536	ply	274977
+Juglet_Piece_9	B	0	2087	1498	5.385601000000001	9.7238303	14.967039999999997	18.64322558453872	0.6829035339063992	3.3204094596622915	ply	163395
+Juglet_Piece_9	B	1	3510	2013	6.6240999999999985	13.0204401	16.418030000000044	21.976402578415545	0.73018147086915	2.802466685118388	ply	274522
+[CELL39] === the pair statistic ===
+piece	arm	n0	n1	med_nn	med_along	med_across	med_angle_deg	coin	med_t_signed	p05_t_signed	p95_t_signed	normal_src_a	normal_src_b
+Juglet_Piece_2	A	4155	3979	0.0	0.0	0.0	0.0	0.5911032922844935	0.0	-2.5417101869858705	0.0	ply	ply
+Juglet_Piece_2	B	4155	3762	2.2847357995719397	2.2540777851087657	0.15926958694537513	12.977144972134433	0.0	-2.2540777851087657	-2.654118883696664	-1.5862942210477828	ply	ply
+Juglet_Piece_9	A	2229	3512	0.0	0.0	0.0	0.0	0.8246013667425968	0.0	-0.004322898100523831	0.03986170855198336	ply	ply
+Juglet_Piece_9	B	2087	3510	2.175759811718171	2.134489859141274	0.1877338703672796	13.927093172798616	0.0	-2.134489859141274	-2.4260113140511037	-1.6615995307254277	ply	ply
+[CELL39] === the nesting quantities ===
+piece	arm	n0	n0_distinct	n1	n1_distinct	shared	shared_over_a	shared_over_b	shared_over_smaller	mean_normal_dot	matched	median_point_normal_angle_deg	normal_src_a	normal_src_b
+Juglet_Piece_2	A	4155	2471	3979	3979	2352	0.9518413597733711	0.5911032922844935	0.9518413597733711	0.9960274472338446	2352	0.0	ply	ply
+Juglet_Piece_2	B	4155	2471	3762	2142	0	0.0	0.0	0.0	-0.9993570511406065	0	na	ply	ply
+Juglet_Piece_9	A	2229	2229	3512	2015	1616	0.7249887842081651	0.8019851116625311	0.8019851116625311	0.9993183797978673	1616	0.0	ply	ply
+Juglet_Piece_9	B	2087	1498	3510	2013	0	0.0	0.0	0.0	-0.9999474210970047	0	na	ply	ply
+[CELL39] all cells ran
+[CELL39] done
+[JOB] corpus and frozen inputs unchanged
+pcd	2	691816
+ply	12	3820607
+TOTAL	14	4512423
+# geometry deleted by 20261028-1624_ed0fc16_t39-ownmode phase 1, 2026-10-28T05:27:17Z
+geometry_files_before 14
+geometry_files_after 0
+# kept: tsv json log py sh txt png (tables, numbers, sources, figures)
+[JOB] index row appended (verdict and human_note left empty)
+[JOB] phase 1 complete rc=0

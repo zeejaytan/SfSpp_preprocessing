@@ -108,3 +108,52 @@ the numbers; the lead decides whether they meet it.
 7. Corpus and pristine md5 before/after; the geometry deletion record; job ids with `sacct` states; the
    pushed branch head.
 8. Anything not done, with the exact command or line that failed.
+
+## Progress (work in progress, 2026-10-28)
+
+Numbers, evidence and the exact failures are in `.scratch/juglet-breaklines/stage39/REPORT.md`; the run of record
+is `/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/` (job **33926931**, commit
+`ed0fc16328efdb13991e2d9dba843fe7bddb174e`, `spartan-bm073`, `COMPLETED` 00:01:47, ExitCode 0:0). **One job of the
+two allowed was used**; no cell failed, so there was nothing to re-run.
+
+All eight evidence items are delivered:
+
+1. **Cloud check** — both pieces reproduce ticket 38 before any cell runs: Juglet 2 6 259 points / 0.20904330739003849 mm
+   median against 6 259 / 0.209043, Juglet 9 5 257 / 0.201511365190472 against 5 257 / 0.201511, `count_ok` and
+   `spacing_ok` `yes`, gate `ok`. The clouds are byte-identical to ticket 38's (same md5s `c6cd2eab…` /
+   `77e0f59d…`), and so are `sampler_validate_<piece>.json` and `sample_<piece>_x1.json`.
+2. **Arm-A control** — reproduces ticket 38 exactly on both pieces: sherd 2 **4 155 / 3 979**, sherd 9 **2 229 /
+   3 512**, so neither cell is void. Stronger: after masking the cell path and dropping the two timing lines and the
+   `Sampled indices` draw, arm A's `mesh.log` has **0 differing lines** against ticket 38 run 6's own `mesh.log` for
+   the same piece. Both arms of a piece ran on one cloud — their `inputs.md5` are byte-identical, and the environment
+   differs only in `SFS_REASSIGN_MODE`.
+3. **Per-surface table** — 8 rows in `out/cells-pipeline/surfaces.tsv` (points, distinct, extents, diagonal,
+   2 mm coverage, folded angle to the original mesh). Piece 2 arm B `Surface_0` is bit-identical to arm A's; its
+   `Surface_1` falls 3 979 → 3 762 (diagonal 27.7418 → 24.8165 mm). Piece 9 arm B `Surface_0` falls 2 229 → 2 087
+   (diagonal 19.5211 → 18.6432 mm, 2 mm coverage 0.8138 → 0.6829), `Surface_1` 3 512 → 3 510.
+4. **Pair table** — arm A's medians are all exactly `0.0` (every `Surface_1` point coincides with a `Surface_0`
+   point). Arm B: `med_nn` 2.2847 / 2.1758, `med_along` **2.2541 / 2.1345 mm**, `med_across` 0.1593 / 0.1877,
+   `coin` 0.0, signed `med_t` **-2.2541 / -2.1345** with p05 / p95 **-2.6541 / -1.5863** and **-2.4260 / -1.6616**.
+   The `p90` columns and `min_nn_minus_across` are in the report.
+5. **The three derived quantities** — arm A reproduces ticket 38's nesting: shared-of-smaller **0.9518 / 0.8020**,
+   mean-normal dot **+0.9960 / +0.9993**. Arm B: shared **0** on both pieces (fraction 0.0 both ways), mean-normal
+   dot **-0.9993570511406065 / -0.9999474210970047**, median per-point normal angle `na` because there is no shared
+   position to take it at.
+6. **`[REASSIGN-22]` and `[WINDOW-26*]` lines** — 8 lines per cell quoted verbatim from each cell's
+   `logs/admission39.log`, in the report's section 6, with the reason each arm's numbers differ
+   (`admitted_own` 0 on piece 2 arm B; 1 498 / 262 against 1 610 / 1 755 on piece 9) and with
+   `[WINDOW-26-SWITCH]` identified as the window scheme (`g_windowMode`, `SFS_WINDOW_MODE`), not the reassign mode.
+7. **Corpus, pristine, deletion, job, branch** — `corpus_before.tsv` = `corpus_after.tsv` (1 803 lines) and
+   `inputs_before.md5` = `inputs_after.md5` (215 lines), both `diff` files 0 bytes; `/opt/sfs-pristine` recorded
+   **ABSENT** from the compute node with the `ls`/`stat` text; the geometry delete counted first (14 files /
+   4 512 423 bytes, 0 after) and written to `GEOMETRY_DELETED_phase1.txt` before the delete; index row at
+   `index.tsv` line 320 with `verdict` and `human_note` **empty**; branch head pushed, `git diff --stat main --
+   mesh_processing_headless.cpp` **empty** (no tracked pipeline change).
+8. **Not done, with the exact command or line** — six numbered items in the report's section 8, the load-bearing
+   ones being: no `SAMPLER-GATE-DISCLOSURE_<piece>.txt` was written by `run_cell39.sh` (the route-1/route-2 lines
+   survive in `phase1.log` only), `nest39.py selftest` is not run by the job (its 3/3 was run by hand), and the
+   435 MB `build/` tree stays on the cluster as it did for stage 38.
+
+The bar in "The bar the lead will read against" is restated in the report beside the numbers and **not judged**
+there. `Status`, `intent/` and `mesh_processing_headless.cpp` are untouched by this ticket; no merge.
+

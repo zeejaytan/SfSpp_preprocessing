@@ -1,0 +1,5 @@
+piece	arm	pot	level	cloud_kind	cloud_points	requested_mm	achieved_mm	pipeline_rc	clusters	spacing_policy	status_outcome	surf0_points	surf1_points	ctrl38_surf0	ctrl38_surf1	ctrl38_reproduced	note
+Juglet_Piece_2	A	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3979	4155	3979	yes	ok
+Juglet_Piece_2	B	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3762	4155	3979	na	ok
+Juglet_Piece_9	A	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2229	3512	2229	3512	yes	ok
+Juglet_Piece_9	B	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2087	3510	2229	3512	na	ok

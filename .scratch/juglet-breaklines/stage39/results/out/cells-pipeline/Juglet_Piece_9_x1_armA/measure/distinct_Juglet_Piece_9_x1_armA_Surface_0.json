@@ -1,0 +1,8 @@
+{
+ "distinct": 2229,
+ "normal_src": "ply",
+ "ply": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armA/Temp/Data/Juglet/Juglet_Piece_9_Surface_0.ply",
+ "points": 2229,
+ "round_mm": 0.0001,
+ "tag": "Juglet_Piece_9_x1_armA_Surface_0"
+}
