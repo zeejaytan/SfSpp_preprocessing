@@ -1,0 +1,64 @@
+stage39/results — provenance of every file
+
+Everything here was copied out of ONE run directory on the cluster: 82 files as a single tar
+(md5 c6ae3359831c9f3955e71dfc1077ae89, 23 478 B, still at /tmp/t39-artifacts.tgz on the cluster) and the
+remaining 7 (logs/build-new.log, logs/fetch.log, logs/sbatch_phase1.txt, out/corpus_before.tsv,
+out/corpus_after.tsv, out/inputs_before.md5, out/inputs_after.md5) fetched one by one afterwards. All 89
+were then md5-compared against the cluster copies; see the note below the run line.
+
+run = /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/
+      job 33926931, COMPLETED, Elapsed 00:01:47, ExitCode 0:0, node spartan-bm073
+      commit ed0fc16328efdb13991e2d9dba843fe7bddb174e
+
+Every file below was md5-compared against the cluster copy after download: 89 of the run directory's 90
+files outside build/ are here and 89 of 89 md5s match. The one that is not here is out/bin-new, the
+1 582 080 B binary the job built (md5 180e68467eac391279675fdc3ffedfe1); it is reproducible from the
+commit and the build log is kept.
+
+path under this directory                        source inside the run directory
+-----------------------------------------------  ------------------------------------------------
+out/phase1.log                                   out/phase1.log (the driver's own log, 31360 B)
+out/cells-pipeline/cloud_gate.tsv                out/cells-pipeline/cloud_gate.tsv
+out/cells-pipeline/pipeline_cells.tsv            out/cells-pipeline/pipeline_cells.tsv
+out/cells-pipeline/surfaces.tsv                  out/cells-pipeline/surfaces.tsv
+out/cells-pipeline/surface_pairs.tsv             out/cells-pipeline/surface_pairs.tsv
+out/cells-pipeline/nest.tsv                      out/cells-pipeline/nest.tsv
+out/cells-pipeline/<cell>/cell.tsv               same path in the run directory
+out/cells-pipeline/<cell>/inputs.md5             same path in the run directory
+out/cells-pipeline/<cell>/geometry_counts.tsv    same path in the run directory
+out/cells-pipeline/<cell>/status_raw.tsv         same path in the run directory
+out/cells-pipeline/<cell>/logs/mesh.log          the pipeline's own stdout/stderr for that cell
+out/cells-pipeline/<cell>/logs/lines39.log       the fixed grep set over mesh.log
+out/cells-pipeline/<cell>/logs/admission39.log   every [REASSIGN-22] and [WINDOW-26*] line, verbatim
+out/cells-pipeline/<cell>/measure/*.json         per-surface, per-pair and per-nest measurements
+out/measure/sampler_validate_*.json              route-1/route-2 sampler proof per piece
+out/measure/sample_*.json                        the cloud actually drawn, with achieved spacing
+out/measure/spacing39_*.txt                      the requested spacing pass 1 gated and pass 2 used
+out/pristine.txt                                 /opt/sfs-pristine status (ABSENT on this node)
+out/versions.txt                                 host, utc, commit, python/numpy/scipy/apptainer
+out/run-meta_phase1.txt                          runid, jobid, commit, tag, phase, utc, rc
+out/GEOMETRY_DELETED_phase1.txt                  the counted record written BEFORE the delete
+out/geometry_counts_phase1.tsv                   the same counts, per extension
+out/instruments_commit.md5                       md5 of the instruments as extracted from the commit
+out/instruments_rundir.md5                       md5 of the instruments as they sat in the run dir
+out/corpus.diff                                  empty: corpus tree listing before == after
+out/inputs.diff                                  empty: 215 input md5s before == after
+out/corpus_before.tsv, out/corpus_after.tsv      the two listings the diff above was taken from (1803 rows each)
+out/inputs_before.md5, out/inputs_after.md5      the two md5 sets the diff above was taken from (215 rows each)
+logs/build-new.log                               the arm binary's build log, 68342 B
+logs/fetch.log                                   the job's own git fetch
+logs/sbatch_phase1.txt                           sbatch's reply: "Submitted batch job 33926931"
+logs/slurm-33926931.out                          Slurm stdout
+logs/slurm-33926931.err                          Slurm stderr (0 bytes)
+logs/submit.log                                  submit39.sh's own record
+run.json                                         the run's parameters
+submit.sbatch                                    the rendered batch script that ran
+
+Geometry (PCD/PLY/OBJ/XYZ) is not here and no longer exists for these cells: the 14 files the cells
+produced under out/ were counted per extension and deleted at the end of the run
+(out/GEOMETRY_DELETED_phase1.txt: geometry_files_before 14, geometry_files_after 0). The 401 geometry
+files still under the run directory's build/ are the extracted commit's OWN tracked files: the commit
+tracks 409 geometry-extension paths, 401 exist under build/new/src, 0 exist there untracked and 0 tracked
+ones are missing; all 401 regular blobs were md5-compared against "git cat-file blob ed0fc16:<path>" and
+all 401 are identical, and the other 8 are symlinks in the commit whose targets readlink matches. Nothing
+under build/ was produced by the cells.

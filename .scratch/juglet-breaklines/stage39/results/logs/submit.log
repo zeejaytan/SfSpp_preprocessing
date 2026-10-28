@@ -1,0 +1,8 @@
+runid=20261028-1624_ed0fc16_t39-ownmode tag=t39-ownmode phase=1 wall=00:40:00
+commit=ed0fc16328efdb13991e2d9dba843fe7bddb174e
+jobname=t39-ownmode
+COPIES.md grow38.py measure34.py mesh38.py nest39.py replica37.py run_cell39.sh stage_synth_p38.sh submit39.sbatch.tmpl submit39.sh 
+runid=20261028-1624_ed0fc16_t39-ownmode tag=t39-ownmode phase=1 wall=00:40:00
+commit=ed0fc16328efdb13991e2d9dba843fe7bddb174e
+jobname=t39-ownmode
+COPIES.md grow38.py measure34.py mesh38.py nest39.py replica37.py run_cell39.sh stage_synth_p38.sh submit39.sbatch.tmpl submit39.sh 

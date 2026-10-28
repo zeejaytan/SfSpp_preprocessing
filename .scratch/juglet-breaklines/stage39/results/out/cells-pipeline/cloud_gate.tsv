@@ -1,0 +1,3 @@
+piece	pot	level	expected_points	actual_points	expected_mm	actual_mm	count_ok	spacing_ok	gate	cloud	cloud_md5
+Juglet_Piece_2	Juglet	1	6259	6259	0.209043	0.20904330739003849	yes	yes	ok	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd	c6cd2eab8a1df10b6e97951cc360d3af
+Juglet_Piece_9	Juglet	1	5257	5257	0.201511	0.201511365190472	yes	yes	ok	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd	77e0f59d80bef8df1f92049622f97f59

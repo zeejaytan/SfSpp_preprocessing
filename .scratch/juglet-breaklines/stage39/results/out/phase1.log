@@ -1,0 +1,324 @@
+[CELL39] sampler check against the shipped cloud: Juglet_Piece_2
+[VALIDATE] Juglet_Piece_2 mesh v=2565 f=5126 area=491.0674 mm2  edge_median=0.3387 edge_cv=1.107 angle_median=55.8 deg angle_min=0.1 deg frac(tri min angle<20 deg)=0.110
+[VALIDATE] shipped cloud: points=2565 median_nn=0.2109 p10=0.1609 p90=0.4131 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2109 mm -> points=6259 median_nn=0.2090 p10=0.1653 p90=0.2851 mm (voxel 0.3213 mm, 2 merge iterations) | count_ratio=2.4402 spacing_ratio=0.9911 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 491.0674 mm2 at that spacing carries 11041 points = 4.30x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2090 mm at request 0.2109 (ratio 0.9911) and 0.1042 mm at request 0.1054 (ratio 0.9885) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1115 (0.529 s) p99=0.2079 (0.986 s) max=0.2476 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 6259 points to the original triangles median=0.00114 (0.005 s) p99=0.02800 (0.133 s) p99.9=0.04991 max=0.14001 mm (0.664 s) [7 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.89927 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 25238 points for 6259 (1.008 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.557 points*s^2/area at the request, 0.558 at half of it, 0.542 at the density-implied spacing 0.4375 mm (1386 points = 0.540 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+[CELL39] sampling Juglet_Piece_2 x1 at 0.21089557 mm -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd
+[SAMPLE] Juglet_Piece_2 x1 requested=0.21090 mm achieved median=0.20904 p10=0.16535 p90=0.28499 ratio=0.991 points=6259 voxel=0.32134 iters=2 area=491.07 mm2 elapsed=0.2s
+[CELL39] cloud gate Juglet_Piece_2: points 6259 (ticket 38: 6259) median 0.20904330739003849 mm (ticket 38: 0.209043) -> ok
+[CELL39] sampler check against the shipped cloud: Juglet_Piece_9
+[VALIDATE] Juglet_Piece_9 mesh v=2094 f=4184 area=373.7574 mm2  edge_median=0.3146 edge_cv=0.919 angle_median=55.6 deg angle_min=0.0 deg frac(tri min angle<20 deg)=0.105
+[VALIDATE] shipped cloud: points=2094 median_nn=0.2034 p10=0.1599 p90=0.3950 mm density_index=0.232 (points*s^2/area)
+[VALIDATE] route 1 literal: sampled at 0.2034 mm -> points=5257 median_nn=0.2015 p10=0.1630 p90=0.2580 mm (voxel 0.3113 mm, 2 merge iterations) | count_ratio=2.5105 spacing_ratio=0.9906 (accept 0.95-1.05)
+[VALIDATE] route 1 context: a uniform covering of 373.7574 mm2 at that spacing carries 9033 points = 4.31x the shipped count, so the literal count comparison cannot hold on this input
+[VALIDATE] route 2 spacing: 0.2015 mm at request 0.2034 (ratio 0.9906) and 0.1011 mm at request 0.1017 (ratio 0.9942) PASS
+[VALIDATE] route 2 cover: random surface points to the nearest cloud point median=0.1071 (0.527 s) p99=0.2014 (0.990 s) max=0.2442 mm (accept median<=0.80 s, p99<=2.50 s) PASS
+[VALIDATE] route 2 surface: 5257 points to the original triangles median=0.00088 (0.004 s) p99=0.02638 (0.130 s) p99.9=0.05486 max=0.08530 mm (0.419 s) [3 points past 0.5 s re-measured over every triangle; their incident-set maximum was 0.18714 mm] (accept median<=0.25 s, p99<=1.00 s) PASS
+[VALIDATE] route 2 density law (recorded, not a gate): halving the request gives 21277 points for 5257 (1.012 x the 4x a fixed count per unit area would give)
+[VALIDATE] sampler density law: 0.571 points*s^2/area at the request, 0.582 at half of it, 0.568 at the density-implied spacing 0.4225 mm (1194 points = 0.570 x the shipped count) -- every table reports the ACHIEVED spacing beside the request, so counts are read against these
+[VALIDATE] gate_route=instrument-validated-disclosed literal=FAIL route2=PASS
+[VALIDATE] WARNING route 1 did not reproduce the shipped cloud; route 2 is what the synthetic clouds are gated on, and the disclosure file records both
+[CELL39] sampling Juglet_Piece_9 x1 at 0.20341531 mm -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd
+[SAMPLE] Juglet_Piece_9 x1 requested=0.20342 mm achieved median=0.20151 p10=0.16296 p90=0.25803 ratio=0.991 points=5257 voxel=0.31129 iters=2 area=373.76 mm2 elapsed=0.1s
+[CELL39] cloud gate Juglet_Piece_9: points 5257 (ticket 38: 5257) median 0.201511365190472 mm (ticket 38: 0.201511) -> ok
+piece	pot	level	expected_points	actual_points	expected_mm	actual_mm	count_ok	spacing_ok	gate	cloud	cloud_md5
+Juglet_Piece_2	Juglet	1	6259	6259	0.209043	0.20904330739003849	yes	yes	ok	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd	c6cd2eab8a1df10b6e97951cc360d3af
+Juglet_Piece_9	Juglet	1	5257	5257	0.201511	0.201511365190472	yes	yes	ok	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd	77e0f59d80bef8df1f92049622f97f59
+[CELL39] both clouds reproduce ticket 38 exactly; the cells may run
+[CELL39] wall clock left: 1487s
+[CELL39] ==============================================================
+[CELL39] cell Juglet_Piece_2 (Juglet) x1 arm A SFS_REASSIGN_MODE=radius -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA
+[CELL39] the same cloud both arms see: /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd (6259 points, achieved median 0.20904330739003849 mm)
+[STAGE] Juglet_Piece_2 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz
+SYNTHETIC	c6cd2eab8a1df10b6e97951cc360d3af	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd	6259
+REAL-MESH	5223fe76170ac556be23c7164c715943	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj	-
+REAL-AXIS	6066ab7374d91292403662fa1870f494	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz	-
+[CELL39] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=6259 SFS_REASSIGN_MODE=radius
+[CELL39] pipeline rc=0 log=13219 bytes
+[CELL39] kept 25 log lines and 8 admission lines
+  admission: [WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+  admission: [REASSIGN-22] mode=radius
+  admission: [WINDOW-26] piece=Juglet_Piece_2 surface=0 mode=literal k=5.0000 residual_mm=0.014188 other_mm=0.016868 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2003 admitted_other=2471
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1684 other_n=1734 other_grid_mm=0.161515 other_proj_mm=0.016868 own_cluster_points=1684 other_cluster_points=1734 candidates=6259
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=0 admitted_own=2003 admitted_other=2471 other_copied_over=yes final_points=4155
+  admission: [WINDOW-26] piece=Juglet_Piece_2 surface=1 mode=literal k=5.0000 residual_mm=0.012174 other_mm=0.339594 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2359 admitted_other=2146
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1620 other_n=1798 other_grid_mm=0.442792 other_proj_mm=0.339594 own_cluster_points=1620 other_cluster_points=1798 candidates=6259
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=1 admitted_own=2359 admitted_other=2146 other_copied_over=no final_points=3979
+piece	Juglet_Piece_2
+arm	A
+reassign_mode	radius
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd
+cloud_md5	c6cd2eab8a1df10b6e97951cc360d3af
+cloud_points	6259
+cloud_achieved_spacing_mm	0.20904330739003849
+requested_spacing_mm	0.21089557
+pipeline_rc	0
+pipeline_clusters	8
+spacing_policy	piece
+spacing_s0MM	0.209045
+spacing_S	0.209045
+reassign_line	[REASSIGN-22] mode=radius
+count_minCluster	50
+status_npts	6259
+status_floor	50
+status_outcome	two
+status_surf0_points	4155
+status_surf1_points	3979
+retry_sizes	1684,1620,62,52
+downsampling	6259
+[CELL39] === the surfaces this arm wrote, measured against the ORIGINAL cloud and mesh ===
+[CELL39] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armA/Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply (319604 bytes)
+[SURFACE] Juglet_Piece_2_x1_armA_Surface_0 points=4155 diag=27.471 mm cov2mm=0.7680 fold=3.104 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_2_x1_armA_Surface_0 points=4155 distinct=2471 (normals ply)
+[CELL39] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armA/Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply (315847 bytes)
+[SURFACE] Juglet_Piece_2_x1_armA_Surface_1 points=3979 diag=27.742 mm cov2mm=1.0000 fold=3.013 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_2_x1_armA_Surface_1 points=3979 distinct=3979 (normals ply)
+[CELL39] === the pair statistic between the two surfaces this arm wrote ===
+[SURFACEPAIR] Juglet_Piece_2_x1_armA n0=4155 n1=3979 med_nn=0.0000 along=0.0000 across=0.0000 angle=0.000 deg coin=0.591103 t_signed=0.0000 (normals a:ply b:ply)
+[NEST] Juglet_Piece_2_x1_armA n0=4155 (distinct 2471) n1=3979 (distinct 3979) shared=2352 of_a=0.9518 of_b=0.5911 of_smaller=0.9518 meandot=+0.9960 ang=0.000 deg (normals a:ply b:ply)
+[CELL39] SampledWithNormals: points=6259 median_nn=0.20892 mm
+[CELL39] === count the geometry this arm produced, then delete it ===
+ext	files	bytes
+json	5	4187
+obj	1	159681
+other	3	539
+pcd	3	632458
+ply	12	4416096
+TOTAL	29	6539004
+xyz	5	1326043
+[CELL39] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armA and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump after the counted record above
+[CELL39] control Juglet_Piece_2 reproduces ticket 38 exactly: 4155 / 3979
+[CELL39] ==============================================================
+[CELL39] cell Juglet_Piece_2 (Juglet) x1 arm B SFS_REASSIGN_MODE=own -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armB
+[CELL39] the same cloud both arms see: /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd (6259 points, achieved median 0.20904330739003849 mm)
+[STAGE] Juglet_Piece_2 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz
+SYNTHETIC	c6cd2eab8a1df10b6e97951cc360d3af	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd	6259
+REAL-MESH	5223fe76170ac556be23c7164c715943	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj	-
+REAL-AXIS	6066ab7374d91292403662fa1870f494	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_2_Axis.xyz	-
+[CELL39] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=6259 SFS_REASSIGN_MODE=own
+[CELL39] pipeline rc=0 log=13198 bytes
+[CELL39] kept 25 log lines and 8 admission lines
+  admission: [WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+  admission: [REASSIGN-22] mode=own
+  admission: [WINDOW-26] piece=Juglet_Piece_2 surface=0 mode=literal k=5.0000 residual_mm=0.014188 other_mm=0.016868 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=0 admitted_other=2471
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1684 other_n=1734 other_grid_mm=0.161515 other_proj_mm=0.016868 own_cluster_points=1684 other_cluster_points=1734 candidates=6259
+  admission: [WINDOW-26] piece=Juglet_Piece_2 surface=1 mode=literal k=5.0000 residual_mm=0.012174 other_mm=0.339594 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=0 admitted_other=2142
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1620 other_n=1798 other_grid_mm=0.442792 other_proj_mm=0.339594 own_cluster_points=1620 other_cluster_points=1798 candidates=6259
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=0 admitted_own=0 admitted_other=2471 other_copied_over=yes final_points=4155
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=1 admitted_own=0 admitted_other=2142 other_copied_over=yes final_points=3762
+piece	Juglet_Piece_2
+arm	B
+reassign_mode	own
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_2_synthetic_x1_spacing_0.21089557.pcd
+cloud_md5	c6cd2eab8a1df10b6e97951cc360d3af
+cloud_points	6259
+cloud_achieved_spacing_mm	0.20904330739003849
+requested_spacing_mm	0.21089557
+pipeline_rc	0
+pipeline_clusters	8
+spacing_policy	piece
+spacing_s0MM	0.209045
+spacing_S	0.209045
+reassign_line	[REASSIGN-22] mode=own
+count_minCluster	50
+status_npts	6259
+status_floor	50
+status_outcome	two
+status_surf0_points	4155
+status_surf1_points	3762
+retry_sizes	1684,1620,62,52
+downsampling	6259
+[CELL39] === the surfaces this arm wrote, measured against the ORIGINAL cloud and mesh ===
+[CELL39] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armB/Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply (323511 bytes)
+[SURFACE] Juglet_Piece_2_x1_armB_Surface_0 points=4155 diag=27.471 mm cov2mm=0.7680 fold=3.104 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_2_x1_armB_Surface_0 points=4155 distinct=2471 (normals ply)
+[CELL39] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armB/Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply (300439 bytes)
+[SURFACE] Juglet_Piece_2_x1_armB_Surface_1 points=3762 diag=24.816 mm cov2mm=0.7918 fold=2.902 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_2_x1_armB_Surface_1 points=3762 distinct=2142 (normals ply)
+[CELL39] === the pair statistic between the two surfaces this arm wrote ===
+[SURFACEPAIR] Juglet_Piece_2_x1_armB n0=4155 n1=3762 med_nn=2.2847 along=2.2541 across=0.1593 angle=12.977 deg coin=0.000000 t_signed=-2.2541 (normals a:ply b:ply)
+[NEST] Juglet_Piece_2_x1_armB n0=4155 (distinct 2471) n1=3762 (distinct 2142) shared=0 of_a=0.0000 of_b=0.0000 of_smaller=0.0000 meandot=-0.9994 ang=na deg (normals a:ply b:ply)
+[CELL39] SampledWithNormals: points=6259 median_nn=0.20892 mm
+[CELL39] === count the geometry this arm produced, then delete it ===
+ext	files	bytes
+json	5	3613
+obj	1	159681
+other	3	538
+pcd	3	632458
+ply	12	4392579
+TOTAL	29	6507320
+xyz	5	1318451
+[CELL39] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_2_x1_armB and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armB/dump after the counted record above
+[CELL39] wall clock left: 1474s
+[CELL39] ==============================================================
+[CELL39] cell Juglet_Piece_9 (Juglet) x1 arm A SFS_REASSIGN_MODE=radius -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armA
+[CELL39] the same cloud both arms see: /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd (5257 points, achieved median 0.201511365190472 mm)
+[STAGE] Juglet_Piece_9 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz
+SYNTHETIC	77e0f59d80bef8df1f92049622f97f59	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd	5257
+REAL-MESH	c773e3d0e28d0bc8513d9eef463e190f	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj	-
+REAL-AXIS	2ece60314b1515e5b03904136af0a2e7	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz	-
+[CELL39] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=5257 SFS_REASSIGN_MODE=radius
+[CELL39] pipeline rc=0 log=12943 bytes
+[CELL39] kept 21 log lines and 8 admission lines
+  admission: [WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+  admission: [REASSIGN-22] mode=radius
+  admission: [WINDOW-26] piece=Juglet_Piece_9 surface=0 mode=literal k=5.0000 residual_mm=0.007744 other_mm=0.056367 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=1610 admitted_other=1640
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_9 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=589 other_n=2237 other_grid_mm=0.084629 other_proj_mm=0.056367 own_cluster_points=589 other_cluster_points=2237 candidates=5256
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_9 surface=0 admitted_own=1610 admitted_other=1640 other_copied_over=yes final_points=2229
+  admission: [WINDOW-26] piece=Juglet_Piece_9 surface=1 mode=literal k=5.0000 residual_mm=0.007436 other_mm=0.245060 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=1755 admitted_other=2015
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_9 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1497 other_n=1329 other_grid_mm=0.394550 other_proj_mm=0.245060 own_cluster_points=1497 other_cluster_points=1329 candidates=5256
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_9 surface=1 admitted_own=1755 admitted_other=2015 other_copied_over=yes final_points=3512
+piece	Juglet_Piece_9
+arm	A
+reassign_mode	radius
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd
+cloud_md5	77e0f59d80bef8df1f92049622f97f59
+cloud_points	5257
+cloud_achieved_spacing_mm	0.201511365190472
+requested_spacing_mm	0.20341531
+pipeline_rc	0
+pipeline_clusters	7
+spacing_policy	piece
+spacing_s0MM	0.201486
+spacing_S	0.201486
+reassign_line	[REASSIGN-22] mode=radius
+count_minCluster	50
+status_npts	5256
+status_floor	50
+status_outcome	two
+status_surf0_points	2229
+status_surf1_points	3512
+retry_sizes	589,1497,327,166,158,89
+downsampling	5256
+[CELL39] === the surfaces this arm wrote, measured against the ORIGINAL cloud and mesh ===
+[CELL39] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armA/Temp/Data/Juglet/Juglet_Piece_9_Surface_0.ply (173888 bytes)
+[SURFACE] Juglet_Piece_9_x1_armA_Surface_0 points=2229 diag=19.521 mm cov2mm=0.8138 fold=2.966 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armA_Surface_0 points=2229 distinct=2229 (normals ply)
+[CELL39] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armA/Temp/Data/Juglet/Juglet_Piece_9_Surface_1.ply (274977 bytes)
+[SURFACE] Juglet_Piece_9_x1_armA_Surface_1 points=3512 diag=22.025 mm cov2mm=0.7326 fold=2.803 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armA_Surface_1 points=3512 distinct=2015 (normals ply)
+[CELL39] === the pair statistic between the two surfaces this arm wrote ===
+[SURFACEPAIR] Juglet_Piece_9_x1_armA n0=2229 n1=3512 med_nn=0.0000 along=0.0000 across=0.0000 angle=0.000 deg coin=0.824601 t_signed=0.0000 (normals a:ply b:ply)
+[NEST] Juglet_Piece_9_x1_armA n0=2229 (distinct 2229) n1=3512 (distinct 2015) shared=1616 of_a=0.7250 of_b=0.8020 of_smaller=0.8020 meandot=+0.9993 ang=0.000 deg (normals a:ply b:ply)
+[CELL39] SampledWithNormals: points=5256 median_nn=0.20154 mm
+[CELL39] === count the geometry this arm produced, then delete it ===
+ext	files	bytes
+json	5	3348
+obj	1	128277
+other	3	539
+pcd	3	536219
+ply	12	3533667
+TOTAL	29	5256316
+xyz	5	1054266
+[CELL39] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armA and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armA/dump after the counted record above
+[CELL39] control Juglet_Piece_9 reproduces ticket 38 exactly: 2229 / 3512
+[CELL39] ==============================================================
+[CELL39] cell Juglet_Piece_9 (Juglet) x1 arm B SFS_REASSIGN_MODE=own -> /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB
+[CELL39] the same cloud both arms see: /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd (5257 points, achieved median 0.201511365190472 mm)
+[STAGE] Juglet_Piece_9 pot=Juglet kind=SYNTHETIC cloud=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd mesh=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj axis=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz
+SYNTHETIC	77e0f59d80bef8df1f92049622f97f59	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd	5257
+REAL-MESH	c773e3d0e28d0bc8513d9eef463e190f	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj	-
+REAL-AXIS	2ece60314b1515e5b03904136af0a2e7	/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet/Juglet_Piece_9_Axis.xyz	-
+[CELL39] env: SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_DOWNSAMPLE_TARGET=5257 SFS_REASSIGN_MODE=own
+[CELL39] pipeline rc=0 log=12928 bytes
+[CELL39] kept 21 log lines and 8 admission lines
+  admission: [WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+  admission: [REASSIGN-22] mode=own
+  admission: [WINDOW-26] piece=Juglet_Piece_9 surface=0 mode=literal k=5.0000 residual_mm=0.007744 other_mm=0.056367 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=1498 admitted_other=2
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_9 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=589 other_n=2237 other_grid_mm=0.084629 other_proj_mm=0.056367 own_cluster_points=589 other_cluster_points=2237 candidates=5256
+  admission: [WINDOW-26] piece=Juglet_Piece_9 surface=1 mode=literal k=5.0000 residual_mm=0.007436 other_mm=0.245060 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=262 admitted_other=2013
+  admission: [WINDOW-26-MEASURE] piece=Juglet_Piece_9 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1497 other_n=1329 other_grid_mm=0.394550 other_proj_mm=0.245060 own_cluster_points=1497 other_cluster_points=1329 candidates=5256
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_9 surface=0 admitted_own=1498 admitted_other=2 other_copied_over=no final_points=2087
+  admission: [WINDOW-26-FINAL] piece=Juglet_Piece_9 surface=1 admitted_own=262 admitted_other=2013 other_copied_over=yes final_points=3510
+piece	Juglet_Piece_9
+arm	B
+reassign_mode	own
+pot	Juglet
+level	1
+cloud_kind	SYNTHETIC
+cloud	/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd
+cloud_md5	77e0f59d80bef8df1f92049622f97f59
+cloud_points	5257
+cloud_achieved_spacing_mm	0.201511365190472
+requested_spacing_mm	0.20341531
+pipeline_rc	0
+pipeline_clusters	7
+spacing_policy	piece
+spacing_s0MM	0.201486
+spacing_S	0.201486
+reassign_line	[REASSIGN-22] mode=own
+count_minCluster	50
+status_npts	5256
+status_floor	50
+status_outcome	two
+status_surf0_points	2087
+status_surf1_points	3510
+retry_sizes	589,1497,327,166,158,89
+downsampling	5256
+[CELL39] === the surfaces this arm wrote, measured against the ORIGINAL cloud and mesh ===
+[CELL39] surface 0: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB/Temp/Data/Juglet/Juglet_Piece_9_Surface_0.ply (163395 bytes)
+[SURFACE] Juglet_Piece_9_x1_armB_Surface_0 points=2087 diag=18.643 mm cov2mm=0.6829 fold=3.320 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armB_Surface_0 points=2087 distinct=1498 (normals ply)
+[CELL39] surface 1: ply /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB/Temp/Data/Juglet/Juglet_Piece_9_Surface_1.ply (274522 bytes)
+[SURFACE] Juglet_Piece_9_x1_armB_Surface_1 points=3510 diag=21.976 mm cov2mm=0.7302 fold=2.802 deg (normals ply)
+[NEST-COUNT] Juglet_Piece_9_x1_armB_Surface_1 points=3510 distinct=2013 (normals ply)
+[CELL39] === the pair statistic between the two surfaces this arm wrote ===
+[SURFACEPAIR] Juglet_Piece_9_x1_armB n0=2087 n1=3510 med_nn=2.1758 along=2.1345 across=0.1877 angle=13.927 deg coin=0.000000 t_signed=-2.1345 (normals a:ply b:ply)
+[NEST] Juglet_Piece_9_x1_armB n0=2087 (distinct 1498) n1=3510 (distinct 2013) shared=0 of_a=0.0000 of_b=0.0000 of_smaller=0.0000 meandot=-0.9999 ang=na deg (normals a:ply b:ply)
+[CELL39] SampledWithNormals: points=5256 median_nn=0.20154 mm
+[CELL39] === count the geometry this arm produced, then delete it ===
+ext	files	bytes
+json	5	2775
+obj	1	128277
+other	3	539
+pcd	3	536219
+ply	12	3510888
+TOTAL	29	5225160
+xyz	5	1046462
+[CELL39] deleted stage /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/stage_Juglet_Piece_9_x1_armB and dump /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump after the counted record above
+[CELL39] === every cell, as recorded ===
+piece	arm	pot	level	cloud_kind	cloud_points	requested_mm	achieved_mm	pipeline_rc	clusters	spacing_policy	status_outcome	surf0_points	surf1_points	ctrl38_surf0	ctrl38_surf1	ctrl38_reproduced	note
+Juglet_Piece_2	A	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3979	4155	3979	yes	ok
+Juglet_Piece_2	B	Juglet	1	SYNTHETIC	6259	0.21089557	0.20904330739003849	0	8	piece	two	4155	3762	4155	3979	na	ok
+Juglet_Piece_9	A	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2229	3512	2229	3512	yes	ok
+Juglet_Piece_9	B	Juglet	1	SYNTHETIC	5257	0.20341531	0.201511365190472	0	7	piece	two	2087	3510	2229	3512	na	ok
+[CELL39] === the surfaces ===
+piece	arm	surface	points	distinct	ext_x	ext_y	ext_z	diag	cov_2mm	fold_deg	normal_src	ply_bytes
+Juglet_Piece_2	A	0	4155	2471	7.022998000000001	24.7381	9.660949999999957	27.470530526739072	0.7680311890838206	3.104152556785976	ply	319604
+Juglet_Piece_2	A	1	3979	3979	8.167999000000002	24.7381	9.53496999999993	27.74176368176507	1.0	3.013485934784664	ply	315847
+Juglet_Piece_2	B	0	4155	2471	7.022998000000001	24.7381	9.660949999999957	27.470530526739072	0.7680311890838206	3.104152556785976	ply	323511
+Juglet_Piece_2	B	1	3762	2142	6.161200999999998	22.20069	9.220950000000016	24.816465363564596	0.791812865497076	2.901643836867422	ply	300439
+Juglet_Piece_9	A	0	2229	2229	5.927202999999999	8.74016	16.418030000000044	19.521112706751897	0.8137535816618912	2.9662320393249444	ply	173888
+Juglet_Piece_9	A	1	3512	2015	6.782699000000001	13.0204401	16.418030000000044	22.024726450133052	0.7325692454632283	2.8033206206864536	ply	274977
+Juglet_Piece_9	B	0	2087	1498	5.385601000000001	9.7238303	14.967039999999997	18.64322558453872	0.6829035339063992	3.3204094596622915	ply	163395
+Juglet_Piece_9	B	1	3510	2013	6.6240999999999985	13.0204401	16.418030000000044	21.976402578415545	0.73018147086915	2.802466685118388	ply	274522
+[CELL39] === the pair statistic ===
+piece	arm	n0	n1	med_nn	med_along	med_across	med_angle_deg	coin	med_t_signed	p05_t_signed	p95_t_signed	normal_src_a	normal_src_b
+Juglet_Piece_2	A	4155	3979	0.0	0.0	0.0	0.0	0.5911032922844935	0.0	-2.5417101869858705	0.0	ply	ply
+Juglet_Piece_2	B	4155	3762	2.2847357995719397	2.2540777851087657	0.15926958694537513	12.977144972134433	0.0	-2.2540777851087657	-2.654118883696664	-1.5862942210477828	ply	ply
+Juglet_Piece_9	A	2229	3512	0.0	0.0	0.0	0.0	0.8246013667425968	0.0	-0.004322898100523831	0.03986170855198336	ply	ply
+Juglet_Piece_9	B	2087	3510	2.175759811718171	2.134489859141274	0.1877338703672796	13.927093172798616	0.0	-2.134489859141274	-2.4260113140511037	-1.6615995307254277	ply	ply
+[CELL39] === the nesting quantities ===
+piece	arm	n0	n0_distinct	n1	n1_distinct	shared	shared_over_a	shared_over_b	shared_over_smaller	mean_normal_dot	matched	median_point_normal_angle_deg	normal_src_a	normal_src_b
+Juglet_Piece_2	A	4155	2471	3979	3979	2352	0.9518413597733711	0.5911032922844935	0.9518413597733711	0.9960274472338446	2352	0.0	ply	ply
+Juglet_Piece_2	B	4155	2471	3762	2142	0	0.0	0.0	0.0	-0.9993570511406065	0	na	ply	ply
+Juglet_Piece_9	A	2229	2229	3512	2015	1616	0.7249887842081651	0.8019851116625311	0.8019851116625311	0.9993183797978673	1616	0.0	ply	ply
+Juglet_Piece_9	B	2087	1498	3510	2013	0	0.0	0.0	0.0	-0.9999474210970047	0	na	ply	ply
+[CELL39] all cells ran
+[CELL39] done

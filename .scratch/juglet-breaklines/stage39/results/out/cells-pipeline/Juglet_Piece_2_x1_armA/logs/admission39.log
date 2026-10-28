@@ -1,0 +1,8 @@
+[WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+[REASSIGN-22] mode=radius
+[WINDOW-26] piece=Juglet_Piece_2 surface=0 mode=literal k=5.0000 residual_mm=0.014188 other_mm=0.016868 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2003 admitted_other=2471
+[WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1684 other_n=1734 other_grid_mm=0.161515 other_proj_mm=0.016868 own_cluster_points=1684 other_cluster_points=1734 candidates=6259
+[WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=0 admitted_own=2003 admitted_other=2471 other_copied_over=yes final_points=4155
+[WINDOW-26] piece=Juglet_Piece_2 surface=1 mode=literal k=5.0000 residual_mm=0.012174 other_mm=0.339594 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2359 admitted_other=2146
+[WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1620 other_n=1798 other_grid_mm=0.442792 other_proj_mm=0.339594 own_cluster_points=1620 other_cluster_points=1798 candidates=6259
+[WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=1 admitted_own=2359 admitted_other=2146 other_copied_over=no final_points=3979

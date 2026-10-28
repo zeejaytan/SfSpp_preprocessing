@@ -1,0 +1,9 @@
+runid=20261028-1624_ed0fc16_t39-ownmode
+jobid=33926931
+commit=ed0fc16328efdb13991e2d9dba843fe7bddb174e
+tag=t39-ownmode
+phase=1
+host=spartan-bm073.hpc.unimelb.edu.au
+utc=2026-10-28T05:27:17Z
+phase_rc=0
+phase_failures=

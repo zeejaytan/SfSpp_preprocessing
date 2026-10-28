@@ -1,0 +1,18 @@
+{
+ "arms": {
+  "A": "SFS_REASSIGN_MODE=radius (shipped default, the control)",
+  "B": "SFS_REASSIGN_MODE=own"
+ },
+ "commit": "ed0fc16328efdb13991e2d9dba843fe7bddb174e",
+ "created_utc": "2026-10-28T05:25:10Z",
+ "defaults": "SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0, spacing policy unset (=piece), no single-cluster write, no dedupe switch, no window override",
+ "phases": {},
+ "pieces": [
+  "Juglet_Piece_2",
+  "Juglet_Piece_9"
+ ],
+ "question": "U19 - does SFS_REASSIGN_MODE=own keep the two faces apart?",
+ "runid": "20261028-1624_ed0fc16_t39-ownmode",
+ "tag": "t39-ownmode",
+ "ticket": ".scratch/juglet-breaklines/issues/39-does-own-mode-keep-the-two-faces-apart.md"
+}

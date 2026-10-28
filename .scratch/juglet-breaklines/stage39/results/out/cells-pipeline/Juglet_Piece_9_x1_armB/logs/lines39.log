@@ -1,0 +1,21 @@
+[DUMP-25] piece=Juglet_Piece_9 on=yes dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/
+[SPACING-22] policy=piece diagMM=23.3454 s0MM=0.201486 samples=200 rawMM=0.116727 S=0.201486
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[DOWNSAMPLING RESULT] Target=5257 points, Bounds=[4205-6308], Result=5256 points, Radius(leaf)=0.03502
+[0;m[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/r1_downsampled.ply points=5256
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+Number of clusters is equal to 7
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/r2_clusters_premerge.ply points=5256
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 51 into 538
+[PAPER-234] pass 1 done: 6 clusters
+[PAPER-234] pass 2 done: 6 clusters
+[PAPER-234] classify: face0 n=1497 interior_frac=0.2953 face1 n=589 interior_frac=0.0000 satA=1031.0000 satB=1055.0000
+[PAPER-234] classify: swapped -> Surface_0=interior
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/r3_after_merge.ply points=5256
+[RETRY-23] piece=Juglet_Piece_9 retry=1 npts=5256 clusters_pre=7 clusters=6 sizes=589,1497,327,166,158,89 minCluster=50 minClusterFrom=50
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/r4_after_reassign.ply points=5256
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/dump/Juglet_Piece_9/r5_write.ply points=5256
+[0;m[STATUS-23] piece=Juglet_Piece_9 outcome=two retries=1 clusters=6 sizes=589,1497,327,166,158,89 npts=5256 floor=50 floor_from=50 capped=no surf0_points=2087 surf1_points=3510 reason=two surfaces written

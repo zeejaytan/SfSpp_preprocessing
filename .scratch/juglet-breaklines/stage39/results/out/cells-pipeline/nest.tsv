@@ -1,0 +1,5 @@
+piece	arm	n0	n0_distinct	n1	n1_distinct	shared	shared_over_a	shared_over_b	shared_over_smaller	mean_normal_dot	matched	median_point_normal_angle_deg	normal_src_a	normal_src_b
+Juglet_Piece_2	A	4155	2471	3979	3979	2352	0.9518413597733711	0.5911032922844935	0.9518413597733711	0.9960274472338446	2352	0.0	ply	ply
+Juglet_Piece_2	B	4155	2471	3762	2142	0	0.0	0.0	0.0	-0.9993570511406065	0	na	ply	ply
+Juglet_Piece_9	A	2229	2229	3512	2015	1616	0.7249887842081651	0.8019851116625311	0.8019851116625311	0.9993183797978673	1616	0.0	ply	ply
+Juglet_Piece_9	B	2087	1498	3510	2013	0	0.0	0.0	0.0	-0.9999474210970047	0	na	ply	ply

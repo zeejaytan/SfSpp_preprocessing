@@ -1,0 +1,21 @@
+{
+ "coin": 0.0,
+ "med_across": 0.1877338703672796,
+ "med_along": 2.134489859141274,
+ "med_angle_deg": 13.927093172798616,
+ "med_nn": 2.175759811718171,
+ "med_t_signed": -2.134489859141274,
+ "min_nn_minus_across": 0.259182374853975,
+ "n0": 2087,
+ "n1": 3510,
+ "normal_src_a": "ply",
+ "normal_src_b": "ply",
+ "p05_t_signed": -2.4260113140511037,
+ "p90_across": 1.077030458638634,
+ "p90_along": 2.3673458076645217,
+ "p90_angle_deg": 29.70379510670713,
+ "p95_t_signed": -1.6615995307254277,
+ "surface_a": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/surfaces/Juglet_Piece_9_Surface_0.ply",
+ "surface_b": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_9_x1_armB/surfaces/Juglet_Piece_9_Surface_1.ply",
+ "tag": "Juglet_Piece_9_x1_armB"
+}

@@ -1,0 +1,152 @@
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+Copied Point file: Juglet_Piece_2_Point.pcd
+Copied Mesh file: Juglet_Piece_2_Mesh.obj
+
+Selected file: Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd
+[DUMP-25] piece=Juglet_Piece_2 on=yes dir=/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/
+[SPACING-22] policy=piece diagMM=28.2305 s0MM=0.209045 samples=200 rawMM=0.141153 S=0.209045
+[COUNT-22] policy=off scale=1 minCluster=50 k1=10 k2=30
+[SWITCH-23] singleCluster=off floorCeiling=off countScaleAuto=no
+[WINDOW-26-SWITCH] mode=literal k=5 clampMM=0.5,6 report=none
+[NORMAL-24-SWITCH] mode=count radiusMMraw=0 radiusMM=0.000000 radiusFrom=fixed mult=2 s0MM=0.209045 diagMM=28.2305 radiusOverDiag=no minK=5 maxK=20 nbrsFile=none dumpDir=none
+[DOWNSAMPLING RESULT] Target=6259 points, Bounds=[5007-7510], Result=6259 points, Radius(leaf)=0.04235
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6259
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6259
+[ADAPTIVE CGAL] Using 6 neighbors for 6259 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[NORMAL-24] piece=Juglet_Piece_2 call=0 mode=count n=6259 k=6
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6259
+[DEBUG getNormalsOnSurface] Computing curvature for 6259 points...
+[ADAPTIVE CURVATURE] Using K=20 for 6259 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG downsamplePointCloud] Saving PLY in ASCII mode to avoid camera data issues...
+[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/r1_downsampled.ply points=6259
+Starting processing on: Dataset/Point/Juglet/Juglet_Piece_2_Point.pcd
+Starting surface segmentation on: Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply
+[SPLITTER-234] rule=PCL-REGION-GROWING smoothDeg=3.40000 curv=1.00000 joinDeg=60.00000 distMM=2.00000 window=100 paper=PAPER-CHAIN theta=3.40000 kappa=1.00000 nb=10 normalSource=reestimate normalSourceSet=no minPairs=3
+[DEBUG] Loading PLY file: Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply
+[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_SampledWithNormals.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[DEBUG] PLY file loaded successfully. Points: 6259
+[DEBUG] Converting PointNormal to PointXYZ...
+[DEBUG] Conversion complete. Cloud size: 6259
+[DEBUG] Calling getNormalsOnSurface...
+[DEBUG] Input cloud size: 6259
+[DEBUG getNormalsOnSurface] Starting function. Input points: 6259
+[DEBUG getNormalsOnSurface] Creating Eigen matrix...
+[DEBUG getNormalsOnSurface] Writing matrix to XYZ file...
+[DEBUG getNormalsOnSurface] Reading XYZ file: fileForNormalEst_Sampled.xyz
+[DEBUG getNormalsOnSurface] XYZ file read successfully. Points loaded: 6259
+[ADAPTIVE CGAL] Using 6 neighbors for 6259 points (density-aware)
+[DEBUG getNormalsOnSurface] PCA normal estimation complete.
+[DEBUG getNormalsOnSurface] Orienting normals with MST...
+[DEBUG getNormalsOnSurface] MST orientation complete.
+[NORMAL-24] piece=Juglet_Piece_2 call=1 mode=count n=6259 k=6
+[DEBUG getNormalsOnSurface] Erased unoriented points. Remaining: 6259
+[DEBUG getNormalsOnSurface] Computing curvature for 6259 points...
+[ADAPTIVE CURVATURE] Using K=20 for 6259 points
+[DEBUG getNormalsOnSurface] Curvature computation complete.
+[DEBUG getNormalsOnSurface] Saving PLY in ASCII mode...
+[DEBUG] getNormalsOnSurface completed successfully. Result points: 6259
+[DEBUG] Extracting normals from sampled cloud...
+[PAPER-234] paper grow: thetaDeg=3.40000 kappa=1.00000 nb=10
+
+Total points: 6259
+Number of clusters is equal to 8
+Points in 
+Cluster 1 : 1549
+Cluster 2 : 1212
+Cluster 3 : 264
+Cluster 4 : 144
+Cluster 5 : 74
+Cluster 6 : 62
+Cluster 7 : 61
+Cluster 8 : 52
+Points in two clusters / Total Points in Pointcloud: 44.1125%
+Points in two clusters / Total Points in all clusters: 80.7782%
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/r2_clusters_premerge.ply points=6259
+Calling mergePaper234 function.
+[COUNT-22] merge k1=10 k2=30 minCluster=50
+[PAPER-234] appendix-A merge: rhoD=1.0000 rhoN=0.9500 rhoC=0.1000 rhoInN=0.7500 rhoInC=0.2500 k1=10 k2=30 minPairs=3
+[PAPER-234] pass 1: merge 61 into 1549
+[PAPER-234] pass 1: merge 264 into 1212
+[PAPER-234] pass 1: merge 144 into 1476
+[PAPER-234] pass 1 done: 5 clusters
+[PAPER-234] pass 2: merge 74 into 1610
+[PAPER-234] pass 2 done: 4 clusters
+[PAPER-234] pass 3 done: 4 clusters
+[PAPER-234] classify: face0 n=1684 interior_frac=0.5238 face1 n=1620 interior_frac=0.0000 satA=2502.0000 satB=802.0000
+[PAPER-234] classify: kept -> Surface_0=interior
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/r3_after_merge.ply points=6259
+[RETRY-23] piece=Juglet_Piece_2 retry=1 npts=6259 clusters_pre=8 clusters=4 sizes=1684,1620,62,52 minCluster=50 minClusterFrom=50
+Sampled indices: 496 1462 1546 1585 1637 1609 1415 845 369 1412 1071 1488 293 191 1232 586 844 359 1682 964 1526 727 1490 1106 62 134 1604 1186 643 1607 
+Normals flipped: false
+[REASSIGN-22] mode=radius
+  loading cloudForSpline.pcd
+  1684 points in data set
+  surface fitting ...
+[WINDOW-26] piece=Juglet_Piece_2 surface=0 mode=literal k=5.0000 residual_mm=0.014188 other_mm=0.016868 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2003 admitted_other=2471
+[WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=0 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1684 other_n=1734 other_grid_mm=0.161515 other_proj_mm=0.016868 own_cluster_points=1684 other_cluster_points=1734 candidates=6259
+[DEDUPE-27] surface=0 mode=off in=4155 out=2471
+[WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=0 admitted_own=2003 admitted_other=2471 other_copied_over=yes final_points=4155
+  loading cloudForSpline.pcd
+  1620 points in data set
+  surface fitting ...
+[WINDOW-26] piece=Juglet_Piece_2 surface=1 mode=literal k=5.0000 residual_mm=0.012174 other_mm=0.339594 raw_mm=3.000000 clamped_mm=3.000000 admitted_own=2359 admitted_other=2146
+[WINDOW-26-MEASURE] piece=Juglet_Piece_2 surface=1 rule=literal reason=ok clamp_lo_mm=0.5000 clamp_hi_mm=6.0000 clamped=no clamped_from_mm=3.000000 residual_n=1620 other_n=1798 other_grid_mm=0.442792 other_proj_mm=0.339594 own_cluster_points=1620 other_cluster_points=1798 candidates=6259
+[DEDUPE-27] surface=1 mode=off in=3979 out=3979
+[WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=1 admitted_own=2359 admitted_other=2146 other_copied_over=no final_points=3979
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/r4_after_reassign.ply points=6259
+[DEBUG] Saving surface cluster PLY files in ASCII mode...
+[DUMP-25] wrote /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/out/cells-pipeline/Juglet_Piece_2_x1_armA/dump/Juglet_Piece_2/r5_write.ply points=6259
+[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_unclustered.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[ADAPTIVE CLUSTER 1] N=2841, min=10, max=8523
+PointCloud representing the Cluster: 2841 data points.
+[ADAPTIVE BOUNDARY] Cluster 0 has 2841 points, spacing≈18.7614mm, boundary_r=50.0000mm
+[DEBUG BOUNDARY] cloud size: 2841, cloudWithoutNormals size: 2841, boundary size: 2841
+[WARNING] Cluster 0 has no boundary points! Skipping getPointsInSequence.
+[WARNING] This may indicate the boundary radius (50mm) is too small for the point spacing.
+Successfully found 4 clusters after 1 iterations.
+Ply to XYZ start
+[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_0.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:25: property 'float32 focal' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:26: property 'float32 scalex' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:27: property 'float32 scaley' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:28: property 'float32 centerx' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:29: property 'float32 centery' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:32: property 'float32 k1' of element 'camera' is not handled
+[0;m[1;33m[pcl::PLYReader] Temp/Data/Juglet/Juglet_Piece_2_Surface_1.ply:33: property 'float32 k2' of element 'camera' is not handled
+[0;m[STATUS-23] piece=Juglet_Piece_2 outcome=two retries=1 clusters=4 sizes=1684,1620,62,52 npts=6259 floor=50 floor_from=50 capped=no surf0_points=4155 surf1_points=3979 reason=two surfaces written
+
+Time after processing: 1.5425 seconds
+Total time elapsed: 1.7671 seconds
