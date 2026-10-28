@@ -1,0 +1,349 @@
+{
+ "arms": {
+  "A": {
+   "label": "A radius (control)",
+   "nest": {
+    "matched": 1616,
+    "mean_normal_dot": 0.9993183797978673,
+    "median_point_normal_angle_deg": 0.0,
+    "n0": 2229,
+    "n0_distinct": 2229,
+    "n1": 3512,
+    "n1_distinct": 2015,
+    "normal_src_a": "ply",
+    "normal_src_b": "ply",
+    "shared": 1616,
+    "shared_over_a": 0.7249887842081651,
+    "shared_over_b": 0.8019851116625311,
+    "shared_over_smaller": 0.8019851116625311,
+    "tag": "Juglet_Piece_9_x1_armA"
+   },
+   "pair": {
+    "coin": 0.8246013667425968,
+    "med_across": 0.0,
+    "med_along": 0.0,
+    "med_angle_deg": 0.0,
+    "med_nn": 0.0,
+    "med_t_signed": 0.0,
+    "min_nn_minus_across": 0.0,
+    "n0": 2229,
+    "n1": 3512,
+    "p05_t_signed": -0.004322898100523831,
+    "p90_across": 0.7545153882755931,
+    "p90_along": 0.012113363315752636,
+    "p90_angle_deg": 3.964590847072483,
+    "p95_t_signed": 0.03986170855198336
+   },
+   "surface_0": {
+    "md5": "2a619256abf47b063d7a46fe2a4e6c92",
+    "normal_src": "ply",
+    "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/cells-pipeline/Juglet_Piece_9_x1_armA/surfaces/Juglet_Piece_9_Surface_0.ply",
+    "points": 2229
+   },
+   "surface_1": {
+    "md5": "6d183acf88fd0ea514f2ce86eb033013",
+    "normal_src": "ply",
+    "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/cells-pipeline/Juglet_Piece_9_x1_armA/surfaces/Juglet_Piece_9_Surface_1.ply",
+    "points": 3512
+   }
+  },
+  "B": {
+   "label": "B own",
+   "nest": {
+    "matched": 0,
+    "mean_normal_dot": -0.9999474210970047,
+    "median_point_normal_angle_deg": null,
+    "n0": 2087,
+    "n0_distinct": 1498,
+    "n1": 3510,
+    "n1_distinct": 2013,
+    "normal_src_a": "ply",
+    "normal_src_b": "ply",
+    "shared": 0,
+    "shared_over_a": 0.0,
+    "shared_over_b": 0.0,
+    "shared_over_smaller": 0.0,
+    "tag": "Juglet_Piece_9_x1_armB"
+   },
+   "pair": {
+    "coin": 0.0,
+    "med_across": 0.1877338703672796,
+    "med_along": 2.134489859141274,
+    "med_angle_deg": 13.927093172798616,
+    "med_nn": 2.175759811718171,
+    "med_t_signed": -2.134489859141274,
+    "min_nn_minus_across": 0.259182374853975,
+    "n0": 2087,
+    "n1": 3510,
+    "p05_t_signed": -2.4260113140511037,
+    "p90_across": 1.077030458638634,
+    "p90_along": 2.3673458076645217,
+    "p90_angle_deg": 29.70379510670713,
+    "p95_t_signed": -1.6615995307254277
+   },
+   "surface_0": {
+    "md5": "8a55e4195b38898462833ba4133a1423",
+    "normal_src": "ply",
+    "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/cells-pipeline/Juglet_Piece_9_x1_armB/surfaces/Juglet_Piece_9_Surface_0.ply",
+    "points": 2087
+   },
+   "surface_1": {
+    "md5": "2dd177cfeb986beb4f6b23dfcfc4a464",
+    "normal_src": "ply",
+    "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/cells-pipeline/Juglet_Piece_9_x1_armB/surfaces/Juglet_Piece_9_Surface_1.ply",
+    "points": 3510
+   }
+  }
+ },
+ "cloud": {
+  "md5": "77e0f59d80bef8df1f92049622f97f59",
+  "path": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/geometry/Juglet_Piece_9_synthetic_x1_spacing_0.20341531.pcd",
+  "points": 5257
+ },
+ "cloud_kind": "SYNTHETIC",
+ "hist_figure": {
+  "arms": {
+   "A": {
+    "counts": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     17,
+     3109,
+     295,
+     51,
+     31,
+     7,
+     1
+    ],
+    "counts_sum": 3512,
+    "label": "A radius (control)",
+    "max_mm": 0.408912691194546,
+    "median_mm": 0.0,
+    "min_mm": -0.21540228290307345,
+    "n": 3512,
+    "p05_mm": -0.004322898100523831,
+    "p95_mm": 0.03986170855198336
+   },
+   "B": {
+    "counts": [
+     2,
+     14,
+     20,
+     35,
+     178,
+     429,
+     621,
+     701,
+     630,
+     360,
+     199,
+     112,
+     86,
+     54,
+     40,
+     16,
+     8,
+     3,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "counts_sum": 3510,
+    "label": "B own",
+    "max_mm": -1.0632350186427337,
+    "median_mm": -2.134489859141274,
+    "min_mm": -2.8360403446940152,
+    "n": 3510,
+    "p05_mm": -2.4260113140511037,
+    "p95_mm": -1.6615995307254277
+   }
+  },
+  "bin_mm": 0.1,
+  "bytes": 101804,
+  "cloud_kind": "SYNTHETIC",
+  "edges_mm": [
+   -2.9000000000000004,
+   -2.8000000000000003,
+   -2.7,
+   -2.6,
+   -2.5,
+   -2.4,
+   -2.3,
+   -2.1999999999999997,
+   -2.0999999999999996,
+   -1.9999999999999996,
+   -1.8999999999999995,
+   -1.7999999999999994,
+   -1.6999999999999993,
+   -1.5999999999999992,
+   -1.4999999999999991,
+   -1.399999999999999,
+   -1.299999999999999,
+   -1.1999999999999988,
+   -1.0999999999999988,
+   -0.9999999999999987,
+   -0.8999999999999986,
+   -0.7999999999999985,
+   -0.6999999999999984,
+   -0.5999999999999983,
+   -0.4999999999999982,
+   -0.39999999999999813,
+   -0.29999999999999805,
+   -0.19999999999999796,
+   -0.09999999999999787,
+   2.220446049250313e-15,
+   0.10000000000000231,
+   0.2000000000000024,
+   0.3000000000000025,
+   0.4000000000000026,
+   0.5000000000000027
+  ],
+  "level": "1",
+  "md5": "317608191b9dc8ce2b55ed82956c46dd",
+  "piece": "Juglet_Piece_9",
+  "png": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/figures/fig39_Juglet_Piece_9_x1_hist_SYNTHETIC.png",
+  "quantity": "signed through-distance Surface_1 -> nearest Surface_0, along Surface_0's own normal (measure34.pair_pointwise t)",
+  "tag": "Juglet_Piece_9_x1"
+ },
+ "level": "1",
+ "piece": "Juglet_Piece_9",
+ "tag": "Juglet_Piece_9_x1",
+ "views_figure": {
+  "bar_mm": 5.0,
+  "cloud_kind": "SYNTHETIC",
+  "colours": {
+   "cloud": "#b8b8b8",
+   "surface_0": "#1f4fd8",
+   "surface_1": "#e8620c"
+  },
+  "dpi": 150,
+  "edge_on": {
+   "A": {
+    "page_x": [
+     -0.905293444492762,
+     0.4133567614481247,
+     -0.09787730647881981
+    ],
+    "page_x_is": "the mean normal of Surface_0",
+    "page_y": [
+     0.256908743008612,
+     0.3492859000410411,
+     -0.9011089045161271
+    ],
+    "plane_contains": "the mean normal of Surface_0",
+    "view_dir": [
+     -0.33829229539580635,
+     -0.8409135198090464,
+     -0.42240120155865707
+    ]
+   },
+   "B": {
+    "page_x": [
+     0.9119897777209286,
+     -0.4035600260527754,
+     0.07357955357852129
+    ],
+    "page_x_is": "the mean normal of Surface_0",
+    "page_y": [
+     0.2121677008096013,
+     0.3105292575866743,
+     -0.9265832110047303
+    ],
+    "plane_contains": "the mean normal of Surface_0",
+    "view_dir": [
+     0.3510833406268361,
+     0.8606456213535,
+     0.3688219114685962
+    ]
+   }
+  },
+  "level": "1",
+  "pad": 1.06,
+  "panel_span_mm": 18.57386670377705,
+  "pca_axes": [
+   [
+    -0.24459291553724544,
+    0.32691498220175347,
+    0.9128531645785193
+   ],
+   [
+    -0.40198181805838273,
+    0.8225448534009374,
+    -0.40228171981101457
+   ],
+   [
+    0.8823745937069285,
+    0.46534563343353447,
+    0.06977476495750679
+   ]
+  ],
+  "piece": "Juglet_Piece_9",
+  "tag": "Juglet_Piece_9_x1",
+  "views": {
+   "A": {
+    "bytes": 525870,
+    "md5": "547de5b929410c9365de7f98ea39841f",
+    "mm_per_px": 0.025492860907298964,
+    "mm_per_px_spread": 1.0408340855860843e-17,
+    "panels": [
+     "e0-e1",
+     "e0-e2",
+     "e1-e2",
+     "edge-on, plane contains Surface_0's mean normal"
+    ],
+    "png": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/figures/fig39_Juglet_Piece_9_x1_armA_views_SYNTHETIC.png"
+   },
+   "B": {
+    "bytes": 519551,
+    "md5": "bfe0ac26731550e0d4df918a63358d61",
+    "mm_per_px": 0.025492860907298964,
+    "mm_per_px_spread": 1.0408340855860843e-17,
+    "panels": [
+     "e0-e1",
+     "e0-e2",
+     "e1-e2",
+     "edge-on, plane contains Surface_0's mean normal"
+    ],
+    "png": "/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure/out/figures/fig39_Juglet_Piece_9_x1_armB_views_SYNTHETIC.png"
+   }
+  }
+ }
+}

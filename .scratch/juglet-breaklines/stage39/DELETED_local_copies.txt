@@ -1,0 +1,133 @@
+# Deletion record - ticket 39 local copies
+
+Written BEFORE the delete, from a census of the worktree, on 2026-10-28.
+
+Run of record these copies came from:
+
+    /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1902_50fd002_t39-figure
+
+Every path under results_fig/ below was checked to exist in that run
+directory at the same relative path before this record was written
+(79 of 79 present, 0 missing); four sizes were compared byte for byte and
+matched exactly. Nothing in results_fig/ is unique: its instruments/ is
+byte-identical to the already-tracked stage39/instruments/ in all 12 files,
+and its three figures are now tracked under stage39/results/out/figures/.
+
+The two loose files are LAPTOP ONLY - neither exists in the run directory
+(ls and find both return nothing), so they are recorded here in full rather
+than deferred to the cluster copy.
+
+## Classes deleted
+
+| class | files | bytes | where the same content also lives |
+|---|---|---|---|
+| png (three figures) | 3 | 1 147 225 | tracked at stage39/results/out/figures/ and in the run dir out/figures/ |
+| json (tables + figure json) | 19 | 77 247 | run dir, same path |
+| tsv | 16 | 463 018 | run dir, same path |
+| log | 11 | 122 072 | run dir logs/, same path |
+| md5 | 6 | 55 778 | run dir, same path |
+| txt | 6 | 832 | run dir, same path |
+| md | 1 | 6 423 | COPIES.md, already tracked as stage39/instruments/COPIES.md |
+| py | 6 | 149 694 | stage39/instruments/, already tracked |
+| sh | 4 | 30 983 | stage39/instruments/ (3) and run dir instruments/ |
+| tmpl | 1 | 11 353 | stage39/instruments/, already tracked |
+| sbatch | 1 | 11 584 | stage39/instruments/submit39.sbatch.tmpl, already tracked |
+| out (slurm stdout) | 1 | 8 594 | run dir logs/, same path |
+| none (build binary out/bin-new) | 1 | 1 582 080 | run dir out/bin-new, same size |
+| diff | 2 | 0 | run dir, same path |
+| err | 1 | 0 | run dir logs/, same path |
+
+Totals: results_fig/ 79 files, 3 666 883 bytes.
+
+Two further paths, laptop only, not in any run directory:
+
+| path | bytes | md5 | what it is |
+|---|---|---|---|
+| stage39/edgeon_compare.png | 650 161 | a0571a1cf0ed1a31cc8e6d4d8787c39a | a scratch edge-on comparison rendered while the figure was being designed; distinct from all three tracked figures (md5s 547de5b9.., bfe0ac26.., 31760819..) and cited by no line of the ticket |
+| stage39/fig_artifacts.tgz | 1 805 233 | see below | a repackaging of results_fig/ (96 tar entries: logs/, instruments/, out/ incl. out/bin-new and the .mplcache font cache); redundant with results_fig/ and with the run dir |
+
+## Every deleted path
+
+| path (relative to stage39) | bytes |
+|---|---|
+| fig_artifacts.tgz | 1 805 233 |
+| results_fig/run.json | 903 |
+| results_fig/submit.sbatch | 11 584 |
+| results_fig/instruments/COPIES.md | 6 423 |
+| results_fig/instruments/fig39.py | 18 737 |
+| results_fig/instruments/grow38.py | 21 376 |
+| results_fig/instruments/measure34.py | 39 501 |
+| results_fig/instruments/mesh38.py | 44 367 |
+| results_fig/instruments/nest39.py | 8 299 |
+| results_fig/instruments/replica37.py | 17 414 |
+| results_fig/instruments/run_cell39.sh | 19 490 |
+| results_fig/instruments/run_fig39.sh | 4 748 |
+| results_fig/instruments/stage_synth_p38.sh | 2 146 |
+| results_fig/instruments/submit39.sbatch.tmpl | 11 353 |
+| results_fig/instruments/submit39.sh | 4 599 |
+| results_fig/logs/build-new.log | 68 243 |
+| results_fig/logs/fetch.log | 169 |
+| results_fig/logs/sbatch_phase2.txt | 29 |
+| results_fig/logs/slurm-33929933.err | 0 |
+| results_fig/logs/slurm-33929933.out | 8 594 |
+| results_fig/logs/submit.log | 596 |
+| results_fig/out/GEOMETRY_DELETED_phase2.txt | 203 |
+| results_fig/out/bin-new | 1 582 080 |
+| results_fig/out/corpus.diff | 0 |
+| results_fig/out/corpus_after.tsv | 228 922 |
+| results_fig/out/corpus_before.tsv | 228 922 |
+| results_fig/out/geometry_counts_phase2.tsv | 43 |
+| results_fig/out/inputs.diff | 0 |
+| results_fig/out/inputs_after.md5 | 26 966 |
+| results_fig/out/inputs_before.md5 | 26 966 |
+| results_fig/out/instruments_commit.md5 | 463 |
+| results_fig/out/instruments_rundir.md5 | 463 |
+| results_fig/out/phase2_cells.log | 16 158 |
+| results_fig/out/phase2_fig.log | 3 908 |
+| results_fig/out/pristine.txt | 197 |
+| results_fig/out/run-meta_phase2.txt | 215 |
+| results_fig/out/versions.txt | 177 |
+| results_fig/out/.mplcache/fontlist-v390.json | 56 648 |
+| results_fig/out/cells-pipeline/cloud_gate.tsv | 352 |
+| results_fig/out/cells-pipeline/figures.tsv | 1 058 |
+| results_fig/out/cells-pipeline/figures_geometry.tsv | 51 |
+| results_fig/out/cells-pipeline/nest.tsv | 394 |
+| results_fig/out/cells-pipeline/pipeline_cells.tsv | 416 |
+| results_fig/out/cells-pipeline/surface_pairs.tsv | 416 |
+| results_fig/out/cells-pipeline/surfaces.tsv | 668 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/cell.tsv | 681 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/geometry_counts.tsv | 112 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/inputs.md5 | 460 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/status_raw.tsv | 98 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/logs/admission39.log | 1 274 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/logs/lines39.log | 2 300 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/logs/mesh.log | 12 938 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/distinct_Juglet_Piece_9_x1_armA_Surface_0.json | 304 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/distinct_Juglet_Piece_9_x1_armA_Surface_1.json | 304 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/nest_Juglet_Piece_9_x1_armA.json | 751 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/sampled_spacing.json | 305 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/surface_Juglet_Piece_9_x1_armA_Surface_0.json | 652 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/surface_Juglet_Piece_9_x1_armA_Surface_1.json | 655 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armA/measure/surfacepair_Juglet_Piece_9_x1_armA.json | 796 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/cell.tsv | 675 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/geometry_counts.tsv | 112 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/inputs.md5 | 460 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/status_raw.tsv | 98 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/logs/admission39.log | 1 262 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/logs/lines39.log | 2 300 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/logs/mesh.log | 12 924 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/distinct_Juglet_Piece_9_x1_armB_Surface_0.json | 304 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/distinct_Juglet_Piece_9_x1_armB_Surface_1.json | 304 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/nest_Juglet_Piece_9_x1_armB.json | 702 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/sampled_spacing.json | 305 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/surface_Juglet_Piece_9_x1_armB_Surface_0.json | 653 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/surface_Juglet_Piece_9_x1_armB_Surface_1.json | 653 |
+| results_fig/out/cells-pipeline/Juglet_Piece_9_x1_armB/measure/surfacepair_Juglet_Piece_9_x1_armB.json | 863 |
+| results_fig/out/figures/fig39_Juglet_Piece_9_x1_armA_views_SYNTHETIC.png | 525 870 |
+| results_fig/out/figures/fig39_Juglet_Piece_9_x1_armB_views_SYNTHETIC.png | 519 551 |
+| results_fig/out/figures/fig39_Juglet_Piece_9_x1_figures.json | 8 059 |
+| results_fig/out/figures/fig39_Juglet_Piece_9_x1_hist_SYNTHETIC.png | 101 804 |
+| results_fig/out/measure/sample_Juglet_Piece_9_x1.json | 1 050 |
+| results_fig/out/measure/sampler_validate_Juglet_Piece_9.json | 3 036 |
+| results_fig/out/measure/spacing39_Juglet_Piece_9_x1.txt | 11 |
+| edgeon_compare.png | 650 161 |
