@@ -1,7 +1,8 @@
 # 40: is own mode a general repair, or a two-piece coincidence?
 
-**Status:** ready-for-agent
-**Branch:**
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-29)
+**Branch:** 40-is-own-mode-a-general-repair, in /c/PR/worktrees/sfs/40
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** 07 (the Juglet end-to-end run, currently PAUSED)
