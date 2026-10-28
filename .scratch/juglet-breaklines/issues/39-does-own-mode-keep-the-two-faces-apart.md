@@ -1,6 +1,8 @@
 # 39: Does the own-mode admission keep the two faces apart?
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-28)
+**Branch:** 39-does-own-mode-keep-the-two-faces-apart, in /c/PR/worktrees/sfs/39
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** none
