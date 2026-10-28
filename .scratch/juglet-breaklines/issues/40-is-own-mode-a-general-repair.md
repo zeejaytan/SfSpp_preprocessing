@@ -1,7 +1,8 @@
 # 40: is own mode a general repair, or a two-piece coincidence?
 
-**Status:** ready-for-agent
-**Branch:**
+**Status:** done
+**Working in:** chat on Thinkbook16 (2026-10-29)
+**Branch:** 40-is-own-mode-a-general-repair, in /c/PR/worktrees/sfs/40
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** 07 (the Juglet end-to-end run, currently PAUSED)
@@ -165,12 +166,148 @@ A row per (group, piece, arm) carrying items 1-6, the three figures, and the pla
 
 ## Progress (work in progress)
 
-(the worker appends here)
+2026-10-29, worker 221bbb8b (run 2 of 3 for this brief; worker 1, ca266a33, died before
+submitting anything - untracked instruments only, no job, no index row).
+
+Jobs: 33939133 FAILED 9:0 00:02:47 (spacing regex double-backslash in submit40.sbatch.tmpl;
+no cell ran - the one dead plumbing submission). 33939160 t40-g1 COMPLETED 0:0 06:24
+(9 pieces, dense synthetic, arms A+B). 33939253 t40-g2 COMPLETED 0:0 04:18 (9 pieces,
+released clouds). 33939254 t40-g3 COMPLETED 0:0 12:04 (8 Pot A pieces).
+
+Run dirs: 20261029-0337_668e969_t40-g1, 20261029-0355_08c3653_t40-g2, 20261029-0355_08c3653_t40-g3
+under /data/gpfs/projects/punim2657/SfSpp/runs/. Branch commits 2268614 (instruments, inherited from
+worker 1), 668e969 (spacing-regex fix), 08c3653 (switch-proof grep fix). Corpus md5 identical in all
+three runs; /opt/sfs-pristine ABSENT (recorded, not created); geometry deleted with counted records;
+cell surface PLYs kept (g1 36, g2 16, g3 32) per the ticket's keep list.
+
+Tables at <run>/out/cells-pipeline/: pipeline_cells.tsv, surfaces.tsv, surface_pairs.tsv, nest.tsv,
+walls.tsv, xyz_census.tsv, switch_proof.tsv, cloud_gate.tsv. Figures g1 28 / g2 13 / g3 25 PNG plus
+f2 pair summaries.
+
+Deviations disclosed by the worker: g1 switch-proof initially 0/9 from a leading-tab grep,
+recomputed on the login node; g2 wall anchors only 1 of 6 within 5 percent (walls measured on the
+downsampled SampledWithNormals clouds, not ticket 35's full released clouds); g2 J3 anchor_hit
+mechanically no although the outcome was in fact one cluster; submit40.sh tee'd to logs/ before it
+existed for g2/g3 (submission unaffected).
 
 ## Lead reading
 
-(the lead writes this after verifying first-hand)
+2026-10-29. Every number below re-read by me from the run tables (nest.tsv, surface_pairs.tsv,
+pipeline_cells.tsv, walls.tsv, switch_proof.tsv) and from sacct - not taken from the worker's report.
+
+### The one-line answer
+
+On a uniform covering at each sherd's own spacing, own mode is a GENERAL repair: it separates the
+two faces on all nine Juglet sherds (9 of 9, shared points 0, mean dot -0.94 to -1.00, one wall
+thickness apart) where today's radius mode nests on eight of nine. On the real released clouds it
+is safe (Pot A 8 of 8 untouched, both arms shared 0, dot <= -0.9988) but only partly effective:
+it stops the point-sharing everywhere, yet yields a genuine opposite-facing pair only on piece 1 -
+on pieces 5, 7, 8 the two grown regions are patches in different places, which is a growth problem,
+not an admission problem.
+
+### Group 1 - dense synthetic covering, all nine sherds (job 33939160)
+
+Control cells exact (the hard anchors from ticket 39): P2 A shared 2352, dot +0.9960; P2 B shared 0,
+dot -0.99936; P9 A shared 1616, dot +0.99932; P9 B shared 0, dot -0.99995.
+
+Arm A (radius, today's default) NESTS on eight of nine: the two surfaces share 3833-10112 of the
+smaller surface's distinct points and their mean normals agree (+0.68 to +1.00) - one face written
+twice, the ticket-38 finding reproduced across the whole vessel. Piece 7 is the exception, already
+separated under both arms (shared 0, dot -0.998, med_along 2.96 mm).
+
+Arm B (own mode) separates ALL NINE: shared 0 on every piece, mean dot -0.9355 (J1) to -0.99995,
+med_along 1.88-2.96 mm (70-90 percent of each sherd's ray wall), med_across 0.16-0.28 mm,
+coincidence 0.0-0.012. Per piece (med_along / med_across, mm): J1 1.961/0.229, J2 2.254/0.159,
+J3 1.987/0.168, J4 2.243/0.187, J5 2.416/0.277, J6 2.392/0.184, J7 2.964/0.243, J8 1.882/0.180,
+J9 2.134/0.188.
+
+Caveat carried forward from ticket 39: these are synthetic coverings (the mesh sampled at its own
+[SPACING-22] S, 4-10x the released clouds' downsampled densities). They prove the pipeline CAN
+separate both faces when the points are there; they do not promise it on a scan.
+
+### Group 2 - real released clouds, adaptive default (job 33939253)
+
+NEW FINDING, a regression of ticket 37's default flip: pieces 4 and 6 produce ONE cluster and no
+surface at all, in BOTH arms (clusters=1). At the old fixed 0.6 mm they wrote pairs (182/732 and
+608/1016). They were never in the ticket-36/37 piece lists, so the adaptive-spacing default was
+never measured on them - the flip silently lost two sherds that had worked. Pieces 2, 3, 9 remain
+silent as known (0, 1, 0 clusters).
+
+Own mode on the four pieces that do write two surfaces (arm A -> arm B, shared points both ways /
+mean dot): J1 5497 / +0.347 -> 532 / -0.914; J5 34 / -0.482 -> 0 / -0.443; J7 336 / +0.515 ->
+10 / +0.403; J8 200 / +0.849 -> 0 / +0.758. Corrected pair statistic: J1 B med_along 1.815 mm,
+med_across 0.528 mm, coin 0.035 against a wall of ~2.06-2.35 mm - borderline genuine. J5 B
+along 8.19, across 11.36 (worse than A); J7 B along 2.39, across 7.94; J8 B across 6.63 - patches
+in different places, not two faces of one wall. So on real clouds the admission is no longer the
+mixer; the growth/cluster layout is.
+
+Walls on the downsampled clouds run 0.2-0.3 mm off ticket 35's full-cloud anchors (only J7 within
+5 percent) - a method difference (SampledWithNormals cloud vs released cloud), recorded, not chased.
+
+### Group 3 - Pot A control (job 33939254)
+
+No regression from own mode: all 8 pieces have shared 0 and mean dot -0.99884 to -0.99967 in BOTH
+arms, surface point counts within +-2 of the anchors (PA01 66764/57288 against 66763/57286, PA07
+24636/26739 exact, PA08 26774/29286). PA01 A med_nn 7.0952, med_t_signed -7.0890, coin 0.0; arm B
+nearly identical. Wall anchors HIT (PA01 8.2857 vs 8.2857; PA07 4.0574 vs 4.0561).
+
+### What I take from it
+
+1. Own mode is the right default for the admission step: 9 of 9 on uniform coverings, 0 damage on
+the control pot. The radius admission's point-sharing is reproduced as a vessel-wide property,
+not a two-sherd accident.
+2. It is not sufficient on real clouds: only piece 1 gains a genuine pair. Pieces 5/7/8's two
+regions lie in different places - the next blocker is upstream (growth/cluster layout), not the
+window.
+3. The ticket-37 default flip has an unmeasured cost: pieces 4 and 6 (and piece 3's single
+cluster) are lost at the adaptive default. Any default change must be re-run over ALL nine
+sherds before it ships - this grid is the first that covered all nine.
+4. Weight: one vessel, one pot, synthetic coverings for the 9-of-9 claim, real clouds for the
+safety claim. A lead with a strong direction, not a shipped repair.
+
+### Where the jobs went wrong
+
+33939133 died on a double-backslashed spacing regex before any cell ran (1 dead submission, void).
+The g1 switch-proof grep had a leading-tab bug (recomputed on the login node); the g2 wall
+comparison measured a different cloud class than ticket 35's anchors; submit40.sh tee'd to logs/
+before it existed for g2/g3. Worker 1 (ca266a33) died before submitting anything - attempt 2 of 3.
+
+### What this does not settle
+
+- Whether own mode should ship as the default NOW, or after the pieces-4/6 regression is handled:
+  the flip question is a decision for the conservator, with this grid as its evidence.
+- Whether the growth on real clouds can be brought to two-place layout (pieces 5/7/8) - a
+  different repair (growth criterion or a second pass), not this one.
+- Whether a synthetic covering may stand in for a scan in any number on record - the standing
+  caveat; the 9-of-9 is a capability statement, not a performance claim.
+- finishImprovedSurface's copy-the-larger-cluster-over branch and the still-literal 3 mm window on
+  the radius path remain named follow-ups.
 
 ### verified:
+
+- sacct -j 33939133,33939160,33939253,33939254 -> FAILED 9:0 00:02:47 / COMPLETED 0:0 06:24 /
+  COMPLETED 0:0 04:18 / COMPLETED 0:0 12:04.
+- g1 out/cells-pipeline/nest.tsv, control rows read at the line: P2 A shared 2352 dot
+  +0.9960274472338446; P2 B shared 0 dot -0.9993570511406065; P9 A 1616/+0.9993183797978673;
+  P9 B 0/-0.9999474210970047 - exactly the ticket's hard anchors.
+- g1 nest.tsv all nine arm-B rows: shared 0 everywhere; dots -0.9355 to -0.99995; med_along
+  1.882-2.964 mm; med_across 0.159-0.277; coin <= 0.012.
+- g2 pipeline_cells.tsv rows for pieces 2/3/4/6/9: status_outcome=none both arms, clusters
+  0/1/1/1/0; pieces 4 and 6 clusters=1 (the regression).
+- g2 nest.tsv arm A -> B: J1 5497/+0.347 -> 532/-0.914; J5 34/-0.482 -> 0/-0.443; J7 336/+0.515
+  -> 10/+0.403; J8 200/+0.849 -> 0/+0.758.
+- g2 surface_pairs.tsv: J1 B med_along 1.815 med_across 0.528 coin 0.035; J5 B 8.19/11.36;
+  J7 B 2.39/7.94; J8 B across 6.63.
+- g3 nest.tsv: 8 of 8 shared 0 both arms, dot -0.99884 to -0.99967; g3 pipeline_cells.tsv
+  surface counts PA01 66764/57288, PA07 24636/26739, PA08 26774/29286 (anchors 66763/57286,
+  24636/26739, 26774/29286).
+- walls.tsv: PA01 8.285696 and PA07 4.057357 against ticket-35 anchors 8.2857 / 4.05609 (HIT);
+  g2 first rows J1-J9 as quoted, only J7 within 5 percent of the full-cloud anchors.
+- switch_proof.tsv: g1 A 9/9 B 9/9; g3 8/8 + 8/8; g2 4/9 + 4/9 with the five none-outcome cells
+  genuinely carrying no [REASSIGN-22] line.
+- git diff --stat main...HEAD -> 19 files, all under .scratch/juglet-breaklines/stage40/ and the
+  ticket; corpus md5 identical before/after in all three runs; /opt/sfs-pristine ABSENT x3.
+- index.tsv tail -> the three t40 rows present with verdict/human_note empty (filled by the lead
+  in the close-out).
 
 ### What this does not settle
