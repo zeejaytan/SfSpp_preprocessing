@@ -228,9 +228,13 @@ selftest (see section 8).
 
 ## 6. The `[REASSIGN-22]` and `[WINDOW-26*]` lines, verbatim, per cell
 
-Each cell's `logs/admission39.log` holds exactly these eight lines (1 × `[WINDOW-26-SWITCH]`, 1 ×
-`[REASSIGN-22]`, then per surface `[WINDOW-26]` + `[WINDOW-26-MEASURE]` + `[WINDOW-26-FINAL]`). No ANSI
-escapes in these files, unlike `mesh.log`, which carries 39 ESC-bearing lines.
+Each cell's `logs/admission39.log` holds exactly eight lines: 1 × `[WINDOW-26-SWITCH]`, 1 × `[REASSIGN-22]`,
+and per surface `[WINDOW-26]` + `[WINDOW-26-MEASURE]` + `[WINDOW-26-FINAL]`. The **order differs between the
+modes** and the blocks below are in each file's own order: radius mode fits and finalises one surface at a time
+(`mesh_processing_headless.cpp:2335` prints, 2351 finalises, per call), so its lines run surface 0 → surface 1;
+own mode fits both surfaces, prints both, then finalises both (2478-2479 then 2481-2485), so both
+`[WINDOW-26-FINAL]` lines come last. No ANSI escapes in these files, unlike `mesh.log`, which carries 39
+ESC-bearing lines.
 
 ### Juglet_Piece_2_x1_armA (`SFS_REASSIGN_MODE=radius`)
 
@@ -257,11 +261,6 @@ escapes in these files, unlike `mesh.log`, which carries 39 ESC-bearing lines.
 [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=0 admitted_own=0 admitted_other=2471 other_copied_over=yes final_points=4155
 [WINDOW-26-FINAL] piece=Juglet_Piece_2 surface=1 admitted_own=0 admitted_other=2142 other_copied_over=yes final_points=3762
 ```
-
-(The lines above are in the file's own order. In own mode both surfaces are fitted before either is
-finalised, so the two `[WINDOW-26-FINAL]` lines come after **both** surfaces' `[WINDOW-26]` and
-`[WINDOW-26-MEASURE]` lines; in radius mode each surface is finalised before the next is fitted, so they
-interleave one surface at a time. That ordering difference is one of the lines that differs between the arms.)
 
 The `[WINDOW-26]` and `[WINDOW-26-MEASURE]` lines of arm B are **identical** to arm A's on this piece except for
 `admitted_own` and `admitted_other` — same `residual_mm`, same `other_mm`, same clamp, same `residual_n`, same
