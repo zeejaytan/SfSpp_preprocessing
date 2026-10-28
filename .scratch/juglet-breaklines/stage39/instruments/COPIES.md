@@ -27,7 +27,9 @@ would only make the two tickets' stagers look like different instruments.
 |---|---|
 | `nest39.py` | the three derived quantities ticket 39 asks for: distinct point count per surface, the shared-position count and fraction both ways and of the smaller (coordinates rounded to 1e-4 mm, the rounding `check38.py` used), the mean-normal dot, and the median per-point folded angle between the two surfaces' normals at matching positions.  Readers and the folded-angle definition are `measure34`'s, imported, not re-implemented. |
 | `run_cell39.sh` | the driver: pass 1 samples one cloud per piece and gates it against ticket 38's own numbers before any cell runs; pass 2 runs arm A (radius) then arm B (own) on that same cloud, per piece, in the same job. |
-| `submit39.sbatch.tmpl` | the batch script: one phase, build from the pushed commit, anti-drift instruments gate, corpus and `/opt/sfs-pristine` recorded before and after, geometry counted and deleted, index row with verdict and human_note left empty. |
+| `fig39.py` | the picture: per arm, the two written surfaces in two colours over the sherd's cloud on three principal-axis projections plus one edge-on view whose plane contains the mean normal of Surface_0; and the signed through-distance histogram of Surface_1 against Surface_0 for both arms on one common axis.  It draws from the same arrays it measures, and its JSON carries the input md5s beside the three quantities, so a figure cannot be a picture of a different surface than the row it is set beside. |
+| `run_fig39.sh` | the figure driver: resolves the four surfaces the two cells of one piece wrote, logs their bytes and md5, renders, then writes `figures.tsv` and `figures_geometry.tsv`. |
+| `submit39.sbatch.tmpl` | the batch script: two phases (1 = the two pieces, both arms; 2 = piece 9 only, both arms, then the figure), build from the pushed commit, anti-drift instruments gate, corpus and `/opt/sfs-pristine` recorded before and after, geometry counted and deleted, index row with verdict and human_note left empty. |
 | `submit39.sh` | the renderer: placeholder check, CRLF gate over every script, `bash -n`, `run.json`, then `sbatch`. |
 | `COPIES.md` | this file |
 
@@ -49,3 +51,23 @@ would only make the two tickets' stagers look like different instruments.
 - **Pot A is not in this job.**  Ticket 39 excludes it deliberately: it is the reference from the
   other density group, not a silent sherd, and run 6 on ticket 38 showed its cell is what the wall
   clock kills.
+
+## Phase 2, the figure
+
+A change that moves geometry has to be looked at, not only measured, so the second job re-runs the
+two cells of **one** piece and draws what they wrote.  The order inside phase 2 matters and is
+fixed in the template: the cells run, then the renderer, then the closing bookkeeping that counts
+and deletes the geometry.  The renderer therefore reads surfaces that are still on disk, and the
+PNGs are kept because they are not geometry.
+
+The two figures are drawn from the same arrays as the numbers beside them: `fig39.py` loads each
+PLY once, hands it to `nest39.pair_row` and `measure34.pair_stats` (the functions the first job's
+tables came from), and writes the input md5s into its own JSON.  `figures.tsv` repeats the md5 of
+each surface on the row that carries the recomputed quantities, so the figure and the table can be
+shown to come from the same bytes rather than asserted to.
+
+The edge-on view is chosen rather than picked by eye: the page's horizontal axis IS the mean normal
+of Surface_0, and the view direction is perpendicular to that normal, which is what puts the normal
+in the plane of the view instead of along the line of sight.  The JSON records both vectors for each
+arm.  All four panels of a figure share one span and therefore one mm/px, which is measured from the
+drawn axes after the canvas is realised and printed on every panel and in the footer.

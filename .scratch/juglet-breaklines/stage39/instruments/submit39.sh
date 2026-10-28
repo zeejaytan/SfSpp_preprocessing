@@ -1,18 +1,21 @@
 #!/bin/bash
 # ticket 39: render the sbatch script for the one job, prove the files are LF-only and parseable,
 # and submit.  usage:
-#   submit39.sh <rundir> <tag> <jobname> <walltime> <commit_sha> <phase 1> [--dry]
+#   submit39.sh <rundir> <tag> <jobname> <walltime> <commit_sha> <phase 1|2> [--dry]
 # run.json is written on first use, so the run directory carries the parameters, the commit and the
 # tag in its name.
 set -uo pipefail
 
 RUN=${1:-}; TAG=${2:-}; JOBNAME=${3:-}; WALL=${4:-}; SHA=${5:-}; PHASE=${6:-}; DRY=${7:-}
 if [ -z "$RUN" ] || [ -z "$TAG" ] || [ -z "$JOBNAME" ] || [ -z "$WALL" ] || [ -z "$SHA" ] || [ -z "$PHASE" ]; then
-  echo "usage: submit39.sh <rundir> <tag> <jobname> <walltime> <commit_sha> <phase 1> [--dry]" >&2
+  echo "usage: submit39.sh <rundir> <tag> <jobname> <walltime> <commit_sha> <phase 1|2> [--dry]" >&2
   exit 2
 fi
 for _p in $(echo "$PHASE" | tr ',' ' '); do
-  case "$_p" in 1) ;; *) echo "[SUBMIT] FATAL ticket 39 has one phase; got '$PHASE'" >&2; exit 2 ;; esac
+  case "$_p" in
+    1|2) ;;
+    *) echo "[SUBMIT] FATAL ticket 39 has phases 1 and 2 only; got '$PHASE'" >&2; exit 2 ;;
+  esac
 done
 case "$PHASE" in *,*) PHASE_TAG=$(echo "$PHASE" | tr ',' '-') ;; *) PHASE_TAG=$PHASE ;; esac
 case "$SHA" in *[!0-9a-f]*) echo "[SUBMIT] FATAL sha is not lowercase hex: $SHA" >&2; exit 2 ;; esac
@@ -25,13 +28,16 @@ RUNID=$(basename "$RUN")
 PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
 
 if [ ! -f "$RUN/run.json" ]; then
-  "$PY" - "$RUN/run.json" "$RUNID" "$TAG" "$SHA" <<'PYEOF'
+  "$PY" - "$RUN/run.json" "$RUNID" "$TAG" "$SHA" "$PHASE" <<'PYEOF'
 import json, sys, time
-out, runid, tag, sha = sys.argv[1:5]
+out, runid, tag, sha, phase = sys.argv[1:6]
 rec = {"runid": runid, "tag": tag, "commit": sha, "ticket":
        ".scratch/juglet-breaklines/issues/39-does-own-mode-keep-the-two-faces-apart.md",
        "question": "U19 - does SFS_REASSIGN_MODE=own keep the two faces apart?",
-       "pieces": ["Juglet_Piece_2", "Juglet_Piece_9"],
+       "pieces": ["Juglet_Piece_9"] if phase == "2" else ["Juglet_Piece_2", "Juglet_Piece_9"],
+       "figure": ("one edge-on plus three orthographic views per arm, and the signed through-distance "
+                  "histogram of Surface_1 against Surface_0, from the surfaces these cells write"
+                  if phase == "2" else ""),
        "arms": {"A": "SFS_REASSIGN_MODE=radius (shipped default, the control)",
                 "B": "SFS_REASSIGN_MODE=own"},
        "defaults": "SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 "

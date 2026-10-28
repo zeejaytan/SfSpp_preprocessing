@@ -196,6 +196,25 @@ for PH in $(echo "$PHASE" | tr ',' ' '); do
       BIN=$OUT/bin-new; export BIN
       bash "$INSTR/run_cell39.sh" > "$OUT/phase1.log" 2>&1; rc=$?
       ;;
+    2)
+      # The picture of what arm B wrote, from the surfaces the two cells of ONE piece have just
+      # written -- the same bytes the tables are computed from.  The cells run first, then the
+      # renderer, and only then the closing bookkeeping (which counts and deletes the geometry);
+      # the PNGs are kept.  PIECE 9 only: the ticket asks for one picture of the change.
+      build_arm new "$NEW" || fail 5 "binary build failed (see logs/build-new.log)"
+      BIN=$OUT/bin-new; export BIN
+      export CELL_LIST="Juglet:Juglet_Piece_9:1" MIN_LEFT_S=300 CELL_BUDGET_S=900
+      bash "$INSTR/run_cell39.sh" > "$OUT/phase2_cells.log" 2>&1; rc=$?
+      echo "[JOB] cells rc=$rc; rendering from the surfaces they wrote"
+      PIECE=Juglet_Piece_9 LEVEL=1 bash "$INSTR/run_fig39.sh" > "$OUT/phase2_fig.log" 2>&1; frc=$?
+      if [ "$frc" -ne 0 ]; then
+        echo "[JOB] WARN figure driver failed rc=$frc (see out/phase2_fig.log)"
+        printf "%s\t%s\n" "2-fig" "$frc" >> "$OUT/phase_failures.tsv"
+        [ "$rc" -eq 0 ] && rc=$frc
+      fi
+      [ -s "$OUT/phase2_cells.log" ] && tail -40 "$OUT/phase2_cells.log"
+      [ -s "$OUT/phase2_fig.log" ] && cat "$OUT/phase2_fig.log"
+      ;;
     *)
       fail 6 "unknown phase $PH"
       ;;
