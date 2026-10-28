@@ -425,8 +425,8 @@ done
 GOT_A=0; GOT_B=0
 for C in "$PIPECELL"/*/cell.tsv; do
   [ -f "$C" ] || continue
-  if grep -q "	reassign_mode	radius" "$C" && grep -q "reassign_line	.*mode=radius" "$C"; then GOT_A=$((GOT_A+1)); fi
-  if grep -q "	reassign_mode	own" "$C" && grep -q "reassign_line	.*mode=own" "$C"; then GOT_B=$((GOT_B+1)); fi
+  if grep -qP "^reassign_mode	radius$" "$C" && grep -qP "^reassign_line	.*mode=radius" "$C"; then GOT_A=$((GOT_A+1)); fi
+  if grep -qP "^reassign_mode	own$" "$C" && grep -qP "^reassign_line	.*mode=own" "$C"; then GOT_B=$((GOT_B+1)); fi
 done
 SW=$PIPECELL/switch_proof.tsv
 printf "arm\tplanned\tmode_line_present\n" > "$SW"
