@@ -6,10 +6,13 @@ One run of record, one job, kept in full:
 
 - **run 1** `/data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/` (job **33926931**,
   commit `ed0fc16328efdb13991e2d9dba843fe7bddb174e`, `spartan-bm073.hpc.unimelb.edu.au`, `COMPLETED`
-  00:01:47, ExitCode 0:0): every section below. Its record minus `build/` **is** `stage39/results/`;
-  `results/PROVENANCE.txt` maps every file there back to its path in the run directory. There is no separate
-  `run-<runid>/` directory beside it — stage 38 needed one because its `results/` drew on three runs, whereas
-  here one run supplied everything and a second copy would be the same bytes twice.
+  00:01:47, ExitCode 0:0): every section below. Its record minus `build/`, minus the staged
+  `instruments/` copy and minus the 1.5 MB built binary `out/bin-new` **is** `stage39/results/`: 89 of the
+  90 files the run wrote outside `instruments/`, md5-compared one for one against the cluster copy, 89 of 89
+  identical. `results/PROVENANCE.txt` maps every file back to its path in the run directory and records the
+  binary's md5. There is no separate `run-<runid>/` directory
+  beside it — stage 38 needed one because its `results/` drew on three runs, whereas here one run supplied
+  everything and a second copy would be the same bytes twice.
 
 Job budget: **1 of the 2** the ticket allows was used. No cell failed, so there was nothing to re-run.
 

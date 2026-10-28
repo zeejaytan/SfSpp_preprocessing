@@ -1,11 +1,19 @@
 stage39/results — provenance of every file
 
-Everything here was copied out of ONE run directory on the cluster, as a single tar of the named files
-(md5 of the tar as it left the cluster: c6ae3359831c9f3955e71dfc1077ae89, 23478 bytes).
+Everything here was copied out of ONE run directory on the cluster: 82 files as a single tar
+(md5 c6ae3359831c9f3955e71dfc1077ae89, 23 478 B, still at /tmp/t39-artifacts.tgz on the cluster) and the
+remaining 7 (logs/build-new.log, logs/fetch.log, logs/sbatch_phase1.txt, out/corpus_before.tsv,
+out/corpus_after.tsv, out/inputs_before.md5, out/inputs_after.md5) fetched one by one afterwards. All 89
+were then md5-compared against the cluster copies; see the note below the run line.
 
 run = /data/gpfs/projects/punim2657/SfSpp/runs/20261028-1624_ed0fc16_t39-ownmode/
       job 33926931, COMPLETED, Elapsed 00:01:47, ExitCode 0:0, node spartan-bm073
       commit ed0fc16328efdb13991e2d9dba843fe7bddb174e
+
+Every file below was md5-compared against the cluster copy after download: 89 of the run directory's 90
+files outside build/ are here and 89 of 89 md5s match. The one that is not here is out/bin-new, the
+1 582 080 B binary the job built (md5 180e68467eac391279675fdc3ffedfe1); it is reproducible from the
+commit and the build log is kept.
 
 path under this directory                        source inside the run directory
 -----------------------------------------------  ------------------------------------------------
@@ -49,6 +57,8 @@ submit.sbatch                                    the rendered batch script that 
 Geometry (PCD/PLY/OBJ/XYZ) is not here and no longer exists for these cells: the 14 files the cells
 produced under out/ were counted per extension and deleted at the end of the run
 (out/GEOMETRY_DELETED_phase1.txt: geometry_files_before 14, geometry_files_after 0). The 401 geometry
-files still under the run directory's build/ are the extracted commit's OWN tracked files, byte-identical
-to ed0fc16 (401 of 401 tracked there; five non-empty ones md5-compared against the commit), not
-something the cells produced.
+files still under the run directory's build/ are the extracted commit's OWN tracked files: the commit
+tracks 409 geometry-extension paths, 401 exist under build/new/src, 0 exist there untracked and 0 tracked
+ones are missing; all 401 regular blobs were md5-compared against "git cat-file blob ed0fc16:<path>" and
+all 401 are identical, and the other 8 are symlinks in the commit whose targets readlink matches. Nothing
+under build/ was produced by the cells.
