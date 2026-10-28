@@ -123,8 +123,8 @@ Juglet_Piece_9	B	0	2087	1498	5.385601000000001	9.7238303	14.967039999999997	18.6
 Juglet_Piece_9	B	1	3510	2013	6.6240999999999985	13.0204401	16.418030000000044	21.976402578415545	0.73018147086915	2.802466685118388	ply	274522
 ```
 
-Tab-separated, in the file's own order (the header line above the rows in the file is exactly the
-backticked list of column names in the sentence before it).
+Tab-separated, in the file's own order; the column names are the backticked list above, which is the
+file's header line.
 
 `distinct` is the number of distinct positions at 1e-4 mm; `cov_2mm` is the fraction of the ORIGINAL piece
 cloud within 2 mm of that surface; `fold_deg` is the median folded angle to the ORIGINAL mesh.
