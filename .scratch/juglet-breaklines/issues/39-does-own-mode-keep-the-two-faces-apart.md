@@ -274,6 +274,7 @@ signed statistic exists — but it can and does show that the second sheet is no
 - `out/pristine.txt` → "/opt/sfs-pristine ... status ABSENT"; `corpus.diff` and `inputs.diff` both 0 bytes.
 - `git diff --stat main -- mesh_processing_headless.cpp` → empty: this ticket changes no tracked pipeline behaviour, it runs a switch that was already there.
 - The three PNGs I opened (`read_image` is refused for this session's model; `modlens_read_image` used and its prose checked against the tables, where it wrongly described arm A's sheets as "visibly separated") plus my own PIL pixel counts in `artifacts/juglet-p39/`.
+- `stage39/DELETED_local_copies.txt` (133 lines) → the counted record of the local copies removed after the figures were committed: `results_fig/` 79 files / 3 666 883 bytes (json 19 / 77 247, tsv 16 / 463 018, log 11 / 122 072, md5 6 / 55 778, txt 6 / 832, md 1 / 6 423, py 6 / 149 694, sh 4 / 30 983, tmpl 1 / 11 353, sbatch 1 / 11 584, out 1 / 8 594, binary 1 / 1 582 080, diff 2 / 0, err 1 / 0) plus `fig_artifacts.tgz` 1 805 233 B and `edgeon_compare.png` 650 161 B; all 79 paths under `results_fig/` proved present at the same relative path in the run of record, and the two loose files are laptop-only (neither exists on the cluster).
 
 ### What happens next (proposed, not decided here)
 
