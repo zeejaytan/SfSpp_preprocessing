@@ -152,7 +152,9 @@ All eight evidence items are delivered:
 8. **Not done, with the exact command or line** — six numbered items in the report's section 8, the load-bearing
    ones being: no `SAMPLER-GATE-DISCLOSURE_<piece>.txt` was written by `run_cell39.sh` (the route-1/route-2 lines
    survive in `phase1.log` only), `nest39.py selftest` is not run by the job (its 3/3 was run by hand), and the
-   435 MB `build/` tree stays on the cluster as it did for stage 38.
+   435 MB `build/` tree and the built binary `out/bin-new` stay on the cluster as they did for stage 38 — every
+   other file the run wrote (89 of 90 outside `instruments/`) is in `stage39/results/`, md5-compared against the
+   cluster copy, 89 of 89 identical.
 
 The bar in "The bar the lead will read against" is restated in the report beside the numbers and **not judged**
 there. `Status`, `intent/` and `mesh_processing_headless.cpp` are untouched by this ticket; no merge.
