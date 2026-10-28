@@ -433,11 +433,13 @@ after masking the arm name and the dump path, in exactly these classes — `[REA
    30) and calls its `count` and `pair` commands. The 3/3 result quoted in section 5 was produced by hand on
    the login node, from the run directory's instruments copy:
    `python3 instruments/nest39.py selftest`.
-4. **The `build/` tree (435 MB: `build/new` 220 MB + `build/src` 215 MB) is not mirrored into the worktree** —
-   it stays in the cluster run directory, as it did for stage 38. What is mirrored is the run record minus
-   `build/`, plus the seven files fetched separately for this report (`logs/build-new.log`, `logs/fetch.log`,
-   `logs/sbatch_phase1.txt`, `out/corpus_before.tsv`, `out/corpus_after.tsv`, `out/inputs_before.md5`,
-   `out/inputs_after.md5`), each md5-checked against the cluster copy.
+4. **Two things are not mirrored into the worktree.** The `build/` tree (435 MB: `build/new` 220 MB +
+   `build/src` 215 MB) stays in the cluster run directory as it did for stage 38, and so does the built binary
+   `out/bin-new` (1 582 080 B). Everything else the run wrote — 89 of its 90 files outside `instruments/` — is
+   in `results/`, md5-compared one for one against the cluster copy (89 of 89 identical). The staged
+   `instruments/` copy in the run directory is not copied here either, because it is byte-identical to
+   `stage39/instruments/` (11 of 11 md5s equal, compared against the cluster); `out/instruments_commit.md5`
+   and `out/instruments_rundir.md5` record that equality as the job's own anti-drift gate.
 5. **Pot A is not in this run** — the ticket excludes it deliberately (it is the reference from the other
    density group, not a silent sherd, and stage 38's run 6 showed its cell is what the wall clock kills). This
    is a scope decision recorded in the ticket, not a failure.
