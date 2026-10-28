@@ -2436,3 +2436,25 @@ Every pair measurement in this project since ticket 26 has used one instrument. 
 What it touches, counted per ticket by re-reading every table that carries the three columns: ticket 26 one row of 116; ticket 33 twelve of thirteen and forty of forty in two tables; ticket 34 every per-cell table; ticket 37 forty-six of one hundred and two. Ticket 30's numbers came from these instruments but it kept no table of its own; ticket 36's tables are clean (53 rows, none inflated). The direction is always the same — the reported across was too large — so Pot A's clean pairs are cleaner than reported (a reported 7.10-7.86 mm is truly 0.29-0.57 mm) and no "is a pair" verdict flips to "is not". One sentence does not survive: ticket 34's **"the Juglet never yields two real faces"** is withdrawn, and ticket 38 replaces it with a measurement — at even sampling the two large regions of sherds 2 and 9 sit 2.12-2.28 mm apart through the wall with 0.02-0.16 mm of lateral slip, i.e. one wall thickness apart.
 
 Next: unchanged — the admission window at dense sampling (ticket 38's proposal).
+
+## 2026-10-29 — own mode separates both faces on all nine sherds, and the adaptive default has an unmeasured cost (ticket 40)
+
+On a uniform covering at each sherd's own spacing, the own admission (`SFS_REASSIGN_MODE=own`, already in the
+binary since ticket 39) gives two opposite-facing surfaces one wall thickness apart on **9 of 9** Juglet sherds —
+shared points 0, mean dot -0.94 to -1.00, med_along 1.88-2.96 mm (70-90 % of each ray wall) — where the shipped
+radius admission nests on **8 of 9** (shared 3833-10112 of the smaller surface, dot +0.68 to +1.00; piece 7 alone is
+separated under both). Pot A is untouched: 8 of 8, shared 0, dot <= -0.9988 in both arms, counts within ±2 of the
+recorded anchors. On the real released clouds own mode stops the point-sharing everywhere but yields a genuine
+opposite-facing pair only on piece 1 (along 1.82 / across 0.53 / coin 0.035); pieces 5, 7 and 8 grow two regions in
+different places — a growth-layout problem, not an admission problem.
+
+Two things this grid found that no earlier grid could: the ticket-37 adaptive-spacing default **silently loses
+Juglet pieces 4 and 6** (one cluster, no surface, both arms) — they were never in the ticket-36/37 piece lists, and at
+the old fixed 0.6 mm they wrote pairs (182/732 and 608/1016); and the dense-cloud capability claim rests on
+**synthetic coverings** (the mesh sampled at its own spacing, 4-10x the released downsampled densities), so it is a
+capability statement, not a performance claim.
+
+Weight: none on the 281/292 tally — no edgeline was scored.
+
+Next: the default decision (own mode as shipped default, with the pieces-4/6 regression answered first), then the
+growth layout on real clouds (pieces 5/7/8) — the blocker upstream of the admission.
