@@ -14,7 +14,7 @@
 # what it executes against what the commit holds and fails rc=4 on any difference.
 set -uo pipefail
 
-PHASE=$1; TAG=$2; WTIME=$3; PARTA=$4; [ -n "$PARTA" ] || PARTA=none
+PHASE=${1:-}; TAG=${2:-}; WTIME=${3:-}; PARTA=${4:-none}
 [ -n "$PHASE" ] && [ -n "$TAG" ] && [ -n "$WTIME" ] || {
   echo "usage: submit43.sh <phase 1|2|3> <tag> <walltime> [partA-rundir]" >&2; exit 2; }
 case "$PHASE" in 1|2|3) ;; *) echo "phase must be 1, 2 or 3" >&2; exit 2 ;; esac
