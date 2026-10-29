@@ -2,8 +2,8 @@
 # ticket 42 -- set the growth angle by the outcome, not as a shipped constant.
 #
 # Two-arm grid on REAL RELEASED clouds (no synthetic, no downsample override):
-#   A  today exactly: paper chain theta=3.4, radius admission, literal merge (the control;
-#      anchors from ticket 40 g2/g3 and ticket 41 arm A);
+#   A  today exactly: NO env overrides -- shipped defaults (SFS_REASSIGN_MODE=own, adaptive
+#      spacing); every cell log must show [REASSIGN-22] mode=own (run 3 correction);
 #   B  the same env + SFS_GROWTH_MODE=outcome -- the bidirectional paperTheta ladder of
 #      ticket 42 (single-delta design: the only difference is the growth mode).
 #   R  reference control (pieces listed in REFLIST only): the SAME env as arm A run on the
@@ -113,10 +113,13 @@ WALLSUM=$PIPECELL/walls.tsv
 printf "pot\tpiece\tarm\tcloud_pts\trays\tthick_med_mm\tthick_p10_mm\tthick_p90_mm\tanchor_med_mm\tabs_diff\tanchor_hit\tarm_ply\n" > "$WALLSUM"
 
 arm_env() {  # $1 arm -> prints the env assignments
+  # run 3 correction: the run of record pinned SFS_REASSIGN_MODE=radius on every arm, so its
+  # arm A was not "today".  Arm A now carries NO overrides at all -- the shipped default is
+  # SFS_REASSIGN_MODE=own with adaptive spacing (ticket 41).  Arm B adds exactly one variable.
   case "$1" in
-    A) echo "SFS_REASSIGN_MODE=radius SFS_MERGE_SCALE=literal" ;;
-    B) echo "SFS_REASSIGN_MODE=radius SFS_MERGE_SCALE=literal SFS_GROWTH_MODE=outcome" ;;
-    R) echo "SFS_REASSIGN_MODE=radius SFS_MERGE_SCALE=literal" ;;
+    A) echo "" ;;
+    B) echo "SFS_GROWTH_MODE=outcome" ;;
+    R) echo "" ;;
     *) return 1 ;;
   esac
 }

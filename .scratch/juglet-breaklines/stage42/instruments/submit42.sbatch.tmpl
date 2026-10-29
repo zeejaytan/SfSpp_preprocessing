@@ -15,13 +15,15 @@
 # piece in the SAME job on the SAME cloud:
 #   phase 1  Juglet, all nine sherds;
 #   phase 2  Pot A, all eight pieces.
-# Arms (run_cell42.sh): A today exactly (paper chain theta=3.4, radius admission, literal merge);
-# B the same env + SFS_GROWTH_MODE=outcome (the bidirectional paperTheta ladder).  Proof 1 rides
-# on the R reference cells (same env as A on the PRE-change binary __REFCOMMIT__, pieces 1/3/5/7
-# of Juglet and Pot_A 07): identical SampledWithNormals md5 + identical [RETRY-23] sequences,
-# A vs R.  Proof 2 rides on every cell: zero ladder lines in A/R logs, mode=angle in A/R,
-# mode=outcome in B.  The cells' surfaces, logs and tables are KEPT for the lead; the closing
-# delete removes everything else and records itself first.
+# Arms (run_cell42.sh), run 3 correction of the radius pin: A today exactly = NO env overrides
+# (shipped defaults: SFS_REASSIGN_MODE=own, adaptive spacing); B adds exactly
+# SFS_GROWTH_MODE=outcome (the bidirectional paperTheta ladder).  No R reference cells in this
+# run: REFLIST is empty.  Measurement (measure42.sh: surfaces.tsv, surface_pairs.tsv with
+# signed-t and wall medians joined, nest.tsv, ticket-41 pair anchors +/-0.01, designed exit-10
+# on miss) runs INLINE in this same job.  Also recorded inline: every arm A cell log line
+# [REASSIGN-22] mode=own, and zero theta=0.0 ladder rungs anywhere (the 8f9eb29 off-by-end fix).
+# The cells' surfaces, logs and tables are KEPT for the lead; the closing delete removes
+# everything else and records itself first.
 # Paid-for traps this script is written around: CRLF in any script (grep -c CR gate in the
 # submitter); brace-stripping when this template renders (unrendered-placeholder check in the
 # renderer); unbound variables under set -u (every variable is defaulted or colon-dash'd); no
@@ -205,16 +207,8 @@ phase_cells() {  # $1 phase -> POT:PIECE list (arms default A and B in the drive
   for p in $pcs; do list="$list $pot:$p"; done
   echo "$list"
 }
-phase_reflist() {  # $1 phase -> POT:PIECE pieces that also get the R cell on the ref binary
-  if [ "$1" = 3 ]; then
-    echo "Juglet:Juglet_Piece_1 Juglet:Juglet_Piece_3 Juglet:Juglet_Piece_5 Juglet:Juglet_Piece_7 Pot_A:Pot_A_Piece_07"
-    return 0
-  fi
-  if [ "$1" = 1 ]; then
-    echo "Juglet:Juglet_Piece_1 Juglet:Juglet_Piece_3 Juglet:Juglet_Piece_5 Juglet:Juglet_Piece_7"
-  else
-    echo "Pot_A:Pot_A_Piece_07"
-  fi
+phase_reflist() {  # run 3 correction: no R reference cells -- the corrected arm A no longer
+  echo ""               # matches the pre-change binary's shipped default, so A-vs-R proves nothing
 }
 
 RC_ANY=0
@@ -238,6 +232,48 @@ if [ "$rc" -ne 0 ]; then
   echo "[JOB] WARN phase $PHASE driver failed rc=$rc (see the cells log); closing record still written"
   printf "%s\t%s\n" "$PHASE" "$rc" >> "$OUT/phase_failures.tsv"
   RC_ANY=$rc
+fi
+
+# ---- inline measurement (run 3): the tables the lead asked for, from THIS run's kept PLYs,
+# with the wall medians joined into the pair rows and the ticket-41 anchors checked (+/-0.01,
+# designed exit-10 on miss, reported not tuned).
+export SRC_RUN="$RUN"
+bash "$INSTR/measure42.sh" > "$OUT/measure42.log" 2>&1; MRC=$?
+tail -40 "$OUT/measure42.log"
+if [ "$MRC" -eq 10 ]; then
+  echo "[JOB] WARN measure42 anchor MISS (exit 10): reported, not tuned (see out/anchors.tsv)"
+  echo "measure42	10	anchor-miss" >> "$OUT/phase_failures.tsv"
+elif [ "$MRC" -ne 0 ]; then
+  echo "[JOB] WARN measure42 failed rc=$MRC (see out/measure42.log)"
+  echo "measure42	$MRC	failed" >> "$OUT/phase_failures.tsv"
+else
+  echo "[JOB] measure42 anchors hit (rc=0)"
+fi
+
+# ---- run-3 verification: every arm A cell ran the shipped default (mode=own), and no ladder
+# rung anywhere chose theta=0.0 (the 8f9eb29 off-by-end fix).  Recorded, not gated.
+{
+  echo "cell	arm	reassign_mode	note"
+  for C in "$OUT"/cells-pipeline/*_armA; do
+    [ -d "$C" ] || continue
+    M=$(grep -am1 "\[REASSIGN-22\]" "$C/logs/mesh.log" 2>/dev/null | sed -n "s/.*mode=\([^ ]*\).*/\1/p")
+    [ -n "$M" ] || M=no-line
+    echo "$(basename "$C")	A	$M	-"
+  done
+  T0=0
+  for L in "$OUT"/cells-pipeline/*/ladder.tsv; do
+    [ -f "$L" ] || continue
+    T0=$((T0 + $(grep -ac "theta=0.0" "$L" || true)))
+  done
+  echo "ALL	ladder	-	theta0_rungs_total=$T0"
+} > "$OUT/reassign_proof.tsv"
+cat "$OUT/reassign_proof.tsv"
+N_OWN=$(awk -F"\t" '$2=="A" && $3=="own"' "$OUT/reassign_proof.tsv" | wc -l)
+N_A=$(awk -F"\t" '$2=="A"' "$OUT/reassign_proof.tsv" | wc -l)
+echo "[JOB] reassign proof: $N_OWN/$N_A arm A cells show mode=own"
+if [ "$N_OWN" = "$N_A" ] && [ "$N_OWN" -gt 0 ]; then :; else
+  echo "reassign	proof-failed" >> "$OUT/phase_failures.tsv"
+  echo "[JOB] WARN reassign proof FAILED (recorded)"
 fi
 
 # The closing bookkeeping runs once, and also on a termination signal: if Slurm ends this job at the

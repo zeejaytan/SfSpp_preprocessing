@@ -43,15 +43,16 @@ rec = {"runid": runid, "tag": tag, "commit": sha, "ref_commit": refsha, "phase":
        "ticket": ".scratch/juglet-breaklines/issues/42-set-the-growth-angle-by-outcome.md",
        "question": "E4 - set the growth (smoothness) angle by the outcome, not as a shipped constant",
        "pieces": pieces,
-       "arms": {"A": "today exactly: SFS_REASSIGN_MODE=radius SFS_MERGE_SCALE=literal + paper defaults",
+       "arms": {"A": "today exactly: NO env overrides -- shipped defaults (SFS_REASSIGN_MODE=own, adaptive spacing); run-3 correction of the radius pin",
                 "B": "arm A + SFS_GROWTH_MODE=outcome (bidirectional paperTheta ladder 3.4,5.1,6.8,10.2,2.55,1.7,0.85 deg; largest theta with >=2 floor-clearing regions, else largest single region)",
-                "R": "arm A env on the PRE-change binary (ref_commit) for the REFLIST pieces: proof 1 = identical SampledWithNormals md5 + identical [RETRY-23] sequences, A vs R"},
+                "R": "not run in run 3 (REFLIST empty): the corrected arm A no longer matches the pre-change binary's default"},
        "defaults": "SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 "
-                   "SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0 SFS_REASSIGN_MODE=radius "
-                   "SFS_MERGE_SCALE=literal; no SFS_DOWNSAMPLE_TARGET (pipeline downsamples itself); "
+                   "SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0; SFS_REASSIGN_MODE/SFS_MERGE_SCALE/"
+                   "SFS_GROWTH_MODE all UNSET (shipped: own, adaptive spacing, angle); "
+                   "no SFS_DOWNSAMPLE_TARGET (pipeline downsamples itself); "
                    "SFS_GROWTH_MODE defaults to angle in the new binary (proof 2: zero ladder lines "
                    "in A/R logs, mode=angle in A/R, mode=outcome in B)",
-       "ref_pieces": REFLIST[phase],
+       "ref_pieces": [],
        "clouds": "real released .pcd clouds only, no synthetic",
        "controls": "arm-A surf-count anchors from ticket 41 recorded per cell (anchor_hit), not gated -- "
                    "the unseeded sampler's run-to-run spread is the standing tolerance",
