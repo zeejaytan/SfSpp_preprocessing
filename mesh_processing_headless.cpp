@@ -1240,6 +1240,7 @@ static double g_countScale = 1.0;
 // =write runs the same boundary improvement the two-cluster path runs on that cluster and
 // writes it as tmpSurfaceCluster_Improved_0.ply, so it becomes Surface_0.
 static std::string g_singleClusterMode = "off";
+static std::string g_growthMode42 = "angle";  // TICKET 42: angle (default) | outcome
 // TICKET 23: SFS_FLOOR_CEILING=<fraction> (default off) bounds the scaled minCluster at
 // that fraction of the piece's own post-downsample point count, so a finer spacing cannot
 // ask for a floor larger than the piece; off leaves the floor exactly as it was.
@@ -3541,9 +3542,56 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
     double minAngleThreshold = -50.0;  // Lower bound to prevent excessive iteration
     if (const char* sfs_ss = std::getenv("SFS_SINGLE_SHOT")) { if (*sfs_ss && std::string(sfs_ss) != "0") maxIterations = 1; }  // TICKET 234: ported ladder harness
     
-    while (numberOfClustersCreated < 2 && currentIteration < maxIterations)
+    // TICKET 42: outcome mode replaces the blind +2 loosening with a bidirectional
+    // paperTheta ladder: default (3.4) first, then outward both ways. Angle mode and
+    // an unset SFS_GROWTH_MODE run exactly today's loop, PCL dial and all.
+    const bool outcome42 = (g_growthMode42 == "outcome");
+    static const double kLadder42[] = { 3.4, 5.1, 6.8, 10.2, 2.55, 1.7, 0.85 };
+    const int kLadderN42 = 7;
+    int ladderIdx42 = 0;
+    bool finalRun42 = false;    // set once the chosen theta is known; that iteration runs downstream
+    bool outcomeDone42 = false; // set at the top of the final iteration, after which the loop exits
+    struct Trial42 { double theta; int clusters; int geFloor; size_t largest; size_t second; std::string sizes; std::string outcome; };
+    std::vector<Trial42> trials42;
+    while (outcome42 ? !outcomeDone42 : (numberOfClustersCreated < 2 && currentIteration < maxIterations))
     {
-        if (numberOfClustersCreated != -1 && numberOfClustersCreated < 2)
+        if (outcome42)
+        {
+            if (finalRun42)
+            {
+                outcomeDone42 = true;  // this iteration is the chosen-theta run; downstream then exit
+            }
+            else if (ladderIdx42 > 0)
+            {
+                if (ladderIdx42 >= kLadderN42)
+                {
+                    // Ladder exhausted: select the LARGEST theta leaving >= 2 floor-clearing
+                    // regions; if none leaves 2, the theta with the LARGEST single region.
+                    int chosen42 = -1;
+                    const char* rule42 = "two-regions";
+                    for (int i42 = 0; i42 < static_cast<int>(trials42.size()); ++i42)
+                        if (trials42[i42].geFloor >= 2 &&
+                            (chosen42 < 0 || trials42[i42].theta > trials42[chosen42].theta)) chosen42 = i42;
+                    if (chosen42 < 0)
+                    {
+                        rule42 = "largest-region";
+                        for (int i42 = 0; i42 < static_cast<int>(trials42.size()); ++i42)
+                            if (chosen42 < 0 || trials42[i42].largest > trials42[chosen42].largest) chosen42 = i42;
+                    }
+                    paperTheta = trials42[chosen42].theta;
+                    finalRun42 = true;
+                    std::cout << "[GROWTH-42-FINAL] piece=" << fileNameOnly
+                              << " chosen_theta=" << paperTheta << " rule=" << rule42
+                              << " clusters=" << trials42[chosen42].clusters
+                              << " sizes=" << trials42[chosen42].sizes << std::endl;
+                }
+                else
+                {
+                    ++ladderIdx42;
+                }
+            }
+        }
+        else if (numberOfClustersCreated != -1 && numberOfClustersCreated < 2)
         {
             std::cout << "Single cluster found (iteration " << (currentIteration + 1) 
                       << "/" << maxIterations << ")...Increasing angle threshold (+2) and trying again..." << std::endl;
@@ -3642,9 +3690,11 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         g_status23.capped = capped23;
 
         std::vector<pcl::PointIndices> clusters;
+        // TICKET 42: the theta this iteration actually grows with (ladder rung in outcome mode).
+        const double thetaEff42 = outcome42 ? (finalRun42 ? paperTheta : kLadder42[ladderIdx42]) : paperTheta;
         if (paperChain) {
-            std::cout << "[PAPER-234] paper grow: thetaDeg=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
-            clusters = growPaper234(cloud, normals, dynMinCluster, paperNB, paperTheta, paperKappa);
+            std::cout << "[PAPER-234] paper grow: thetaDeg=" << thetaEff42 << " kappa=" << paperKappa << " nb=" << paperNB << std::endl;
+            clusters = growPaper234(cloud, normals, dynMinCluster, paperNB, thetaEff42, paperKappa);
         } else if (planeRule) {
             std::cout << "[PLANE-234] windowed-plane gate: joinDeg=" << planeJoinDeg
                       << " distMM=" << planeDistMM << " window=" << planeWindow << std::endl;
@@ -3722,7 +3772,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 << ", \"spacing_mm\": " << dumpFmt25(g_effectiveSpacingMM)
                 << ", \"paper_chain\": " << (paperChain ? "true" : "false")
                 << ", \"plane_rule\": " << (planeRule ? "true" : "false")
-                << ", \"theta\": " << dumpFmt25(paperTheta)
+                << ", \"theta\": " << dumpFmt25(thetaEff42)
                 << ", \"kappa\": " << dumpFmt25(paperKappa)
                 << ", \"nb\": " << paperNB
                 << ", \"points_in_no_cluster\": " << unclaimed25
@@ -3816,6 +3866,29 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             dumpWriteJson25("r3_after_merge", o25.str());
         }
 
+        // TICKET 42: one ladder rung per line in outcome mode, recorded after growth+merge
+        // against the floor this run actually applied.
+        if (outcome42 && !finalRun42)
+        {
+            std::ostringstream sz42;
+            for (size_t i42 = 0; i42 < clusters.size(); ++i42) { if (i42) sz42 << ","; sz42 << clusters[i42].indices.size(); }
+            Trial42 t42;
+            t42.theta = thetaEff42;
+            t42.clusters = static_cast<int>(clusters.size());
+            t42.geFloor = 0;
+            for (size_t i42 = 0; i42 < clusters.size(); ++i42)
+                if (clusters[i42].indices.size() >= static_cast<size_t>(dynMinCluster)) ++t42.geFloor;
+            t42.largest  = clusters.empty() ? 0 : clusters[0].indices.size();
+            t42.second   = clusters.size() > 1 ? clusters[1].indices.size() : 0;
+            t42.outcome  = (t42.geFloor >= 2) ? "two" : (t42.geFloor == 1 ? "one" : "none");
+            t42.sizes    = clusters.empty() ? std::string("none") : sz42.str();
+            trials42.push_back(t42);
+            std::cout << "[GROWTH-42] piece=" << fileNameOnly << " theta=" << t42.theta
+                      << " clusters=" << t42.clusters << " ge_floor=" << t42.geFloor
+                      << " largest=" << t42.largest << " second=" << t42.second
+                      << " outcome=" << t42.outcome << std::endl;
+        }
+
         // TICKET 23: one line per retry with the numbers the retry ended on, so a piece that
         // keeps or loses a cluster says so whether or not a switch is armed.
         {
@@ -3834,6 +3907,12 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
         }
 
         numberOfClustersCreated = clusters.size();
+
+        // TICKET 42: ladder trials fit and write nothing; only the chosen-theta run flows
+        // into the surface build, exactly as a settled retry does today.
+        const bool trialOnly42 = outcome42 && !finalRun42;
+        if (!trialOnly42)
+        {
 
         if (clusters.size() > 1)
         {
@@ -4192,6 +4271,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 
 		getBreakLineForDecorativeParts(dataPath_global + fileNameOnly + "_unclustered.ply");
         numberOfClustersCreated = clusters.size();
+        } // TICKET 42: end of the !trialOnly42 guard
     }
     
     // Safety check: Handle cases where clustering couldn't achieve 2 clusters
@@ -4587,6 +4667,22 @@ int main(int argc, char** argv) {
             std::cerr << "[PAPER-234] FATAL SFS_MERGE_MIN_PAIRS=" << g_mergeMinPairs << " (>=1)" << std::endl;
             std::exit(2);
         }
+        // TICKET 42: SFS_GROWTH_MODE=angle (default, exactly today's binary) or outcome
+        // (bidirectional paperTheta ladder in the growth retry loop). The PCL path never
+        // sees outcome mode: it requires the paper chain, else it warns and stays angle.
+        g_growthMode42 = "angle";
+        if (const char* e42 = std::getenv("SFS_GROWTH_MODE")) { if (*e42) g_growthMode42 = e42; }
+        if (g_growthMode42 != "angle" && g_growthMode42 != "outcome")
+        {
+            std::cerr << "[GROWTH-42] FATAL SFS_GROWTH_MODE=" << g_growthMode42 << " (angle|outcome)" << std::endl;
+            std::exit(2);
+        }
+        if (g_growthMode42 == "outcome" && !paperChain)
+        {
+            std::cerr << "[GROWTH-42] warn outcome needs the paper chain; running angle" << std::endl;
+            g_growthMode42 = "angle";
+        }
+        std::cout << "[GROWTH-42-MODE] mode=" << g_growthMode42 << std::endl;
         std::cout << "Starting surface segmentation on: " << downsampledFilePath << std::endl;
         std::cout << "[SPLITTER-234] rule=" << (planeRule ? "PLANE-CONTINUITY" : "PCL-REGION-GROWING")
                   << " smoothDeg=" << smoothnessAngleThreshold << " curv=" << curvatureThreshold
