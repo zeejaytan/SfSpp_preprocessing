@@ -3,7 +3,9 @@
 **Answers:** U19, E1
 **Blocked by:** none (ticket 41 merged as 8ee02a2)
 **Blocks:** 07
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-29)
+**Branch:** 42-set-the-growth-angle-by-outcome, in /c/PR/worktrees/sfs/42
 
 ## The question
 
