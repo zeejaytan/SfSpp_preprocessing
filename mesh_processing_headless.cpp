@@ -3561,34 +3561,29 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             {
                 outcomeDone42 = true;  // this iteration is the chosen-theta run; downstream then exit
             }
-            else
+            else if (!trials42.empty() && ++ladderIdx42 >= kLadderN42)
             {
-                if (ladderIdx42 >= kLadderN42)
+                // Ladder exhausted: select the LARGEST theta leaving >= 2 floor-clearing
+                // regions; if none leaves 2, the theta with the LARGEST single region.
+                // (trials42.empty() keeps iteration 0 on rung 0; ++ only after a completed
+                // trial, so ladderIdx42 never indexes past kLadder42's last rung.)
+                int chosen42 = -1;
+                const char* rule42 = "two-regions";
+                for (int i42 = 0; i42 < static_cast<int>(trials42.size()); ++i42)
+                    if (trials42[i42].geFloor >= 2 &&
+                        (chosen42 < 0 || trials42[i42].theta > trials42[chosen42].theta)) chosen42 = i42;
+                if (chosen42 < 0)
                 {
-                    // Ladder exhausted: select the LARGEST theta leaving >= 2 floor-clearing
-                    // regions; if none leaves 2, the theta with the LARGEST single region.
-                    int chosen42 = -1;
-                    const char* rule42 = "two-regions";
+                    rule42 = "largest-region";
                     for (int i42 = 0; i42 < static_cast<int>(trials42.size()); ++i42)
-                        if (trials42[i42].geFloor >= 2 &&
-                            (chosen42 < 0 || trials42[i42].theta > trials42[chosen42].theta)) chosen42 = i42;
-                    if (chosen42 < 0)
-                    {
-                        rule42 = "largest-region";
-                        for (int i42 = 0; i42 < static_cast<int>(trials42.size()); ++i42)
-                            if (chosen42 < 0 || trials42[i42].largest > trials42[chosen42].largest) chosen42 = i42;
-                    }
-                    paperTheta = trials42[chosen42].theta;
-                    finalRun42 = true;
-                    std::cout << "[GROWTH-42-FINAL] piece=" << fileNameOnly
-                              << " chosen_theta=" << paperTheta << " rule=" << rule42
-                              << " clusters=" << trials42[chosen42].clusters
-                              << " sizes=" << trials42[chosen42].sizes << std::endl;
+                        if (chosen42 < 0 || trials42[i42].largest > trials42[chosen42].largest) chosen42 = i42;
                 }
-                else
-                {
-                    ++ladderIdx42;
-                }
+                paperTheta = trials42[chosen42].theta;
+                finalRun42 = true;
+                std::cout << "[GROWTH-42-FINAL] piece=" << fileNameOnly
+                          << " chosen_theta=" << paperTheta << " rule=" << rule42
+                          << " clusters=" << trials42[chosen42].clusters
+                          << " sizes=" << trials42[chosen42].sizes << std::endl;
             }
         }
         else if (numberOfClustersCreated != -1 && numberOfClustersCreated < 2)
