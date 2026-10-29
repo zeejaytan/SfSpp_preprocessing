@@ -73,13 +73,12 @@ if left:
 nexp = len(re.findall(r"[$][{]?[A-Za-z_][A-Za-z0-9_]*", text))
 if nexp < 50:
     raise SystemExit("[SUBMIT] FATAL rendered script lost its shell expansions (%d found)" % nexp)
-open(out, "w", newline="
-").write(text)
+open(out, "w", newline="\n").write(text)
 print("[SUBMIT] rendered %s (%d bytes, phase %s, %d shell expansions)" % (out, len(text), phase, nexp))
 PYEOF
 
 # CRLF gate: a stray carriage return has already killed two grids on this project
-CR=$(grep -lU $'' "$RUN/submit.sbatch" $RUN/instruments/*.py $RUN/instruments/*.sh $RUN/instruments/*.tmpl "$RUN/run.json" 2>/dev/null)
+CR=$(grep -lU $'\r' "$RUN/submit.sbatch" $RUN/instruments/*.py $RUN/instruments/*.sh $RUN/instruments/*.tmpl "$RUN/run.json" 2>/dev/null)
 if [ -n "$CR" ]; then
   echo "[SUBMIT] FATAL carriage returns in:" >&2
   echo "$CR" >&2
@@ -100,8 +99,7 @@ echo "[SUBMIT] bash -n and py_compile clean"
   echo "runid=$RUNID tag=$TAG phase=$PHASE wall=$WALL"
   echo "commit=$SHA ref=$REFSHA"
   echo "jobname=$JOBNAME"
-  ls -1 "$RUN"/instruments | tr '
-' ' '
+  ls -1 "$RUN"/instruments | tr '\n' ' '
   echo
 } | tee -a "$RUN/logs/submit.log"
 
