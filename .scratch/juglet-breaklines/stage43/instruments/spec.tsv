@@ -1,0 +1,24 @@
+# ticket 43 Part A spec: pot	piece	mesh.obj	spacing_mm	ladder_theta_deg
+# spacing = the S each piece's own pipeline run resolved ([SPACING-22] policy=piece ... S=),
+# read from ticket 42 run of record 33989453 out/cells-pipeline/*_armA/logs/mesh.log.
+# ladder_theta = ticket 42 chosen_theta for that piece (same run's pipeline_cells.tsv arm B).
+# meshes = the exact globs stage42/instruments/run_cell42.sh piece_mesh() uses:
+#   Juglet  $DS/Mesh/Juglet/<piece>_Mesh.obj   ($DS=/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset)
+#   Pot_A   $CORP/Mesh/<piece>_Mesh.obj        (the frozen corpus)
+Juglet	Juglet_Piece_1	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_1_Mesh.obj	0.338049	10.2
+Juglet	Juglet_Piece_2	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_2_Mesh.obj	0.210898	10.2
+Juglet	Juglet_Piece_3	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_3_Mesh.obj	0.215277	10.2
+Juglet	Juglet_Piece_4	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_4_Mesh.obj	0.215621	10.2
+Juglet	Juglet_Piece_5	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_5_Mesh.obj	0.238572	10.2
+Juglet	Juglet_Piece_6	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_6_Mesh.obj	0.223696	10.2
+Juglet	Juglet_Piece_7	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_7_Mesh.obj	0.257988	10.2
+Juglet	Juglet_Piece_8	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_8_Mesh.obj	0.221611	10.2
+Juglet	Juglet_Piece_9	/data/gpfs/projects/punim2657/Dataset/Mesh/Juglet/Juglet_Piece_9_Mesh.obj	0.203464	10.2
+Pot_A	Pot_A_Piece_01	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_01_Mesh.obj	0.6	6.8
+Pot_A	Pot_A_Piece_02	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_02_Mesh.obj	0.6	10.2
+Pot_A	Pot_A_Piece_03	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_03_Mesh.obj	0.6	6.8
+Pot_A	Pot_A_Piece_04	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_04_Mesh.obj	0.581739	10.2
+Pot_A	Pot_A_Piece_05	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_05_Mesh.obj	0.6	10.2
+Pot_A	Pot_A_Piece_06	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_06_Mesh.obj	0.6	10.2
+Pot_A	Pot_A_Piece_07	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_07_Mesh.obj	0.292881	6.8
+Pot_A	Pot_A_Piece_08	/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Mesh/Pot_A_Piece_08_Mesh.obj	0.270368	6.8

@@ -1,0 +1,5 @@
+pot	piece	A_sampled_md5	N_sampled_md5	same	A_sampled_points	N_sampled_points	A_outcome	N_outcome	A_s0s1	N_s0s1
+Juglet	Juglet_Piece_2	8b704a31c13bfa95845bd3a320dbfbee	8b704a31c13bfa95845bd3a320dbfbee	same	2397	2397	none	none	-1/-1	-1/-1
+Pot_A	Pot_A_Piece_01	missing-A-or-N-cell
+Juglet	Juglet_Piece_5	31b9a593d48a133196888a6564341327	31b9a593d48a133196888a6564341327	same	5668	5668	two	two	143/2304	143/2304
+Pot_A	Pot_A_Piece_07	missing-A-or-N-cell
