@@ -446,6 +446,11 @@ Part A as I wrote it asked for two things that are the same quantity: measure th
 
 **Weight:** 17 sherds, two vessels, one constant. The law is measured on the clouds the pipeline actually runs on (the released clouds, at the spacing each piece resolved — `NN median` 0.2109 mm on Juglet_Piece_2, 0.2034 on Juglet_Piece_9, matching the [SPACING-22] `S` those runs logged), and the out-of-sample prediction is the strong part: m was fixed on Pot A and the Juglet fell within 1 deg of its independently found answer.
 
+**The figure.** `law43.png` in the run of record's `out/` (job 34000246, 111 264 B, 1820x728): left panel
+`w50` against `S/R` with `y = x`, right panel the rule against the two known-good angles. Both panels carry
+ink (0.0535 and 0.0662 of their area) and each spans its full width (ink columns 19-896 and 3-892 of 910),
+which is the assertion I can make without an image reader: this session cannot open images.
+
 **Not tested:** no pipeline cell has run at the curvature-derived theta. Arms B and C carried R1/R2 (percentile rules), never this rule. The prediction is arithmetic against outcomes already measured, not a new outcome. A cell at `SFS_PAPER_THETA` = 2.66-4.36 on Pot A and 8.16-12.68 on the Juglet is the test that would settle it, and it needs a job, not a source change.
 
 **Also untested, and named rather than buried:** the fold radius `R` comes from an osculating-paraboloid fit whose cap is `RHO_CAP_MM` = 60 mm, so a genuinely flat sherd reports 60 rather than its true radius and the rule would over-predict there. No piece in this set is near the cap (max 37.99 mm, PA04), but a flatter pot would be.
