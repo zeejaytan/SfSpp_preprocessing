@@ -1,0 +1,166 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 42 MEASUREMENT RERUN -- the grid run of record __SRCRUN__ (job 33959417) filled
+# pipeline_cells/walls/switch_proof/proof1 but died on ModuleNotFoundError replica37 before the
+# measurement step, leaving surfaces.tsv, surface_pairs.tsv and nest.tsv header-only.  The 66 cell
+# surface PLYs were KEPT.  This job re-measures those KEPT PLYs against the ORIGINAL released
+# clouds/meshes with the fixed instruments (replica37.py, measure34.py, mesh38.py now beside
+# grow38.py) and writes the three tables into ITS OWN run directory.  No pipeline rerun, no
+# binary build: the run of record and the corpus are READ-ONLY (md5-proven before/after).
+# Hard anchors inside: J1 arm A pair 2.0146/1.8152/0.5282 and Pot A arm A PA01 7.0952/7.0888/
+# 0.2709, +/-0.01 -- a miss is reported in anchors.tsv and exits 10, never tuned.
+# Paid-for traps written around: CRLF in any script; brace-stripping at render; unbound variables
+# under set -u; the run of record must not be written to.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+SRC_RUN=__SRCRUN__
+IXTAG=__IXTAG__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DS=$CANON/Dataset
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+RINSTR=$RUN/instruments
+OUT=$RUN/out
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+JOBID=${SLURM_JOB_ID:-na}
+export CANON CORP DS PY OUT RUN RUNID NEW SRC_RUN IXTAG RUNS IDX JOBID
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT" logs
+
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG measure-only new=$NEW src=$SRC_RUN host=$(hostname)"
+
+[ -d "$SRC_RUN/out/cells-pipeline" ] || fail 2 "no cells-pipeline in $SRC_RUN"
+NP=$(find "$SRC_RUN/out/cells-pipeline" -path '*/surfaces/*.ply' -type f | wc -l)
+echo "[JOB] kept surface PLYs in the run of record: $NP"
+
+# the instruments this job runs are the PUSHED COMMIT's bytes, verified against the run dir copies
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+git -C "$CANON" cat-file -e "${NEW}^{commit}" 2>>logs/fetch.log || fail 2 "commit $NEW not in $CANON"
+SRC=$RUN/build/src
+rm -rf "$SRC"; mkdir -p "$SRC"
+git -C "$CANON" archive "$NEW" | tar -x -C "$SRC" || fail 3 "git archive $NEW failed"
+INSTR=$SRC/.scratch/juglet-breaklines/stage42/instruments
+[ -d "$INSTR" ] || fail 3 "no stage42 instruments in commit $NEW"
+( cd "$INSTR" && md5sum *.py *.sh 2>/dev/null ) | sort -k2 > "$OUT/instruments_commit.md5"
+( cd "$RINSTR" && md5sum *.py *.sh 2>/dev/null ) | sort -k2 > "$OUT/instruments_rundir.md5"
+diff -q "$OUT/instruments_commit.md5" "$OUT/instruments_rundir.md5" > /dev/null \
+  || fail 4 "instruments in the run directory differ from commit $NEW"
+echo "[JOB] instruments match commit $NEW ($(wc -l < "$OUT/instruments_commit.md5") files)"
+export INSTR
+
+# prove every import INSIDE the job too: selftests exercise replica37, measure34, mesh38,
+# grow38 and nest39 end to end on synthetic truth before any real measurement runs
+"$PY" "$INSTR/grow38.py" selftest > "$OUT/selftest_grow38.log" 2>&1 || fail 5 "grow38 selftest failed (imports broken?)"
+"$PY" "$INSTR/nest39.py" selftest > "$OUT/selftest_nest39.log" 2>&1 || fail 5 "nest39 selftest failed (imports broken?)"
+echo "[JOB] selftests passed (every import exercised)"
+
+# read-only proofs: frozen corpus md5s and the run of record's kept PLYs, before and after
+md5_corpus() {
+  local out=$1 f
+  {
+    for f in "$DS"/Point/Juglet/*.pcd "$DS"/Mesh/Juglet/*.obj "$DS"/Axes/Juglet/*.xyz \
+             "$DS"/Axes/Pot_A/*.xyz \
+             "$CORP"/Point/Pot_A/*.pcd "$CORP"/Mesh/Pot_A_Piece_*.obj "$CORP"/Axes/*.xyz; do
+      [ -f "$f" ] && printf "%s\t%s\n" "$(md5sum "$f" | cut -d' ' -f1)" "$f"
+    done
+  } | sort -k2 > "$out"
+}
+md5_corpus "$OUT/inputs_before.md5"
+find "$SRC_RUN/out/cells-pipeline" -path '*/surfaces/*.ply' -type f -print0 \
+  | sort -z | xargs -0 md5sum > "$OUT/src_plies_before.md5" || fail 6 "could not md5 the kept PLYs"
+
+{
+  echo "host $(hostname)"
+  echo "utc $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "commit $NEW"
+  echo "src_run $SRC_RUN"
+  "$PY" -c "import numpy, scipy, sys; print('python', sys.version.split()[0]); print('numpy', numpy.__version__); print('scipy', scipy.__version__)"
+  nproc
+} > "$OUT/versions.txt" 2>&1
+
+RC_ANY=0
+bash "$INSTR/measure42.sh" > "$OUT/measure_cells.log" 2>&1; rc=$?
+tail -80 "$OUT/measure_cells.log"
+[ "$rc" -ne 0 ] && RC_ANY=$rc
+echo "[JOB] measure42.sh rc=$rc"
+
+FINISHED=0
+finish() {
+  [ "$FINISHED" -eq 1 ] && return 0
+  FINISHED=1
+  md5_corpus "$OUT/inputs_after.md5"
+  find "$SRC_RUN/out/cells-pipeline" -path '*/surfaces/*.ply' -type f -print0 \
+    | sort -z | xargs -0 md5sum > "$OUT/src_plies_after.md5" || true
+  diff "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" || true
+  diff "$OUT/src_plies_before.md5" "$OUT/src_plies_after.md5" > "$OUT/src_plies.diff" || true
+  if [ -s "$OUT/inputs.diff" ] || [ -s "$OUT/src_plies.diff" ]; then
+    echo "[JOB] WARN the corpus or the run of record changed during this job"
+    cat "$OUT/inputs.diff" "$OUT/src_plies.diff"
+  else
+    echo "[JOB] corpus and run-of-record PLYs unchanged"
+  fi
+  # geometry this job itself created (expected none: only tsv/json/log are written) --
+  # counted and recorded BEFORE any delete
+  GEOM=$(find "$OUT" -type f \( -name '*.pcd' -o -name '*.ply' -o -name '*.obj' -o -name '*.xyz' \) | wc -l)
+  {
+    echo "# geometry created by $RUNID, $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "geometry_files_created $GEOM"
+    find "$OUT" -type f \( -name '*.pcd' -o -name '*.ply' -o -name '*.obj' -o -name '*.xyz' \) -delete
+    echo "geometry_files_after $(find "$OUT" -type f \( -name '*.pcd' -o -name '*.ply' -o -name '*.obj' -o -name '*.xyz' \) | wc -l)"
+    echo "# kept: nothing -- the measured PLYs stay in the run of record $SRC_RUN"
+  } > "$OUT/GEOMETRY_DELETED.txt"
+  cat "$OUT/GEOMETRY_DELETED.txt"
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "src_run=$SRC_RUN"
+    echo "tag=$IXTAG"
+    echo "host=$(hostname)"
+    echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "measure_rc=${rc:-na}"
+    echo "surfaces_rows $(wc -l < "$OUT/surfaces.tsv" 2>/dev/null || echo 0)"
+    echo "surface_pairs_rows $(wc -l < "$OUT/surface_pairs.tsv" 2>/dev/null || echo 0)"
+    echo "nest_rows $(wc -l < "$OUT/nest.tsv" 2>/dev/null || echo 0)"
+    echo "anchor_misses $(cat "$OUT/anchors.tsv.flag" 2>/dev/null || echo na)"
+  } > "$OUT/run-meta.txt"
+  printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+  echo "[JOB] index row appended (verdict and human_note left empty)"
+  sacct -j "$JOBID" -P --format=JobID,JobName%25,State,Elapsed,ExitCode > logs/sacct.txt 2>&1 || true
+}
+trap 'echo "[JOB] signal caught: closing the record before exiting"; finish; exit 143' TERM INT
+
+finish
+if [ "$RC_ANY" -eq 10 ]; then
+  echo "[JOB] ANCHOR MISS: tables written, anchors.tsv records the miss; not tuned"
+fi
+exit "$RC_ANY"
