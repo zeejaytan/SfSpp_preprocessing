@@ -2504,7 +2504,7 @@ with a mean absolute error of **0.150 deg** and **0.562 deg**. The pooled correl
 within-vessel figures are the ones that carry weight — a pooled figure across two scales proves nothing.
 
 So `theta = k x S / R_fold` with **k = 3.3573**, calibrated on the Pot A median alone, leaves the control at
-its shipped 3.4 (predicts 2.66-4.36) and predicts the Juglet at **8.16-12.68, median 9.70** — against the
+its shipped 3.4 (predicts 2.66-4.36) and predicts the Juglet at **8.16-12.68, median 10.05** — against the
 **10.2** the ticket-42 ladder found by pure outcome search on those sherds, within 1 deg at the median and
 bracketed by the range. The same law as a multiplier on the measured median turn gives the identical answer
 with m = 2.8849. The cross-check that makes it a law rather than a fit: the theta ratio the two vessels need

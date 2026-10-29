@@ -419,7 +419,7 @@ The same law in the form the conservator asked for — geometry in, angle out, n
 | vessel | predicted | known-good |
 |---|---|---|
 | Pot A | 2.66-4.36 deg (PA01 4.36, PA02 3.30, PA03 3.76, PA04 2.92, PA05 3.50, PA06 3.17, PA07 2.66, PA08 3.61) | 3.4 |
-| Juglet | 8.16-12.68 deg (median 9.70; J1 10.29, J2 12.40, J3 9.35, J4 10.25, J5 8.74, J6 8.16, J7 8.65, J8 10.05, J9 12.68) | 10.2 |
+| Juglet | 8.16-12.68 deg (median 10.05; J1 10.29, J2 12.40, J3 9.35, J4 10.25, J5 8.74, J6 8.16, J7 8.65, J8 10.05, J9 12.68) | 10.2 |
 
 This is the connection the conservator asked for (m05808): the angle follows how curved the sherd is, Pot A gets about 3.4 because it is nearly flat, and the Juglet gets about 10 because it folds on a 3-6 mm radius. Its two inputs are already available in the pipeline — `S` is what [SPACING-22] resolves, `R` is what the ticket-32 instrument measures — so nothing has to be searched.
 
