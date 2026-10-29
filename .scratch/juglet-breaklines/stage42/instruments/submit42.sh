@@ -12,8 +12,8 @@ if [ -z "$RUN" ] || [ -z "$TAG" ] || [ -z "$JOBNAME" ] || [ -z "$WALL" ] || [ -z
   exit 2
 fi
 case "$PHASE" in
-  1|2) ;;
-  *) echo "[SUBMIT] FATAL ticket 42 has phases 1 (Juglet), 2 (Pot A); got '$PHASE'" >&2; exit 2 ;;
+  1|2|3) ;;
+  *) echo "[SUBMIT] FATAL ticket 42 has phases 1 (Juglet), 2 (Pot A), 3 (both pots); got '$PHASE'" >&2; exit 2 ;;
 esac
 for S in "$SHA" "$REFSHA"; do
   case "$S" in *[!0-9a-f]*) echo "[SUBMIT] FATAL sha is not lowercase hex: $S" >&2; exit 2 ;; esac
@@ -31,9 +31,13 @@ if [ ! -f "$RUN/run.json" ]; then
 import json, sys, time
 out, runid, tag, sha, refsha, phase = sys.argv[1:7]
 POTS = {"1": ("Juglet", ["Juglet_Piece_%d" % i for i in range(1, 10)]),
-        "2": ("Pot_A", ["Pot_A_Piece_%02d" % i for i in range(1, 9)])}
+        "2": ("Pot_A", ["Pot_A_Piece_%02d" % i for i in range(1, 9)]),
+        "3": ("Juglet+Pot_A", ["Juglet_Piece_%d" % i for i in range(1, 10)] +
+                              ["Pot_A_Piece_%02d" % i for i in range(1, 9)])}
 REFLIST = {"1": ["Juglet_Piece_1", "Juglet_Piece_3", "Juglet_Piece_5", "Juglet_Piece_7"],
-           "2": ["Pot_A_Piece_07"]}
+           "2": ["Pot_A_Piece_07"],
+           "3": ["Juglet_Piece_1", "Juglet_Piece_3", "Juglet_Piece_5", "Juglet_Piece_7",
+                 "Pot_A_Piece_07"]}
 pot, pieces = POTS[phase]
 rec = {"runid": runid, "tag": tag, "commit": sha, "ref_commit": refsha, "phase": phase, "pot": pot,
        "ticket": ".scratch/juglet-breaklines/issues/42-set-the-growth-angle-by-outcome.md",

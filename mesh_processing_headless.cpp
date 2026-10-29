@@ -3561,7 +3561,7 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             {
                 outcomeDone42 = true;  // this iteration is the chosen-theta run; downstream then exit
             }
-            else if (ladderIdx42 > 0)
+            else
             {
                 if (ladderIdx42 >= kLadderN42)
                 {

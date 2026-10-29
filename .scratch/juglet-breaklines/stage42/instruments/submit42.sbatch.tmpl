@@ -196,12 +196,20 @@ POTA="Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05
 
 phase_cells() {  # $1 phase -> POT:PIECE list (arms default A and B in the driver)
   local ph=$1 list="" pot
+  if [ "$ph" = 3 ]; then
+    echo "$(phase_cells 1) $(phase_cells 2)"
+    return 0
+  fi
   if [ "$ph" = 1 ]; then pot=Juglet; else pot=Pot_A; fi
   local pcs; pcs=$( [ "$ph" = 1 ] && echo "$JUG" || echo "$POTA" )
   for p in $pcs; do list="$list $pot:$p"; done
   echo "$list"
 }
 phase_reflist() {  # $1 phase -> POT:PIECE pieces that also get the R cell on the ref binary
+  if [ "$1" = 3 ]; then
+    echo "Juglet:Juglet_Piece_1 Juglet:Juglet_Piece_3 Juglet:Juglet_Piece_5 Juglet:Juglet_Piece_7 Pot_A:Pot_A_Piece_07"
+    return 0
+  fi
   if [ "$1" = 1 ]; then
     echo "Juglet:Juglet_Piece_1 Juglet:Juglet_Piece_3 Juglet:Juglet_Piece_5 Juglet:Juglet_Piece_7"
   else
@@ -213,8 +221,8 @@ RC_ANY=0
 rc=1
 echo "[JOB] ---- phase $PHASE ----"
 case "$PHASE" in
-  1|2) ;;
-  *) fail 6 "unknown phase $PHASE (ticket 42: 1=Juglet, 2=Pot A)" ;;
+  1|2|3) ;;
+  *) fail 6 "unknown phase $PHASE (ticket 42: 1=Juglet, 2=Pot A, 3=both pots in one job)" ;;
 esac
 build_arm new "$NEW" || fail 5 "new binary build failed (see logs/build-new.log)"
 build_arm ref "$REF" || fail 5 "ref binary build failed (see logs/build-ref.log)"
