@@ -2480,3 +2480,16 @@ Weight: none on the 281/292 tally — no edgeline was scored.
 Next: the growth criterion (stop at the edge at fine spacing); fusion pieces 3/4/6 and fragmentation
 pieces 2/9 likely need different fixes.
 growth layout on real clouds (pieces 5/7/8) — the blocker upstream of the admission.
+
+## 2026-10-29 — an outcome-set growth angle makes genuine wall pairs where the default cannot (ticket 42)
+
+Setting the growth angle by outcome — a bidirectional ladder over paperTheta that keeps the largest
+angle still leaving two floor-clearing regions — produces genuine inner/outer pairs on Juglet pieces
+2-8 (med_along 1.77-2.52 mm at 0.65-0.95 of the ray-cast wall, med_across 0.38-0.67 mm, coincidence
+0.00-0.015): seven sherds that today write nothing or only same-facing patches. J9 is borderline and
+J1 regresses (its default 3.4 was already right). On Pot A the same rule damages 5 of 8 pieces, so the
+rule as built must not ship; the repair is to fire the ladder only where the retry loop already
+reports fewer than two regions (mesh_processing_headless.cpp:3544), plus a face-size floor (>=1% of
+the cloud) on the second region so a sliver cannot satisfy it.
+
+Weight: none on the 281/292 tally — no edgeline was scored; one vessel, one run per cell.
