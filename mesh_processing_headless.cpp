@@ -3900,7 +3900,10 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
 
             pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster1(new pcl::PointCloud<pcl::PointNormal>);
             pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster2(new pcl::PointCloud<pcl::PointNormal>);
-            std::string reassignMode = "radius";
+            // TICKET 41: the shipped default flips radius -> own (own separates both faces on
+            // 9/9 Juglet sherds where radius nests on 8/9, ticket 40). SFS_REASSIGN_MODE=radius
+            // still restores the pre-41 behaviour exactly (proof 1).
+            std::string reassignMode = "own";
             if (const char* e = std::getenv("SFS_REASSIGN_MODE")) { if (*e) reassignMode = e; }
             std::cout << "[REASSIGN-22] mode=" << reassignMode << std::endl;
             // TICKET 26: W2's "any other surviving cluster" is every cluster that is not the one
@@ -4591,9 +4594,33 @@ int main(int argc, char** argv) {
                   << " paper=" << (paperChain ? "PAPER-CHAIN" : "off") << " theta=" << paperTheta << " kappa=" << paperKappa << " nb=" << paperNB
                   << " normalSource=" << g_normalSource << " normalSourceSet=" << (g_normalSourceGiven ? "yes" : "no")
                   << " minPairs=" << g_mergeMinPairs << std::endl;
+        // TICKET 41: SFS_MERGE_SCALE=literal (default, today's behaviour byte-for-byte) or
+        // spacing: every paper-merge threshold that is a LENGTH in mm is multiplied by
+        // (S / 0.6), S = the spacing this run actually used ([SPACING-22] S). rhoD is the only
+        // length term -- rhoN/rhoInN are normal dots, rhoC/rhoInC curvature differences, none
+        // scaled. The adaptive default's finer spacing lets the fixed 1.0 mm rhoD reach more
+        // neighbours per boundary point and fuse regions the 0.6 mm default kept apart
+        // (Juglet 4 and 6, ticket 40).
+        std::string mergeScale41 = "literal";
+        if (const char* e41 = std::getenv("SFS_MERGE_SCALE")) { if (*e41) mergeScale41 = e41; }
+        double mergeScaleFactor41 = 1.0;
+        double paperRhoDEff41 = paperRhoD;
+        if (mergeScale41 == "spacing")
+        {
+            mergeScaleFactor41 = g_effectiveSpacingMM / 0.6;
+            paperRhoDEff41 = paperRhoD * mergeScaleFactor41;
+        }
+        else if (mergeScale41 != "literal")
+        {
+            std::cerr << "[MERGE-41] FATAL SFS_MERGE_SCALE=" << mergeScale41 << " (literal|spacing)" << std::endl;
+            std::exit(2);
+        }
+        std::cout << "[MERGE-41] piece=" << fileNameOnly << " scale=" << mergeScale41
+                  << " S=" << g_effectiveSpacingMM << " factor=" << mergeScaleFactor41
+                  << " rhod_raw=" << paperRhoD << " rhod_eff=" << paperRhoDEff41 << std::endl;
         surfaceSegmentation(downsampledFilePath, minCluster, noOfNeighbours, smoothnessAngleThreshold, curvatureThreshold,
             planeRule, planeJoinDeg, planeDistMM, planeWindow,
-            paperChain, paperTheta, paperKappa, paperNB, paperRhoD, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC);
+            paperChain, paperTheta, paperKappa, paperNB, paperRhoDEff41, paperRhoN, paperRhoC, paperRhoInN, paperRhoInC);
 
 		std::string tempFileName0 = intermediatePath + "tmpSurfaceCluster_Improved_0.ply";
 		std::string tempFileName1 = intermediatePath + "tmpSurfaceCluster_Improved_1.ply";
