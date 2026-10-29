@@ -2,7 +2,9 @@
 
 **Answers:** U19, E1
 **Blocked by:** none (ticket 42 merged as 84de2ed; its run of record is reference only)
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-30)
+**Branch:** 43-derive-the-growth-angle-from-the-sherds-own-curvature, in /c/PR/worktrees/sfs/43
 
 ## The question
 
