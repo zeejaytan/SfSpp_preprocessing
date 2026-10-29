@@ -1,6 +1,8 @@
 # 41: fix the pieces-4/6 loss and make own mode the default
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-29)
+**Branch:** 41-fix-pieces-4-6-and-default-own-mode, in /c/PR/worktrees/sfs/41
 **Answers:** U19
 **Blocked by:** none
 **Blocks:** 07 (the Juglet end-to-end run, PAUSED)
