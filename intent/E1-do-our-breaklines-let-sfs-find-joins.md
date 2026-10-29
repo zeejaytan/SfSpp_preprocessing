@@ -2493,3 +2493,46 @@ reports fewer than two regions (mesh_processing_headless.cpp:3544), plus a face-
 the cloud) on the second region so a sliver cannot satisfy it.
 
 Weight: none on the 281/292 tally — no edgeline was scored; one vessel, one run per cell.
+
+## 2026-10-30 — the growth angle is set by spacing over fold radius, and one constant serves both vessels (ticket 43)
+
+The angle the growth applies is not a free parameter and not a property of the material: it is the turn
+between two neighbouring samples, and that turn is **spacing divided by fold radius**. Measured on the
+clouds the pipeline actually runs (the released clouds at the spacing each piece resolved), the within-face
+median turn tracks `S/R` at Pearson **+0.9115 within Pot A** (n=8) and **+0.9581 within the Juglet** (n=9),
+with a mean absolute error of **0.150 deg** and **0.562 deg**. The pooled correlation is +0.9910, but the
+within-vessel figures are the ones that carry weight — a pooled figure across two scales proves nothing.
+
+So `theta = k x S / R_fold` with **k = 3.3573**, calibrated on the Pot A median alone, leaves the control at
+its shipped 3.4 (predicts 2.66-4.36) and predicts the Juglet at **8.16-12.68, median 9.70** — against the
+**10.2** the ticket-42 ladder found by pure outcome search on those sherds, within 1 deg at the median and
+bracketed by the range. The same law as a multiplier on the measured median turn gives the identical answer
+with m = 2.8849. The cross-check that makes it a law rather than a fit: the theta ratio the two vessels need
+is 10.2/3.4 = 3.00, and the turn ratio they show is 2.74 — one constant of about 2.9-3.0, never fitted on
+the juglet. This is the connection the conservator asked for: Pot A is nearly flat so its angle is small, the
+Juglet folds on a 3-6 mm radius so its angle is three times larger.
+
+Two corrections this ticket had to make to itself. First, the rule it specified multiplied the within-face
+**p90**, and the p90 is 6-8x the median because a few percent of pairs sit near 180 deg (sign flips): it was
+measuring where the contamination had reached, not how curved the face is, which is why its Juglet angles
+came out 4.43-8.48 — below the known-good 10.2 — and the sherds fragmented (retained points 15.8-76.7 %,
+median 21.7 %, against the ladder's 54.7-95.4 %, median 68.7 %). Second, the ticket's own label test was
+degenerate: measuring the turn between face normals and labelling a pair by whether the face normals differ
+by 45 deg is the same quantity twice, so that field is pinned at 45 deg by construction and carries no
+evidence.
+
+And the objective was the wrong one. No theta separates within-face from across-fold pairs on these sherds —
+the two fractions trade off monotonically and cross — but they do not have to be separated by the growth,
+because `tryMergePair234` admits boundary-patch normals agreeing within `rhoN` 0.95 = **18.19 deg**
+(`mesh_processing_headless.cpp:3339`), five times the growth gate, and the break face meets the sherd face
+at roughly 90 deg so the merge can never weld them. The growth only has to stop at the break edge. That is
+the conservator's reading and the source agrees with him.
+
+Not yet tested: no pipeline cell has run at the curvature-derived angle. The prediction is arithmetic against
+outcomes already measured, not a new outcome; a cell at `SFS_PAPER_THETA` = 2.66-4.36 on Pot A and
+8.16-12.68 on the Juglet is the test that would settle it and needs a job, not a source change. Also named
+rather than buried: the fold radius is an osculating fit capped at 60 mm, so a genuinely flat sherd would
+report 60 and the rule would over-predict there; nothing in this set is near the cap (max 37.99 mm).
+
+Weight: 17 sherds, two vessels, one constant, no edgeline scored — nothing on the tally. The clouds were
+the real released ones at their own resolved spacing, not a synthetic upsample.
