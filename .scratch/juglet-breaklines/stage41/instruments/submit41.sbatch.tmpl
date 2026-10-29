@@ -192,8 +192,13 @@ geom_delete() {
 JUG="Juglet_Piece_1 Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_4 Juglet_Piece_5 Juglet_Piece_6 Juglet_Piece_7 Juglet_Piece_8 Juglet_Piece_9"
 POTA="Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08"
 
-phase_cells() {  # $1 phase -> POT:PIECE list
+phase_cells() {  # $1 phase -> POT:PIECE[:ARMS] list
   local ph=$1 list="" pot
+  if [ "$ph" = 3 ]; then
+    # ticket 41 measurement rerun (lead review): only the cells that write two surfaces
+    echo "Juglet:Juglet_Piece_1:ABCD Juglet:Juglet_Piece_5:ABC Juglet:Juglet_Piece_7:ABCD Juglet:Juglet_Piece_8:ABC Juglet:Juglet_Piece_4:D Juglet:Juglet_Piece_6:D Pot_A:Pot_A_Piece_01:ABCD Pot_A:Pot_A_Piece_02:ABCD Pot_A:Pot_A_Piece_03:ABCD Pot_A:Pot_A_Piece_04:ABCD Pot_A:Pot_A_Piece_05:ABCD Pot_A:Pot_A_Piece_06:ABCD Pot_A:Pot_A_Piece_07:ABCD Pot_A:Pot_A_Piece_08:ABCD"
+    return 0
+  fi
   if [ "$ph" = 1 ]; then pot=Juglet; else pot=Pot_A; fi
   local pcs; pcs=$( [ "$ph" = 1 ] && echo "$JUG" || echo "$POTA" )
   for p in $pcs; do list="$list $pot:$p"; done
@@ -204,8 +209,8 @@ RC_ANY=0
 rc=1
 echo "[JOB] ---- phase $PHASE ----"
 case "$PHASE" in
-  1|2) ;;
-  *) fail 6 "unknown phase $PHASE (ticket 41: 1=Juglet, 2=Pot A)" ;;
+  1|2|3) ;;
+  *) fail 6 "unknown phase $PHASE (ticket 41: 1=Juglet, 2=Pot A, 3=measurement rerun)" ;;
 esac
 build_arm new "$NEW" || fail 5 "binary build failed (see logs/build-new.log)"
 BIN=$OUT/bin-new; export BIN

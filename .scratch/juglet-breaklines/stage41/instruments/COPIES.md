@@ -14,6 +14,7 @@ Copies from stage40/instruments, verified md5-identical on the laptop
 | wall40.py | fcd710b66b6c960119f71ed47e79f651 | SAME (copy) |
 | stage_synth_p40.sh | 9bb59676bc08157687010955d1d9ebc8 | SAME (copy) |
 | .gitattributes | 50e02870ff69bcacb0b67593ceeca161 | SAME (copy) |
+| replica37.py | e190a7948fdf1d65a9f7195e0450a764 | SAME (copy; missed in the first grid run -- grow38 imports it, which is why surfaces/pairs/nest tsvs came back header-only; added for the measurement rerun) |
 
 New in stage41 (not copies):
 

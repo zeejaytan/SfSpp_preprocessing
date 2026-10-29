@@ -35,7 +35,7 @@ PIPECELL=$OUT/cells-pipeline
 mkdir -p "$PIPECELL" "$MREG" || exit 7
 
 log() { echo "[CELL41] $*"; }
-jget() { "$PY" -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]))' "$1" "$2" 2>/dev/null || echo ""; }
+jget() { "$PY" -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]])' "$1" "$2" 2>/dev/null || echo ""; }
 jgetna() {
   local v
   v=$(jget "$1" "$2") || { echo na; return 0; }
@@ -336,9 +336,12 @@ run_arm() {
   return 0
 }
 
+# SPEC is POT:PIECE or POT:PIECE:ARMS (e.g. Juglet:Juglet_Piece_5:ABC) -- the optional third
+# field selects a subset of arms, default all four (ticket 41 measurement rerun).
+spec_arms() { case ${1#*:*} in *:*) echo "${1##*:}" | fold -w1 ;; *) echo A B C D ;; esac; }
 for SPEC in $CELL_LIST; do
-  POT=${SPEC%%:*}; PIECE=${SPEC#*:}
-  for ARM in A B C D; do
+  POT=${SPEC%%:*}; PIECE=${SPEC#*:}; PIECE=${PIECE%%:*}
+  for ARM in $(spec_arms "$SPEC"); do
     LEFT=$(budget_left)
     if [ "$LEFT" -lt "$MIN_LEFT_S" ]; then
       log "SKIP $POT/$PIECE arm $ARM: only ${LEFT}s of this script's ${CELL_BUDGET_S}s budget left"
@@ -381,7 +384,7 @@ if [ -n "$FIRST" ]; then
   if [ -n "$FA" ] && grep -qP "^arm	${FA}$" "$FIRST"; then SELFTEST=ok; fi
 fi
 NPLANNED=0
-for SPEC in $CELL_LIST; do NPLANNED=$((NPLANNED+4)); done
+for SPEC in $CELL_LIST; do NPLANNED=$((NPLANNED+$(spec_arms "$SPEC" | wc -w))); done
 {
   echo "grep_selftest	$SELFTEST	(first cell $FIRST, arm $FA)"
   for A in A B C D; do

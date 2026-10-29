@@ -13,8 +13,8 @@ if [ -z "$RUN" ] || [ -z "$TAG" ] || [ -z "$JOBNAME" ] || [ -z "$WALL" ] || [ -z
   exit 2
 fi
 case "$PHASE" in
-  1|2) ;;
-  *) echo "[SUBMIT] FATAL ticket 41 has phases 1 (Juglet) and 2 (Pot A); got '$PHASE'" >&2; exit 2 ;;
+  1|2|3) ;;
+  *) echo "[SUBMIT] FATAL ticket 41 has phases 1 (Juglet), 2 (Pot A), 3 (measurement rerun); got '$PHASE'" >&2; exit 2 ;;
 esac
 case "$SHA" in *[!0-9a-f]*) echo "[SUBMIT] FATAL sha is not lowercase hex: $SHA" >&2; exit 2 ;; esac
 [ "${#SHA}" -ge 40 ] || { echo "[SUBMIT] FATAL sha shorter than 40 chars: $SHA" >&2; exit 2; }
@@ -30,7 +30,9 @@ if [ ! -f "$RUN/run.json" ]; then
 import json, sys, time
 out, runid, tag, sha, phase = sys.argv[1:6]
 POTS = {"1": ("Juglet", ["Juglet_Piece_%d" % i for i in range(1, 10)]),
-        "2": ("Pot_A", ["Pot_A_Piece_%02d" % i for i in range(1, 9)])}
+        "2": ("Pot_A", ["Pot_A_Piece_%02d" % i for i in range(1, 9)]),
+        "3": ("mixed", ["Juglet 1/5/7/8 arms ABC(+D on 1,7), Juglet 4/6 arm D, Pot A 01-08 all arms"])}
+CELLS = {"3": "48 measurement cells: Juglet J1/J7 ABCD, J5/J8 ABC, J4/J6 D, Pot A 01-08 ABCD"}
 pot, pieces = POTS[phase]
 rec = {"runid": runid, "tag": tag, "commit": sha, "phase": phase, "pot": pot,
        "ticket": ".scratch/juglet-breaklines/issues/41-fix-pieces-4-6-and-default-own-mode.md",
