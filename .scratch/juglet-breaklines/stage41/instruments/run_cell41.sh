@@ -88,7 +88,7 @@ GATE=$PIPECELL/cloud_gate.tsv
 printf "piece\tpot\tcloud_points\tcloud_md5\tgate\n" > "$GATE"
 GATE_FAILED=""
 for SPEC in $CELL_LIST; do
-  POT=${SPEC%%:*}; PIECE=${SPEC#*:}
+  POT=${SPEC%%:*}; PIECE=${SPEC#*:}; PIECE=${PIECE%%:*}
   MESH=$(piece_mesh "$POT" "$PIECE"); CLOUD=$(piece_cloud "$POT" "$PIECE"); AXIS=$(piece_axis "$POT" "$PIECE")
   G=ok
   [ -f "$MESH" ] || { log "FATAL missing mesh $MESH"; G=FAILED; GATE_FAILED="$GATE_FAILED $PIECE/mesh"; }
