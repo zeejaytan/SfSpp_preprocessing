@@ -2,7 +2,7 @@
 
 **Answers:** U19, E1
 **Blocked by:** none (ticket 42 merged as 84de2ed; its run of record is reference only)
-**Status:** in-progress
+**Status:** done (reading written by the lead; the curvature rule is derived and predicted, not yet run through the pipeline)
 **Working in:** chat on Thinkbook16 (2026-10-30)
 **Branch:** 43-derive-the-growth-angle-from-the-sherds-own-curvature, in /c/PR/worktrees/sfs/43
 
@@ -373,3 +373,87 @@ Every row in the file has 6 fields (338 rows checked).
 - `__pycache__`/`*.pyc` under `stage43`: none present at the end (checked with glob after the last commit and after the submitter's `py_compile`); the directory's `.gitignore` carries `__pycache__/` and `*.pyc` so a stray one cannot be committed.
 
 Report numbers and paths, not verdicts — no verdict is written here and `Status:` is untouched.
+## Reading (lead, 2026-10-30)
+
+**The answer to the question the ticket asks is yes, and it is a physical law — but the rule the ticket specified reads the wrong statistic.** Part B's R1 multiplied the within-face **p90**, and the p90 is contaminated by the same near-180-degree sign flips that wrecked the p99. The quantity that tracks curvature is the within-face **median**. With the median, one constant reproduces both known-good endpoints — the shipped 3.4 on the pot and the ladder's empirically found 10.2 on the juglet — and it does so out of sample: the constant is calibrated on Pot A alone and predicts the Juglet.
+
+### 1. The law: turn per step is spacing divided by fold radius
+
+Verified first-hand on the worker's own `partA.tsv` and `piece_<Piece>.json`, not taken from the report. `S` is `spacing_ach_mm` (the spacing each piece's own pipeline run resolved, [SPACING-22] `policy=piece`); `R` is `fold_radius_med_mm` (the ticket-32 osculating-parabola instrument); `w50` is `est_within_p50`, the within-face turn between neighbouring samples.
+
+| test | result | what it rules out |
+|---|---|---|
+| Pearson(`w50`, `S/R` in deg), pooled, 17 pieces | **+0.9910** | a coincidence of scatter |
+| Pearson within Pot A alone (n=8) | **+0.9115** | the pooled figure being an artefact of the two vessels separating |
+| Pearson within Juglet alone (n=9) | **+0.9581** | same |
+| mean abs error `w50` vs `S/R`, Pot A | **0.150 deg** (max 0.295) | the relation being ordinal only, with a free offset |
+| mean abs error `w50` vs `S/R`, Juglet | **0.562 deg** (max 1.165) | same |
+
+The within-vessel correlations are the load-bearing ones: a pooled correlation across two groups that differ in scale proves nothing, because any two scale-like variables separate the groups. Within each vessel the relation still holds, and the absolute error is a fraction of a degree.
+
+### 2. Why R1 failed, and why this does not
+
+| statistic | Pot A range | Juglet range | ratio to the median |
+|---|---|---|---|
+| within-face **median** `w50` | 0.89-1.48 deg | 2.88-4.86 deg | ~1x |
+| within-face **p90** (what R1 used) | 9.37-16.04 deg | 15.32-29.28 deg | 6-8x |
+| within-face **p99** | 139.72-177.26 deg | 156.07-177.26 deg | the near-180 sign flips |
+
+`frac_over90_est` is 1.6-6.7 % of all pairs, so a few percent of pairs sit near 180 deg and drag every high percentile with them. R1 therefore never measured "how curved is this face"; it measured "where the contamination has reached". R1's Juglet thetas came out 4.43-8.48 deg, **below** the 10.2 the outcome search found, and arm B duly fragmented the sherds: retained point fraction 15.8-76.7 % (median 21.7 %) against the ladder's 54.7-95.4 % (median 68.7 %) at 10.2.
+
+### 3. The rule, calibrated on the control and tested on the juglet
+
+`theta = m x (this sherd's own within-face median turn)`, with **m = 2.8849** fixed so the Pot A median lands on 3.4.
+
+| vessel | predicted theta min / med / max | what is known to work | verdict |
+|---|---|---|---|
+| Pot A (calibration) | 2.58 / **3.40** / 4.27 deg | shipped 3.4; arm A gives two clean surfaces on 8 of 8 | the control is left where it is |
+| Juglet (out of sample) | 8.29 / **9.32** / 14.01 deg | ladder's empirical 10.2; 7 genuine pairs on J2-J8 | median within 1 deg, range brackets it |
+
+The cross-check that makes this a law rather than a fit: the theta ratio the two vessels need is 10.2 / 3.4 = **3.00**; the turn ratio they actually show is 2.74. One constant of about 2.9-3.0 serves both vessels, and it was never fitted on the juglet.
+
+The same law in the form the conservator asked for — geometry in, angle out, no percentile table:
+
+**`theta = k x S / R_fold`, with k = 3.3573** (calibrated on the Pot A median `S/R` = 1.0127 deg).
+
+| vessel | predicted | known-good |
+|---|---|---|
+| Pot A | 2.66-4.36 deg (PA01 4.36, PA02 3.30, PA03 3.76, PA04 2.92, PA05 3.50, PA06 3.17, PA07 2.66, PA08 3.61) | 3.4 |
+| Juglet | 8.16-12.68 deg (median 9.70; J1 10.29, J2 12.40, J3 9.35, J4 10.25, J5 8.74, J6 8.16, J7 8.65, J8 10.05, J9 12.68) | 10.2 |
+
+This is the connection the conservator asked for (m05808): the angle follows how curved the sherd is, Pot A gets about 3.4 because it is nearly flat, and the Juglet gets about 10 because it folds on a 3-6 mm radius. Its two inputs are already available in the pipeline — `S` is what [SPACING-22] resolves, `R` is what the ticket-32 instrument measures — so nothing has to be searched.
+
+### 4. What the separability grid does and does not say
+
+The grid is correct and it does **not** contradict the law; it answers a different question. At every theta the two fractions trade off monotonically and cross (Juglet at 3.4: miss 0.030 / false 0.486; at 10.2: miss 0.115 / false 0.178), so no single theta separates within-face from across-fold pairs on these sherds. That is a statement about the overlap of the two pair distributions.
+
+It is not the objective, because **the growth is not the step that has to separate them**. `tryMergePair234` admits a pair whose boundary-patch normals agree within `rhoN` = 0.95, i.e. 18.19 deg (`mesh_processing_headless.cpp:3339`) — five times the growth gate — and the break face meets the sherd face at roughly 90 deg, so the merge can never weld them. The growth only has to stop at the break edge; the merge does the same-face regrouping. The conservator said this first (m05808) and the source agrees with him.
+
+So the right objective is not "separate the distributions" but "stop at the edge without fragmenting the face", and the quantity that measures it is the retained point fraction, which I computed from the worker's own `[STATUS-23]` lines:
+
+| vessel | arm A today | arm B (R1) | arm C (R2) | ticket 42 ladder |
+|---|---|---|---|---|
+| Juglet, retained points | 0.0-67.5 % (median 11.5) | 15.8-76.7 % (median 21.7) | 78.5-99.6 % (median 86.8) | 54.7-95.4 % (median 68.7) |
+| Pot A, retained points | 83.2-89.6 % (median 86.7) | 83.9-88.7 % (median 87.4) | 99.4-100.0 % (median 99.9) | 92.8-97.7 % (median 97.1) |
+
+Retention alone is not the goal either — arm C retains the most on both vessels and is the worst outcome, because it swallows the piece into one cluster. What the table shows is the cost side of each theta, and it explains the two regressions: arm C's theta (11.0-20.4 deg) is so permissive that one region claims the whole sherd and the remainder falls under the 30-point floor (`mesh_processing_headless.cpp:3658-3659`), while arm B's theta is so tight on the Juglet that the face shatters into sub-floor fragments.
+
+### 5. A correction to my own ticket text
+
+Part A as I wrote it asked for two things that are the same quantity: measure the turn between source-triangle face normals, **and** label a pair WITHIN-FACE when those face normals differ by less than 45 deg. The label would then be degenerate by construction, pinned at 45 deg. The worker's `dist43.py` caught this and reported it before running; `face_across_p10` comes out 47.4-49.2 deg on all 17 pieces, exactly as the degenerate construction predicts. That field carries no evidence and should not be read. The instrument is right; the ticket text was wrong.
+
+### 6. Weight, and what is still untested
+
+**Weight:** 17 sherds, two vessels, one constant. The law is measured on the clouds the pipeline actually runs on (the released clouds, at the spacing each piece resolved — `NN median` 0.2109 mm on Juglet_Piece_2, 0.2034 on Juglet_Piece_9, matching the [SPACING-22] `S` those runs logged), and the out-of-sample prediction is the strong part: m was fixed on Pot A and the Juglet fell within 1 deg of its independently found answer.
+
+**Not tested:** no pipeline cell has run at the curvature-derived theta. Arms B and C carried R1/R2 (percentile rules), never this rule. The prediction is arithmetic against outcomes already measured, not a new outcome. A cell at `SFS_PAPER_THETA` = 2.66-4.36 on Pot A and 8.16-12.68 on the Juglet is the test that would settle it, and it needs a job, not a source change.
+
+**Also untested, and named rather than buried:** the fold radius `R` comes from an osculating-paraboloid fit whose cap is `RHO_CAP_MM` = 60 mm, so a genuinely flat sherd reports 60 rather than its true radius and the rule would over-predict there. No piece in this set is near the cap (max 37.99 mm, PA04), but a flatter pot would be.
+
+### 7. Verdict on the worker's delivery
+
+Everything the ticket asked for is present and I re-read the tables myself: Part A (35 columns x 17 rows, `sep.tsv` 238 rows), Part B (`k_R1` = 0.28943 reproduced to 5 decimals on all 17 rows), Part C (55 cells, `pipeline_rc` 0 everywhere, `theta_proof` `match=yes` on all 55), the defaults proof (four md5 pairs identical), the integrity record (corpus/inputs diffs 0 bytes in all four runs, geometry counts equal before and after), and four index rows with empty verdicts. The seven deviations are recorded above and each is a real limitation, not a concealment. The three undelivered items are named in the worker's own words.
+
+The one thing I could not check myself is the figure: this session's image reader is unavailable (`read_image` rejects this model's image input, `modlens_read_image` returned Gemini 503). `figure_partA.png` rests on the worker's code and `[FIG43]` log line. Every number above is from the tables, which I did read.
+
+**No verdict is written into the deliverable, and the `Status:` line is set by me, not by the worker.**
