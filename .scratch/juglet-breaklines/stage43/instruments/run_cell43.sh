@@ -53,7 +53,7 @@ theta_of() {  # $1 pot  $2 piece  $3 column (3=R1 4=R2)
 }
 
 # ticket 35's recorded wall medians (mm) -- recorded beside the measurement, not gated
-anc_wall() { case "$1/$2" in
+anc_wall() { case "$1" in   # one argument "Pot/Piece": $2 is unset here and set -u made this print na
   Juglet/Juglet_Piece_1) echo 2.35376 ;; Juglet/Juglet_Piece_2) echo 2.69305 ;; Juglet/Juglet_Piece_3) echo 2.4516 ;;
   Juglet/Juglet_Piece_5) echo 2.8998 ;; Juglet/Juglet_Piece_7) echo 3.26316 ;; Juglet/Juglet_Piece_9) echo 2.59484 ;;
   Pot_A/Pot_A_Piece_01) echo 8.2857 ;; Pot_A/Pot_A_Piece_07) echo 4.05609 ;;
