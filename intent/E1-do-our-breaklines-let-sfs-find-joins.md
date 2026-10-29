@@ -2457,4 +2457,26 @@ capability statement, not a performance claim.
 Weight: none on the 281/292 tally — no edgeline was scored.
 
 Next: the default decision (own mode as shipped default, with the pieces-4/6 regression answered first), then the
+
+## 2026-10-29 — own mode ships as the default, and the pieces-4/6 loss is growth-side (ticket 41)
+
+Two code changes on main: `SFS_REASSIGN_MODE` now defaults to **own** (radius still reachable by env;
+proof verified: radius reproduces the old counts, cluster sequences identical on 17 pieces, Pot A pair
+statistics unchanged to three decimals), and `SFS_MERGE_SCALE=literal|spacing` added, default literal.
+On real released clouds under the new default: piece 1 keeps the one genuine pair (shared 5497 → 532,
+dot −0.914, along 1.815 / across 0.528 mm), pieces 5/7/8 keep patch pairs, pieces 2/3/4/6/9 stay silent,
+Pot A 8 of 8 in every arm.
+
+The pieces-4/6 regression is NOT repaired and is now located: at the adaptive spacing pieces 3, 4 and 6
+arrive at the merge with **one cluster already** (289, 335, 707 points); the rhoD scaling changed nothing
+on any piece; the old fixed 0.6 mm restores two surfaces that are same-facing patches (mean-normal dot
++0.978 and +0.581, across 6.2/8.2 mm), not two faces. Mechanism: at ~0.2 mm steps the per-step normal
+turn falls below the 3.4° gate, so the growth no longer stops at the broken edge and one band wraps the
+whole sherd — the ticket-30 conclusion returns as the live repair: a spacing-relative or
+curvature-relative growth criterion.
+
+Weight: none on the 281/292 tally — no edgeline was scored.
+
+Next: the growth criterion (stop at the edge at fine spacing); fusion pieces 3/4/6 and fragmentation
+pieces 2/9 likely need different fixes.
 growth layout on real clouds (pieces 5/7/8) — the blocker upstream of the admission.
