@@ -1,0 +1,26 @@
+# Deletion record - ticket 43 local copies
+
+Written BEFORE the delete, from a census of the worktree, on 2026-10-30.
+
+Run of record these copies came from:
+
+    /data/gpfs/projects/punim2657/SfSpp/runs/20261030-0416_390068c_t43-ab2
+
+## Classes deleted
+
+1. `.scratch/juglet-breaklines/stage43/results/phase1_dist.log`
+   - 28 190 B, 187 lines, md5 `73313e8d3d853da3751eff1a57c373e7`.
+   - BYTE-IDENTICAL to `out/phase1_dist.log` in the run of record: same md5,
+     measured on the cluster after the fact. Nothing is unique to this copy.
+   - It is not tracked because the repo `.gitignore:54` ignores `*.log`; every
+     other file in that directory (18 of them, the tables and the figure) is tracked.
+   - The earlier Part A run 20261030-0350_ed59345_t43-ab carries its own
+     `out/phase1_dist.log` (135 lines, md5 `d4a4a722fae0d5a19f6bcb5663124a0e`),
+     which is the void first pass, not this file.
+
+## Nothing else was ignored
+
+`git status --ignored` in the worktree listed this one file under `.scratch/` and no
+other, and no `__pycache__` or `*.pyc` exists anywhere under `stage43` (glob-verified
+after the worker's final commit; the instruments' own `.gitignore` carries both
+patterns).
