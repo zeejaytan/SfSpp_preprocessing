@@ -63,8 +63,15 @@ suspect — stop and say so rather than tuning.
 
 Reuse stage45's machinery (branch `45-adopt-the-curvature-formula-as-the-default-growth-angle`, tip
 `fe33e44`): `run_cell45.sh` already carries the run cloud in one variable (`RUN_CLOUD`, one stager call at
-about line 104), so stage46 changes the staging, not the pipeline. Branch **from that tip**, so the formula
-default, its `[GROWTH-45]` line and the medians are present; do not rebase onto main.
+about line 104), so stage46 changes the staging, not the pipeline.
+
+**How the branch is built, because the two rules meet here.** `scripts/ticket_start.sh` always cuts the ticket
+branch from `origin/main`, and main deliberately does **not** carry ticket 45's unmerged formula. So: open the
+ticket with the script as usual, then in the worktree run
+`git merge --no-ff fe33e44 -m "..."` — that brings the formula default, its `[GROWTH-45]` line, the medians
+and stage45's instruments into this branch, and **main still sees neither**. Do not merge branch 45 into main
+and do not rebase: the adopt-or-drop decision belongs to this run's result. Record the merge commit in the
+ticket, and diff against `fe33e44` (not main) when proving the source is untouched.
 
 ## Deliver
 
@@ -101,18 +108,20 @@ default, its `[GROWTH-45]` line and the medians are present; do not rebase onto 
 
 ## Blocked by
 
-- branch 45: the formula default is implemented and unmerged on purpose — adopt or drop it on this run's
-  result, not on its own
+- branch 45 (`fe33e44`): the formula default is implemented and unmerged on purpose — adopt or drop it on
+  this run's result, not on its own. Carried in by a merge into this ticket's branch (see Prove-out), never
+  into main.
 
 **Status:** ready-for-agent
 **Working in:** (unclaimed)
-**Branch:** 46-even-covering, from `45-adopt-the-curvature-formula-as-the-default-growth-angle` tip `fe33e44`
+**Branch:** cut from `origin/main` by `scripts/ticket_start.sh`, then merged with `fe33e44` (see Prove-out)
 **Needs-eye:** after the run — the covering figure and the 3x3 surface panel go to the conservator
 
 ## Acceptance
 
-- [ ] Source untouched: `git diff <branch 45 tip>` shows changes only under `.scratch/juglet-breaklines/stage46/**`
-      and the ticket file.
+- [ ] Source untouched: `git diff fe33e44...HEAD` shows changes only under `.scratch/juglet-breaklines/stage46/**`
+      and the ticket file; `git log --oneline origin/main..HEAD` shows branch 45's two commits plus one merge
+      and nothing else; `mesh_processing_headless.cpp` md5 equals branch 45's.
 - [ ] Builds clean with stage45's `build_bin` (apptainer cmake), same commit.
 - [ ] Covering gate passes on 9 of 9 Juglet pieces (spacing within 1 %, sampled points <= 1e-3 mm from the mesh,
       point ratio recorded against the shipped cloud).
