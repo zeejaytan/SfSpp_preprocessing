@@ -63,6 +63,8 @@ One run `runs/<YYYYMMDD-HHMM>_<git7>_t45-default`:
 
 - none (44 closed)
 
+**Status:** ready-for-agent
+
 ## Acceptance
 
 - [ ] Source change confined to the formula + log line at the caller; env-override path untouched
