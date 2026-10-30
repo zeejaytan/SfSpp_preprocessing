@@ -134,6 +134,15 @@ property of the sherd — it is a property of the point set.
 **Working in:** coordinating session, 2026-10-30 — run verified by the lead, verdict void, awaiting the conservator's choice between options 1-3
 **Branch:** 45-adopt-the-curvature-formula-as-the-default-growth-angle, in /c/PR/worktrees/sfs/45
 
+## 2026-10-31 — what main carries now (lead)
+
+Ticket 46 closed by merging its branch, and that branch carried this ticket's merge commit (`006d4c8` of `fe33e44`), so `main` started computing the growth angle from curvature with no env set — the configuration this ticket measured as broken on the released clouds. Commit `2263532` gates it: `medianFoldRadius45()` is unchanged, but the caller runs the formula only when `SFS_GROWTH_FORMULA` is set and not `0`; otherwise the angle is the flat 3.4, and `SFS_PAPER_THETA` still overrides both.
+
+Verified with run `20261031-0200_2263532_t46-default-check` (job `34073410`, sacct COMPLETED 0:0, 00:02:44), rebuilt from `2263532` with the whole `SFS_*` family unset: J2 reads `paper grow: thetaDeg=3.40000`, outcome none, clusters 0; PA01 reads `thetaDeg=3.40000`, outcome two, surfaces 66 760 / 57 295 (this ticket's 3.4 arm: 66 761 / 57 284); both sampled clouds hash equal to the 3.4 arm's; zero `[GROWTH-45]` lines. Index row appended, verdict pass.
+
+So the three options below are no longer about the default — the default is 3.4 again, and the formula is a switch. They are about whether to ship the formula at all, now that ticket 46 showed it reads the angle correctly on an even covering and only fails when the input cloud is the mesh's vertex dump.
+
+
 ## Acceptance
 
 - [ ] Source change confined to the formula + log line at the caller; env-override path untouched

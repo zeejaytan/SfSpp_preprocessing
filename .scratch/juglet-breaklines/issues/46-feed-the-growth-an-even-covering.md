@@ -265,3 +265,16 @@ tables so the tables above stand unchanged:
 - [ ] `run.json`, index row appended (verdict/human_note left for the lead), poll and final `sacct` in the ticket.
 - [ ] Worker reports numbers and paths; the lead runs its own acceptance check (hidden before hand-over),
       verifies, then decides whether adopting ticket 45 plus this covering step is the ship.
+
+## The default after this ticket (lead, 2026-10-31)
+
+Closing this ticket merged its branch, and the branch carried ticket 45's merge (`006d4c8` of `fe33e44`) — so `main` began computing the growth angle from curvature with **no env set**, the exact configuration ticket 45 measured as broken. Commit `2263532` gates the rule: it runs only when `SFS_GROWTH_FORMULA` is set and not `0`; with nothing set the angle is the flat 3.4, and `SFS_PAPER_THETA` still overrides both. `medianFoldRadius45()` is untouched, so nothing measured here is thrown away.
+
+Verified on Spartan, run `20261031-0200_2263532_t46-default-check` (job `34073410`, sacct COMPLETED 0:0, 00:02:44), rebuilt from `2263532` with the whole `SFS_*` family unset:
+
+| piece | paper grow theta | `[GROWTH-45]` lines | outcome | surfaces | SampledWithNormals md5 |
+|---|---|---|---|---|---|
+| Juglet_Piece_2 | 3.40000 | 0 | none | – | equal to t45 arm O |
+| Pot_A_Piece_01 | 3.40000 | 0 | two | 66 760 / 57 295 (t45 arm O 66 761 / 57 284) | equal to t45 arm O |
+
+The default is back to what shipped before this week: a run with no switches behaves as it did, and the formula is available for the day the input side is fixed.
