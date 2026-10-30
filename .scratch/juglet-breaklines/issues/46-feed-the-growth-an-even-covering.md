@@ -102,6 +102,131 @@ ticket, and diff against `fe33e44` (not main) when proving the source is untouch
 - No comparison of absolute surface counts with the paper, and none with Pot A's 15/15 seating bar.
 - No per-piece angle tuning: `SFS_PAPER_THETA` stays unset in all 17 cells.
 
+## Result — run of record (lead, 2026-10-31)
+
+Run `20261031-0123_a4d72f6_t46-covering4`, job **34071136**, commit `a4d72f6`, 9 coverings + 17 cells.
+`sacct`: **FAILED 3:0**, elapsed **00:06:31**. Exit 3 is `theta_check46.py`'s single miss (J3); every cell ran
+(`pipeline_rc` 0 on 17 of 17), `out/corpus.diff` and `out/inputs.diff` are 0 bytes, geometry was deleted with its
+census (85 files before, 51 kept cell surface plies, coverings deleted after phase 9), and one index row was
+appended with `verdict`/`human_note` **empty** for me. Phase rcs: 4 -> 8, 7 -> 3 (phase 4's 8 was its own spacing
+proof — see "Two alarms that were the instruments", below; replayed on this run's own tables it passes).
+
+Three submits before it, each recorded as a **void** row in `runs/index.tsv`:
+
+| run | job | died how |
+|---|---|---|
+| `20261031-0104_b30da90_t46-covering` | 34069902 | cancelled 00:06:18 — the exact all-point surface gate cost 5+ min per piece |
+| `20261031-0112_1801b68_t46-covering2` | 34070441 | FAILED 5:0 — coverings sat 0.035-0.110 mm *inside* the mesh (voxel merge), and `make -j` received a piece name instead of a job count |
+| `20261031-0118_f152500_t46-covering3` | 34070850 | cancelled 00:02:04 — surface gate clean, but the written cloud's measured spacing moved 1.1-1.6 % after projection |
+
+Each defect was fixed in the instruments — project every sampled point onto the mesh exactly, loop the nine
+pieces with `JP` so the CPU count survives, re-solve the sample spacing against the post-projection median —
+and no band was widened to make a run pass.
+
+### The covering did what it was meant to
+
+`out/covering_gate.tsv`, 9 of 9 PASS (max distance to the mesh is measured on a 1 000-point subsample):
+
+| piece | shipped | covering | ratio | spacing err | max dist to mesh |
+|---|---|---|---|---|---|
+| J1 | 24 294 | 26 835 | 1.105 | 0.16 % | 0.000000 mm |
+| J2 | 2 565 | 6 066 | 2.365 | 0.43 % | 0.000000 mm |
+| J3 | 3 493 | 9 707 | 2.779 | 0.55 % | 0.000000 mm |
+| J4 | 3 651 | 9 055 | 2.480 | 0.42 % | 0.000000 mm |
+| J5 | 6 211 | 15 056 | 2.424 | 0.68 % | 0.000000 mm |
+| J6 | 5 126 | 13 055 | 2.547 | 0.60 % | 0.000000 mm |
+| J7 | 8 421 | 17 655 | 2.097 | 0.80 % | 0.000000 mm |
+| J8 | 4 479 | 10 710 | 2.391 | 0.41 % | 0.000000 mm |
+| J9 | 2 094 | 5 249 | 2.507 | 0.67 % | 0.000000 mm |
+
+No subdivision was used (level x1): every covering point lies on the shipped mesh. The covering holds
+**2.1-2.8x** the points of the cloud the pipeline was reading, at the same spacing.
+
+### Theta: the pipeline's own curvature measurement, on an even covering
+
+| piece | reference (k43) | delivered | delta | within 2 % |
+|---|---|---|---|---|
+| J1 | 10.29 | 10.22647 | -0.617 % | yes |
+| J2 | 12.40 | 12.59916 | +1.606 % | yes |
+| J3 | 9.35 | 9.13822 | **-2.265 %** | **no** |
+| J4 | 10.25 | 10.28547 | +0.346 % | yes |
+| J5 | 8.74 | 8.72093 | -0.218 % | yes |
+| J6 | 8.16 | 8.23416 | +0.909 % | yes |
+| J7 | 8.65 | 8.64907 | -0.011 % | yes |
+| J8 | 10.05 | 10.14824 | +0.978 % | yes |
+| J9 | 12.68 | 12.69573 | +0.124 % | yes |
+
+Mean absolute error **0.79 %**, no systematic bias (five high, four low). On the *same* nine pieces ticket 45's
+run on the released clouds delivered **18.7-54.4 deg**. Same binary, same code, same source commit: the
+difference is the cloud.
+
+### Predictions
+
+| # | prediction | outcome |
+|---|---|---|
+| P1 | theta within **2 %** on 9 of 9 | **8 of 9.** J3 at -2.27 % (0.21 deg on a 9.35 deg angle). The ticket's own falsifier — "any piece off by more than 5 %" — is **not** reached; the closest is 2.27 %. |
+| P2 | J2 and J9 grow **two** surfaces | **met.** J2 263 / 6 143, J9 3 770 / 4 855. Both had been `none` at every angle tried so far. |
+| P3 | J3-J8 keep the ticket-44 pairs (along 1.86-2.81 mm, across 0.38-0.63, angle 13-19 deg, coincidence ~0) | **met in form, across is smaller.** J3-J9: along **1.88-2.70 mm**, across **0.18-0.30 mm**, angle **10.5-20.4 deg**, coincidence **0.0000-0.0112**. |
+| P4 | Pot A unchanged, 8 of 8 two surfaces, counts within 2 % | **met.** theta identical to ticket 45's arm F to 5 dp on all 8; clusters identical; worst surface-size move **0.55 %** (PA01 second surface 82 029 vs 82 484). |
+
+Outcome and surface counts (all nine grew two surfaces; clusters in brackets): J1 261/31 579 (4), J2 263/6 143 (3),
+J3 7 891/7 473 (7), J4 9 120/7 098 (2), J5 10 623/13 048 (5), J6 8 916/11 115 (7), J7 15 223/16 451 (4),
+J8 7 582/8 674 (9), J9 3 770/4 855 (4).
+
+### What the eye sees
+
+`juglet_surfaces.png` (3x3, grown surfaces over each piece's own mesh silhouette): J3-J9 show **two interleaved
+sheets filling the sherd**, not a scrap beside a sheet. J1 and J2 are the exception and the picture says so
+plainly — one large surface plus a small patch (J1 261 points, J2 263). `j2_covering.png` shows why the
+covering was the variable: the released cloud hugs the piece's **outline** and leaves the interior hollow — it
+is the mesh's vertex set, thin triangles and holes — while the covering is even. This session read both
+images directly.
+
+### What this does not say
+
+- **Not the paper's method.** The covering is derived *from the shipped mesh*: the run adds coverage, it does
+  not add detail. Ticket 38's standing question — may a synthetic cloud stand in for a scan in any recorded
+  number — is **untouched** here, and ticket 16 must be told before these numbers meet the paper's.
+- **No wall pair has been shown.** The 0.18-0.30 mm separation is a tenth of the Juglet's wall thickness
+  (2.4-3.3 mm), so what the growth produces is still two layers of the *same* face — the signature ticket 44
+  recorded at 0.38-0.63 mm. This run does not upgrade that reading.
+- **The clustering is still loose**: 2-9 clusters per piece, most of them under the 30-point floor.
+
+### The consequence for ticket 45
+
+The law now holds **inside the pipeline**, measured by the pipeline's own instrument (8 of 9 within 2 %, mean
+0.8 %), so the C++ port is faithful, the constant is right, and ticket 45's failure was the input cloud — not
+the method and not the measurement code. That is the first question answered.
+
+The second is not answered, and it decides the ship: the formula needs `R`, and on a **real released cloud**
+`R` is under-read 2-4x (ticket 45's own measurement). Adopting the formula as the default today would therefore
+leave the Juglet at ticket 45's 18.7-54.4 deg and change nothing for Pot A, where the shipped 3.4 and the
+formula's 2.9-4.4 already agree. **The angle is no longer the blocker; the input cloud is** — a
+capture/representation question (is a vertex-set dump a faithful stand-in for a scan?), not an angle
+question, and the same question ticket 38 left open. Decision for the conservator: ship the formula as
+correct-but-inert (it becomes right as clouds get denser), or hold it until the input side is answered.
+
+### Two alarms that were the instruments
+
+Both were raised by this run, both are fixed in commit `076d0c3`, and both were replayed on this run's own
+tables so the tables above stand unchanged:
+
+1. `run_cell46.sh`'s spacing proof compared the run's `[SPACING-22]` **S** with `spec46.tsv`'s *requested* S at a
+   1e-3 mm absolute tolerance, so four pieces read MOVED at 0.0011-0.0020 mm. The run's S actually equals the
+   covering's own measured spacing to **2.5e-5 mm** worst case (J1 0.337343 vs 0.337342846 ... J9 0.202559 vs
+   0.2025699). The proof now reads the achieved spacing from `<piece>_cover.json`.
+2. `theta_check46.py` demanded *exact* equality of the Pot A control counts where this ticket asks for 2 %;
+   it now requires identical clusters and both surface sizes within 2 %.
+
+### Verified (lead)
+
+- `verified: out/cells-pipeline/*/cell.tsv spacing_line -> S matches the covering spacing to 2.5e-5 mm`
+- `verified: python theta_check46.py --cells out/cells-pipeline/pipeline_cells.tsv -> exit 3, J3 alone`
+- `verified: git diff --name-only fe33e44...HEAD -> only .scratch/juglet-breaklines/issues/46-* and stage46/**`
+- `verified: git rev-parse HEAD:mesh_processing_headless.cpp == fe33e44:... -> 25895a3fa52d3c120e28c2d64628a4eb14eb2620`
+- `verified: wc -c out/corpus.diff out/inputs.diff -> 0 0`
+- `verified by eye: juglet_surfaces.png, j2_covering.png (read directly in this session)`
+
 ## Answers
 
 - Answers: U19 (does the pipeline put the Juglet back together), E1 (do our breaklines let SfS find joins)
@@ -112,10 +237,10 @@ ticket, and diff against `fe33e44` (not main) when proving the source is untouch
   this run's result, not on its own. Carried in by a merge into this ticket's branch (see Prove-out), never
   into main.
 
-**Status:** in-progress
+**Status:** done
 **Working in:** lead session C:/PR (SFS++ theta work, 2026-10-30) (2026-10-31)
 **Branch:** 46-feed-the-growth-an-even-covering, in /c/PR/worktrees/sfs/46
-**Needs-eye:** after the run — the covering figure and the 3x3 surface panel go to the conservator
+**Needs-eye:** the covering figure and the 3x3 surface panel are drawn and read (see Result); the conservator still decides the ticket-45 ship question
 
 ## Acceptance
 
