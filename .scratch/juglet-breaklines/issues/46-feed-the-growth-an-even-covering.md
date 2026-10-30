@@ -112,9 +112,9 @@ ticket, and diff against `fe33e44` (not main) when proving the source is untouch
   this run's result, not on its own. Carried in by a merge into this ticket's branch (see Prove-out), never
   into main.
 
-**Status:** ready-for-agent
-**Working in:** (unclaimed)
-**Branch:** cut from `origin/main` by `scripts/ticket_start.sh`, then merged with `fe33e44` (see Prove-out)
+**Status:** in-progress
+**Working in:** lead session C:/PR (SFS++ theta work, 2026-10-30) (2026-10-31)
+**Branch:** 46-feed-the-growth-an-even-covering, in /c/PR/worktrees/sfs/46
 **Needs-eye:** after the run — the covering figure and the 3x3 surface panel go to the conservator
 
 ## Acceptance
