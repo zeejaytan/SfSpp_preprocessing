@@ -1,0 +1,337 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 47 -- rebuild the nine Juglet input clouds with the corpus converter.
+#
+# Corpus-only: no pipeline source, no build, no container.  The nine mm meshes
+# Dataset/Mesh/Juglet/Juglet_Piece_N_Mesh.obj go through cc_mesh_to_pcd.sh (README
+# step 1; the tool that built the 143 released clouds) with defaults only, the nine
+# 2026-09-25 vertex dumps they replace are archived to the attic with a manifest and
+# a read-back proof, and the new clouds + _cc.log + MANIFEST_JUGLET_CC.tsv install at
+# the canonical Dataset/Point/Juglet/ where every branch stages its inputs from.
+#   phase 0  record + verify: converter bytes out of the pushed commit, corpus tree
+#            and md5s before, CloudCompare module smoke
+#   phase 1  convert the nine meshes into out/staging (naming asserted per piece)
+#   phase 2  gates47.py: frame (no -GLOBAL_SHIFT AUTO recentering, cloud on the mesh
+#            vertices in the GT frame) + density (~1e6 sampled, ~84 pct kept, normals)
+#   phase 3  attic move with manifest + read-back, install, freeze manifest, the
+#            before/after md5 table
+#   phase 4  the J2 before/after figure (the conservator's eye picture)
+#   phase 5  corpus-confined proof (nothing under Dataset/ moved but Point/Juglet)
+# The index row is appended with verdict and human_note EMPTY (project convention:
+# they are written by a person or the coordinating session, never the job).
+# Written around the paid-for traps: CRLF (grep gate in the submitter); no
+# dollar-brace forms anywhere (the renderer eats braces); defaults under set -u; the
+# converter's own exit codes 1-7 respected; rename documented, never silent.
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+IXTAG=__IXTAG__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+DS=$CANON/Dataset
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+RINSTR=$RUN/instruments
+OUT=$RUN/out
+STAGE=$OUT/staging
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+ATTIC_DATE=$(printf %s "$RUNID" | cut -c1-8)
+ATTIC=/data/gpfs/projects/punim2657/SfSpp/attic/$ATTIC_DATE-juglet-vertex-dumps
+JOBID=$SLURM_JOB_ID; [ -n "$JOBID" ] || JOBID=na
+CPUS=$SLURM_CPUS_PER_TASK; [ -n "$CPUS" ] || CPUS=4
+# cc_mesh_to_pcd.sh calls bare python3 for its ASC->PCD step: give it the TORA env
+export PATH=/data/gpfs/projects/punim2657/TORA/envs/tora/bin:$PATH
+export CANON DS PY RINSTR OUT RUN RUNID NEW IXTAG RUNS IDX ATTIC STAGE JOBID CPUS ATTIC_DATE
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT" logs "$STAGE" "$OUT/figures" build
+
+RC_ANY=0
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+note_rc() {
+  RC_ANY=$1
+  echo "[JOB] phase rc recorded: $RC_ANY"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG commit=$NEW host=$(hostname)"
+echo "[JOB] attic=$ATTIC"
+
+# ---------------------------------------------------------------- phase 0
+echo "[JOB] phase 0: record + verify"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+git -C "$CANON" rev-parse --verify --quiet "$NEW" > /dev/null 2>>logs/fetch.log || fail 2 "commit $NEW not in $CANON"
+
+# instruments: the run-dir copies must equal the pushed-commit bytes
+SRC=$RUN/build/src
+rm -rf "$SRC"; mkdir -p "$SRC"
+git -C "$CANON" archive "$NEW" .scratch/juglet-breaklines/stage47 | tar -x -C "$SRC"   || fail 3 "git archive $NEW stage47 failed"
+INSTR=$SRC/.scratch/juglet-breaklines/stage47/instruments
+[ -d "$INSTR" ] || fail 3 "no stage47 instruments in commit $NEW"
+( cd "$INSTR" && md5sum *.py *.sh *.tsv *.md 2>/dev/null ) | sort -k2 > "$OUT/instruments_commit.md5"
+( cd "$RINSTR" && md5sum *.py *.sh *.tsv *.md 2>/dev/null ) | sort -k2 > "$OUT/instruments_rundir.md5"
+if ! diff -q "$OUT/instruments_commit.md5" "$OUT/instruments_rundir.md5" > /dev/null; then
+  diff "$OUT/instruments_rundir.md5" "$OUT/instruments_commit.md5" || true
+  fail 4 "instruments in the run directory differ from commit $NEW"
+fi
+echo "[JOB] instruments match commit $NEW ($(wc -l < "$OUT/instruments_commit.md5") files)"
+
+# the converter: byte-frozen out of the same commit, never an instrument copy
+CONVDIR=$RUN/build/conv
+rm -rf "$CONVDIR"; mkdir -p "$CONVDIR"
+git -C "$CANON" archive "$NEW" cc_mesh_to_pcd.sh | tar -x -C "$CONVDIR" || fail 3 "git archive cc_mesh_to_pcd.sh failed"
+CONV=$CONVDIR/cc_mesh_to_pcd.sh
+[ -f "$CONV" ] || fail 3 "cc_mesh_to_pcd.sh not in commit $NEW"
+CONV_MD5=$(md5sum "$CONV" | cut -d' ' -f1)
+CONV_SHOW_MD5=$(git -C "$CANON" show "$NEW":cc_mesh_to_pcd.sh | md5sum | cut -d' ' -f1)
+{
+  echo "commit $NEW"
+  echo "converter $CONV"
+  echo "archive_md5 $CONV_MD5"
+  echo "git_show_md5 $CONV_SHOW_MD5"
+} > "$OUT/converter.md5"
+[ "$CONV_MD5" = "$CONV_SHOW_MD5" ] || fail 4 "converter archive/show md5 mismatch"
+echo "[JOB] converter from commit $NEW md5=$CONV_MD5 (defaults only, byte-frozen)"
+chmod +x "$CONV"
+
+# CloudCompare module smoke (the converter loads it itself; fail fast if the node lacks it)
+module load GCC/11.3.0 OpenMPI/4.1.4 CloudCompare/2.12.4 > logs/module.log 2>&1   || { cat logs/module.log; fail 5 "module load failed on $(hostname)"; }
+CloudCompare --version > "$OUT/cc_version.txt" 2>&1 || true
+cat "$OUT/cc_version.txt" | head -2
+module purge > /dev/null 2>&1 || true   # the converter re-loads what it needs
+
+# corpus tree + md5s BEFORE anything moves
+corpus_tree() {
+  local out=$1
+  find "$DS" -type f -printf "%p\t%s\t%T@\n" | sort > "$out"
+}
+corpus_tree "$OUT/corpus_before.tsv"
+{
+  for f in "$DS"/Mesh/Juglet/*.obj "$DS"/Axes/Juglet/*.xyz "$DS"/Juglet_GT/*.txt \
+           "$DS"/Point/Juglet/*.pcd; do
+    [ -f "$f" ] && printf "%s\t%s\n" "$(md5sum "$f" | cut -d' ' -f1)" "$f"
+  done
+} | sort -k2 > "$OUT/inputs_before.md5"
+grep '/Point/Juglet/' "$OUT/inputs_before.md5" | sort -k2 > "$OUT/old_dumps_before.md5"
+grep -v '/Point/Juglet/' "$OUT/inputs_before.md5" | sort -k2 > "$OUT/frozen_before.md5"
+{
+  echo "# the nine shipped vertex dumps, as found (points from the PCD header)"
+  for f in "$DS"/Point/Juglet/*.pcd; do
+    printf "%s\t%s\t%s\n" "$(basename "$f")" "$(grep -a '^POINTS' "$f" | head -1 | awk '{print $2}')" "$(stat -c %s "$f")"
+  done
+} > "$OUT/old_dumps_points.tsv"
+cat "$OUT/old_dumps_points.tsv"
+echo "[JOB] $(wc -l < "$OUT/old_dumps_points.tsv") old dumps on record before any move"
+
+# guards: never install twice, never archive twice
+[ -e "$DS/Point/Juglet/MANIFEST_JUGLET_CC.tsv" ] && fail 6 "MANIFEST_JUGLET_CC.tsv already installed - refusing to clobber"
+[ -e "$ATTIC" ] && fail 6 "attic $ATTIC already exists - refusing to mix archives"
+
+echo "[JOB] phase 0 ok $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+# ---------------------------------------------------------------- phase 1
+echo "[JOB] phase 1: convert the nine meshes (defaults only)"
+CONV_RC=0
+for N in 1 2 3 4 5 6 7 8 9; do
+  piece=Juglet_Piece_$N
+  mesh=$DS/Mesh/Juglet/"$piece"_Mesh.obj
+  [ -f "$mesh" ] || { echo -e "$piece\tmissing-mesh" >> "$OUT/phase1_conversions.tsv"; fail 7 "mesh $mesh not found"; }
+  echo "[JOB] converting $piece ..."
+  bash "$CONV" -i "$mesh" -o "$STAGE" > "logs/convert-$N.log" 2>&1
+  rc=$?
+  exp=$STAGE/"$piece"_Point.pcd
+  rename=none
+  if [ $rc -eq 0 ] && [ ! -f "$exp" ] && [ -f "$STAGE/$piece"_Mesh_Point.pcd ]; then
+    mv "$STAGE/$piece"_Mesh_Point.pcd "$exp"
+    rename=mesh-suffix-stripped
+  fi
+  if [ $rc -eq 0 ] && [ ! -f "$exp" ]; then
+    ls -la "$STAGE" >> "logs/convert-$N.log"
+    echo -e "$piece\trc=$rc\tNO-OUTPUT" >> "$OUT/phase1_conversions.tsv"
+    fail 7 "$piece: converter rc=0 but no $exp"
+  fi
+  pts=$(grep -a '^POINTS' "$exp" 2>/dev/null | head -1 | awk '{print $2}')
+  echo -e "$piece\trc=$rc\tpoints=$pts\trename=$rename" >> "$OUT/phase1_conversions.tsv"
+  echo "[JOB] $piece rc=$rc points=$pts rename=$rename"
+  [ $rc -eq 0 ] || CONV_RC=$rc
+done
+cat "$OUT/phase1_conversions.tsv"
+if [ "$CONV_RC" -ne 0 ]; then
+  note_rc "$CONV_RC"
+  fail 7 "a conversion failed - corpus untouched, nothing installed"
+fi
+echo "[JOB] phase 1 ok $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+# ---------------------------------------------------------------- phase 2
+echo "[JOB] phase 2: frame + density gates"
+"$PY" "$RINSTR/gates47.py" --ds "$DS" --staging "$STAGE" --old-dir "$DS/Point/Juglet" \
+  --out "$OUT" --date "$ATTIC_DATE" \
+  --command 'bash cc_mesh_to_pcd.sh -i {mesh} -o {staging}' > "$OUT/phase2_gates.log" 2>&1
+GRC=$?
+cat "$OUT/phase2_gates.log"
+if [ "$GRC" -ne 0 ]; then
+  note_rc "$GRC"
+  fail 8 "gates47 failed - corpus untouched, nothing installed (see out/gates47.tsv)"
+fi
+echo "[JOB] phase 2 ok: 9/9 through both gates $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+# ---------------------------------------------------------------- phase 3
+echo "[JOB] phase 3: attic + install"
+mkdir -p "$ATTIC"
+{
+  echo "# the nine 2026-09-25 Juglet vertex dumps, archived by run $RUNID (job $JOBID)"
+  echo "# written BEFORE the move; the read-back below proves the move, not this list"
+  echo -e "piece\tpath\tbytes\tmd5\tmoved_at"
+} > "$ATTIC/manifest.tsv"
+for N in 1 2 3 4 5 6 7 8 9; do
+  piece=Juglet_Piece_$N
+  f=$DS/Point/Juglet/"$piece"_Point.pcd
+  m=$(md5sum "$f" | cut -d' ' -f1)
+  echo -e "$piece\t$f\t$(stat -c %s "$f")\t$m\t$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$ATTIC/manifest.tsv"
+done
+cat "$ATTIC/manifest.tsv"
+for N in 1 2 3 4 5 6 7 8 9; do
+  piece=Juglet_Piece_$N
+  src=$DS/Point/Juglet/"$piece"_Point.pcd
+  mv "$src" "$ATTIC/" || fail 9 "mv $src into the attic failed"
+done
+for N in 1 2 3 4 5 6 7 8 9; do
+  piece=Juglet_Piece_$N
+  want=$(grep -P "^$piece\t" "$ATTIC/manifest.tsv" | awk -F'\t' '{print $4}')
+  got=$(md5sum "$ATTIC/$piece"_Point.pcd | cut -d' ' -f1)
+  if [ "$want" = "$got" ]; then st=readback-ok; else st=READBACK-MISMATCH; fi
+  echo -e "$piece\t$want\t$got\t$st" >> "$OUT/attic_readback.tsv"
+  [ "$want" = "$got" ] || fail 9 "attic read-back mismatch on $piece (rule 13 proof failed)"
+done
+cat "$OUT/attic_readback.tsv"
+echo "[JOB] attic move proven by read-back: $ATTIC"
+
+for N in 1 2 3 4 5 6 7 8 9; do
+  piece=Juglet_Piece_$N
+  cp -f "$STAGE/$piece"_Point.pcd "$DS/Point/Juglet/" || fail 10 "cp $piece pcd failed"
+  cp -f "$STAGE/$piece"_cc.log "$DS/Point/Juglet/" || fail 10 "cp $piece log failed"
+  a=$(md5sum "$STAGE/$piece"_Point.pcd | cut -d' ' -f1)
+  b=$(md5sum "$DS/Point/Juglet/$piece"_Point.pcd | cut -d' ' -f1)
+  if [ "$a" = "$b" ]; then st=install-ok; else st=INSTALL-MISMATCH; fi
+  echo -e "$piece\t$a\t$b\t$st" >> "$OUT/install_verify.tsv"
+  [ "$a" = "$b" ] || fail 10 "installed bytes differ from staging on $piece"
+done
+cat "$OUT/install_verify.tsv"
+cp -f "$OUT/manifest_rows.tsv" "$DS/Point/Juglet/MANIFEST_JUGLET_CC.tsv"
+cp -f "$OUT/manifest_rows.tsv" "$OUT/MANIFEST_JUGLET_CC.tsv"
+"$PY" - "$OUT/old_dumps_points.tsv" "$OUT/manifest_rows.tsv" "$OUT/before_after_md5.tsv" <<'PYEOF'
+import sys
+old = {}
+for line in open(sys.argv[1]):
+    if line.startswith('#'):
+        continue
+    p = line.rstrip(chr(10)).split(chr(9))
+    if len(p) >= 2:
+        old[p[0]] = p[1]
+rows = []
+for line in open(sys.argv[2]):
+    if line.startswith('#'):
+        continue
+    p = line.rstrip(chr(10)).split(chr(9))
+    if len(p) >= 6:
+        rows.append(chr(9).join([p[0], old.get(p[0], '?'), p[4], p[3], p[5]]))
+with open(sys.argv[3], 'w') as f:
+    f.write('piece' + chr(9) + 'old_points' + chr(9) + 'old_md5' + chr(9) + 'new_points' + chr(9) + 'new_md5' + chr(10))
+    f.write(chr(10).join(rows) + chr(10))
+PYEOF
+cat "$OUT/before_after_md5.tsv"
+{
+  for f in "$DS"/Mesh/Juglet/*.obj "$DS"/Axes/Juglet/*.xyz "$DS"/Juglet_GT/*.txt; do
+    [ -f "$f" ] && printf "%s\t%s\n" "$(md5sum "$f" | cut -d' ' -f1)" "$f"
+  done
+} | sort -k2 > "$OUT/frozen_after.md5"
+if ! diff -q "$OUT/frozen_before.md5" "$OUT/frozen_after.md5" > /dev/null; then
+  diff "$OUT/frozen_before.md5" "$OUT/frozen_after.md5"
+  fail 11 "meshes/axes/GT changed during install - corpus damage"
+fi
+echo "[JOB] phase 3 ok: installed 9 clouds + logs + manifest $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+# ---------------------------------------------------------------- phase 4
+echo "[JOB] phase 4: the J2 before/after figure"
+BEFORE=$ATTIC/Juglet_Piece_2_Point.pcd
+[ -f "$BEFORE" ] || BEFORE=$DS/Point/Juglet/Juglet_Piece_2_Point.pcd
+"$PY" "$RINSTR/figure47.py" --mesh "$DS/Mesh/Juglet/Juglet_Piece_2_Mesh.obj" \
+  --before "$BEFORE" --after "$DS/Point/Juglet/Juglet_Piece_2_Point.pcd" \
+  --out "$OUT/figures/j2_before_after.png" --runid "$RUNID" > "$OUT/phase4_figure.log" 2>&1
+FRC=$?
+cat "$OUT/phase4_figure.log"
+[ "$FRC" -eq 0 ] || note_rc "$FRC"
+ls -la "$OUT/figures"
+echo "[JOB] phase 4 done rc=$FRC"
+
+# ---------------------------------------------------------------- closing
+FINISHED=0
+finish() {
+  [ "$FINISHED" -eq 1 ] && return 0
+  FINISHED=1
+  corpus_tree "$OUT/corpus_after.tsv"
+  if [ -f "$OUT/corpus_before.tsv" ]; then
+    diff "$OUT/corpus_before.tsv" "$OUT/corpus_after.tsv" > "$OUT/corpus.diff" || true
+  fi
+  # confinement: every changed path must live under Dataset/Point/Juglet
+  ESCAPED=$(printf %s "$DS" | sed 's/[&/]/\&/g')
+  if [ -s "$OUT/corpus.diff" ]; then
+    awk -F'\t' -v ds="$DS/Point/Juglet/" '
+      /^</ { next } /^---/ { next }
+      /^>/ { if (index($1, ds) != 2) { print "OUTSIDE:" $1; bad = 1 } }
+      END { exit bad ? 1 : 0 }' "$OUT/corpus.diff" > "$OUT/corpus_confined.txt"
+    if [ $? -ne 0 ]; then
+      echo "[JOB] WARN corpus changed outside Dataset/Point/Juglet:"
+      cat "$OUT/corpus_confined.txt"
+    else
+      echo "confined: every change under Dataset/Point/Juglet" > "$OUT/corpus_confined.txt"
+    fi
+  else
+    echo "no corpus change recorded" > "$OUT/corpus_confined.txt"
+  fi
+  cat "$OUT/corpus_confined.txt"
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "host=$(hostname)"
+    echo "utc $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "attic=$ATTIC"
+    echo "rc_any=$RC_ANY"
+    echo "converter_md5=$CONV_MD5"
+  } > "$OUT/run-meta.txt"
+  printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+  echo "[JOB] index row appended (verdict and human_note left empty)"
+}
+trap 'echo "[JOB] signal caught: closing the record before exiting"; finish; exit 143' TERM INT
+
+finish
+if [ "$RC_ANY" -ne 0 ]; then
+  echo "[JOB] FAILED: rc=$RC_ANY"
+  exit "$RC_ANY"
+fi
+echo "[JOB] ticket 47 run complete rc=0"
