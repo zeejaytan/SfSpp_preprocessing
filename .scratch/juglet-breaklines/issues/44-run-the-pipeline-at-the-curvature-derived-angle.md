@@ -14,7 +14,9 @@ becomes geometry in, angle out.
 **Blocked by:** none (ticket 43 merged, f38ed3b..2e7082a; its committed prediction table
 is the input)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** lead chat on Thinkbook16 (Spartan job) (2026-10-30)
+**Branch:** 44-run-the-pipeline-at-the-curvature-derived-angle, in /c/PR/worktrees/sfs/44
 
 - [ ] `stage44/instruments/thetas44.tsv` committed, values **verbatim** from ticket 43's
       k-rule table: Pot A PA01 4.36, PA02 3.30, PA03 3.76, PA04 2.92, PA05 3.50,
