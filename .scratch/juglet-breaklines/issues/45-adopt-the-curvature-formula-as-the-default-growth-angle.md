@@ -55,6 +55,73 @@ One run `runs/<YYYYMMDD-HHMM>_<git7>_t45-default`:
   Juglet_Piece_5, Pot_A_Piece_07) — the legacy path;
 - corpus md5 gate before==after, as every stage run.
 
+## Result (2026-10-30) — NOT adopted; the in-pipeline radius does not reproduce the calibration
+
+Run `20261030-2128_f4a3559_t45-default`, job 34054302, `sacct` COMPLETED 0:0 in 00:04:56, commit
+`f4a3559`. All 21 cells ran (17 no-env, 4 override), corpus and inputs unchanged, instruments md5
+gated. The build and the source change are sound. **The angle the default produces is not the
+formula's angle, and on the Juglet it destroys the piece.**
+
+### What the run measured
+
+| | delivered by the new default | ticket-43 reference | in tolerance |
+|---|---|---|---|
+| Juglet J1 | 10.37 | 10.29 | yes (+0.08) |
+| Juglet J2 | 48.56 | 12.40 | no (+36.2) |
+| Juglet J3 | 46.41 | 9.35 | no (+37.1) |
+| Juglet J4 | 39.89 | 10.25 | no (+29.6) |
+| Juglet J5 | 24.61 | 8.74 | no (+15.9) |
+| Juglet J6 | 32.31 | 8.16 | no (+24.1) |
+| Juglet J7 | 18.68 | 8.65 | no (+10.0) |
+| Juglet J8 | 37.77 | 10.05 | no (+27.7) |
+| Juglet J9 | 54.38 | 12.68 | no (+41.7) |
+| Pot A PA01-PA06 | 5.71 / 4.58 / 4.43 / 3.57 / 4.22 / 4.08 | 4.36 / 3.30 / 3.76 / 2.92 / 3.50 / 3.17 | no (1.2-1.4x high) |
+| Pot A PA07 | 2.88 | 2.66 | yes (+0.22) |
+| Pot A PA08 | 3.93 | 3.61 | no (+0.32) |
+
+`out/theta_check.tsv`: **within_0.30 = 2 of 17** (J1, PA07). Outcome class
+(`out/cells-pipeline/pipeline_cells.tsv`): **8 of 9 Juglet pieces produced no surface at all**
+(`status_outcome=none`); only J1 grew two (325 / 29,040 pts). Pot A grew two on 8 of 8 as always.
+The 3.4 override arm reproduced today's path exactly on its 4 cells (J2 none, J5 two 143/2,304,
+PA01 two, PA07 two).
+
+### Why — measured, not inferred
+
+The port is faithful. `foldcheck45.py` (dist43's `quadric_radii`, unchanged, k=30, run on a compute
+node) applied to the **pipeline's own input clouds** reproduces the binary's numbers:
+
+| piece | dist43 on pipeline cloud, k=30 | binary `[GROWTH-45]` R | calibrated R (mesh sample at S) |
+|---|---|---|---|
+| J2 | 0.7828 | 0.8355 | 3.2358 |
+| J1 | 6.1476 | 6.2733 | 6.3736 |
+| PA01 | 13.2829 (raw 1M cloud) | 20.2232 (0.6-downsampled cloud) | 26.2046 |
+
+So the same code on the same cloud agrees with the C++ to 2-7 %. The disagreement is in the
+**cloud**, and it is large: R swings 2-4x between point sets of the same piece (J2 0.78 vs 3.24;
+PA01 13.3 vs 20.2 vs 26.2). A 4x low R gives a 4x high theta, which is exactly the 18-54 deg seen.
+
+The Juglet input clouds are the reason they are hit hardest: 2,094-24,294 points per piece against
+~1,000,000 for Pot A, and the mesh sample the calibration used at the same nominal spacing carries
+about 2.5x more points (J2: 6,288 sampled vs 2,565 in the corpus cloud). Only J1, the one piece with
+24k points, lands.
+
+### What this does not say
+
+It does not overturn ticket 44's evidence. Fed the **same thetas through `SFS_PAPER_THETA`**
+(run `20261030-1511_fa92002_t44-formula`), all 9 Juglet pieces grew two surfaces and 6 of 8 ladder
+wall pairs held. The formula's *values* work; its *estimator*, as the pipeline can compute it today,
+is not stable enough to be the default. Reading R off a k=30 quadric at 0.2-0.6 mm spacing is not a
+property of the sherd — it is a property of the point set.
+
+### Options this leaves open (for the conservator)
+
+1. **Do not ship the formula as a default**; keep 3.4 and pass per-piece thetas explicitly (proven in
+   ticket 44). Cheapest, changes nothing today.
+2. **Make R stable first**: fix the physical patch diameter instead of k (or sample the mesh at S as
+   dist43 does), recalibrate, then re-test. A real ticket with its own spike.
+3. **Densify the Juglet clouds** (2,565 points for a whole sherd is very sparse) and re-measure —
+   separate from the formula, and it may matter for every Juglet result so far.
+
 ## Answers
 
 - Answers: U19 (does the pipeline put the Juglet back together), E1 (do our breaklines let SfS find joins)
@@ -63,7 +130,9 @@ One run `runs/<YYYYMMDD-HHMM>_<git7>_t45-default`:
 
 - none (44 closed)
 
-**Status:** ready-for-agent
+**Status:** ready-for-human
+**Working in:** coordinating session, 2026-10-30 — run verified by the lead, verdict void, awaiting the conservator's choice between options 1-3
+**Branch:** 45-adopt-the-curvature-formula-as-the-default-growth-angle, in /c/PR/worktrees/sfs/45
 
 ## Acceptance
 
