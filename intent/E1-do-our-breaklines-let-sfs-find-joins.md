@@ -2536,3 +2536,30 @@ report 60 and the rule would over-predict there; nothing in this set is near the
 
 Weight: 17 sherds, two vessels, one constant, no edgeline scored — nothing on the tally. The clouds were
 the real released ones at their own resolved spacing, not a synthetic upsample.
+
+## 2026-10-30 — the law transferred through the pipeline: the formula's angles carry the wall pairs, 6 of 8 (ticket 44)
+
+Run `20261030-1511_fa92002_t44-formula` (job 34028966, COMPLETED 0:0) put every one of the 17 pieces through
+the shipped env switch at **its own** curvature-derived angle — Pot A 2.66-4.36, Juglet 8.16-12.68 — beside a
+today-arm on the same clouds, plus four no-env proofs. Proofs first: the job's own `paper_grow` line confirms
+every arm-B cell carried its committed theta (17/17 match, requested == committed to 3 dp); the no-env cells
+reproduce the today-arm's sampled md5 4/4; corpus and staged-input md5s are unchanged before == after.
+
+**Pot A, the control, holds: 8 of 8 two clean surfaces** at the formula's angles, surface point counts within
+1-2 % of the today-arm — the vessel k was calibrated on is undisturbed by its own rule, so the run is not void
+(ticket 43's arm-C collapse precedent does not fire).
+
+**The Juglet at its own angles: J3-J8 reproduce the ladder's genuine wall pairs** — med_along 1.86-2.81 mm,
+med_across 0.38-0.63 mm, angle 13-19 deg, coincidence 0. J4 (at 10.25) and J8 (at 10.05) match the 10.2 ladder
+reference to the second decimal. The exceptions, named: **J2 is lost** — formula 12.40 from the set's tightest
+fold (R 3.24 mm) leaves a 172-point fragment where 10.2 had a genuine 1.88/0.67 pair; directionally right,
+about 2 deg wide, and the ladder stays its fallback. **J1 and J9 have no clean pair at any wide angle** (J1's
+pair exists only at today's 3.4; J9's 392-point fragment at 12.68, like its 10.2 pair, is not wall-like).
+
+So the growth-angle gate is **geometry in, angle out**: one rule fitted on Pot A alone carries the other
+vessel's wall pairs with no per-vessel search, superseding the ticket-42 ladder as the default (the ladder
+remains the audit and the J2 fallback). This is a preprocessing-stage outcome — the along/across pair
+statistic, not a seating: whether these six wall pairs (plus J2 at 10.2) put the Juglet back together is U19's
+remaining half, through ticket 07.
+
+Weight: 17 sherds in one grid, both vessels, every cell proofed; one piece (J2) named against the rule.
