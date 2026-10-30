@@ -4729,15 +4729,23 @@ int main(int argc, char** argv) {
         int paperNB = 10;
         bool thetaFromEnv45 = false;
         if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) { paperTheta = std::stod(e); thetaFromEnv45 = true; } }
-        // TICKET 45: with SFS_PAPER_THETA unset, the growth angle now comes from the piece's own
-        // curvature instead of the flat 3.4 (ticket 43's law; run of record for the formula arm
-        // 20261030-1511_fa92002_t44-formula): theta_deg = 3.3573 * (S / R_fold) * (180 / pi).
-        // k = 3.3573 is dimensionless, calibrated so the Pot A median S/R lands on 3.4; S is the
-        // resolved spacing ([SPACING-22]) and R_fold the median fold radius of the downsampled
-        // cloud the growth runs on (medianFoldRadius45 above, dist43.py's quadric rule). An
-        // explicit SFS_PAPER_THETA keeps today's path unchanged byte-for-byte (the legacy 3.4
-        // and the J2 fallback 10.2 both still reach it); SFS_GROWTH_MODE=outcome is untouched.
-        if (!thetaFromEnv45)
+        // TICKET 45/46: the curvature rule is implemented and OPT-IN, not the default.
+        // theta_deg = 3.3573 * (S / R_fold) * (180 / pi) (ticket 43's law, run of record
+        // 20261030-1511_fa92002_t44-formula): k = 3.3573 is dimensionless, calibrated so the Pot A
+        // median S/R lands on 3.4; S is the resolved spacing ([SPACING-22]) and R_fold the median
+        // fold radius of the downsampled cloud the growth runs on (medianFoldRadius45 above,
+        // dist43.py's quadric rule).
+        // It is OFF by default because the rule needs a fold radius the corpus clouds cannot
+        // supply: ticket 45 (run 20261030-2128_f4a3559_t45-default) measured R 2-4x under-read on
+        // the released clouds, so the no-env default read 18.7-54.4 deg on the Juglet and 8 of 9
+        // pieces grew no surface. Ticket 46 (20261031-0123_a4d72f6_t46-covering4) then showed the
+        // rule itself is right - on an even covering of the same mesh it reproduces the ticket-43
+        // prediction on 8 of 9 pieces within 2 pct - so the defect is the input, not the formula.
+        // Until the input side is answered the shipped default stays 3.4; ask for the rule with
+        // SFS_GROWTH_FORMULA=1, and an explicit SFS_PAPER_THETA still wins over both.
+        bool thetaFormula46 = false;
+        if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) != "0") thetaFormula46 = true; }
+        if (!thetaFromEnv45 && thetaFormula46)
         {
             const double k45 = 3.3573;
             const double rMed45 = medianFoldRadius45();
