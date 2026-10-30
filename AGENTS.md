@@ -41,6 +41,19 @@ change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-
 the competing causes and the open measurements are in
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
+### The Juglet input clouds are vertex dumps, not samples (2026-10-31)
+
+The nine Dataset/Point/Juglet/*_Point.pcd were written 2026-09-25 by
+original_nurbs_preprocessing/tools/obj_to_pcd.cpp — every mesh vertex copied out, nothing
+sampled — where the corpus standard is cc_mesh_to_pcd.sh (README step 1: CloudCompare, up to
+1,000,000 points on the faces + noise filter; see Dataset/Point/Pot_A/*_cc.log). Cloud points
+equal mesh vertices exactly (J1 24,294 / J2 2,565 / J9 2,094). Stages that downsample first
+cannot see this; anything that reads the input cloud's layout can — ticket 45's fold radius
+read folds 2-4x too tight and theta 4x too steep, ticket 46's even covering reproduced the
+formula. Do not score input-layout-dependent quantities on the Juglet until the clouds are
+regenerated with the corpus converter. Full record:
+docs/notes/2026-10-31-juglet-cloud-provenance.md.
+
 ### A reference can be the broken thing (read this before quoting any score)
 
 **Pot J 09 — do not score against the authors' breaklines on this piece** (conservator's ruling, 2026-10-24,
