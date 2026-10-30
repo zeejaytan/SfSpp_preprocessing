@@ -19,7 +19,9 @@ the corpus carries ~840 000-1 000 000, and the first measurement that read the i
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-31)
+**Branch:** 47-rebuild-the-juglet-input-clouds-with-the-corpus-converter, in /c/PR/worktrees/sfs/47
 
 **Worker:** unassigned
 
