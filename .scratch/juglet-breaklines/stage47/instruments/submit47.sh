@@ -63,7 +63,7 @@ PYEOF
 echo "[submit47] gates on the rendered batch file"
 CR=$(grep -c -F $(printf '\r') "$OUTF" || true)
 [ "$CR" -eq 0 ] || { echo "FATAL: $CR CR bytes in rendered sbatch"; exit 4; }
-LEFT=$(grep -o -E '__[A-Z][A-Z0-9_]*__' "$OUTF" | wc -l)
+LEFT=$(grep -c -E '__[A-Z][A-Z0-9_]*__' "$OUTF" || true)
 [ "$LEFT" -eq 0 ] || { echo "FATAL: $LEFT unrendered placeholders"; exit 5; }
 bash -n "$OUTF" || { echo "FATAL: bash -n failed"; exit 6; }
 EXP=$(grep -o -E '\$[A-Za-z_][A-Za-z0-9_]*' "$OUTF" | wc -l)
