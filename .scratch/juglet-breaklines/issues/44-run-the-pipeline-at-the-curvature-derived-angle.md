@@ -15,7 +15,7 @@ becomes geometry in, angle out.
 is the input)
 
 **Status:** in-progress
-**Working in:** lead chat on Thinkbook16 (Spartan job) (2026-10-30)
+**Working in:** run 20261030-1511_fa92002_t44-formula, job 34028966 (lead chat, 2026-10-30)
 **Branch:** 44-run-the-pipeline-at-the-curvature-derived-angle, in /c/PR/worktrees/sfs/44
 
 - [ ] `stage44/instruments/thetas44.tsv` committed, values **verbatim** from ticket 43's
