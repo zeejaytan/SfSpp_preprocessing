@@ -1,0 +1,308 @@
+#!/bin/bash
+#SBATCH --job-name=__JOBNAME__
+#SBATCH --account=punim2657
+#SBATCH --partition=sapphire
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=__TIME__
+#SBATCH --output=__RUNDIR__/logs/slurm-%j.out
+#SBATCH --error=__RUNDIR__/logs/slurm-%j.err
+# ticket 45 -- adopt the curvature formula as the DEFAULT growth angle (source change).
+#
+# One phase, BOTH vessels.  mesh_processing_headless.cpp now computes theta per piece when
+# SFS_PAPER_THETA is unset (ticket 43's law theta = 3.3573 x S/R_fold x 180/pi, R_fold the
+# median fold radius of the downsampled cloud the growth runs on, logged [GROWTH-45]); an
+# explicit SFS_PAPER_THETA keeps today's path byte-for-byte.
+#   phase 4  arm F (no env, the NEW default) on 17 pieces (Juglet 1-9, Pot A 01-08);
+#            arm O (SFS_PAPER_THETA=3.4, today's path) on the four proof pieces, whose
+#            SampledWithNormals md5 is the override proof against ticket 44's committed
+#            defaults_proof arm-A md5 (compared offline; ticket 291 measured sampler spread).
+# thetas44.tsv rides along COMMITTED as the REFERENCE (ticket 43's k-rule theta); the job
+# reports each arm-F theta against it at the 0.30 deg tolerance as a REPORT, never a gate --
+# the acceptance call is the lead's.
+#
+# Paid-for traps this script is written around: CRLF in any script (grep gate in the submitter);
+# brace-stripping when this template renders (unrendered-placeholder and expansion-count checks);
+# unbound variables under set -u (every variable defaulted, no ${...} form is used anywhere);
+# no xargs -d; grep -a on binary PCD/PLY; PLY header length varies (instruments parse to
+# end_header).
+set -uo pipefail
+
+RUN=__RUNDIR__
+RUNID=__RUNID__
+NEW=__NEWCOMMIT__
+PHASE=__PHASE__
+IXTAG=__IXTAG__
+PARTA=__PARTA__
+CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
+CORP=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp
+DS=$CANON/Dataset
+SIF=$CANON/pcl_191_nurbs.sif
+APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
+PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
+RINSTR=$RUN/instruments
+OUT=$RUN/out
+RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
+IDX=$RUNS/index.tsv
+JOBID=$SLURM_JOB_ID; [ -n "$JOBID" ] || JOBID=na
+P=$SLURM_CPUS_PER_TASK; [ -n "$P" ] || P=8
+unset SFS_COUNT_SCALE SFS_SPACING_POLICY SFS_SPACING_SAMPLES SFS_NORMAL_SOURCE SFS_NORMAL_CARRY \
+      SFS_SINGLE_CLUSTER SFS_FLOOR_CEILING SFS_DOWNSAMPLE_TARGET SFS_DUMP_STAGE SFS_DUMP_PIECES \
+      SFS_PAPER_THETA SFS_PAPER_KAPPA SFS_PAPER_NB SFS_PAPER_CHAIN SFS_SMOOTHNESS_DEG \
+      SFS_CURVATURE_THRESH SFS_REASSIGN_MODE SFS_WINDOW_REPORT SFS_MERGE_SCALE SFS_GROWTH_MODE \
+      SFS_AXIS_FILE SFS_STATUS_FILE POT_NAME 2>/dev/null || true
+export CANON CORP DS SIF APT PY OUT RUN RUNID NEW PHASE IXTAG PARTA RUNS IDX JOBID P
+
+cd "$RUN" || exit 1
+mkdir -p "$OUT" logs
+
+fail() {
+  local rc=$1; shift
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "rc=$rc"
+    echo "reason: $*"
+    date -u +"at %Y-%m-%dT%H:%M:%SZ"
+  } > "$OUT/RUN-FAILED.txt"
+  echo "[JOB] FATAL rc=$rc $* (see out/RUN-FAILED.txt)"
+  exit "$rc"
+}
+
+echo "[JOB] runid=$RUNID job=$JOBID tag=$IXTAG phase=$PHASE new=$NEW host=$(hostname)"
+
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" >> logs/fetch.log 2>&1
+git -C "$CANON" rev-parse --verify --quiet "$NEW" > /dev/null 2>>logs/fetch.log || fail 2 "commit $NEW not in $CANON"
+
+# the instruments the job executes are the PUSHED COMMIT bytes, not the run directory copies
+SRC=$RUN/build/src
+rm -rf "$SRC"; mkdir -p "$SRC"
+# path-limited: the instruments are all this needs, and the full tree is ~1 GB of committed data
+git -C "$CANON" archive "$NEW" .scratch/juglet-breaklines/stage45 | tar -x -C "$SRC" \
+  || fail 3 "git archive $NEW failed"
+INSTR=$SRC/.scratch/juglet-breaklines/stage45/instruments
+[ -d "$INSTR" ] || fail 3 "no stage45 instruments in commit $NEW"
+( cd "$INSTR" && md5sum *.py *.sh *.tsv 2>/dev/null ) | sort -k2 > "$OUT/instruments_commit.md5"
+( cd "$RINSTR" && md5sum *.py *.sh *.tsv 2>/dev/null ) | sort -k2 > "$OUT/instruments_rundir.md5"
+if ! diff -q "$OUT/instruments_commit.md5" "$OUT/instruments_rundir.md5" > /dev/null; then
+  diff "$OUT/instruments_rundir.md5" "$OUT/instruments_commit.md5" || true
+  fail 4 "instruments in the run directory differ from commit $NEW"
+fi
+echo "[JOB] instruments match commit $NEW ($(wc -l < "$OUT/instruments_commit.md5") files)"
+STAGER=$INSTR/stage_synth_p40.sh
+export INSTR STAGER
+
+corpus_tree() {
+  local out=$1
+  {
+    find "$CORP" -type f -printf "%p\t%s\t%T@\n" | sort
+    find "$DS" -type f -printf "%p\t%s\t%T@\n" | sort
+    if [ -d /opt/sfs-pristine ]; then
+      echo "opt-sfs-pristine PRESENT $(ls -R /opt/sfs-pristine | md5sum | cut -d' ' -f1)"
+    else
+      echo "opt-sfs-pristine ABSENT"
+    fi
+  } > "$out"
+}
+pristine_record() {
+  local out=$1
+  {
+    echo "# /opt/sfs-pristine, recorded from the compute node"
+    if [ -d /opt/sfs-pristine ]; then
+      echo "status PRESENT"; ls -la /opt/sfs-pristine
+    else
+      echo "status ABSENT"
+      ls -d /opt/sfs-pristine 2>&1 || true
+      stat /opt/sfs-pristine 2>&1 || true
+    fi
+  } > "$out"
+}
+md5_corpus() {
+  local out=$1 f
+  {
+    for f in "$DS"/Point/Juglet/*.pcd "$DS"/Mesh/Juglet/*.obj "$DS"/Axes/Juglet/*.xyz \
+             "$DS"/Axes/Pot_A/*.xyz \
+             "$CORP"/Point/Pot_A/*.pcd "$CORP"/Mesh/Pot_A_Piece_*.obj "$CORP"/Axes/*.xyz; do
+      [ -f "$f" ] && printf "%s\t%s\n" "$(md5sum "$f" | cut -d' ' -f1)" "$f"
+    done
+  } | sort -k2 > "$out"
+}
+
+corpus_tree "$OUT/corpus_before.tsv"
+pristine_record "$OUT/pristine.txt"
+md5_corpus "$OUT/inputs_before.md5"
+{
+  echo "host $(hostname)"
+  echo "utc $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "commit $NEW"
+  "$PY" -c "import numpy, scipy, sys; print('python', sys.version.split()[0]); print('numpy', numpy.__version__); print('scipy', scipy.__version__)" 2>&1
+  "$PY" -c "import matplotlib; print('matplotlib', matplotlib.__version__)" 2>&1 || echo "matplotlib absent"
+  "$APT" --version 2>&1 | head -2
+  nproc
+} > "$OUT/versions.txt" 2>&1
+cat "$OUT/versions.txt"
+
+build_bin() {
+  local name=$1 sha=$2 rc
+  echo "[BUILD] $name from $sha"
+  mkdir -p "build/$name/src/build"
+  git -C "$CANON" archive "$sha" | tar -x -C "build/$name/src" || { echo "[BUILD] archive FAILED"; return 1; }
+  ( cd "build/$name/src/build" \
+    && "$APT" exec --bind /data:/data "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
+    && "$APT" exec --bind /data:/data "$SIF" make -j"$P" MeshPreprocessingHeadless \
+  ) > "logs/build-$name.log" 2>&1
+  rc=$?
+  if [ "$rc" -eq 0 ] && [ -x "build/$name/src/build/MeshPreprocessingHeadless" ]; then
+    cp -f "build/$name/src/build/MeshPreprocessingHeadless" "$OUT/bin-$name"
+    echo "[BUILD] $name ok $(stat -c %s "$OUT/bin-$name") bytes md5=$(md5sum "$OUT/bin-$name" | cut -d' ' -f1)"
+    return 0
+  fi
+  return 1
+}
+
+geom_record() {
+  local out=$1
+  {
+    find "$OUT" -type f -printf "%p\t%s\n" 2>/dev/null | awk -F"\t" '
+      { n=split($1,a,"."); ext=(n>1?a[n]:"none");
+        if (ext !~ /^(pcd|ply|obj|xyz|stl|off)$/) next;
+        f[ext]++; b[ext]+=$2; tf++; tb+=$2 }
+      END { for (e in f) printf "%s\t%d\t%d\n", e, f[e], b[e];
+            printf "TOTAL\t%d\t%d\n", tf, tb }'
+  } | sort > "$out"
+  cat "$out"
+}
+geom_delete() {
+  # ticket 45 KEEPS the cells surfaces for the lead: everything else under out/ is deleted, and
+  # the delete records itself first -- what is kept is named in the record, not implied.
+  local before after kept
+  before=$(find "$OUT" -type f \( -name "*.pcd" -o -name "*.ply" -o -name "*.obj" -o -name "*.xyz" \) | wc -l)
+  kept=$(find "$OUT" -path "*/cells-pipeline/*/surfaces/*.ply" -type f | wc -l)
+  find "$OUT" -type f \( -name "*.pcd" -o -name "*.ply" -o -name "*.obj" -o -name "*.xyz" \) \
+    -not -path "*/cells-pipeline/*/surfaces/*" -print0 | xargs -0 -r rm -f
+  rm -rf "$OUT"/cells-pipeline/stage_* 2>/dev/null || true
+  after=$(find "$OUT" -type f \( -name "*.pcd" -o -name "*.ply" -o -name "*.obj" -o -name "*.xyz" \) | wc -l)
+  {
+    echo "# geometry deleted by $RUNID phase $PHASE, $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "geometry_files_before $before"
+    echo "geometry_files_after $after"
+    echo "kept_cell_surface_plies $kept"
+    echo "# kept: the cells surfaces (*/cells-pipeline/*/surfaces/*.ply), tsv json log py sh txt png"
+  } > "$OUT/GEOMETRY_DELETED.txt"
+  cat "$OUT/GEOMETRY_DELETED.txt"
+}
+
+JUG="Juglet_Piece_1 Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_4 Juglet_Piece_5 Juglet_Piece_6 Juglet_Piece_7 Juglet_Piece_8 Juglet_Piece_9"
+POTA="Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08"
+# the override proof pieces (evidence: today's path unchanged): four pieces get the O cell
+PROOF="Juglet:Juglet_Piece_2 Pot_A:Pot_A_Piece_01 Juglet:Juglet_Piece_5 Pot_A:Pot_A_Piece_07"
+
+phase_cells() {  # phase 4 -> POT:PIECE:ARMS list, both vessels: F everywhere, +O on the proof pieces
+  local list="" pot pcs p arms
+  for pot in Juglet Pot_A; do
+    if [ "$pot" = "Juglet" ]; then pcs=$JUG; else pcs=$POTA; fi
+    for p in $pcs; do
+      arms=F
+      for S in $PROOF; do [ "$S" = "$pot:$p" ] && arms=FO; done
+      list="$list $pot:$p:$arms"
+    done
+  done
+  echo "$list"
+}
+
+RC_ANY=0
+rc=1
+echo "[JOB] ---- phase $PHASE ----"
+case "$PHASE" in
+  4) ;;
+  *) fail 6 "unknown phase $PHASE (ticket 45: 4 = default-formula cells F + 3.4 override cells O)" ;;
+esac
+
+# ------------------------------------------------ the cells: arm F default / O 3.4 override
+cp -f "$INSTR/thetas44.tsv" "$OUT/thetas_committed.tsv"
+echo "[JOB] reference thetas committed with ticket 45 (md5 $(md5sum "$OUT/thetas_committed.tsv" | cut -d' ' -f1))"
+cat "$OUT/thetas_committed.tsv"
+
+build_bin new "$NEW" || fail 5 "binary build failed (see logs/build-new.log)"
+BIN=$OUT/bin-new; export BIN
+export CELL_LIST="$(phase_cells)" PROOF_LIST="$PROOF" MIN_LEFT_S=300 CELL_BUDGET_S=14400
+echo "[JOB] cells: $CELL_LIST"
+echo "[JOB] override-proof cells: $PROOF"
+bash "$INSTR/run_cell45.sh" > "$OUT/phase4_cells.log" 2>&1; rc=$?
+[ -s "$OUT/phase4_cells.log" ] && tail -80 "$OUT/phase4_cells.log"
+if [ "$rc" -ne 0 ]; then
+  echo "[JOB] WARN the cells driver failed rc=$rc (see the cells log); closing record still written"
+  printf "%s\t%s\n" "4" "$rc" >> "$OUT/phase_failures.tsv"
+  RC_ANY=$rc
+fi
+
+# ---- reference check (REPORT, never a gate): every arm-F theta against ticket 43's k-rule
+# theta from the committed thetas44.tsv, tolerance 0.30 deg.  Blank computed thetas are
+# recorded as no-evidence rows for the lead to read.
+TC=$OUT/theta_check.tsv
+printf "pot\tpiece\ttheta_computed_deg\ttheta_reference_deg\tdelta_deg\twithin_0.30\n" > "$TC"
+if [ -f "$OUT/cells-pipeline/pipeline_cells.tsv" ]; then
+  awk -F'\t' 'NR==FNR { if (FNR>1) ref[$1 "\t" $2]=$3; next }
+    FNR>1 && $3=="formula" {
+      d=""; w="no-evidence"
+      if ($12 != "" && $12 != "na" && $12 != "-") {
+        r=ref[$1 "\t" $2]
+        if (r != "") { d=sprintf("%.3f", ($12>r ? $12-r : r-$12)); w=(d<0.30 ? "yes" : "no") }
+        else { r="no-reference" }
+      } else { r=ref[$1 "\t" $2] }
+      printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, $2, ($12==""?"na":$12), r, d, w
+    }' "$OUT/thetas_committed.tsv" "$OUT/cells-pipeline/pipeline_cells.tsv" >> "$TC"
+fi
+echo "[JOB] === arm-F thetas against the ticket-43 reference (REPORT, 0.30 deg tolerance) ==="
+cat "$TC"
+echo "[JOB] within_0.30: $(awk -F'\t' 'NR>1 && $6=="yes"' "$TC" | wc -l) of $(awk -F'\t' 'NR>1 && $6!="no-evidence"' "$TC" | wc -l) with evidence"
+
+# The closing bookkeeping runs once, and also on a termination signal: if Slurm ends this job at
+# the wall clock, the corpus is still proved unchanged, the geometry is still counted, deleted
+# and the index row still appended, so a timeout cannot leave half a record behind.
+FINISHED=0
+finish() {
+  [ "$FINISHED" -eq 1 ] && return 0
+  FINISHED=1
+  corpus_tree "$OUT/corpus_after.tsv"
+  md5_corpus "$OUT/inputs_after.md5"
+  diff "$OUT/corpus_before.tsv" "$OUT/corpus_after.tsv" > "$OUT/corpus.diff" || true
+  diff "$OUT/inputs_before.md5" "$OUT/inputs_after.md5" > "$OUT/inputs.diff" || true
+  if [ -s "$OUT/corpus.diff" ] || [ -s "$OUT/inputs.diff" ]; then
+    echo "[JOB] WARN the corpus or the frozen inputs changed during this job"
+    cat "$OUT/corpus.diff" "$OUT/inputs.diff"
+  else
+    echo "[JOB] corpus and frozen inputs unchanged"
+  fi
+
+  geom_record "$OUT/geometry_counts.tsv"
+  geom_delete
+
+  {
+    echo "runid=$RUNID"
+    echo "jobid=$JOBID"
+    echo "commit=$NEW"
+    echo "tag=$IXTAG"
+    echo "phase=$PHASE"
+    echo "host=$(hostname)"
+    echo "utc $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "phase_rc=$rc"
+    echo "phase_failures=$(cat "$OUT/phase_failures.tsv" 2>/dev/null | tr "\n" " ")"
+  } > "$OUT/run-meta.txt"
+
+  printf "%s\t%s\t%s\t%s\t\t\n" "$RUNID" "$JOBID" "$NEW" "$IXTAG" >> "$IDX"
+  echo "[JOB] index row appended (verdict and human_note left empty)"
+}
+trap 'echo "[JOB] signal caught: closing the record before exiting"; finish; exit 143' TERM INT
+
+finish
+if [ "$RC_ANY" -ne 0 ]; then
+  echo "[JOB] FAILED: the phase driver returned non-zero"
+  cat "$OUT/phase_failures.tsv" 2>/dev/null || true
+  exit "$RC_ANY"
+fi
+echo "[JOB] phase $PHASE complete rc=0"
