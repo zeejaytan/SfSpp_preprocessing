@@ -130,9 +130,10 @@ property of the sherd — it is a property of the point set.
 
 - none (44 closed)
 
-**Status:** ready-for-human
-**Working in:** coordinating session, 2026-10-30 — run verified by the lead, verdict void, awaiting the conservator's choice between options 1-3
-**Branch:** 45-adopt-the-curvature-formula-as-the-default-growth-angle, in /c/PR/worktrees/sfs/45
+**Status:** done
+**Working in:** closed 2026-10-31 — see the Closed section below
+**Branch:** 45-adopt-the-curvature-formula-as-the-default-growth-angle (merged into main via ticket 46's merge)
+**Worker:** lead — both workers died mid-run; the lead verified the run, diagnosed the corpus, and gated the default
 
 ## 2026-10-31 — what main carries now (lead)
 
@@ -142,6 +143,16 @@ Verified with run `20261031-0200_2263532_t46-default-check` (job `34073410`, sac
 
 So the three options below are no longer about the default — the default is 3.4 again, and the formula is a switch. They are about whether to ship the formula at all, now that ticket 46 showed it reads the angle correctly on an even covering and only fails when the input cloud is the mesh's vertex dump.
 
+
+## Closed (2026-10-31) — method shipped opt-in; the default flip moved to ticket 48
+
+The conservator's direction (2026-10-31, "keep the ticket 45 method") settles the three options below:
+the method ships. Main carries it behind `SFS_GROWTH_FORMULA=1` (commit `2263532`, verified by run
+`20261031-0200_2263532_t46-default-check`); the no-env default stays the flat 3.4 until the corpus clouds
+exist to feed it — ticket 47 rebuilds them, ticket 48 step 2 flips the default only if the formula verifies
+on them within 2 percent. The void verdict on this ticket's own run stands and is not a method failure:
+ticket 46's even-covering counterproof isolated the input clouds (vertex dumps) as the broken measurement.
+The acceptance list below is the original ask, kept unchecked as the honest record of what that run did.
 
 ## Acceptance
 
