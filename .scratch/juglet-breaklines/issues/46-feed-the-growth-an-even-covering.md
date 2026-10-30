@@ -245,6 +245,7 @@ tables so the tables above stand unchanged:
 **Status:** done
 **Working in:** lead session C:/PR (SFS++ theta work, 2026-10-30) (2026-10-31)
 **Branch:** 46-feed-the-growth-an-even-covering, in /c/PR/worktrees/sfs/46
+**Worker:** lead — the session that wrote this ticket built its instruments, submitted its four runs, verified them and closed it; the ticket-45 worker died twice and the pattern was not reinstated (rule lapse, 2026-10-31)
 **Needs-eye:** the covering figure and the 3x3 surface panel are drawn and read (see Result); the conservator still decides the ticket-45 ship question
 
 ## Acceptance
