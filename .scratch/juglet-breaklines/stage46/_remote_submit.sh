@@ -7,4 +7,4 @@ echo "PWD=$(pwd)"
 echo "--- HEAD of the submitter ---"
 git rev-parse HEAD 2>/dev/null || echo "(not a git dir, expected: archive)"
 echo "--- submitting ---"
-bash submit46.sh covering2 01:30:00
+bash submit46.sh covering3 01:30:00

@@ -130,15 +130,34 @@ def main():
     a = ap.parse_args()
 
     v, fc = mesh38.read_obj(a.mesh)   # read_obj returns (verts, faces) only
+    # The spacing the covering finally HAS is the one measured after projection, so that is what
+    # the gate reads. Projection pulls points onto the surface and shuffles them a little
+    # (0.2-1.6 pct on the pieces seen so far), so when the post-projection spacing leaves the band
+    # the sampler is asked again at the corrected spacing -- the request is solved, not rounded.
     res = mesh38.sample_at(v, fc, a.spacing, seed=a.seed, jitter=a.jitter)
-    pts, nrm = res["pts"], res["nrm"]
-    pts, moved = project_to_mesh(v, fc, pts)
-    mesh38.write_pcd(a.out, pts, nrm)
-    print("[COVER46] %s projected %d points onto the mesh (largest move %.6f mm)"
-          % (a.piece, len(pts), moved), flush=True)
-
+    pts, moved = project_to_mesh(v, fc, res["pts"])
+    nrm = res["nrm"]
     sp = mesh38.nn_spacing(pts)
-    achieved = sp["median"]
+    achieved = float(sp["median"])
+    attempts = [{"ask_mm": a.spacing, "achieved_after_projection_mm": round(achieved, 6),
+                 "points": int(len(pts)), "max_move_mm": round(moved, 6)}]
+    for _ in range(2):
+        err0 = abs(achieved - a.spacing) / a.spacing
+        if err0 <= a.spacing_tol:
+            break
+        ask = a.spacing * (a.spacing / achieved)
+        print("[COVER46] %s post-projection spacing %.6f is %.3f%% off; re-solving at %.6f"
+              % (a.piece, achieved, 100.0 * err0, ask), flush=True)
+        res = mesh38.sample_at(v, fc, ask, seed=a.seed, jitter=a.jitter)
+        pts, moved = project_to_mesh(v, fc, res["pts"])
+        nrm = res["nrm"]
+        sp = mesh38.nn_spacing(pts)
+        achieved = float(sp["median"])
+        attempts.append({"ask_mm": round(ask, 6), "achieved_after_projection_mm": round(achieved, 6),
+                         "points": int(len(pts)), "max_move_mm": round(moved, 6)})
+    mesh38.write_pcd(a.out, pts, nrm)
+    print("[COVER46] %s %d points on the mesh (largest move %.6f mm, %d attempts)"
+          % (a.piece, len(pts), moved, len(attempts)), flush=True)
     sp_err = abs(achieved - a.spacing) / a.spacing
     print("[COVER46] %s sampled %d points at S=%.6f (achieved %.6f, %d triangles)"
           % (a.piece, len(pts), a.spacing, achieved, len(fc)), flush=True)
@@ -179,6 +198,7 @@ def main():
            "surface_check": "exact distance to every triangle on a deterministic subsample (seed %d)" % a.seed,
            "projection": "voxel-merged covering projected onto the closest point of a nearby triangle (k=16 by centroid); every point lies on the shipped mesh",
            "project_max_move_mm": round(moved, 6),
+           "spacing_attempts": attempts,
            "cover_median_mm": cover["cover_median_mm"],
            "cover_p90_mm": cover["cover_p90_mm"], "cover_p99_mm": cover["cover_p99_mm"],
            "cover_max_mm": cover["cover_max_mm"],
