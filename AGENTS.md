@@ -53,6 +53,8 @@ read folds 2-4x too tight and theta 4x too steep, ticket 46's even covering repr
 formula. Do not score input-layout-dependent quantities on the Juglet until the clouds are
 regenerated with the corpus converter. Full record:
 docs/notes/2026-10-31-juglet-cloud-provenance.md.
+The whole OBJ-to-reassembly chain and this step's place in it:
+../structure-from-sherds-pp/docs/e2e-obj-to-reassembly.md.
 
 ### A reference can be the broken thing (read this before quoting any score)
 
