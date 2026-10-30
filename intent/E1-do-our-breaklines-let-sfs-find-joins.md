@@ -2563,3 +2563,33 @@ statistic, not a seating: whether these six wall pairs (plus J2 at 10.2) put the
 remaining half, through ticket 07.
 
 Weight: 17 sherds in one grid, both vessels, every cell proofed; one piece (J2) named against the rule.
+
+## 2026-10-31 — the formula was right; the cloud was wrong (ticket 46)
+
+Run `20261031-0123_a4d72f6_t46-covering4` (job 34071136, FAILED 3:0, exit 3 = one theta miss) replaced each
+Juglet piece's released cloud with an **even covering of the same shipped mesh** at the spacing the run already
+resolves — 2.1-2.8x the points, every point on the mesh, no subdivision — and left Pot A's clouds untouched as
+the control. No `SFS_*` env in any of the 17 cells; corpus and inputs md5 unchanged; source untouched (the
+`mesh_processing_headless.cpp` blob equals branch 45's, carried by a merge of ticket 45's tip into the ticket
+branch, never into main).
+
+**The theta answer.** On an even covering the pipeline's own curvature measurement delivers the ticket-43
+prediction on **8 of 9** pieces within 2 % (J1 -0.62, J2 +1.61, J4 +0.35, J5 -0.22, J6 +0.91, J7 -0.01, J8 +0.98,
+J9 +0.12 %; **J3 -2.27 %**, the single miss, 0.21 deg). Mean absolute error 0.79 %, no bias. Hours earlier the
+same nine pieces, same commit, read 18.7-54.4 deg on the released clouds. So the port is faithful and the
+constant is right, and ticket 45's failure was the input.
+
+**The outcome answer.** All nine grow two surfaces — including **J2 (263 / 6 143) and J9 (3 770 / 4 855)**, which
+were `none` at every angle tried before. J3-J9 keep the ticket-44 pair signature: along 1.88-2.70 mm, across
+0.18-0.30 mm, 10.5-20.4 deg, coincidence 0.0000-0.0112. Pot A is unchanged: theta identical to ticket 45's arm F
+to 5 dp on all eight, clusters identical, worst surface-size move 0.55 %.
+
+**What it does not settle.** The covering is derived from the shipped mesh — this adds coverage, not detail, so
+the synthetic-cloud question (ticket 38) stands and ticket 16 must be told. The 0.18-0.30 mm separation is a tenth
+of the Juglet wall (2.4-3.3 mm), so these are still two layers of one face, not a wall pair, and the clustering is
+still loose (2-9 clusters a piece). And because R is under-read 2-4x on a real released cloud, adopting the
+formula today leaves the Juglet at ticket 45's wrong angles and changes nothing for Pot A: the formula is right
+and inert until the input side is answered.
+
+Weight: one diagnostic run, nine sherds, one control vessel, one covering per piece; every number above read
+from the run's own tables by the lead, and both figures read directly.

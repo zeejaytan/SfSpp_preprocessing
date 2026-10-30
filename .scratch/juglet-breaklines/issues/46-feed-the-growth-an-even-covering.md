@@ -227,6 +227,11 @@ tables so the tables above stand unchanged:
 - `verified: wc -c out/corpus.diff out/inputs.diff -> 0 0`
 - `verified by eye: juglet_surfaces.png, j2_covering.png (read directly in this session)`
 
+- Deleted at close, with this record: `.scratch/juglet-breaklines/stage46/_dry46_submit.sbatch` (16 036 B, mtime
+  2026-10-31 01:18) — the pre-flight dry render of `submit46.sbatch.tmpl`. The template itself is tracked and is the
+  source; read back before deleting: its first lines were the rendered `#SBATCH` header (`--job-name=t46-covering`,
+  `--account=punim2657`). Nothing else was removed, and no geometry was ever on the laptop.
+
 ## Answers
 
 - Answers: U19 (does the pipeline put the Juglet back together), E1 (do our breaklines let SfS find joins)
