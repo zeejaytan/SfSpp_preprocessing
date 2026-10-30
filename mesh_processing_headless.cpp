@@ -1087,6 +1087,87 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 	return outputFile;
 }
 
+// TICKET 45: median fold radius of the downsampled cloud the growth runs on, by ticket 43's
+// rule (stage43/instruments/dist43.py quadric_radii, :140-180): per subsampled point take the
+// 30 nearest neighbours (self included), build the PCA tangent frame around the normal, fit the
+// bivariate quadric z = a*x + b*y + 0.5*L*x^2 + M*x*y + 0.5*N*y^2 by least squares, take the
+// larger principal curvature of [[L, M], [M, N]], radius = 1/kmax capped to [0, 60] mm
+// (dist43.py RHO_CAP_MM / MAX_PTS_RHO). The subsample is a deterministic stride of at most
+// 20000 points, so rerunning the same bytes reproduces the same R_fold. Returns 0.0 when the
+// cloud has no usable points; the caller FATALs on that.
+static double medianFoldRadius45()
+{
+	const int kNN45 = 30;          // dist43.py quadric_radii(..., k=30)
+	const double rhoCap45 = 60.0;  // dist43.py RHO_CAP_MM
+	const size_t maxPts45 = 20000; // dist43.py MAX_PTS_RHO
+	const pcl::PointCloud<pcl::PointNormal>::Ptr cloud = downsampledCloudWithNormals;
+	const size_t n45 = cloud->points.size();
+	if (n45 < 4) return 0.0;
+	pcl::KdTreeFLANN<pcl::PointNormal> tree45;
+	tree45.setInputCloud(cloud);
+	const size_t stride45 = std::max<size_t>(1, (n45 + maxPts45 - 1) / maxPts45);
+	std::vector<double> radii45;
+	radii45.reserve(n45 / stride45 + 1);
+	std::vector<int> idx45;
+	std::vector<float> sq45;
+	for (size_t i45 = 0; i45 < n45; i45 += stride45)
+	{
+		const pcl::PointNormal& p45 = cloud->points[i45];
+		if (!std::isfinite(p45.x) || !std::isfinite(p45.y) || !std::isfinite(p45.z)) continue;
+		if (tree45.nearestKSearch(p45, kNN45, idx45, sq45) < 4) continue;
+		Eigen::Vector3d mean45 = Eigen::Vector3d::Zero();
+		for (size_t j45 = 0; j45 < idx45.size(); ++j45)
+			mean45 += Eigen::Vector3d(cloud->points[idx45[j45]].x, cloud->points[idx45[j45]].y, cloud->points[idx45[j45]].z);
+		mean45 /= static_cast<double>(idx45.size());
+		Eigen::Matrix3d cov45 = Eigen::Matrix3d::Zero();
+		for (size_t j45 = 0; j45 < idx45.size(); ++j45)
+		{
+			const Eigen::Vector3d d45 = Eigen::Vector3d(cloud->points[idx45[j45]].x, cloud->points[idx45[j45]].y, cloud->points[idx45[j45]].z) - mean45;
+			cov45 += d45 * d45.transpose();
+		}
+		// Normal = eigenvector of the smallest covariance eigenvalue (dist43.py np.linalg.eigh).
+		const Eigen::Vector3d e45 = Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d>(cov45).eigenvectors().col(0);
+		const Eigen::Vector3d a45 = std::abs(e45(0)) > 0.9 ? Eigen::Vector3d(0.0, 1.0, 0.0) : Eigen::Vector3d(1.0, 0.0, 0.0);
+		Eigen::Vector3d u45 = e45.cross(a45);
+		u45 /= u45.norm();
+		const Eigen::Vector3d v45 = e45.cross(u45);
+		const Eigen::Vector3d P45(p45.x, p45.y, p45.z);
+		Eigen::Matrix<double, 6, 6> M45 = Eigen::Matrix<double, 6, 6>::Zero();
+		Eigen::Matrix<double, 6, 1> b45 = Eigen::Matrix<double, 6, 1>::Zero();
+		for (size_t j45 = 0; j45 < idx45.size(); ++j45)
+		{
+			const Eigen::Vector3d rel45 = Eigen::Vector3d(cloud->points[idx45[j45]].x, cloud->points[idx45[j45]].y, cloud->points[idx45[j45]].z) - P45;
+			const double x45 = rel45.dot(u45), y45 = rel45.dot(v45), z45 = rel45.dot(e45);
+			Eigen::Matrix<double, 6, 1> row45;
+			row45 << x45, y45, 0.5 * x45 * x45, x45 * y45, 0.5 * y45 * y45, 1.0;
+			M45 += row45 * row45.transpose();
+			b45 += row45 * z45;
+		}
+		const double ridge45 = 1e-12 * M45.trace(); // dist43.py ridge on the normal equations
+		for (int d45 = 0; d45 < 6; ++d45) M45(d45, d45) += ridge45;
+		const Eigen::Matrix<double, 6, 1> coef45 = M45.ldlt().solve(b45);
+		const double L45 = coef45(2), Mm45 = coef45(3), N45 = coef45(4);
+		const double tr45 = L45 + N45;
+		const double det45 = L45 * N45 - Mm45 * Mm45;
+		const double disc45 = std::sqrt(std::max(0.25 * tr45 * tr45 - det45, 0.0));
+		const double k1_45 = 0.5 * tr45 + disc45, k2_45 = 0.5 * tr45 - disc45;
+		const double kmax45 = std::max(std::abs(k1_45), std::abs(k2_45));
+		double rad45 = rhoCap45; // non-finite or kmax <= 1/60 -> cap (dist43.py inf then clip)
+		if (std::isfinite(kmax45) && kmax45 > 1.0 / rhoCap45) rad45 = 1.0 / kmax45;
+		radii45.push_back(std::min(std::max(rad45, 0.0), rhoCap45));
+	}
+	if (radii45.empty()) return 0.0;
+	const size_t mid45 = radii45.size() / 2;
+	std::nth_element(radii45.begin(), radii45.begin() + mid45, radii45.end());
+	double med45 = radii45[mid45];
+	if ((radii45.size() & 1) == 0)
+	{
+		const double lo45 = *std::max_element(radii45.begin(), radii45.begin() + mid45);
+		med45 = 0.5 * (lo45 + med45); // np.median: mean of the two middles
+	}
+	return med45;
+}
+
 int getClusters_EuclideanDistBased(string fileName)
 {
 	pcl::PointCloud<PointTypeIO>::Ptr cloud_in(new pcl::PointCloud<PointTypeIO>), cloud_out(new pcl::PointCloud<PointTypeIO>);
@@ -4646,7 +4727,31 @@ int main(int argc, char** argv) {
         if (const char* e = std::getenv("SFS_PAPER_CHAIN")) { if (*e && std::string(e) != "0") paperChain = true; else paperChain = false; }
         double paperTheta = 3.4, paperKappa = 1.0, paperRhoD = 1.0, paperRhoN = 0.95, paperRhoC = 0.1, paperRhoInN = 0.75, paperRhoInC = 0.25;
         int paperNB = 10;
-        if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) paperTheta = std::stod(e); }
+        bool thetaFromEnv45 = false;
+        if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) { paperTheta = std::stod(e); thetaFromEnv45 = true; } }
+        // TICKET 45: with SFS_PAPER_THETA unset, the growth angle now comes from the piece's own
+        // curvature instead of the flat 3.4 (ticket 43's law; run of record for the formula arm
+        // 20261030-1511_fa92002_t44-formula): theta_deg = 3.3573 * (S / R_fold) * (180 / pi).
+        // k = 3.3573 is dimensionless, calibrated so the Pot A median S/R lands on 3.4; S is the
+        // resolved spacing ([SPACING-22]) and R_fold the median fold radius of the downsampled
+        // cloud the growth runs on (medianFoldRadius45 above, dist43.py's quadric rule). An
+        // explicit SFS_PAPER_THETA keeps today's path unchanged byte-for-byte (the legacy 3.4
+        // and the J2 fallback 10.2 both still reach it); SFS_GROWTH_MODE=outcome is untouched.
+        if (!thetaFromEnv45)
+        {
+            const double k45 = 3.3573;
+            const double rMed45 = medianFoldRadius45();
+            if (!(rMed45 > 0.0))
+            {
+                std::cerr << "[GROWTH-45] FATAL piece=" << fileNameOnly
+                          << " median fold radius is " << rMed45
+                          << " (downsampled cloud unusable)" << std::endl;
+                std::exit(2);
+            }
+            paperTheta = k45 * (g_effectiveSpacingMM / rMed45) * (180.0 / M_PI);
+            std::cout << "[GROWTH-45] piece=" << fileNameOnly << " S=" << g_effectiveSpacingMM
+                      << " R_med=" << rMed45 << " theta=" << paperTheta << std::endl;
+        }
         if (const char* e = std::getenv("SFS_PAPER_KAPPA")) { if (*e) paperKappa = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_NB")) { if (*e) paperNB = std::stoi(e); }
         if (const char* e = std::getenv("SFS_PAPER_RHOD")) { if (*e) paperRhoD = std::stod(e); }
