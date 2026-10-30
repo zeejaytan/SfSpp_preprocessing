@@ -54,13 +54,13 @@ COVER=$OUT/cells-covering
 RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
 IDX=$RUNS/index.tsv
 JOBID=$SLURM_JOB_ID; [ -n "$JOBID" ] || JOBID=na
-P=$SLURM_CPUS_PER_TASK; [ -n "$P" ] || P=8
+CPUS=$SLURM_CPUS_PER_TASK; [ -n "$CPUS" ] || CPUS=8
 unset SFS_COUNT_SCALE SFS_SPACING_POLICY SFS_SPACING_SAMPLES SFS_NORMAL_SOURCE SFS_NORMAL_CARRY \
       SFS_SINGLE_CLUSTER SFS_FLOOR_CEILING SFS_DOWNSAMPLE_TARGET SFS_DUMP_STAGE SFS_DUMP_PIECES \
       SFS_PAPER_THETA SFS_PAPER_KAPPA SFS_PAPER_NB SFS_PAPER_CHAIN SFS_SMOOTHNESS_DEG \
       SFS_CURVATURE_THRESH SFS_REASSIGN_MODE SFS_WINDOW_REPORT SFS_MERGE_SCALE SFS_GROWTH_MODE \
       SFS_AXIS_FILE SFS_STATUS_FILE POT_NAME 2>/dev/null || true
-export CANON CORP DS COVER SIF APT PY OUT RUN RUNID NEW PHASE IXTAG PARTA RUNS IDX JOBID P
+export CANON CORP DS COVER SIF APT PY OUT RUN RUNID NEW PHASE IXTAG PARTA RUNS IDX JOBID CPUS
 
 cd "$RUN" || exit 1
 mkdir -p "$OUT" logs
@@ -154,13 +154,15 @@ md5_corpus "$OUT/inputs_before.md5"
 cat "$OUT/versions.txt"
 
 build_bin() {
-  local name=$1 sha=$2 rc
+  local name=$1 sha=$2 rc jobs
+  jobs=$CPUS
+  case "$jobs" in ''|*[!0-9]*) jobs=8 ;; esac
   echo "[BUILD] $name from $sha"
   mkdir -p "build/$name/src/build"
   git -C "$CANON" archive "$sha" | tar -x -C "build/$name/src" || { echo "[BUILD] archive FAILED"; return 1; }
   ( cd "build/$name/src/build" \
     && "$APT" exec --bind /data:/data "$SIF" cmake -DCMAKE_BUILD_TYPE=Release .. \
-    && "$APT" exec --bind /data:/data "$SIF" make -j"$P" MeshPreprocessingHeadless \
+    && "$APT" exec --bind /data:/data "$SIF" make -j"$jobs" MeshPreprocessingHeadless \
   ) > "logs/build-$name.log" 2>&1
   rc=$?
   if [ "$rc" -eq 0 ] && [ -x "build/$name/src/build/MeshPreprocessingHeadless" ]; then
@@ -233,25 +235,25 @@ if want 1; then
   cat "$SPECF"
   mkdir -p "$COVER"
   RC1=0; NCC=0
-  for P in $JUG; do
-    S=$(awk -F'\t' -v p="$P" 'NR>1 && $2==p {print $3; exit}' "$SPECF")
-    MESH=$DS/Mesh/Juglet/"$P"_Mesh.obj
-    SHIP=$DS/Point/Juglet/"$P"_Point.pcd
+  for JP in $JUG; do
+    S=$(awk -F'\t' -v p="$JP" 'NR>1 && $2==p {print $3; exit}' "$SPECF")
+    MESH=$DS/Mesh/Juglet/"$JP"_Mesh.obj
+    SHIP=$DS/Point/Juglet/"$JP"_Point.pcd
     if [ -z "$S" ] || [ ! -f "$MESH" ] || [ ! -f "$SHIP" ]; then
-      echo "[COVER] FATAL $P: S='$S' mesh=$MESH shipped=$SHIP"
-      RC1=1; printf "%s\t%s\n" "1:$P/input" "1" >> "$OUT/phase_failures.tsv"; continue
+      echo "[COVER] FATAL $JP: S='$S' mesh=$MESH shipped=$SHIP"
+      RC1=1; printf "%s\t%s\n" "1:$JP/input" "1" >> "$OUT/phase_failures.tsv"; continue
     fi
-    echo "[COVER] $P S=$S"
+    echo "[COVER] $JP S=$S"
     "$PY" "$INSTR/cover_cloud46.py" --mesh "$MESH" --shipped-cloud "$SHIP" --spacing "$S" \
-      --piece "$P" --out "$COVER/$P"_covering.pcd --json "$COVER/$P"_cover.json \
-      > "$OUT/cover_$P.log" 2>&1
+      --piece "$JP" --out "$COVER/$JP"_covering.pcd --json "$COVER/$JP"_cover.json \
+      > "$OUT/cover_$JP.log" 2>&1
     rc=$?
-    tail -12 "$OUT/cover_$P.log" || true
+    tail -12 "$OUT/cover_$JP.log" || true
     if [ "$rc" -eq 0 ]; then
       NCC=$((NCC+1))
     else
-      echo "[COVER] FAILED $P rc=$rc"
-      RC1=$rc; printf "%s\t%s\n" "1:$P" "$rc" >> "$OUT/phase_failures.tsv"
+      echo "[COVER] FAILED $JP rc=$rc"
+      RC1=$rc; printf "%s\t%s\n" "1:$JP" "$rc" >> "$OUT/phase_failures.tsv"
     fi
   done
   echo "[JOB] coverings built: $NCC of 9"

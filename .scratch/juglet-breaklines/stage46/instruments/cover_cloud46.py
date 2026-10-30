@@ -10,6 +10,8 @@ changes: same mesh, same axis, same binary, no environment.
 Gates (all mechanical, exit non-zero on failure, every number in the json):
   spacing  |achieved median - S| / S <= 1 pct            ticket 46 deliverable (1)
   surface  every checked point <= 1e-3 mm from the mesh  ticket 46 deliverable (1)
+           the covering is PROJECTED onto the mesh after the voxel merge, so every point of the
+           written cloud lies on a triangle; the gate measures that on the subsample below.
            exact per-triangle distance over EVERY triangle (mesh38.dist_to_mesh_all), not the
            k-vertex shortcut: the Juglet meshes are long thin triangles, the shortcut can miss
            a sliver interior.  Checked on a deterministic subsample (--surface-check-points,
@@ -51,6 +53,67 @@ def count_pcd_points(path):
     return -1
 
 
+def _closest_on_triangle(P, A, B, C):
+    """Closest point on each triangle for each point (Ericson, vectorised, exact)."""
+    AB = B - A; AC = C - A; AP = P - A
+    BP = P - B; CP = P - C
+    d1 = np.einsum("ij,ij->i", AB, AP); d2 = np.einsum("ij,ij->i", AC, AP)
+    d3 = np.einsum("ij,ij->i", AB, BP); d4 = np.einsum("ij,ij->i", AC, BP)
+    d5 = np.einsum("ij,ij->i", AB, CP); d6 = np.einsum("ij,ij->i", AC, CP)
+    va = d3 * d6 - d5 * d4
+    vb = d5 * d2 - d1 * d6
+    vc = d1 * d4 - d3 * d2
+    den = va + vb + vc
+    safe = np.where(np.abs(den) < 1e-30, 1.0, den)
+    v = vb / safe; w = vc / safe
+    out = A + AB * v[:, None] + AC * w[:, None]
+    m = (d1 <= 0) & (d2 <= 0); out[m] = A[m]
+    m = (d3 >= 0) & (d4 <= d3); out[m] = B[m]
+    m = (d6 >= 0) & (d5 <= d6); out[m] = C[m]
+    m = (vc <= 0) & (d1 >= 0) & (d3 <= 0)
+    if m.any():
+        tt = d1[m] / np.where(np.abs(d1[m] - d3[m]) < 1e-30, 1.0, d1[m] - d3[m])
+        out[m] = A[m] + AB[m] * tt[:, None]
+    m = (vb <= 0) & (d2 >= 0) & (d6 <= 0)
+    if m.any():
+        tt = d2[m] / np.where(np.abs(d2[m] - d6[m]) < 1e-30, 1.0, d2[m] - d6[m])
+        out[m] = A[m] + AC[m] * tt[:, None]
+    m = (va <= 0) & ((d4 - d3) >= 0) & ((d5 - d6) >= 0)
+    if m.any():
+        num = d4[m] - d3[m]; den2 = num + (d5[m] - d6[m])
+        tt = num / np.where(np.abs(den2) < 1e-30, 1.0, den2)
+        out[m] = B[m] + (C[m] - B[m]) * tt[:, None]
+    return out
+
+
+def project_to_mesh(v, fc, pts, k=16):
+    """Move every covering point onto the shipped mesh surface.
+
+    The voxel merge that fixes the covering's spacing averages the generated points inside a
+    voxel, so a merged point sits slightly inside the surface at a crease (0.03-0.11 mm,
+    measured on the first attempt). Projecting the merged point back onto a nearby triangle
+    makes every point lie exactly ON the shipped mesh -- which is what "an even covering of the
+    mesh" means -- while moving it by less than half the spacing. Candidate triangles are the k
+    nearest by centroid; a point on any candidate is on the surface, so the guarantee is exact
+    even where the k nearest miss the global nearest.
+    """
+    from scipy.spatial import cKDTree
+    A = v[fc[:, 0]]; B = v[fc[:, 1]]; C = v[fc[:, 2]]
+    cen = (A + B + C) / 3.0
+    kk = int(min(k, len(fc)))
+    _, idx = cKDTree(cen).query(pts, k=kk)
+    idx = np.atleast_2d(idx.reshape(len(pts), -1))
+    best = np.full(len(pts), np.inf)
+    out = pts.copy()
+    for j in range(idx.shape[1]):
+        cand = _closest_on_triangle(pts, A[idx[:, j]], B[idx[:, j]], C[idx[:, j]])
+        dd = np.einsum("ij,ij->i", cand - pts, cand - pts)
+        better = dd < best
+        best[better] = dd[better]
+        out[better] = cand[better]
+    return out, float(np.sqrt(np.max(best)))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mesh", required=True)
@@ -69,9 +132,13 @@ def main():
     v, fc = mesh38.read_obj(a.mesh)   # read_obj returns (verts, faces) only
     res = mesh38.sample_at(v, fc, a.spacing, seed=a.seed, jitter=a.jitter)
     pts, nrm = res["pts"], res["nrm"]
+    pts, moved = project_to_mesh(v, fc, pts)
     mesh38.write_pcd(a.out, pts, nrm)
+    print("[COVER46] %s projected %d points onto the mesh (largest move %.6f mm)"
+          % (a.piece, len(pts), moved), flush=True)
 
-    achieved = res["sp"]["median"]
+    sp = mesh38.nn_spacing(pts)
+    achieved = sp["median"]
     sp_err = abs(achieved - a.spacing) / a.spacing
     print("[COVER46] %s sampled %d points at S=%.6f (achieved %.6f, %d triangles)"
           % (a.piece, len(pts), a.spacing, achieved, len(fc)), flush=True)
@@ -97,7 +164,7 @@ def main():
            "out": a.out, "covering_md5": md5(a.out), "covering_points": int(len(pts)),
            "covering_over_shipped": (round(len(pts) / shipped_points, 3) if shipped_points > 0 else None),
            "spacing_requested_mm": a.spacing, "spacing_achieved_median_mm": achieved,
-           "spacing_p10_mm": res["sp"]["p10"], "spacing_p90_mm": res["sp"]["p90"],
+           "spacing_p10_mm": sp["p10"], "spacing_p90_mm": sp["p90"],
            "spacing_error_pct": round(100.0 * sp_err, 4),
            "ratio_achieved_over_requested": res["ratio_achieved_over_requested"],
            "voxel_mm": res["voxel_mm"], "iterations": res["iterations"],
@@ -110,6 +177,8 @@ def main():
            "dist_to_mesh_max_mm": round(float(np.max(d)), 6),
            "surface_check_points": nchk,
            "surface_check": "exact distance to every triangle on a deterministic subsample (seed %d)" % a.seed,
+           "projection": "voxel-merged covering projected onto the closest point of a nearby triangle (k=16 by centroid); every point lies on the shipped mesh",
+           "project_max_move_mm": round(moved, 6),
            "cover_median_mm": cover["cover_median_mm"],
            "cover_p90_mm": cover["cover_p90_mm"], "cover_p99_mm": cover["cover_p99_mm"],
            "cover_max_mm": cover["cover_max_mm"],
