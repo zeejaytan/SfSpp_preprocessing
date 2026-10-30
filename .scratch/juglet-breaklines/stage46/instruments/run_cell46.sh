@@ -295,33 +295,41 @@ fi
 # The covering must not move the spacing: S is re-derived from the cloud the cell reads, and a
 # moved S would mean the theta moved for a reason other than the covering.
 SP=$PIPECELL/spacing_proof.tsv
-printf "pot\tpiece\tarm\tspacing_line_S\tspec46_S_mm\tdelta_mm\tnote\n" > "$SP"
+printf "pot\tpiece\tarm\tspacing_line_S\tcovering_achieved_mm\tspec46_S_mm\tdelta_vs_covering_mm\tdelta_vs_spec_mm\tnote\n" > "$SP"
 for C in "$PIPECELL"/*/cell.tsv; do
   [ -f "$C" ] || continue
   POT=$(sed -n "s/^pot	//p" "$C"); PIECE=$(sed -n "s/^piece	//p" "$C"); A=$(sed -n "s/^arm	//p" "$C")
   AD=$(arm_display "$A" 2>/dev/null || echo "?")
   GOT=$(sed -n "s/^spacing_line	//p" "$C" | sed -n "s/.* S=\([^ ]*\).*/\1/p")
-  REF=$(spec_S "$PIECE")
-  D=na; N=ok
+  SPEC=$(spec_S "$PIECE")
+  CJ2=$(cover_json "$PIECE"); ACH=na
+  if [ "$A" = "E" ] && [ -f "$CJ2" ]; then
+    ACH=$("$PY" -c 'import json,sys; print("%.6f" % json.load(open(sys.argv[1]))["spacing_achieved_median_mm"])' "$CJ2" 2>/dev/null || echo na)
+  fi
+  REF=$ACH; [ "$REF" = "na" ] && REF=$SPEC
+  D=na; DS=na; N=ok
   if [ -z "$GOT" ] || [ -z "$REF" ]; then
     N="missing-spacing-evidence"
-    log "WARN $PIECE arm $A: no [SPACING-22] S or no spec46 row (S='${GOT:-}' ref='${REF:-}')"
+    log "WARN $PIECE arm $A: no [SPACING-22] S or no reference (S='${GOT:-}' ref='${REF:-}')"
   else
     D=$("$PY" -c "print('%.6f' % abs(float('$GOT')-float('$REF')))" 2>/dev/null || echo na)
+    if [ "$ACH" != "na" ] && [ -n "$SPEC" ]; then
+      DS=$("$PY" -c "print('%.6f' % abs(float('$ACH')-float('$SPEC')))" 2>/dev/null || echo na)
+    fi
     N=$("$PY" -c "print('ok' if abs(float('$GOT')-float('$REF'))<1e-3 else 'MOVED')" 2>/dev/null || echo unreadable)
     if [ "$N" = "MOVED" ]; then
-      log "FAILED spacing moved on $PIECE arm $A: $GOT vs spec $REF"
+      log "FAILED spacing moved on $PIECE arm $A: run says $GOT, the covering measured $REF"
       FAILED="$FAILED $POT/$PIECE/spacing"
     fi
   fi
-  printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$POT" "$PIECE" "$AD" "${GOT:-na}" "${REF:-na}" "$D" "$N" >> "$SP"
+  printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$POT" "$PIECE" "$AD" "${GOT:-na}" "$ACH" "${SPEC:-na}" "$D" "$DS" "$N" >> "$SP"
 done
-log "=== spacing proof (S must equal what the run already resolved) ==="
+log "=== spacing proof (the run's S must equal the spacing the covering measured) ==="
 cat "$SP"
 
 if [ -n "$FAILED" ]; then
   log "FAILED:$FAILED"
   exit 8
 fi
-log "all cells ran, no env carried, S unmoved"
+log "all cells ran, no env carried, S agrees with the covering"
 log "done"

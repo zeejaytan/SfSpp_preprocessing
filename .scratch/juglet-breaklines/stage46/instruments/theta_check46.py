@@ -132,11 +132,20 @@ def main(argv=None):
             if ref is None or None in got:
                 note2 = "control counts unreadable"
                 pota_bad.append("%s(unreadable)" % piece)
-            elif got == tuple(float(x) for x in ref):
-                note2 = "control identical to t45 arm F"
-            else:
-                note2 = "control differs from t45 arm F: %s vs %s" % (tuple(int(x) for x in got), ref)
+            elif int(got[0]) != int(ref[0]):
+                note2 = "control clusters %d vs t45 arm F %d" % (int(got[0]), int(ref[0]))
                 pota_bad.append("%s(%s)" % (piece, note2))
+            else:
+                # P4 is a 2 pct band on the two surface sizes (ticket 46), not exact equality:
+                # the second surface is re-assigned and can move by a few points out of 100,000.
+                worst = max(abs(float(got[1]) - ref[1]) / float(ref[1]),
+                            abs(float(got[2]) - ref[2]) / float(ref[2]))
+                if worst <= 0.02:
+                    note2 = ("control within 2 pct of t45 arm F (worst %.2f pct)" % (100.0 * worst))
+                else:
+                    note2 = ("control moved %.2f pct off t45 arm F: %s vs %s"
+                             % (100.0 * worst, tuple(int(x) for x in got), ref))
+                    pota_bad.append("%s(%s)" % (piece, note2))
             rows[-1]["note"] = rows[-1]["note"] + "; " + note2
 
     with open(out, "w") as fh:
