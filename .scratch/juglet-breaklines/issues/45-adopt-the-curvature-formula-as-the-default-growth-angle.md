@@ -64,7 +64,7 @@ One run `runs/<YYYYMMDD-HHMM>_<git7>_t45-default`:
 - none (44 closed)
 
 **Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-10-30)
+**Working in:** DSH worker session (2026-10-30), continuing the dead worker's uncommitted change in /c/PR/worktrees/sfs/45
 **Branch:** 45-adopt-the-curvature-formula-as-the-default-growth-angle, in /c/PR/worktrees/sfs/45
 
 ## Acceptance
