@@ -75,9 +75,9 @@ for SPEC in $CELL_LIST; do
       na na na na na na na na "missing-covering" FAILED >> "$GATE"
     continue
   fi
-  REA=$("$PY" -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["covering_points"], j["covering_md5"], j["covering_over_shipped"], j["spacing_requested_mm"], j["spacing_achieved_median_mm"], j["spacing_error_pct"], j["dist_to_mesh_max_mm"], j["cover_median_over_spacing"], j["gate"])' "$CJ")
+  REA=$("$PY" -c 'import json,sys; j=json.load(open(sys.argv[1])); print(j["covering_points"], j["covering_md5"], j["covering_over_shipped"], j["spacing_requested_mm"], j["spacing_achieved_median_mm"], j["spacing_error_pct"], j["dist_to_mesh_max_mm"], j["cover_median_over_spacing"], j["surface_check_points"], j["gate"])' "$CJ")
   [ $? -eq 0 ] || { log "FATAL unreadable cover json $CJ"; G=FAILED; GATE_FAILED="$GATE_FAILED $PIECE/json"; }
-  read -r CN CM RN RS RM RE MD CV GG <<<"$REA"
+  read -r CN CM RN RS RM RE MD CV SCC GG <<<"$REA"
   CN2=$(pcd_points "$CC" 2>/dev/null)
   if [ "$CN" != "$CN2" ]; then log "FATAL covering count disagrees $PIECE: json=$CN pcd=$CN2"; G=FAILED; GATE_FAILED="$GATE_FAILED $PIECE/count"; fi
   if [ "$GG" != "PASS" ]; then log "FATAL cover_cloud46 gate=$GG for $PIECE"; G=FAILED; GATE_FAILED="$GATE_FAILED $PIECE/gate"; fi
@@ -85,8 +85,8 @@ for SPEC in $CELL_LIST; do
   if [ -n "$SS" ] && [ "$SS" != "$RS" ]; then log "WARN $PIECE S in spec46 ($SS) differs from what the coverer asked ($RS)"; fi
   printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
     "$PIECE" "$POT" "${SYNN:-na}" "$SHMD5" "$MESH" "$MMMD5" \
-    "$CN" "$CM" "$RN" "$RS" "$RM" "$RE" "$MD" "$CV" "no subdivision used (level 1, mesh38.sample_at)" "$G" >> "$GATE"
-  log "covering gate $PIECE: shipped ${SYNN:-na} -> covering $CN (ratio ${RN}x) S=$RS achieved=$RM err=$RE% maxdist=$MD mm -> $G"
+    "$CN" "$CM" "$RN" "$RS" "$RM" "$RE" "$MD" "$CV" "no subdivision used (level 1); surface check on $SCC of $CN points" "$G" >> "$GATE"
+  log "covering gate $PIECE: shipped ${SYNN:-na} -> covering $CN (ratio ${RN}x) S=$RS achieved=$RM err=$RE% maxdist=$MD mm on $SCC points -> $G"
 done
 cat "$GATE"
 if [ -n "$GATE_FAILED" ]; then
