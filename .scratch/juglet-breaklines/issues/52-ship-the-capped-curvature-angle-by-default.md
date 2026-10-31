@@ -11,7 +11,7 @@ capped curvature angle; `SFS_PAPER_THETA` still wins over everything; `SFS_GROWT
 
 **Blocked by:** None — tickets 50 (merged 40c93da) and 51 (merged 9862352) are both on main.
 
-**Status:** in-progress (worker running)
+**Status:** in-progress (worker done 2026-11-01; runs complete, P6 failed — branch left UNMERGED for the lead)
 **Working in:** DeepSeek worker session, child of the lead (2026-11-01)
 **Branch:** 52-ship-the-capped-curvature-angle-by-default, in /c/PR/worktrees/sfs/52
 
@@ -171,3 +171,93 @@ the cap alone would ship a knob that does nothing.
   one remote command and retry on empty output. Never recursive-find or `du` under `/data/gpfs`.
 - Run index row format (tab-separated, header `runid jobid commit tag verdict human_note`) and
   `index_row.sh` in the 292 dir: verdict and human_note stay empty for a person.
+
+
+## Worker answers (2026-11-01, ticket worker; no ## Result — that is the lead's)
+
+**Branch tip:** 4997593 (pushed, NOT merged). Commits: ba9e425 (the flip + stage52 instruments),
+6c50ad7 (build292.sbatch COMMIT=), 7a5fc12/3c573c0 (fixes to my own commit text), fc0a70e (env
+probe greps only SFS_GROWTH_*/SFS_PAPER_*), e6f2d6a (F/K opt-out arms for the acceptance env
+cases), 4997593 (commit C: backfills the p292 run id into the growth comment). Code commit both
+runs built from: ba9e425345b92658d37a5e8bda732c6fd8efe43a.
+
+### Run 1 — 20261101-0440_fc0a70e_t52-confirm, job 34149518, sacct COMPLETED 0:0 (12m49s)
+
+(A first attempt 20261101-0426_6c50ad7, job 34134459, FAILED its env proof from an instrument bug
+of mine — fixed in fc0a70e; its index row is left as the record.)
+
+- 51/51 cells pipeline_rc=0; corpus gate 9/9 Juglet (md5 AND kept_points vs the ticket-47
+  manifest); Pot A recorded-not-gated; corpus.diff and inputs.diff 0 bytes; thetas52.tsv 51 rows.
+- **Env cases, quoted from real logs** (Juglet_Piece_1, out/cells-pipeline/Juglet_Piece_1_arm*/
+  /logs/mesh.log; the F and K cells were run by job 34149757 into the same run dir, and
+  env_cases52_env_proof.tsv records the probes):
+  - no SFS_* (arm D): `[GROWTH-45] piece=Juglet_Piece_1 S=0.60000 R_med=6.06475 theta=19.03055`
+    and `[GROWTH-51] piece=Juglet_Piece_1 crossing=9.178729 capped=1 theta=8.26086` — both present.
+  - SFS_GROWTH_FORMULA=1 SFS_GROWTH_CAP=1 (arm C): lines identical to D.
+  - SFS_GROWTH_FORMULA=0 (arm F): no GROWTH line at all; `[PAPER-234] paper grow: thetaDeg=3.40000`.
+  - SFS_GROWTH_CAP=0 (arm K): `[GROWTH-45] ... theta=19.03055`, no [GROWTH-51];
+    `[PAPER-234] paper grow: thetaDeg=19.03055` — the formula, uncapped.
+  - SFS_PAPER_THETA=3.4 (arm X): no GROWTH line; `[PAPER-234] paper grow: thetaDeg=3.40000`.
+- **P1 (D≡C): MET on theta and crossing 17/17** (equal to 5 dp; theta_check52.tsv). Surface point
+  counts equal for the 11 Juglet pieces; **REFUTED in the strict count sense for 6 Pot A pieces**
+  (deltas of 1-4 points, e.g. PA01 surf0 67101 vs 67102, PA05 31793 vs 31789) with identical env
+  and identical theta — clustering nondeterminism, not env leakage (the probe proves D saw no
+  SFS_* growth variable at all).
+- **P2: 16/17 MET.** Arm D two face-sized surfaces 17/17; Juglet med_nn 81.9-95.6 % of own wall
+  (inside the 78-96 band), med_across 0.017-0.036 mm. **Juglet_Piece_8 REFUTED**: surf1 = 145
+  pts, med_nn 32.3 % of wall, med_across 0.306 mm. Context: t51 (old spacing law) had J8 healthy
+  at 39428/33527, and today's paper-theta arm X gives J8 no surface file at all, so J8's collapse
+  tracks the ticket-50 spacing change at least as much as this flip — D is the best of today's
+  three arms on J8.
+- **P3: REFUTED on both halves.** Cap fired 8/9 Juglet (all but Piece_6, crossing 24.03 uncapped)
+  and 0/8 Pot A (crossings 8.1-11.0, capped=0 everywhere). On the released Pot A clouds the
+  crossing never exceeds the formula theta (S=0.6 everywhere under the new spacing law, R_med
+  large), so the cap is inert there; the PA07/PA08 mechanism the prediction assumed died with the
+  old S values.
+- **P4: MET.** Zero [GROWTH-52] FALLBACK lines in run 1 (job log and every cell) and run 2 (all
+  148 piece logs).
+- **P5: MET.** Arm X: thetaDeg=3.40000 from the log on every piece, no GROWTH-45/51, cluster
+  counts recorded (J1 15 clusters, J4 1 with status none).
+
+### Run 2 — 20261101-0428_ba9e425_p292-flipcap, jobs 34146541 (build) / 34146545 (array 0-147%10) / 34146550 (collect), all COMPLETED 0:0
+
+- 148/148 elements; 296 measured / 294 valid / 292 sound as the harness expects; corpus md5s
+  unchanged 148/148 (collect: corpus_unchanged=YES); no file > 1 MiB outside bin/.
+- **Headline: 237/292 sound at bar (81.2 %)** vs baseline 20261025-0134_787c149_p292-rescore
+  281/292. Also 239/296 measured at bar (80.7 %); 0 lanes with jumps; largest step 7.812 mm
+  (Pot_E_Piece_18 lane 1).
+- **P6: REFUTED — 237 < 276, so the branch is NOT merged** (rule applied as written). Mechanism
+  (attrib52.tsv, 148 rows, in the run dir): **41 measured lanes lost at bar, 0 gained, all in
+  pots C-J; Pot A untouched (0 lane changes)**. Lost lanes show coverage collapse (cov_ours
+  typically 100 % to 55-80 %) with medians rising as the larger theta grows clusters across true
+  edgelines — Pot_J_Piece_03 lane 1 0.365 to 14.184 mm (cov 100 to 4 %), Pot_E_Piece_15 lane 0
+  0.357 to 12.380 mm (cov 100 to 0 %). The flip raises the default theta from 3.4 to 4.1-9.6 deg
+  across the corpus; 16 pieces hit the cap. S_new = 0.6 everywhere; the baseline predates the
+  spacing merge and its logs carry no S line, so S_base is recorded "na" — the Pot A vs C-J
+  contrast (same theta change, no lane change on Pot A) is the attribution the lead should weigh.
+- The 292 summary/potpng scripts were not in the extracted harness; copied unchanged from the
+  baseline run dir and run (logs/summary292.log); out/summary.md is in the run dir.
+
+### Deviations and worker errors (all recorded)
+
+1. Env-probe bug, attempt 1 (job 34134459): the probe listed SFS_AXIS_FILE/SFS_STATUS_FILE, set
+   in every arm by the stage51 protocol, so arm-only want-lists never matched. Fixed in fc0a70e.
+2. Commit e6f2d6a's message names job 34152916 for the F/K env-case run; the real job is
+   **34149757**. The pushed message is wrong; not force-corrected.
+3. The F/K env-case job reused run 1's run dir and truncated out/cells-pipeline/pipeline_cells.tsv
+   to its two rows; restored the 51-row table verbatim from out/phase5_cells.log. env_proof.tsv
+   and theta_proof.tsv gained the F/K rows additively (54 rows).
+4. Two run-2 chains were scrapped before the good one (34134467-9 wrong sha — my typo;
+   34134471-3 commit absent on Spartan before the explicit branch fetch).
+5. index.tsv: the p292-flipcap row (jobid 34146541+34146545+34146550, commit ba9e425) was
+   appended by me with EMPTY verdict/human_note; this harness's collect does not write it.
+
+### Acceptance checklist as it stands for the lead
+
+- Diff scope, four env cases from real logs, run-1 and run-2 numbers, P6 + merge rule: done as
+  above.
+- check_intent_links.py: fails on this ticket only through the pre-existing U19 gap shared by
+  every feature ticket 07-52 ("answers U19, which does not exist. Known: E1"); U19 is the lead's
+  to create; ticket 52 adds no new breakage.
+- Merge / worktree removal / branch deletion: NOT done — P6 failed; branch left unmerged at
+  4997593 per the rule. Verdict, FIXES-LEDGER row, and intent/U19 stay with the lead.
