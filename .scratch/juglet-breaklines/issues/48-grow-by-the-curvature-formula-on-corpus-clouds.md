@@ -13,7 +13,9 @@ paper-compliance story simplifies with it.
 
 **Blocked by:** 47 (needs the corpus-conforming Juglet clouds installed).
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-31)
+**Branch:** 48-grow-by-the-curvature-formula-on-corpus-clouds, in /c/PR/worktrees/sfs/48
 
 **Worker:** unassigned
 
