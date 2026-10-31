@@ -10,7 +10,7 @@ set -uo pipefail
 
 : ${RUN_DIR:?RUN_DIR must be exported}
 RUN=$RUN_DIR
-COMMIT=ba9e425345b92658d37a5e8bda732c6fd8efe43a3  # ticket 52 code commit: capped curvature angle shipped default
+COMMIT=ba9e425345b92658d37a5e8bda732c6fd8efe43a  # ticket 52 code commit: capped curvature angle shipped default
 CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
 BUILDROOT=/data/gpfs/projects/punim2657/sfs-vote-248
 SIF=$CANON/pcl_191_nurbs.sif
