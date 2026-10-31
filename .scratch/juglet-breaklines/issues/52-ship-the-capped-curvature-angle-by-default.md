@@ -11,9 +11,47 @@ capped curvature angle; `SFS_PAPER_THETA` still wins over everything; `SFS_GROWT
 
 **Blocked by:** None — tickets 50 (merged 40c93da) and 51 (merged 9862352) are both on main.
 
-**Status:** ready-for-agent
+**Status:** ready-for-human — the pre-registered merge gate REFUTED the flip; the branch is NOT merged and the conservator's decision (m06129) needs revisiting with the measured cost
 
-**Worker:** unassigned
+**Worker:** 1f8f4a42-3974-42d6-b181-2688a627a24b — built the default flip, the stage52 instruments and both runs; lead verified, wrote the verdict and kept the branch unmerged
+
+## Result (lead verdict, 2026-11-01)
+
+**The flip is refuted by its own pre-registered gate and is NOT merged.** Run 2 — the 148-cloud corpus regression at the new default (run 20261101-0428_ba9e425_p292-flipcap, jobs 34146541/34146545/34146550, all COMPLETED 0:0, binary built from ba9e425) — scored **237 of 292 sound lanes at bar (81.2%)** against the shipped baseline **281 of 292 (96.2%)**. The gate in this ticket said >= 276 merges; 237 < 276, so the branch stays unmerged at f690c07.
+
+**Mechanism (verified by the lead from attrib52.tsv, 148 rows):** 41 lanes lost, 0 gained, every loss in pots C-J (C 3, D 4, E 8, F 4, G 2, H 8, I 5, J 7); Pot A is untouched. The formula theta on the corpus ranges 2.81-13.82 deg where the shipped default is a flat 3.4; the cap fired on 16 of 148 corpus pieces. The loosened angles (many well above 3.4) grow clusters across true edgelines and lane coverage collapses (100% -> 55-80%, extremes to 0-4%). Spacing is NOT the cause on the corpus: every corpus piece clamps to S = 0.6 under both the old and the new spacing law, so the whole delta is the theta change.
+
+**What did hold (run 1, 20261101-0440_fc0a70e_t52-confirm, job 34149518, COMPLETED 0:0, 51/51 cells):**
+
+- The default path IS the capped curvature angle: arm D (no SFS_* at all) = arm C (FORMULA+CAP) on theta and crossing 17/17 to 5 dp; Pot A surface counts differ by 1-4 pts on 6 pieces — the same run-to-run clustering jitter ticket 51 measured (67101 vs 67103), not env leakage. All four env cases (unset / =1 / =0 / PAPER_THETA) proved from real logs, F/K opt-out cells from job 34149757.
+- Zero [GROWTH-52] FALLBACK lines in either run.
+- Juglet pairs: 8 of 9 genuine (med_nn 81.9-95.6% of wall, med_across <= 0.036 mm). **Juglet_Piece_8 REFUTED**: second surface 145 pts at 32.3% of wall, med_across 0.306 mm. J8 tracks the ticket-50 uniform spacing more than this flip — its paper-theta arm X (3.4 deg, new spacing) produces NO surface at all, where ticket 51 (old spacing) had it healthy.
+- The cap fired on 8 of 9 Juglet pieces (J6 uncapped: crossing 24.03) and 0 of 8 Pot A pieces — prediction 3 refuted on both halves as written.
+
+**The claim this leaves standing:** the capped curvature angle is the right angle WHERE IT WAS CALIBRATED (Pot A, the Juglet), and the code paths are already on main behind SFS_GROWTH_FORMULA=1 + SFS_GROWTH_CAP=1 (tickets 45/51). As a UNIVERSAL default it is refuted: one angle law does not serve pots C-J, whose sound lanes drop by 41. There is no entry in FIXES-LEDGER.md section Q — the ledger's own rule admits only applied fixes, and this one is not applied; the refutation lives here.
+
+### What this does and does not settle
+
+- It does NOT settle that the Juglet growth step is wrong — opt-in, the capped angle still gives 8 of 9 Juglet wall pairs (ticket 51 + run 1 arm D).
+- It does NOT re-litigate ticket 50's spacing change on the corpus (no-op there); J8's collapse under uniform spacing is a separate open defect.
+- It DOES settle that the conservator's instruction (m06129, make this fix on by default) cannot ship as measured: the cost is 41 corpus lanes.
+
+### Verification (lead)
+
+verified: recount of at-bar lanes from out/lanes/*.tsv of run 20261101-0428_ba9e425_p292-flipcap -> 239/296 measured, matches summary292.py -> 237/292 sound.
+verified: attrib52.tsv recount -> lost 41, gained 0, pots C-J only; theta_new range 2.81-13.82; capped 16/148.
+verified: theta_check52.tsv -> theta/crossing D=C 17/17 to 5dp; 6 Pot A surf-count deltas 1-4 pts.
+verified: pairquality52.tsv -> 8/9 Juglet in [81.9, 95.6]% of wall; J8 32.3%, med_across 0.306.
+verified: thetas52.tsv J8 arm X -> 1 cluster, status_outcome none at theta 3.4 under uniform spacing.
+
+### Runs
+
+- 20261101-0440_fc0a70e_t52-confirm (job 34149518) — the 51-cell confirm run of record.
+- 20261101-0426_6c50ad7_t52-confirm (job 34134459, FAILED 8:0) — VOID: the worker's env-probe grep recorded SFS_AXIS_FILE/SFS_STATUS_FILE and failed its own proof; instrument fixed in fc0a70e, rerun above.
+- 20261101-0428_ba9e425_p292-flipcap (jobs 34146541/34146545/34146550) — the corpus regression of record; two earlier scrapped chains (wrong sha typed; commit absent before a wide-refspec fetch) never produced lanes.
+- attrib52.tsv sits in the 292 run dir (not in git; per-run instrument output).
+
+The worker's recorded deviations live in the branch's Worker-answers section (f690c07).
 
 ## Why
 
