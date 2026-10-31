@@ -83,4 +83,7 @@ wall thickness (Juglet walls 2.0-3.3 mm, Pot A 3.6-8.3 mm).
 - Changing the default growth angle or spacing (ticket 50's lane).
 - Touching the merge pass, breaklines, or anything downstream of growth.
 
-Status: ready-for-agent
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-11-01)
+Branch: 51-cap-the-growth-angle-by-the-measured-cheapest-crossing, in /c/PR/worktrees/sfs/51
+Worker: unassigned
