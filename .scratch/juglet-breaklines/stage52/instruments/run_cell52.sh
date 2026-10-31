@@ -128,6 +128,8 @@ arm_env() {  # $1 arm
     D) echo "" ;;
     C) echo "SFS_GROWTH_FORMULA=1 SFS_GROWTH_CAP=1" ;;
     X) echo "SFS_PAPER_THETA=3.4" ;;
+    F) echo "SFS_GROWTH_FORMULA=0" ;;   # acceptance env case: literal 0 disables the formula
+    K) echo "SFS_GROWTH_CAP=0" ;;       # acceptance env case: literal 0 disables the cap only
     *) return 1 ;;
   esac
 }
@@ -136,12 +138,14 @@ arm_display() {  # $1 arm -> the pipeline_cells arm vocabulary of this ticket
     D) echo default ;;
     C) echo explicit ;;
     X) echo paper34 ;;
+    F) echo formula0 ;;
+    K) echo cap0 ;;
     *) return 1 ;;
   esac
 }
 arm_kind() {  # $1 arm -> the inputs.md5 KIND label the stager writes
   case "$1" in
-    D|C|X) echo REAL-RELEASED-CLOUD ;;
+    D|C|X|F|K) echo REAL-RELEASED-CLOUD ;;
     *) return 1 ;;
   esac
 }
@@ -284,6 +288,14 @@ run_arm() {
       [ -n "$G45" ] && NOTE="$NOTE unexpected GROWTH-45 line (X takes SFS_PAPER_THETA)"
       [ -n "$G51" ] && NOTE="$NOTE unexpected GROWTH-51 line (X takes SFS_PAPER_THETA)"
       ;;
+    F)
+      [ -n "$G45" ] && NOTE="$NOTE unexpected GROWTH-45 line (F disables the formula)"
+      [ -n "$G51" ] && NOTE="$NOTE unexpected GROWTH-51 line (F disables the formula)"
+      ;;
+    K)
+      [ -z "$T45" ] && NOTE="$NOTE no GROWTH-45 line (K disables only the cap)"
+      [ -n "$G51" ] && NOTE="$NOTE unexpected GROWTH-51 line (K disables only the cap)"
+      ;;
   esac
   [ "$FB52" -gt 0 ] && NOTE="$NOTE ${FB52} GROWTH-52 FALLBACK line(s) (prediction P4: ZERO)"
   printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
@@ -334,6 +346,8 @@ for C in "$PIPECELL"/*/cell.tsv; do
   WANT=""
   [ "$A" = "C" ] && WANT="SFS_GROWTH_CAP=1;SFS_GROWTH_FORMULA=1;"
   [ "$A" = "X" ] && WANT="SFS_PAPER_THETA=3.4;"
+  [ "$A" = "F" ] && WANT="SFS_GROWTH_FORMULA=0;"
+  [ "$A" = "K" ] && WANT="SFS_GROWTH_CAP=0;"
   [ "$A" = "D" ] && WANT=""
   if [ "${PR-<missing>}" != "$WANT" ]; then  # no colon: an EMPTY probe (arm D) is the pass, not a miss
     ENV_BAD="$ENV_BAD $POT/$PIECE/$A(saw:[$PR] want:[$WANT])"
