@@ -1,0 +1,25 @@
+# ticket 51 REFERENCE thetas -- committed, REPORT ONLY; no cell reads them at run time.
+# t48_theta_formula: [GROWTH-45] formula theta, run 20261031-1428_93b3c07_t48-t48-verify
+#   (arm V, same corpus clouds, same code path as this ticket's arm U -- arm U must reproduce
+#   these to 2 dp).
+# edge50_glue60_k10: cheapest crossing, k=10 NN graph, glue=60%, run 20261031-2007_158ddc6_t50-edge
+#   out/edge50.tsv -- thetaCross51 (k=11 incl self = the same 10 neighbours) must land within
+#   1.5 deg of these where present (J1-9, PA01-04; na = the edge50 pass did not measure it).
+piece	t48_theta_formula	edge50_glue60_k10
+Juglet_Piece_1	10.83673	7.0
+Juglet_Piece_2	11.04426	6.0
+Juglet_Piece_3	8.95950	6.5
+Juglet_Piece_4	9.74587	8.5
+Juglet_Piece_5	9.31229	8.5
+Juglet_Piece_6	8.86226	7.5
+Juglet_Piece_7	9.78652	6.5
+Juglet_Piece_8	9.47194	9.0
+Juglet_Piece_9	9.49636	6.0
+Pot_A_Piece_01	5.70709	10.0
+Pot_A_Piece_02	4.57863	10.0
+Pot_A_Piece_03	4.43321	8.5
+Pot_A_Piece_04	3.57188	8.5
+Pot_A_Piece_05	4.22457	na
+Pot_A_Piece_06	4.08171	na
+Pot_A_Piece_07	2.88049	na
+Pot_A_Piece_08	3.92527	na

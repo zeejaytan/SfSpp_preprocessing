@@ -1092,6 +1092,83 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 // 30 nearest neighbours (self included), build the PCA tangent frame around the normal, fit the
 // bivariate quadric z = a*x + b*y + 0.5*L*x^2 + M*x*y + 0.5*N*y^2 by least squares, take the
 // larger principal curvature of [[L, M], [M, N]], radius = 1/kmax capped to [0, 60] mm
+// TICKET 51: the cheapest smooth crossing of the downsampled cloud the growth runs on:
+// k = 11 NN graph (self included, so 10 neighbours, the same graph edge50.tsv measured at
+// k = 10), each undirected edge carrying the angle in degrees between the two point normals,
+// ELIGIBLE only when BOTH endpoint curvatures are < 1.0 (the same kappa the growth step
+// uses). Kruskal union-find over the eligible edges in ascending angle; the return value is
+// the edge angle at which the largest component first reaches 60% of the points that have
+// at least one eligible edge. Returns -1.0 when fewer than 1000 points have an eligible
+// edge (the caller logs crossing=none and does not cap).
+static double thetaCross51()
+{
+	const int kNN51 = 11;
+	const double kappaMax51 = 1.0;
+	const size_t minEligible51 = 1000;
+	const pcl::PointCloud<pcl::PointNormal>::Ptr cloud = downsampledCloudWithNormals;
+	const size_t n51 = cloud->points.size();
+	if (n51 < 2) return -1.0;
+	pcl::KdTreeFLANN<pcl::PointNormal> tree51;
+	tree51.setInputCloud(cloud);
+	struct Edge51 { float ang51; int a51, b51; };
+	std::vector<Edge51> edges51;
+	std::vector<char> elig51(n51, 0);
+	std::vector<int> idx51;
+	std::vector<float> sq51;
+	edges51.reserve(n51 * kNN51 / 2 + 1);
+	for (size_t i51 = 0; i51 < n51; ++i51)
+	{
+		const pcl::PointNormal& pi51 = cloud->points[i51];
+		if (!std::isfinite(pi51.x) || !std::isfinite(pi51.y) || !std::isfinite(pi51.z)) continue;
+		if (!(pi51.curvature < kappaMax51)) continue; // NaN curvature is not eligible
+		if (tree51.nearestKSearch(pi51, kNN51, idx51, sq51) < 2) continue;
+		for (size_t j51 = 0; j51 < idx51.size(); ++j51)
+		{
+			const int q51 = idx51[j51];
+			if (static_cast<size_t>(q51) <= i51) continue; // undirected dedupe: keep i < j
+			const pcl::PointNormal& pj51 = cloud->points[q51];
+			if (!(pj51.curvature < kappaMax51)) continue;
+			const double dot51 = pi51.normal_x * pj51.normal_x + pi51.normal_y * pj51.normal_y + pi51.normal_z * pj51.normal_z;
+			const double ang51 = std::acos(std::min(1.0, std::max(-1.0, std::abs(dot51)))) * (180.0 / M_PI);
+			edges51.push_back(Edge51{static_cast<float>(ang51), static_cast<int>(i51), q51});
+			elig51[i51] = 1;
+			elig51[q51] = 1;
+		}
+	}
+	size_t nElig51 = 0;
+	for (size_t i51 = 0; i51 < n51; ++i51) nElig51 += (elig51[i51] ? 1u : 0u);
+	if (nElig51 < minEligible51) return -1.0;
+	std::sort(edges51.begin(), edges51.end(), [](const Edge51& l51, const Edge51& r51) { return l51.ang51 < r51.ang51; });
+	std::vector<int> parent51(n51), size51(n51, 1);
+	for (size_t i51 = 0; i51 < n51; ++i51) parent51[i51] = static_cast<int>(i51);
+	// iterative find with path halving: no recursion, no new dependencies
+	auto find51 = [&parent51](int x51) {
+		while (parent51[x51] != x51) { parent51[x51] = parent51[parent51[x51]]; x51 = parent51[x51]; }
+		return x51;
+	};
+	size_t largest51 = 1;
+	const size_t target51 = (nElig51 * 3 + 5) / 5; // ceil(0.6 * eligible points)
+	for (size_t e51 = 0; e51 < edges51.size(); ++e51)
+	{
+		const int ra51 = find51(edges51[e51].a51), rb51 = find51(edges51[e51].b51);
+		if (ra51 == rb51) continue;
+		if (size51[ra51] < size51[rb51])
+		{
+			parent51[ra51] = rb51;
+			size51[rb51] += size51[ra51];
+			if (static_cast<size_t>(size51[rb51]) > largest51) largest51 = static_cast<size_t>(size51[rb51]);
+		}
+		else
+		{
+			parent51[rb51] = ra51;
+			size51[ra51] += size51[rb51];
+			if (static_cast<size_t>(size51[ra51]) > largest51) largest51 = static_cast<size_t>(size51[ra51]);
+		}
+		if (largest51 >= target51) return static_cast<double>(edges51[e51].ang51);
+	}
+	return -1.0;
+}
+
 // (dist43.py RHO_CAP_MM / MAX_PTS_RHO). The subsample is a deterministic stride of at most
 // 20000 points, so rerunning the same bytes reproduces the same R_fold. Returns 0.0 when the
 // cloud has no usable points; the caller FATALs on that.
@@ -4759,6 +4836,27 @@ int main(int argc, char** argv) {
             paperTheta = k45 * (g_effectiveSpacingMM / rMed45) * (180.0 / M_PI);
             std::cout << "[GROWTH-45] piece=" << fileNameOnly << " S=" << g_effectiveSpacingMM
                       << " R_med=" << rMed45 << " theta=" << paperTheta << std::endl;
+            // TICKET 51: cap the formula theta by the piece's own measured cheapest smooth
+            // crossing (thetaCross51 above: k = 11 NN graph, both curvatures < 1.0, Kruskal,
+            // largest component reaching 60% of the points with an eligible edge). OPT-IN via
+            // SFS_GROWTH_CAP=1, and only inside this formula block, so with either env unset
+            // the [GROWTH-45] path is byte-identical and no [GROWTH-51] line is printed.
+            // Fewer than 1000 eligible points logs crossing=none and leaves theta alone.
+            bool growthCap51 = false;
+            if (const char* e51 = std::getenv("SFS_GROWTH_CAP")) { if (*e51 && std::string(e51) != "0") growthCap51 = true; }
+            if (growthCap51)
+            {
+                const double cross51 = thetaCross51();
+                int capped51 = 0;
+                if (cross51 > 0.0)
+                {
+                    const double cap51 = 0.9 * cross51;
+                    if (paperTheta > cap51) { paperTheta = cap51; capped51 = 1; }
+                }
+                std::cout << "[GROWTH-51] piece=" << fileNameOnly
+                          << " crossing=" << ((cross51 > 0.0) ? std::to_string(cross51) : std::string("none"))
+                          << " capped=" << capped51 << " theta=" << paperTheta << std::endl;
+            }
         }
         if (const char* e = std::getenv("SFS_PAPER_KAPPA")) { if (*e) paperKappa = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_NB")) { if (*e) paperNB = std::stoi(e); }
