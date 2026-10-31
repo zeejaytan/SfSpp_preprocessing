@@ -1,0 +1,81 @@
+C01: bag=753 inner=212 fold=264 outer=277 TRUE=476 OUTER=277 foldshare=35.1%
+C01-TRUE: fine bins 267 non-empty of 360
+C01-TRUE: smoothed polygon=367.1mm -> N1=204
+C01-TRUE seed0 rot=0: n=204 arc=363.6 closure=3.23 gaps5=0 back=194 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE seed1 rot=164: n=204 arc=365.0 closure=1.79 gaps5=0 back=194 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE seed2 rot=71: n=204 arc=365.0 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE seed3 rot=115: n=204 arc=365.0 closure=1.79 gaps5=0 back=194 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE seed4 rot=34: n=204 arc=365.0 closure=1.79 gaps5=0 back=194 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE seed5 rot=141: n=204 arc=365.0 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=0.6421 cov=203/211
+C01-TRUE PICK seed2: n=204 arc=365.0 closure=1.79 gaps5=0 back=0 rimmed=0.6421 cov=203/211
+C01-OUTER: fine bins 200 non-empty of 360
+C01-OUTER: smoothed polygon=396.9mm -> N1=220
+C01-OUTER seed0 rot=0: n=220 arc=392.4 closure=4.02 gaps5=0 back=0 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER seed1 rot=58: n=220 arc=394.6 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=4.0 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER seed2 rot=153: n=220 arc=394.6 closure=1.79 gaps5=0 back=194 ret=0 fwd=0 BAND=4.0 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER seed3 rot=111: n=220 arc=394.6 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=4.0 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER seed4 rot=188: n=220 arc=394.6 closure=1.79 gaps5=0 back=194 ret=0 fwd=0 BAND=4.0 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER seed5 rot=30: n=220 arc=394.6 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=4.0 HALT=- rimmed=3.3277 cov=4/211
+C01-OUTER PICK seed1: n=220 arc=394.6 closure=1.79 gaps5=0 back=0 rimmed=3.3277 cov=4/211
+C02 pool F0=412 F1=543 pooled=955 (dupes 0)
+C02: bag=955 inner=191 fold=253 outer=511 TRUE=444 OUTER=511 foldshare=26.5%
+C02-TRUE: fine bins 287 non-empty of 360
+C02-TRUE: smoothed polygon=416.6mm -> N1=231
+C02-TRUE seed0 rot=0: n=231 arc=409.9 closure=4.41 gaps5=0 back=197 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE seed1 rot=197: n=231 arc=412.6 closure=1.78 gaps5=0 back=197 ret=0 fwd=0 BAND=4.4 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE seed2 rot=105: n=231 arc=412.6 closure=1.78 gaps5=0 back=3 ret=0 fwd=0 BAND=4.4 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE seed3 rot=62: n=231 arc=412.6 closure=1.79 gaps5=0 back=197 ret=0 fwd=0 BAND=4.4 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE seed4 rot=150: n=231 arc=412.6 closure=1.79 gaps5=0 back=197 ret=0 fwd=0 BAND=4.4 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE seed5 rot=39: n=231 arc=412.6 closure=1.79 gaps5=0 back=3 ret=0 fwd=0 BAND=4.4 HALT=- rimmed=0.8331 cov=173/221
+C02-TRUE PICK seed5: n=231 arc=412.6 closure=1.79 gaps5=0 back=3 rimmed=0.8331 cov=173/221
+C02-OUTER: fine bins 288 non-empty of 360
+C02-OUTER: smoothed polygon=462.9mm -> N1=240
+C02-OUTER seed0 rot=0: n=240 arc=452.9 closure=8.29 gaps5=0 back=164 ret=0 fwd=0 BAND=1.9 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER seed1 rot=9: n=240 arc=459.3 closure=1.89 gaps5=1 back=164 ret=0 fwd=0 BAND=8.3 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER seed2 rot=114: n=240 arc=459.3 closure=1.90 gaps5=1 back=164 ret=0 fwd=0 BAND=8.3 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER seed3 rot=165: n=240 arc=459.3 closure=1.90 gaps5=1 back=1 ret=0 fwd=0 BAND=8.3 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER seed4 rot=68: n=240 arc=459.3 closure=1.90 gaps5=1 back=1 ret=0 fwd=0 BAND=8.3 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER seed5 rot=139: n=240 arc=459.3 closure=1.90 gaps5=1 back=1 ret=0 fwd=0 BAND=8.3 HALT=- rimmed=5.9309 cov=0/221
+C02-OUTER PICK seed0 -- NONE MET GATE: n=240 arc=452.9 closure=8.29 gaps5=0 back=164 rimmed=5.9309 cov=0/221
+C03 pool F0=322 F1=221 pooled=543 (dupes 0)
+C03: bag=543 inner=85 fold=418 outer=40 TRUE=503 OUTER=40 foldshare=77.0%
+C03-TRUE: fine bins 287 non-empty of 360
+C03-TRUE: smoothed polygon=344.6mm -> N1=191
+C03-TRUE seed0 rot=0: n=191 arc=336.0 closure=3.21 gaps5=0 back=124 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE seed1 rot=73: n=191 arc=337.4 closure=1.79 gaps5=0 back=124 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE seed2 rot=147: n=191 arc=337.4 closure=1.79 gaps5=0 back=124 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE seed3 rot=40: n=191 arc=337.4 closure=1.75 gaps5=0 back=124 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE seed4 rot=105: n=191 arc=337.5 closure=1.72 gaps5=0 back=1 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE seed5 rot=125: n=191 arc=337.4 closure=1.79 gaps5=0 back=124 ret=0 fwd=0 BAND=3.2 HALT=- rimmed=6.5232 cov=15/191
+C03-TRUE PICK seed1: n=191 arc=337.4 closure=1.79 gaps5=0 back=124 rimmed=6.5232 cov=15/191
+C03-OUTER: fine bins 39 non-empty of 360
+C03-OUTER: smoothed polygon=227.8mm -> N1=127
+C03-OUTER seed0 rot=0: n=127 arc=220.9 closure=6.50 gaps5=0 back=66 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER seed1 rot=27: n=127 arc=225.6 closure=1.76 gaps5=1 back=0 ret=0 fwd=0 BAND=6.5 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER seed2 rot=87: n=127 arc=225.6 closure=1.76 gaps5=1 back=0 ret=0 fwd=0 BAND=6.5 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER seed3 rot=58: n=127 arc=225.6 closure=1.76 gaps5=1 back=0 ret=0 fwd=0 BAND=6.5 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER seed4 rot=108: n=127 arc=225.6 closure=1.76 gaps5=1 back=66 ret=0 fwd=0 BAND=6.5 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER seed5 rot=42: n=127 arc=225.6 closure=1.76 gaps5=1 back=66 ret=0 fwd=0 BAND=6.5 HALT=- rimmed=12.2529 cov=0/191
+C03-OUTER PICK seed0 -- NONE MET GATE: n=127 arc=220.9 closure=6.50 gaps5=0 back=66 rimmed=12.2529 cov=0/191
+C04 pool F0=280 F1=310 pooled=589 (dupes 1)
+C04: bag=589 inner=2 fold=227 outer=360 TRUE=229 OUTER=360 foldshare=38.5%
+C04-TRUE: fine bins 187 non-empty of 360
+C04-TRUE: smoothed polygon=227.6mm -> N1=126
+C04-TRUE seed0 rot=0: n=126 arc=223.3 closure=3.63 gaps5=0 back=0 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE seed1 rot=101: n=126 arc=225.2 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=3.6 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE seed2 rot=41: n=126 arc=225.2 closure=1.79 gaps5=0 back=124 ret=0 fwd=0 BAND=3.6 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE seed3 rot=71: n=126 arc=225.2 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=3.6 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE seed4 rot=20: n=126 arc=225.2 closure=1.79 gaps5=0 back=124 ret=0 fwd=0 BAND=3.6 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE seed5 rot=55: n=126 arc=225.2 closure=1.79 gaps5=0 back=0 ret=0 fwd=0 BAND=3.6 HALT=- rimmed=0.7014 cov=127/131
+C04-TRUE PICK seed1: n=126 arc=225.2 closure=1.79 gaps5=0 back=0 rimmed=0.7014 cov=127/131
+C04-OUTER: fine bins 263 non-empty of 360
+C04-OUTER: smoothed polygon=252.5mm -> N1=140
+C04-OUTER seed0 rot=0: n=140 arc=248.7 closure=2.74 gaps5=0 back=0 ret=0 fwd=0 BAND=1.8 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER seed1 rot=45: n=140 arc=249.7 closure=1.79 gaps5=0 back=106 ret=0 fwd=0 BAND=2.7 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER seed2 rot=99: n=140 arc=249.7 closure=1.80 gaps5=0 back=0 ret=0 fwd=0 BAND=2.7 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER seed3 rot=73: n=140 arc=249.7 closure=1.80 gaps5=0 back=0 ret=0 fwd=0 BAND=2.7 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER seed4 rot=25: n=140 arc=249.7 closure=1.80 gaps5=0 back=0 ret=0 fwd=0 BAND=2.7 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER seed5 rot=122: n=140 arc=249.7 closure=1.79 gaps5=0 back=106 ret=0 fwd=0 BAND=2.7 HALT=- rimmed=4.3072 cov=3/131
+C04-OUTER PICK seed4: n=140 arc=249.7 closure=1.80 gaps5=0 back=0 rimmed=4.3072 cov=3/131
+C01-TRUE-vs-197: ref=(204, 3) mine=(204, 3) maxdiff=0.000000
+P204 DCHAIN DONE

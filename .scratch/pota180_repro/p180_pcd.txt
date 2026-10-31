@@ -1,0 +1,12 @@
+G0 curvature uniq=1 val=1.905766e-42
+G0-donor NN (mesh-mesh): med=0.76 max=1.83 n>5mm=0
+segments rescaled 402->220 head=# 1 16 0 tail=# 216 220 0
+DIFFERS Pot_C_Piece_01_Breakline_0.pcd d4793a55934f59bf64561123984f2d16 -> 8ab5bbf20e762011f7be034fda70ebdf
+SAME Pot_C_Piece_01_Breakline_1.pcd fa3805fe86ac935d4fa872473bf80ced
+SAME Pot_C_Piece_02_Breakline_0.pcd cb5c2ec50a045ea0e454aec6f10c8cd0
+SAME Pot_C_Piece_02_Breakline_1.pcd 7d48c6c7bbe298820b4a2b1366614d11
+SAME Pot_C_Piece_03_Breakline_0.pcd 9d2d61831938282e25180bb1a70d07a7
+SAME Pot_C_Piece_03_Breakline_1.pcd 32541c256cdf2b7ce2f0d0ae7e3e2c02
+SAME Pot_C_Piece_04_Breakline_0.pcd f04f5cf9b5569029e517904afa788c9a
+SAME Pot_C_Piece_04_Breakline_1.pcd b5dcec4616cc3f68ef782998a537ea0a
+SLOT-HYGIENE PROOF: only C01-Bl_0 differs, all 7 other slots bit-identical

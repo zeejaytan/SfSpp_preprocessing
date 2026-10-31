@@ -1,0 +1,16 @@
+POTA-180 LEAD RELAY (worker has no SSH -- stage only, DO NOT submit from worker).
+Ship to Spartan stage dir /data/gpfs/projects/punim2657/pota180_repro/stage/:
+  p180_C01_single_walk.npy  (220x3 mesh frame, md5 3a8909031978b2038da85cd00ed73ba2)
+  p180_build.py  (py_compile OK; port of p176_build.py)
+  run_pota180_stage_AC.sbatch  (bash -n OK; port of 176 sbatch)
+Runbook (176 s5 pattern, lead owns Spartan SSH):
+  1. rsync stage files -> Spartan stage/ (verify walk md5 on arrival).
+  2. login-node: python3 stage/p180_build.py  (file assembly + tiny numpy; expect BUILD DONE +
+     bundle-Bl diff showing ONLY C01-Bl_0 differs + 98-SXC intact ALL-OK).
+  3. sbatch x3 run_pota180_stage_AC.sbatch (4 arms/job: A_orig/A_fresh STEPS 8 + C_orig/C_180 STEPS 4).
+  4. laptop-side poll each job + record sacct State/ExitCode.
+  5. tallies vs 179 bar: Total 40 -> 100-125 band, pruned 8 -> 30-40 band, C01 pairs >=1 survivor,
+     C01 seated (edges 1/3 -> >=2/3). FALSIFIER: Total stays ~40 -> D-alphabet refuted, report honestly.
+  6. fetch pota180_fetch.tgz (rims_C180 + GT_C + T_* + P180_*.txt) for the record.
+Donor note: channels come from Spartan ORIG Pot_C C01 Bl_0 (G0 author donor, mesh frame,
+176 s7b ruling); no extra refs need shipping. Same-binary ORIG control (C_orig arm) is in-job.

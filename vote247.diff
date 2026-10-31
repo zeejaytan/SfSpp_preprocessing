@@ -1,0 +1,212 @@
+diff --git a/edgeline_extraction_headless.cpp b/edgeline_extraction_headless.cpp
+index 99a99c5..b826393 100644
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
+@@ -23,6 +23,7 @@
+ #include <experimental/filesystem>
+ #include <filesystem>
+ #include <stdio.h>
++#include <cstdlib> // POTA-247: getenv(SFS_VOTE_ORDER)
+ #include <pcl/filters/uniform_sampling.h>
+ 
+ #include <chrono>
+@@ -534,6 +535,186 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
+ 	return ptExists;
+ }
+ 
++
++// POTA-247: paper vote-ordered loop port (SfSpp § "edge line": K-D tree filter,
++// resample equidistant d=1.9mm, reorder CCW by normals+voting, corner segmentation
++// at peaks of the distance-score distribution). BEHIND SFS_VOTE_ORDER ONLY;
++// default path still calls getPointsInSequence (greedy split-walk, untouched).
++// Paper-quote anchors: resample d=1.9mm (constant below); CCW-by-voting;
++// distance-score = deviation from local linear trend; NO numeric corner threshold
++// in the paper, so the peak rule below is a STATED ASSUMPTION (local max over
++// +/-8 window above max(2.0mm, 3*median)), corners LOGGED ONLY -- the emitted
++// lane stays one ordered loop because the downstream B-spline expects one lane
++// per face (splitting the output would change Bl file structure).
++// Substitution (stated): this bag is PointXYZ (no per-point normals), so the
++// "normals" vote uses the PCA best-fit plane normal of the loop as the
++// geometric normal surrogate, oriented by majority vote of per-edge turn signs.
++static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
++                                        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
++{
++	const float RESAMPLE_D_MM = 1.9f; // paper constant
++	size_t n = cloud->points.size();
++	if (n == 0) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
++	if (n < 8) { // too few for plane/vote statistics: pass through (logged)
++		std::cout << "[VOTE-247] passthrough n=" << n << std::endl;
++		for (size_t i = 0; i < n; i++) cloud_sequenced->points.push_back(cloud->points[i]);
++		cloud_sequenced->width = cloud_sequenced->points.size();
++		cloud_sequenced->height = 1;
++		return;
++	}
++	// 1. Deterministic seed (centroid-nearest; no cloud[0] order dependence), then
++	// pure nearest-unvisited chain. Jump chords here are harmless: step 3 re-derives
++	// topology geometrically (angular sort), so no gate is applied at this stage.
++	pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
++	kdtree.setInputCloud(cloud);
++	std::vector<char> used(n, 0);
++	// POTA-247b: paper's K-D tree filter surrogate. The rim bag carries satellite
++	// fragments the greedy path discards via its COMP_GAP split (it walks comp[0]
++	// only); angular voting is defined on ONE loop, so restrict to the largest
++	// COMP_GAP-connected component (BFS, 5.0mm edge gate = greedy COMP_GAP =
++	// same population the greedy walker would sequence). Logged; no-op when
++	// the bag is already single-component.
++	const double COMP_GAP_MM = 5.0;
++	std::vector<int> comp(n, -1);
++	int ncomp = 0; int biggest = 0; size_t biggestSize = 0;
++	std::vector<int> stack; std::vector<int> nb; std::vector<float> nd;
++	for (size_t s = 0; s < n; s++) if (comp[s] < 0) {
++		size_t sz = 0;
++		stack.clear(); stack.push_back((int)s); comp[s] = ncomp;
++		while (!stack.empty()) {
++			int u = stack.back(); stack.pop_back(); sz++;
++			int nn = kdtree.radiusSearch(cloud->points[u], COMP_GAP_MM, nb, nd);
++			for (int k = 0; k < nn; k++) {
++				int w = nb[k];
++				if (w < 0 || (size_t)w >= n || comp[w] >= 0) continue;
++				comp[w] = ncomp; stack.push_back(w);
++			}
++		}
++		if (sz > biggestSize) { biggestSize = sz; biggest = ncomp; }
++		ncomp++;
++	}
++	size_t keptN = 0;
++	for (size_t i = 0; i < n; i++) { if (comp[i] != biggest) used[i] = 1; else keptN++; }
++	std::cout << "[VOTE-247] comp-filter kept " << keptN << "/" << n
++	          << " (comp " << biggest << " of " << ncomp << ")" << std::endl;
++	// Deterministic seed: kept-component centroid-nearest (no cloud[0] order dependence).
++	Eigen::Vector3f cent(0,0,0);
++	for (size_t i = 0; i < n; i++) if (!used[i])
++		cent += Eigen::Vector3f(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
++	cent /= (float)keptN;
++	size_t seed = 0; float seedD2 = std::numeric_limits<float>::max();
++	for (size_t i = 0; i < n; i++) if (!used[i]) {
++		Eigen::Vector3f d(cloud->points[i].x - cent(0), cloud->points[i].y - cent(1), cloud->points[i].z - cent(2));
++		if (d.squaredNorm() < seedD2) { seedD2 = d.squaredNorm(); seed = i; }
++	}
++	std::vector<Eigen::Vector3f> chain; chain.reserve(n);
++	size_t cur = seed;
++	for (size_t done = 0; done < n; done++) {
++		chain.push_back(Eigen::Vector3f(cloud->points[cur].x, cloud->points[cur].y, cloud->points[cur].z));
++		used[cur] = 1;
++		if (done + 1 == n) break;
++		// nearest unvisited: KNN probe first, exhaustive fallback (chain must cover all n)
++		std::vector<int> idx(50); std::vector<float> dist(50);
++		int found = kdtree.nearestKSearch(cloud->points[cur], 50, idx, dist);
++		int best = -1; float bestD2 = std::numeric_limits<float>::max();
++		for (int k = 0; k < found; k++) {
++			int cand = idx[k];
++			if (cand < 0 || (size_t)cand >= n || used[cand]) continue;
++			if (dist[k] < bestD2) { bestD2 = dist[k]; best = cand; }
++		}
++		if (best < 0) for (size_t i = 0; i < n; i++) if (!used[i]) {
++			Eigen::Vector3f d(cloud->points[i].x - chain.back()(0), cloud->points[i].y - chain.back()(1), cloud->points[i].z - chain.back()(2));
++			if (d.squaredNorm() < bestD2) { bestD2 = d.squaredNorm(); best = (int)i; }
++		}
++		if (best < 0) break; // unreachable (all used)
++		cur = (size_t)best;
++	}
++	// 2. PCA best-fit plane of the chain (normal surrogate), angular sort about centroid.
++	Eigen::Vector3f mean(0,0,0);
++	for (size_t i = 0; i < chain.size(); i++) mean += chain[i];
++	mean /= (float)chain.size();
++	Eigen::Matrix3f cov = Eigen::Matrix3f::Zero();
++	for (size_t i = 0; i < chain.size(); i++) { Eigen::Vector3f d = chain[i] - mean; cov += d * d.transpose(); }
++	Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es(cov);
++	Eigen::Vector3f un = es.eigenvectors().col(0); // smallest eigenvalue = plane normal
++	Eigen::Vector3f u = (chain[0] - mean); u -= un * u.dot(un); u.normalize();
++	Eigen::Vector3f v = un.cross(u);
++	std::vector<std::pair<float, Eigen::Vector3f> > keyed; keyed.reserve(chain.size());
++	for (size_t i = 0; i < chain.size(); i++) {
++		Eigen::Vector3f d = chain[i] - mean;
++		keyed.push_back(std::make_pair(std::atan2(d.dot(v), d.dot(u)), chain[i]));
++	}
++	std::sort(keyed.begin(), keyed.end(),
++		[](const std::pair<float, Eigen::Vector3f>& a, const std::pair<float, Eigen::Vector3f>& b){ return a.first < b.first; });
++	std::vector<Eigen::Vector3f> loop; loop.reserve(keyed.size());
++	for (size_t i = 0; i < keyed.size(); i++) loop.push_back(keyed[i].second);
++	// 3. Vote: signed turn sum of the sorted loop; enforce CCW (positive). The vote
++	// is the majority direction of per-edge turns, not any single seed choice.
++	double turnSum = 0.0;
++	size_t M0 = loop.size();
++	for (size_t i = 0; i < M0; i++) {
++		Eigen::Vector3f a = loop[(i + 1) % M0] - loop[i];
++		Eigen::Vector3f b = loop[(i + 2) % M0] - loop[(i + 1) % M0];
++		Eigen::Vector3f an = a - un * a.dot(un), bn = b - un * b.dot(un);
++		if (an.norm() < 1e-9f || bn.norm() < 1e-9f) continue;
++		an.normalize(); bn.normalize();
++		turnSum += std::atan2(un.dot(an.cross(bn)), an.dot(bn));
++	}
++	bool ccw = (turnSum >= 0.0);
++	if (!ccw) std::reverse(loop.begin(), loop.end());
++	std::cout << "[VOTE-247] chain=" << chain.size() << " turnSum=" << turnSum
++	          << (ccw ? " CCW-kept" : " CW-reversed-to-CCW") << std::endl;
++	// 4. Closed-loop arc-length resample at d=1.9mm (paper constant).
++	std::vector<float> cum(M0 + 1, 0.0f);
++	for (size_t i = 0; i < M0; i++) cum[i+1] = cum[i] + (loop[(i+1) % M0] - loop[i]).norm();
++	float L = cum[M0];
++	size_t M = (L >= RESAMPLE_D_MM) ? (size_t)std::max<size_t>(8, (size_t)std::llround(L / RESAMPLE_D_MM)) : M0;
++	std::vector<Eigen::Vector3f> res; res.reserve(M);
++	if (L >= RESAMPLE_D_MM) {
++		size_t seg = 0;
++		for (size_t j = 0; j < M; j++) {
++			float s = (float)j * L / (float)M;
++			while (seg + 1 < M0 && cum[seg+1] < s) seg++;
++			float segLen = cum[seg+1] - cum[seg];
++			float t = (segLen > 1e-9f) ? (s - cum[seg]) / segLen : 0.0f;
++			res.push_back(loop[seg] * (1.0f - t) + loop[(seg+1) % M0] * t);
++		}
++	} else { res = loop; }
++	// 5. Corner segmentation (paper: peaks of distance-score = deviation from local
++	// linear trend). Score = perpendicular distance from chord (i-w, i+w), w=8
++	// (STATED ASSUMPTION: paper gives no window/threshold). Logged only.
++	size_t MR = res.size();
++	const int W = 8;
++	std::vector<float> score(MR, 0.0f);
++	for (size_t i = 0; i < MR; i++) {
++		Eigen::Vector3f a = res[(i + MR - W) % MR], b = res[(i + W) % MR];
++		Eigen::Vector3f ab = b - a; float abl = ab.norm();
++		if (abl < 1e-9f) { score[i] = 0.0f; continue; }
++		Eigen::Vector3f ap = res[i] - a;
++		score[i] = (ap - ab * (ap.dot(ab) / (abl * abl))).norm();
++	}
++	std::vector<float> srt = score;
++	std::sort(srt.begin(), srt.end());
++	float med = srt[srt.size()/2];
++	float thr = std::max(2.0f, 3.0f * med);
++	size_t corners = 0; std::string cidx;
++	for (size_t i = 0; i < MR; i++) {
++		bool peak = true;
++		for (int k = 1; k <= W; k++)
++			if (score[(i + k) % MR] > score[i] || score[(i + MR - k) % MR] > score[i]) { peak = false; break; }
++		if (peak && score[i] > thr) {
++			if (corners < 12) { if (corners) cidx += ","; cidx += std::to_string(i); }
++			corners++;
++		}
++	}
++	std::cout << "[VOTE-247] resampled=" << MR << " (L=" << L << "mm) corners=" << corners
++	          << " thr=" << thr << " med=" << med << " idx=[" << cidx << "]" << std::endl;
++	for (size_t i = 0; i < MR; i++)
++		cloud_sequenced->points.push_back(pcl::PointXYZ(res[i](0), res[i](1), res[i](2)));
++	cloud_sequenced->width = cloud_sequenced->points.size();
++	cloud_sequenced->height = 1;
++}
++
+ // POTA-212 PORT NOTE (pristine line): this is the POTA-153 split-walk cure verbatim except this
+ // header. Staged anchor was edgeline_extraction_headless.cpp:806-892 @ 4accb8d/main-line;
+ // pristine anchor is :533-613 @ b1ed4d1 (pristine walker: seed cloud[0], greedy K=50,
+@@ -1021,7 +1202,11 @@ void getInitialBoundary_UsingPCL_BoundaryAlgo(pcl::PointCloud<pcl::PointNormal>:
+ 		if (!axOK) std::cout << "[LOOP-SELECT] axis missing/unreadable: " << axPath << std::endl;
+ 		splitRimVsStepRing_213(boundaryCloud_Improved, axC, axD, axOK, cloud_rimIn, cloud_ringIn);
+ 	}
+-	getPointsInSequence(cloud_rimIn, cloud_sequenced);
++	bool voteOrder247 = false;
++	if (const char* evo = std::getenv("SFS_VOTE_ORDER")) { if (*evo && std::string(evo) != "0") voteOrder247 = true; }
++	std::cout << "[VOTE-247] " << (voteOrder247 ? "ON (paper CCW vote-order)" : "OFF (greedy split-walk intact)") << std::endl;
++	if (voteOrder247) getPointsInSequence_Vote247(cloud_rimIn, cloud_sequenced);
++	else getPointsInSequence(cloud_rimIn, cloud_sequenced);
+ 	std::cout << "[EDGELINE DBG] cloud_sequenced (rim) size=" << cloud_sequenced->points.size() << std::endl;
+ 	{
+ 		string blBase = currentFileName;

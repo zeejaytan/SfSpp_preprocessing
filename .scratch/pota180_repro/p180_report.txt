@@ -1,0 +1,9 @@
+author ORIG n=211 arc=380.0 closure=1.80
+candidates/station: min=1 med=4.0 (all stations covered)
+Viterbi single track: total=395.6 (was 673.7 open doubled)
+dedupe: kept 202/211
+SINGLE n=220 arc=395.6 closure=1.48 max=1.80 med=1.79 n>5mm=0 nzerostep=0
+RIM-TRUTH ours-vs-author med=0.76 <2mm=100.0% max=1.83
+RIM-TRUTH author-vs-ours med=0.75 max=1.83
+D-TOKENS distinct=4 top=[(11, 201), (10, 13), (8, 3)] longest-run=36 (author: 3 / longest 4)
+saved p180_C01_single_walk.npy (220x3, mesh frame) md5=3a8909031978b2038da85cd00ed73ba2

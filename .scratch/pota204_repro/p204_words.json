@@ -1,0 +1,98 @@
+{
+ "01": {
+  "thin_vs_auth": {
+   "n": 204,
+   "m": 211,
+   "fwd": 111,
+   "fwd_cov": 0.544,
+   "rev": 33,
+   "rev_cov": 0.162,
+   "arc": 366.8,
+   "closure": 1.79,
+   "dtok": 2
+  },
+  "fresh_vs_auth": {
+   "n": 132,
+   "m": 211,
+   "fwd": 17,
+   "fwd_cov": 0.129,
+   "rev": 19,
+   "rev_cov": 0.144,
+   "arc": 347.8,
+   "closure": 1.91,
+   "dtok": 5
+  }
+ },
+ "02": {
+  "thin_vs_auth": {
+   "n": 231,
+   "m": 221,
+   "fwd": 104,
+   "fwd_cov": 0.471,
+   "rev": 34,
+   "rev_cov": 0.154,
+   "arc": 414.4,
+   "closure": 1.79,
+   "dtok": 3
+  },
+  "fresh_vs_auth": {
+   "n": 267,
+   "m": 221,
+   "fwd": 18,
+   "fwd_cov": 0.081,
+   "rev": 26,
+   "rev_cov": 0.118,
+   "arc": 782.4,
+   "closure": 99.77,
+   "dtok": 7
+  }
+ },
+ "03": {
+  "thin_vs_auth": {
+   "n": 191,
+   "m": 191,
+   "fwd": 27,
+   "fwd_cov": 0.141,
+   "rev": 18,
+   "rev_cov": 0.094,
+   "arc": 339.2,
+   "closure": 1.79,
+   "dtok": 3
+  },
+  "fresh_vs_auth": {
+   "n": 167,
+   "m": 191,
+   "fwd": 71,
+   "fwd_cov": 0.425,
+   "rev": 33,
+   "rev_cov": 0.198,
+   "arc": 330.0,
+   "closure": 1.9,
+   "dtok": 3
+  }
+ },
+ "04": {
+  "thin_vs_auth": {
+   "n": 126,
+   "m": 131,
+   "fwd": 96,
+   "fwd_cov": 0.762,
+   "rev": 17,
+   "rev_cov": 0.135,
+   "arc": 227.0,
+   "closure": 1.79,
+   "dtok": 2
+  },
+  "fresh_vs_auth": {
+   "n": 191,
+   "m": 131,
+   "fwd": 21,
+   "fwd_cov": 0.16,
+   "rev": 11,
+   "rev_cov": 0.084,
+   "arc": 411.5,
+   "closure": 24.33,
+   "dtok": 23
+  }
+ }
+}
