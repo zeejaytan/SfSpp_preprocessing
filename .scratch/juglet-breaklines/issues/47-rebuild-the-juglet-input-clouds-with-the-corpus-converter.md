@@ -19,9 +19,11 @@ the corpus carries ~840 000-1 000 000, and the first measurement that read the i
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
+**Working in:** chat on Thinkbook16 (2026-10-31)
+**Branch:** 47-rebuild-the-juglet-input-clouds-with-the-corpus-converter, in /c/PR/worktrees/sfs/47
 
-**Worker:** unassigned
+**Worker:** lead (worker died mid-patch; lead finished per acceptance, 2026-10-31)
 
 ## The method, exactly
 
@@ -52,19 +54,30 @@ is a separate decision with its own ticket.
 
 ## Acceptance
 
-- [ ] 9 of 9 clouds produced by `cc_mesh_to_pcd.sh` unmodified, defaults only; `_cc.log` beside each.
-- [ ] Frame gate recorded per piece: first rows vs mesh vertices vs GT frame; no global shift applied.
-- [ ] `MANIFEST_JUGLET_CC.tsv` (piece / points / md5 / cc-log / date / command) committed beside the
-      record note; the draw is frozen.
-- [ ] Vertex dumps archived with manifest; nothing else under `Dataset/` changed (mesh + axes md5s
-      unchanged, recorded before/after).
-- [ ] Before/after figure for at least J2 — shipped vertex dump vs corpus cloud over the mesh outline,
-      counts and pts/mm^2 in the caption — staged for the conservator's eye before any number is quoted.
-- [ ] Run dir under `SfSpp/runs/` with `run.json`, index row appended (verdict left empty), poll and
-      final `sacct` recorded in this ticket.
-- [ ] The lead re-verifies the frame gate and the manifest itself, then updates the AGENTS.md caveat and
-      the provenance note with the regeneration date.
+- [x] 9 of 9 clouds produced by `cc_mesh_to_pcd.sh` unmodified, defaults only; `_cc.log` beside each. install_verify 9/9 install-ok; converter byte-frozen from the pushed commit; run 20261031-1303_147b121_t47-jugletcc2.
+- [x] Frame gate recorded per piece: first rows vs mesh vertices vs GT frame; no global shift applied. Gates 9/9: extent_delta 0.002-0.025 mm, first3 0.074-0.337 mm, center vs AREA-weighted centroid 0.007-0.021 mm, maxabs 512-552 mm both sides (GT frame, no shift).
+- [x] `MANIFEST_JUGLET_CC.tsv` committed beside the record note (docs/notes/MANIFEST_JUGLET_CC.tsv); the draw is frozen. Lead re-checked: md5 col 6 matches installed bytes 9/9.
+- [x] Vertex dumps archived: attic/20261031-juglet-vertex-dumps (9 pcd + manifest.tsv), readback-ok 9/9. Nothing else under `Dataset/` changed: corpus_confined clean, find -newermt 2026-10-31 12:00 over Mesh/Juglet, Axes/Juglet, Juglet_GT returns nothing.
+- [x] Before/after figure for J2 staged: SfSpp_preprocessing/artifacts/t47-jugletcc2/j2_before_after.png (2,565 pts -> 841,310 pts; 5.22 -> ~12.35 pts/mm^2). Lead's machine eye was down (no image input on this model; vision bridge 503) — the conservator's eye on this figure is the instrument of record.
+- [x] Run dir 20261031-1303_147b121_t47-jugletcc2 (run.json, submit.sbatch, logs, out); index row appended by the job with empty verdict, lead wrote PASS with note (backup .bak-t47pass). sacct COMPLETED 0:0, 00:05:42, job 34095579 (poll recorded below).
+- [x] Lead re-verified frame gate (gates47.tsv + independent md5sum over installed bytes) and the manifest; AGENTS.md caveat and provenance note updated with the regeneration date in this commit.
 
-**Needs-eye:** the before/after cloud figure (J2 minimum).
+**Needs-eye:** the before/after cloud figure (J2 minimum) — staged at SfSpp_preprocessing/artifacts/t47-jugletcc2/j2_before_after.png.
 
 ## Comments
+
+### Results — run of record 20261031-1303_147b121_t47-jugletcc2 (lead, 2026-10-31)
+
+- **Job 34095579**, sapphire, sacct **COMPLETED 0:0**, 00:05:42; polled via slurm_poll.sh; run built from pushed commit 147b121 (git archive of origin/branch-47).
+- **Gates 9/9**: frame gate vs area-weighted mesh centroid 0.007-0.021 mm; extent (bbox-vs-bbox) 0.002-0.025 mm; first-3 rows on mesh vertices 0.074-0.337 mm; maxabs 512-552 mm both sides = GT frame, no global shift; density 9/9 (~1.0 M sampled, kept 840 666-841 413, ratio 0.8405-0.8417 vs Pot A 0.843); normals present all 9.
+- **Install 9/9 install-ok; attic readback 9/9 readback-ok.** Nine new clouds at Dataset/Point/Juglet (49.8-50.5 MB, ASCII PCD, 6 fields incl normals) + 9 _cc.log + MANIFEST_JUGLET_CC.tsv. Old Sep-25 vertex dumps (2 094-24 294 pts) archived at SfSpp/attic/20261031-juglet-vertex-dumps with manifest.
+- **Lead re-verification (independent of the job's own gates):** manifest col-6 md5 vs md5sum of installed bytes 9/9 OK; POINTS headers 840 666-841 413; Mesh/Axes/Juglet_GT untouched (find -newermt empty); index row verdict pass written with full note.
+- **verified: ssh_exec md5sum loop over MANIFEST_JUGLET_CC.tsv -> 9/9 OK, md5-gate-fail=0; gates47.tsv cols 12-14/17-18 -> all pass; sacct -j 34095579 -> COMPLETED 0:0 00:05:42.**
+
+### History of this ticket's three attempts
+
+1. 20261031-0346_a51819f: pre-submit submit-gates killed it (no run dir) — the hardening was the point.
+2. 20261031-0352_4a4b39b, job 34080350: sacct FAILED 8:0. Gates 6/9 — frame gate failed J1/J3/J5 on center_delta alone (2.4-3.8 mm vs 2.0 bar) while every other frame metric agreed to <=0.36 mm. **Defect: gate compared cloud point-mean centroid vs mesh BBOX centre — different kinds of centres.** Lead probe (/tmp/areaprobe.py, run-2 staging clouds): point-mean vs area-weighted centroid 0.003-0.025 mm on all nine — the clouds were right, the gate's reference was wrong. Index verdict void; corpus untouched by design (fail-before-install).
+3. Fix 147b121: gates47.py reference -> mesh_area_centroid (mesh_area-weighted), provenance probe files kept in stage47/. Resubmitted as the run of record above.
+
+Worker died mid-patch; lead completed the patch, resubmission, verification and this write-back (2026-10-31).

@@ -75,3 +75,31 @@ The step was documented, implemented, and already on Spartan; the staging sessio
 substitute tool instead and used it, without a ticket, a note, or a comparison against the
 README. That is a process failure by us, not a defect in the method or the data. The remedy
 ticket (regenerate the nine clouds with cc_mesh_to_pcd.sh) awaits the conservator's go.
+
+## Regeneration — done 2026-10-31, ticket 47, run 20261031-1303_147b121_t47-jugletcc2
+
+Job 34095579, sacct COMPLETED 0:0 in 00:05:42, built from pushed commit 147b121. The nine
+clouds at Dataset/Point/Juglet/ are now corpus-conforming samples from cc_mesh_to_pcd.sh,
+defaults only, converter byte-frozen from the pushed commit: ~1 000 000 points sampled on
+the faces, SOR keeping 840 666-841 413 (ratio 0.8405-0.8417; Pot A reference 0.843), ASCII
+PCD with normals, coordinates left in the GT frame (maxabs 512-552 mm both sides; extents
+match the meshes to 0.002-0.025 mm; cloud point-mean centroid vs area-weighted mesh centroid
+0.007-0.021 mm; first rows on mesh vertices 0.074-0.337 mm). The unseeded draw is frozen in
+Dataset/Point/Juglet/MANIFEST_JUGLET_CC.tsv (piece, source mesh + md5, sampled/kept points,
+pcd md5 + bytes, cc-log + md5, spacing, date, command); repo copy at
+docs/notes/MANIFEST_JUGLET_CC.tsv. The Sep-25 vertex dumps moved to
+SfSpp/attic/20261031-juglet-vertex-dumps with a manifest, read back after the move (9/9).
+Meshes, axes and GT poses untouched (verified by mtime sweep and md5 gates).
+
+Two earlier attempts: 20261031-0346_a51819f never ran (submit gates killed it pre-submit);
+20261031-0352_4a4b39b (job 34080350) failed its own frame gate 6/9 — the gate compared the
+cloud's point-mean centroid against the mesh's BBOX CENTRE, two different kinds of centres
+(asymmetric sherds differ naturally by >2 mm; the probe measured point-mean vs
+area-weighted centroid at 0.003-0.025 mm on all nine staged clouds). Verdict void, corpus
+untouched by design; the gate's reference was fixed to the area-weighted centroid (147b121)
+and the rerun passed 9/9. The clouds from run 2 and the run of record are draws from the
+same converter at the same defaults; the run of record's draw is the frozen one.
+
+Consequence: input-layout-dependent quantities on the Juglet are measurable from 2026-10-31
+on. Ticket 48 (grow by the curvature formula on the new corpus clouds) carries the
+formula-vs-default decision that ticket 45's run could not.
