@@ -13,7 +13,7 @@ again at that single step to see whether their break thresholds converge.
 **Working in:** chat on Thinkbook16 (2026-10-31)
 **Branch:** 50-make-the-growth-step-independent-of-piece-size, in /c/PR/worktrees/sfs/50
 
-**Worker:** unassigned
+**Worker:** 1a8d9ef2-f346-479a-a838-524f62059a5c
 <!-- Who executes it: the dispatcher replaces `unassigned` with the worker's agent id or a
 short session label. `lead — <why>` plus `ticket_close.sh --lead-executed` is the recorded
 lapse, for the case where the session that wrote the ticket had to run it. -->
