@@ -257,3 +257,27 @@ surfaces48.tsv, juglet_answer.txt). Index rows appended for all four runs, verdi
 No verdict, no ticket close — reported for the lead to conclude. The worktree edit to
 `mesh_processing_headless.cpp` is uncommitted and `t50-step.patch` is untracked in the
 worktree root; committing them is the lead's call.
+
+
+## Lead verification (2026-11-01)
+
+Everything below re-read from the run files, not the worker's message.
+
+- **Diff:** one logic line `sClamped = std::max(uniformMM, s0MM)` (`uniformMM` 0.6 default,
+  `SFS_SPACING_MM` override), diagonal demoted to audit trail, `fixed` policy untouched. Committed
+  here as 5b90061; `t50-step.patch` deleted (reproduces blob b376441 exactly).
+- **No-op proof** (20261101-0110_225eb1c_t50-arms, job 34131845): threshold50b_A.tsv and _B.tsv
+  both md5 ca4f5d515f8376292b5c69135f5bff67, 104 lines each — unpatched+fixed and patched+piece
+  are byte-identical at S=0.6.
+- **Prediction held** (20261101-0102_225eb1c_t50-pa0108, job 34131787): with the face-sized bar
+  (each of top-2 clusters >= 20% npts; raw `two` above 10.5 on PA08 is a 6.3k face + 420-pt
+  fragment — the bar is the honest one): PA01 (9.5, 10.0], PA08 (10.0, 10.5]. PA08 was 4.3 on
+  its old S=0.270. Gap 5.60 -> ~0.5 deg. thr/S at 0.6: PA01 16.3, PA08 17.1.
+- **Juglet at the uniform step** (20261101-0020_225eb1c_t50-step, job 34126231): all 9 pieces
+  keep two face-sized clusters at theta 10 and 12 (J1 7329+10260, J2 651+558, J9 476+417),
+  despite the 3.4-24.5x point loss. Pair genuineness at those thetas is ticket 51's run.
+- **Corpus:** 232 files unchanged in every run (corpus_verdict.txt re-read).
+
+**Verdict: pass — adopt.** The step is now one physical length; thresholds converge as
+threshold ~ 16-17 x S across both pots. Cost stated: growth clouds lose 3.4-24.5x points
+(J9 36085 -> 1475); faces still form at the formula thetas.
