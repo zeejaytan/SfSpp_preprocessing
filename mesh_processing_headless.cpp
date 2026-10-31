@@ -4825,44 +4825,63 @@ int main(int argc, char** argv) {
         int paperNB = 10;
         bool thetaFromEnv45 = false;
         if (const char* e = std::getenv("SFS_PAPER_THETA")) { if (*e) { paperTheta = std::stod(e); thetaFromEnv45 = true; } }
-        // TICKET 45/46: the curvature rule is implemented and OPT-IN, not the default.
-        // theta_deg = 3.3573 * (S / R_fold) * (180 / pi) (ticket 43's law, run of record
-        // 20261030-1511_fa92002_t44-formula): k = 3.3573 is dimensionless, calibrated so the Pot A
-        // median S/R lands on 3.4; S is the resolved spacing ([SPACING-22]) and R_fold the median
-        // fold radius of the downsampled cloud the growth runs on (medianFoldRadius45 above,
-        // dist43.py's quadric rule).
-        // It is OFF by default because the rule needs a fold radius the corpus clouds cannot
-        // supply: ticket 45 (run 20261030-2128_f4a3559_t45-default) measured R 2-4x under-read on
-        // the released clouds, so the no-env default read 18.7-54.4 deg on the Juglet and 8 of 9
-        // pieces grew no surface. Ticket 46 (20261031-0123_a4d72f6_t46-covering4) then showed the
-        // rule itself is right - on an even covering of the same mesh it reproduces the ticket-43
-        // prediction on 8 of 9 pieces within 2 pct - so the defect is the input, not the formula.
-        // Until the input side is answered the shipped default stays 3.4; ask for the rule with
-        // SFS_GROWTH_FORMULA=1, and an explicit SFS_PAPER_THETA still wins over both.
-        bool thetaFormula46 = false;
-        if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) != "0") thetaFormula46 = true; }
+        // TICKET 52: the curvature rule is the SHIPPED DEFAULT. The conservator decided
+        // on 2026-11-01: "alright, i decide to make this fix on by default. and document it
+        // in the fixes ledger". theta_deg = 3.3573 * (S / R_fold) * (180 / pi) (ticket 43's
+        // law, run of record 20261030-1511_fa92002_t44-formula): k = 3.3573 is dimensionless,
+        // calibrated so the Pot A median S/R lands on 3.4; S is the resolved spacing
+        // ([SPACING-22]) and R_fold the median fold radius of the downsampled cloud the
+        // growth runs on (medianFoldRadius45 above, dist43.py's quadric rule). The input
+        // objection that kept it off (ticket 45: vertex-dump clouds under-read R) was closed
+        // by ticket 47, which rebuilt the Juglet clouds with the corpus converter.
+        // The 3.4 constant is the FALLBACK, not the rule: a piece uses theta 3.4 when
+        // R_fold cannot be measured (the [GROWTH-52] FALLBACK line below), when the caller
+        // opts out with SFS_GROWTH_FORMULA=0 or SFS_GROWTH_CAP=0, or when SFS_PAPER_THETA
+        // is set -- that env is the top-level override and still wins over both. The two
+        // knobs are opt-OUT: only the literal value "0" disables, and an EMPTY value
+        // (SFS_GROWTH_FORMULA= with nothing after the equals) is treated as unset, i.e. it
+        // no longer disables anything (that semantics changed with this ticket).
+        // The corpus regression that came with the flip is ticket 52's p292 run
+        // [GROWTH-RUN-ID] this line is COMPLETED by the commit after that run: a run id
+        // embeds its own commit's sha, so the id cannot be written before the run exists.
+        bool thetaFormula46 = true;
+        bool formulaRequested52 = false;  // SFS_GROWTH_FORMULA explicitly enabled: a dead radius stays FATAL
+        if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) == "0") thetaFormula46 = false; else if (*e) formulaRequested52 = true; }
         if (!thetaFromEnv45 && thetaFormula46)
         {
             const double k45 = 3.3573;
             const double rMed45 = medianFoldRadius45();
             if (!(rMed45 > 0.0))
             {
-                std::cerr << "[GROWTH-45] FATAL piece=" << fileNameOnly
+                if (formulaRequested52)
+                {
+                    std::cerr << "[GROWTH-45] FATAL piece=" << fileNameOnly
+                              << " median fold radius is " << rMed45
+                              << " (downsampled cloud unusable)" << std::endl;
+                    std::exit(2);
+                }
+                // ticket 52: the shipped default never dies where 3.4 worked
+                std::cout << "[GROWTH-52] FALLBACK piece=" << fileNameOnly
                           << " median fold radius is " << rMed45
-                          << " (downsampled cloud unusable)" << std::endl;
-                std::exit(2);
+                          << " (downsampled cloud unusable) - using 3.4" << std::endl;
             }
-            paperTheta = k45 * (g_effectiveSpacingMM / rMed45) * (180.0 / M_PI);
-            std::cout << "[GROWTH-45] piece=" << fileNameOnly << " S=" << g_effectiveSpacingMM
-                      << " R_med=" << rMed45 << " theta=" << paperTheta << std::endl;
-            // TICKET 51: cap the formula theta by the piece's own measured cheapest smooth
+            else
+            {
+                paperTheta = k45 * (g_effectiveSpacingMM / rMed45) * (180.0 / M_PI);
+                std::cout << "[GROWTH-45] piece=" << fileNameOnly << " S=" << g_effectiveSpacingMM
+                          << " R_med=" << rMed45 << " theta=" << paperTheta << std::endl;
+            }
+            // TICKET 51/52: cap the formula theta by the piece's own measured cheapest smooth
             // crossing (thetaCross51 above: k = 11 NN graph, both curvatures < 1.0, Kruskal,
-            // largest component reaching 60% of the points with an eligible edge). OPT-IN via
-            // SFS_GROWTH_CAP=1, and only inside this formula block, so with either env unset
-            // the [GROWTH-45] path is byte-identical and no [GROWTH-51] line is printed.
+            // largest component reaching 60% of the points with an eligible edge). DEFAULT ON
+            // since ticket 52 (opt-OUT: only the literal SFS_GROWTH_CAP=0 disables), and only
+            // inside this formula block, so a piece at theta 3.4 via SFS_PAPER_THETA or
+            // SFS_GROWTH_FORMULA=0 prints no [GROWTH-51] line. On a [GROWTH-52] FALLBACK
+            // piece the cap still runs: theta is 3.4 there and the cap is 0.9 x the crossing,
+            // so it cannot fire -- nothing is skipped silently.
             // Fewer than 1000 eligible points logs crossing=none and leaves theta alone.
-            bool growthCap51 = false;
-            if (const char* e51 = std::getenv("SFS_GROWTH_CAP")) { if (*e51 && std::string(e51) != "0") growthCap51 = true; }
+            bool growthCap51 = true;
+            if (const char* e51 = std::getenv("SFS_GROWTH_CAP")) { if (*e51 && std::string(e51) == "0") growthCap51 = false; }
             if (growthCap51)
             {
                 const double cross51 = thetaCross51();

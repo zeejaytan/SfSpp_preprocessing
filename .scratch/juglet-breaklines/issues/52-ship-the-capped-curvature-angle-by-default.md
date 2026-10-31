@@ -11,11 +11,11 @@ capped curvature angle; `SFS_PAPER_THETA` still wins over everything; `SFS_GROWT
 
 **Blocked by:** None — tickets 50 (merged 40c93da) and 51 (merged 9862352) are both on main.
 
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-01)
+**Status:** in-progress (worker running)
+**Working in:** DeepSeek worker session, child of the lead (2026-11-01)
 **Branch:** 52-ship-the-capped-curvature-angle-by-default, in /c/PR/worktrees/sfs/52
 
-**Worker:** unassigned
+**Worker:** DeepSeek ticket worker (child of lead session-120a72b0)
 
 ## Why
 
