@@ -41,17 +41,19 @@ change (ticket 275), alongside Pot B 01. Recorded from the conservator, 2026-10-
 the competing causes and the open measurements are in
 `.scratch/pota-repro/issues/285-pot-c-01-scan-gap.md`.
 
-### The Juglet input clouds are vertex dumps, not samples (2026-10-31)
+### The Juglet input clouds were vertex dumps until 2026-10-31; they are corpus samples now
 
-The nine Dataset/Point/Juglet/*_Point.pcd were written 2026-09-25 by
-original_nurbs_preprocessing/tools/obj_to_pcd.cpp — every mesh vertex copied out, nothing
-sampled — where the corpus standard is cc_mesh_to_pcd.sh (README step 1: CloudCompare, up to
-1,000,000 points on the faces + noise filter; see Dataset/Point/Pot_A/*_cc.log). Cloud points
-equal mesh vertices exactly (J1 24,294 / J2 2,565 / J9 2,094). Stages that downsample first
-cannot see this; anything that reads the input cloud's layout can — ticket 45's fold radius
-read folds 2-4x too tight and theta 4x too steep, ticket 46's even covering reproduced the
-formula. Do not score input-layout-dependent quantities on the Juglet until the clouds are
-regenerated with the corpus converter. Full record:
+The nine Dataset/Point/Juglet/*_Point.pcd were vertex dumps (written 2026-09-25 by
+obj_to_pcd.cpp — every mesh vertex copied out, 2 094-24 294 points) until ticket 47
+regenerated them on 2026-10-31 with the corpus converter cc_mesh_to_pcd.sh, defaults only:
+~1 000 000 sampled on the faces, SOR keeping 840 666-841 413 points (ratio 0.841, Pot A
+reference 0.843), ASCII PCD with normals, coordinates left in the GT frame (no global
+shift). The unseeded draw is frozen in Dataset/Point/Juglet/MANIFEST_JUGLET_CC.tsv (copy at
+docs/notes/MANIFEST_JUGLET_CC.tsv); the old dumps are archived at
+SfSpp/attic/20261031-juglet-vertex-dumps. **Any Juglet number measured before 2026-10-31
+that reads the input cloud's layout was measured on the dumps** — ticket 45's fold radius
+read folds 2-4x too tight and theta 4x too steep; ticket 46's even covering reproduced the
+formula. A rebuild is a corpus change, never a silent refresh. Full record:
 docs/notes/2026-10-31-juglet-cloud-provenance.md.
 The whole OBJ-to-reassembly chain and this step's place in it:
 ../structure-from-sherds-pp/docs/e2e-obj-to-reassembly.md.
