@@ -74,8 +74,7 @@ subs = {"__JOBNAME__": jobname, "__RUNDIR__": rundir, "__RUNID__": runid,
         "__TIME__": wtime, "__PARTA__": parta}
 for k, v in subs.items():
     text = text.replace(k, v)
-open(dst, "w", encoding="utf-8", newline="
-").write(text)
+open(dst, "w", encoding="utf-8", newline="\n").write(text)
 PYEOF
 [ $? -eq 0 ] || { echo "render failed" >&2; exit 6; }
 
