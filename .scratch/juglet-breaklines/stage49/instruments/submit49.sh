@@ -20,7 +20,10 @@ TIME=${2:?usage: submit49.sh <tag> <walltime>}
 
 PHASE=4
 PARTA=committed
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
+# The branch is named, not discovered: the submitter runs on Spartan from a plain directory of the
+# commit's instruments (the run is built from origin, never from a checkout), so there is no local
+# HEAD to ask.  BRANCH=... overrides it for a re-run of an older head.
+BRANCH=${BRANCH:-49-make-the-fold-radius-scale-free}
 INSTR=$(cd "$(dirname "$0")" && pwd)
 CANON=/data/gpfs/projects/punim2657/sfs_preprocessing
 RUNS=/data/gpfs/projects/punim2657/SfSpp/runs
@@ -30,11 +33,13 @@ ATTIC=/data/gpfs/projects/punim2657/SfSpp/attic/20261031-juglet-vertex-dumps
 cd "$INSTR"
 
 # ---- the commit that will be built: origin/<branch>, not whatever is checked out here
-git fetch origin --quiet || { echo "[SUBMIT49] FATAL git fetch failed"; exit 2; }
-NEW=$(git rev-parse "origin/$BRANCH") || { echo "[SUBMIT49] FATAL no origin/$BRANCH"; exit 2; }
-HEADNOW=$(git rev-parse HEAD)
-if [ "$HEADNOW" != "$NEW" ]; then
-  echo "[SUBMIT49] WARN local HEAD $HEADNOW differs from origin/$BRANCH $NEW -- the run builds origin"
+git -C "$CANON" fetch --no-tags origin "+refs/heads/*:refs/remotes/origin/*" > /dev/null 2>&1 \
+  || { echo "[SUBMIT49] FATAL git fetch in $CANON failed"; exit 2; }
+NEW=$(git -C "$CANON" rev-parse "refs/remotes/origin/$BRANCH" 2>/dev/null) \
+  || { echo "[SUBMIT49] FATAL no origin/$BRANCH in $CANON"; exit 2; }
+LOCAL=$(git -C "$INSTR" rev-parse HEAD 2>/dev/null || echo none)
+if [ "$LOCAL" != "none" ] && [ "$LOCAL" != "$NEW" ]; then
+  echo "[SUBMIT49] WARN the submitter came from $LOCAL but origin/$BRANCH is $NEW -- the run builds origin"
 fi
 GIT7=$(printf "%s" "$NEW" | cut -c1-7)
 echo "[SUBMIT49] branch $BRANCH commit $NEW (${GIT7})"
