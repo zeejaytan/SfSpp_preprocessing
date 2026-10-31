@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 # ticket 47 gates -- frame, density, spacing; freeze-manifest rows.
-# Frame gate: the new cloud must sit where the mesh vertices sit (~700 mm scan-pose
-# frame, the frame the GT transforms were derived in).  A real -GLOBAL_SHIFT AUTO
-# recentering is a thousands-of-mm constant offset, so: max|coord| < 5000 mm,
-# |center-mesh_center| <= 2 mm/axis, |extent-mesh_extent| <= 2 mm/axis, first-3-rows
+# Frame gate: the new cloud must sit where the mesh sits (~700 mm scan-pose frame,
+# the frame the GT transforms were derived in).  A real -GLOBAL_SHIFT AUTO recentering
+# is a thousands-of-mm constant offset, so: max|coord| < 5000 mm, |center -
+# mesh_area_centroid| <= 2 mm/axis, |extent-mesh_extent| <= 2 mm/axis, first-3-rows
 # distance to the nearest mesh vertex <= 1.0 mm; the old dump (mesh vertices copied
-# out) must match the mesh extent exactly.  Density gate: sampled 999k-1005k, kept
+# out) must match the mesh extent exactly.
+#
+# Reference fixed 2026-10-31 after run 20261031-0352_4a4b39b_t47-jugletcc: the center
+# gate first compared the cloud point-mean against the mesh BBOX CENTER, and three
+# asymmetric pieces missed on that alone (J1 2.826, J3 3.837, J5 2.408 mm) while
+# extent agreed to <= 0.027 mm and first-3 rows sat <= 0.358 mm from the mesh --
+# the reference conflated asymmetry with shift.  An area-uniform sample's mean
+# estimates the AREA-weighted centroid; against that reference the same nine
+# staging clouds measured 0.003-0.025 mm (probe /tmp/areaprobe.py, that run).  Density gate: sampled 999k-1005k, kept
 # 800k-900k (Pot A 01: 1000088 -> 843433), ratio 0.78-0.90, normals in FIELDS.
 # Exit 0 = all gates pass on all nine; 1 = any FAIL; 2 = parse trouble.
 import argparse, hashlib, json, math, os, sys
@@ -49,6 +57,17 @@ def mesh_area(v, faces):
         a, b, c = v[f[0]], v[f[1]], v[f[2]]
         total += 0.5 * float(np.linalg.norm(np.cross(b - a, c - a)))
     return total
+
+
+def mesh_area_centroid(v, faces):
+    tot_a = 0.0
+    tot_c = np.zeros(3)
+    for f in faces:
+        a, b, c = v[f[0]], v[f[1]], v[f[2]]
+        ar = 0.5 * float(np.linalg.norm(np.cross(b - a, c - a)))
+        tot_a += ar
+        tot_c += ar * (a + b + c) / 3.0
+    return tot_c / tot_a
 
 
 def read_pcd(path, first_n=3):
@@ -175,7 +194,8 @@ def main():
         area = mesh_area(v, faces)
         m_mins, m_maxs = v.min(axis=0), v.max(axis=0)
         m_ext = m_maxs - m_mins
-        m_ctr = (m_mins + m_maxs) / 2.0
+        m_ctr = mesh_area_centroid(v, faces)  # area-uniform sample mean estimates this,
+                                             # not the bbox center (run 0352_4a4b39b)
 
         header, first, n, mins, maxs, ext, ctr, maxabs = read_pcd(pcd)
         _, _, on, _, _, o_ext, _, _ = read_pcd(old)
