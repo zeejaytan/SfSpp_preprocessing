@@ -174,7 +174,9 @@ run_arm() {
       SFS_AXIS_FILE="$ST/Dataset/Axes/${PIECE}_Axis.xyz" \
       SFS_STATUS_FILE="$CELL/status_raw.tsv" $ENVS env ) > "$CELL/env_probe.txt" 2>"$CELL/env_probe.err"
   PROBE_RC=$?
-  grep -a "^SFS_" "$CELL/env_probe.txt" | sort > "$CELL/env_probe_sfs.txt" || true
+  # env proof covers only the growth knobs; SFS_AXIS_FILE and SFS_STATUS_FILE are
+  # instrumentation inputs set in every arm by the stage51 protocol and are excluded.
+  grep -a -E "^SFS_(GROWTH_|PAPER_)" "$CELL/env_probe.txt" | sort > "$CELL/env_probe_sfs.txt" || true
   log "env probe rc=$PROBE_RC saw: [$(tr "\n" ";" < "$CELL/env_probe_sfs.txt")]"
 
   LOG=$CELL/logs/mesh.log
