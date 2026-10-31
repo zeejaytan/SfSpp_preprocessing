@@ -13,7 +13,7 @@ paper-compliance story simplifies with it.
 
 **Blocked by:** 47 (needs the corpus-conforming Juglet clouds installed).
 
-**Status:** ready-for-human
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-31)
 **Branch:** 48-grow-by-the-curvature-formula-on-corpus-clouds, in /c/PR/worktrees/sfs/48
 
@@ -49,15 +49,17 @@ paper-compliance story simplifies with it.
 
 ## Acceptance
 
-- [ ] Verify arm: 9 of 9 Juglet cells on ticket-47 clouds (corpus md5 equals ticket 47's MANIFEST),
-      zero covering artifacts in any input; Pot A corpus unchanged.
-- [ ] `theta_check` vs k43 at the 2 % band with per-piece deltas; outcome class and surface counts per
-      piece; pair table for every two-surface cell.
-- [ ] Pot A control: same config as t45 arm F expectations, counts within 2 %.
-- [ ] Default flip: diff confined to `mesh_processing_headless.cpp` (the `2263532` gate inverted to
-      default-on) + stage48 instruments + this ticket file; default-check run shows `[GROWTH-45]` lines
-      with no env and md5-equal outputs vs the verify arm; `SFS_PAPER_THETA=3.4` re-proven on one piece.
-- [ ] Covering retired (banner + COPIES.md note + reference check); ticket 16 notified.
+- [x] Verify arm: 9 of 9 Juglet cells on ticket-47 clouds (corpus md5 equals ticket 47's MANIFEST),
+      zero covering artifacts in any input; Pot A corpus unchanged. — ran, corpus gate 9/9 ok.
+- [x] `theta_check` vs k43 at the 2 % band with per-piece deltas; outcome class and surface counts per
+      piece; pair table for every two-surface cell. — produced; the band was **missed on 17 of 17**.
+- [x] Pot A control: same config as t45 arm F expectations, counts within 2 %. — exact to 5 dp.
+- [x] Default flip: **NOT EXECUTED** — the ticket makes it conditional on the verify arm holding, and
+      it did not (0 of 17 in band). The default stays 3.4 with the formula behind `SFS_GROWTH_FORMULA`.
+      The re-derivation that would earn the flip is ticket 49.
+- [x] Covering retired: **NOT EXECUTED** — the same condition gates it. The covering remains a
+      diagnostic instrument; retiring it and telling ticket 16 ride with ticket 49, which replaces
+      the measurement the covering was standing in for.
 - [ ] `run.json` and index rows for every job (verdicts left empty), poll + final `sacct` recorded.
 - [ ] Worker reports numbers and paths; the lead runs its own hidden acceptance check before close.
 
@@ -176,3 +178,26 @@ Next step is a decision for the conservator: either calibrate k against the corp
 (re-derive it on the corpus clouds, keeping the law), or make R scale-free (fix the neighbourhood's
 physical diameter rather than its point count, so R stops depending on S), or restore the density the
 calibration assumed. The second is the one that makes the law portable across inputs.
+
+### Close-out (lead, 2026-10-31)
+
+Closed on the ticket's own conditional: the verify arm did not hold, so parts 2 and 3 do not run.
+The conservator chose the third route from the list above — **make the fold radius scale-free** — and
+it is written up as **ticket 49** (`49-make-the-fold-radius-scale-free.md`).
+
+The measurement that makes ticket 49 well-posed, and that is worth keeping here: `k = 30` neighbours is
+not a fixed physical patch. At each piece's spacing it spans
+
+| | patch radius at calibration | patch radius on the corpus clouds | ratio |
+|---|---|---|---|
+| J1 | 1.044 mm | 0.974 mm | 0.93x |
+| J2 | 0.652 mm | 0.437 mm | 0.67x |
+| J9 | 0.629 mm | 0.363 mm | 0.58x |
+
+so the estimator was comparing curvature over patches that shrink with the input, by up to 1.7x. That
+is the mechanism behind `R ~ S^0.22` in the section above, and it is why a fixed neighbour count cannot
+carry a constant between sampling scales. Ticket 49 replaces the count with a fixed physical diameter
+and re-derives k on the corpus clouds.
+
+Index verdict for the run: `pass` — the harness measured faithfully; the prediction it tested failed.
+Verdict and note written by the lead, not the job.
