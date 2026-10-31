@@ -13,11 +13,11 @@ paper-compliance story simplifies with it.
 
 **Blocked by:** 47 (needs the corpus-conforming Juglet clouds installed).
 
-**Status:** in-progress
+**Status:** ready-for-human
 **Working in:** chat on Thinkbook16 (2026-10-31)
 **Branch:** 48-grow-by-the-curvature-formula-on-corpus-clouds, in /c/PR/worktrees/sfs/48
 
-**Worker:** unassigned
+**Worker:** 5c312d24-cbe9-4678-acc8-68b0a1043c5e (DSH subagent; rate-limited mid-build at the sbatch template, resumed, finished part 1; the lead verified its return and wrote this record)
 
 ## Three parts
 
@@ -132,3 +132,47 @@ Artifacts copied to `SfSpp_preprocessing/artifacts/t48-verify/`: `pipeline_cells
 
 Index row appended by the job with `verdict` and `human_note` empty. No verdict, no ticket close,
 no parts 2–3 — reported for the lead to conclude.
+
+### Part 1 — lead verification and the mechanism (lead, 2026-10-31)
+
+**The lead's own acceptance check ran and passed** (`C:/PR/artifacts/dsh-handover/48-verify-arm/accept48b.py`,
+run against the worktree and the fetched artifacts): source blob `0727cca9da9b` identical to
+`origin/main` (blob hashes, not working-tree md5 — CRLF), diff confined to `stage48/**` + this
+ticket file (19 files), 17/17 rows carry `theta_env = SFS_GROWTH_FORMULA=1` with `pipeline_rc = 0`,
+corpus gate 9/9 `ok` against the ticket-47 manifest, `corpus_covering_sweep.txt` / `corpus.diff` /
+`inputs.diff` all 0 bytes, control 8/8 thetas identical to 5 dp and counts within 0.08%.
+Index verdict written by the lead: `pass` (the run is valid; the prediction it tested did not hold).
+
+**Why the prediction failed — measured, not guessed.** The formula's two inputs per cell, from
+`[SPACING-22]` and `[GROWTH-45]`, compared against the spacing the ticket-43 calibration was made at:
+
+| piece | S_ref (t45) | S_now (corpus) | S ratio | R_cal | R_now | R ratio | theta_ref | theta_now |
+|---|---|---|---|---|---|---|---|---|
+| J1 | 0.3380 | 0.3151 | 0.932 | 6.319 | 5.594 | 0.885 | 10.29 | 10.837 |
+| J2 | 0.2109 | 0.1415 | 0.671 | 3.272 | 2.465 | 0.753 | 12.40 | 11.044 |
+| J3 | 0.2153 | 0.1678 | 0.780 | 4.429 | 3.603 | 0.814 | 9.35 | 8.960 |
+| J4 | 0.2156 | 0.1601 | 0.743 | 4.046 | 3.161 | 0.781 | 10.25 | 9.746 |
+| J5 | 0.2386 | 0.2123 | 0.890 | 5.251 | 4.386 | 0.835 | 8.74 | 9.312 |
+| J6 | 0.2237 | 0.1973 | 0.882 | 5.273 | 4.282 | 0.812 | 8.16 | 8.862 |
+| J7 | 0.2580 | 0.2200 | 0.853 | 5.737 | 4.323 | 0.754 | 8.65 | 9.787 |
+| J8 | 0.2216 | 0.1726 | 0.779 | 4.242 | 3.504 | 0.826 | 10.05 | 9.472 |
+| J9 | 0.2035 | 0.1174 | 0.577 | 3.087 | 2.379 | 0.771 | 12.68 | 9.497 |
+
+A log-log regression of `R_now/R_cal` against `S_now/S_ref` gives **R ~ S^0.22**, so
+**theta = k x S / R scales as S^0.78** — the fold radius is not spacing-invariant. The constant
+`k = 3.3573` was calibrated at the ticket-45 spacing (~0.34 mm on the dumps); on the corpus clouds
+the pipeline's own voxel spacing falls to 0.117-0.315 mm and the ratio k x S/R moves with it.
+That single exponent explains both halves of the failure: the theta miss (0 of 17) and, downstream,
+the five pieces whose growth collapsed to one cluster.
+
+**What this does NOT say.** It does not say the ticket-43 law is wrong — the within-vessel correlation
+(Pot A +0.9115, Juglet +0.9581) still holds and Pot A still reproduces its own 1.08-1.39x. It says the
+**law as written is not scale-free**: `theta = k x S/R` is only valid at the sampling scale where k was
+measured, and any change of input density moves the answer through R.
+
+**Parts 2 and 3 were NOT executed** — the ticket's own instruction ("if it does not [hold], report where
+it lands and stop"). No default flip; the covering is not retired; ticket 16 not yet told.
+Next step is a decision for the conservator: either calibrate k against the corpus sampling scale
+(re-derive it on the corpus clouds, keeping the law), or make R scale-free (fix the neighbourhood's
+physical diameter rather than its point count, so R stops depending on S), or restore the density the
+calibration assumed. The second is the one that makes the law portable across inputs.
