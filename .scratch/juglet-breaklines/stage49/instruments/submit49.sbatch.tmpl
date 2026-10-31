@@ -303,8 +303,11 @@ fi
 # ---- k re-derivation: for pieces with a genuine wall pair, the k that puts the grown pair at
 # wall separation, with spread and n, per vessel and pooled.  This is a FIT on the pieces it is
 # then scored on -- the table says so; it is not a test.
+# NOTE: --cells is the cells DIRECTORY (k49.py reads each <cell>/cell.tsv for the [GROWTH-45]
+# S= field); passing pipeline_cells.tsv here failed the first run of this grid with
+# NotADirectoryError, which is why the path below is the directory, not the tsv.
 "$PY" "$INSTR/k49.py" --out "$OUT" --pairs "$OUT/pairs49.tsv" --wall "$OUT/wall49.tsv" \
-  --cells "$OUT/cells-pipeline/pipeline_cells.tsv" > "$OUT/phase8c_k49.log" 2>&1
+  --cells "$OUT/cells-pipeline" > "$OUT/phase8c_k49.log" 2>&1
 krc=$?
 [ -s "$OUT/phase8c_k49.log" ] && tail -40 "$OUT/phase8c_k49.log"
 if [ "$krc" -ne 0 ]; then
