@@ -9,7 +9,7 @@ again at that single step to see whether their break thresholds converge.
 
 **Blocked by:** None (can start immediately)
 
-**Status:** in-progress
+**Status:** done
 **Working in:** chat on Thinkbook16 (2026-10-31)
 **Branch:** 50-make-the-growth-step-independent-of-piece-size, in /c/PR/worktrees/sfs/50
 
