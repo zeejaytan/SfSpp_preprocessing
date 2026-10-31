@@ -19,7 +19,9 @@ and test the resulting law on both vessels.
 
 **Blocked by:** 48 (the diagnosis this ticket acts on) — resolved.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-10-31)
+**Branch:** 49-make-the-fold-radius-scale-free, in /c/PR/worktrees/sfs/49
 
 **Worker:** unassigned
 
