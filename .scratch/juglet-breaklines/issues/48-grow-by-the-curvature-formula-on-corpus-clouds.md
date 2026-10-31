@@ -64,3 +64,71 @@ paper-compliance story simplifies with it.
 **Needs-eye:** the 3x3 grown-surface panel on the new clouds, beside ticket 46's.
 
 ## Comments
+### Part 1 verify arm — run record (worker, 2026-10-31)
+
+**Run** `20261031-1428_93b3c07_t48-t48-verify`, job `34096804`, branch commit `93b3c07`,
+partition sapphire, walltime requested 00:30:00, `sacct`: `COMPLETED 0:0`, elapsed `00:15:44`.
+Source unchanged (no `mesh_processing_headless.cpp` edit); the formula path is selected by
+`SFS_GROWTH_FORMULA=1` alone, verified per cell in `env_proof.tsv` (17/17 read exactly that env,
+`SFS_GROWTH_MODE` unset). Binary built in-job from `93b3c07`, md5 `82834d2291357b2759b4266ebb2e0f5e`.
+Instruments md5 commit == rundir (14/14 files).
+
+**Corpus gate passed.** 9/9 Juglet clouds on `$DS/Point/Juglet` match `MANIFEST_JUGLET_CC.tsv` on
+both `pcd_md5` and `kept_points` (840666, 841310, 840837, 840973, 841282, 841413, 840783, 841399,
+841086); `corpus_covering_sweep.txt` is 0 lines (no `*_covering.pcd` under either corpus Point tree);
+8/8 Pot A released clouds recorded, not gated. `corpus.diff` and `inputs.diff` are both 0 bytes
+(before/after identical), so no input was written to.
+
+**theta vs k43, 2% band: 0 of 17 in band.** Computed / reference / delta:
+
+| piece | computed | k43 | d% | | piece | computed | k43 | d% |
+|---|---|---|---|---|---|---|---|---|
+| J1 | 10.83673 | 10.29 | +5.31 | | Pot_A_01 | 5.70709 | 4.36 | +30.90 |
+| J2 | 11.04426 | 12.40 | −10.93 | | Pot_A_02 | 4.57863 | 3.30 | +38.75 |
+| J3 | 8.95950 | 9.35 | −4.18 | | Pot_A_03 | 4.43321 | 3.76 | +17.91 |
+| J4 | 9.74587 | 10.25 | −4.92 | | Pot_A_04 | 3.57188 | 2.92 | +22.33 |
+| J5 | 9.31229 | 8.74 | +6.55 | | Pot_A_05 | 4.22457 | 3.50 | +20.70 |
+| J6 | 8.86226 | 8.16 | +8.61 | | Pot_A_06 | 4.08171 | 3.17 | +28.76 |
+| J7 | 9.78652 | 8.65 | +13.14 | | Pot_A_07 | 2.88049 | 2.66 | +8.29 |
+| J8 | 9.47194 | 10.05 | −5.75 | | Pot_A_08 | 3.92527 | 3.61 | +8.73 |
+| J9 | 9.49636 | 12.68 | −25.11 | | | | | |
+
+Juglet computed/reference ratio: mean 0.981, range 0.749 (J9) to 1.131 (J7); mean |delta| 9.4%,
+largest 25.1% (J9). Pot A ratio: mean 1.220, range 1.083–1.387, mean |delta| 22.0% — i.e. Pot A
+reproduces the 1.09–1.38x the honesty line already records, digit for digit against t45 arm F.
+
+**The formula's two inputs per cell** (`[SPACING-22]` and `[GROWTH-45]`): on the corpus clouds
+S is the pipeline's own voxel spacing, 0.117–0.315 mm (J1 0.31512, J2 0.14153, J3 0.16783,
+J4 0.16015, J5 0.21234, J6 0.19726, J7 0.21996, J8 0.17255, J9 0.11744), never reaching the 0.6 mm
+clamp; on Pot A 6 of 8 hit the clamp (S=0.60000) and the other two read 0.58174 / 0.29288 / 0.27037.
+R_med on Juglet runs 2.38–5.59 mm.
+
+**Surfaces: 12 of 17 pieces grew two; 4 of 9 Juglet.** Two: J1 (420 / 80 775), J3 (540 / 42 040),
+J5 (1 269 / 48 068), J6 (1 736 / 40 476), and all 8 Pot A. One cluster, no surface: J2, J4, J7, J8, J9
+— each logged `pass 1 done: 1 clusters`, `final clusters=1` after retry (`status_outcome none`).
+
+**Pair table** (`pairs48.tsv`, 12 rows, stage44 protocol). Pot A, all 8: `med_angle_deg` 2.62–4.19,
+`coin` 0.000, `med_t_signed` −3.55 to −8.39 mm (a consistent signed offset, one face from the other).
+Juglet, the 4 that grew: `med_angle_deg` 42.05 (J3), 43.98 (J6), 65.15 (J5), 65.69 (J1);
+`med_nn` 7.07 / 10.07 / 14.59 / 25.89 mm; `coin` 0.0018–0.0072. `nests48.tsv` shared-over-smaller
+0.084 (J1), 0.466 (J3), 0.118 (J5), 0.274 (J6).
+
+**Pot A control vs t45 arm F:** thetas identical to 5 decimals on 8/8 (delta 0.00%); clusters 8/8
+equal; surface point counts within 0.08% (largest −0.08% on Pot_A_08 surf0). The control arm is
+bit-deterministic across runs.
+
+**Anomalies / notes.** (1) `/opt/sfs-pristine` is ABSENT on spartan-bm197, so `pristine.txt` records
+absence rather than a baseline — the same as previous stage runs, not new. (2) The run directory tag
+reads `t48-t48-verify` because the submitter prefixes `t48-` to the tag I passed (`t48-verify`);
+cosmetic, the measurement is unaffected. (3) One earlier submit attempt at commit `79e3925` died in
+the renderer (a split newline literal in `submit48.sh`, fixed in `93b3c07`); it never reached sbatch,
+left no jobid and no geometry, and its directory was recorded in
+`20261031-1427_79e3925_t48-t48-verify-INDEX.txt` before removal.
+
+Artifacts copied to `SfSpp_preprocessing/artifacts/t48-verify/`: `pipeline_cells.tsv`,
+`theta_check48.tsv`, `corpus_gate.tsv`, `pairs48.tsv`, `nests48.tsv`, `surfaces48.tsv`,
+`control48.tsv`, `corpus.diff`, `inputs.diff`, `corpus_covering_sweep.txt`, `run-meta.txt`,
+`geometry_counts.tsv`, the three phase logs, and `juglet_panel48.png`.
+
+Index row appended by the job with `verdict` and `human_note` empty. No verdict, no ticket close,
+no parts 2–3 — reported for the lead to conclude.
