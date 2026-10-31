@@ -19,11 +19,11 @@ and test the resulting law on both vessels.
 
 **Blocked by:** 48 (the diagnosis this ticket acts on) — resolved.
 
-**Status:** in-progress
+**Status:** ready-for-human
 **Working in:** chat on Thinkbook16 (2026-10-31)
 **Branch:** 49-make-the-fold-radius-scale-free, in /c/PR/worktrees/sfs/49
 
-**Worker:** unassigned
+**Worker:** 3730bd77-9818-494a-ab98-d6ef826d84ab (one-shot; submitted both runs, wrote no verdict, merged nothing)
 
 ## The change
 
@@ -359,3 +359,97 @@ than a baseline, as in every previous stage run. (3) The run tag reads `t49-patc
 **Looked at it.** The r1.0 corpus panel shows J1, J4, J5, J6, J8 covered by the two grown surfaces
 and J2, J3, J7, J9 showing the grey mesh only; the r1.0 attic panel shows J1 grown and the other
 eight collapsed. The outcome column is what the pictures show.
+
+## Lead verification (2026-10-31, coordinating session)
+
+Re-read the run's own tables and recomputed what could be recomputed. **Three of my own first-pass
+claims failed re-checking and are corrected here before anything else**, because a verification that
+only reports the worker's errors is not a verification.
+
+### Corrections to my own first pass
+
+1. **I reported the calibration regression as 299% / 197% mean |delta|. Wrong.** I compared the attic
+   arms against the *ticket-43 reference* (the LAW) instead of against **ticket 45's own output**, which
+   is what clause 2 of this ticket's test asks for. Recomputed against ticket 45's own table the
+   regression is **r1.0 mean 18.19% / median 15.52% (within 5%: 2/9)**, **r1.5 mean 11.47% / median
+   11.88% (within 5%: 1/9)** — which is what the worker reported. The worker was right and I was wrong.
+2. **I wrote that the worker's attic figures "do not match its own theta_check49.tsv". Wrong** — they
+   match to the printed precision. The 299%/197% figures were mine, computed against the wrong reference.
+3. **I wrote that the ticket's bar "names five pieces" and only 1 of 5 met it. Too narrow.** The
+   parenthetical at :57 lists the five pieces whose wall thickness is *known*; the bar's clause 1 is
+   "every piece grows two surfaces", scored over all nine. The correct statement of the failure is
+   clause 1 at 5 of 9, not "1 of 5 named pieces".
+
+### What stands, and it is the headline
+
+**`pair_over_wall` is stored inverted.** `k49.py:179` computes `ratio = w / s_now` (wall divided by
+pair) and writes it at `:192` under the name `pair_over_wall`. The column therefore holds **wall/pair**,
+not pair/wall. Section D's table above labels it pair/wall and reads it as such, so the claim
+"four pieces grow a pair **1.11-1.28x the measured wall**" is inverted: those pairs are **0.78-0.90x**
+the wall. Recomputed from the same rows:
+
+| piece | arm | pair med_nn mm | wall mm | **pair/wall** | angle deg |
+|---|---|---|---|---|---|
+| J4 | r1.0-corpus | 2.051 | 2.626 | **0.781** | 21.81 |
+| J5 | r1.0-corpus | 2.512 | 2.959 | **0.849** | 11.23 |
+| J6 | r1.0-corpus | 2.362 | 2.617 | **0.903** | 12.49 |
+| J8 | r1.0-corpus | 1.807 | 2.161 | **0.836** | 13.36 |
+| J1 | r1.0-corpus | 26.488 | 2.054 | **12.897** | 69.50 (two sides of the piece) |
+| J7 | r1.5-corpus | 15.720 | 3.295 | **4.82** | 45.29 (two sides) |
+| Pot A 01-08 | both | 3.56-8.50 | 3.61-8.29 | **0.971-1.026** | 2.62-13.66 |
+
+The direction error does not change the substance — a pair at 0.78-0.90x wall is a **different thing
+from tickets 44/46's 0.15x**, and it is the change this ticket was built to find. But "wider than the
+wall" and "slightly narrower than the wall" are different physical claims, and the record must carry
+the right one.
+
+### The bar, scored honestly
+
+- **Clause 1, every piece grows two surfaces: NOT MET.** r1.0-corpus grows a pair on **5 of 9**
+  Juglet (J1 J4 J5 J6 J8; none on J2 J3 J7 J9); r1.5-corpus on **5 of 9** (J4 J5 J6 J7 J8; none on
+  J1 J2 J3 J9). Pot A 8 of 8 at both radii.
+- **The five pieces whose wall is known** (:57): J2 no pair either radius; J3 no pair either radius;
+  **J5 pair 2.5115 mm against a known wall of 2.900 = 0.866 (the one that lands at wall scale)**;
+  J7 no pair at r1.0 and 4.82x wall at r1.5; J9 no pair either radius.
+- **Clause 2, the calibration case intact: NOT MET.** The attic arms move 11.5-18.2% mean against
+  ticket 45's own numbers, with 1-2 of 9 pieces inside 5%. Ticket 45's figures are not reproduced.
+- **Against the ticket-43 reference the fixed radius is worse, not better**: Juglet k=30 (t48)
+  mean 9.39% -> r1.0 19.76% -> r1.5 17.13%; Pot A 22.04% -> 46.85% -> 24.35%.
+
+**Verdict: the bar is not met, and the law is not portable.** The measurement improved — the pairs now
+resolve to wall scale instead of two layers of one face — but the *law* did not transfer, and the
+calibration case that already worked was not preserved.
+
+### A defect in the instrument's own criterion
+
+`k49.py:165-172` calls a pair "genuine" only when `med_angle_deg >= 5.0`, on the reasoning that a
+wall's two faces meet the break edge at an angle. But the two faces of a wall are **near-parallel
+almost everywhere** — they are separated by the wall, not tilted across it. The consequence is that
+the criterion **excludes the correct answer**: PA02-PA08 sit at **0.97-1.03x their own wall** (the
+best evidence in the run) and are thrown out for having angles of 2.6-4.2 deg. Separation, not angle,
+is what distinguishes a wall from two layers of one face (0.2-0.3 mm vs 2-3 mm); the angle test
+conflates the two. Section E works around this with a second, looser criterion, which is why it and
+`k49.py`'s grouped output disagree on Pot A's n (16 vs 2). A future stage should test separation first
+and use the angle only to reject *large*-separation coincidences.
+
+**One more inverted statement:** section D says the ray wall "runs 0.06-0.3 mm **high** on the corpus
+clouds"; the numbers in the same paragraph show it running **low** (J2 known 2.693 vs measured 2.481;
+J3 2.452 vs 2.274; J5 2.900 vs 2.819; J7 3.263 vs 3.244; J9 2.595 vs 2.352).
+
+### k
+
+The re-derivation stands as a **fit, not a test**: Juglet median **3.9848** (n=8, range 3.7192-4.2980),
+Pot A median **3.4030** (n=16, range 3.2727-3.4590), a **17% split** — one k does not serve both
+vessels, and Pot A keeps ticket 43's 3.3573 to 1.4% while the Juglet wants 1.19x it. On the stricter
+genuine-only flag Pot A has n=2 (PA01 only), median 3.2847.
+
+### What I verified myself
+
+`accept49.py` PASS after I fixed **three defects in my own check** (recorded in the file): it searched
+the whole 5000-line blob for `nearestKSearch` (used ~16 other places legitimately) instead of the
+`medianFoldRadius45()` body; it looked for `0.5 * x * x` when the variable is `x45`; and it looked for
+`R_PATCH=1.0` when the run logs `patch_r=1.00000`. Diff confined to `mesh_processing_headless.cpp` +
+`stage49/**` + this ticket (22 files); corpus gate 9/9 on `pcd_md5` and `kept_points`; `corpus.diff`
+and `inputs.diff` 0 bytes; both radii evidenced [1.0, 1.5].
+
+**Nothing merged. No source default changed. Ticket 45's default flip remains unadopted.**
