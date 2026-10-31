@@ -4841,9 +4841,12 @@ int main(int argc, char** argv) {
         // knobs are opt-OUT: only the literal value "0" disables, and an EMPTY value
         // (SFS_GROWTH_FORMULA= with nothing after the equals) is treated as unset, i.e. it
         // no longer disables anything (that semantics changed with this ticket).
-        // The corpus regression that came with the flip is ticket 52's p292 run
-        // [GROWTH-RUN-ID] this line is COMPLETED by the commit after that run: a run id
-        // embeds its own commit's sha, so the id cannot be written before the run exists.
+        // Ticket 52's own corpus regression run is 20261101-0428_ba9e425_p292-flipcap
+        // (job chain 34146541/34146545/34146550): 237/292 sound lanes at bar vs the
+        // 281/292 baseline 20261025-0134_787c149_p292-rescore -- 41 lanes lost, 0 gained,
+        // all in pots C-J, coverage collapsing as the larger default theta grows clusters
+        // across true edgelines. Per the ticket's merge rule (<276) the flip was NOT
+        // merged; see the ticket for the attribution (attrib52.tsv in that run dir).
         bool thetaFormula46 = true;
         bool formulaRequested52 = false;  // SFS_GROWTH_FORMULA explicitly enabled: a dead radius stays FATAL
         if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) == "0") thetaFormula46 = false; else if (*e) formulaRequested52 = true; }
