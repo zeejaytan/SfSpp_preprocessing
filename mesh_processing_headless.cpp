@@ -1503,6 +1503,8 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 
 // TICKET 22: SFS_SPACING_POLICY=piece needs the piece's bounding-box diagonal and its
 // own median nearest-neighbour spacing, both measured on the raw cloud.
+// TICKET 50: the diagonal is still measured and logged, but it no longer sets the step; only s0
+// does, and only as a floor under SFS_SPACING_MM.
 void measurePieceSpacing(const std::string& pcdFile, double& diagMM, double& s0MM)
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -4512,13 +4514,22 @@ int main(int argc, char** argv) {
         int dsTarget244 = 0;
         if (const char* e = std::getenv("SFS_DOWNSAMPLE_TARGET")) { if (*e) dsTarget244 = std::stoi(e); }
         float samplingRadius244 = 0.6F;
-        // TICKET 37: the adaptive step is the DEFAULT from here on. Ticket 36 measured it on the
-        // sample pot: 8 of 8 two-surface, pairs unchanged or better, and more than double the
-        // samples on the small sherds, so the conservator asked for the change (2026-10-27). The
-        // step is the piece's own: S = min(0.6, max(s0, diag/SFS_SPACING_SAMPLES)), so a big piece
-        // keeps the 0.6 mm it has always had and only a small one is sampled finer.
-        // SFS_SPACING_POLICY=fixed is the override that restores the pre-37 behaviour exactly
-        // (ticket 37 proof 1: the same SampledWithNormals.ply md5 as the pre-change binary).
+        // TICKET 50: the step is ONE ABSOLUTE LENGTH, not a fraction of the piece.
+        // Ticket 37 made S = min(0.6, max(s0, diag/SFS_SPACING_SAMPLES)) -- "about 200 samples
+        // across the sherd" -- so the step was a property of sherd size and two sherds of one pot
+        // grew at steps up to 2.2x apart. The angle that breaks a fresh edge is proportional to the
+        // step (ticket 43), so a single angle could not be right for both: PA01 broke at 9.9 deg on
+        // S=0.600 while PA08 broke at 4.3 deg on S=0.270, same pot, same fresh break, and
+        // threshold/S was 14.8 +- 1.3 across Pot A. The bounding-box term is gone.
+        //     S = max(SFS_SPACING_MM, s0)        SFS_SPACING_MM default 0.6
+        // The measured spacing s0 survives as a FLOOR only, so a cloud too sparse to support the
+        // uniform step is never sampled finer than its own data; on every corpus cloud s0 is far
+        // below 0.6 mm, so S is the uniform step for every piece in a run.
+        // SFS_SPACING_SAMPLES is still read and still reported as rawMM, but it no longer sets S:
+        // it is kept so an old run log and a new one can be read side by side.
+        // SFS_SPACING_POLICY=fixed keeps working exactly as today (0.6, no measurement) -- it is
+        // the override that restores the pre-37 behaviour exactly (ticket 37 proof 1: the same
+        // SampledWithNormals.ply md5 as the pre-change binary).
         // SFS_COUNT_SCALE stays off on purpose: ticket 36 showed the scaled counts are what empties
         // the small sherds, so the floor keeps its 50 and only the step moves.
         std::string spacingPolicy = "piece";
@@ -4527,16 +4538,24 @@ int main(int argc, char** argv) {
         {
             int spacingSamples = 200;
             if (const char* e = std::getenv("SFS_SPACING_SAMPLES")) { if (*e) spacingSamples = std::stoi(e); }
+            // TICKET 50: SFS_SPACING_MM (default 0.6) is the one step every piece grows at.
+            double uniformMM = 0.6;
+            if (const char* e = std::getenv("SFS_SPACING_MM")) { if (*e) uniformMM = std::stod(e); }
             double diagMM = 0.0, s0MM = 0.0;
             measurePieceSpacing(inputFilePath, diagMM, s0MM);
+            // diagMM is still measured and rawMM still reported: they are the audit trail back to
+            // ticket 37's rule, and [SPACING-22] has to stay comparable with the logs before this
+            // ticket. Neither of them decides S any more.
             double sRaw = diagMM / static_cast<double>(spacingSamples);
-            double sClamped = std::min(0.6, std::max(s0MM, sRaw));
+            double sClamped = std::max(uniformMM, s0MM);
             samplingRadius244 = static_cast<float>(sClamped);
             g_effectiveSpacingMM = sClamped;
             g_pieceDiagMM = diagMM;   // TICKET 24: the radius arm reads these instead of re-probing
             g_pieceS0MM = s0MM;
             std::cout << "[SPACING-22] policy=piece diagMM=" << diagMM << " s0MM=" << s0MM
                       << " samples=" << spacingSamples << " rawMM=" << sRaw
+                      << " uniformMM=" << uniformMM
+                      << " floorFrom=" << ((s0MM > uniformMM) ? "s0" : "uniform")
                       << " S=" << sClamped << std::endl;
         }
         else

@@ -121,3 +121,139 @@ diagnosis is wrong — say so in the ticket rather than adjusting the numbers.
 5. Job ID, run directory, `sacct` State/ExitCode.
 
 Do not commit, do not push, do not edit `intent/`. Report into `## Comments` at the bottom.
+
+## Comments
+### Worker run record (2026-11-01)
+
+**The change.** `mesh_processing_headless.cpp`, the `SFS_SPACING_POLICY=piece` branch
+(`mesh_processing_headless.cpp:4527`-`4560` in the patched file): the bounding-box term is gone.
+Before `S = min(0.6, max(s0, diagMM/200))`; after `S = max(SFS_SPACING_MM, s0)` with
+`SFS_SPACING_MM` defaulting to 0.6 (getenv override). The measured `s0` survives as a floor
+only. `SFS_SPACING_POLICY=fixed` is untouched and still works. `[SPACING-22]` now prints
+`diagMM s0MM samples rawMM uniformMM floorFrom=<(uniform|s0)> S`. **The commit does not
+contain the change** — 225eb1c carries the ticket text only (its cpp blob 0727cca is the
+unchanged ticket-37 file, md5 0fa53233ff40aff85ace2d5a293ede99). The change lives as an
+uncommitted worktree edit plus `t50-step.patch` (5007 bytes, md5 96f3e37fe6ac28e7beadfc0132e6f7f8)
+in the run dirs and the worktree root; the lead should commit it. Patched cpp md5 (LF)
+3287dd05549b6e18eb355775bbed5ff4, git blob b3764417ef6612ef8dd282fcae0ebec4e8f03566.
+
+**Main sweep.** Run `20261101-0020_225eb1c_t50-step`, job **34126231**, partition sapphire,
+built in-job from git archive 225eb1c + t50-step.patch. `sacct`: `COMPLETED 0:0`, elapsed
+00:15:28. Binary 1604016 bytes, **md5 6a6d2782f7041a0bb1e700d4394a26ef** (carries
+`floorFrom=` and `uniformMM=`; differs from the t49 binary). Exact diff: `out/source.diff`
+(67 lines; the two hunks are the comment block and the `sClamped = std::max(uniformMM, s0MM)`
+line plus the two new log fields). Patched source copied to `out/mesh_processing_headless.cpp`.
+Corpus gate: **UNCHANGED, 232 files** before/after. Grid: 17 pieces, SFS_SPACING_MM=0.6,
+Juglet thetas 4 6 8 10 12 14 16, Pot A 4 6 8 10 12 = 103 cells. Index row appended, verdict
+empty.
+
+**Evidence 1 — one S for all 17** (`out/spacing22.txt`): every line reads
+`policy=piece ... uniformMM=0.6 floorFrom=uniform S=0.6`. The s0 floor never binds: max s0 on
+the corpus is 0.0755 (PA01). diagMM/s0MM/rawMM per piece: J1 63.02/0.0306/0.315,
+J2 28.31/0.0094/0.142, J3 33.57/0.0117/0.168, J4 32.03/0.0114/0.160, J5 42.47/0.0161/0.212,
+J6 39.45/0.0141/0.197, J7 43.99/0.0191/0.220, J8 34.51/0.0125/0.173, J9 23.49/0.0083/0.117;
+PA01 172.60/0.0755/0.863, PA02 137.20/0.0558/0.686, PA03 132.23/0.0519/0.661,
+PA04 116.35/0.0484/0.582, PA05 120.89/0.0484/0.604, PA06 132.01/0.0418/0.660,
+PA07 58.58/0.0212/0.293, PA08 54.07/0.0203/0.270. (On the old rule PA07/PA08 grew at S=0.29/0.27;
+on the new rule they grow at 0.6 like everyone else.)
+
+**Evidence 2 — raw sweep** `out/threshold50b.tsv` (103 rows, piece theta outcome clusters sizes).
+Headline: all 9 Juglet pieces keep two faces at every theta 4-16 (J7 fuses at 16: 87,7080,70);
+Pot A: PA01/PA03 fuse at 10, PA02/PA04/PA05 fuse at 12, PA06 stays two through 12 (414,27188 —
+the second "cluster" is a 1.5% fragment), PA07 two at 12 (301,7632), PA08 two at 12 (427,6891).
+
+**Evidence 3 — threshold table** (`out/threshold_table_B.txt`; two-face rule declared: each of
+the two biggest clusters >= 20% of npts):
+
+| piece | S | last two | first fused | bracket | | piece | S | last two | first fused | bracket |
+|---|---|---|---|---|---|---|---|---|---|---|
+| J1 | 0.6 | 16 | none | (16,?] | | PA01 | 0.6 | 8 | 10 | (8,10] |
+| J2 | 0.6 | 16 | none | (16,?] | | PA02 | 0.6 | 8 | 10 | (8,10] |
+| J3 | 0.6 | 16 | none | (16,?] | | PA03 | 0.6 | 8 | 10 | (8,10] |
+| J4 | 0.6 | 16 | none | (16,?] | | PA04 | 0.6 | 8 | 10 | (8,10] |
+| J5 | 0.6 | 16 | none | (16,?] | | PA05 | 0.6 | 8 | 10 | (8,10] |
+| J6 | 0.6 | 16 | none | (16,?] | | PA06 | 0.6 | 8 | 10 | (8,10] |
+| J7 | 0.6 | 14 | 16 | (14,16] | | PA07 | 0.6 | 10 | 12 | (10,12] |
+| J8 | 0.6 | 16 | none | (16,?] | | PA08 | 0.6 | 10 | 12 | (10,12] |
+| J9 | 0.6 | 16 | none | (16,?] | | | | | | |
+
+Growth-cloud glue60 (`out/step50.tsv`): PA01 9.87, PA02 9.58, PA03 8.24, PA04 9.39, PA05 8.31,
+PA06 8.13, PA07 11.04, PA08 10.29; Juglet 14.99-24.38. Pot A thr/S: mean 15.6 sd 1.8 cv 11.3%
+(was 19.4% spread under the old rule); Juglet thr/S mean 33.2 sd 5.7 cv 17.2%.
+
+**Evidence 4 — the prediction HELD.** Fine sweep at 0.5 deg (run `20261101-0102_225eb1c_t50-pa0108`,
+job **34131787**, COMPLETED 0:0, 00:06:46, thetas 8.0-16.0, same binary): **PA01 bracket
+(9.5,10.0], PA08 bracket (10.0,10.5]** — PA08 moved from 4.3 to ~10.3, within 1 deg of PA01's
+~9.9. glue60 agrees (9.87 and 10.29 both inside their brackets). The prior PA01-PA08 gap was
+5.60 deg; it is now 0.42 deg by glue60, 0.5-1.0 deg by the pipeline brackets. The stated
+mechanism (the angle that breaks a fresh edge scales with the step) is supported: the step rule
+was the cause. Absolute numbers sit near 8.9 deg as predicted for six of eight pieces; PA07
+(11.04) and PA08 (10.29) land ~1-2 deg above it, so "about 8.9" holds as a centre, not a
+constant.
+
+**Two-arm no-op proof** (run `20261101-0110_225eb1c_t50-arms`, job **34131845**, COMPLETED 0:0,
+00:34:23): arm A = unpatched cpp (md5 0fa53233, binary 1603880 bytes md5 82834d2291357b2759b4266ebb2e0f5e)
+run with `SFS_SPACING_POLICY=fixed`; arm B = patched cpp (binary identical to the main run's,
+6a6d2782 — same commit + same patch reproduces the same binary) with `SFS_SPACING_MM=0.6`.
+Result: `threshold50b_A.tsv` and `threshold50b_B.tsv` are **byte-identical** (md5
+ca4f5d51 each), all 103 cells, and every piece's final SampledWithNormals.ply md5 matches
+(`out/arms_compare.txt`). arm A logs `[SPACING-22] policy=fixed S=0.6` (the fixed branch's
+shorter line, by design — it does not measure the piece), arm B logs the full piece line with
+S=0.6. So on default settings the change is a no-op for every piece whose old S was already
+0.6, and the measured differences on the corpus come only through PA07/PA08 and the Juglet
+pieces whose old S was finer.
+
+**Determinism control (free):** the five Pot A pieces whose S was already 0.6 (PA01, 02, 03,
+05, 06) reproduce their prior-run glue60 and npts to the digit across two different jobs —
+same bytes, same result.
+
+**Cost of the change, stated plainly:** the growth clouds are coarser. npts before -> after:
+PA07 34608->8598 (4.0x fewer), PA08 36097->7682 (4.7x), J1 65597->19312 (3.4x), J2 31841->1883
+(16.9x), J3 34569->2841, J4 36860->2768, J5 42430->5671, J6 38031->4373, J7 53141->7633,
+J8 39165->3464, J9 36085->1475 (24.5x). PA01 85136 unchanged. Whether that resolution loss
+hurts downstream edgelines is not measured here.
+
+**Pair quality at theta 4.5** (run `20261101-0200_225eb1c_t50-pair`, jobs **34132387** (cells,
+FAILED 10:0 at the pair stage — see anomalies) + **34132592** (pair stage, COMPLETED 0:0,
+00:00:52); both arms' binaries md5-gated to the arms run). Frozen stage44 protocol
+(grow38 surfacepair + nest39 pair, the ticket-48 bytes). Both arms give the same pairs to
+3-4 decimals (the no-op again). Per piece (armA values; armB differs only in the last digit):
+Pot A nn 3.56-3.78 mm (PA01 7.10), across 0.24-0.27 mm, angle 2.62-3.96 deg (PA01 11.44),
+med_t_signed -3.55 to -7.10 mm, mean_normal_dot -0.999 — i.e. two opposed layers one wall
+thickness apart: the wall's two faces. Juglet: nn 1.50-4.10 mm, across 0.23-0.46 (J5 3.49,
+J8 0.98), angle 4.01-17.23 deg, t_signed -1.45 to -2.97 (J1 0.000 with nest shared-over-a
+0.318 — J1's pair is folded, not walled). Under the band I declared before looking (angle
+<= 15 deg AND across <= 0.05 mm) **no pair on either arm qualifies as "genuine"** — the Pot A
+across is ~0.25 mm, not <= 0.05; that band, taken from the lead's theta=4.5 note, appears too
+strict for these surfaces, so the verdict column is my declaration and the raw numbers above
+are the evidence. Juglet one-liner per piece: see `out/juglet_answer.txt` and the table above.
+
+**Anomalies / what went wrong, plainly.**
+1. Main sweep attempt 1 (job 34126173) FAILED rc=8 "binary carries no floorFrom=" — a false
+   negative: under `set -o pipefail`, `strings $BIN | grep -q` returns 141 (SIGPIPE on
+   strings) when grep exits at first match. The string was present (grep -c = 1). Fixed by
+   `strings > logs/strings.txt` then a case match; artefacts preserved in
+   `attempt1-failed/` with a README; no index row was written for the failed attempt.
+2. First fine-sweep run `20261101-0055_..._t50-pa0108` (job 34126643) had a two-face-flag bug:
+   `cut -d, -f2` prints the whole string when no delimiter exists, so single-cluster rows
+   passed the >= 20% test (its PA01 "two through 12.0" was wrong; raw cluster sizes were valid).
+   Fixed with a case match on comma; corrected run 34131787 above supersedes it. Both runs kept.
+3. Pair run part 1 (job 34132387) failed rc=10: grow38/nest39 import sibling modules
+   (replica37, measure34, mesh38) I had not copied into the run's instruments. Part 2 (job
+   34132592) copied them and re-ran the pair stage over the intact cells; COMPLETED. The
+   index row records both jobids.
+4. Cosmetic: `juglet_answer.txt` lines read "arm armA/armB" (double prefix from the run_pair48
+   display label); the pair_table itself is correct.
+
+**Artifacts.** Main: `runs/20261101-0020_225eb1c_t50-step/out/` (threshold50b.tsv,
+threshold50b_raw.tsv, threshold_table.txt, spacing22.txt, spacing_S.tsv, step50.tsv,
+analysis.txt, source.diff, mesh_processing_headless.cpp, t50-step.patch, binary.md5,
+corpus_before/after.md5, RUN-DONE.txt; tmp/ KEPT, 870M, for the growth clouds). Fine sweep:
+`runs/20261101-0102_225eb1c_t50-pa0108/out/`. Arms: `runs/20261101-0110_225eb1c_t50-arms/out/`
+(arms_compare.txt, bin-A/bin-B, per-arm tables). Pair:
+`runs/20261101-0200_225eb1c_t50-pair/out/` (pair_table.txt, pairs48.tsv, nests48.tsv,
+surfaces48.tsv, juglet_answer.txt). Index rows appended for all four runs, verdicts empty.
+
+No verdict, no ticket close — reported for the lead to conclude. The worktree edit to
+`mesh_processing_headless.cpp` is uncommitted and `t50-step.patch` is untracked in the
+worktree root; committing them is the lead's call.
