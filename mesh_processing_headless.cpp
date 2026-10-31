@@ -1087,19 +1087,52 @@ std::string downsamplePointCloud(std::string inputPcdFile, float samplingRadius 
 	return outputFile;
 }
 
-// TICKET 45: median fold radius of the downsampled cloud the growth runs on, by ticket 43's
+// TICKET 45/49: median fold radius of the downsampled cloud the growth runs on, by ticket 43's
 // rule (stage43/instruments/dist43.py quadric_radii, :140-180): per subsampled point take the
-// 30 nearest neighbours (self included), build the PCA tangent frame around the normal, fit the
-// bivariate quadric z = a*x + b*y + 0.5*L*x^2 + M*x*y + 0.5*N*y^2 by least squares, take the
-// larger principal curvature of [[L, M], [M, N]], radius = 1/kmax capped to [0, 60] mm
-// (dist43.py RHO_CAP_MM / MAX_PTS_RHO). The subsample is a deterministic stride of at most
-// 20000 points, so rerunning the same bytes reproduces the same R_fold. Returns 0.0 when the
-// cloud has no usable points; the caller FATALs on that.
+// neighbourhood inside a FIXED PHYSICAL PATCH RADIUS R_PATCH_MM, build the PCA tangent frame
+// around the normal, fit the bivariate quadric z = a*x + b*y + 0.5*L*x^2 + M*x*y + 0.5*N*y^2 by
+// least squares, take the larger principal curvature of [[L, M], [M, N]], radius = 1/kmax capped
+// to [0, 60] mm (dist43.py RHO_CAP_MM / MAX_PTS_RHO). The subsample is a deterministic stride of
+// at most 20000 points, so rerunning the same bytes reproduces the same R_fold. Returns 0.0 when
+// the cloud has no usable points; the caller FATALs on that.
+//
+// TICKET 49: the neighbourhood is a radius, not a count.  Ticket 45 used the 30 nearest
+// neighbours, which is not a fixed physical patch: on a denser cloud the same 30 points cover a
+// smaller area, so R_fold came out 0.58-0.93x of its calibration value and theta 1.1-1.7x too
+// steep (ticket 48, run 20261031-1428_93b3c07_t48-t48-verify).  R_PATCH_MM is a length in mm,
+// SFS_PATCH_R_MM overrides it, compiled default 1.0 mm (the k=30 patch radius measured on the
+// ticket-45 calibration clouds, 0.63-1.04 mm).  A 6-parameter quadric is not determined by
+// fewer than 6 samples, so patches holding fewer are skipped and counted (g_foldSkipped45) --
+// with 30 fixed neighbours that could not happen, with a radius it can, and a 4- or 5-point
+// ridge solve would otherwise return a curvature with no geometric meaning straight into the
+// median.  Everything else in the fit is byte-identical to ticket 45.
+static double g_patchRadius45MM = 1.0; // the radius medianFoldRadius45 actually used, for the log
+static long g_foldSampled45 = 0;       // stride points examined
+static long g_foldSkipped45 = 0;       // stride points whose patch held fewer than 6 samples
+
 static double medianFoldRadius45()
 {
-	const int kNN45 = 30;          // dist43.py quadric_radii(..., k=30)
 	const double rhoCap45 = 60.0;  // dist43.py RHO_CAP_MM
 	const size_t maxPts45 = 20000; // dist43.py MAX_PTS_RHO
+	double rPatch45 = 1.0;         // TICKET 49: mm, SFS_PATCH_R_MM overrides
+	if (const char* e49 = std::getenv("SFS_PATCH_R_MM"))
+	{
+		if (*e49)
+		{
+			char* end49 = nullptr;
+			const double v49 = std::strtod(e49, &end49);
+			if (end49 == e49 || !std::isfinite(v49) || v49 <= 0.0)
+			{
+				std::cerr << "[GROWTH-45] FATAL SFS_PATCH_R_MM=" << e49
+				          << " is not a positive length in mm" << std::endl;
+				std::exit(2);
+			}
+			rPatch45 = v49;
+		}
+	}
+	g_patchRadius45MM = rPatch45;
+	g_foldSampled45 = 0;
+	g_foldSkipped45 = 0;
 	const pcl::PointCloud<pcl::PointNormal>::Ptr cloud = downsampledCloudWithNormals;
 	const size_t n45 = cloud->points.size();
 	if (n45 < 4) return 0.0;
@@ -1114,7 +1147,14 @@ static double medianFoldRadius45()
 	{
 		const pcl::PointNormal& p45 = cloud->points[i45];
 		if (!std::isfinite(p45.x) || !std::isfinite(p45.y) || !std::isfinite(p45.z)) continue;
-		if (tree45.nearestKSearch(p45, kNN45, idx45, sq45) < 4) continue;
+		// TICKET 49: a radius, not a neighbour count -- the same physical patch on every cloud.
+		// Self is included by radiusSearch, as it was by nearestKSearch.  Fewer than 6 samples
+		// cannot determine the 6 coefficients of the quadric, so the patch is skipped and
+		// counted rather than fitted to a rank-deficient system (the ridge would still return a
+		// number, and it would be meaningless).
+		const int nPatch45 = tree45.radiusSearch(p45, rPatch45, idx45, sq45);
+		++g_foldSampled45;
+		if (nPatch45 < 6) { ++g_foldSkipped45; continue; }
 		Eigen::Vector3d mean45 = Eigen::Vector3d::Zero();
 		for (size_t j45 = 0; j45 < idx45.size(); ++j45)
 			mean45 += Eigen::Vector3d(cloud->points[idx45[j45]].x, cloud->points[idx45[j45]].y, cloud->points[idx45[j45]].z);
@@ -4757,8 +4797,12 @@ int main(int argc, char** argv) {
                 std::exit(2);
             }
             paperTheta = k45 * (g_effectiveSpacingMM / rMed45) * (180.0 / M_PI);
+            // TICKET 49: patch_r and skipped are appended, never substituted -- every earlier
+            // field keeps its position and meaning, so the stage-45/48 readers still parse it.
             std::cout << "[GROWTH-45] piece=" << fileNameOnly << " S=" << g_effectiveSpacingMM
-                      << " R_med=" << rMed45 << " theta=" << paperTheta << std::endl;
+                      << " R_med=" << rMed45 << " theta=" << paperTheta
+                      << " patch_r=" << g_patchRadius45MM
+                      << " skipped=" << g_foldSkipped45 << "/" << g_foldSampled45 << std::endl;
         }
         if (const char* e = std::getenv("SFS_PAPER_KAPPA")) { if (*e) paperKappa = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_NB")) { if (*e) paperNB = std::stoi(e); }
