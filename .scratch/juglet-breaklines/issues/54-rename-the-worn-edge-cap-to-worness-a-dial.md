@@ -10,7 +10,9 @@ crossing permits.
 
 **Answers:** U19 (worn-edge regime as an explicit, named variable)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-01)
+**Branch:** 54-rename-the-worn-edge-cap-to-worness-a-dial, in /c/PR/worktrees/sfs/54
 
 **Worker:** unassigned
 
