@@ -30,7 +30,7 @@ SfS find joins)
 **Status:** resolved 2026-11-02 — all three parts answered; part C's mechanism confirmed, and the
 worker's one 'not shown' verdict refuted by a direct test (lead verification at the end)
 **Working in:** chat on Thinkbook16 (2026-11-01)
-**Branch:** 56-corner-window-seating-and-breakline-header-count, in /c/PR/worktrees/sfs/56
+**Branch:** 56-corner-window-seating-and-breakline-header-count (merged 357e4b0; worktree and branch closed 2026-11-02)
 
 **Worker:** subagent 9adb2fce-a866-4810-8dc1-7868409a3280
 
