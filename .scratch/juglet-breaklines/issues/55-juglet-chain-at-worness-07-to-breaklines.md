@@ -20,13 +20,13 @@ SfS find joins)
 **Blocked by:** None (54 merged as 0724e5d; the dial exists on main and 0.7 is the
 recommended value, ledger row 12)
 
-**Status:** in-progress
+**Status:** resolved 2026-11-01 — 9/9 Juglet pieces through the shipped chain at WORNESS=0.7 to breaklines, pictures delivered for the eye; lead verification below
 **Working in:** chat on Thinkbook16 (2026-11-01)
 **Branch:** 55-juglet-chain-at-worness-07-to-breaklines, in /c/PR/worktrees/sfs/55
 
 **Worker:** dsh-t55-worker (subagent of the lead session; never the lead itself)
 
-**Needs-eye:** `SfSpp_preprocessing/artifacts/<runid>/Juglet_Piece_{1..9}.png` — one picture
+**Needs-eye:** `SfSpp_preprocessing/artifacts/20261101-2004_05be12c_t55-worness07-breaklines/out/png/Juglet_Piece_{1..9}.png` — one picture
 per sherd, on-mesh edgeline overlay; image-only bundle, deliberately NOT staged into
 visual-qa manifests
 
@@ -102,6 +102,32 @@ fails this ticket even if every number is green.
 - [x] No assembly, no scorer, no corpus write, no source change; stages deleted with the
       counted record; the branch carries instruments + ticket write-back only.
 - [x] Worker reports facts only (numbers, paths, failures); the verdict is the lead's.
+
+## Lead verification (2026-11-01)
+
+- verified: worker table vs out/pieces55.tsv on the laptop -> identical 9 rows, all
+  status ok, mesh_rc=0 edge_rc=0, classify+worness markers yes on 9/9.
+- verified: branch 55-juglet-chain-at-worness-07-to-breaklines is based on the corrected
+  caveat commit 6d89d75; the write-back carries no stale larger-surface claim.
+- verified: binary identity -- MeshPreprocessingHeadless md5 736ff95c976486d17f7c00b3af402040
+  equals the t54 binary of record; EdgeLineExtractionHeadless cbf747dc3172fe0bbd188822df14092a.
+- verified: on-mesh geometry (lead-run out/nncheck55.py on Spartan: cKDTree lane-to-mesh-vertex
+  NN distance, mm) -- 8/9 pieces, both lanes hug the mesh: median 0.15-0.30, p90 <= 0.36,
+  max <= 1.02. **Exception J1 Bl0: 10 of 28 dots, one consecutive run, sit 3.3-5.2 mm off
+  the mesh** (region x 26-34, y -16..-6, z -505..-502 -- ~13% of the sherd's 38 mm extent),
+  visible in the picture as the lane leaving the sherd. The PNG plots the real Bl0
+  coordinates, so this is pipeline data, not a render defect; B-spline projection bowing
+  off a sparse region is the likely seat, unproven here.
+- caveat: the mesh stage is not deterministic (30 unseeded ray-cast points,
+  mesh_processing_headless.cpp:1526-1527; run-to-run spread up to 0.867 mm measured on
+  Pot H 02), so the J1 departure may move between runs -- a single-run number is not a
+  stable measurement of it.
+- verified: 9/9 PNGs on disk at the Needs-eye path (1485x704, two panels); lane pixel
+  presence per render55.tsv. The qualitative on-rim read stays with the conservator
+  (vision bridge 503 for worker and lead alike).
+- Verdict: run of record stands, deliverable accepted. Carry-forward finding: J1 Bl0's
+  off-surface segment -- Bl0 is the lane the assembler reads, so the future assembly
+  ticket inherits it.
 
 ## Results (worker write-back, 2026-11-01)
 
