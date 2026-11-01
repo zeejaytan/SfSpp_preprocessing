@@ -92,11 +92,11 @@ operator-faithful measurement is to run growth itself on a theta ladder.
 
 ## Acceptance
 
-- [ ] Ladder probe reproduces growPaper234 split behaviour on the 17-piece set (or is the operator itself).
-- [ ] Run 1 + Run 2 of record with sacct State/ExitCode recorded; corpus md5s unchanged.
+- [x] Ladder probe reproduces growPaper234 split behaviour on the 17-piece set (or is the operator itself).  <!-- t53: growthWalkProbe53 calls growPaper234 itself (the operator, not a re-implementation); theta_check53.tsv checks arm-W theta_ship == the pipeline's own grow theta to 5 dp per cell -->
+- [x] Run 1 + Run 2 of record with sacct State/ExitCode recorded; corpus md5s unchanged.
 - [ ] Gates 1 and 2 judged against the pre-registered brackets, with the theta distribution table.
 - [ ] No merge without both gates; the ticket records which fired.
-- [ ] run.json, index rows, and the per-piece theta table (out/thetas53.tsv) in the run dir.
+- [x] run.json, index rows, and the per-piece theta table (out/thetas53.tsv) in the run dir.
 - [ ] Code tickets: branch merged into main and pushed, no job still running from it, worktree removed, branch deleted locally and on GitHub — ONLY if the gates pass.
 
 ## Out of scope
@@ -122,3 +122,45 @@ operator-faithful measurement is to run growth itself on a theta ladder.
   capped thetas 5.5-8.3 delivered it on 8 of 9 (J8 excepted, spacing-linked).
 
 **Status:** ready-for-agent
+
+## Worker report (2026-11-01)
+
+Branch tip: `fe4f44c` (pushed). Probe = growthWalkProbe53 calling growPaper234 itself
+(mesh_processing_headless.cpp:3371 def; main wiring :4927 flag, :4981 probe block);
+CMakeLists.txt:32 option SFS_GROWTH_WALK53_DEFAULT (OFF in source).
+
+**Run 1** `20261101-1421_fe4f44c_t53-walkprobe` job **34157560** COMPLETED 0:0 (14:19).
+out/thetas53.tsv (51 cells), out/theta_check53.tsv **17/17 MET** (prediction 1: arm-W
+theta_ship == the pipeline's own grow theta to 5 dp). 0 FALLBACK lines. Gate 2 (arm W):
+genuine wall pairs on **9 of 9** Juglet pieces — med_nn 83.3-99.1 % of wall, med_across
+0.011-0.027 mm; **J8 under W gives a genuine pair (95.3 %)** where arm X yields NO surface
+on J4/J6/J8 (prediction 6: J8 behaves differently, better).
+
+**Run 2** `20261101-1422_fe4f44c_t53-corpus` jobs **34157564** (build, COMPLETED 0:0) /
+**34157565** (array 0-147, all elements COMPLETED 0:0, 0 errors) / **34157566** (collect,
+COMPLETED 0:0). Walk armed as CODE default (cmake -DSFS_GROWTH_WALK53_DEFAULT=ON; the
+array refuses SFS_* env — recorded in run.json). Corpus md5s unchanged (all 148 identical
+before/after). **Headline 138/292 at bar (47.3 %)** — gate 1 **FAILS** (needed >= 276;
+baseline 281 at flat 3.4, ticket-52 flip 237).
+
+**theta distribution (reported, not gated):** corpus theta_ship min 4.05 / median 8.325 /
+max 10.80; in the predicted 2.5-4.5 band: **1 of 148** (prediction 2 FAILS — the corpus
+lands at 7-10, the same loose band as the fuse crossing); theta_split saturates the 12.0
+ladder ceiling on 14 corpus pieces. Juglet: theta_split = 12.0 (ceiling) on **all 9**,
+theta_ship 10.8 — prediction 3 (5.5-8.5) FAILS; the ladder's [1,12] range is too low for
+the Juglet's own walk, the split never turns to glue inside it (J1 ladder: glue 1-3, split
+4-12). 0 FALLBACK corpus-wide (prediction 4 MET); prediction 5 (>= 276) FAILS with 138.
+
+**Mechanism:** the operator-faithful walk measurement inherits the fuse-crossing bias it
+was meant to escape — on the corpus the growth walk itself keeps two face-sized clusters
+separated far above the 3.4 the pots are healthy at, so theta_split reads 4.5-12 and
+theta_ship 4.05-10.8. The ticket's own pre-registered failure clause fired: "if it lands
+at 7-10 like the fuse crossing, the walk measurement inherits the bias and the ticket
+fails its own gate."
+
+**Deviations:** stage53 instruments copied from stage52 @f690c07 (unmerged origin branch)
+with ticket-53 edits (COPIES.md records provenance); build292.sbatch COMMIT re-pointed at
+fe4f44c and the cmake flag added in the run dir (repo copy untouched). Both runs have
+index.tsv rows with verdict/human_note EMPTY. Gates 1/2 pass-fail and the merge decision
+left to the lead (decision rule: gate 1 FAIL -> do NOT merge).
+
