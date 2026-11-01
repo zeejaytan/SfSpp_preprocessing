@@ -2593,3 +2593,17 @@ and inert until the input side is answered.
 
 Weight: one diagnostic run, nine sherds, one control vessel, one covering per piece; every number above read
 from the run's own tables by the lead, and both figures read directly.
+
+**2026-11-01, ticket 55 — the full Juglet through the shipped FIXED chain at the conservator's dial, to
+breaklines and no further.** All nine pieces went mesh-stage + edge-stage at SFS_WORNESS=0.7 on the
+corpus clouds (run 20261101-2004_05be12c_t55-worness07-breaklines, job 34165367, COMPLETED 0:0):
+9/9 cells green (classify + worness markers, S0/S1/Bl0/Bl1 exported), corpus frozen inputs verified
+unchanged, capped thetas 6.4-17.1 deg. This is the first full pass on the post-47 corpus input and the
+first at the 0.7 dial; the stage it exercises is the fixed one (interior Bl0 per ticket 04, filter 05,
+resampling 06). The lead's on-mesh check (NN lane-to-mesh): 8/9 pieces both lanes hug the mesh at
+median 0.15-0.30 mm; the exception is **J1 Bl0, where one consecutive run of 10/28 dots sits 3.3-5.2 mm
+off the sherd** -- and Bl0 is the lane the assembler reads, so the future assembly ticket inherits it.
+The mesh stage's unseeded ray-cast makes that single-run number unstable between runs. Nine on-mesh
+pictures are with the conservator for the eye read; the 36-file geom bundle is kept on Spartan for the
+assembly ticket. E1's question itself -- do these lines let SFS find joins -- is still open: this ticket
+stops one step short on purpose. Ordering/vote direction (ticket 03) also still open.

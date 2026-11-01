@@ -1,0 +1,3 @@
+# keep LF in the repository and in every checkout: the batch script renders a shell
+# script from a template and both are CRLF-sensitive
+* -text
