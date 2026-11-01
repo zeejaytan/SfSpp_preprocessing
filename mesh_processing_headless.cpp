@@ -32,6 +32,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include <cstdlib>  // TICKET 234: getenv
+#include <cerrno>   // TICKET 54: errno for SFS_WORNESS strtod guard
 #include <pcl/filters/uniform_sampling.h>
 
 #include <chrono>
@@ -4841,7 +4842,31 @@ int main(int argc, char** argv) {
         // SFS_GROWTH_FORMULA=1, and an explicit SFS_PAPER_THETA still wins over both.
         bool thetaFormula46 = false;
         if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) != "0") thetaFormula46 = true; }
-        if (!thetaFromEnv45 && thetaFormula46)
+        // TICKET 54: SFS_WORNESS is the one knob for the worn-edge regime. Unset/empty = OFF
+        // (byte-identical to today). Set to w (0 < w <= 1) = the SFS_GROWTH_FORMULA=1 +
+        // SFS_GROWTH_CAP=1 behaviour with the 0.9 promoted to the dial: theta =
+        // min(formula theta, w x measured crossing). Bad values are a units error, not a
+        // tuning fallback, so they FATAL. Precedence: SFS_PAPER_THETA > SFS_WORNESS >
+        // SFS_GROWTH_FORMULA/CAP (the last two keep working exactly as before when
+        // SFS_WORNESS is unset).
+        double wornessW54 = -1.0; // -1 = OFF
+        if (const char* e54 = std::getenv("SFS_WORNESS"))
+        {
+            if (*e54)
+            {
+                char* end54 = nullptr;
+                errno = 0;
+                const double w54 = std::strtod(e54, &end54);
+                if (errno != 0 || end54 == e54 || *end54 != '\0' || !(w54 > 0.0) || w54 > 1.0)
+                {
+                    std::cerr << "[WORNESS-54] FATAL SFS_WORNESS=\"" << e54
+                              << "\" (need 0 < w <= 1)" << std::endl;
+                    std::exit(2);
+                }
+                wornessW54 = w54;
+            }
+        }
+        if (!thetaFromEnv45 && (thetaFormula46 || wornessW54 > 0.0))
         {
             const double k45 = 3.3573;
             const double rMed45 = medianFoldRadius45();
@@ -4863,7 +4888,26 @@ int main(int argc, char** argv) {
             // Fewer than 1000 eligible points logs crossing=none and leaves theta alone.
             bool growthCap51 = false;
             if (const char* e51 = std::getenv("SFS_GROWTH_CAP")) { if (*e51 && std::string(e51) != "0") growthCap51 = true; }
-            if (growthCap51)
+            // TICKET 54: SFS_WORNESS replaces the pair above with one dial: when set it drives
+            // this cap (at w x crossing) instead of the 0.9 literal, and SFS_GROWTH_CAP is
+            // ignored for that run. Unset, the block below is exactly ticket 51's.
+            if (wornessW54 > 0.0)
+            {
+                const double formulaTheta54 = paperTheta;
+                const double cross51 = thetaCross51();
+                int capped54 = 0;
+                if (cross51 > 0.0)
+                {
+                    const double cap54 = wornessW54 * cross51;
+                    if (paperTheta > cap54) { paperTheta = cap54; capped54 = 1; }
+                }
+                std::cout << "[WORNESS-54] piece=" << fileNameOnly
+                          << " formula_theta=" << formulaTheta54
+                          << " crossing=" << ((cross51 > 0.0) ? std::to_string(cross51) : std::string("none"))
+                          << " w=" << wornessW54
+                          << " capped=" << capped54 << " theta=" << paperTheta << std::endl;
+            }
+            else if (growthCap51)
             {
                 const double cross51 = thetaCross51();
                 int capped51 = 0;
