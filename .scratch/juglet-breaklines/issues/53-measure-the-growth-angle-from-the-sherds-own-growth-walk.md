@@ -12,7 +12,9 @@ theta_split; ship theta = 0.9 x theta_split. No constant from any other vessel e
 
 **Blocked by:** None — ticket 52 closed 2026-11-01 with the flip unmerged; main 8e30a6c holds everything.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-01)
+**Branch:** 53-measure-the-growth-angle-from-the-sherds-own-growth-walk, in /c/PR/worktrees/sfs/53
 
 **Worker:** unassigned
 
