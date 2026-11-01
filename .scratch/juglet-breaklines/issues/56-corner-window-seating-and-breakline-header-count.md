@@ -27,7 +27,9 @@ SfS find joins)
 
 **Blocked by:** None (can start immediately; ticket 55's run of record supplies the files)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-01)
+**Branch:** 56-corner-window-seating-and-breakline-header-count, in /c/PR/worktrees/sfs/56
 
 **Worker:** unassigned
 
