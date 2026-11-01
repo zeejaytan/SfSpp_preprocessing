@@ -27,8 +27,11 @@ SfS find joins)
 
 **Blocked by:** None (can start immediately; ticket 55's run of record supplies the files)
 
-**Status:** resolved 2026-11-02 — all three parts answered; part C's mechanism confirmed, and the
-worker's one 'not shown' verdict refuted by a direct test (lead verification at the end)
+**Status:** resolved 2026-11-02 — all three parts answered; the worker's one 'not shown'
+verdict refuted by a direct test (lead verification at the end). **Part C's mechanism was
+re-opened and corrected the same day** after the conservator challenged the wording: the
+"patch wraps past the other face" reading is withdrawn (C.4 carries the correction and the
+re-measurement).
 **Working in:** chat on Thinkbook16 (2026-11-01)
 **Branch:** 56-corner-window-seating-and-breakline-header-count (merged 357e4b0; worktree and branch closed 2026-11-02)
 
@@ -111,13 +114,14 @@ measurement needed — cite the lines.
    of a detected boundary dot, and the median detected dot sits 7.17 mm from the crease. The
    S0 dots beside the crease have a median max-angular-gap of 9-10 deg against a 108 deg
    threshold, at search radii 2, 3, 4 and 6 mm alike, and the boundary set is line-like
-   (planarity 0.98 over a 3 mm neighbourhood). **The cause is the face patch wrapping past the
-   fold:** S0 carries dots on both sides of the crease (1,712 dots within 1 mm of it), so from
-   an S0 dot the crease is not a void. Check this in the code: `setRadiusSearch(4)` and
-   `setAngleThreshold(M_PI * 0.6)` — is the rule purely a tangent-plane angular-void test
-   with no normal-discontinuity term, so that a patch that folds over its own edge cannot be
-   detected? Name the line and say plainly whether a cure belongs to the surface stage (keep
-   S0 off the other face) or to the boundary stage.
+   (planarity 0.98 over a 3 mm neighbourhood). The hypothesis to test was that the patch wraps
+   past its own edge, so from an S0 dot the edge is not a void. Check this in the code:
+   `setRadiusSearch(4)` and `setAngleThreshold(M_PI * 0.6)` — is the rule purely a
+   tangent-plane angular-void test with no normal-discontinuity term? Name the line and say
+   plainly whether a cure belongs to the surface stage (stop the surface rolling past its own
+   edge) or to the boundary stage. **See C.4 for the corrected verdict: the mechanism is the
+   surface's own points behind its edge, not the other skin, and the edge is a 4 deg roll, not
+   a sharp lip.**
 5. **What this costs today.** Every emitted dot is a resampled point of the chain, so the
    closure chord is invisible in the logs (J1's log shows a clean `L=59.8158mm`, no
    over-length warning). State whether any existing check would catch a lane that leaves its
@@ -201,10 +205,14 @@ largest-component seed :627-647; the K=50 heading-guarded pick :662-696; the sto
       **undefined behaviour**, not an abort; ranges/header must land before any flag is written.
 - [x] Part C checked against the code: points 1, 2, 3, 4 and 5 all **borne out** (the lead
       refuted the worker's 'chord not visible' verdict by locating the chord at dot 2, after
-      the vote's reversal — see Lead verification), and the wrap-past-fold mechanism is
-      confirmed by an intervention test (S0 fire rate 14% → 34% with the wrap removed).
+      the vote's reversal — see Lead verification), and the mechanism is confirmed by
+      an intervention test in its **corrected** form — see C.4, where the earlier
+      "wrap past the other face" reading is withdrawn: Surface_0's own points lying
+      more than 1.4 mm behind the anchor's normal are what fill the wedge (fire rate
+      18% → 31% over the ring, 31% → 49% outside the blind arc, with a random-removal
+      control at 32%).
 - [x] Part C closes with what a fix would have to change and which stage owns it — surface
-      stage first (keep `Surface_0` off the opposite face), then the edge stage must stop
+      stage first (stop `Surface_0` rolling past its own fold line), then the edge stage must stop
       closing an abandoned chain — and states that **no existing check** would have caught a
       lane leaving its surface.
 - [x] Every claim carries `file:line`; the plain-language answers come first.
@@ -569,17 +577,19 @@ commented on the line above at `:1107`). Its test is a tangent-plane maximum-ang
 point is a boundary point if some angular sector of its disc is empty. **No normal-discontinuity
 or crease term is passed to it, and none is computed afterwards** — the only post-filter is
 `FACE_ALIGN_VETO = 2.0f` (`:1122`), applied to `normal · radial` at `:1136-1145`. A patch
-that folds over its own edge supplies dots on both sides, so no sector is empty and the crease
-is invisible by construction. (The adaptive-radius arm at `:1096-1102` is compiled only under
+that rolls away under its own edge supplies dots on both sides, so no sector is empty and the
+edge is invisible by construction. (The mechanism was later measured precisely — see C.4's
+correction: the filling material is the patch's **own** points lying behind the anchor's
+tangent plane, median 1.66 mm above it in the blind arc, not points of the other face.) (The adaptive-radius arm at `:1096-1102` is compiled only under
 `-DPOTA218_ARM_B`, and the t55 log carries no `[ARM-B radius]` line, so the build in the run
 of record used the fixed 4 mm / 0.6π rule.)
 
-*Which stage owns a cure:* the boundary stage cannot detect this crease with its current rule —
+*Which stage owns a cure:* the boundary stage cannot detect this edge with its current rule —
 detecting a fold would need a normal-discontinuity term that does not exist in the code, i.e. a
-new capability rather than a threshold change. Keeping `Surface_0` from crossing onto the
-other face is a property of the surface stage, which is where the patch is built
+new capability rather than a threshold change. Stopping `Surface_0` from rolling past its own
+fold line is a property of the surface stage, which is where the patch is built
 (`mesh_processing_headless.cpp:4993-5000` writes `Surface_0.ply` and converts it to `Surface_0.xyz`).
-So the surface stage owns the cheap fix; the boundary stage would own a new crease detector.
+So the surface stage owns the cheap fix; the boundary stage would own a new fold detector.
 
 **C.5 What it costs today, and whether any check would catch it — no check would.** Every
 emitted dot is a resampled point of the walked chain, so a lane that leaves the surface looks
@@ -593,7 +603,9 @@ across `edgeline_extraction_headless.cpp` returns nothing, and `scripts/diagnost
 is a textual move-verifier, not a geometric one. **No existing check would have caught this.**
 
 **What a fix would have to change.** Three separable changes, in this order of ownership:
-(1) *surface stage* — keep `Surface_0` off the opposite face, so the crease is a real void;
+(1) *surface stage* — stop `Surface_0` rolling past its own fold line, so the edge is a real
+void in the tangent plane (the measured cure: removing the patch's own behind-the-edge points
+lifts the detector's fire rate at the fold from 18% to 31%);
 (2) *edge stage* — do not close a chain the walk abandoned: either refuse the wrap edge when
 the chain did not return near its own start (the `:798` term is where that test belongs), or
 restart the walk on the nearest unvisited component instead of dropping it (`:735`); (3) *a new
@@ -670,26 +682,53 @@ on J1's own surfaces (probe scripts on Spartan; every figure below is a measurem
   contain points. The patch is not torn — the *boundary dots* are in pieces.
 - **Neither surface yielded a ring.** S0: 194 boundary dots in 2 groups at 5 mm, largest 131,
   covering 16 of 36 ring sectors (44%). S1: 347 dots in 4 groups, largest 247, 21 of 36 (58%).
-- **The break edge on the mesh is a real closed ring:** 770 sharp-crease vertices (dihedral
-  > 60 deg), circle fit R = 14.26 mm, residual median 3.09 mm, 32 of 36 ten-degree sectors
-  occupied.
-- **The cause is the patch folding over its own edge.** 68% of S0's edge points have S0's own
-  material on *both* sides of the fold (reaching 2.1 mm and 1.7 mm past it); 45% of S1's do
-  (2.6 and 1.7 mm). A tangent-plane empty-wedge test cannot fire where the wedge is not empty.
-- **Intervention test — the decisive one.** Delete each patch's own points that lie past the
-  break edge, re-run the same detector unchanged: S0's fire rate rises **14% → 34%**, S1's
-  **30% → 45%**. The wrap is the mechanism, and it bites both surfaces.
-- **Why S0 is worse than S1** (same fault, hit harder): 32.5% of S0's points sit within 2 mm
-  of the crease against S1's 20.5%; at the edge S0 owns 56% of its own 4 mm neighbourhood
-  against S1's 44%, so S1 is more outnumbered by the other face and its edge is more exposed.
-  Density alone is not the cause: thinning S0 to 85/60/35% moves its fire rate only
-  14 → 15 → 16 → 19%, nowhere near S1's 30%. Supplied vs PCA normals change nothing.
-- **Coverage of the true edge by the emitted lanes:** `Breakline_0` covers 78 of 770 crease
-  vertices (10%), `Breakline_1` 199 (26%), both together 254 (33%).
+> **CORRECTION (2026-11-02, after the conservator challenged the wording).** An earlier
+> version of this section said the patch "folds over its own edge" and quoted 68%/45% of edge
+> points having the patch's own material "on both sides of the fold", with an intervention
+> moving S0 14% → 34% and S1 30% → 45%. **That explanation is withdrawn.** The word "crease"
+> meant mesh vertices with a sharp dihedral; that definition fragments into 159 pieces and is
+> not an edge at all. The "both sides of a plane through the crease" test was also invalid — a
+> curved patch falls on both sides of any plane by construction. The corrected measurements
+> follow. Two things the earlier version got wrong in principle: the detector is given **one**
+> surface cloud, so the other skin is never in the neighbourhood (`processFragmentData` is
+> called once per surface at `edgeline_extraction_headless.cpp:3718-3719`, and
+> `cleanSamples` writes `cloud_Surface_AllSamples_Cleaned.pcd` from that one file at :3372,
+> read back at :2318); and the surface's own edge is **not sharp** — the dihedral across it is
+> a median 3.8-4.6 deg, i.e. a gentle roll.
 
-This sharpens the worker's C.4 answer rather than contradicting it: the surface stage owns the
-cheap cure, and the reason it is cheap is now measured — removing the wrap alone more than
-doubles the detector's fire rate at the same edge, with no threshold changed.
+- **The right object is the fold line, not a "crease":** the mesh edges with one endpoint
+  covered by the surface and one not. For S0 that is 2,824 edges / 1,557 mm in 22 components,
+  largest 987 mm; a circle fit gives R = 15.7 mm, residual median 1.23 mm. It is a real ring,
+  and the surface's own boundary, but it is rounded, not a lip.
+- **What actually fills the wedge is the surface's own points lying behind its edge.** At a
+  fold-line anchor, the neighbours within 4 mm sit a median **1.66 mm above the tangent plane**
+  (p90 2.35) in the blind arc against **0.77 mm** elsewhere, while their in-plane radius is
+  normal (2.42 vs 2.57 mm). So the disc is full because the surface rolls away under itself,
+  not because another face is present. 16.3% of S0's points have at least three of their own
+  points more than 1.4 mm behind their normal — 31% inside the blind arc, 7% outside it.
+- **Intervention test, corrected form** (anchor and its normal kept; only the neighbour set
+  restricted to remove S0's own points more than 1.4 mm behind the anchor's normal): the fire
+  rate at the fold goes **18% → 31%** over the whole ring, **0% → 7%** inside the blind arc and
+  **31% → 49%** outside it. Removing the same count at random leaves it at 32%, so the effect is
+  the points removed, not the thinning.
+- **The dots are one arc with one gap, not "in pieces".** Re-running the same test (R = 4 mm,
+  108 deg) gives 187 of S0's 13,850 points, and they form a single contiguous run covering
+  **264 deg** with one **95.7 deg** blind stretch; 28 of 36 ten-degree bins are occupied. The
+  run's own `[LOOP-SELECT] bag=208 comps=2` (139 + 69) is the same set split at a second,
+  smaller gap by the 5 mm linkage.
+- **The blind stretch is where the surface rolls most.** There the fire rate is 0%, 31% of
+  points have own material behind the edge, and 73% of the fold meets the other surface rather
+  than the bare fracture band (52% elsewhere). The emitted `Breakline_0` covers 78 of the fold
+  line's vertices (10%), `Breakline_1` 199 (26%).
+- **Controls, so the cause is not just "curved" or "dense":** synthetic sheets with a free lip
+  at the same 0.40 mm spacing fire 66% (flat), 55% (R = 15 mm), 44% (R = 8 mm), 72% (R = 5 mm),
+  and the fire rate is unchanged when neighbours are restricted to |height| < 0.2 mm. A flat
+  sheet at 0.10 mm spacing still fires 40%. The real piece's 18-31% is therefore not explained
+  by curvature or density; it is the own-material behind the edge.
+
+This still sharpens the worker's C.4 answer — the surface stage owns the cheap cure — but the
+cure is *stop the surface sampling rolling past its own edge*, not "stop it seeing the other
+face".
 
 **A correction to the Given that this replaces.** The Given describes S0's boundary as "two
 separate arcs (127 and 63 dots at 5 mm linkage)". That is the run's own `[LOOP-SELECT]`
