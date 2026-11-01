@@ -1,0 +1,20 @@
+{
+ "runid": "20261101-1913_d8f716f_t58-floor-density-panel",
+ "jobid": "PENDING",
+ "commit": "d8f716fefd633a07404c6f43e88e84c94628220a",
+ "tag": "t58-floor-density-panel",
+ "branch": "58-fifty-dot-floor-seating-and-density",
+ "ticket": "58-fifty-dot-floor-seating-and-density",
+ "pieces": 9,
+ "submitted_utc": "2026-11-01T19:15Z",
+ "arms": [
+  "F50  floor 50, t55 lanes (shipped behaviour; only J7 has 54 dots)",
+  "F45  floor 45 (J5 47, J6 46, J7 54 -> 3 active pieces)",
+  "F10  floor 10 (all 9 active)",
+  "F0   floor 0 (must be behaviourally identical to F10)",
+  "F10R repeat of F10 (byte-identical determinism proof)",
+  "I60  interpolated 60-dot lanes at the STANDARD floor 50 (count vs information control)",
+  "PA10 Pot A bundle at floor 10 (regression control; expect 8/8 + 15/15)"
+ ],
+ "note": "each arm compiles its own binary from a sed-ed COPY of the shipped shim; no variant merged; no index.tsv row appended by the job"
+}
