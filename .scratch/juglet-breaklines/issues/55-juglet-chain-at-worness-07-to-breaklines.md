@@ -20,7 +20,9 @@ SfS find joins)
 **Blocked by:** None (54 merged as 0724e5d; the dial exists on main and 0.7 is the
 recommended value, ledger row 12)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-01)
+**Branch:** 55-juglet-chain-at-worness-07-to-breaklines, in /c/PR/worktrees/sfs/55
 
 **Worker:** dsh-t55-worker (subagent of the lead session; never the lead itself)
 
