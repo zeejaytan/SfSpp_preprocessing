@@ -52,7 +52,7 @@ BUILD md5 line 736ff95c... in both run logs; awk D-vs-X mismatch scan on the rep
 
 **Branch:** 54-rename-the-worn-edge-cap-to-worness-a-dial, in /c/PR/worktrees/sfs/54
 
-**Worker:** unassigned
+**Worker:** 14f39d5e-1124-4c7b-bab9-488002899071 - built SFS_WORNESS, the stage54 harness and submitted the run; lead verified, merged, reproduced the binary from main and wrote the ledger row
 
 ## Spec
 
