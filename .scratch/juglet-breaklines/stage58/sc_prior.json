@@ -1,0 +1,441 @@
+{
+ "label": "run",
+ "gt_pieces": 9,
+ "result_dir": "C:\\PR\\SfSpp_preprocessing\\artifacts\\t58\\prior\\A",
+ "pieces_with_T": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "tables": {
+  "per_piece": [
+   {
+    "piece": 1,
+    "raw_deg": 173.42,
+    "raw_mm": 633.66,
+    "gauge_deg": 126.05,
+    "gauge_mm": 432.54,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 2,
+    "raw_deg": 151.73,
+    "raw_mm": 771.38,
+    "gauge_deg": 131.49,
+    "gauge_mm": 733.3,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 3,
+    "raw_deg": 47.57,
+    "raw_mm": 351.46,
+    "gauge_deg": 126.55,
+    "gauge_mm": 572.42,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 4,
+    "raw_deg": 137.49,
+    "raw_mm": 768.03,
+    "gauge_deg": 108.34,
+    "gauge_mm": 26.85,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 5,
+    "raw_deg": 35.37,
+    "raw_mm": 324.39,
+    "gauge_deg": 162.38,
+    "gauge_mm": 625.07,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 6,
+    "raw_deg": 174.56,
+    "raw_mm": 973.45,
+    "gauge_deg": 138.35,
+    "gauge_mm": 386.62,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 7,
+    "raw_deg": 124.85,
+    "raw_mm": 869.11,
+    "gauge_deg": 125.74,
+    "gauge_mm": 400.14,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 8,
+    "raw_deg": 88.54,
+    "raw_mm": 95.54,
+    "gauge_deg": 136.08,
+    "gauge_mm": 689.62,
+    "strict_raw": false,
+    "strict_gauge": false
+   },
+   {
+    "piece": 9,
+    "raw_deg": 131.71,
+    "raw_mm": 691.09,
+    "gauge_deg": 150.81,
+    "gauge_mm": 324.48,
+    "strict_raw": false,
+    "strict_gauge": false
+   }
+  ],
+  "per_edge": [
+   {
+    "i": 1,
+    "j": 2,
+    "deg": 130.4426,
+    "mm": 910.4833,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 1,
+    "j": 4,
+    "deg": 38.8832,
+    "mm": 100.7039,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 1,
+    "j": 5,
+    "deg": 157.5579,
+    "mm": 802.6428,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 1,
+    "j": 6,
+    "deg": 12.7182,
+    "mm": 103.7082,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 1,
+    "j": 8,
+    "deg": 105.3019,
+    "mm": 752.5473,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 1,
+    "j": 9,
+    "deg": 122.2277,
+    "mm": 893.8557,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 2,
+    "j": 1,
+    "deg": 130.4427,
+    "mm": 939.4734,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 2,
+    "j": 5,
+    "deg": 123.0457,
+    "mm": 580.2259,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 2,
+    "j": 9,
+    "deg": 154.0524,
+    "mm": 327.5676,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 3,
+    "j": 5,
+    "deg": 78.4829,
+    "mm": 605.1913,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 3,
+    "j": 7,
+    "deg": 115.78,
+    "mm": 560.9628,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 4,
+    "j": 1,
+    "deg": 38.8832,
+    "mm": 239.0035,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 4,
+    "j": 5,
+    "deg": 126.6412,
+    "mm": 894.2609,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 4,
+    "j": 6,
+    "deg": 44.6087,
+    "mm": 189.1721,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 5,
+    "j": 1,
+    "deg": 157.5581,
+    "mm": 685.7662,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 5,
+    "j": 2,
+    "deg": 123.0458,
+    "mm": 834.6772,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 5,
+    "j": 3,
+    "deg": 78.4829,
+    "mm": 653.3393,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 5,
+    "j": 4,
+    "deg": 126.6412,
+    "mm": 500.5124,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 5,
+    "j": 9,
+    "deg": 131.137,
+    "mm": 233.7507,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 6,
+    "j": 1,
+    "deg": 12.718,
+    "mm": 39.2886,
+    "pass": true,
+    "strict": false
+   },
+   {
+    "i": 6,
+    "j": 4,
+    "deg": 44.6087,
+    "mm": 270.7408,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 6,
+    "j": 7,
+    "deg": 139.5635,
+    "mm": 916.975,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 6,
+    "j": 8,
+    "deg": 104.4097,
+    "mm": 805.429,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 7,
+    "j": 3,
+    "deg": 115.78,
+    "mm": 541.42,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 7,
+    "j": 6,
+    "deg": 139.5635,
+    "mm": 996.3464,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 7,
+    "j": 8,
+    "deg": 171.6688,
+    "mm": 1107.9873,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 7,
+    "j": 9,
+    "deg": 172.0614,
+    "mm": 1084.4152,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 8,
+    "j": 1,
+    "deg": 105.3019,
+    "mm": 574.3015,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 8,
+    "j": 6,
+    "deg": 104.4097,
+    "mm": 554.0039,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 8,
+    "j": 7,
+    "deg": 171.6691,
+    "mm": 675.9326,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 8,
+    "j": 9,
+    "deg": 143.3651,
+    "mm": 956.6729,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 9,
+    "j": 1,
+    "deg": 122.2277,
+    "mm": 722.6419,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 9,
+    "j": 2,
+    "deg": 154.0525,
+    "mm": 1008.4151,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 9,
+    "j": 5,
+    "deg": 131.1371,
+    "mm": 771.0106,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 9,
+    "j": 7,
+    "deg": 172.0614,
+    "mm": 1011.2461,
+    "pass": false,
+    "strict": false
+   },
+   {
+    "i": 9,
+    "j": 8,
+    "deg": 143.3651,
+    "mm": 644.6372,
+    "pass": false,
+    "strict": false
+   }
+  ]
+ },
+ "countresult": {
+  "k_directed_pass": 1,
+  "total_directed": 36,
+  "k_sherd": 2,
+  "right_sherd": [
+   1,
+   6
+  ],
+  "edge_print_pair": [
+   0,
+   18
+  ],
+  "pct": 2.7777777777777777
+ },
+ "gauge": {
+  "R": [
+   [
+    0.478015,
+    -0.537644,
+    -0.694579
+   ],
+   [
+    0.109045,
+    -0.748334,
+    0.654298
+   ],
+   [
+    -0.871556,
+    -0.388505,
+    -0.299088
+   ]
+  ],
+  "t": [
+   190.9138,
+   -84.8292,
+   419.66
+  ],
+  "pieces_used": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ]
+ },
+ "seat_bar_mm": 4.596
+}
