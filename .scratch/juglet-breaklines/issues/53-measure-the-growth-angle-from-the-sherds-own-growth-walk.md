@@ -12,9 +12,9 @@ theta_split; ship theta = 0.9 x theta_split. No constant from any other vessel e
 
 **Blocked by:** None — ticket 52 closed 2026-11-01 with the flip unmerged; main 8e30a6c holds everything.
 
-**Status:** ready-for-agent
+**Status:** done (gate 1 REFUTED, branch NOT merged — the walk inherits the loose bias)
 
-**Worker:** unassigned
+**Worker:** 071f8a77-30a5-49b0-99dc-49a1728aef8a - built growthWalkProbe53 (the operator itself on a theta ladder), stage53 instruments, ran run 1 + the 292 corpus; lead verified, judged the gates, wrote this verdict. Full worker report on branch tip 75c1060.
 
 ## Why
 
@@ -104,6 +104,40 @@ operator-faithful measurement is to run growth itself on a theta ladder.
 - Flipping any default (the conservator decides after the gates).
 - Seating / e2e (U19's assembly run) — blocked until the growth step is settled.
 
+## Result (lead verdict, 2026-11-01)
+
+**Gate 1 (corpus >= 276/292): FAIL - 138/292 (47.3%).** Run 20261101-1422_fe4f44c_t53-corpus
+(jobs 34157564/34157565/34157566, all COMPLETED 0:0, corpus md5s 148/148 unchanged, walk armed
+as code default via cmake SFS_GROWTH_WALK53_DEFAULT=ON, recorded in run.json). Baseline 281/292
+at flat 3.4; ticket 52's flip scored 237; the walk-measured theta is WORSE than both.
+
+**Gate 2 (Juglet >= 8/9 genuine pairs): PASS 9/9** - med_nn 83.3-99.1% of wall, med_across
+0.011-0.027 mm (run 20261101-1421_fe4f44c_t53-walkprobe, job 34157560, COMPLETED 0:0; prediction
+1 met 17/17: theta_ship reaches the pipeline grow theta to 5 dp). J8 pairs under W (95.3%) where
+arm X (flat 3.4) gives no surface on J4/J6/J8.
+
+**Decision per the pre-registered rule: gate 1 fails -> branch 75c1060 NOT merged, no ledger row.**
+
+### Mechanism (what the refutation teaches)
+
+- The growth walk reads the split threshold of the corpus pieces at 4.5-12 deg (median theta_ship
+  8.325; 14 pieces saturate the 12 deg ladder ceiling; Juglet ALL 9 saturate: theta_split = 12.0,
+  ship = 10.8). Yet the corpus is only healthy at 3.4 - at walk-measured thetas the edgelines are
+  crossed and lane coverage collapses (Pot A itself falls 16/16 -> 12/16 at bar).
+- So the defect is NOT the measuring instrument this time - the probe runs the operator itself.
+  The defect is the CRITERION: ">= 2 clusters each >= 20% npts" cannot see edgeline-crossing on
+  multi-surface corpus pieces; a cluster can absorb a true edgeline and still leave two big
+  halves. Every measured-theta route so far (k-NN fuse crossing t51, cap t52, operator walk t53)
+  reads 7-12 deg on pieces that are only safe at 3.4: the split/glue transition of the growth
+  operator is NOT the quantity the corpus bar cares about.
+- Corollary: a per-piece measured theta for the corpus cannot come from split detection. The 3.4
+  constant survives as the corpus default; the Juglet's problem (worn edges needing 5.5-8) is a
+  different regime and the t51 cap (opt-in) remains the best Juglet-side answer.
+
+verified: sacct 34157560/34157564-66 all COMPLETED 0:0; awk recount of out/lanes.tsv at_bar=yes
+139/296 measured = 138/292 sound (matches summary.md); thetas53.tsv W-arm Juglet theta_ship
+10.80000 x9, Pot A 7.2-9.9; grep FALLBACK out/ = 0; corpus_before/after.md5 unchanged.
+
 ## Facts already established (do not re-derive)
 
 - Ticket 52 (run 20261101-0428_ba9e425_p292-flipcap): formula-as-default = 237/292, 41 lanes
@@ -119,4 +153,3 @@ operator-faithful measurement is to run growth itself on a theta ladder.
 - Juglet genuine-pair zone: med_nn 0.70-1.05 x wall, med_across <= 0.05 mm (tickets 51/52);
   capped thetas 5.5-8.3 delivered it on 8 of 9 (J8 excepted, spacing-linked).
 
-**Status:** ready-for-agent
