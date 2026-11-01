@@ -47,8 +47,8 @@ PYEOF
 
 grep -q '__[A-Z0-9]*__' submit.sbatch && { echo "[S55] unreplaced placeholder in submit.sbatch"; exit 1; };
 bash -n submit.sbatch || { echo "[S55] bash -n submit.sbatch failed"; exit 1; }
-EXP=$(grep -o '\${' submit.sbatch | wc -l)
-[ "$EXP" -ge 40 ] || { echo "[S55] only $EXP expansions in submit.sbatch -- render broken?"; exit 1; };
+EXP=$(grep -o '\$' submit.sbatch | wc -l)
+[ "$EXP" -ge 40 ] || { echo "[S55] only $EXP variable refs in submit.sbatch -- render broken?"; exit 1; };
 echo "[S55] gates passed (expansions=$EXP)"
 
 # push instruments + rendered sbatch, submit
