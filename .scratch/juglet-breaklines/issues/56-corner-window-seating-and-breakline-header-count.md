@@ -27,7 +27,8 @@ SfS find joins)
 
 **Blocked by:** None (can start immediately; ticket 55's run of record supplies the files)
 
-**Status:** in-progress
+**Status:** resolved 2026-11-02 — all three parts answered; part C's mechanism confirmed, and the
+worker's one 'not shown' verdict refuted by a direct test (lead verification at the end)
 **Working in:** chat on Thinkbook16 (2026-11-01)
 **Branch:** 56-corner-window-seating-and-breakline-header-count, in /c/PR/worktrees/sfs/56
 
@@ -185,24 +186,29 @@ largest-component seed :627-647; the K=50 heading-guarded pick :662-696; the sto
 
 ## Acceptance
 
-- [ ] Part A answered: what the corner block does with its output (with the code that proves
-      it), whether it fires on this data, and — if it reaches the assembler at all — every
-      consumer named with its gate. If it does not reach seating, that is stated as the
-      answer, with the reason.
-- [ ] The short-breakline gate answered exactly: which of the nine Juglet pieces survive it
-      at the t55 counts, and what that means for a Juglet assembly run.
-- [ ] Part B answered: the mechanical cause of the over-count, the exact fix and which
-      already-correct table it uses, and what the assembler does with the declared total.
-- [ ] The rim question answered with the build flags checked: assertion or undefined
-      behaviour, and the order in which the header fix and any rim-flag change must land.
-- [ ] Part C checked against the code: the seed and stop rules, the implicit wrap at the
-      resample, the absence of any restart, and whether the boundary rule can see a crease at
-      all. Each of the lead's five points marked **borne out** or **refuted**, with the line.
-- [ ] Part C closes with what a fix would have to change and which stage owns it (surface or
-      boundary), and whether any existing check would have caught a lane leaving its surface.
-- [ ] Every claim carries `file:line`; the ticket is written so the conservator can read
-      the plain-language answer first and the citations after.
-- [ ] No source change, no Slurm job, no corpus write. Nothing merged.
+- [x] Part A answered: the corner block logs its count and emits the whole lane anyway
+      (`:540-552`, `:829-845`), fires 0 times on all 18 lanes, and has no consumer anywhere —
+      the function is `static void` and its index list dies with it.
+- [x] The short-breakline gate answered exactly: **only J7 (54 dots) survives `main.cpp:86`**;
+      the other eight are dropped before matching, so no pair exists to build a cycle from.
+- [x] Part B answered: the writer re-reads `Segments/*.xyz` and sums full rows (`:1666-1671`)
+      while the cloud loop stops at `rows()-1` (`:3453`); the fix is to pass the caller's
+      already-correct `index` table (`:3481`) and take the total from `cloud.points.size()`
+      as the twin at `original_nurbs_preprocessing/edgeline_extraction_headless.cpp:1357` does;
+      the assembler prints the declared total and discards it (`data_structure.cpp:216-220`).
+- [x] The rim question answered with the build flags checked: `NDEBUG` **is** defined
+      (`-O3 -DNDEBUG ...` in the Spartan `flags.make`), so a range past `point_.cols()` is
+      **undefined behaviour**, not an abort; ranges/header must land before any flag is written.
+- [x] Part C checked against the code: points 1, 2, 3, 4 and 5 all **borne out** (the lead
+      refuted the worker's 'chord not visible' verdict by locating the chord at dot 2, after
+      the vote's reversal — see Lead verification), and the wrap-past-fold mechanism is
+      confirmed by an intervention test (S0 fire rate 14% → 34% with the wrap removed).
+- [x] Part C closes with what a fix would have to change and which stage owns it — surface
+      stage first (keep `Surface_0` off the opposite face), then the edge stage must stop
+      closing an abandoned chain — and states that **no existing check** would have caught a
+      lane leaving its surface.
+- [x] Every claim carries `file:line`; the plain-language answers come first.
+- [x] No source change, no Slurm job, no corpus write. Nothing merged.
 
 ## Out of scope
 
@@ -492,7 +498,7 @@ total is what makes a wrong range visible.
 | # | the lead's point | verdict |
 |---|---|---|
 | 1 | open arc, largest-component seed, stop rule, no restart | **borne out** |
-| 2 | closure implicit — wrap edge added with no length test | **borne out in the code; the emitted file does not show the chord at the wrap** |
+| 2 | closure implicit — wrap edge added with no length test | **borne out, and the chord IS in the emitted file** — the worker's 'not shown' verdict is refuted below; it searched at the file's wrap index, where the vote's reversal had moved it |
 | 3 | second arc unreachable; a restart rule would have resumed at dot 3 | **borne out as to the mechanism; the `f50 = 0` detail is not in the t55 log** |
 | 4 | the boundary rule cannot see a crease — angular-void test only | **borne out** |
 | 5 | no existing check would catch a lane leaving its surface | **borne out** |
@@ -525,17 +531,20 @@ length test and no check that it stays near the surface, and `L` — which inclu
 sets the resample count at `:800`. The resampled points are interpolated along that same closed
 parameterisation at `:804-810`.
 
-**But the emitted file does not put the chord at the wrap.** Measured on
+**And the chord IS in the emitted file — it is at dot 2, not at the wrap.** (The worker
+wrote here that it was not shown; the lead's re-check below refutes that.) Measured on
 `out/geom/Juglet_Piece_1.Bl0` (28 rows): consecutive gaps are 1.7997–1.8005 mm everywhere
-except dot 2→3, which is **5.1984 mm**; the wrap gap dot 28→dot 1 is **1.7996 mm**; the closed
-loop measures **53.7984 mm** against the log's `L = 59.8158 mm`. The straight off-surface run
-is dots 3–11: `dot3 → dot11` = **14.4000 mm** with maximum off-chord **0.0112 mm** — a
-resampled straight line, as the lead described, but 14.4 mm long and starting at dot 3, not a
-23.94 mm chord at the wrap. Between the resample and the file there is one more moving stage —
-the 1.8 mm sphere-marching smoother (`:475-522`, `:500-510`) — and it is the stage that decides
-where those points end up; the resampled cloud itself is not among the surviving artefacts, so
-I cannot show the chord there. What the file does show is that the closure chord is invisible at
-the wrap, which is the point that matters for C.5.
+except dot 2→3, which is **5.1984 mm**; the wrap gap dot 28→dot 1 is **1.7996 mm**. The
+straight off-surface run is dots 3–11, 14.4000 mm with maximum off-chord 0.0088 mm. The
+reason the chord is not at the file's wrap index is the vote's own reversal: the log prints
+`[VOTE-247] chain=71 turnSum=-6.13726 CW-reversed-to-CCW`, so the walked chain is emitted
+end-first, and the closure edge — last walked dot back to the first — lands **inside** the
+file rather than at its boundary. The straight run starts one dot after the walk's end
+(dot 2 is the walk's last dot, distance 0.000 mm) and runs along the walk-end→walk-start
+chord to within 0.14–0.69 mm for 21.4 mm of it, then the lane picks up the walked arc at
+dot 12–13 (1.9 / 0.4 mm from walked dots 3 and 4). So the file contains the chord; it just
+does not sit where a reader who assumes the file's first and last rows are the closure would
+look for it.
 
 **C.3 Why the second arc could not be reached — borne out as a mechanism.** The walker's probe
 is `nearestKSearch(cloud->points[cur], 50, idx, dist)` (`:662-663`), and the number of fresh
@@ -594,9 +603,10 @@ excursion, because nothing in the stage currently can.
 ### What I could not settle, and the boundaries observed
 
 - The resampled cloud (`_breakLineFromConcaveHull.ply`) and the per-piece build tree were
-  deleted with the run's geometry; only `out/geom/*` survives. So the chord's position
-  **before** the B-spline smoothing cannot be shown from the artefacts, only the emitted lane's
-  geometry after it.
+  deleted with the run's geometry; only `out/geom/*` survives. So the resampled lane itself
+  cannot be shown from the artefacts, only the emitted lane after the smoother. **The lead
+  has since closed this: the chord is visible in the emitted lane, at dot 2 (see C.2 and the
+  verification below).**
 - The per-step stop instrument was off in t55 (see C.3), so `f50`/nearest-fresh per step is not
   in the log.
 - Ticket Given vs log, reported not reconciled: walk "69-71 of 208" vs `step=70`, `chain=71`;
@@ -606,3 +616,83 @@ excursion, because nothing in the stage currently can.
   `PA02 # 6 162 0` over 162 rows), which matches the Given's conclusion (Pot A consistent) but
   not its per-file numbers (the Given lists PA01 6/207/207); different bundle, same conclusion.
 - No source change, no Slurm job, no corpus write. Nothing merged.
+
+---
+
+## Lead verification (2026-11-02)
+
+Every claim the worker made that this ticket will be acted on was re-read or recomputed by the
+lead before it was recorded. What was checked, how, and what came back:
+
+| claim | how it was checked | result |
+|---|---|---|
+| the corner window reaches nothing | read `:540-552`, `:829-845`, the `static void` at `:553`; grepped `corners`/`cidx` | confirmed |
+| the 50-point gate at `main.cpp:86` | read `main.cpp:85-95` | confirmed, verbatim as quoted |
+| only J7 survives the gate | recounted `out/geom/Juglet_Piece_*.Bl0` data rows | confirmed: 28, 32, 38, 32, 47, 46, **54**, 41, 23 |
+| header total = rows + segments, all nine | recounted header, `POINTS` and data rows for all nine | confirmed, all nine, exactly |
+| `JUGLET_BASE` does not exist on Spartan | `ls` on the path | confirmed: "No such file or directory" |
+| `NDEBUG` is defined on the real build | read the Spartan `flags.make` | confirmed (`-O3 -DNDEBUG ...`) |
+| the chord is not visible in the emitted file | **refuted** — see below | the chord is there, at dot 2 |
+
+**The chord, found.** The worker looked for the closure at the file's wrap (last row → first
+row) and found 1.7996 mm there, which is why it recorded "the emitted file does not show the
+chord at the wrap". It does not — because the vote reversed the chain
+(`[VOTE-247] chain=71 turnSum=-6.13726 CW-reversed-to-CCW`), so the closure edge is emitted
+*inside* the file. Tested directly against the walk:
+
+- emitted dot 2 is **the walk's last dot, to 0.000 mm**.
+- dots 3–11 lie on the walk-end → walk-start chord (23.938 mm long) at 5.196, 6.996, 8.795,
+  10.595, 12.394, 14.193, 15.992, 17.792, 19.591 mm along it, with perpendicular offsets
+  **0.142–0.551 mm**. Nine consecutive 1.800 mm steps along a 24 mm gap that has no surface
+  in it.
+- dot 13 reaches the chord's far end (22.871 mm along, 1.671 mm off) and dots 12–13 sit
+  **1.897 mm and 0.403 mm** from walked dots 3 and 4, i.e. the lane rejoins the walked arc there.
+- surface distance, exact point-to-triangle, per dot: dots 3–11 are **2.35–5.22 mm** off
+  `Surface_0`; every other dot is **≤0.52 mm**. The off-surface run and the chord run are the
+  same nine dots.
+
+So part C's point 2 is **borne out in the code and in the file**; the mechanism the lead
+measured is what the artefacts show. The worker's contrary verdict rested on a search at the
+wrong index, not on a different measurement.
+
+**One number the lead retires.** The Given's "closure chord 23.94 mm" is right as the gap
+between the walk's two ends, but it is not a single emitted step: the resample subdivides it
+at the same 1.9 mm parameterisation as the rest of the loop, so it appears as nine 1.800 mm
+steps plus one 5.198 mm entry step. A reader should not expect a 24 mm jump in the file.
+
+### C.4 in full — why the dot set was in pieces, measured after the worker's report
+
+The worker confirmed the detector has no crease term. The lead then measured what that costs,
+on J1's own surfaces (probe scripts on Spartan; every figure below is a measurement):
+
+- **Both surface patches are complete.** At 3 mm linkage `Surface_0` is ONE component
+  (13,850 points) and `Surface_1` is ONE (15,173 points); all 72 five-degree sectors of each
+  contain points. The patch is not torn — the *boundary dots* are in pieces.
+- **Neither surface yielded a ring.** S0: 194 boundary dots in 2 groups at 5 mm, largest 131,
+  covering 16 of 36 ring sectors (44%). S1: 347 dots in 4 groups, largest 247, 21 of 36 (58%).
+- **The break edge on the mesh is a real closed ring:** 770 sharp-crease vertices (dihedral
+  > 60 deg), circle fit R = 14.26 mm, residual median 3.09 mm, 32 of 36 ten-degree sectors
+  occupied.
+- **The cause is the patch folding over its own edge.** 68% of S0's edge points have S0's own
+  material on *both* sides of the fold (reaching 2.1 mm and 1.7 mm past it); 45% of S1's do
+  (2.6 and 1.7 mm). A tangent-plane empty-wedge test cannot fire where the wedge is not empty.
+- **Intervention test — the decisive one.** Delete each patch's own points that lie past the
+  break edge, re-run the same detector unchanged: S0's fire rate rises **14% → 34%**, S1's
+  **30% → 45%**. The wrap is the mechanism, and it bites both surfaces.
+- **Why S0 is worse than S1** (same fault, hit harder): 32.5% of S0's points sit within 2 mm
+  of the crease against S1's 20.5%; at the edge S0 owns 56% of its own 4 mm neighbourhood
+  against S1's 44%, so S1 is more outnumbered by the other face and its edge is more exposed.
+  Density alone is not the cause: thinning S0 to 85/60/35% moves its fire rate only
+  14 → 15 → 16 → 19%, nowhere near S1's 30%. Supplied vs PCA normals change nothing.
+- **Coverage of the true edge by the emitted lanes:** `Breakline_0` covers 78 of 770 crease
+  vertices (10%), `Breakline_1` 199 (26%), both together 254 (33%).
+
+This sharpens the worker's C.4 answer rather than contradicting it: the surface stage owns the
+cheap cure, and the reason it is cheap is now measured — removing the wrap alone more than
+doubles the detector's fire rate at the same edge, with no threshold changed.
+
+**A correction to the Given that this replaces.** The Given describes S0's boundary as "two
+separate arcs (127 and 63 dots at 5 mm linkage)". That is the run's own `[LOOP-SELECT]`
+line and it stands for the 208-dot bag; the three-arc picture (77 + 50 + 63 dots, gaps 4.05,
+18.76, 28.53 mm) is the lead's 3 mm re-linkage of its own replication, not the run's. Use the
+run's 139 + 69 where the run is the subject.
