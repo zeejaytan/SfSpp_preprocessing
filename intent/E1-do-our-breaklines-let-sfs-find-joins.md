@@ -41,6 +41,30 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-02, ticket 56 (merged 357e4b0) — the ordering walk is not the only thing between
+us and a join, and the J1 case names a new one.** Three results bear on this question:
+
+- **A lane can leave its surface and nothing catches it.** J1's `Breakline_0` carries nine
+  dots 2.35-5.22 mm off the mesh, running straight across a bay in the sherd, because the
+  boundary detector never saw the break edge and the resample closed the gap with a 23.9 mm
+  chord. Measured cause: the `Surface_0` patch folds past its own edge, so the tangent-plane
+  empty-wedge test (`setAngleThreshold(M_PI*0.6)`, `:1108`) has no empty wedge to fire on —
+  68% of S0's edge points have their own patch on both sides of the fold. Deleting the wrap
+  and re-running the same detector raises its fire rate **14% → 34%** on S0 and **30% → 45%**
+  on S1, so the cure belongs to the surface stage. No check in the edge stage compares a
+  breakline point with its own surface (`:3495` and `:3088` measure axis deviation and normal
+  consistency), so this class of failure is silent today.
+- **The corner window is a dead branch and the 50-point floor is what binds.** The
+  corner detector (`W = 8`, `thr = max(2.0, 3*med)`) fires 0 times on all 18 lanes, is
+  `static void` with no consumer, and is logged only by design (`:540-552`). The gate that
+  actually removes pieces is `main.cpp:86` — see U19's 2026-11-02 entry for the counts.
+- **The breakline PCD headers over-count by exactly the segment count** (writer re-reads
+  `Segments/*.xyz` and sums full rows, `:1666-1671`, while the cloud loop stops at
+  `rows()-1`, `:3453`). Cosmetic today because the reader prints and discards the total
+  (`class/data_structure.cpp:216-220`), but the per-range ends over-count too, so writing a
+  rim flag over today's ranges would index past the point matrix under `-DNDEBUG` —
+  undefined behaviour, not an abort. Range/header fix must land before any rim flag.
+
 **Limits, stated honestly:** the paper names the voting algorithm but
 does not specify it, pointing to supplementary material this corpus does
 not contain. And whether the authors' own 142 fragments always classify
