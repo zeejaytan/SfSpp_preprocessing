@@ -6,10 +6,13 @@ edge-line stage — and every piece's edgelines are rendered as pictures ON its 
 conservator to read with his own eyes. This is e2e step 4 of 5
 (`../structure-from-sherds-pp/docs/e2e-obj-to-reassembly.md`): **the run stops before
 assembly**. Nothing is scored and no seating claim is made. The pictures are the deliverable
-(the conservator asked for them by name, 2026-11-01); they are also the honest baseline of
-what the shipped edge stage does at the recommended dial — spec.md problem 1 (the stage takes
-the edge line from the LARGER surface, not the interior) is unfixed, so the pictures must show
-what IS, not what the spec hopes for.
+(the conservator asked for them by name, 2026-11-01). The shipped stage they exercise is
+the FIXED one: Breakline_0 comes from the **interior** wall (ticket 04, resolved 2026-09-28:
+per-sherd surface_classify vote + exchange wiring, 15/15 with patch rims per ticket 14),
+the specified noise filter runs (ticket 05, 2026-09-30) and resampling is equidistant
+(ticket 06, 2026-09-30). Still open from the spec is only edge-line **ordering / vote
+direction** (ticket 03, characterized-but-unfixed) — the pictures are the honest per-sherd
+read of this fixed stage at the recommended dial.
 
 **Answers:** U19 (does the pipeline put the Juglet back together), E1 (do our breaklines let
 SfS find joins)
@@ -102,7 +105,9 @@ fails this ticket even if every number is green.
 
 - Any assembly run or seating claim (step 5; a later ticket).
 - Any change to edgeline_extraction_headless.cpp / mesh_processing_headless.cpp — the
-  spec.md rebuild (interior surface, ordering, filter, resampling: tickets 03-06) is
-  separate work; this ticket records the shipped stage's behaviour, it does not fix it.
+  spec.md rebuild is mostly DONE (interior surface 04, filter 05, resampling 06, all
+  resolved 2026-09-28/30); only ordering / vote direction (ticket 03) remains open, and
+  it is separate work. This ticket records the shipped stage's behaviour, it does not
+  change it.
 - The J8 spacing question, corpus changes, Pot A arms (t54 already proved the dial inert
   there).
