@@ -18,9 +18,10 @@ let SfS find joins)
 
 **Blocked by:** none (56 resolved; 55's run of record is the baseline arm)
 
-**Status:** ready-for-agent
-**Working in:** —
-**Branch:** —
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-02)
+**Branch:** 57-worness-fine-sweep-surface-separation, in /c/PR/worktrees/sfs/57
+**Worker:** unassigned
 
 **Conservator decisions feeding this ticket:**
 - 2026-11-01: SFS_WORNESS=0.7 is the recommended documented value (ticket 54, ledger row 12).
