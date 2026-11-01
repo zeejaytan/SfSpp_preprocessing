@@ -17,9 +17,10 @@ let SfS find joins)
 **Blocked by:** none (uses the t55 run of record read-only; runs alongside 57 — different
 repo; do NOT write inside the t55 run dir)
 
-**Status:** ready-for-agent
-**Working in:** —
-**Branch:** —
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-02)
+**Branch:** 58-fifty-dot-floor-seating-and-density, in /c/PR/worktrees/sfs/58
+**Worker:** unassigned
 
 ## Spec
 
