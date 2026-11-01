@@ -2,7 +2,7 @@
 
 **What to build:** the opt-in worn-edge growth angle becomes ONE knob named after what it means
 physically: SFS_WORNESS. Unset (default) = today's shipped behaviour, flat 3.4 (corpus). Set to a
-multiplier w (0 < w <= 1, recommended 0.9 = the calibrated value) = worn-edge mode: theta =
+multiplier w (0 < w <= 1, **recommended 0.7** -- the conservator's dial, 2026-11-01; 0.9 is the t51-calibrated value, no longer the recommendation) = worn-edge mode: theta =
 min(formula theta, w x measured crossing), i.e. the current SFS_GROWTH_FORMULA=1 +
 SFS_GROWTH_CAP=1 behaviour with the 0.9 promoted from a hard constant to the dial. More worn
 sherd -> higher w -> looser allowed angle, still never above what the piece's own measured
@@ -30,6 +30,8 @@ SFS_GROWTH_FORMULA/CAP, both old knobs untouched.
 | W (0.9) | the worn dial | theta == min(formula, 0.9 x crossing) exactly on every cell; Juglet 8/9 genuine pairs (med_nn 81.9-103.5 pct of own wall, med_across <= 0.036 mm); J8 junk (145-pt second surface) — expected, it is spacing-bound, and it recovers under W7 |
 | W7 (0.7) | the dial turns the right way | thetas strictly below W on 17/17 |
 | FATAL probes | units guard | `=0` and `=abc` both rc 2 with `[WORNESS-54] FATAL ...` and no surface |
+
+**Recommended dial: 0.7 (conservator's decision, 2026-11-01).** 0.9 stays in the record as the t51-calibrated value, but it is not the recommendation: at 0.7 the thetas turn down on 17/17 cells and J8's second surface recovers (9/9 genuine wall pairs on the Juglet), so 0.7 is the value the next tickets build on (ticket 55 runs the chain at WORNESS=0.7 down to breaklines).
 
 **Reproduced from merged main** (conservator's instruction): run 20261101-1643_83edd76_t54-reproduce,
 job 34161339, COMPLETED 0:0, built from the merged tree; binary md5 **736ff95c976486d17f7c00b3af402040**,
