@@ -90,18 +90,69 @@ fails this ticket even if every number is green.
 
 ## Acceptance
 
-- [ ] One run of record on the shared root, run.json facts in out/run-meta.txt (runid,
+- [x] One run of record on the shared root, run.json facts in out/run-meta.txt (runid,
       jobid, commit, tag, rc), index row appended by the job with verdict/human_note empty,
       corpus md5 unchanged before/after, `sacct` State/ExitCode recorded in the ticket.
-- [ ] 9/9 pieces with classify line + WORNESS line + S0/S1 + Bl0/Bl1 exported; per-piece
+- [x] 9/9 pieces with classify line + WORNESS line + S0/S1 + Bl0/Bl1 exported; per-piece
       table (piece, capped theta, surf0/surf1 points, bl0/bl1 points, rc) in out/ and in the
       ticket write-back. A FAILED cell is reported as FAILED — never dropped.
-- [ ] 9/9 PNGs rendered per the spec above; fetched to
+- [x] 9/9 PNGs rendered per the spec above; fetched to
       `SfSpp_preprocessing/artifacts/<runid>/` on the laptop together with the per-piece
       table, run-meta and the slurm out/err; the Needs-eye line above resolves on disk.
-- [ ] No assembly, no scorer, no corpus write, no source change; stages deleted with the
+- [x] No assembly, no scorer, no corpus write, no source change; stages deleted with the
       counted record; the branch carries instruments + ticket write-back only.
-- [ ] Worker reports facts only (numbers, paths, failures); the verdict is the lead's.
+- [x] Worker reports facts only (numbers, paths, failures); the verdict is the lead's.
+
+## Results (worker write-back, 2026-11-01)
+
+**Run of record:** '20261101-2004_05be12c_t55-worness07-breaklines', job **34165367**,
+**sacct COMPLETED 0:0, elapsed 00:04:00** (host spartan-bm157), commit '05be12c'
+(instruments 'c8da315' + gate fixes '05be12c'/'8700ee2'), branch pushed. First submit
+34165338 FAILED in 3 s at the instruments md5 gate: the laptop render passed /data/...
+as python argv and MSYS rewrote it into the bash-win32 install prefix, baking
+'C:/Users/hermi/...' into --output/RUN=; fixed by rendering on Spartan + commit
+'8700ee2' (MSYS2_ARG_CONV_EXCL render, C: gate, full 7-file instrument tar), resubmitted.
+Both events are in sacct history; run.json carries prior_attempt_jobid.
+
+- **Corpus gate 9/9 ok** -- cloud md5 AND kept_points match MANIFEST_JUGLET_CC.tsv
+  per piece (840,666-841,413 pts); job log line 179: 'frozen inputs unchanged (empty
+  corpus diff)'. No *_covering.pcd anywhere under the corpus Point trees.
+- **Cells 9/9 ok, cells_rc=0** -- every piece has '[PAPER-234] classify: face0' and
+  '[WORNESS-54] piece= ... theta='; mesh_rc=0, edge_rc=0; no FAILED cell.
+
+| piece | capped theta deg | surf0 pts | surf1 pts | Bl0 dots | Bl1 dots |
+|---|---|---|---|---|---|
+| Juglet_Piece_1 | 6.43 | 13,850 | 15,173 | 28 | 64 |
+| Juglet_Piece_2 | 12.87 | 1,390 | 1,296 | 32 | 31 |
+| Juglet_Piece_3 | 11.93 | 2,063 | 2,189 | 38 | 41 |
+| Juglet_Piece_4 | 17.13 | 2,033 | 2,255 | 32 | 35 |
+| Juglet_Piece_5 | 13.54 | 4,066 | 5,302 | 47 | 51 |
+| Juglet_Piece_6 | 16.82 | 3,870 | 3,944 | 46 | 45 |
+| Juglet_Piece_7 | 10.50 | 5,703 | 7,282 | 54 | 58 |
+| Juglet_Piece_8 | 15.46 | 2,770 | 2,933 | 41 | 41 |
+| Juglet_Piece_9 | 14.21 | 1,051 | 1,219 | 23 | 24 |
+
+(Full 12-col table: out/pieces55.tsv, fetched copy in artifacts.)
+
+- **Deliverables:** 9/9 PNGs (out/png/Juglet_Piece_{1..9}.png, 1485x704, two panels)
+  and the 36-file out/geom/ bundle ({P}.{S0,S1,Bl0,Bl1}, the assembly-consumable
+  export) -- geom kept, every stage tree deleted with counts
+  (GEOMETRY_DELETED.txt: before 0 / after 0 outside keeps, kept 36).
+  Binaries from the pushed commit: MeshPreprocessingHeadless
+  '736ff95c976486d17f7c00b3af402040', EdgeLineExtractionHeadless
+  'cbf747dc3172fe0bbd188822df14092a' (out/binaries.md5).
+- **Index row appended** with verdict/human_note EMPTY (lead's to write).
+- **Artifacts on laptop** at SfSpp_preprocessing/artifacts/20261101-2004_05be12c_t55-worness07-breaklines/
+  (fetch tar md5 'f425564e88bc24ff2c4b0c9ea8e5983e', verified after extraction):
+  out/{pieces55.tsv,run-meta.txt,render55.tsv,corpus_gate.tsv,corpus_covering_sweep.txt,geometry_counts.tsv,GEOMETRY_DELETED.txt,binaries.md5,files.md5,cells55.log,render55.log,inputs.diff,versions.txt,png/Juglet_Piece_1..9.png}
+  + logs/{slurm-34165367.out,slurm-34165367.err,build.log,fetch.log} + submit.sbatch.
+- **Worker-side picture check (quantitative, not the eye):** every PNG contains both
+  lanes -- red (Bl0) 468-791 px and blue (Bl1) 632-1,075 px, mesh 2.8-6.5% of frame.
+  The qualitative on-rim read is the conservator's (modlens vision bridge was 503 both
+  tries); pictures linked in Needs-eye resolve on disk.
+- Acceptance items 1-4 are met by the facts above; the branch carries instruments +
+  this write-back only, nothing merged to main, no assembly/scorer/corpus write/source
+  change.
 
 ## Out of scope
 
