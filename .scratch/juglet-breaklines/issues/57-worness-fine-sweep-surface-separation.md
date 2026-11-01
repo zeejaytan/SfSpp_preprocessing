@@ -18,7 +18,7 @@ let SfS find joins)
 
 **Blocked by:** none (56 resolved; 55's run of record is the baseline arm)
 
-**Status:** open
+**Status:** ready-for-agent
 **Working in:** —
 **Branch:** —
 
