@@ -3364,6 +3364,85 @@ static std::vector<pcl::PointIndices> growPaper234(
     return pclusters;
 }
 
+// ============================================================================
+// TICKET 53: measure the growth angle from the sherd's own growth walk.
+// The question (U19): what theta does the piece itself want?  Not a law fitted
+// on another corpus (ticket 45's 3.3573*S/R) and not a graph crossing of all
+// smooth pairs (ticket 51's thetaCross51) -- the actual growth operator,
+// growPaper234 itself, run on the same downsampled cloud the pipeline grows on
+// (downsampledCloudWithNormals, the precedent thetaCross51/medianFoldRadius45
+// set), swept over a theta ladder:
+//   coarse  1.0 .. 12.0 step 1.0, every rung evaluated (the split is not
+//           assumed monotone: theta_split is the LARGEST splitting theta)
+//   refine  the bracket (theta_split, theta_split+1.0) on a 0.25 grid, tested
+//           from the top down; if the coarse pass already burned >240 s the
+//           refine grid COARSENS to 0.5 -- coarsened, never skipped
+// A theta SPLITS when >= 2 returned clusters each hold >= 20% of the cloud
+// (two face-sized surfaces); theta_ship = 0.9 * theta_split.  No merge pass
+// runs here (the measurement must see the walk's own seams).  The dynMinCluster
+// floor is replicated exactly from surfaceSegmentation (minCluster=50 scaled by
+// g_countScale, floored at max(30, Npts/500), SFS_FLOOR_CEILING cap) and the
+// minClusterSize gate inside growPaper234 is applied with that floor, so the
+// ladder runs the operator at its shipped semantics.  A cloud no theta in the
+// ladder splits is a FALLBACK to 3.4 (logged, never fatal).
+static void growthWalkProbe53(const std::string& piece53,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pc53,
+    pcl::PointCloud<pcl::Normal>::Ptr pn53,
+    int nb53, double kappa53, int dynMinCluster53,
+    double& thetaSplit53, double& thetaShip53, bool& fallback53,
+    int& runs53, double& secs53, std::string& ladder53, std::string& detail53)
+{
+    const double lo53 = 1.0, hi53 = 12.0, step53 = 1.0;
+    const double coarseBudget53 = 240.0; // s: over this, refine coarsens to 0.5
+    const auto t053 = std::chrono::steady_clock::now();
+    const int Npts53 = static_cast<int>(pc53->points.size());
+    const double face53 = 0.20 * static_cast<double>(Npts53);
+    runs53 = 0;
+    ladder53.clear();
+    auto splitsAt53 = [&](double th53) -> bool {
+        ++runs53;
+        const std::vector<pcl::PointIndices> cl53 =
+            growPaper234(pc53, pn53, dynMinCluster53, nb53, th53, kappa53);
+        int big53 = 0;
+        for (size_t c53 = 0; c53 < cl53.size(); ++c53)
+            if (static_cast<double>(cl53[c53].indices.size()) >= face53) ++big53;
+        const bool sp53 = (big53 >= 2);
+        char rung53[64];
+        std::snprintf(rung53, sizeof rung53, "%.2f:%s", th53, sp53 ? "split" : "glue");
+        if (!ladder53.empty()) ladder53 += " ";
+        ladder53 += rung53;
+        return sp53;
+    };
+    double largestSplit53 = -1.0;
+    for (double th53 = lo53; th53 <= hi53 + 1e-9; th53 += step53)
+        if (splitsAt53(th53)) largestSplit53 = th53;
+    const double coarseSecs53 =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - t053).count();
+    double grid53 = 0.25;
+    if (coarseSecs53 > coarseBudget53) grid53 = 0.5;
+    if (largestSplit53 > 0.0 && largestSplit53 < hi53 - 1e-9)
+    {
+        // bracket (largestSplit53, largestSplit53+1.0): largestSplit splits,
+        // largestSplit+1.0 glued in the coarse pass; walk the grid top-down and
+        // the first splitting rung IS the largest splitting theta on that grid.
+        const int steps53 = static_cast<int>(std::lround(1.0 / grid53));
+        for (int m53 = steps53 - 1; m53 >= 1; --m53)
+        {
+            const double cand53 = largestSplit53 + m53 * grid53;
+            if (splitsAt53(cand53)) { largestSplit53 = cand53; break; }
+        }
+    }
+    thetaSplit53 = largestSplit53;
+    fallback53 = (largestSplit53 <= 0.0);
+    thetaShip53 = fallback53 ? 3.4 : 0.9 * largestSplit53;
+    secs53 = std::chrono::duration<double>(std::chrono::steady_clock::now() - t053).count();
+    detail53 = "npts=" + std::to_string(Npts53) + " floor=" + std::to_string(dynMinCluster53)
+        + " nb=" + std::to_string(nb53) + " kappa=" + std::to_string(kappa53)
+        + " grid=" + std::to_string(grid53) + " runs=" + std::to_string(runs53)
+        + " coarse_secs=" + std::to_string(coarseSecs53);
+    (void)piece53;
+}
+
 static Eigen::Vector3f meanNormal234(const std::vector<int>& idx,
     pcl::PointCloud<pcl::Normal>::Ptr pnormals)
 {
@@ -4841,7 +4920,22 @@ int main(int argc, char** argv) {
         // SFS_GROWTH_FORMULA=1, and an explicit SFS_PAPER_THETA still wins over both.
         bool thetaFormula46 = false;
         if (const char* e = std::getenv("SFS_GROWTH_FORMULA")) { if (*e && std::string(e) != "0") thetaFormula46 = true; }
-        if (!thetaFromEnv45 && thetaFormula46)
+        // TICKET 53: SFS_GROWTH_WALK=1 -- opt-in, the theta comes from the piece's own
+        // growth walk (growthWalkProbe53 above), measured on the same downsampled cloud
+        // the pipeline grows on. OFF is today's binary byte-identical: nothing below the
+        // flag runs, no [GROWTH-53] line is printed. A build may flip the compile-time
+        // default with CMake SFS_GROWTH_WALK53_DEFAULT=ON (the corpus regression build:
+        // its scheduler refuses SFS_* env, so the only way to arm the walk there is in
+        // code); the env var overrides the compile default in BOTH directions (a literal
+        // "0" turns a default-on build off). SFS_PAPER_THETA still outranks both, and the
+        // walk also outranks the formula: the piece's own measurement beats a fitted law.
+        bool growthWalk53On = false;
+#ifdef SFS_GROWTH_WALK53_DEFAULT_ON
+        growthWalk53On = true;
+#endif
+        if (const char* e53 = std::getenv("SFS_GROWTH_WALK"))
+        { if (*e53 && std::string(e53) != "0") growthWalk53On = true; else growthWalk53On = false; }
+        if (!thetaFromEnv45 && thetaFormula46 && !growthWalk53On)
         {
             const double k45 = 3.3573;
             const double rMed45 = medianFoldRadius45();
@@ -4884,6 +4978,67 @@ int main(int argc, char** argv) {
         if (const char* e = std::getenv("SFS_PAPER_RHOC")) { if (*e) paperRhoC = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_RHOINN")) { if (*e) paperRhoInN = std::stod(e); }
         if (const char* e = std::getenv("SFS_PAPER_RHOINC")) { if (*e) paperRhoInC = std::stod(e); }
+        // TICKET 53: run the growth-walk probe and take its theta.  Sits here, after the
+        // SFS_PAPER_KAPPA / SFS_PAPER_NB reads, so the ladder runs the operator at the
+        // exact kappa/nb this run will grow with; the flag itself was resolved before the
+        // formula block so the formula is inert when the walk is armed.
+        if (!thetaFromEnv45 && growthWalk53On && paperChain)
+        {
+            pcl::PointCloud<pcl::PointXYZ>::Ptr pc53(new pcl::PointCloud<pcl::PointXYZ>);
+            pcl::PointCloud<pcl::Normal>::Ptr pn53(new pcl::PointCloud<pcl::Normal>);
+            pc53->points.reserve(downsampledCloudWithNormals->points.size());
+            pn53->points.reserve(downsampledCloudWithNormals->points.size());
+            for (size_t i53 = 0; i53 < downsampledCloudWithNormals->points.size(); ++i53)
+            {
+                const pcl::PointNormal& p53 = downsampledCloudWithNormals->points[i53];
+                if (!std::isfinite(p53.x) || !std::isfinite(p53.y) || !std::isfinite(p53.z)) continue;
+                pcl::PointXYZ q53; q53.x = p53.x; q53.y = p53.y; q53.z = p53.z;
+                pcl::Normal n53; n53.normal_x = p53.normal_x; n53.normal_y = p53.normal_y;
+                n53.normal_z = p53.normal_z; n53.curvature = p53.curvature;
+                pc53->points.push_back(q53);
+                pn53->points.push_back(n53);
+            }
+            pc53->width = static_cast<uint32_t>(pc53->points.size()); pc53->height = 1; pc53->is_dense = true;
+            pn53->width = pc53->width; pn53->height = 1; pn53->is_dense = true;
+            // the dynMinCluster floor, replicated from surfaceSegmentation (minCluster=50):
+            // scaled floor, max(30, Npts/500) floor, SFS_FLOOR_CEILING ceiling when armed.
+            const int Npts53 = static_cast<int>(pc53->points.size());
+            int dyn53 = std::max(static_cast<int>(std::lround(50 * g_countScale)),
+                                 std::max(30, Npts53 / 500));
+            if (g_floorCeilingOn && g_countScaleAuto)
+            {
+                int cap53 = static_cast<int>(std::lround(g_floorCeilingFrac * static_cast<double>(Npts53)));
+                if (cap53 < 1) cap53 = 1;
+                if (dyn53 > cap53) dyn53 = cap53;
+            }
+            double thetaSplit53 = -1.0, thetaShip53 = 3.4, secs53 = 0.0;
+            bool fallback53 = false;
+            int runs53 = 0;
+            std::string ladder53, detail53;
+            growthWalkProbe53(fileNameOnly, pc53, pn53, paperNB, paperKappa, dyn53,
+                              thetaSplit53, thetaShip53, fallback53, runs53, secs53,
+                              ladder53, detail53);
+            paperTheta = thetaShip53;
+            char ship53[32], split53[32], secs53s[32];
+            std::snprintf(ship53, sizeof ship53, "%.5f", thetaShip53);
+            std::snprintf(split53, sizeof split53, "%.5f", thetaSplit53);
+            std::snprintf(secs53s, sizeof secs53s, "%.1f", secs53);
+            if (fallback53)
+            {
+                std::cout << "[GROWTH-53] piece=" << fileNameOnly
+                          << " theta_split=none theta_ship=" << ship53
+                          << " FALLBACK no theta in [1.0,12.0] splits the walk; using 3.4"
+                          << " secs=" << secs53s << " " << detail53 << std::endl;
+            }
+            else
+            {
+                std::cout << "[GROWTH-53] piece=" << fileNameOnly
+                          << " theta_split=" << split53 << " theta_ship=" << ship53
+                          << " secs=" << secs53s << " " << detail53 << std::endl;
+            }
+            std::cout << "[GROWTH-53] ladder piece=" << fileNameOnly
+                      << " " << ladder53 << std::endl;
+        }
         // TICKET 33: the appendix-A merge's boundary-pair minimum, replacing the literal 3.
         g_mergeMinPairs = 3;
         if (const char* e33 = std::getenv("SFS_MERGE_MIN_PAIRS")) { if (*e33) g_mergeMinPairs = std::stoi(e33); }

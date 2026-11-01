@@ -29,6 +29,15 @@ if (MSVC)
   add_definitions(-D _CRT_SECURE_NO_WARNINGS)
 endif()
 
+# TICKET 53: build-time default for the growth-walk theta probe (SFS_GROWTH_WALK).
+# OFF (shipped default) keeps the walk opt-in via the env var; ON compiles the walk in as
+# the default theta source, for corpus regression builds whose scheduler strips SFS_* env.
+# The env var still overrides the compile-time default in both directions.
+option(SFS_GROWTH_WALK53_DEFAULT "Default the growth-walk theta probe ON at build time" OFF)
+if (SFS_GROWTH_WALK53_DEFAULT)
+  add_definitions(-DSFS_GROWTH_WALK53_DEFAULT_ON)
+endif()
+
 file(GLOB PROJ_DEP "alglib/src/*.cpp" "alglib/src/*.h")
 
 # Build both original and headless versions
