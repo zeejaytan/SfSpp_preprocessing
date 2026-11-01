@@ -34,7 +34,10 @@ done
 "$PY" -m py_compile render55.py || { echo "[S55] py_compile render55.py failed"; exit 1; }
 bash -n run_cell55.sh || { echo "[S55] bash -n run_cell55.sh failed"; exit 1; }
 
-"$PY" - "$INSTR/submit55.sbatch.tmpl" "$INSTR/submit.sbatch" "$RUNID" "$RUNDIR" "$HEAD" "$TAG" "$TIME" <<'PYEOF'
+# MSYS path conversion rewrites argv that look like POSIX roots (/data/...) into the
+# bash-win32 install prefix, which once baked C:/Users/... into --output and RUN= and
+# failed the job at the instruments gate (job 34165338).  Exclude every arg here.
+MSYS2_ARG_CONV_EXCL='*' MSYS_NO_PATHCONV=1 "$PY" - "$INSTR/submit55.sbatch.tmpl" "$INSTR/submit.sbatch" "$RUNID" "$RUNDIR" "$HEAD" "$TAG" "$TIME" <<'PYEOF'
 import sys
 tmpl, out, runid, rundir, new, tag, time = sys.argv[1:8]
 s = open(tmpl, encoding="utf-8").read()
@@ -49,11 +52,16 @@ grep -q '__[A-Z0-9]*__' submit.sbatch && { echo "[S55] unreplaced placeholder in
 bash -n submit.sbatch || { echo "[S55] bash -n submit.sbatch failed"; exit 1; }
 EXP=$(grep -o '\$' submit.sbatch | wc -l)
 [ "$EXP" -ge 40 ] || { echo "[S55] only $EXP variable refs in submit.sbatch -- render broken?"; exit 1; };
+# a Windows-mangled path in the render is fatal, not cosmetic: on the compute node it
+# becomes a literal 'C:' tree inside the rundir and the job dies at a gate
+if grep -q 'C:' "$INSTR/submit.sbatch"; then grep -n 'C:' "$INSTR/submit.sbatch" | head -3; echo "[S55] submit.sbatch carries a Windows-mangled path"; exit 1; fi
 echo "[S55] gates passed (expansions=$EXP)"
 
 # push instruments + rendered sbatch, submit
 ssh "$SSH" "mkdir -p '$RUNDIR/logs' '$RUNDIR/instruments'"
-tar -C "$INSTR" -cf - run_cell55.sh render55.py stage_synth_p40.sh .gitattributes | ssh "$SSH" "tar -C '$RUNDIR/instruments' -xf -"
+# every *.py *.sh *.tsv in instruments/ must ship: the job md5-compares its whole
+# rundir instrument set against the git archive of the pushed commit
+tar -C "$INSTR" -cf - .gitattributes check-stage55.sh render55.py run_cell55.sh stage_synth_p40.sh submit55.sbatch.tmpl submit55.sh | ssh "$SSH" "tar -C '$RUNDIR/instruments' -xf -"
 scp -q "$INSTR/submit.sbatch" "$SSH:$RUNDIR/submit.sbatch"
 
 JOBID=$(ssh "$SSH" "sbatch --parsable '$RUNDIR/submit.sbatch'")
