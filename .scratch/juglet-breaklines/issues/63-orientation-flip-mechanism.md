@@ -11,8 +11,8 @@ adopt-or-park decision on radius 1.0 mm is the conservator's and is NOT part of 
 **Blocked by:** 62 (its Stage-1 replica and run directories are this ticket's instrument and
 baseline)
 
-**Status:** ready-for-agent
-**Working in:** —
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-03)
 **Branch:** 63-orientation-flip-mechanism, in /c/PR/worktrees/sfs/63
 **Worker:** unassigned
 
