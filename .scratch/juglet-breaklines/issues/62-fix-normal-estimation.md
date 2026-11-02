@@ -8,7 +8,7 @@ fix must be opt-in: no shipped default changes in this ticket.
 
 **Blocked by:** 61 (same source file; run 61 first, its run directory is this ticket's baseline)
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-11-02)
 **Branch:** 62-fix-normal-estimation, in /c/PR/worktrees/sfs/62
 **Worker:** unassigned
