@@ -19,10 +19,10 @@ let SfS find joins)
 
 **Blocked by:** none (uses the t55 run of record and the t57 gate READ-ONLY)
 
-**Status:** ready-for-agent
-**Working in:** to be created by ticket_start.sh (run dir under
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-02)
+**Branch:** 59-break-surface-stop-rule, in /c/PR/worktrees/sfs/59
 /data/gpfs/projects/punim2657/SfSpp/runs/)
-**Branch:** 59-break-surface-stop-rule, created by scripts/ticket_start.sh
 **Worker:** DSH subagent (ticket-59 worker) — measures only; the lead verifies, commits and judges
 
 ## Spec
