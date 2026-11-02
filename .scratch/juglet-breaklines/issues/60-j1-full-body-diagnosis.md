@@ -7,8 +7,8 @@ dump of the growth's candidate pool so the contradiction can be counted rather t
 **Why now (2026-11-02, conservator):** after ticket 59's read-out the conservator chose this
 run: "let's do the run comparing J1's cloud normals to its mesh. i think it might be because it
 is a piece contain full 360 degree body". The lead's quick shape check (axis frame, 5 deg
-azimuth bins) supports the premise strongly: **J1 covers 360.00 deg of azimuth with a 0 deg
-largest gap**, J7 also wraps (360 deg, 2 deg gap), J2 wraps 0.94 (13 deg gap) and J9 0.85
+azimuth bins) supports the premise: **J1 covers 360.00 deg of azimuth with a 0 deg
+largest gap** -- i.e. it is a ring fragment with a top and a bottom break edge (see H1), J7 also wraps (360 deg, 2 deg gap), J2 wraps 0.94 (13 deg gap) and J9 0.85
 (27 deg), while J3-J6 and J8 cover only 0.24-0.42 (219-279 deg gaps). J1 is also ten times the
 mesh of J2 (24 294 vs 2 565 vertices).
 
@@ -38,11 +38,18 @@ mesh of J2 (24 294 vs 2 565 vertices).
 
 ### The three explanations this run must separate
 
-- **H1 (conservator) — shape.** J1 is a full 360 deg body: it has no break edge bounding the
-  grown region, only the rim fold where the shell turns through 180 deg. A growth that
-  encircles therefore ends up with its whole frontier on that fold, and fold points cannot pair
-  (the ray grazes out of the shell), so the stop fires everywhere - which is exactly a 91 %
-  break-like bag.
+- **H1 (conservator) — shape, restated 2026-11-02 after the lead got it wrong.** The lead's
+  first reading ("full 360 deg, therefore no break edge") is **wrong**; the conservator corrected
+  it (m03836): "no, it does have a break boundary, a 360 degree full body means it's cylindrical,
+  it STILL have break edge at top and bottom". J1 is a **ring fragment**: one piece wrapping the
+  whole circumference, so it has no break edge *around* its side, but it has a break edge at the
+  **top and another at the bottom**, each running all the way round. A growth that encircles
+  ends with its frontier lying along those two annular edges, and an edge point cannot pair --
+  its ray leaves the shell at a grazing angle instead of crossing clay -- so the bag goes
+  edge-dominated and the stop fires everywhere: the 91 % break-like bag. What the dump must show
+  if H1 is right: the candidates cluster along the two annular break edges, not uniformly over
+  the surface. (Workspace precedent: the Juglet is 2/9 ring fragments by count and 54 % by mass,
+  and TORA's lessons.md records "I ruled out a breakage pattern the target object actually has".)
 - **H2 — normals.** J1's cloud normals (the t47 corpus clouds, 840 666-841 413 points) disagree
   with its mesh: sign flips, or normals estimated across an edge on a closed 360 deg shell. A
   flipped normal makes every ray shoot outward into air -> no pair.
