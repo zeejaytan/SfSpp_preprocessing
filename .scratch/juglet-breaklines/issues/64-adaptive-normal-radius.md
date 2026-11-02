@@ -12,8 +12,7 @@ silently exceeding it.
 **Blocked by:** 63 (its instrumented walk is the acceptance instrument; its predictor tables are the
 validation targets)
 
-**Status:** open
-**Working in:** —
+**Status:** ready-for-agent
 **Branch:** 64-adaptive-normal-radius, via `ticket_start.sh` at dispatch
 **Worker:** —
 
