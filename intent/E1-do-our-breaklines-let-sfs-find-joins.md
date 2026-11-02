@@ -41,6 +41,23 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-03, ticket 62 (merged 0a0d9eb) — the sheet flip is not wall bridging, and a 1.0 mm
+radius fixes the field where carrying the input normals could not be defaulted.** The suspected
+mechanism (the neighbour ball reaching through the clay and averaging both sheets together) is
+refuted by measurement: on J1/J2/J7, 0 % of points have a k-th neighbour beyond the wall at any
+k from 6 to 19 (J1's 19th-neighbour distance: median 1.26 mm, max 1.63, against a 1.876 mm wall),
+and J1 crosses the wall LESS than the controls. What the sweep did find is a sharp threshold
+inside the orientation pass (replica, cause unmeasured): the sheet stays sound at k<=12 or radius
+<=1.0 mm and is 42 % flipped at k=19 or radius 1.4 mm. Running the pipeline itself at
+`SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=1.0` (opt-in, ticket 24's mode; no default changed)
+takes J1's flip from 41.63 % to 0.20 %, lowers it on all nine pieces, holds genuine pairs 9/9
+and nS0 within 10 % of t55, at a folded-median cost of 0.4-1.4 deg on J2-J9. Unlike the carry,
+no piece moves nS0 over 10 %. The armed break-surface stop still does not localise the break
+(farS0 0.77 on J1 with 94.2 % of points accepted wall-like) - a second, independent failure of
+the rule itself. Whether to adopt radius 1.0 mm as the recommended opt-in rests with the
+conservator; the setting sits just under an unexplained cliff, so the mechanism ticket would
+still have value.
+
 **2026-11-02, ticket 61 (merged 067fed7) — the join-killing scramble in the walk's input is a
 normal field, and a sound one costs nothing on the line.** The growth stage re-estimates normals
 from each decimated rung, and on J1 one whole sheet comes out inverted against the other (41.63 %
