@@ -395,3 +395,40 @@ overrunning the rim onto a 5.0 mm-wide worn break face, which no admission rule 
 **Stage-2 outcome so far:** the 2d admission-side rule (emulated) meets restated gate half 1 on
 J1 (0.0678 / 0.0394 / 0.0 / f2r 0.919) and is provably neutral on J2-J9 (zero drops). Stage 3 =
 carry it into the pipeline as a default-off flag and re-run the real chain.
+
+### 2026-11-03 ~07:20 — worker 3: stage 3 submitted
+
+- **Code:** commit `a47d478` (pushed on this branch), `mesh_processing_headless.cpp` only, +46 lines.
+  `SFS_ADMIT_SIGN` (unset, empty or `0` means off) is read beside `SFS_DEDUPE`. Inside
+  `finishImprovedSurface`, after the copy of the other branch's block and before the growth cluster
+  is appended, the switch keeps an admitted point only if `sgn*dot(n_adm, n_nearest_cluster) > 0`.
+  `sgn` is the sign of the median dot over admitted rows at distance 0 from a cluster point, and is
+  +1 when there are no such rows. This is a port of `t65_emul.py:46-54`. Only when the switch is on
+  does it print `[ADMIT-SIGN-65] surface= admitted_in= kept= dropped= dup_rows= dup_dot_med=`.
+  The rule lives in `mesh_processing_headless.cpp`, not `edgeline_extraction_headless.cpp` as the
+  dispatch said; that is where the admission block meets the cluster.
+- **Run:** `runs/20261103-0709_a47d478_t65-admitsign` (`run.json`, `submit.sbatch`, `logs/`,
+  `outC/`, `outT/`). Index row appended with verdict and human_note empty. The script is copied here
+  as `stage65/submit65.sbatch`. Cell C has `SFS_ADMIT_SIGN` unset; cell T has `SFS_ADMIT_SIGN=1`.
+  Both use `SFS_WORNESS=0.7 SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=1.0`, all nine Juglet
+  pieces, through `run_cell55.sh` archived from the same commit.
+- **Job 34243810** (sapphire, spartan-bm172). The build passed: mesh binary md5
+  42844b1596803252dfccb01beb78aa09, edge binary md5 cbf747dc3172fe0bbd188822df14092a. At hand-off
+  the job was RUNNING, 00:03:45 elapsed, with cell C past J1. Polling with `scripts/slurm_poll.sh`
+  (log `stage65/poll_34243810.log`). The final sacct State/ExitCode is still to be recorded.
+- **Not patched with `t59-stop.patch`**, unlike t62's binary (no other source edits allowed). The
+  mesh source is unchanged from `ca520fe` to `aee7ba0`.
+- **Control against t62 cell F, J1, checked by hand:**
+  - Point count, `[WINDOW-26-FINAL]` lines, classify line and `Normals flipped: false` are
+    identical.
+  - Columns 1-6 (x y z nx ny nz) are identical: S0 md5 b844c49a…, S1 md5 7132c42e…, the same
+    in both runs.
+  - No `ADMIT-SIGN-65` line is printed with the switch off.
+  - The **whole-file md5s differ**, and the job's `C_vs_t62F.S.tsv` will therefore read DIFF. The
+    only differing column is the 7th, curvature, on exactly the growth-cluster rows (7,208 in S0,
+    9,919 in S1): 3.0816738e-12 here against 3.0812874e-30 there. `finishImprovedSurface` never
+    sets `ptTmp.curvature`, so that column is uninitialised memory. This predates this ticket.
+    Compare surfaces on columns 1-6; the scorer reads only those.
+- **For the scorer next turn:** in cell T, `[WINDOW-26-FINAL] final_points` already counts after the
+  drops, but `admitted_own` and `admitted_other` are counted before them. `t65_admit.py`'s `n_adm` is
+  therefore wrong for treatment files; use the `ADMIT-SIGN-65` `kept=` value as the block size.
