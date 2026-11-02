@@ -12,8 +12,8 @@ Diagnosis first; a null result is a valid ending and must be stated as one.
 **Blocked by:** 63 (its instrumented walk is the instrument for stage 2a), 62 (its radius-1.0 cell
 is the best baseline we have)
 
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-03); stage 1 analysed, stage 2 not yet run in the pipeline
+**Status:** ready-for-human (code done, default-off; lane default is the conservator's call)
+**Working in:** chat on Thinkbook16 (2026-11-03); stages 1-3 done, scored, rendered; awaiting lane ruling
 **Branch:** 65-cleanly-separated-surface-on-j1, in /c/PR/worktrees/sfs/65
 **Worker:** worker 3 (Cursor session, 2026-11-03 ~07:00), after workers 1-2 were reaped by the harness
 
@@ -536,3 +536,23 @@ property of the sherd, not something this switch can fix. Claim type: the method
   before the conservator is told.
 - Pot A has not been run with the switch on, so gate 3's "Pot A shows no harm" is open.
 - Status is unchanged; index.tsv verdict and note are left empty.
+
+### 2026-11-03 07:30 — lead close-out: scored tables verified, figures seen, J7 ruled
+
+verified: out/sep_C.tsv vs out/sep_T.tsv differ on NO piece except Juglet_Piece_1 (lead's own diff of all columns)
+verified: out/stage1_T.tsv J1 -> fold_off2 0.0678, fold_off2_s1 0.0394, fold_island_share 0.0, f2r_le1 0.9185, r2f_ceil 0.4426, cov 280/360; J7 rows byte-identical between arms
+verified: both figures read by the lead — control shows the red loops filled by the 364 magenta spill points; treatment removes them (864 of 1092 boundary dots within 1 mm); J7 islands are 2 components, 17 of 758 points, both on J7's own sheet (<1 mm pinholes at 2.6-4.5 mm from the rim), no far-face or break-face points, no wall crossing
+
+**J7 ruling:** fold_island_share 0.0224 on J7 exists identically in t55, t62F, control and treatment — it predates
+this ticket and is untouched by it. The gate bar is read as "0 on J1, unchanged on J2-J9" (the neutrality the gate
+exists to enforce); J7's pinholes are recorded here with the figure, not ticketed.
+
+**Verdict:** restated Gate 3 half 1 PASSES (J1 0.0678/0.0394/0.0/0.9185; J2-J9 unchanged; J7 pre-existing,
+ruled above). Half 2 is report-only as written: J1 r2f 0.4049 of ceiling 0.4426, ring 280 of 360, rim0_miss
+0.2366 unchanged — the worn-lip physical ceiling (break face 5.03 mm median where the boundary misses,
+1.37 mm where it hits). Control reproduced the t62 lane with zero spread. Change is default-off; flag-off
+output is byte-identical to t62 cell F on the scorer's columns.
+
+**Owed to the conservator:** (1) rule whether SFS_ADMIT_SIGN=1 becomes the Juglet-lane default (would sit
+beside FIXES-LEDGER rows 12-13); (2) ticket 64 dispatch-or-hold; (3) the four J1 options from the 2026-11-03
+morning stand-off remain unchosen.
