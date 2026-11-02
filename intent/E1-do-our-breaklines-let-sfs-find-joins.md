@@ -48,8 +48,8 @@ majority-sign flip against 0.18-1.70 % on the other eight). Carrying the corpus 
 normals (`SFS_NORMAL_SOURCE=input SFS_NORMAL_CARRY=nearest`, tickets 33/34, already shipped)
 removes it: 0.145 % flip, folded median 3.93 -> 2.55 deg, and J1's interior surface goes from a
 85.5 deg blind fold on 13850 points to a 51.5 deg one on 15730 with its genuine pair intact. It is
-not a free global switch - farS0 worsens on J2/J5/J7/J9 (0.818 -> 0.867, 0.754 -> 0.939, 0.804 ->
-0.942, 0.700 -> 0.920) and nS0 moves on all eight - so nothing is defaulted. What this establishes
+not a free global switch - farS0 worsens on seven of the other eight pieces (all but J6) and
+nS0 moves over 10 % on five of them - so nothing is defaulted. What this establishes
 for E1 is that a breakline derived from a scrambled field is not evidence about the edgeline walk:
 the 85 deg fold was the field, and the same walk on a coherent field keeps the join. Ticket 62
 asks why the re-estimate scrambles a sheet.

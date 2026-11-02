@@ -254,11 +254,14 @@ Two things the Results section leaves implicit, recorded because they change how
    the two sheets now agree. For scale, J6's own re-estimate is also globally inverted (`raw_neg`
    0.9982) and has never been treated as a defect, so the global sign carries no information about
    the piece.
-2. **Carrying the input normals is not a free global improvement.** The field alone moves `nS0` on
-   the other eight too (J3 2063 -> 2227, J5 4066 -> 5347, J7 5703 -> 7373, J9 1051 -> 1429) and makes
-   `farS0` **worse** on four of them (J2 0.818 -> 0.867, J5 0.754 -> 0.939, J7 0.804 -> 0.942, J9
-   0.700 -> 0.920). Only J1 improves (blindDeg 85.49 -> 51.49, farS0 0.862 -> 0.573). `genuine` stays
-   true on all nine pieces in all four cells.
+2. **Carrying the input normals is not a free global improvement.** The field alone moves `nS0` by
+   more than 10 % on five of the other eight (J2 1390 -> 1238, J5 4066 -> 5347, J7 5703 -> 7373,
+   J8 2770 -> 3429, J9 1051 -> 1429) and makes `farS0` **worse on seven of the eight** (J2 0.818 ->
+   0.867, J3 0.771 -> 0.844, J4 0.706 -> 0.800, J5 0.754 -> 0.939, J7 0.804 -> 0.942, J8 0.651 ->
+   0.783, J9 0.700 -> 0.920); only J6 improves (0.882 -> 0.841). Only J1 improves where it matters
+   (blindDeg 85.49 -> 51.49, farS0 0.862 -> 0.573). `genuine` stays true on all nine pieces in all
+   four cells. *(Corrected 2026-11-03: the first version of this note, written from a five-piece
+   sample, said four pieces; the full table says seven of eight.)*
 
 **Verdict: the positive bar is not met, and the negative bar is met in a specific form.** With a
 coherent field the rule accepts 93.6 % of J1's points as wall-like and the surface still reaches the
