@@ -12,9 +12,9 @@ Diagnosis first; a null result is a valid ending and must be stated as one.
 **Blocked by:** 63 (its instrumented walk is the instrument for stage 2a), 62 (its radius-1.0 cell
 is the best baseline we have)
 
-**Status:** ready-for-agent
-**Working in:** —
-**Branch:** 65-cleanly-separated-surface-on-j1, via `ticket_start.sh` at dispatch
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-03) (2026-11-03)
+**Branch:** 65-cleanly-separated-surface-on-j1, in /c/PR/worktrees/sfs/65
 **Worker:** —
 
 ## Spec
