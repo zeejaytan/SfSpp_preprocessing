@@ -432,3 +432,107 @@ carry it into the pipeline as a default-off flag and re-run the real chain.
 - **For the scorer next turn:** in cell T, `[WINDOW-26-FINAL] final_points` already counts after the
   drops, but `admitted_own` and `admitted_other` are counted before them. `t65_admit.py`'s `n_adm` is
   therefore wrong for treatment files; use the `ADMIT-SIGN-65` `kept=` value as the block size.
+
+### 2026-11-03 ~07:30 — worker 3: stage 3 scored (job 34243810 COMPLETED 0:0, 5:59)
+
+Scoring ran on holder 34240339 (`srun --overlap -c 8`, `work/score65.sh`, all four steps rc=0). It
+used the frozen `check_separation.py` from t57, plus `t65_sector.py` and `t65_stage1.py` copied
+into `work/`. Their md5s match this worktree's copies once CRLF is removed (d12b15bb…, 613e43d0…).
+Files in `runs/20261103-0709_a47d478_t65-admitsign/out/`:
+- `sep_C.tsv` and `sep_T.tsv` (frozen scorer);
+- `side_{C,T}.tsv` (f2r, r2f, ring coverage);
+- `stage1_{C,T}.tsv`;
+- `gate3_{C,T}.tsv` (restated gate 3 per piece);
+- the raw `sector/` and `stage1/` outputs, which also carry t55 and t62F reference rows.
+
+**Mechanics.**
+- The live drop counts equal the emulation's: J1 S0 `kept=5455 dropped=364`, S1 `kept=6753
+  dropped=62` (from `[ADMIT-SIGN-65]`), against `emul_counts.tsv` emulF J1 5455/364 and 6753/62.
+- Admission-block sizes in this read-out come from `kept=`, never from `[WINDOW-26-FINAL]`. No
+  scoring instrument reads `n_adm`.
+
+**The control reproduces the t62 lane exactly, with zero spread.** J1 C: blind 68.38, farS0
+0.6729, f2r 0.6665, r2f 0.4211, coverage 250. Every one of the nine pieces is identical to the
+t62F rows in every column of the scorer, sector and stage-1 tables, as expected from surfaces that
+are identical in columns 1-6.
+
+**The treatment equals the emulF emulation in every column** (J1: blind 58.19, farS0 0.6575,
+dc_ge1 0.0085, med_nn 1.984, pct_wall 87.6, f2r 0.9185, coverage 280, fold_off2 0.0678). The
+offline prediction held in the real pipeline.
+
+**J1, control (= t62F) against treatment, gating columns:**
+
+| column | bar | C | T |
+|---|---|---|---|
+| fold_off2 | <= 0.10 | 0.3673 | **0.0678** |
+| fold_off2_s1 | <= 0.05 | 0.3348 | **0.0394** |
+| fold_island_share | == 0 | 0.128 (9 comp) | **0.0** (3 comp) |
+| f2r_le1 | >= 0.90 | 0.6665 | **0.9185** |
+| genuine pair | 9/9 | True | True |
+
+**J2-J9 do not regress.** Their scorer, side and stage-1 rows are bit-identical between C and T,
+because there were 0 drops on all 16 of their surfaces. Genuine pairs are 9/9 in both arms.
+
+**Gate 3, half 1 (gating), as written: FAIL, on J7 only, and not because of this change.**
+- J1 passes all four bars in T; it failed all four in C.
+- J2-J6, J8 and J9 pass in both arms.
+- **J7 fails `fold_island_share == 0` in every arm we have:** t55 0.0225, t62F 0.0224, C 0.0224,
+  T 0.0224, with 5 fold components. J7 passes the other three bars (off2 0.0224, s1 0.0, f2r
+  0.9657).
+- J7's off-rim fold all lies on its own S0 sheet (fold_off2_s0 0.0224; s1 0), so this looks like
+  small closed loops inside S0 more than 2 mm from the rim, not a spill. That is not rendered and
+  not verified.
+- The gate as written therefore cannot be met by any change that leaves J2-J9 unchanged. The
+  islands bar would have to read "== 0 on J1 / unchanged on J2-J9", or J7 needs its own ticket.
+  That is the lead's ruling; I have not re-scored or re-interpreted anything.
+
+**Gate 3, half 2 (report only), treatment arm.**
+
+| piece | r2f / ceil | coverage / ceil |
+|---|---|---|
+| J1 | 0.4049 / 0.4426 = **0.915** (C 0.951) | 280 / 360 = **0.778** (C 0.694) |
+| J2 | 0.715 | 0.955 |
+| J3 | 0.870 | 1.129* |
+| J4 | 0.785 | 0.957 |
+| J5 | 0.678 | 0.986 |
+| J6 | 0.970 | 1.000 |
+| J7 | 0.614 | 1.000 |
+| J8 | 0.950 | 1.000 |
+| J9 | 0.675 | 0.958 |
+
+\* Ring coverage uses the scorer's fold-fit frame and cov_ceil uses the S0-side-rim frame, so the
+ratio can exceed 1. It is indicative only.
+
+On J1, r2f fell slightly (0.4211 to 0.4049): the dropped far-face spill included boundary points
+that sat near the S1-side rim.
+
+**J1's residual against the worn-lip ceiling: unchanged in both arms.**
+- rim0_miss is 0.2366, which is 155 of 655 S0-side rim midpoints.
+- 100 % of those are covered by S0, so S0 runs past the rim. None were handed to S1 and none were
+  left unclaimed.
+- The break face there is **5.03 mm wide (median) against 1.37 mm where the boundary hits** (the
+  other eight: 1.75-3.26 mm against 1.22-1.86 mm).
+- So about a quarter of J1's Surface_0 rim is placed somewhere on a worn break face up to ~5 mm
+  wide. No admission rule moves that.
+
+**Reported, gating nothing on J1:**
+- blind 68.38 to 58.19 deg (t55 85.49);
+- farS0 0.6729 to 0.6575;
+- dc_ge1 0.043 to 0.0085.
+
+**Plain reading.** The method's split artefact on J1 was the admitted block bringing far-face
+points into Surface_0. With `SFS_ADMIT_SIGN=1` it is gone in the real pipeline:
+- the off-rim boundary falls from 37 % to 7 % of the fold;
+- the boundary sits within 1 mm of the rim on 92 % of its length, up from 67 %;
+- no other Juglet piece changes by a single point.
+
+What remains on J1 is the worn lip: on about a quarter of the rim the surface runs on over a break
+face around 5 mm wide, so the line there can be up to a few millimetres from the rim. That is a
+property of the sherd, not something this switch can fix. Claim type: the method failed on J1
+(split artefact), and the fix works; the residual is the input's worn edge.
+
+**Not done.**
+- Nothing is rendered: not J1 T against C, and not J7's islands. AGENTS.md asks for a picture
+  before the conservator is told.
+- Pot A has not been run with the switch on, so gate 3's "Pot A shows no harm" is open.
+- Status is unchanged; index.tsv verdict and note are left empty.
