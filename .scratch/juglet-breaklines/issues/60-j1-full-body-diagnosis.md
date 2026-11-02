@@ -16,9 +16,9 @@ mesh of J2 (24 294 vs 2 565 vertices).
 
 **Blocked by:** none (reads ticket 59's run dir and the corpus read-only)
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-11-02)
-**Branch:** 60-j1-full-body-diagnosis
+**Branch:** 60-j1-full-body-diagnosis, in /c/PR/worktrees/sfs/60
 **Worker:** unassigned
 
 ## Spec
