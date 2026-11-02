@@ -15,7 +15,7 @@ find joins)
 
 **Blocked by:** none
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-11-02)
 **Branch:** 61-sound-field-stop-test, in /c/PR/worktrees/sfs/61
 **Worker:** unassigned
