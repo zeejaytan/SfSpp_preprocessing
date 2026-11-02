@@ -243,6 +243,11 @@ struct myclass2 {
 // finishImprovedSurface reads it and is defined further down.
 static bool g_dedupeOn27 = false;
 
+// TICKET 65: SFS_ADMIT_SIGN=1 keeps an admitted (B-spline window) point only when its normal agrees
+// with the nearest growth-cluster point's normal, the relative sign of the two blocks fixed by the
+// rows they share. Unset, empty or "0" keeps every admitted point and prints nothing.
+static bool g_admitSign65 = false;
+
 
 class Timer
 {
@@ -1515,6 +1520,45 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 	if (improvedSurfacePointCloud_other->points.size() > improvedSurfacePointCloud->points.size())
 	{
 		pcl::copyPointCloud(*improvedSurfacePointCloud_other, *improvedSurfacePointCloud);
+	}
+
+	if (g_admitSign65 && !improvedSurfacePointCloud->points.empty() && !segmentedSurfacePointCloud->points.empty())
+	{
+		pcl::KdTreeFLANN<pcl::PointNormal> tree65;
+		tree65.setInputCloud(segmentedSurfacePointCloud);
+		const size_t nAdm65 = improvedSurfacePointCloud->points.size();
+		std::vector<double> dot65(nAdm65, std::numeric_limits<double>::quiet_NaN());
+		std::vector<double> dupDot65;
+		std::vector<int> idx65(1);
+		std::vector<float> sq65(1);
+		for (size_t i65 = 0; i65 < nAdm65; ++i65)
+		{
+			const pcl::PointNormal& a65 = improvedSurfacePointCloud->points[i65];
+			if (!std::isfinite(a65.x) || !std::isfinite(a65.y) || !std::isfinite(a65.z)) continue;
+			if (tree65.nearestKSearch(a65, 1, idx65, sq65) < 1) continue;
+			const pcl::PointNormal& c65 = segmentedSurfacePointCloud->points[idx65[0]];
+			dot65[i65] = (double)a65.normal_x * c65.normal_x + (double)a65.normal_y * c65.normal_y
+				+ (double)a65.normal_z * c65.normal_z;
+			if (sq65[0] == 0.0f) dupDot65.push_back(dot65[i65]);
+		}
+		// The two blocks can carry opposite normal signs; the median dot over shared rows fixes it.
+		double dupMed65 = std::numeric_limits<double>::quiet_NaN();
+		if (!dupDot65.empty())
+		{
+			std::sort(dupDot65.begin(), dupDot65.end());
+			const size_t m65 = dupDot65.size();
+			dupMed65 = (m65 % 2) ? dupDot65[m65 / 2] : 0.5 * (dupDot65[m65 / 2 - 1] + dupDot65[m65 / 2]);
+		}
+		const double sgn65 = (dupMed65 < 0.0) ? -1.0 : 1.0;
+		decltype(improvedSurfacePointCloud->points) kept65;
+		kept65.reserve(nAdm65);
+		for (size_t i65 = 0; i65 < nAdm65; ++i65)
+			if (sgn65 * dot65[i65] > 0.0) kept65.push_back(improvedSurfacePointCloud->points[i65]);
+		const size_t nKept65 = kept65.size();
+		improvedSurfacePointCloud->points.swap(kept65);
+		std::cout << "[ADMIT-SIGN-65] surface=" << surfaceIndex27 << " admitted_in=" << nAdm65
+			<< " kept=" << nKept65 << " dropped=" << (nAdm65 - nKept65)
+			<< " dup_rows=" << dupDot65.size() << " dup_dot_med=" << dupMed65 << std::endl;
 	}
 
 	for (int i = 0; i < segmentedSurfacePointCloud->points.size(); i++)
@@ -4677,6 +4721,8 @@ int main(int argc, char** argv) {
         // Unset, empty, "off" and anything else keep today's apples-to-apples surface.
         g_dedupeOn27 = false;
         if (const char* e27 = std::getenv("SFS_DEDUPE")) { if (*e27 && std::string(e27) == "on") g_dedupeOn27 = true; }
+        g_admitSign65 = false;
+        if (const char* e65 = std::getenv("SFS_ADMIT_SIGN")) { if (*e65 && std::string(e65) != "0") g_admitSign65 = true; }
         if (const char* e26 = std::getenv("SFS_WINDOW_MODE")) { if (*e26) g_windowMode = e26; }
         if (const char* e26 = std::getenv("SFS_WINDOW_K")) { if (*e26) g_windowK = std::stod(e26); }
         if (const char* e26 = std::getenv("SFS_WINDOW_CLAMP_MM"))
