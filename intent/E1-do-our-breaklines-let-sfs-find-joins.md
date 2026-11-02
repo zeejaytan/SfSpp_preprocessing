@@ -205,6 +205,17 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-03, ticket 63 (merged ebd5df4): **why J1's growth arrows came out backwards is
+  measured, not guessed.** One MST link through the sherd's thinnest wall (1.47 mm edge across a
+  1.46-1.48 mm wall, flat spot 6.7 mm from the fold) carries the wrong in/out sign to 41.8% of
+  J1's growth call; the orientation cost 1-|ni.nj| is sign-blind, so the through-clay link is
+  nearly free (0.0017 vs 0.0005 typical). The shipped count rule k=n/1000 (clamp 5..20) makes
+  the ball grow with the cloud: only J1 combines >19k growth points with a sub-1.5 mm wall, which
+  is why the other eight Juglet pieces and all 16 probed Pot A / Pot D pieces are sound. Radius
+  mode at 1.0 mm cannot span that wall at any cloud size; 1.4 mm can. Arrow check separates the
+  one flipper from 24 sound pieces; wall thickness alone does not (rims are thin too). Figure:
+  artifacts/63/t63_j1_through_wall_edge.png.
+
 **2026-10-26 — why the authors' published Pot D and H numbers do not come back (ticket 299), and what
 the scan gap in Pot C 01 did to its seat (ticket 300).**
 
