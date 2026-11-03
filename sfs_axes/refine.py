@@ -14,11 +14,36 @@ axes are MLESAC+Pottmann+dedup+sort outputs. This port reproduces that
 behaviour identically (numpy raises at the same product; same catch path),
 so ORIG-axes parity holds. Method 1 shapes are consistent and refines
 genuinely; it is kept for future use, not used by run_potsac.
+(In MATLAB the scalar*matrix product at :36 is legal; the throw comes at
+:49, xlog(:,eval+1) = a 6xn x_cand. Same catch, same outcome.)
+
+LIVE METHOD 2 (ticket 70, default): the residual handed to the LM is the
+per-point Cao residual (3, n) of the normal sign whose whole-cloud sum is
+lower, with its (3, 6, n) Jacobian, robustified per point by Huber. The
+biaxial cost is a log-sum-exp softmin (s = 100) of those two sums, so this
+is its minimiser to within log(2)/100. The MATLAB no-op stays available:
+refine_axis(..., noop=True) or env SFS_AXES_REFINE_NOOP=1.
 """
+
+import os
 
 import numpy as np
 
 from .cao import compute_biaxial_cao_error, compute_cao_error
+
+
+def refine_noop_default():
+    return os.environ.get("SFS_AXES_REFINE_NOOP", "0") not in ("", "0")
+
+
+def biaxial_blocks(vt, X):
+    """Per-point residual blocks for live method 2: (R (3, n), J (3, 6, n))
+    of whichever normal sign has the lower sum of squares."""
+    R_fwd, J_fwd = compute_cao_error(vt, X, with_jacobian=True)
+    R_rev, J_rev = compute_cao_error(vt, X, reversed=True, with_jacobian=True)
+    if np.sum(R_rev ** 2) < np.sum(R_fwd ** 2):
+        return R_rev, J_rev
+    return R_fwd, J_fwd
 from .robust import apply_robustifier, robustifier_huber
 
 
@@ -117,21 +142,28 @@ def optimize_using_lm(x, res_func, update_func, robustifier,
     return x, err, np.column_stack(xs)
 
 
-def refine_axis(vt_initial, X, method=2, max_iters=300, tolerance=1e-9, verbose=False):
+def refine_axis(vt_initial, X, method=2, max_iters=300, tolerance=1e-9, verbose=False,
+                noop=None):
     """Port of refine_axis.m (unused1/unused2 compatibility args dropped).
 
     method 1 = single-sided Cao error, 2 = biaxial (default, most robust).
-    NOTE: method 2 raises inside optimize_using_lm exactly as MATLAB does
-    and returns the initial estimate via the catch path (see module docstring).
+    noop (None = env SFS_AXES_REFINE_NOOP): True keeps the MATLAB method-2
+    path, which raises inside optimize_using_lm and returns the initial
+    estimate via the catch; False runs live method 2 (module docstring).
     """
     vt = np.asarray(vt_initial, dtype=float).reshape(6)
     X = np.asarray(X, dtype=float)
+    if noop is None:
+        noop = refine_noop_default()
     if method == 1:
         def res_func(v):
             return compute_cao_error(v, X, with_jacobian=True)
-    elif method == 2:
+    elif method == 2 and noop:
         def res_func(v):
             return compute_biaxial_cao_error(v, X, with_jacobian=True)
+    elif method == 2:
+        def res_func(v):
+            return biaxial_blocks(v, X)
     else:
         raise ValueError("Unknown refinement method: %r" % (method,))
     try:
