@@ -115,8 +115,9 @@ mkdir -p "$PROOF"
 PS=$PROOF/stage_Pot_A_Piece_01
 MESH_DIR_69=$CORP/Mesh bash "$STAGER" "$PS" Pot_A Pot_A_Piece_01 "$CORP/Axes/Pot_A_Piece_01_Axis.xyz" "$CORP/Point/Pot_A/Pot_A_Piece_01_Point.pcd" REAL-RELEASED-CLOUD > "$PROOF/stage.log" 2>&1 \
   || fail 6 "proof staging failed"
-"$APT" exec --bind /data:/data "$SIF" env POT_NAME=Pot_A SFS_AXIS_FILE="$PS/Dataset/Axes/Pot_A_Piece_01_Axis.xyz" SFS_STATUS_FILE="$PROOF/status.tsv" $SHIPPED "$MESH_BIN" > "$PROOF/mesh.log" 2>&1
-[ $? -eq 0 ] || fail 6 "proof mesh stage failed"
+# the pipeline binaries resolve their inputs RELATIVE to the working directory
+( cd "$PS" && "$APT" exec --bind /data:/data "$SIF" env POT_NAME=Pot_A SFS_AXIS_FILE="$PS/Dataset/Axes/Pot_A_Piece_01_Axis.xyz" SFS_STATUS_FILE="$PROOF/status.tsv" $SHIPPED "$MESH_BIN" ) > "$PROOF/mesh.log" 2>&1
+[ $? -eq 0 ] || { tail -5 "$PROOF/mesh.log"; fail 6 "proof mesh stage failed"; }
 grep -q 'PAPER-234] classify: face0' "$PROOF/mesh.log" || fail 6 "proof mesh stage missing the classify line"
 printf 'run\tenv\tbl0_md5\tbl0_dots\tbl1_md5\tbl1_dots\n' > "$PROOF/proof.tsv"
 proof_run() {
