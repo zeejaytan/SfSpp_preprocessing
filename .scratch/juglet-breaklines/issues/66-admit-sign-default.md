@@ -15,9 +15,9 @@ corrected cheaply.
 
 **Blocked by:** 65 (the flag, the filter, and the t65 C/T arms this stands on)
 
-**Status:** ready-for-agent
-**Working in:** (unset)
-**Branch:** (set by ticket_start)
+**Status:** in-progress
+**Working in:** worktree 66, worker via cursor_code (lead dispatch) (2026-11-03)
+**Branch:** 66-admit-sign-default, in /c/PR/worktrees/sfs/66
 **Worker:** (unset)
 
 ## Spec
