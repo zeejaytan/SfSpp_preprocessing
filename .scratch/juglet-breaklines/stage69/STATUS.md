@@ -1,15 +1,18 @@
 # stage69 STATUS (ticket 69: axis method + 2x density do not hurt other pots)
 
-Worker state file. LF only. Worker measurements, NOT lead-verified. A later turn resumes from this file alone.
+Worker state file. LF only. A later turn resumes from this file alone. The lead independently re-derived
+Parts A/B/C/D on 2026-11-03 (message m00963); where a number below differs from the ticket's ## Results, the
+ticket is authoritative.
 
 ## Ticket
 `.scratch/juglet-breaklines/issues/69-axis-density-corpus-check.md`. Answers U19, E1.
 Branch `69-axis-density-corpus-check` in `C:/PR/worktrees/sfs/69`. Budget: <= 8 Slurm jobs, <= 24 h wall.
 Order of work: **A (corpus GT axes) -> C (seating gate) -> B (density sweep) -> D (code switches)**.
 Jobs used: **8 of 8** (final) — 4 Part A (34273111 / 34273167 / 34273237 / 34273319), job 5
-the density panel (34274535, in flight), job 6 Part C (34275210, COMPLETED, **superseded — wrong axis dir**),
-job 7 Part C corrected (34275406, in flight). Job 5's first attempt 34274349 FAILED 6:0 in 2m24s (a staging
-bug, no evidence) and counts against the budget. **One job remains after these.**
+the density panel (34274535, FAILED 1:0 but all four cells' data landed), job 6 Part C (34275210, COMPLETED,
+**superseded — wrong axis dir**), job 7 Part C corrected (34275406, COMPLETED 0:0, **the gate**). Job 5's
+first attempt 34274349 FAILED 6:0 in 2m24s (a staging bug, no evidence) and counts against the budget.
+**Budget exhausted; no job remains.**
 
 ## Plan (as written 2026-11-03, before any measurement)
 
@@ -126,7 +129,7 @@ kept, range (0.4,5.0), prints `[SPHERE-69]`), `SFS_RESAMPLE_D_MM` at `:556` (def
 (0.4,5.0), prints `[RESAMPLE-69]`). `sfs_axes/hybrid.py` is the default-off hybrid estimator (module +
 CLI). The byte-identity proof is job 5's Part D section (below).
 
-## Part B / D — job 5 (the density panel), in flight
+## Part B / D — job 5 (the density panel), COMPLETED (FAILED 1:0 on the Pot C 03 segfault)
 
 Run dir `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-0734_601013e_t69-density-panel`, job **34274535**.
 First attempt 34274349 (run `20261103-0729_ae5ad59`) FAILED 6:0 in 2m24s: the Part D proof ran the mesh
@@ -168,12 +171,31 @@ Position md5 identical in all eight pairs (Bl0 `8c6c4dbcc9c5d4d6bb1cfe2e5de5e44a
 `bc428262059363fb5210777c04c40e07`), and the same-arm normal jitter (0.19-0.25 deg median) is the same
 size as the cross-arm one (0.14-0.35 deg) — i.e. the switches are inert with respect to geometry and the
 residual jitter is pre-existing writer non-determinism (the curvature column is denormal dust, 1e-28).
-Job 6 (Part C) re-measures the same four-pair table in its own job so the claim is reproduced, not quoted.
+Job 7 (Part C corrected) reproduced the same four-pair table in its own job — `proofgeom/proofgeom.tsv`,
+four edge runs on ONE staged tree under `pcl_191_nurbs.sif`: 203/203 and 210/210 dots, max position delta
+0.000000 mm, POINTS header identical, position md5 Bl0 `db71e9f1eb2717a7aeae24929b6360b0` / Bl1
+`711c502e3c1627603bbb83023f29e96e`, normals median 0.106-0.188 deg max 0.443-0.895 deg. So the claim is
+reproduced in two independent jobs, not quoted from one.
 
-**Part B lane counts, job 5 as of the last poll** (bl0_18 / bl1_18 / bl0_09 / bl1_09): Pot A 203/210/415/426,
-162/168/331/343, 152/157/311/319, 147/151/298/309, 144/149/294/305, 146/150/298/305, 63/65/130/134,
-57/61/119/127 — every piece `ok`, and the 0.9 mm lane is 2.04x the 1.8 mm lane on every piece. Pot C 01
-207/226/423/461. Pot C 02-04, Pot D and Pot J were still running.
+**Part B — all 62 lanes scored** (`scoreB69.py` + `score292.py`; combined table
+`/data/gpfs/projects/punim2657/SfSpp/scratch69/score/all_lanes.tsv`, 63 lines incl header, columns
+`pot piece lane dots18 med18 cov18 bar18 dots09 med09 cov09 bar09 delta_med direction`). Pieces: Pot A 8,
+Pot C 4, Pot D 10, Pot J 11. Four lanes excluded (C 01 lane 0 corpus gap; C 03 lane 1 the authors' Bl1 is
+not a break edge; J 09 lanes 0 and 1 per ticket 289).
+
+| pot | lanes | at bar | med 1.8 -> 0.9 mm | cov 1.8 / 0.9 | dots |
+|---|---|---|---|---|---|
+| Pot_A | 16 | 16/16 | 0.625 -> 0.601 | 100 / 100 | 2185 -> 4464 |
+| Pot_C | 6 | 6/6 | 0.583 -> 0.565 | 100 / 99.9 | 1201 -> 2454 |
+| Pot_D | 20 | 20/20 | 0.564 -> 0.552 | 100 / 100 | 4976 -> 10103 |
+| Pot_J | 20 | 20/20 | 0.584 -> 0.572 | 100 / 100 | 2544 -> 5216 |
+| ALL | 62 | **62/62** | **0.581 -> 0.565** | 100 / 100 | 10906 -> 22237 (2.045x) |
+
+**0 crossed out, 0 crossed in.** Per-lane delta: 30 lanes farther at 0.9 mm, 32 closer, median -0.013 mm,
+max **+0.283 mm** (Pot_A_Piece_07 lane 0), min -0.242 mm (Pot_J_Piece_03 lane 1). The panel's geom18 and
+geom09 share ONE mesh stage per piece and their S0/S1 are byte-identical; the panel's surfaces are NOT the
+t66 surfaces (the mesh stage is unseeded, `mesh_processing_headless.cpp:1526-1527`), so no panel lane may be
+compared against an older run's lane as a density effect.
 
 ## Part C — Pot A seating, density only (the gate)
 
@@ -199,7 +221,9 @@ the corpus root).
 takes the Juglet from 2 of 9 pieces entering to 8 of 9 (P9 is 49 dots, one short) — and seats nothing.
 Consistent with ticket 67: lowering the floor is not what is missing.
 
-**Job 7, 34275406, `runs/20261103-0811_08d08b0_t69-pota-axes` — the corrected Part C.** Same two arms,
+**Job 7, 34275406, `runs/20261103-0811_08d08b0_t69-pota-axes` — the corrected Part C, COMPLETED
+0:0 00:12:55, and the gate PASSES: POTA18C 8/8 pieces + 15/15 joins (Time 218720), POTA09C 8/8 + 15/15
+(Time 814280).** Same two arms,
 everything identical to submit69c except `--axis-dir "$CORP/Axes"`; arms renamed POTA18C / POTA09C; the
 Juglet arm dropped (already answered). Reading rule written into the job header: if POTA18C is 8/8 + 15/15
 the harness matches PACTL and POTA09C answers the ticket; if POTA18C is itself below 8/8 the harness differs
