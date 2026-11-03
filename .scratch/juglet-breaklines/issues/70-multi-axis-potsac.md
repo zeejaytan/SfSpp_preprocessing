@@ -30,7 +30,7 @@ piece? match the gap, so axis step generate same axises as sample and then test 
 
 **Blocked by:** none (t69 merged be5980c; sfs_axes port landed ticket 05)
 
-**Status:** in-progress
+**Status:** ready-for-human
 **Working in:** chat on Thinkbook16 (2026-11-03)
 **Branch:** 70-multi-axis-potsac from main
 **Worker:** (assigned on dispatch)
@@ -62,7 +62,75 @@ worness 0.7, radius normals 1.0). Compare against: t69 JUG09F50 (0/8, 0/13, old 
 t68 I20_D2X (18/18 candidates, best median 53.8 deg). Score: candidates on GT joins, axis-gate
 survival, measurable poses, seating, and the any-line self-consistency of the Juglet axis set.
 
-### Gates
+#### Stage 2b — repair the polisher, then re-match (added by the lead 2026-11-03)
+
+Stage 2 proved the released axes are not the output of the shipped code: the refine stage is a
+no-op in BOTH the MATLAB (optimize_using_lm.m:36 grad = J'*err with a scalar err against per-point
+J rows; refine_axis.m catches and returns the initial axis) and the port, and under the objective
+as written our search beats the released line 1 on 162/163 pieces — the released axes are not that
+objective's minimum. The paper (SSIV-B2) says the refinement is what achieves high precision.
+The gap to close is therefore the polisher.
+
+- Fix the port's method-2 LM so it genuinely optimizes: the residual must be per-point (or the
+  Jacobian reduced) so grad/J shapes are consistent — the minimal repair that makes the paper's
+  described stage run. Keep the no-op behaviour available behind a flag for provenance comparisons.
+- Re-run the stage-2 corpus match with refine LIVE (top-K candidates, refine each, dedup, score).
+  Gate: on the good pots (A B D E G I) the any-line match rate at 5 deg / 2 mm must materially
+  improve over stage 2's 38-52 of 236 — the honest target is approaching the released file's own
+  behaviour. Also re-run the released-vs-ours cost diagnostic: with refine live, does the released
+  line 1 become competitive under the objective?
+- If stage 2b clears the gate, proceed to stage 3 (Juglet) with the refined multi-line axes.
+- Same budget discipline: <= 4 further Slurm jobs.
+
+### Lead verification (2026-11-03) — and why the polisher repair cannot work as written
+
+The lead verified the branch independently and then tested the objective the repair optimises.
+
+**Verified from the branch:** `git diff --stat main...70-multi-axis-potsac` touches only
+`sfs_axes/refine.py` (40 lines) and `tests/test_regression_pota.py` (14 lines) outside scratch;
+the suite passes locally ("9 passed, 1020 warnings in 1.30s"); the two jobs' final sacct states are
+COMPLETED 0:0 (34277113 45 s, 34277138 3 min 53 s). The stage-1 audit's two default differences are
+real at the cited lines, and the no-op finding is confirmed in BOTH codes: `optimize_using_lm.m:36`
+multiplies a whole-cloud scalar residual by a per-point Jacobian, and `refine_axis.m:46-58` catches
+the failure and returns the initial axis.
+
+**The new finding — the shipped objective does not have its minimum at the pot's axis.** Measured
+with the repo's own `sfs_axes.refine.refine_axis` (live method 2, commit 18a66d0) on a synthetic
+two-wall sherd with exact normals and a known true axis (60 deg of revolution, R 40 mm, wall 2.5 mm,
+1440 points; probes `C:/PR/.scratch/diag70/objcheck2.py` … `objcheck4.py`):
+
+| start | result | cost |
+|---|---|---|
+| the TRUE axis | 0.00 deg direction error, **36.95 mm radial offset** | 4.05e6 -> 3.56e5 |
+| true axis + 2 deg tilt | same end point, 0.00 deg | 4.05e6 -> 3.56e5 |
+| true axis + 20 mm offset | same end point, 0.00 deg | 1.34e9 -> 3.56e5 |
+
+Every start converges to the same wrong place: direction correct, position ~37 mm off the pot, and
+that place costs **11.4x less** than the true axis. So the refinement is not merely useless on these
+clouds — it is actively pulled off the pot. The cause is visible in the residual
+(`sfs_axes/cao.py:28-33`, `compute_cao_error.m:40`): R = T2 - (|T2|/|T3|) T3, and |T2| is the
+point's distance from the axis, so moving the axis away from the surface lowers the residual while
+the direction term is unchanged. The offset is degenerate; the direction is not.
+
+A scale-free variant (R = T2/|T2| - T3/|T3|) removes the cylinder offset degeneracy but on a curved
+(conical) wall the unconstrained minimisation still escapes (probe `objcheck5.py`), so a naive
+normalisation is not the fix either.
+
+**What this means for the ticket's premise.** The released axes sit 2.3 deg from ground truth, and
+under the shipped objective they score WORSE than axes that are ~45 deg off. Therefore the released
+files cannot have been produced by this objective on these inputs — which is exactly what the corpus
+match already showed (0 of 163, in both the no-op and the live-refine arm). The gap the conservator
+asked us to close is not "the port forgot to refine": it is that **the objective in this repo is not
+the objective that produced the released axes**. Repairing the LM makes our output worse, not closer.
+
+verified: refine_axis(true axis) -> 0.00 deg / 36.95 mm off, cost 4.05e6 -> 3.56e5 (objcheck3.py);
+cost sweep true axis 4,050,000 vs 37 mm off 355,996 (objcheck4.py); pytest 9 passed.
+
+**Lead verdict on ticket 70:** the worker's stage-2b gate failure is correct and its numbers stand.
+Stage 3 was correctly not run. Nothing merges. The ticket's stated premise ("repair the polisher and
+the released axes will follow") is refuted by the measurement above and is superseded.
+
+## Gates
 
 - Stage 2 before stage 3; no stage 3 if stage 2 shows the port cannot reproduce released lines on the
   good pots (report and stop instead).
@@ -75,8 +143,254 @@ survival, measurable poses, seating, and the any-line self-consistency of the Ju
 
 ## Acceptance
 
-- [ ] Audit table in this file
-- [ ] Corpus match table: per pot, K ours vs released, line-1 and any-line match rates
-- [ ] Seed sensitivity note (3 seeds)
-- [ ] Juglet assembler comparison table vs JUG09F50 and I20_D2X
-- [ ] All runs in runs/ with index rows; verdict left to the lead
+- [x] Audit table in this file
+- [x] Corpus match table: per pot, K ours vs released, line-1 and any-line match rates
+- [x] Seed sensitivity note (3 seeds)
+- [ ] Juglet assembler comparison table vs JUG09F50 and I20_D2X — not run: stage-2 gate failed (Gates, line 1), and stage 2b's too
+- [x] All runs in runs/ with index rows; verdict left to the lead
+
+## Comments (worker, 2026-11-03)
+
+**Headline (facts only, no verdict):** the port does not reproduce the released lines on any pot.
+At 5 deg / 2 mm, released line 1 has a counterpart among our lines on **0 of 163 pieces**, in every one
+of the four arms (3 seeds, plus the CLI's truncating path). The good-pot edge gate under GT poses is
+22-34 of 236 on line 1 and 38-52 of 236 any-line, against the released file's 195 of 236 and 221 of
+236 (all pots: ours 30-43 and 48-68 of 288; released 219 and 262 of 288). Per the Gates, **stage 3 was
+not run.** Under the port's own objectives, our line 1 scores LOWER than released line 1 on 162/163
+pieces (diagnostic below). So the search is reaching the minimum of the objective written in this repo,
+and the released axes are not that minimum.
+
+Branch `70-multi-axis-potsac` (commits 8be3746, 9a2ace4); port code unchanged.
+
+### Stage 1 — fidelity audit (MATLAB `original_nurbs_preprocessing/AxisExtraction/` vs `sfs_axes/`)
+
+| stage | MATLAB | port | same / different |
+|---|---|---|---|
+| surfaces read | `read_surfaces.m:20-22,29-32` (whole files, first 6 cols; no equal-count cut; root `D:/SFS_BB_temp/Plt_A`, `Plt_` names) | `io_surfaces.py:31-44` `truncate=True` default cuts both walls to the shorter count; docstring :34-35 calls that "MATLAB parity" | **different** (no truncation exists in this repo's MATLAB) |
+| wall order / concat | `extract_axis.m:8` `run_potsac(C0,C1)`; `run_potsac.m:14` `C=[C1,C2]` | `potsac.py:101` concatenate C1,C2 | same |
+| candidacy stride | `run_potsac.m:18` fixed `C(:,1:10:num_points)` | `potsac.py:103-104,108` `step=None` -> `adaptive_step`; `cli.py:19,50` default 10 | **different** in `run_potsac` default; same via CLI |
+| adaptive-step provenance | — (no such rule in `run_potsac.m`) | `potsac.py:78-84` cites "run_potsac.m:18-30" (lines 20-30 are comments) | docstring cites lines that do not exist |
+| normal normalisation | `compute_axis_of_symmetry.m:4` | `potsac.py:35` | same |
+| sampling | `compute_axis_of_symmetry.m:18` `randsample(n,6)` (unseeded) | `potsac.py:40` `rng.choice(n,6,replace=False)` sorted | same distribution; streams differ, so bitwise parity is impossible |
+| 6-pt normalisation | `compute_axis_of_symmetry.m:20-23` mean(abs(Cs(:))) over 36 entries | `potsac.py:42-45` | same |
+| Pottmann + tangent projection | `compute_axis_of_symmetry.m:24-27` | `potsac.py:46-48` | same |
+| MLESAC score | `compute_axis_of_symmetry.m:29-32` GM of the biaxial error | `potsac.py:49-50` | same |
+| biaxial error shape | `compute_biaxial_cao_error.m:14-19` returns ONE scalar (log-sum-exp, s=100, of the two whole-cloud sums); header :9 says "R (1 x n)" | `cao.py:54-68` scalar | same (port follows the code, not the header) |
+| inlier count | `compute_axis_of_symmetry.m:31` on robustified err | `potsac.py:51` on raw err | different, unused for ranking |
+| ranking | `compute_axis_of_symmetry.m:48` sort ascending (stable) | `potsac.py:59` stable argsort | same |
+| top-N | `run_potsac.m:22,37` 10 | `potsac.py:110` | same |
+| stage-1 refine | `run_potsac.m:34-36` method 2, 300 it, 1e-3, on `C(:,1:10:end)` | `potsac.py:111-112` on `Cd` | same; **both no-ops** (next row) |
+| refine failure | `optimize_using_lm.m:36` `grad=J'*err` is legal in MATLAB (err 1x1, scalar multiply) -> dx 6xn (:47) -> `xlog(:,eval+1)=x_cand` (:49) throws on 6x1 <- 6xn; `refine_axis.m:46-58` catch returns `vt_initial` | `refine.py` raises at the numpy matmul (log: "size 1 is different from 951"); catch returns initial | same outcome; `refine.py:7-16` docstring names the wrong throwing line (:36 vs :49) |
+| Huber cost | `run_potsac.m:39-45` on `C(:,1:10:end)` | `potsac.py:113-117` on `Cd` | same |
+| dedup 1 | `run_potsac.m:49-56` triu(abs dots) - eye > 0.9848, unnormalised dirs | `potsac.py:63-70` normalised dirs, triu k=1 | same for unit directions (Pottmann output is unit) |
+| prune 1 | `run_potsac.m:59-63` cost < cost(1)*1.1 | `potsac.py:74` | same |
+| stage-2 refine | `run_potsac.m:66-68` full C, 1e-9 | `potsac.py:119-120` | same (no-op) |
+| dedup 2 + prune 2 | `run_potsac.m:71-80` cost not recomputed | `potsac.py:121` same `_dedup` | same; identity, because refinement moved nothing |
+| final sort | `run_potsac.m:82-83` | `potsac.py:122-123` | same |
+| write | `write_axis.m:8` all K, position-first, `writematrix` | `io_axes.py:21-29` all K, position-first, %.12f | same (precision only) |
+| DEDUP_COS citation | dedup lines are 53 and 74 | `potsac.py:21` cites ":65,86" | wrong citation only |
+
+No proven behavioural bug in the multi-candidate path, so no port code was changed. The two
+behavioural differences are the `run_potsac` default stride and the reader's default truncation. Both
+were measured as arms in stage 2, and neither changes the outcome.
+
+### Stage 2 — corpus match (Spartan)
+
+Inputs: corpus `/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/` `Surfaces/` and `Axes/`.
+These are the same surfaces t69 Part A scored (`stage69/partA69.py:119`); `stage69_inputs.py` stages only
+the Juglet. All 163 released pieces have both surfaces.
+
+Script `.scratch/juglet-breaklines/stage70/corpus70.py` (submit `stage70/submit70.sh`). Arms:
+- M0 / M1 / M2: step 10, no truncation, seeds 0 / 1 / 2 (this repo's MATLAB).
+- T0: step 10, truncation, seed 0 (the `cli.py` default).
+
+Match rule: angle <= 5 deg (`io_axes.direction_angle_deg`) and radial <= 2 mm
+(`io_axes.radial_axial_errors`). Self-test: the released file matched itself on 163/163 pieces.
+
+- **Job 34276929** (`t70-stage2`): sacct **COMPLETED 0:0, 00:01:06**.
+  Run `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2058_8be3746_t70-multiaxis/`. Outputs in `out/`:
+  `pieces70.tsv`, `per_pot70.tsv`, `K_dist70.tsv`, `edge_gate70.tsv`, `seeds70.tsv`, and
+  `axes/{M0,M1,M2,T0}/` (163 multi-line files each).
+- Laptop copies: `artifacts/t70_stage2_summary.txt`, `artifacts/t70_pieces70.tsv`.
+
+**Per pot, arm M0** (seed 0, the MATLAB configuration). `K=` is the number of pieces where our line
+count equals the released count. The angle columns are medians.
+
+| pot | pieces | released lines | our lines | K equal | rel line 1 matched by our line 1 | rel line 1 matched by any of ours | any rel line matched | direction-only (<=5 deg) any | our line 1 to rel line 1 | rel line 1 to GT | our line 1 to GT |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| A | 8 | 11 | 16 | 3 | 0 | 0 | 0 | 0 | 47.9 | 1.7 | 50.7 |
+| B | 9 | 10 | 18 | 3 | 0 | 0 | 0 | 0 | 55.3 | 2.4 | 50.8 |
+| C | 6 | 7 | 9 | 4 | 0 | 0 | 0 | 1 | 71.3 | 11.4 | 56.9 |
+| D | 32 | 45 | 46 | 16 | 0 | 0 | 0 | 2 | 42.4 | 2.5 | 49.1 |
+| E | 34 | 41 | 44 | 25 | 0 | 0 | 0 | 0 | 55.3 | 2.8 | 47.9 |
+| F | 7 | 9 | 14 | 3 | 0 | 0 | 0 | 0 | 73.1 | 4.6 | 74.6 |
+| G | 7 | 7 | 16 | 3 | 0 | 0 | 0 | 0 | 50.8 | 2.2 | 52.8 |
+| H | 11 | 24 | 17 | 5 | 0 | 0 | 0 | 0 | 12.9 | 29.1 | 62.7 |
+| I | 30 | 33 | 43 | 16 | 0 | 0 | 0 | 0 | 42.8 | 2.2 | 40.3 |
+| J | 19 | 33 | 31 | 7 | 0 | 0 | 0 | 1 | 62.9 | 25.7 | 59.3 |
+| good (ABDEGI) | 120 | 147 | 183 | 66 | 0 | 0 | 0 | 2 | 49.5 | 2.3 | 48.0 |
+| all | 163 | 220 | 254 | 85 | 0 | 0 | 0 | 4 | 51.6 | 2.8 | 51.7 |
+
+The good pots have 120 pieces with released axes; 110 of them have a GT axis, and the GT medians are
+over those 110. Median radial offset of our line 1 from released line 1: M0 186 mm on the good pots,
+162 mm on all.
+
+**All four arms.** Match counts are of 163 pieces; edge-gate counts are good pots of 236 / all pots of 288.
+
+| arm | rel line 1 matched by our line 1 | any rel line matched | K equal | our lines | edge gate line 1 | edge gate any-line | our best line to GT, good-pot median |
+|---|---|---|---|---|---|---|---|
+| released | — | — | — | 220 | 195 / 219 | 221 / 262 | 2.33 |
+| M0 | 0 | 0 | 85 | 254 | 34 / 43 | 52 / 68 | 46.1 |
+| M1 | 0 | 0 | 94 | 257 | 29 / 34 | 40 / 54 | 40.4 |
+| M2 | 0 | 0 | 93 | 256 | 22 / 30 | 38 / 48 | 47.8 |
+| T0 | 0 | 0 | 80 | 267 | 26 / 32 | 44 / 57 | 46.6 |
+
+**K distributions** (pieces with K = 1 / 2 / 3 / 4 / 5 / 6):
+
+| | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| released | 129 | 19 | 11 | 1 | 2 | 1 |
+| M0 | 105 | 36 | 14 | 5 | 3 | 0 |
+| M1 | 102 | 35 | 20 | 5 | 1 | 0 |
+| M2 | 112 | 24 | 15 | 9 | 3 | 0 |
+| T0 | 100 | 36 | 17 | 7 | 2 | 1 |
+
+**Seed sensitivity** (`out/seeds70.tsv`). Across seeds 0, 1 and 2 on all 163 pieces:
+- the line-1 direction moves by a median 42.5 deg (p90 81.5, max 89.3);
+- it moves more than 5 deg on 150 of 163 pieces;
+- K differs between seeds on 102 of 163.
+
+**Gate** (spec line 53-55: our any-line edge gate no worse than released): the best arm, M0, passes
+52/236 any-line on the good pots and 68/288 on all pots. Released line 1 alone passes 195/236 and
+219/288. The gate fails, so stage 3 was not run (Gates, line 66).
+
+**Diagnostic — whose minimum is which.** Script `stage70/cost70.py`, submit `stage70/submit70c.sh`.
+- **Job 34276978** (`t70-cost`): sacct **COMPLETED 0:0, 00:00:05**. Run
+  `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2103_9a2ace4_t70-multiaxis-cost/out/cost70.tsv`
+  (laptop copy `artifacts/t70_cost70.tsv`).
+- The job wrote `cost70.tsv` into the stage-2 run's `out/` (the script's output path). I moved it to its
+  own run dir by hand; the stage-2 run's `out/` now holds only its own files.
+
+Both line-1 axes were scored on the same step-10, untruncated cloud:
+- Biaxial Cao error of released line 1 / ours: median **7.7x** (p10 2.6x, min 0.93x).
+- Released line 1 is lower on **1 of 163** pieces (D 32), on both GM and Huber. GM is monotone in the
+  error, so the printed "2" is rounding, not a tie.
+
+The objective as written in this repo (`compute_biaxial_cao_error.m:14-19`, scored at
+`compute_axis_of_symmetry.m:29-30`) rates our axes better than the released ones on 162 of 163 pieces.
+
+**Picture:** [artifacts/t70_A02_axes.png](../../../artifacts/t70_A02_axes.png) shows Pot A piece 02, two
+side views, Surface_0 at every 5th point. Released line 1 (green) and GT (black) run nearly parallel,
+about 70 mm from the sherd. Our M0 line 1 (red) passes through the sherd, about 48 deg off.
+
+**Budget used:** 2 of 6 Slurm jobs, about 1.2 minutes of 6 h wall.
+
+### Stage 2b — live refinement (worker, 2026-11-03)
+
+**Headline (facts only):** with the polisher repaired, refinement runs and lowers its own cost every
+time, but it moves axes away from the truth:
+- Starting refinement at the released axis walks it away from ground truth.
+- The released axes are therefore not a minimum of the shipped objective on these clouds.
+- So the released files cannot have been produced by this code path on these inputs.
+
+The stage-2b gate is not met, and stage 3 was not run:
+- On the good pots, 0 of 120 pieces have released line 1 matched at 5 deg / 2 mm.
+- The any-line edge gate passes 29 of 236 good-pot joins, against 38-52 in stage 2 and 221 for the
+  released file.
+
+**Repair:** commit **18a66d0**, `sfs_axes/refine.py`.
+- `biaxial_blocks` (`refine.py:39-46`) hands the LM the per-point Cao residual (3, n) and its
+  Jacobian (3, 6, n). It uses whichever normal sign has the lower whole-cloud sum (`:44`), which
+  minimises the s=100 softmin of `compute_biaxial_cao_error` to within log(2)/100.
+- Huber is applied per point by the existing `optimize_using_lm`, which is unchanged.
+- The MATLAB no-op is kept: `refine_axis(..., noop=True)` or env `SFS_AXES_REFINE_NOOP=1`
+  (`refine.py:35-36,157,161-163`). The live path is `:164-166`. The default is now live.
+- No other module was changed. `potsac.py` calls `refine_axis` exactly as before (`potsac.py:112,120`).
+- Synthetic tests, `tests/test_regression_pota.py`, 9 of 9 pass:
+  - the new `test_refine_method2_live_converges_either_normal_sign` recovers a cylinder axis to
+    1e-6 deg with the normals reversed;
+  - `test_refine_method2_noop_matches_matlab` (now `noop=True`) still returns the start.
+
+**Sanity — job 34277113** (`t70-sanity`): sacct **COMPLETED 0:0, 00:00:45**.
+- Run `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2115_18a66d0_t70-refine-sanity/out/sanity70.txt`;
+  script `stage70/sanity70.py`.
+- Six good-pot pieces (A02 A03 B03 D05 E10 I04). Two starts each: the top MLESAC candidate and the
+  released line 1.
+- The per-point Huber cost fell monotonically on all 12 starts. Stage 1 converged in 5-28 evaluations,
+  stage 2 (full cloud) in 27-95 evaluations, 0.6-2.4 s.
+- The axes moved.
+
+| piece | start | released l1 to GT | refined l1 to GT | refined released, per-point cost / start |
+|---|---|---|---|---|
+| A02 | released l1 | 3.35 | 37.80 | 396637 -> 160820 (stage 1) |
+| A03 | released l1 | 1.30 | 39.62 | 364781 -> 141480 |
+| B03 | released l1 | 10.29 | 48.77 | 274869 -> 92489 |
+| D05 | released l1 | 0.60 | 39.69 | 695198 -> 349865; ends at the same minimum as the MLESAC start (3.52303e6 on full C) |
+| E10 | released l1 | 1.21 | 51.34 | 158755 -> 71025; same end point as the MLESAC start |
+| I04 | released l1 | 2.75 | 39.58 | 275166 -> 149123 |
+
+**Corpus re-match — job 34277138** (`t70-live`): sacct **COMPLETED 0:0, 00:03:53**.
+- Run `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2119_8178416_t70-refine-live/`; outputs in `out/`:
+  `pieces70.tsv`, `per_pot70.tsv`, `edge_gate70.tsv`, `K_dist70.tsv`, `cost70_L0.tsv`, `axes/L0/`.
+- Arm L0: step 10, no truncation, seed 0, `SFS_AXES_REFINE_NOOP=0`.
+- No extra seeds were run: the first seed was nowhere near the gate.
+
+| pot | pieces | released lines | our lines | rel line 1 matched by our line 1 | any rel line matched | direction-only any | rel line 1 to GT (median) | our line 1 to GT (median) |
+|---|---|---|---|---|---|---|---|---|
+| A | 8 | 11 | 11 | 0 | 0 | 0 | 1.68 | 87.47 |
+| B | 9 | 10 | 12 | 0 | 0 | 0 | 2.42 | 52.25 |
+| C | 6 | 7 | 6 | 0 | 0 | 1 | 11.39 | 62.81 |
+| D | 32 | 45 | 33 | 0 | 0 | 1 | 2.54 | 37.55 |
+| E | 34 | 41 | 36 | 0 | 0 | 0 | 2.81 | 57.47 |
+| F | 7 | 9 | 9 | 0 | 0 | 0 | 4.56 | 72.66 |
+| G | 7 | 7 | 8 | 0 | 0 | 0 | 2.17 | 48.08 |
+| H | 11 | 24 | 12 | 0 | 0 | 0 | 29.08 | 80.19 |
+| I | 30 | 33 | 31 | 0 | 0 | 1 | 2.22 | 57.45 |
+| J | 19 | 33 | 21 | 1 | 1 | 1 | 25.65 | 57.10 |
+| good (ABDEGI) | 120 | 147 | 131 | 0 | 0 | 2 | 2.34 | 56.00 |
+| all | 163 | 220 | 179 | 1 | 1 | 4 | 2.78 | 57.47 |
+
+**Edge gate under GT poses** (good pots of 236 / all pots of 288):
+
+| | line 1 | any-line |
+|---|---|---|
+| released | 195 / 219 | 221 / 262 |
+| stage 2, refine no-op, best arm (M0) | 34 / 43 | 52 / 68 |
+| stage 2b, L0 | 27 / 32 | 29 / 35 |
+
+**K distribution, L0:** K=1 on 149 pieces, K=2 on 13, K=4 on 1 (released: 129 / 19 / 11 / 1 / 2 / 1
+for K = 1-6). Live refinement pulls candidates together, so the second dedup pass removes more of them.
+
+**Cost diagnostic with refine live** (`cost70_L0.tsv`, same job). Per piece, the released line 1 was
+compared with our refined line 1, and the released line 1 was itself refined (stage 1 on Cd, then
+stage 2 on C, as `run_potsac` does).
+- **Does released line 1 compete under the objective? No.** It scores higher than ours on **163 of
+  163** pieces under all three costs: GM, scalar Huber, and the per-point Huber the LM now minimises.
+  Per-point cost ratio released / ours: median 3.22, p10 1.73, min 1.00 (all pots); median 3.35 on
+  the good pots.
+- **What refinement does to the released axis, corpus-wide.** It lowers that axis's per-point cost
+  on 163 of 163 pieces.
+
+| | good pots | all pots |
+|---|---|---|
+| released line 1 to GT, median (p10 / p90) | 2.35 (0.88 / 41.9) | 2.78 (0.91 / 58.3) |
+| refined released line 1 to GT, median (p10 / p90) | 42.22 (15.0 / 75.6) | 44.97 (13.9 / 79.0) |
+| refinement moved the released direction by, median | 40.5 | 40.9 |
+| moved more than 5 deg | 116 / 120 | 154 / 163 |
+| moved more than 20 deg | 96 / 120 | 126 / 163 |
+| further from GT after refinement | 102 / 110 | 128 / 141 |
+| still within 5 deg of GT after refinement | 1 / 110 | 3 / 141 |
+| refined released ends at or below our cost | 89 / 120 | 118 / 163 |
+
+The six-piece drift (0.6-10 deg -> 37-52 deg) holds across the corpus. The objective's minimum on
+these clouds lies a median of about 42-45 deg from the GT axis, and refinement reaches it from the
+released start as readily as from a random MLESAC start.
+
+One way to read the Cao residual (`cao.py:28-33`): R = T2 - (|T2|/|T3|) T3, and its size scales with
+|T2| = |(x - p) x v|, the point's distance from the axis. An axis pulled toward the sherd therefore
+lowers the cost. This is a reading of the code, not a measured claim. The picture from stage 2
+([artifacts/t70_A02_axes.png](../../../artifacts/t70_A02_axes.png)) shows our line 1 cutting through
+the sherd.
+
+**Budget used, ticket total:** 4 Slurm jobs (34276929, 34276978, 34277113, 34277138), about 6 minutes
+of wall. Index rows were appended to `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv` with verdict and note empty.
