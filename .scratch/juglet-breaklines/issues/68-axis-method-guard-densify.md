@@ -15,7 +15,7 @@ The conservator ruled: fix the method that produces axes, merge the guard, and m
 
 **Blocked by:** none (t67 merged 0baa35f; run of record read-only)
 
-**Status:** in-progress
+**Status:** ready-for-human (axis method fixed; guard merged canonical 9a613b5; densify: 2x yes, but pose accuracy is the wall)
 **Working in:** chat on Thinkbook16 (2026-11-03)
 **Branch:** 68-axis-method-guard-densify, in /c/PR/worktrees/sfs/68
 **Worker:** cursor_code worker via lead dispatch (2026-11-03)
@@ -294,3 +294,19 @@ batch shim; `main.cpp`'s copy compiled into `Hierarchy-Clear` but was not execut
 ### Controls
 
 The guarded build is covered in "Guard proof-build" above: Juglet F50 exits 0 and Pot A F50 scores 8/8 and 15/15. Pot A with estimator axes was not run.
+
+
+### Lead verification (2026-11-03)
+
+- verified (cross-arm numbers, my own scripts on the Spartan run dirs): candidate formation on the 18 GT joins
+  old axes (t67 A20) 9/18 with 1/10 among P2/5/9 joins -> I20N 12/18 (4/10) -> I20_D2X 18/18 (10/10);
+  measurable poses 4/18 (I20N) -> 18/18 (D2X); best-candidate rotation error median 137.2 -> 53.8 deg; best pair
+  1-8: 27.0 -> 7.7 deg; candidates 35 -> 293; Acc.txt re-read: 0/9, 0/18 in every arm; T-file counts 2 (F20O),
+  4 (F20N/I20N), 8 (D095), 9 (D2X). All match the worker's Results table.
+- verified: guard proof-build -- job 34269593 COMPLETED 0:0; Juglet@50 log prints the ranking_system.cpp guard
+  line and exits 0; Pot A@50 8/8 and 15/15 with no guard line; applied diff exactly 13 insertions in 3 files.
+- verified: guard merged to canonical structure-from-sherds-pp as 9a613b5 (laptop applied the CRLF working-copy
+  patch; repo blobs normalize to LF, which is what the proof build compiled).
+- verified: renders for F20O/F20N/I20_D190/I20_D095/I20_D2X exist under SfSpp_preprocessing/artifacts/68/render/.
+- caveat kept open: estimator selection among the ten used the GT gate, so the axes68 chosen-set angles are
+  optimistic; the assembler-side evidence (formation 9->12/18, P5 entering the graph) is selection-free.
