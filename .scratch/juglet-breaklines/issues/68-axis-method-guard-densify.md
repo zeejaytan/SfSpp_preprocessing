@@ -123,11 +123,34 @@ Run `runs/20261103-1523_4b516be_t68-axis-method`, job 34267653, sacct COMPLETED 
 | F20O | old | 23 | 1 | 2, 6 | 0 | as t67 | 0/9, 0/18 |
 | F20N | t68 | 35 | 2 | 1, 5, 7, 8 | 0 | 42.94, 41.08, 36.29, 56.06 | 0/9, 0/18 |
 
-Per-GT-pair table for the 10 joins involving 2/5/9 (candidates / pruning / axis gate / rotation error):
-TODO -- needs the t67 attitude instrument on the axes68 tree (job 2 of 4).
+Per-GT-pair table, instrumented rerun I20N (= F20N with the t67 attitude instrument; job 34268041,
+`out/I20N/T67_*.tsv`, `stage68/pairs68.py`). The 10 joins involving 2/5/9 that were dead under the old
+axes, plus 1-8 and 7-8:
+
+| join | candidates | best candidate: fold deg / rot err deg / centre err mm | where it dies |
+|---|---|---|---|
+| 1-2 | 2 | 4.9 / 100.9 / 32.1 | score gate (11.00 > 1.5) |
+| 1-5 | 1 | 69.3 / 116.7 / 14.8 | axis gate |
+| 1-9 | 0 | - | no LCS |
+| 2-5 | 0 | - | no LCS |
+| 2-9 | 0 | - | no LCS |
+| 3-5 | 1 | 42.6 / 147.5 / 24.3 | axis gate |
+| 4-5 | 1 | 54.6 / 137.2 / 20.2 | axis gate |
+| 5-9 | 0 | - | no LCS |
+| 7-9 | 0 | - | no LCS |
+| 8-9 | 0 | - | no LCS |
+| 1-8 | 4 | 38.7 / 27.0 / 2.4 (the good one) | axis gate; a different 1-8 candidate (137.9 deg / 24.3 mm off) survives |
+| 7-8 | 1 | 30.5 / 167.9 / 30.0 | score gate |
+
+So the new axes bring 4 of the 10 dead joins to a candidate, and none survives: three die at the axis gate
+(`feature_matching.cpp:1715`), one at the score gate (:1726). The six with no LCS are every join with 9
+and 2-5. The 35 candidates include 16 on true joins, with matched runs of 6-13 dots (median 7). The
+(5,7) survivor is not a join, but its relative pose is 5.1 deg / 0.8 mm off GT.
+
 Renders: [F20N_assembly.png](SfSpp_preprocessing/artifacts/68/render/F20N_assembly.png),
-[F20N_perpiece.png](SfSpp_preprocessing/artifacts/68/render/F20N_perpiece.png).
-Best-of-N: the assembly path has no RNG; N=1 per arm (F20O reproduces t67 F20's transform set).
+[F20N_perpiece.png](SfSpp_preprocessing/artifacts/68/render/F20N_perpiece.png),
+[F20O_assembly.png](SfSpp_preprocessing/artifacts/68/render/F20O_assembly.png).
+F20N is a compact cluster of four pieces at the wrong attitude.
 
 ### Part B -- guard merge
 
@@ -135,8 +158,102 @@ Prepared, not committed: `stage68/partB/guard68.patch` + `COMMIT_MSG.txt`. Not y
 
 ### Part C -- densify arm
 
-TODO.
+All arms below use the t66 recipe (worness 0.7, normals radius 1.0 mm, admit-sign default, mesh stage on the
+old axes, exactly as in t66), then the instrumented floor-20 panel with the t68 axes. Only the edgeline
+constants vary.
+
+| arm | constants changed (`edgeline_extraction_headless.cpp`) | Bl0 dots P1..P9 | exported spacing | candidates (on true joins) | GT-join matched run, dots | after pruning | pieces with a T | seated | chamfer mm |
+|---|---|---|---|---|---|---|---|---|---|
+| I20N (t66 lanes) | none | 59/32/44/31/43/45/54/40/22 | 1.80 mm | 35 (16) | 6-13, median 7 | 2: (1,8), (5,7) | 1, 5, 7, 8 | 0 | 42.94 / 41.08 / 36.29 / 56.06 |
+| I20_D190 (rebuilt control) | none | same | 1.80 mm | 34 (15) | 6-13, median 7 | 2: (1,8), (5,7) | 1, 5, 7, 8 | 0 | 42.83 / 40.82 / 36.12 / 55.93 |
+| I20_D095 | `RESAMPLE_D_MM` 1.9 -> 0.95 (:556) | 61/34/46/34/46/47/56/42/24 | 1.80 mm | 43 (18) | 6-12, median 7 | 6: (1,4), (1,8), (2,3)x2, (2,6), (5,7) | 1-8 | 0 | 288-325 |
+| I20_D2X | :556 to 0.95 **and** `sphereRadius` 1.8 -> 0.9 (:477) | 123/68/94/66/90/94/112/84/49 (~2.1x) | 0.90 mm (measured, all 9) | 293 (150) | 7-18, median 8 | 60 (instrument survivors; 0 of 60 pass the overlap replay) | 1-9 | 0 | 360-384 |
+
+Acc.txt is 0/9 and 0/18 in every arm.
+
+**The rebuilt control sets the noise floor.** D190's lanes are geometrically identical to t66's: the
+nearest-dot distance is 0.000 mm on all nine pieces, and all 18 surfaces match byte for byte. The files
+still differ, because the seventh column of every dot is uninitialised memory (1.1e+23 in one run,
+1.5e-37 in the other). With identical geometry the panel still shifts by 1 candidate (35 against 34, on
+pair 1-8) and by 0.1-0.3 mm in chamfer. Any arm difference of that size is noise.
+
+**Changing `RESAMPLE_D_MM` alone does not densify the exported lane, so the ticket's premise was wrong.**
+D095 adds only 2-3 dots per piece, and the spacing stays 1.80 mm. The vote-ordered resample at :556 does
+double (piece 5: 47 -> 94 and 55 -> 110 in `edge.log`), but `smoothAndSampleBreaklinesVer4UsingBSpline`
+then re-walks the exported lane with a 1.8 mm sphere (:477). D095 is therefore a re-draw of the same lane:
+dots move 0.42-0.65 mm (median) from t66, up to 2.2 mm.
+
+Even that small change moves the assembly much more than the noise floor does:
+- Candidates go from 35 to 43, and surviving pairs from 2 to 6.
+- 1-9 and 2-5 now get candidates. Both die at the gates (score and axis).
+- 8 pieces are placed, all wrong. The best edge is 7-8 at 20.9 deg / 14.7 mm, against the 5 deg / 10 mm bar.
+- The render shows a compact cluster about 250 mm from the GT frame. Its 288-325 mm chamfers mostly
+  measure that offset left after the score's gauge fit; the frame-free edge angles (101-179 deg on every
+  other edge) are the reliable evidence that nothing seated.
+
+The true 2x arm D2X halves both constants: 
+
+The table below is coverage and pose quality on the 18 true joins. It counts the lead's cross-arm pull
+from Spartan for every arm, plus `pairs68.py` on the D2X harvest:
+
+| arm | true joins with a candidate | ... of the 10 joins with 2/5/9 | joins with a measurable pose | best-candidate rotation error, median | best join |
+|---|---|---|---|---|---|
+| t67 A20 (old axes) | 9/18 | 1/10 | - | - | - |
+| I20N (new axes) | 12/18 | 4/10 | 4/18 | 137.2 deg | 1-8 at 27.0 deg / 2.4 mm |
+| I20_D095 | - | - | 8/18 | 137.4 deg | 30.5 deg |
+| I20_D2X (new axes + 2x) | **18/18** | **10/10** | 18/18 | 53.8 deg (lead); 48.3 deg on `pairs68.py`'s per-pair best column | 1-8 at **7.7 deg / 0.2 mm** |
+
+With D2X, one join comes near the attitude bar: 8-9 at 25.9 deg, borderline. The 7.7 deg 1-8 candidate
+still dies at the axis gate, with a fold of 25.7 deg against the 25 deg cut (`feature_matching.cpp:1715`),
+a miss of 0.7 deg.
+
+The assembly places all 9 pieces (9 T files), but seats 0/9. Acc.txt is 0/9 and 0/18. The best
+assembled edge is 6-8 at 40.1 deg. Chamfers are 360-384 mm. The render shows the same compact cluster, about 300 mm from the GT frame, as D095, so the
+edge angles are the reliable evidence. 0 of the 60 instrument survivors pass the overlap replay. Job
+34268623, harvest `harvest_t68d.tar.gz` md5 `5805fdde81aa2a92e0c457bbf205005c`
+(`SfSpp_preprocessing/artifacts/68/runD/`).
+
+**Answer: is it better to densify the edgeline?** **Yes, densifying helps materially, but on its own it seats nothing.** At true 2x density (D2X),
+every true join forms a candidate (12/18 -> 18/18, and 4/10 -> 10/10 on the joins with 2/5/9). Every
+join gets a measurable pose (4 -> 18). The median best-candidate rotation error falls from 137 deg to
+about 54 deg, and the best join improves from 27.0 deg to 7.7 deg (1-8, 0.2 mm). Candidates grow
+35 -> 293, all nine pieces enter the graph, and still 0/9 seat.
+
+Coverage was the wall; now pose accuracy is. Most candidates on true joins are still tens of degrees
+off, and the one near-right candidate misses the axis gate by 0.7 deg.
+
+The knob to use is the sphere walk (`sphereRadius`, :477), not `RESAMPLE_D_MM`. Changing the resample
+alone (D095) is a re-draw at the same 1.8 mm spacing, and its changes are within reach of the noise floor
+set by the rebuilt control.
+
+Weight: one object, one run per arm, no seeds, and the assembler is not bit-reproducible here (a
+1-candidate spread on identical geometry). The 35 -> 293 and 4 -> 18 changes are far outside that
+spread; whether any arm seats is not.
+
+Renders: [I20_D095_assembly.png](SfSpp_preprocessing/artifacts/68/render/I20_D095_assembly.png),
+[I20_D095_perpiece.png](SfSpp_preprocessing/artifacts/68/render/I20_D095_perpiece.png),
+[I20_D190_assembly.png](SfSpp_preprocessing/artifacts/68/render/I20_D190_assembly.png),
+[I20_D190_perpiece.png](SfSpp_preprocessing/artifacts/68/render/I20_D190_perpiece.png),
+[I20_D2X_assembly.png](SfSpp_preprocessing/artifacts/68/render/I20_D2X_assembly.png),
+[I20_D2X_perpiece.png](SfSpp_preprocessing/artifacts/68/render/I20_D2X_perpiece.png).
+
+### Slurm jobs (3 of 4 budget)
+
+| job | run | what | sacct |
+|---|---|---|---|
+| 34267653 | `runs/20261103-1523_4b516be_t68-axis-method` | F20O, F20N | COMPLETED 0:0, 00:01:03, MaxRSS 6.88 GB |
+| 34268041 | `runs/20261103-1535_ffcb350_t68-densify` | I20N; D190 and D095 cells; I20_D190, I20_D095 | COMPLETED 0:0, 00:08:49, MaxRSS 6.78 GB |
+| 34268623 | `runs/20261103-1546_6761aed_t68-densify2x` | D2X cell; I20_D2X | COMPLETED 0:0, 00:05:37, MaxRSS 7.32 GB |
+
+Harvests: `harvest_t68a.tar.gz` md5 `1188b8d5e4fdd91d3b8cf6644d667e7d`, `harvest_t68c.tar.gz` md5
+`8cb061856a7019d404adf73fcceef3f8`. Both are unpacked under `SfSpp_preprocessing/artifacts/68/`.
+
+### Best-of-N
+
+N=1 per arm, and every arm reports its only attempt. The assembler has no seed, but it is not
+bit-reproducible on these inputs: the identical-geometry pair I20N / I20_D190 differs by 1 candidate.
+No arm seats any piece, so no best attempt reaches the bar.
 
 ### Controls
 
-TODO (Pot A on the guarded canonical build; Pot A axes from the estimator).
+Not run in this ticket (budget used: 3 of 4 jobs). Still open: compile the Part B patch, and run the F50G / Pot A controls on the guarded build and Pot A with estimator axes. That belongs with the lead merging Part B.

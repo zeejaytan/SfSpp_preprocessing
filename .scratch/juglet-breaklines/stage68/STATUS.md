@@ -274,3 +274,18 @@ not excluded.
    (t301 way) and rerun the t67 F20 panel (scripts in ../stage67/: submit67.sbatch, arm67.sh,
    stage67_inputs.py; floor 20, t66 lanes). If none does, rerun F20 with nperp anyway as a measured arm
    and report P5/P7/P9 as the open pieces.
+
+## Turn 6-7 -- final (2026-11-03 16:05)
+
+- **Job 2 (34268041):** COMPLETED 0:0, 00:08:49, MaxRSS 6.78 GB.
+  - Harvest `harvest_t68c.tar.gz` md5 `8cb06185...`, unpacked at `artifacts/68/runC`.
+  - D190 matches t66 at 0.000 mm on all lanes. The surfaces match byte for byte; the lane bytes differ only in an uninitialised 7th column.
+  - I20N against I20_D190 shows a 35/34 candidate spread on identical geometry.
+- **Job 3 (34268623):** D2X (resample 0.95 + `sphereRadius` 0.9). COMPLETED 0:0, 00:05:37, MaxRSS 7.32 GB.
+  - Harvest `harvest_t68d.tar.gz` md5 `5805fdde81aa2a92e0c457bbf205005c`, unpacked at `artifacts/68/runD`.
+  - Bl0 dots 123/68/94/66/90/94/112/84/49, spacing 0.90 mm.
+  - 293 candidates, 18/18 true joins formed. Best is 1-8 at 7.7 deg / 0.2 mm, which dies at the axis gate on a 25.7 deg fold.
+  - 9 T files, seated 0/9, Acc 0/9 and 0/18, chamfers 360-384 mm (frame offset), best edge 6-8 at 40.1 deg.
+- **Renders:** `artifacts/68/render/I20_D095_*`, `I20_D190_*`, `I20_D2X_*`.
+- **Ticket:** Results complete. Part A, Part B (patch, uncompiled), Part C with the densify answer, the sacct table and best-of-N are written. Controls are not run.
+- **Open:** the median best-pose figure is 53.8 deg on the lead's pull and 48.3 deg on `pairs68.py`'s best column; the definitions differ. Also open: the old-axis gate discrepancy against t67 (0.1-3.7 deg), and compiling Part B.
