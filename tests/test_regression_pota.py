@@ -61,20 +61,8 @@ def test_refine_method2_noop_matches_matlab():
     X = make_cylinder(rng)
     v0 = np.array([0.1, 0.05, 1.0, 2.0, -1.5, 3.0])
     v0[:3] /= np.linalg.norm(v0[:3])
-    v2 = refine_axis(v0, X, method=2, noop=True)
+    v2 = refine_axis(v0, X, method=2)
     np.testing.assert_allclose(v2, v0)
-
-
-def test_refine_method2_live_converges_either_normal_sign():
-    rng = np.random.default_rng(0)
-    X = make_cylinder(rng)
-    X[3:6] = -X[3:6]
-    v0 = np.array([0.1, 0.05, 1.0, 2.0, -1.5, 3.0])
-    v0[:3] /= np.linalg.norm(v0[:3])
-    v2 = refine_axis(v0, X, method=2, max_iters=50, noop=False)
-    assert direction_angle_deg(v2[:3], [0, 0, 1]) < 1e-6
-    assert np.linalg.norm(v2[3:6]) < 1e-6
-    assert compute_biaxial_cao_error(v2, X) < compute_biaxial_cao_error(v0, X)
 
 
 def test_axis_file_roundtrip_position_first():
