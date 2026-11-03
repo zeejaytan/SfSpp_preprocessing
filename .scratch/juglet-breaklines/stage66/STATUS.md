@@ -7,6 +7,8 @@ Updated 2026-11-03 13:34 (UTC+11).
 - Runner/submit/render: `run_cell66.sh`, `submit66.sbatch`, `t66_render.py` in this folder; build commit `fab76f5` (LF fix on top of `37e04b0`). Pushed.
 - Submitted: run `20261103-1332_fab76f5_t66-admitsign-default`, **job 34262530** (sapphire, 8 cpu, 64G, 4h), node spartan-bm073.
   Index row appended (verdict/human_note empty). run.json + submit.sbatch in the run dir.
+- 13:36: build OK -- MeshPreprocessingHeadless `748b174f814ab881afb627fab9a978df`, EdgeLineExtractionHeadless
+  `cbf747dc3172fe0bbd188822df14092a`; cell U_jug running (order: U_jug, U_pota, U_potc, Z_jug, Z_pota, Z_potc, then scoring/render).
 - Poller: `slurm_poll.sh 34262530 120` under nohup on spartan-login2, log `<run>/logs/poll-34262530.log`.
 
 ## Next (resume here)
