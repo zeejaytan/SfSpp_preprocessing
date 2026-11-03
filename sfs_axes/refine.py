@@ -4,16 +4,13 @@ Exact-shape Levenberg-Marquardt port: res_func returns err (M, N) and
 J (M, 6, N); flattens use column-major order to match MATLAB err(:) and
 reshape(permute(...), [], 6).
 
-PROVENANCE FINDING (verified against optimize_using_lm.m:30-36): with
-method 2 (biaxial, the only method run_potsac.m uses) the residual is a
-whole-cloud scalar while J has one row per point, so grad = J'*err is a
-dimension mismatch and MATLAB throws before the first update — refine_axis's
-try/catch then returns the initial estimate. I.e. in the reference
-implementation the two-stage "refinement" is a silent no-op and the shipped
-axes are MLESAC+Pottmann+dedup+sort outputs. This port reproduces that
-behaviour identically (numpy raises at the same product; same catch path),
-so ORIG-axes parity holds. Method 1 shapes are consistent and refines
-genuinely; it is kept for future use, not used by run_potsac.
+NOTE (ticket 302): the earlier PROVENANCE FINDING claimed method 2 raised a
+dimension mismatch in MATLAB (grad = J'*err) and refine was a silent no-op.
+That was an artifact of the port's scalar collapse in cao.py, not MATLAB:
+compute_biaxial_cao_error.m returns a PER-POINT 1xn residual, shapes are
+consistent, and LM refinement genuinely runs. With the per-point fix
+(cao.py) the port refines exactly as MATLAB does; the try/catch catch path
+is kept for genuine failures.
 """
 
 import numpy as np
@@ -62,7 +59,7 @@ def optimize_using_lm(x, res_func, update_func, robustifier,
     v = x[0:3]
     J[:, 0:3] = J[:, 0:3] @ (np.eye(3) - np.outer(v, v))
     JTJ = J.T @ J
-    grad = J.T @ err  # raises here for method 2, as in MATLAB line 36
+    grad = J.T @ err
     if verbose:
         print("[iter][eval] cost actual_cost_change |grad| |TR| MQ")
         print("[%04d][%04d] %.6e %.3e %.2e %.2e %.2e" % (0, 0, 0.5 * cost.sum(), 0,
@@ -121,8 +118,8 @@ def refine_axis(vt_initial, X, method=2, max_iters=300, tolerance=1e-9, verbose=
     """Port of refine_axis.m (unused1/unused2 compatibility args dropped).
 
     method 1 = single-sided Cao error, 2 = biaxial (default, most robust).
-    NOTE: method 2 raises inside optimize_using_lm exactly as MATLAB does
-    and returns the initial estimate via the catch path (see module docstring).
+    With the per-point biaxial residual (ticket 302) both methods refine;
+    the try/catch returns the initial estimate only on a genuine failure.
     """
     vt = np.asarray(vt_initial, dtype=float).reshape(6)
     X = np.asarray(X, dtype=float)

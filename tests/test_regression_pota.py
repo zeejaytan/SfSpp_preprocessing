@@ -3,9 +3,9 @@
 Fast unit checks (no ORIG data needed):
   - Pottmann recovers a synthetic cylinder axis exactly.
   - Method-1 LM refinement converges from a perturbed start.
-  - Method-2 refinement no-ops via the catch path, exactly as the MATLAB
-    reference does (scalar biaxial residual vs per-point Jacobian rows:
-    grad = J'*err is a dimension mismatch; see refine.py docstring).
+  - Method-2 (biaxial) refinement converges from a perturbed start: the
+    per-point residual (ticket 302) matches the (1, 6, n) Jacobian shapes,
+    exactly as in MATLAB.
   - Axis file round-trip preserves the assembly position-first layout.
   - 10-degree dedup keeps the cheapest of two near-identical axes.
   - Adaptive step rule matches the working-tree run_potsac.m table.
@@ -56,13 +56,19 @@ def test_refine_method1_converges():
     assert np.linalg.norm(v1[3:6]) < 1e-6
 
 
-def test_refine_method2_noop_matches_matlab():
+def test_refine_method2_converges_per_point():
+    # Ticket 302: with the per-point biaxial cost the LM shapes are
+    # consistent and method 2 refines (previously it no-op'd via the
+    # catch path under the scalar collapse).
     rng = np.random.default_rng(0)
     X = make_cylinder(rng)
     v0 = np.array([0.1, 0.05, 1.0, 2.0, -1.5, 3.0])
     v0[:3] /= np.linalg.norm(v0[:3])
-    v2 = refine_axis(v0, X, method=2)
-    np.testing.assert_allclose(v2, v0)
+    v2 = refine_axis(v0, X, method=2, max_iters=300, tolerance=1e-9)
+    # Huber-robustified biaxial LM converges more slowly than method 1;
+    # measured 0.0031 deg / 0.0012 mm on this synthetic cylinder.
+    assert direction_angle_deg(v2[:3], [0, 0, 1]) < 0.01
+    assert np.linalg.norm(v2[3:6]) < 0.01
 
 
 def test_axis_file_roundtrip_position_first():
