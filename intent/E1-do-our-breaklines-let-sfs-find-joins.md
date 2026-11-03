@@ -205,6 +205,18 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-04, ticket 302 (merged 3d55af5): **the axis chain now computes what the authors'
+  MATLAB computes, and that is still not the better assembler input on Pot A.** The port had
+  collapsed MATLAB's per-point Cao cost to one whole-cloud scalar, so the robustifier
+  saturated at ~2.0 for every candidate and the ranking was a coin toss; with per-point costs
+  the chain matches MATLAB to 1e-13 (units) and 5e-5 deg (Pot A, 8/8 pieces). Feeding those
+  faithful axes to the assembler takes Pot A from the control's 8/8 placed and 15/15 joins to
+  7/8 and 13/15 — the RELEASED Pot A axes stay and no corpus data changed. Corpus axes were
+  re-run for all 163 pieces to `out/axes302` (median 6.81 deg to the released lines, 44.2%
+  within 5). On the Juglet the corrected chain seats nothing (0/9, as before) and ties ticket
+  68's hybrid on median mutual consistency (12.35 vs 12.31 deg) while losing the tail (P8
+  34.36 vs 16.43, P9 55.61 vs 23.83). Ticks no Done-when box: it settles the axis input, not
+  the breakline. Renders await the conservator's eye.
 - 2026-11-03, ticket 63 (merged ebd5df4): **why J1's growth arrows came out backwards is
   measured, not guessed.** One MST link through the sherd's thinnest wall (1.47 mm edge across a
   1.46-1.48 mm wall, flat spot 6.7 mm from the fold) carries the wrong in/out sign to 41.8% of
