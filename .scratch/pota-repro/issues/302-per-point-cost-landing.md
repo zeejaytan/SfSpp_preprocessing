@@ -6,9 +6,11 @@
 
 **Blocked by:** none — the diagnosis is complete (lead session 2026-11-04); this ticket only lands and extends it.
 
-**Status:** ready-for-agent
+**Status:** in-progress
 
-**Worker:** unassigned
+**Working in:** DSH worker session sfs302 (2026-11-04)
+
+**Worker:** sfs302
 
 **Budget:** large 8
 
