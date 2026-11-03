@@ -14,7 +14,7 @@ in candidate RANKING, not in a polisher — which is a different fix and must be
 
 **Status:** ready-for-human — lead verified 2026-11-03; stage C correctly not run
 
-**Worker:** unassigned
+**Worker:** cursor_code session `t71` (stages A/B1/B2/B3) with B4/B5 and all verification run by the lead
 
 **Budget:** 4
 
