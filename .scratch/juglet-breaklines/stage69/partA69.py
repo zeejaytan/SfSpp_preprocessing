@@ -133,6 +133,7 @@ def one_piece(job):
     rel_dirs = [unit(r[3:6]) for r in rel]
     out["rel0"] = fold(rel_dirs[0], dgt)
     out["relbest"] = min(fold(d, dgt) for d in rel_dirs)
+    out["dir_relbest"] = min(rel_dirs, key=lambda d: fold(d, dgt))
     out["rel0_vs_bestline"] = min(fold(rel_dirs[0], d) for d in rel_dirs)
 
     est = {}
@@ -168,6 +169,10 @@ def one_piece(job):
     nn = C[3:6].T
     nn = nn / np.maximum(np.linalg.norm(nn, axis=1, keepdims=True), 1e-12)
     out["abs_nd_gt"] = float(np.median(np.abs(nn @ dgt)))   # 1.0 = flat/base, 0.0 = cylinder
+    # sin(alpha) = mean |n.axis| over both walls: the quantity that decides whether the
+    # minimum eigenvector of the normals IS the axis (it is only while sin < sin 35.26 deg)
+    out["sin_alpha_gt"] = float(np.mean(np.abs(nn @ dgt)))
+    out["sin_alpha_rel0"] = float(np.mean(np.abs(nn @ rel_dirs[0])))
     x = C[0:3].T - gt[0:3]
     out["r_gt_med"] = float(np.median(np.linalg.norm(x - np.outer(x @ dgt, dgt), axis=1)))
     return out
@@ -212,7 +217,7 @@ def main():
 
     names = ["rel0", "relbest", "nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0"]
     cols = ["pot", "piece", "n0", "n1", "rel_lines", "rel0_vs_bestline",
-            "abs_nd_gt", "r_gt_med"] + names
+            "abs_nd_gt", "sin_alpha_gt", "sin_alpha_rel0", "r_gt_med"] + names
     cols += [n + s for n in ("nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0")
              for s in ("_cyl", "_mer", "_r")] + ["potsac_secs", "potsac_ncand"]
     with open(os.path.join(a.outdir, "pieces.tsv"), "w") as fh:
