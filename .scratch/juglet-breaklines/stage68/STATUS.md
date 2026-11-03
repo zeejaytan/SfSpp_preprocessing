@@ -78,6 +78,13 @@ Dataset trees). No index.tsv row until submission.
 all under Axes/); arms F20O (old axes, baseline = t67 F20) and F20N (t68 axes), floor 20, guarded shim;
 score58.py on both.
 
+**Created:** `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1523_4b516be_t68-axis-method` (commit 4b516be;
+`logs/axes_provenance.log`). axes68 md5: P1 cd798478, P2 20434553, P3 a29159d4, P4 f9f8b531, P5 4a2b49e7,
+P6 c39a3f1d, P7 7b05f75e, P8 c18976b6, P9 28648e69 (LF; the laptop CRLF copies hashed differently).
+Old axes and GT are byte-identical in `punim2657/Dataset` and `sfs_preprocessing/Dataset` (9/9 + 10/10 md5),
+so the 0.1-3.7 deg gap between my old-file gate and the lead's t67 numbers is NOT a tree difference -- still
+open (P7's two-line file read, or the median definition).
+
 To submit next turn: `cd $RUN && sbatch --parsable submit.sbatch`, append the index row, poll with
 scripts/slurm_poll.sh, record sacct. Budget: 0 of 4 jobs used.
 
