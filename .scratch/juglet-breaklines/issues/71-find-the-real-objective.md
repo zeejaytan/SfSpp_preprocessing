@@ -12,7 +12,7 @@ in candidate RANKING, not in a polisher — which is a different fix and must be
 **Blocked by:** none (t70 closed; branch 70-multi-axis-potsac holds the repair behind
 `SFS_AXES_REFINE_NOOP=1`)
 
-**Status:** ready-for-agent
+**Status:** ready-for-human — lead verified 2026-11-03; stage C correctly not run
 
 **Worker:** unassigned
 
@@ -114,6 +114,150 @@ Slurm run `/data/gpfs/projects/punim2657/SfSpp/probe/p71/` (job 34283802, lead, 
 running) does the corpus fixed-point test for the six costs on 30 pieces (3 per pot). Read its
 `p71_leadprobe.txt` when it finishes; early rows already show `cao` drifting 0.75-89.4 deg
 while `proj_signed` drifts 0.55-7.65 deg and `cross`/`triple` 0.39-39.4 deg.
+
+
+## Results (2026-11-03)
+
+Four Slurm jobs, all COMPLETED 0:0. Nothing merged. Branch `71-find-the-real-objective`
+carries the instrument only (`costs71.py`, `b1_synthetic.py`, `corpus71.py`, `b4_pottmann.py`,
+`b5_rank.py`); no shipped code changed, no default moved.
+
+### Stage A — our port cannot reach the released axis (job 34284310)
+
+`runs/20261103-2243_647cc24_t71-objective`, 20 seeds x 163 pieces, refine no-op, step 10.
+
+- **reachable at some seed: 1/163.** Cumulative coverage never exceeds 0.6%.
+- Per-seed best angle median 41.8-53.1 deg, p10 10.9-18.0 deg, min 0.333-1.132 deg. The
+  spread across seeds is the search's own noise floor and it does not close the gap.
+- So H-cand is supported in its weak form: our generator, run 20 times, does not produce what
+  the authors produced. That alone does not say whether the released axis is a minimum of
+  anything.
+
+### Stage B1 — synthetic exactness, independently reproduced (job 34284310)
+
+`out/b1_synthetic.tsv`, `out/b1_landscape.tsv`. Exact two-wall cylinder (R=50, t=4, z -40..40)
+and exact two-wall cone (r = 0.4z, z 40..120, t=4), 1152 points each, both walls, exact normals.
+Gate = every start returns to the true axis within 0.5 deg and 0.5 mm.
+
+| cost | cylinder | cone |
+|---|---|---|
+| cao_shipped | **FAIL** — 90.00 deg from both perturbed starts | pass (0.0005 deg) |
+| cao_perpoint | **FAIL** — 89.68 deg | pass |
+| proj_signed | pass (0.00 deg / 1e-11 mm) | pass |
+| cross | pass | pass |
+| triple | pass | pass |
+| sin_normal | no position term; fails the mm test by construction | same |
+
+The landscape table (cost at the true axis vs 90 deg vs 20 mm offset) shows why:
+`cao_shipped` on the cylinder is **cheaper at 90 deg (3.876e6) than at the true axis (5.096e6)**,
+and cheaper still at a 20 mm offset on the cone. `proj_signed`/`cross`/`triple` are cheapest at
+the truth on both geometries by 5-12 orders of magnitude.
+
+Note the difference from the lead's `objcheck7.py`: the worker's cone (r = 0.4z) lets
+`cao_shipped` sit still, the lead's (R 40->55) does not. Both geometries are exact; the
+disagreement is the geometry, and it does not change the verdict on `proj_signed`/`cross`.
+
+**Gate B1: passed for proj_signed, cross, triple. Failed for both Cao forms and sin_normal.**
+
+### Stage B2 — no cost is a fixed point on the real corpus (job 34284310)
+
+`out/fixed71.tsv`, 163 pieces, perturb released line 1 by 2 deg + 1 mm, minimise:
+
+| cost | drift med | drift p90 | <=2 deg | result vs GT med | released vs GT med | better than released |
+|---|---|---|---|---|---|---|
+| cao_shipped | 58.77 | 87.93 | 2/163 | 64.08 | 2.78 | 10/141 |
+| cao_perpoint | 58.34 | 86.62 | 1/163 | 60.20 | 2.78 | 10/141 |
+| proj_signed | **4.35** | 33.90 | 43/163 | 6.51 | 2.78 | 37/141 |
+| cross | 24.89 | 72.41 | 20/163 | 23.57 | 2.78 | 24/141 |
+| triple | 24.89 | 73.28 | 20/163 | 23.21 | 2.78 | 25/141 |
+| sin_normal | 46.58 | 87.73 | 1/163 | 47.60 | 2.78 | 10/141 |
+
+Two things at once: `proj_signed` is by far the closest thing to a fixed point (median 4.35 deg
+against 24.9-58.8 for the rest), **and it still makes the axis worse than the released axis** —
+6.51 deg from GT after minimisation against 2.78 deg for the released axis it started from.
+It improves the axis on only 37 of 141 pieces.
+
+**Gate B2: failed (median drift 4.35 > 2 deg). Stage C correctly not run.**
+
+### Stage B3 — ranking (job 34284310)
+
+Does the released axis score lower than our own seed-0 line 1? `out/rank71.tsv`:
+cao_shipped 6/163, cao_perpoint 4/163, proj_signed 127/163, cross 119/163, triple 119/163,
+sin_normal 92/163. Under `proj_signed` the released axis beats our own candidate on 127 of 163
+pieces, which is the only arm where the objective agrees with the authors at all.
+
+### Stage B4 (lead) — the answer is IN the candidate pool (job 34284870)
+
+`runs/20261103-2254_647cc24_t71-pottmann`, `b4_pottmann.py`, 141 pieces with GT axes. Pottmann
+on 6 random points straight from the released Surface files: no MLESAC, no scoring, no dedup,
+no refine. 400 draws per piece.
+
+| | median angle to GT | within 5 deg | within 10 deg |
+|---|---|---|---|
+| released axis (control) | 2.78 deg | 92/141 (65.2%) | 105/141 |
+| best of 400 Pottmann draws, both walls | **0.95 deg** | 123/141 (87.2%) | 134/141 |
+| best of 400, wall 0 alone | 0.89 deg | 129/141 (91.5%) | 136/141 |
+| **median single draw** | 31.15 deg | 3/141 (2.1%) | 14/141 |
+
+The released axes are beaten by a random search of their own generator on 2 of every 3 pieces.
+A typical draw is 31 deg off, so the pool is mostly wrong and a small minority is essentially
+exact. Also measured: mean |n.axis| median 0.393 (a genuine surface of revolution), and the
+fraction of normals pointing inward is 0.494 — the surfaces are sane, both walls present.
+
+### Stage B5 (lead) — but no residual can FIND it (job 34284924)
+
+`runs/20261103-2300_647cc24_t71-rank`, `b5_rank.py`. Same 400-draw pool, then pick the argmin
+under each cost — **GT is used only to score the pick, never to choose it**:
+
+| cost (blind argmin) | median angle to GT | within 5 deg | within 10 deg |
+|---|---|---|---|
+| pool oracle (best available) | 1.18 deg | 128/141 | — |
+| cao_shipped | 51.14 | **3/128** | 4 |
+| cao_perpoint | 54.76 | 2/128 | 2 |
+| proj_signed | 10.59 | 51/128 | 70 |
+| cross / triple | 22.16 | 36/128 | 46 |
+| sin_normal | 43.00 | 2/128 | 10 |
+
+On the 128 pieces where the pool demonstrably contains an axis within 5 deg of GT, the shipped
+Cao cost finds it 3 times. `proj_signed` finds it 51 times.
+
+## Conclusion
+
+**H-cand holds, and the gap is in RANKING, not in refinement.**
+
+1. There is no residual in this family that the released axes minimise (B2: the best of six
+   still drifts 4.35 deg median and lands further from GT than it started).
+2. The candidate generator and the input surfaces are fine (B4: 0.95 deg median at best-of-400,
+   beating the released axes; normals sane).
+3. Every scoring rule available picks badly out of a pool that contains the right answer
+   (B5: 3/128 for the shipped cost).
+
+That is consistent with a specific defect already visible in the port:
+`sfs_axes/potsac.py` docstring records that `compute_biaxial_cao_error` returns a **whole-cloud
+scalar**, so `inliers = int(abs(err) < 1.0)` is a degenerate 0/1 count and MLESAC's consensus
+ranking has nothing to rank on. The authors' MLESAC scores by inlier COUNT per hypothesis; this
+port cannot.
+
+**Recommended next step (not this ticket):** build consensus-style rankers on the pool —
+(a) inlier count at a fixed absolute tolerance on the `proj_signed` residual, (b) the same on
+|cross(T2,T3)|, (c) a normal-ray/axis Hough accumulator — and score them with the B5 harness,
+which is already the right instrument (pool in, blind pick out, GT only for scoring). B4/B5
+together give a clean ceiling: 1.18 deg is reachable blind-oracle, 0.95 deg at best-of-400.
+
+## Verification the lead performed
+
+- `runs/20261103-2243_647cc24_t71-objective`: job 34284310 COMPLETED 0:0 5m50s; tables read
+  back from `out/` and re-summarised locally with an independent script
+  (`artifacts/71/` holds `fixed71.tsv`, `rank71.tsv`, `piece71.tsv`, `reach71.tsv`,
+  `b1_synthetic.tsv`, `b1_landscape.tsv`).
+- `runs/20261103-2254_647cc24_t71-pottmann`: jobs 34284804 (NotADirectory, flat Surfaces dir),
+  34284836/34284837 (indentation, then a 6-vector passed where a 3-vector was expected),
+  34284870 COMPLETED 0:0 21s. The first two runs also read the axis files with the WRONG column
+  order (position-first files read as direction-first), which is why an early run reported the
+  released axis 65.9 deg from GT; fixed to columns 3:6 and re-run.
+- `runs/20261103-2300_647cc24_t71-rank`: job 34284924 COMPLETED 0:0 17m56s.
+- Lead's own earlier probe `probe/p71/leadprobe.py` (job 34283802, 30 pieces) agrees on the
+  direction of travel: proj_signed tightest at 2.47 deg median drift, cao 59.45 deg.
 
 ## Acceptance
 
