@@ -4,9 +4,9 @@
 MATLAB fidelity notes:
   * randsample(n, 6) = uniform WITHOUT replacement -> rng.choice(n, 6, replace=False).
   * Per-sample mean/scale normalisation uses mean(abs(Cs)) over ALL 36 entries.
-  * The biaxial cost is a whole-cloud scalar, so the "inlier count" is a
-    degenerate 0/1 scalar; ranking is effectively by GM-robustified cost.
-    Ported literally (sort ascending, no behavioural "fix").
+  * The biaxial cost is PER-POINT (MATLAB sum collapses only dim 1):
+    the inlier count is sum(per-point GM-robustified cost < 1.0) and the
+    ranking cost is the sum of those per-point costs.
   * Dedup threshold 0.9848 = cos(10deg); cost prune keeps cost < cost[0]*1.1
     (first survivor, not the minimum — MATLAB quirk, kept).
 """
@@ -28,7 +28,7 @@ def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
     """Port of compute_axis_of_symmetry.m.
 
     C: (6, n). Returns (vt (6, K) [dir; pos] sorted by ascending cost,
-    inliers (K,) degenerate 0/1 counts, costs (K,), samples list).
+    inliers (K,) per-point counts, costs (K,) summed GM costs, samples list).
     """
     C = np.asarray(C, dtype=float)
     C = C.copy()
@@ -47,8 +47,11 @@ def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
         vt[3:6] = vt[3:6] * scale + mCs
         vt[3:6] = vt[3:6] - (vt[0:3] @ vt[3:6]) * vt[0:3]
         err = compute_biaxial_cao_error(vt, C)
-        cost = float(apply_robustifier(robustifier_gm, np.atleast_1d(err)))
-        inl = int(abs(err) < INLIER_THRESHOLD)
+        # compute_axis_of_symmetry.m:29-34: robustify the PER-POINT errors,
+        # rank by their sum, count points whose robustified cost < 1.0.
+        rob = apply_robustifier(robustifier_gm, np.atleast_1d(err))
+        cost = float(np.sum(rob))
+        inl = int(np.sum(np.abs(rob) < INLIER_THRESHOLD))
         vts.append(vt)
         inliers.append(inl)
         costs.append(cost)

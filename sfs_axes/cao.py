@@ -54,24 +54,27 @@ def compute_cao_error(vt, X, reversed=False, with_jacobian=False):
 def compute_biaxial_cao_error(vt, X, with_jacobian=False):
     """Biaxial (normal-sign-agnostic) Cao error. Port of compute_biaxial_cao_error.m.
 
-    Single-output MATLAB behaviour returns a scalar (log-sum-exp of the two
-    whole-cloud costs, s = 100). Returns R (scalar); with Jacobian also
-    J (1, 6, n).
+    MATLAB semantics (compute_cao_error.m:40 + compute_biaxial_cao_error.m:16-19):
+    ``sum(R.^2)`` with no dimension sums only the FIRST axis of the (3, n)
+    error, so cost_fwd / cost_rev are PER-POINT vectors (n,), and the min,
+    the exp terms and the log-sum-exp robustifier (s = 100) are all
+    elementwise. Returns R (n,), never a whole-cloud scalar; with Jacobian
+    also J (1, 6, n) with per-point weights.
     """
     s = 100.0
     if not with_jacobian:
         fwd = compute_cao_error(vt, X)
         rev = compute_cao_error(vt, X, reversed=True)
-        cost_fwd = float(np.sum(fwd ** 2))
-        cost_rev = float(np.sum(rev ** 2))
-        c = min(cost_fwd, cost_rev)
+        cost_fwd = np.sum(fwd ** 2, axis=0)
+        cost_rev = np.sum(rev ** 2, axis=0)
+        c = np.minimum(cost_fwd, cost_rev)
         return (-1.0 / s * np.log(np.exp(s * -(cost_fwd - c))
                                 + np.exp(s * -(cost_rev - c))) + c)
     R_fwd, J_fwd = compute_cao_error(vt, X, with_jacobian=True)
     R_rev, J_rev = compute_cao_error(vt, X, reversed=True, with_jacobian=True)
-    cost_fwd = float(np.sum(R_fwd ** 2))
-    cost_rev = float(np.sum(R_rev ** 2))
-    c = min(cost_fwd, cost_rev)
+    cost_fwd = np.sum(R_fwd ** 2, axis=0)
+    cost_rev = np.sum(R_rev ** 2, axis=0)
+    c = np.minimum(cost_fwd, cost_rev)
     base_fwd = np.exp(s * -(cost_fwd - c))
     base_rev = np.exp(s * -(cost_rev - c))
     base = base_fwd + base_rev

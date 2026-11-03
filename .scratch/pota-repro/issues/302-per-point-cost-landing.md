@@ -7,8 +7,9 @@
 **Blocked by:** none — the diagnosis is complete (lead session 2026-11-04); this ticket only lands and extends it.
 
 **Status:** in-progress
+Working in: DSH worker session sfs302 (2026-11-04)
+Branch: 302-per-point-cost-landing, in C:/PR/worktrees/sfs/302-per-point-cost-landing
 
-**Working in:** DSH worker session sfs302 (2026-11-04)
 
 **Worker:** sfs302
 
