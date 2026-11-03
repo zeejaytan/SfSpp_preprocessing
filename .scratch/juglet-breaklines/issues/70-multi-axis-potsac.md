@@ -62,7 +62,27 @@ worness 0.7, radius normals 1.0). Compare against: t69 JUG09F50 (0/8, 0/13, old 
 t68 I20_D2X (18/18 candidates, best median 53.8 deg). Score: candidates on GT joins, axis-gate
 survival, measurable poses, seating, and the any-line self-consistency of the Juglet axis set.
 
-### Gates
+#### Stage 2b — repair the polisher, then re-match (added by the lead 2026-11-03)
+
+Stage 2 proved the released axes are not the output of the shipped code: the refine stage is a
+no-op in BOTH the MATLAB (optimize_using_lm.m:36 grad = J'*err with a scalar err against per-point
+J rows; refine_axis.m catches and returns the initial axis) and the port, and under the objective
+as written our search beats the released line 1 on 162/163 pieces — the released axes are not that
+objective's minimum. The paper (SSIV-B2) says the refinement is what achieves high precision.
+The gap to close is therefore the polisher.
+
+- Fix the port's method-2 LM so it genuinely optimizes: the residual must be per-point (or the
+  Jacobian reduced) so grad/J shapes are consistent — the minimal repair that makes the paper's
+  described stage run. Keep the no-op behaviour available behind a flag for provenance comparisons.
+- Re-run the stage-2 corpus match with refine LIVE (top-K candidates, refine each, dedup, score).
+  Gate: on the good pots (A B D E G I) the any-line match rate at 5 deg / 2 mm must materially
+  improve over stage 2's 38-52 of 236 — the honest target is approaching the released file's own
+  behaviour. Also re-run the released-vs-ours cost diagnostic: with refine live, does the released
+  line 1 become competitive under the objective?
+- If stage 2b clears the gate, proceed to stage 3 (Juglet) with the refined multi-line axes.
+- Same budget discipline: <= 4 further Slurm jobs.
+
+## Gates
 
 - Stage 2 before stage 3; no stage 3 if stage 2 shows the port cannot reproduce released lines on the
   good pots (report and stop instead).
