@@ -98,7 +98,7 @@ The gap to close is therefore the polisher.
 - [x] Audit table in this file
 - [x] Corpus match table: per pot, K ours vs released, line-1 and any-line match rates
 - [x] Seed sensitivity note (3 seeds)
-- [ ] Juglet assembler comparison table vs JUG09F50 and I20_D2X — not run: stage-2 gate failed (Gates, line 1)
+- [ ] Juglet assembler comparison table vs JUG09F50 and I20_D2X — not run: stage-2 gate failed (Gates, line 1), and stage 2b's too
 - [x] All runs in runs/ with index rows; verdict left to the lead
 
 ## Comments (worker, 2026-11-03)
@@ -236,3 +236,113 @@ side views, Surface_0 at every 5th point. Released line 1 (green) and GT (black)
 about 70 mm from the sherd. Our M0 line 1 (red) passes through the sherd, about 48 deg off.
 
 **Budget used:** 2 of 6 Slurm jobs, about 1.2 minutes of 6 h wall.
+
+### Stage 2b — live refinement (worker, 2026-11-03)
+
+**Headline (facts only):** with the polisher repaired, refinement runs and lowers its own cost every
+time, but it moves axes away from the truth:
+- Starting refinement at the released axis walks it away from ground truth.
+- The released axes are therefore not a minimum of the shipped objective on these clouds.
+- So the released files cannot have been produced by this code path on these inputs.
+
+The stage-2b gate is not met, and stage 3 was not run:
+- On the good pots, 0 of 120 pieces have released line 1 matched at 5 deg / 2 mm.
+- The any-line edge gate passes 29 of 236 good-pot joins, against 38-52 in stage 2 and 221 for the
+  released file.
+
+**Repair:** commit **18a66d0**, `sfs_axes/refine.py`.
+- `biaxial_blocks` (`refine.py:39-46`) hands the LM the per-point Cao residual (3, n) and its
+  Jacobian (3, 6, n). It uses whichever normal sign has the lower whole-cloud sum (`:44`), which
+  minimises the s=100 softmin of `compute_biaxial_cao_error` to within log(2)/100.
+- Huber is applied per point by the existing `optimize_using_lm`, which is unchanged.
+- The MATLAB no-op is kept: `refine_axis(..., noop=True)` or env `SFS_AXES_REFINE_NOOP=1`
+  (`refine.py:35-36,157,161-163`). The live path is `:164-166`. The default is now live.
+- No other module was changed. `potsac.py` calls `refine_axis` exactly as before (`potsac.py:112,120`).
+- Synthetic tests, `tests/test_regression_pota.py`, 9 of 9 pass:
+  - the new `test_refine_method2_live_converges_either_normal_sign` recovers a cylinder axis to
+    1e-6 deg with the normals reversed;
+  - `test_refine_method2_noop_matches_matlab` (now `noop=True`) still returns the start.
+
+**Sanity — job 34277113** (`t70-sanity`): sacct **COMPLETED 0:0, 00:00:45**.
+- Run `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2115_18a66d0_t70-refine-sanity/out/sanity70.txt`;
+  script `stage70/sanity70.py`.
+- Six good-pot pieces (A02 A03 B03 D05 E10 I04). Two starts each: the top MLESAC candidate and the
+  released line 1.
+- The per-point Huber cost fell monotonically on all 12 starts. Stage 1 converged in 5-28 evaluations,
+  stage 2 (full cloud) in 27-95 evaluations, 0.6-2.4 s.
+- The axes moved.
+
+| piece | start | released l1 to GT | refined l1 to GT | refined released, per-point cost / start |
+|---|---|---|---|---|
+| A02 | released l1 | 3.35 | 37.80 | 396637 -> 160820 (stage 1) |
+| A03 | released l1 | 1.30 | 39.62 | 364781 -> 141480 |
+| B03 | released l1 | 10.29 | 48.77 | 274869 -> 92489 |
+| D05 | released l1 | 0.60 | 39.69 | 695198 -> 349865; ends at the same minimum as the MLESAC start (3.52303e6 on full C) |
+| E10 | released l1 | 1.21 | 51.34 | 158755 -> 71025; same end point as the MLESAC start |
+| I04 | released l1 | 2.75 | 39.58 | 275166 -> 149123 |
+
+**Corpus re-match — job 34277138** (`t70-live`): sacct **COMPLETED 0:0, 00:03:53**.
+- Run `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-2119_8178416_t70-refine-live/`; outputs in `out/`:
+  `pieces70.tsv`, `per_pot70.tsv`, `edge_gate70.tsv`, `K_dist70.tsv`, `cost70_L0.tsv`, `axes/L0/`.
+- Arm L0: step 10, no truncation, seed 0, `SFS_AXES_REFINE_NOOP=0`.
+- No extra seeds were run: the first seed was nowhere near the gate.
+
+| pot | pieces | released lines | our lines | rel line 1 matched by our line 1 | any rel line matched | direction-only any | rel line 1 to GT (median) | our line 1 to GT (median) |
+|---|---|---|---|---|---|---|---|---|
+| A | 8 | 11 | 11 | 0 | 0 | 0 | 1.68 | 87.47 |
+| B | 9 | 10 | 12 | 0 | 0 | 0 | 2.42 | 52.25 |
+| C | 6 | 7 | 6 | 0 | 0 | 1 | 11.39 | 62.81 |
+| D | 32 | 45 | 33 | 0 | 0 | 1 | 2.54 | 37.55 |
+| E | 34 | 41 | 36 | 0 | 0 | 0 | 2.81 | 57.47 |
+| F | 7 | 9 | 9 | 0 | 0 | 0 | 4.56 | 72.66 |
+| G | 7 | 7 | 8 | 0 | 0 | 0 | 2.17 | 48.08 |
+| H | 11 | 24 | 12 | 0 | 0 | 0 | 29.08 | 80.19 |
+| I | 30 | 33 | 31 | 0 | 0 | 1 | 2.22 | 57.45 |
+| J | 19 | 33 | 21 | 1 | 1 | 1 | 25.65 | 57.10 |
+| good (ABDEGI) | 120 | 147 | 131 | 0 | 0 | 2 | 2.34 | 56.00 |
+| all | 163 | 220 | 179 | 1 | 1 | 4 | 2.78 | 57.47 |
+
+**Edge gate under GT poses** (good pots of 236 / all pots of 288):
+
+| | line 1 | any-line |
+|---|---|---|
+| released | 195 / 219 | 221 / 262 |
+| stage 2, refine no-op, best arm (M0) | 34 / 43 | 52 / 68 |
+| stage 2b, L0 | 27 / 32 | 29 / 35 |
+
+**K distribution, L0:** K=1 on 149 pieces, K=2 on 13, K=4 on 1 (released: 129 / 19 / 11 / 1 / 2 / 1
+for K = 1-6). Live refinement pulls candidates together, so the second dedup pass removes more of them.
+
+**Cost diagnostic with refine live** (`cost70_L0.tsv`, same job). Per piece, the released line 1 was
+compared with our refined line 1, and the released line 1 was itself refined (stage 1 on Cd, then
+stage 2 on C, as `run_potsac` does).
+- **Does released line 1 compete under the objective? No.** It scores higher than ours on **163 of
+  163** pieces under all three costs: GM, scalar Huber, and the per-point Huber the LM now minimises.
+  Per-point cost ratio released / ours: median 3.22, p10 1.73, min 1.00 (all pots); median 3.35 on
+  the good pots.
+- **What refinement does to the released axis, corpus-wide.** It lowers that axis's per-point cost
+  on 163 of 163 pieces.
+
+| | good pots | all pots |
+|---|---|---|
+| released line 1 to GT, median (p10 / p90) | 2.35 (0.88 / 41.9) | 2.78 (0.91 / 58.3) |
+| refined released line 1 to GT, median (p10 / p90) | 42.22 (15.0 / 75.6) | 44.97 (13.9 / 79.0) |
+| refinement moved the released direction by, median | 40.5 | 40.9 |
+| moved more than 5 deg | 116 / 120 | 154 / 163 |
+| moved more than 20 deg | 96 / 120 | 126 / 163 |
+| further from GT after refinement | 102 / 110 | 128 / 141 |
+| still within 5 deg of GT after refinement | 1 / 110 | 3 / 141 |
+| refined released ends at or below our cost | 89 / 120 | 118 / 163 |
+
+The six-piece drift (0.6-10 deg -> 37-52 deg) holds across the corpus. The objective's minimum on
+these clouds lies a median of about 42-45 deg from the GT axis, and refinement reaches it from the
+released start as readily as from a random MLESAC start.
+
+One way to read the Cao residual (`cao.py:28-33`): R = T2 - (|T2|/|T3|) T3, and its size scales with
+|T2| = |(x - p) x v|, the point's distance from the axis. An axis pulled toward the sherd therefore
+lowers the cost. This is a reading of the code, not a measured claim. The picture from stage 2
+([artifacts/t70_A02_axes.png](../../../artifacts/t70_A02_axes.png)) shows our line 1 cutting through
+the sherd.
+
+**Budget used, ticket total:** 4 Slurm jobs (34276929, 34276978, 34277113, 34277138), about 6 minutes
+of wall. Index rows were appended to `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv` with verdict and note empty.
