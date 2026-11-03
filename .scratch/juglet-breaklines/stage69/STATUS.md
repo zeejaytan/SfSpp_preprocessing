@@ -6,7 +6,7 @@ Worker state file. LF only. Worker measurements, NOT lead-verified. A later turn
 `.scratch/juglet-breaklines/issues/69-axis-density-corpus-check.md`. Answers U19, E1.
 Branch `69-axis-density-corpus-check` in `C:/PR/worktrees/sfs/69`. Budget: <= 8 Slurm jobs, <= 24 h wall.
 Order of work: **A (corpus GT axes) -> C (seating gate) -> B (density sweep) -> D (code switches)**.
-Jobs used so far: **7 submitted of 8** — 4 Part A (34273111 / 34273167 / 34273237 / 34273319), job 5
+Jobs used: **8 of 8** (final) — 4 Part A (34273111 / 34273167 / 34273237 / 34273319), job 5
 the density panel (34274535, in flight), job 6 Part C (34275210, COMPLETED, **superseded — wrong axis dir**),
 job 7 Part C corrected (34275406, in flight). Job 5's first attempt 34274349 FAILED 6:0 in 2m24s (a staging
 bug, no evidence) and counts against the budget. **One job remains after these.**
@@ -205,43 +205,51 @@ Juglet arm dropped (already answered). Reading rule written into the job header:
 the harness matches PACTL and POTA09C answers the ticket; if POTA18C is itself below 8/8 the harness differs
 from PACTL in some other way and neither arm says anything about density.
 
-## Steps
+## Steps (final, 2026-11-03)
 
 - [x] Read ticket 69, ticket 68, stage68 STATUS + fit68/hybrid68/pott68, score292.py, stage67 arm/stage scripts
 - [x] Corpus probe (counts, formats, per-pot inventory, python envs)
-- [x] Part A — estimator sweep over all ten pots (4 jobs) + edge gate + sin-alpha mechanism
-- [x] Part D — the two switches written (commit b8fed69); byte-identity proof pending job 5
-- [~] Part B — density panel submitted (job 5); lane scoring with score292.py pending the lanes
+- [x] Part A — estimator sweep over all ten pots (4 jobs) + edge gate + sin-alpha mechanism + any-pair ceiling
+- [x] Part D — the two switches written (b8fed69); restated gate measured (counts + positions + POINTS header)
+- [x] Part B — density panel (job 5) + all 62 lanes scored with score292.py; 62/62 at bar in both arms
 - [x] Part C — Juglet floor-50 question answered (JUG09F50: 8/9 pieces enter, 0/8 seat)
-- [~] Part C — Pot A gate: job 6 (34275210) returned 7/8 + 12/15 in BOTH arms = a staging error (wrong axis
-  dir), superseded; **job 7 (34275406) submitted 2026-11-03 20:11 with the corpus axes**
-- [ ] Results section in the ticket
+- [x] Part C — Pot A gate PASSES: job 7 POTA18C 8/8 + 15/15, POTA09C 8/8 + 15/15
+- [x] Renders (render69.py) for PACTL / POTA18C / POTA09C — bbox and piece counts verified, NOT by eye
+- [x] Results section in the ticket (Table 1 axis, Table 2 density, Table 3 seating, Table 4 switches, sacct,
+      merge recommendation, risks)
+- [ ] Lead verification and merge (lead's job; worker does not merge or push to main)
 
-## Runs
+## Answer in one paragraph
+
+**Density passes, the axis method does not.** Pot A seats **8/8 and 15/15 at 0.9 mm lanes**, identical to
+1.8 mm (job 34275406). 62 corpus lanes across Pots A/C/D/J are at bar in BOTH arms with **0 crossed out and
+0 crossed in**, 2.04x the dots at the same accuracy. The axis method is a **regression** on the corpus:
+replacing the released axis with any t68 estimator drops Pot A from **12/15 to 1-6 of 15** on the
+assembler's 25 deg gate and the corpus from **217/286 to 36-109/286**, and an estimator writes one line
+where the released files supply several (any-line-pair 262/288 against line-1's 219/288). Merge the density
+switch (default off); land the axis method only as a Juglet-lane opt-in never applied to the corpus.
+
+## Runs (final)
 
 | run dir | job | state | what |
 |---|---|---|---|
-| `runs/20261103-0729_ae5ad59_t69-density-panel` | 34274349 | **FAILED 6:0** 00:02:24 | job 5 attempt 1: proof stage ran from the run dir |
-| `runs/20261103-0734_601013e_t69-density-panel` | 34274535 | RUNNING (last poll 00:11) | build + Part D proof + 4 density cells |
-| `runs/20261103-0754_b23aedf_t69-pota-seat` | 34275210 | COMPLETED 0:0 00:15:07 | Part C attempt 1: 7/8 + 12/15 in BOTH arms — staged `Dataset/Axes/Pot_A` instead of the corpus axes. **Superseded, no evidence.** JUG09F50 0/8 0/13 |
-| `runs/20261103-0811_08d08b0_t69-pota-axes` | 34275406 | SUBMITTED | Part C corrected: POTA18C / POTA09C with `--axis-dir "$CORP/Axes"` |
-| `runs/20261103-1926_detprobe7_t69d-det` | 34275026 | lead's run, read-only | the lead's four-arm determinism probe; its `out/` is what the restated Part D gate was measured on |
 | `runs/20261103-1733_45ba206_t69-axis-corpus` | 34273111 | COMPLETED 0:0 00:00:42 | Part A pass 1 (no npar) |
 | same | 34273167 | COMPLETED 0:0 00:00:53 | Part A pass 2 (+npar) |
 | same | 34273237 | COMPLETED 0:0 00:00:52 | Part A pass 3 (dirs.tsv writer crashed, fixed) |
 | same | 34273319 | COMPLETED 0:0 00:00:46 MaxRSS 424MB | Part A final pass + edge gates |
+| `runs/20261103-0729_ae5ad59_t69-density-panel` | 34274349 | **FAILED 6:0** 00:02:24 | job 5 attempt 1: proof stage ran from the run dir, no evidence |
+| `runs/20261103-0734_601013e_t69-density-panel` | 34274535 | **FAILED 1:0** 00:42:19 | Part B density panel — rc_any=1 from the Pot C 03 segfault; all four cells' data landed and are used |
+| `runs/20261103-0754_b23aedf_t69-pota-seat` | 34275210 | COMPLETED 0:0 00:15:07 | Part C attempt 1: 7/8 + 12/15 in BOTH arms — staged `Dataset/Axes/Pot_A`, **superseded, no evidence**. JUG09F50 0/8 0/13 |
+| `runs/20261103-0811_08d08b0_t69-pota-axes` | 34275406 | COMPLETED 0:0 00:12:55 | **Part C corrected: POTA18C 8/8 15/15, POTA09C 8/8 15/15** + the four-run Part D proof |
+| `runs/20261103-1926_detprobe7_t69d-det` | 34275026 | COMPLETED 0:0 00:02:10 | the lead's own determinism probe; its `out/` is what `geomid69.py` re-measured |
 
-Run-dir naming wart to state in Results: the directory is named for commit 45ba206 but later passes ran
-1e8d07d / 0d31740 from `work/` (md5s in `logs/provenance.log`).
+Run-dir naming wart stated in Results: `20261103-1733_45ba206_t69-axis-corpus` is named for commit 45ba206
+but its later passes ran 1e8d07d / 0d31740 from `work/` (md5s in `logs/provenance.log`).
 
 ## Next action
 
-1. Poll **34275406** (Part C corrected) with `sacct`; read `logs/gate.tsv` and
-   `out/{POTA18C,POTA09C}/1. Acc.txt`. POTA18C must be 8/8 and 15/15 first; POTA09C is the ticket.
-2. Poll **34274535** (job 5) to completion; pull `out_pot{a,c,d,j}/geom{18,09}` with `pullB69.py`,
-   score with `scoreB69.py` (score292.py), write `lanes.tsv` + per-arm tallies + per-lane deltas.
-3. Render the Part C result dirs with `render69.py`; copy the PNGs into `stage69/renders/`.
-4. Write `## Results` in the ticket: axis table (per pot, with the LINE-1 vs ANY-PAIR edge-gate columns kept
-   apart from the pot self-consistency table), density table (per arm, at-bar/measured, per-lane delta),
-   seating control table, the four-pair Part D table, sacct table, merge recommendation + risks.
-5. Commit, then report to the parent session.
+None for the worker. Hand to the lead: verify the four tables, merge the density switch to main, and keep
+the axis method behind `sfs_axes/hybrid.py` default-off, Juglet-only. Open questions the ticket names:
+(i) 2x density with `MINIMUM_NUMBER` 12 (the physical equivalent of 6 at 1.8 mm) — not run;
+(ii) the Pot C 03 short-segment segfault at `edgeline_extraction_headless.cpp:3003` — unfixed;
+(iii) whether any other pot's seating survives density — only Pot A was assembled.
