@@ -17,6 +17,8 @@
 # where one mesh stage fed two edge stages. So this is a paired test of density alone.
 #   POTA18  Pot A lanes at sphere 1.8 / resample 1.9   (shipped)
 #   POTA09  Pot A lanes at sphere 0.9 / resample 0.95  (densified)
+# Surfaces, axes, meshes and ground truth are the CORPUS files for both arms (the same ones the
+# t67 PACTL control read), so the lane set is the ONLY difference.
 # Gate: each arm must be 8/8 pieces and 15/15 joins in '1. Acc.txt'. Arm POTA18 is the
 # in-harness control; the t67 PACTL reading (8/8, 15/15) is the cross-harness one.
 #
@@ -98,7 +100,7 @@ for G in 18 09; do
   GD=$PREV/out_pota/geom$G
   [ -d "$GD" ] || fail 6 "preprocessing geom dir missing: $GD"
   T=$TREES/pota$G
-  $PY "$INS/stage69_inputs.py" --geom "$GD" --pot Pot_A --pieces "Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08" --out "$T" --mesh-dir "$CORP/Mesh" --axis-dir "$DS/Axes/Pot_A" --gt-dir "$CORP/Ground Truth" --gt-graph "$CORP/Ground Truth/Pot_A_simple_graph.txt" > "$LOG/stage_$G.log" 2>&1 \
+  $PY "$INS/stage69_inputs.py" --geom "$GD" --pot Pot_A --pieces "Pot_A_Piece_01 Pot_A_Piece_02 Pot_A_Piece_03 Pot_A_Piece_04 Pot_A_Piece_05 Pot_A_Piece_06 Pot_A_Piece_07 Pot_A_Piece_08" --out "$T" --mesh-dir "$CORP/Mesh" --axis-dir "$DS/Axes/Pot_A" --surfaces-dir "$CORP/Surfaces" --gt-dir "$CORP/Ground Truth" --gt-graph "$CORP/Ground Truth/Pot_A_simple_graph.txt" > "$LOG/stage_$G.log" 2>&1 \
     || { tail -5 "$LOG/stage_$G.log"; fail 6 "staging pota$G failed"; }
   echo "[C69] tree pota$G staged: $(ls $T/Breaklines | wc -l) lanes, $(ls $T/Surfaces | wc -l) surfaces"
   { echo "--- pota$G lanes"; for f in "$T/Breaklines"/*.pcd; do printf '%s %s %s\n' "$(basename $f)" "$(md5sum $f | cut -d' ' -f1)" "$(grep -am1 '^POINTS' $f | awk '{print $2}')"; done; } >> "$LOG/lanes.tsv"
