@@ -441,6 +441,48 @@ worth keeping for that lane.
 and the switches proved inert when unset (Table 4). Both switches stay **default off**
 (`SFS_SPHERE_RADIUS_MM`, `SFS_RESAMPLE_D_MM`).
 
+### Lead verification (2026-11-03, before merge)
+
+The lead independently verified every part of this ticket before merging.
+
+**Source diff** — read line by line. The non-scratch diff is exactly `edgeline_extraction_headless.cpp`
+(25 lines: two env blocks, defaults untouched, ranges (0.4, 5.0), startup prints [SPHERE-69] / [RESAMPLE-69])
+plus `sfs_axes/hybrid.py` (201 lines, docstring says DEFAULT OFF, do not enable on the corpus). Everything
+else in the branch is stage69 scratch, STATUS, and this ticket.
+
+**Part A reproduced** from the committed `stage69/outA/*.tsv` tables; the corpus regression numbers
+(217/286 released vs 36-109/286 estimator on the 25-deg gate; any-line 262/288) were re-read at source
+and the multi-line mechanism checked in code (`data_structure.cpp:142-176` pushes every axis line;
+44/124 Pot A candidates carry a later line's axis).
+
+**Part B reproduced** with the lead's own scorer (`/c/PR/.scratch/diag65/partB.py`): 62/62 lanes at bar
+in both arms, median-of-lane-medians 0.580 -> 0.565 mm, 30/62 farther. Same numbers as the worker.
+
+**Part D restated** via `/c/PR/.scratch/diag65/gateD.py`: positions identical to 0.000000 mm in every
+pair including unset-vs-explicit; POINTS identical; normal jitter same-arm == cross-arm. The switches are
+inert when unset; md5 is not a valid test (pre-existing writer non-determinism, the ticket-66
+uninitialised-curvature class).
+
+**Renders checked by eye** (the worker's open caveat). Both POTA09C and the t67 control render show a
+point cloud floating ~300 mm above the assembled edges — but the SPLIT IS IN THE CONTROL TOO, and it is
+proved numeric: piece OBJ z 287.5..446.4 vs edgeline z -29.7..2.2, best pure-z alignment still leaves
+median 51.97 mm. `Top_1_Edgeline_*.xyz` is written in a different frame from `Top_1_OBJ_*.obj` — a
+pre-existing assembler defect (also present in t67's PACTL), NOT a density effect, and it does not touch
+seating counts. Honest pieces-only render saved:
+`SfSpp_preprocessing/artifacts/69/pota09c_pieces.png` (bbox 143.7 x 166.2 x 158.9 mm). **Piece contact
+measured directly, both arms identical**: closest pair gaps 0.06-0.10 mm on six joins, 7 of 28 pairs
+within 2 mm, bboxes equal to 0.1 mm — the densified arm seats pieces in exactly the control's
+arrangement. Pose files identical between arms; OBJ md5 differs only via filename timestamps.
+
+verified: gateD.py positions 0.000000mm all pairs -> switches inert; partB.py 62/62 both arms;
+pieces_only.py gaps 2-3:0.06 3-6:0.06 1-2:0.07 1-4:0.08 2-4:0.08 3-4:0.10 -> seating identical.
+
+**Lead merge decision (conservator order m06808, verify-then-merge):** MERGE the branch. The density
+switches pass the gate and are default-off; the axis method is already default-off and marked
+Juglet-lane-only, so merging the branch lands exactly the worker's recommendation — density available,
+axis method available but never applied to the corpus. The open questions (MINIMUM_NUMBER 12 control,
+Pot C 03 underflow segfault, Result-frame mismatch) are ticket material, not merge blockers.
+
 ### Risks that travel with this recommendation
 
 - **Density is not a free resampling — it halves the implied match length.** The LCS that decides whether
