@@ -87,17 +87,15 @@ def main():
                         ok = False
                         continue
                     try:
-                        r = score292.score(f, auth)
+                        # score292.score takes ARRAYS, not paths (score292.py:80); read_pcd
+                        # (score292.py:27) handles ascii and binary alike.
+                        r = score292.score(score292.read_pcd(f), score292.read_pcd(auth))
                     except Exception as e:  # noqa: BLE001
                         rec["arm" + g] = None
                         rec.setdefault("err", []).append("arm%s: %s" % (g, e))
                         ok = False
                         continue
-                    rec["arm" + g] = {
-                        "n_ours": r[0], "n_auth": r[1], "median": r[2], "cov_ours": r[3],
-                        "cov_auth": r[4], "jumps": r[5], "max_step": r[6],
-                        "len_ours": r[7], "len_auth": r[8], "at_bar": r[9],
-                    }
+                    rec["arm" + g] = r
                 if not ok:
                     excluded.append((pot, P, k, "a lane file is missing: " + str(rec.get("err", ""))))
                     continue
