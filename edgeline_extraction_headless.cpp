@@ -474,7 +474,20 @@ vector<Vector3d> FindLineSphereIntersections(Vector3d linePoint0, Vector3d lineP
 
 MatrixXd smoothAndSampleBreaklinesVer4UsingBSpline(MatrixXd& P) {
 	Vector3d sphereCenter(3);
+	// POTA-69: the sphere walk is the LAST stage before the lane is written, so its step length
+	// IS the exported dot spacing.  1.8 mm is the paper constant and also the authors' own
+	// sampling density corpus-wide (median nearest-neighbour gap 1.800 mm, p10 = p90, on all 326
+	// released breaklines), so 1.8 is the correct default.  On a small sherd it starves the lane:
+	// the Juglet's 40-106 mm loops come out at 22-59 dots, 7 of 9 under the assembler's 50-point
+	// floor, while the authors' own corpus never goes below 28 dots on a 114-307 mm breakline.
+	// SFS_SPHERE_RADIUS_MM=0.9 gives the 2x lane (~2.1x dots, 0.90 mm spacing, measured ticket 68).
+	// Unset, or out of range, is byte-identical to the shipped binary.
 	double sphereRadius = 1.8;
+	if (const char* e = std::getenv("SFS_SPHERE_RADIUS_MM")) {
+		double v = std::atof(e);
+		if (v > 0.4 && v < 5.0) { sphereRadius = v; std::cout << "[SPHERE-69] sphereRadius=" << sphereRadius << std::endl; }
+		else std::cout << "[SPHERE-69] SFS_SPHERE_RADIUS_MM=" << e << " out of range (0.4, 5.0); keeping 1.8" << std::endl;
+	}
 	sphereCenter << P(0, 0), P(0, 1), P(0, 2);
 	// std::cout << "Initial Sphere Center: " << sphereCenter.transpose() << ", Radius: " << sphereRadius << std::endl;
 
@@ -553,7 +566,17 @@ bool pointExistsInCLoud(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ>::Ptr cl
 static void getPointsInSequence_Vote247(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_sequenced)
 {
-	const float RESAMPLE_D_MM = 1.9f; // paper constant
+	// POTA-69: 1.9 mm is the paper constant.  Alone it does NOT set the exported spacing --
+	// the BSpline sphere walk (smoothAndSampleBreaklinesVer4UsingBSpline, :477) re-samples the
+	// lane afterwards -- so this knob only re-draws the intermediate loop.  It is part of the
+	// ticket-68 2x recipe (SFS_RESAMPLE_D_MM=0.95 together with SFS_SPHERE_RADIUS_MM=0.9) and
+	// is exposed so that recipe is reproducible from the environment.  Unset = 1.9f exactly.
+	float RESAMPLE_D_MM = 1.9f; // paper constant
+	if (const char* e = std::getenv("SFS_RESAMPLE_D_MM")) {
+		float v = (float)std::atof(e);
+		if (v > 0.4f && v < 5.0f) { RESAMPLE_D_MM = v; std::cout << "[RESAMPLE-69] RESAMPLE_D_MM=" << RESAMPLE_D_MM << std::endl; }
+		else std::cout << "[RESAMPLE-69] SFS_RESAMPLE_D_MM=" << e << " out of range (0.4, 5.0); keeping 1.9" << std::endl;
+	}
 	size_t n = cloud->points.size();
 	if (n == 0) { cloud_sequenced->width = 0; cloud_sequenced->height = 1; return; }
 	if (n < 8) { // too few for plane/vote statistics: pass through (logged)
