@@ -4,7 +4,8 @@
 # /panel/shim/G.cpp (shipped shim + patch_guard67.py), not from the shipped shim itself.
 # Binds (set by submit67.sbatch):
 #   $MAIN -> /workspace   $WORK -> /panel   $OUT -> /out   $TREE -> /Dataset/SfS_pp
-# Usage: bash /panel/arm67.sh ARM FLOOR INCDIR NP EXTRA
+# Usage: bash /panel/arm67.sh ARM FLOOR INCDIR NP EXTRA [BASE]
+#   BASE  source to sed the floor into (default /panel/shim/G.cpp; job 2 passes the instrumented GA.cpp)
 set -uo pipefail
 ARM=$1; FLOOR=$2; INC=$3; NP=$4; EXTRA=$5
 if [ "$EXTRA" = "NONE" ]; then EXTRA=""; fi
@@ -12,7 +13,7 @@ if [ "$EXTRA" = "NONE" ]; then EXTRA=""; fi
 BUILD=/panel/build
 D=$BUILD/CMakeFiles/Hierarchy-Clear.dir
 SHIPPED=/workspace/sfspreproc-docker/hpc/tools/main_pristine_batch.cpp
-BASE=/panel/shim/G.cpp
+BASE=${6:-/panel/shim/G.cpp}
 mkdir -p /panel/logs /panel/shim /out/$ARM
 
 echo "########## arm $ARM floor=$FLOOR np=$NP extra=[$EXTRA] $(date -u +%FT%TZ)"
