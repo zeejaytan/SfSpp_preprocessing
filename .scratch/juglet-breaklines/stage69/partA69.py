@@ -160,6 +160,9 @@ def one_piece(job):
         out[name] = fold(d, dgt)
         c, mm, r = residuals(C, p, d)
         out[name + "_cyl"], out[name + "_mer"], out[name + "_r"] = c, mm, r
+        out["dir_" + name] = d
+    out["dir_rel0"] = rel_dirs[0]
+    out["dir_gt"] = dgt
 
     # geometry of the piece against TRUTH -- diagnostic only, never used to select
     nn = C[3:6].T
@@ -216,6 +219,18 @@ def main():
         fh.write("\t".join(cols) + "\n")
         for r in rows:
             fh.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
+
+    # ---- directions, so that a later script can rebuild the t68 GATE from them ----
+    allnames = names + ["gt"]
+    with open(os.path.join(a.outdir, "dirs.tsv"), "w") as fh:
+        fh.write("pot\tpiece\t" + "\t".join(
+            "%s_x\t%s_y\t%s_z" % (n, n, n) for n in allnames) + "\n")
+        for r in rows:
+            cells = [r["pot"], "%02d" % r["piece"]]
+            for n in allnames:
+                d = r["dir_" + n]
+                cells += ["%.6f" % d[0], "%.6f" % d[1], "%.6f" % d[2]]
+            fh.write("\t".join(cells) + "\n")
 
     # ---- blind (label-free) selection: lowest residual score, GT never consulted ----
     est_names = ["nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0"]
@@ -278,6 +293,17 @@ def main():
                   " ".join("%s=%d" % (k, v) for k, v in worse.items())), flush=True)
     with open(os.path.join(a.outdir, "per_pot.tsv"), "w") as fh:
         fh.write("\n".join(lines) + "\n")
+
+    with open(os.path.join(a.outdir, "per_pot_worse.tsv"), "w") as fh:
+        fh.write("pot\tn\t" + "\t".join("%s_worse10" % n for n in names[2:]) +
+                 "\trel0_med\toracle_med\tblind_med\n")
+        for pot in pots + ["ALL"]:
+            sub = rows if pot == "ALL" else [r for r in rows if r["pot"] == pot]
+            d, worse = block(sub)
+            fh.write("\t".join([pot, str(d["rel0"][0])] +
+                                [str(worse[n]) for n in names[2:]] +
+                                ["%.2f" % d["rel0"][1], "%.2f" % d["oracle"][1],
+                                 "%.2f" % d["blind"][1]]) + "\n")
 
     # ---- the same table restricted to the lead's baseline-good pots ----
     good = ["A", "B", "D", "E", "G", "I"]
