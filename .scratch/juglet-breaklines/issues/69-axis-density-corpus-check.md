@@ -15,7 +15,7 @@ use normal agent for this job." — where 1 = the ticket-68 axis method, 2 = the
 
 **Blocked by:** none (t68 merged bb64811; t66 lanes; the released corpus is read-only)
 
-**Status:** ready-for-human — worker complete 2026-11-03, awaiting lead verification and merge
+**Status:** ready-for-human — lead verified 2026-11-03, merged be5980c (density default-off merged; axis method stays Juglet-lane opt-in, default-off)
 **Working in:** chat on Thinkbook16 (2026-11-03)
 **Branch:** 69-axis-density-corpus-check, in /c/PR/worktrees/sfs/69
 **Worker:** ticket-69 worker session (2026-11-03); lead verified Parts A/B/C/D independently
