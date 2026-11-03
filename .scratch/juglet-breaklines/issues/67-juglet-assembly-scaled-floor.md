@@ -262,3 +262,22 @@ best rotation error of any candidate on a GT pair is 59.6° (3-5); everything el
   substitution in the run dir only.
 - After that, the short-break matching (6-11-dot seeds producing 60-170° attitudes) is the method limit the
   conservator would be deciding on. It is not tuned here, per the spec.
+
+
+### Lead verification (2026-11-03)
+
+- verified: axis-vs-GT split, independent of the worker's instrument -> I transformed each piece's axis direction
+  (6th-field vector of Dataset/Axes/Juglet/Juglet_Piece_N_Axis.xyz) by its GT pose
+  (Dataset/Juglet_GT/Juglet_Piece_N_T.txt, row-major R|t) and computed folded pairwise angles in the assembled
+  frame: piece medians to the other eight are P1 23.1, P2 77.2, P3 29.3, P4 25.0, P5 55.0, P6 17.1, P7 23.1,
+  P8 15.6, P9 63.5 deg -- pieces 2, 5, 9 stick out exactly as claimed, and my per-pair values match the
+  instrument's gt_axis columns exactly (1-2 86.4, 1-5 45.9, 2-5 47.7, 3-7 10.4, 6-7 11.2, 7-8 15.6, 8-9 72.6).
+- verified: out/F20/1.\ Acc.txt reads 0 / 9 and 0 / 18; only T_1to_1.txt and T_5to_5.txt exist (pieces 2, 6);
+  out/PACTL/1.\ Acc.txt reads 8 / 8 (100 %) and 15 / 15 (100 %) with eight T files -> control reproduces on the
+  guarded binary.
+- verified: guard fired -> run log logs/binary_F50G.log prints "T67-NO-CANDIDATES pruned LCS list empty;
+  StateManager skipped; exit 0"; out/F50G is empty (0 files) as expected.
+- verified: renders exist on the laptop (artifacts/67/render/{F20,PACTL}_{assembly,perpiece}.png) and the F20
+  chamfer figures 19.69 / 21.52 mm sit in score/F20.json.
+- note: my first collinearity check on the axis POINTS was inconclusive (I misread the 6-field format as
+  point-to-point); the direction-vector check above is the correct one and confirms the claim.
