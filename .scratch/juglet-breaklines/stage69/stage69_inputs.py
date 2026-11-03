@@ -40,7 +40,8 @@ def ply_to_xyz(src, dst, want=6):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--geom', required=True)
+    ap.add_argument('--geom', default=None,
+                    help='the edgeline cell geom dir (Bl0 + S0/S1); omit when --lane-dir is given')
     ap.add_argument('--pot', required=True)
     ap.add_argument('--pieces', required=True)
     ap.add_argument('--out', required=True)
@@ -48,6 +49,9 @@ def main():
     ap.add_argument('--axis-dir', required=True)
     ap.add_argument('--gt-dir', required=True)
     ap.add_argument('--gt-graph', default=None)
+    ap.add_argument('--lane-dir', default=None,
+                    help='take <P>_Breakline_0.pcd from here instead of the cell geom (used for the '
+                         'released-lane control arm, which must reproduce the t67 PACTL reading)')
     ap.add_argument('--surfaces-dir', default=None,
                     help='take <P>_Surface_{0,1}.xyz from here instead of converting the cell PLY '
                          '(the corpus surfaces are what the seating control used, so a lane-only '
@@ -59,8 +63,13 @@ def main():
         os.makedirs(os.path.join(T, d), exist_ok=True)
 
     man = []
+    if not a.geom and not a.lane_dir:
+        raise SystemExit('one of --geom or --lane-dir is required')
     for P in a.pieces.split():
-        bl = os.path.join(a.geom, P + '.Bl0')
+        if a.lane_dir:
+            bl = os.path.join(a.lane_dir, P + '_Breakline_0.pcd')
+        else:
+            bl = os.path.join(a.geom, P + '.Bl0')
         if not os.path.isfile(bl):
             raise SystemExit('missing lane: ' + bl)
         shutil.copyfile(bl, os.path.join(T, 'Breaklines', P + '_Breakline_0.pcd'))
@@ -73,7 +82,7 @@ def main():
                 shutil.copyfile(src, dst)
                 man.append('SURF %s S%s from=%s' % (P, k, src))
                 continue
-            src = os.path.join(a.geom, '%s.S%s' % (P, k))
+            src = os.path.join(a.geom or '', '%s.S%s' % (P, k))
             if not os.path.isfile(src):
                 raise SystemExit('missing surface: ' + src)
             nv = ply_to_xyz(src, dst)
