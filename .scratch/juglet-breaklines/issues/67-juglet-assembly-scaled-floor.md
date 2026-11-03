@@ -17,7 +17,7 @@ SfS find joins)
 
 **Blocked by:** none (t66 merged d1d0123 supplies the lanes; t58's run of record is read-only)
 
-**Status:** in-progress
+**Status:** ready-for-human (floor not binding; axis files 2/5/9 vs GT is the open input question; crash guard proven)
 **Working in:** chat on Thinkbook16 (2026-11-03)
 **Branch:** 67-juglet-assembly-scaled-floor, in /c/PR/worktrees/sfs/67
 **Worker:** (unset)
