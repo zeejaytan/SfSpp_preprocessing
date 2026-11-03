@@ -11,6 +11,8 @@ T58=/data/gpfs/projects/punim2657/SfSpp/runs/20261101-1913_d8f716f_t58-floor-den
 git -C $CAN fetch -q origin $BR
 C=$(git -C $CAN rev-parse FETCH_HEAD)
 RUN=$RUN1/guard68
+# work/ and trees/ hold only the scratch of this setup's own earlier job (34269496, failed at git apply)
+rm -rf $RUN/work $RUN/trees
 mkdir -p $RUN/logs $RUN/out $RUN/instruments/axes68
 for f in stage67_inputs.py arm67.sh; do git -C $CAN show $C:$P67/$f > $RUN/instruments/$f; done
 git -C $CAN show $C:$P/partB/guard68.patch > $RUN/instruments/guard68.patch

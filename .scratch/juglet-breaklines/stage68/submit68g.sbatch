@@ -51,16 +51,20 @@ git -C $MAIN/sfspreproc-docker archive $COMMIT | tar x -C $SRC
 if [ ! -f $SRC/class/ranking_system.cpp ]; then echo "!!!! archive of $COMMIT failed"; exit 6; fi
 cd $SRC
 git init -q && git add -A && git -c user.email=t68@local -c user.name=t68 commit -qm "archive $COMMIT"
-git apply --check $INS/guard68.patch && git apply $INS/guard68.patch
+# guard68.patch was cut against the laptop's CRLF (autocrlf) checkout; the blobs are LF (job 34269496
+# failed git apply on that alone), so the LF copy of the same patch is what applies to the archive.
+tr -d '\r' < $INS/guard68.patch > $WORK/guard68.lf.patch
+git apply --check $WORK/guard68.lf.patch && git apply $WORK/guard68.lf.patch
 ARC=$?
 {
+  echo "--- patch md5 crlf $(md5sum $INS/guard68.patch | cut -d' ' -f1)  lf $(md5sum $WORK/guard68.lf.patch | cut -d' ' -f1)"
   echo "--- git apply rc=$ARC"
   echo "--- applied tree vs archive (numstat):"
   git diff --numstat
   echo "--- files changed: $(git diff --name-only | wc -l)  insertions/deletions:"
   git diff --shortstat
   echo "--- applied diff == patch hunks? (diff of +/- lines, empty = identical)"
-  diff <(git diff | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)') <(grep -E '^[-+]' $INS/guard68.patch | grep -vE '^(\+\+\+|---)') && echo "IDENTICAL"
+  diff <(git diff | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)') <(grep -E '^[-+]' $WORK/guard68.lf.patch | grep -vE '^(\+\+\+|---)') && echo "IDENTICAL"
   echo "--- patch md5 $(md5sum $INS/guard68.patch | cut -d' ' -f1)"
   md5sum class/ranking_system.cpp main.cpp hpc/tools/main_pristine_batch.cpp class/data_path.h
 } > $LOG/apply.log 2>&1
