@@ -1,0 +1,12 @@
+Guard the empty-candidate crash at its root: StateManager with no root graph
+
+StateManager::Initialize read ext_state_[0] (class/ranking_system.cpp:727) even when no root graph
+was built, which is SIGSEGV 139 whenever pruning leaves nothing to assemble (ticket 58: Juglet at
+floor 45/50). Initialize now prints SFS-NO-CANDIDATES and returns with no state; BuildStep then
+finishes with out_state_ empty, and main.cpp and hpc/tools/main_pristine_batch.cpp stop with the
+same message and exit 0 instead of reading out_state_[0]. This also covers a non-empty pruned list
+whose root graph is empty, which ticket 67's shim-level guard did not. Evidence for the semantics
+(ticket 67, run 20261103-1429_3b3efbc_t67-juglet-assembly, job 34264796): the shim guard turned F50G
+from SIGSEGV into exit 0 with an empty result, and Pot A on the guarded binary reproduced 8/8 sherds
+and 15/15 joins (PACTL). Decision: conservator's order m06611 via ticket 68 Part B; patch prepared by
+the t68 worker, reviewed and pushed by the lead.

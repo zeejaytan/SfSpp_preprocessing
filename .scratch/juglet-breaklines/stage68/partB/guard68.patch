@@ -1,0 +1,46 @@
+diff --git a/class/ranking_system.cpp b/class/ranking_system.cpp
+index 7ddee28..9dcb093 100644
+--- a/class/ranking_system.cpp
++++ b/class/ranking_system.cpp
+@@ -724,6 +724,11 @@ void StateManager::Initialize(int N,
+ 		else
+ 			break;
+ 	}
++	if (ext_state_.empty()) {
++		cout << "SFS-NO-CANDIDATES no root graph from " << initial_graph_.size() << " pruned pairs; StateManager has no state" << endl;
++		num_init_prio_ = 0;
++		return;
++	}
+ 	num_init_prio_ = ext_state_[0].total_priority_.size();
+ }
+ 
+diff --git a/hpc/tools/main_pristine_batch.cpp b/hpc/tools/main_pristine_batch.cpp
+index 0175361..fc4e5b1 100644
+--- a/hpc/tools/main_pristine_batch.cpp
++++ b/hpc/tools/main_pristine_batch.cpp
+@@ -220,6 +220,10 @@ int main(int argc, char** argv)
+ 	//////#################### Incremental graph building ####################//
+ 	StateManager manager(TOP_k, BRANCH_b, shard, LCS_out, step_size, path + "Result");
+ 	manager.BuildStep();
++	if (manager.out_state_.empty()) {
++		cout << "SFS-NO-CANDIDATES no assembly state to save; exit 0" << endl;
++		return 0;
++	}
+ 
+ 	e_time = clock();
+ 	double time_result = (e_time - s_time) / 1000;
+diff --git a/main.cpp b/main.cpp
+index 0b08b21..14fb554 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -222,6 +222,10 @@ int main(int argc, char** argv)
+ 	//////#################### Incremental graph building ####################//
+ 	StateManager manager(TOP_k, BRANCH_b, shard, LCS_out, step_size, path + "Result");
+ 	manager.BuildStep();
++	if (manager.out_state_.empty()) {
++		cout << "SFS-NO-CANDIDATES no assembly state to show; exit 0" << endl;
++		return 0;
++	}
+ 
+ 	int num_total = manager.out_state_.size();
+ 

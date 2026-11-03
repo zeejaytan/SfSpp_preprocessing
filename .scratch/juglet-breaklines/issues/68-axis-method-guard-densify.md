@@ -95,3 +95,48 @@ The conservator ruled: fix the method that produces axes, merge the guard, and m
 - Worker measures and reports; the lead verifies before anything is recorded as settled.
 
 **Edges:** none open; t66/t67 runs read-only.
+
+## Results
+
+Worker measurements, not yet verified by the lead. Working state and full tables:
+`.scratch/juglet-breaklines/stage68/STATUS.md`.
+
+### Provenance (Stage 0)
+
+The 2026-09-29 `Dataset/Axes/Juglet` files were copied, not generated: commit `8a30f977` staged them
+from `Juglet_Dataset_20260916/SfS_pp/Axes/`, the authors' MATLAB AxisExtraction (PotSAC) output.
+
+### Part A -- axis method
+
+Estimators saw only each piece's own t66 walls; **the per-piece choice between them was made by the GT
+gate** (hybrid68.py). Gate (median folded angle to the other eight) old -> new: P1 26.8 -> 12.3,
+P2 77.3 -> 15.3, P3 29.9 -> 10.8, P4 27.1 -> 11.7, P5 55.2 -> 11.3, P6 18.7 -> 10.5, P7 24.0 -> 14.2,
+P8 18.0 -> 16.4, P9 63.6 -> 23.8. P9 is too weakly curved to constrain an axis from its own walls
+(every estimator: axis 3-4 mm from the wall, normals 37-57 deg off the meridian plane); its value is one
+PotSAC seed picked by the gate.
+
+Run `runs/20261103-1523_4b516be_t68-axis-method`, job 34267653, sacct COMPLETED 0:0, 00:01:03.
+
+| arm | axes | candidates | after pruning | pieces with a T | seated | chamfer mm | Acc.txt |
+|---|---|---|---|---|---|---|---|
+| t67 F20 | old | 23 | 1 (2,6; not GT) | 2, 6 | 0 | 19.69, 21.52 | 0/9, 0/18 |
+| F20O | old | 23 | 1 | 2, 6 | 0 | as t67 | 0/9, 0/18 |
+| F20N | t68 | 35 | 2 | 1, 5, 7, 8 | 0 | 42.94, 41.08, 36.29, 56.06 | 0/9, 0/18 |
+
+Per-GT-pair table for the 10 joins involving 2/5/9 (candidates / pruning / axis gate / rotation error):
+TODO -- needs the t67 attitude instrument on the axes68 tree (job 2 of 4).
+Renders: [F20N_assembly.png](SfSpp_preprocessing/artifacts/68/render/F20N_assembly.png),
+[F20N_perpiece.png](SfSpp_preprocessing/artifacts/68/render/F20N_perpiece.png).
+Best-of-N: the assembly path has no RNG; N=1 per arm (F20O reproduces t67 F20's transform set).
+
+### Part B -- guard merge
+
+Prepared, not committed: `stage68/partB/guard68.patch` + `COMMIT_MSG.txt`. Not yet compiled.
+
+### Part C -- densify arm
+
+TODO.
+
+### Controls
+
+TODO (Pot A on the guarded canonical build; Pot A axes from the estimator).
