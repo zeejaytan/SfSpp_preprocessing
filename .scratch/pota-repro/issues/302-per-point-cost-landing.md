@@ -8,7 +8,7 @@
 
 **Status:** landed (lead 2026-11-04) — code on main; gate 4 result says do not swap Pot A axes; renders await the conservator's eye
 Working in: DSH worker session sfs302 (2026-11-04); landed by lead session 2026-11-04
-Branch: 302-per-point-cost-landing, in C:/PR/worktrees/sfs/302-per-point-cost-landing
+Branch: 302-per-point-cost-landing — merged into main (9b2fdef), worktree removed, branch deleted locally and on GitHub (lead 2026-11-04)
 
 
 **Worker:** sfs302
@@ -183,3 +183,15 @@ refine is a silent no-op" comment. That too was a port artefact — the no-op fo
 the scalar collapse making the residual shape inconsistent. With per-point residuals both
 method-2 LM refine stages genuinely run. Anything previously reasoned from "refine never
 runs" should be re-read.
+
+**Close-out (lead, 2026-11-04).** `ticket_close.sh` passed every check ("merged into
+origin/main, nothing uncommitted, every commit on GitHub, Status: landed") and removed the
+worktree; it tripped on deleting the branch because the worktree still held it, so the branch
+was deleted by hand after re-proving `git merge-base --is-ancestor refs/heads/302-per-point-cost-landing
+origin/main` → merged (was 312708f), locally and on GitHub. Board rebuilt: 12 checks, 10
+passed, 2 skipped, 719 tickets.
+
+The script's Spartan reminder could not be discharged from this session — `ssh spartan`
+returns "Permission denied (publickey…)" here, so `squeue` was not read. That is safe: all
+13 jobs in the ledger above are sacct-terminal (COMPLETED/FAILED/CANCELLED), so none of them
+can still be running. Worth one `squeue -u $USER` the next time a session has the key.
