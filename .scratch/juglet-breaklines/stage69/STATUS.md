@@ -6,7 +6,10 @@ Worker state file. LF only. Worker measurements, NOT lead-verified. A later turn
 `.scratch/juglet-breaklines/issues/69-axis-density-corpus-check.md`. Answers U19, E1.
 Branch `69-axis-density-corpus-check` in `C:/PR/worktrees/sfs/69`. Budget: <= 8 Slurm jobs, <= 24 h wall.
 Order of work: **A (corpus GT axes) -> C (seating gate) -> B (density sweep) -> D (code switches)**.
-Jobs used so far: **5 submitted** (4 Part A + job 5, the density panel; job 5's first attempt 34274349 FAILED 6:0 and does not count as evidence but does count against the budget).
+Jobs used so far: **7 submitted of 8** — 4 Part A (34273111 / 34273167 / 34273237 / 34273319), job 5
+the density panel (34274535, in flight), job 6 Part C (34275210, COMPLETED, **superseded — wrong axis dir**),
+job 7 Part C corrected (34275406, in flight). Job 5's first attempt 34274349 FAILED 6:0 in 2m24s (a staging
+bug, no evidence) and counts against the budget. **One job remains after these.**
 
 ## Plan (as written 2026-11-03, before any measurement)
 
@@ -25,8 +28,10 @@ Jobs used so far: **5 submitted** (4 Part A + job 5, the density panel; job 5's 
   (Bl0, Bl1) against the authors' own line with `score292.py`; report lanes at bar / measured per arm and
   the per-lane delta direction.
 - **Part D** — `SFS_SPHERE_RADIUS_MM` + `SFS_RESAMPLE_D_MM` env switches in
-  `edgeline_extraction_headless.cpp` (range (0.4,5.0), defaults 1.8 / 1.9, unset byte-identical proved by
-  md5); hybrid estimator as a tracked module + CLI `sfs_axes/hybrid.py`, default off.
+  `edgeline_extraction_headless.cpp` (range (0.4,5.0), defaults 1.8 / 1.9). **The gate is NOT md5** — the
+  writer is not bit-stable; see "Part D proof" below for the restated gate (counts + positions + POINTS
+  header, normal delta as a number). Hybrid estimator as a tracked module + CLI `sfs_axes/hybrid.py`,
+  default off.
 
 ## Corpus facts measured (read-only probes)
 
@@ -135,19 +140,70 @@ explicit 1.8/1.9); then four density cells (Pot A 8, Pot C 4, Pot D 01-10, Pot J
 staged ONCE and its post-mesh snapshot copied per arm so the two densities are a paired measurement
 (the mesh stage draws 30 unseeded ray-cast points, so two full chains are not the same input).
 
-**Part D proof, full-file md5, job 5:** unset Bl0 `260e20878d9557cce2556895f888a06e` (203 dots),
-explicit Bl0 `4d94a2e444c7de99d64d2d0fe5ba077b` (203 dots); unset Bl1 `abe000137e947d2d3d1d0a02f1744ddc`
-(210), explicit Bl1 `20eef04a230e4b6922036ed8f57bd995` (210). **"identical no"** — but the two edge logs
-diff ONLY by the two env print lines and the timing lines (measured with `diff`), so the file difference is
-not geometry. The seventh column (curvature) is written from uninitialised memory — t68 measured the same
-thing (identical geometry, 1.1e+23 vs 1.5e-37). Job 6 therefore re-runs the pair and compares COLUMNS 1-6
-(`geomid69.py`), plus the largest nearest-dot distance; that is the honest byte-identity claim and it is
-what Results will quote, with the full-file md5 caveat stated.
+**Part D proof — the md5 gate is INVALID AS WRITTEN (lead correction, 2026-11-03, job 34275026).**
+Job 5 reported "identical no" (unset Bl0 `260e20878d9557cce2556895f888a06e` 203 dots vs explicit
+`4d94a2e444c7de99d64d2d0fe5ba077b` 203; Bl1 `abe000137e947d2d3d1d0a02f1744ddc` 210 vs
+`20eef04a230e4b6922036ed8f57bd995` 210). That is **not** a switch failure: the writer is not bit-stable.
+The lead re-ran it four times on one identical staged tree (job 34275026, run
+`runs/20261103-1926_detprobe7_t69d-det`, one mesh stage then the edge stage unset x2 / explicit 1.8+1.9 x2)
+and got **different md5 between two runs of the SAME arm**.
+
+**The gate, restated** — (a) identical dot COUNTS, (b) identical POSITION columns to 0.000 mm, (c) identical
+header POINTS field; the normal-column delta is reported as a MEASURED NUMBER, never an md5 verdict.
+Applied by `geomid69.py` (rewritten 2026-11-03) to the lead's four arms — every number measured by this
+worker from `runs/20261103-1926_detprobe7_t69d-det/out/`:
+
+| pair | lane | dots a/b | max position delta | normal median / max deg | POINTS hdr | same counts / positions |
+|---|---|---|---|---|---|---|
+| unset_a : unset_b (same arm) | Bl0 | 203/203 | 0.000000 mm | 0.208 / 0.898 | 203/203 | yes / yes |
+| unset_a : unset_b (same arm) | Bl1 | 210/210 | 0.000000 mm | 0.247 / 0.624 | 210/210 | yes / yes |
+| explicit_a : explicit_b (same arm) | Bl0 | 203/203 | 0.000000 mm | 0.187 / 0.540 | 203/203 | yes / yes |
+| explicit_a : explicit_b (same arm) | Bl1 | 210/210 | 0.000000 mm | 0.188 / 0.904 | 210/210 | yes / yes |
+| unset_a : explicit_a (SWITCH) | Bl0 | 203/203 | 0.000000 mm | 0.136 / 0.498 | 203/203 | yes / yes |
+| unset_a : explicit_a (SWITCH) | Bl1 | 210/210 | 0.000000 mm | 0.214 / 0.721 | 210/210 | yes / yes |
+| unset_b : explicit_b (SWITCH) | Bl0 | 203/203 | 0.000000 mm | 0.183 / 0.682 | 203/203 | yes / yes |
+| unset_b : explicit_b (SWITCH) | Bl1 | 210/210 | 0.000000 mm | 0.347 / 0.816 | 210/210 | yes / yes |
+
+Position md5 identical in all eight pairs (Bl0 `8c6c4dbcc9c5d4d6bb1cfe2e5de5e44a`, Bl1
+`bc428262059363fb5210777c04c40e07`), and the same-arm normal jitter (0.19-0.25 deg median) is the same
+size as the cross-arm one (0.14-0.35 deg) — i.e. the switches are inert with respect to geometry and the
+residual jitter is pre-existing writer non-determinism (the curvature column is denormal dust, 1e-28).
+Job 6 (Part C) re-measures the same four-pair table in its own job so the claim is reproduced, not quoted.
 
 **Part B lane counts, job 5 as of the last poll** (bl0_18 / bl1_18 / bl0_09 / bl1_09): Pot A 203/210/415/426,
 162/168/331/343, 152/157/311/319, 147/151/298/309, 144/149/294/305, 146/150/298/305, 63/65/130/134,
 57/61/119/127 — every piece `ok`, and the 0.9 mm lane is 2.04x the 1.8 mm lane on every piece. Pot C 01
 207/226/423/461. Pot C 02-04, Pot D and Pot J were still running.
+
+## Part C — Pot A seating, density only (the gate)
+
+Two runs. The control is already measured read-only: t67 `out/PACTL/'1. Acc.txt'` = 8/8 pieces, 15/15 joins
+(Time 433813 Sec); t68 `guard68/out/GPA50` reproduces it (8/8, 15/15, Time 196962 Sec).
+
+**Job 6, 34275210, `runs/20261103-0754_b23aedf_t69-pota-seat` — COMPLETED 0:0 00:15:07. SUPERSEDED, and
+its gate is evidence about nothing.** Three arms at floor 50: POTA18 (shipped lanes), POTA09 (densified),
+JUG09F50 (Juglet 0.9 mm lanes at the SHIPPED floor 50). POTA18 and POTA09 both returned
+**7 / 8 pieces and 12 / 15 joins**, byte-identical gates (the two Acc.txt differ only in the Time line,
+184167 vs 653507 Sec), 8 pieces placed and 8 edgelines written in each arm.
+
+The control arm failed too, so this is **not a density effect**. It is a staging error in submit69c:
+`--axis-dir "$DS/Axes/Pot_A"` (`Pot_A_Piece_01` d4121141...) instead of the corpus axes
+`$CORP/Axes/Pot_A_Piece_01_Axis.xyz` (74086636...) that PACTL and GPA50 read. Measured line-1 fold between
+the two files, pieces 01-08: **0.67, 1.00, 0.68, 1.68, 3.28, 24.72, 2.45, 15.57 deg** — pieces 06 and 08 move
+by 24.7 and 15.6 deg, the size of change that can cost Pot A a piece and three joins. Proof the controls used
+the corpus files: `runs/20261103-1429_3b3efbc_t67-juglet-assembly/trees/pota/Axes/Pot_A_Piece_01_Axis.xyz`
+md5 = 74086636... = the corpus file (stager `guard68/instruments/stage67_inputs.py:112-125` hardlinks from
+the corpus root).
+
+**JUG09F50 (lead input 5, answered): 0 / 8 pieces, 0 / 13 joins.** 2x density alone at the shipped floor 50
+takes the Juglet from 2 of 9 pieces entering to 8 of 9 (P9 is 49 dots, one short) — and seats nothing.
+Consistent with ticket 67: lowering the floor is not what is missing.
+
+**Job 7, 34275406, `runs/20261103-0811_08d08b0_t69-pota-axes` — the corrected Part C.** Same two arms,
+everything identical to submit69c except `--axis-dir "$CORP/Axes"`; arms renamed POTA18C / POTA09C; the
+Juglet arm dropped (already answered). Reading rule written into the job header: if POTA18C is 8/8 + 15/15
+the harness matches PACTL and POTA09C answers the ticket; if POTA18C is itself below 8/8 the harness differs
+from PACTL in some other way and neither arm says anything about density.
 
 ## Steps
 
@@ -156,7 +212,9 @@ what Results will quote, with the full-file md5 caveat stated.
 - [x] Part A — estimator sweep over all ten pots (4 jobs) + edge gate + sin-alpha mechanism
 - [x] Part D — the two switches written (commit b8fed69); byte-identity proof pending job 5
 - [~] Part B — density panel submitted (job 5); lane scoring with score292.py pending the lanes
-- [ ] Part C — Pot A density-only seating arm at floor 50 (submit69c.sbatch ready; needs job 5's geom dirs)
+- [x] Part C — Juglet floor-50 question answered (JUG09F50: 8/9 pieces enter, 0/8 seat)
+- [~] Part C — Pot A gate: job 6 (34275210) returned 7/8 + 12/15 in BOTH arms = a staging error (wrong axis
+  dir), superseded; **job 7 (34275406) submitted 2026-11-03 20:11 with the corpus axes**
 - [ ] Results section in the ticket
 
 ## Runs
@@ -165,6 +223,9 @@ what Results will quote, with the full-file md5 caveat stated.
 |---|---|---|---|
 | `runs/20261103-0729_ae5ad59_t69-density-panel` | 34274349 | **FAILED 6:0** 00:02:24 | job 5 attempt 1: proof stage ran from the run dir |
 | `runs/20261103-0734_601013e_t69-density-panel` | 34274535 | RUNNING (last poll 00:11) | build + Part D proof + 4 density cells |
+| `runs/20261103-0754_b23aedf_t69-pota-seat` | 34275210 | COMPLETED 0:0 00:15:07 | Part C attempt 1: 7/8 + 12/15 in BOTH arms — staged `Dataset/Axes/Pot_A` instead of the corpus axes. **Superseded, no evidence.** JUG09F50 0/8 0/13 |
+| `runs/20261103-0811_08d08b0_t69-pota-axes` | 34275406 | SUBMITTED | Part C corrected: POTA18C / POTA09C with `--axis-dir "$CORP/Axes"` |
+| `runs/20261103-1926_detprobe7_t69d-det` | 34275026 | lead's run, read-only | the lead's four-arm determinism probe; its `out/` is what the restated Part D gate was measured on |
 | `runs/20261103-1733_45ba206_t69-axis-corpus` | 34273111 | COMPLETED 0:0 00:00:42 | Part A pass 1 (no npar) |
 | same | 34273167 | COMPLETED 0:0 00:00:53 | Part A pass 2 (+npar) |
 | same | 34273237 | COMPLETED 0:0 00:00:52 | Part A pass 3 (dirs.tsv writer crashed, fixed) |
@@ -175,5 +236,12 @@ Run-dir naming wart to state in Results: the directory is named for commit 45ba2
 
 ## Next action
 
-Poll job 5 to completion, pull the lanes (`pullB69.py`), score them (`scoreB69.py`), then submit
-Part C (`submit69c.sbatch` via `submitC.sh`) and read `1. Acc.txt` for POTA18 / POTA09 / JUG09F50.
+1. Poll **34275406** (Part C corrected) with `sacct`; read `logs/gate.tsv` and
+   `out/{POTA18C,POTA09C}/1. Acc.txt`. POTA18C must be 8/8 and 15/15 first; POTA09C is the ticket.
+2. Poll **34274535** (job 5) to completion; pull `out_pot{a,c,d,j}/geom{18,09}` with `pullB69.py`,
+   score with `scoreB69.py` (score292.py), write `lanes.tsv` + per-arm tallies + per-lane deltas.
+3. Render the Part C result dirs with `render69.py`; copy the PNGs into `stage69/renders/`.
+4. Write `## Results` in the ticket: axis table (per pot, with the LINE-1 vs ANY-PAIR edge-gate columns kept
+   apart from the pot self-consistency table), density table (per arm, at-bar/measured, per-lane delta),
+   seating control table, the four-pair Part D table, sacct table, merge recommendation + risks.
+5. Commit, then report to the parent session.
