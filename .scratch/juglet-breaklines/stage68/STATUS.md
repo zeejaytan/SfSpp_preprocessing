@@ -2,6 +2,48 @@
 
 Worker state file. LF only. Worker measurements, not lead-verified.
 
+## Turn 4 (2026-11-03): per-pair instrument (I20N) + densify arm -- job 34268041
+
+Run `runs/20261103-1535_ffcb350_t68-densify` (commit ffcb350; setup68c.sh, submit68c.sbatch). One job
+(budget: 2 of 4). Shims identical to t67's (G `056dfb91`, GA `bc2f2aed`); substitution gate 9/9 Axes/.
+I20N = t67 attitude instrument on F20N's exact inputs (t66 lanes, axes68, floor 20). Table by
+`pairs68.py` from `artifacts/68/runC/out/I20N/T67_*.tsv`; same totals as F20N (35 candidates, 0/9, 0/18).
+
+Survivors of pruning: **(1,8) idx 11** -- a GT join, the first ever to survive on the Juglet, but its pose is
+137.9 deg / 24.3 mm (centroid) from the GT relative pose: axes agree (fold 3.0) and the piece is spun about
+the axis. The good (1,8) candidate, idx 9 (7 dots, 12 inliers, score 0.56, rot err **27.0 deg, centroid 2.4 mm**),
+dies at the axis gate (fold 38.7 > 25). **(5,7) idx 29** -- NOT a GT edge (Juglet_simple_graph row 5 =
+1 1 1 1 0 0 0 0 1), yet 5.1 deg / 0.8 mm from the GT relative pose; in the final F20N assembly 5-7 holds at
+6.1 deg (origin-referenced translation 56.4 mm is lever arm). Either 5 and 7 touch and the GT graph omits it,
+or the match is a coincidence -- not settled (claim 3 open).
+
+| GT join | touches | GT axis fold (new axes) | lane dots f/m | contacts @GT | candidates | best by rot err: dots, inliers, score, fold, rot err, centroid mm | dies at |
+|---|---|---|---|---|---|---|---|
+| 1-2 | 2 | 15.6 | 59/32 | 5 | 2 | 7, 4, 11.00, 4.9, 100.9, 32.1 | score gate |
+| 1-5 | 5 | 12.7 | 59/43 | 0 | 1 | 8, 14, 0.34, 69.3, 116.7, 14.8 | axis gate |
+| 1-9 | 9 | 20.7 | 59/22 | 0 | 0 | - | no LCS |
+| 2-5 | 2,5 | 5.3 | 32/43 | 0 | 0 | - | no LCS |
+| 2-9 | 2,9 | 33.8 | 32/22 | 5 | 0 | - | no LCS |
+| 3-5 | 5 | 9.9 | 44/43 | 5 | 1 | 8, 12, 0.54, 42.6, 147.5, 24.3 | axis gate |
+| 4-5 | 5 | 3.6 | 31/43 | 0 | 1 | 7, 6, 0.41, 54.6, 137.2, 20.2 | axis gate |
+| 5-9 | 5,9 | 29.0 | 43/22 | 0 | 0 | - | no LCS |
+| 7-9 | 9 | 11.8 | 54/22 | 3 | 0 | - | no LCS |
+| 8-9 | 9 | 27.0 | 40/22 | 0 | 0 | - | no LCS |
+| 1-8 | placed | 20.7 | 59/40 | 19 | 4 | 7, 12, 0.56, 38.7, **27.0, 2.4** | idx 11 SURVIVES (137.9 deg); idx 9 axis gate |
+| 7-8 | placed | 16.4 | 54/40 | 0 | 1 | 10, 0, 11.00, 30.5, 167.9, 30.0 | score gate |
+| 1-4 | - | 11.6 | 59/31 | 12 | 1 | 7, 0, 11.00, 41.5, 166.5, 30.8 | score gate |
+| 1-6 | - | 10.9 | 59/45 | 0 | 1 | 12, 0, 11.00, 28.3, 166.4, 25.5 | score gate |
+| 3-7 | - | 7.4 | 44/54 | 0 | 1 | 9, 0, 11.00, 44.0, 162.3, 31.9 | score gate |
+| 4-6 | - | 11.8 | 31/45 | 0 | 1 | 13, 0, 11.00, 74.8, 145.2, 32.3 | score gate |
+| 6-7 | - | 8.2 | 45/54 | 16 | 1 | 9, 0, 11.00, 83.8, 135.8, 30.2 | score gate |
+| 6-8 | - | 10.2 | 45/40 | 0 | 1 | 7, 0, 11.00, 16.4, 15.9, 42.9 | score gate |
+
+(1-5 is both a 2/5/9 join and a placed-set join.) Against t67 A20 (old axes): joins touching 2/5/9 forming
+candidates 1/10 -> **4/10** (1-2, 1-5, 3-5, 4-5); none survives (3 axis gate, 1 score gate); all six with no
+LCS involve piece 9 or the 2-5 pair. GT-edge candidates 16 of 35; matched runs 6-13 dots (median 7, mean 8.1;
+t67: 6-11, mean 8.2). Every GT axis fold is now 3.6-33.8 deg (t67: up to 86.4), yet the ICP poses on GT pairs
+still fold 4.9-83.8 deg against each other: the axis gate now rejects poses ICP produced, not axis files.
+
 ## Turn 3 (2026-11-03): Part A run landed; Part B patch prepared (not committed)
 
 Job **34267653**: sacct COMPLETED 0:0, 00:01:03, MaxRSS 6875732K (polled with scripts/slurm_poll.sh;
