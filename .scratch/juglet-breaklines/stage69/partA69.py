@@ -34,8 +34,9 @@ from multiprocessing import Pool
 
 import numpy as np
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                "..", "..", "..")))
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)                                    # staged sfs_axes beside the script
+sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..", "..", "..")))  # in-repo layout
 from sfs_axes.potsac import run_potsac            # noqa: E402
 from sfs_axes.pottmann import compute_pottmann_axis  # noqa: E402
 
@@ -69,6 +70,21 @@ def nperp(C):
     n = n / np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-12)
     w, v = np.linalg.eigh(n.T @ n)
     return v[:, 0], float(w[0] / max(w.sum(), 1e-30))
+
+
+def npar(C):
+    """Direction MAXIMISING sum (n.d)^2 -- the complementary eigenvector.
+
+    EXTRA, not in the ticket's fixed list.  nperp is right only for a cylindrical wall
+    (normals perpendicular to the axis); on a flat/base-like fragment the normals are
+    parallel to the axis, and then nperp returns a direction in the flat's own plane,
+    ~90 deg off.  npar is the estimator that is right in that case.  Measured, not
+    assumed: see stage69/Results.md, column "median |n.d_gt|".
+    """
+    n = C[3:6].T
+    n = n / np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-12)
+    w, v = np.linalg.eigh(n.T @ n)
+    return v[:, -1], float(w[-1] / max(w.sum(), 1e-30))
 
 
 def pos_from_normals(C, d):
@@ -124,6 +140,10 @@ def one_piece(job):
     est["nperp"] = (pos_from_normals(C, d), d)
     d1, _ev1 = nperp(C1)
     est["nperpS1"] = (pos_from_normals(C1, d1), d1)
+    dp_, _evp = npar(C)
+    est["npar"] = (pos_from_normals(C, dp_), dp_)
+    dp1, _evp1 = npar(C1)
+    est["nparS1"] = (pos_from_normals(C1, dp1), dp1)
     vt = compute_pottmann_axis(C1)
     est["pottS1"] = (np.asarray(vt[3:6], dtype=float).reshape(3), unit(np.asarray(vt[0:3],
                                                                             dtype=float).reshape(3)))
@@ -140,6 +160,13 @@ def one_piece(job):
         out[name] = fold(d, dgt)
         c, mm, r = residuals(C, p, d)
         out[name + "_cyl"], out[name + "_mer"], out[name + "_r"] = c, mm, r
+
+    # geometry of the piece against TRUTH -- diagnostic only, never used to select
+    nn = C[3:6].T
+    nn = nn / np.maximum(np.linalg.norm(nn, axis=1, keepdims=True), 1e-12)
+    out["abs_nd_gt"] = float(np.median(np.abs(nn @ dgt)))   # 1.0 = flat/base, 0.0 = cylinder
+    x = C[0:3].T - gt[0:3]
+    out["r_gt_med"] = float(np.median(np.linalg.norm(x - np.outer(x @ dgt, dgt), axis=1)))
     return out
 
 
@@ -173,16 +200,17 @@ def main():
         for i, r in enumerate(pool.imap_unordered(one_piece, jobs), 1):
             rows.append(r)
             print("[%3d/%3d] %s %02d  rel0 %.2f  relbest %.2f  nperp %.2f  nperpS1 %.2f "
-                  " pottS1 %.2f  potsac %.2f (%.1fs)" % (
+                  " npar %.2f  nparS1 %.2f  pottS1 %.2f  potsac %.2f  |n.d| %.2f (%.1fs)" % (
                       i, len(jobs), r["pot"], r["piece"], r["rel0"], r["relbest"],
-                      r["nperp"], r["nperpS1"], r["pottS1"], r["potsac_s0"],
-                      r["potsac_secs"]), flush=True)
+                      r["nperp"], r["nperpS1"], r["npar"], r["nparS1"], r["pottS1"],
+                      r["potsac_s0"], r["abs_nd_gt"], r["potsac_secs"]), flush=True)
     rows.sort(key=lambda r: (r["pot"], r["piece"]))
     print("elapsed %.1f s" % (time.time() - t0), flush=True)
 
-    names = ["rel0", "relbest", "nperp", "nperpS1", "pottS1", "potsac_s0"]
-    cols = ["pot", "piece", "n0", "n1", "rel_lines", "rel0_vs_bestline"] + names
-    cols += [n + s for n in ("nperp", "nperpS1", "pottS1", "potsac_s0")
+    names = ["rel0", "relbest", "nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0"]
+    cols = ["pot", "piece", "n0", "n1", "rel_lines", "rel0_vs_bestline",
+            "abs_nd_gt", "r_gt_med"] + names
+    cols += [n + s for n in ("nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0")
              for s in ("_cyl", "_mer", "_r")] + ["potsac_secs", "potsac_ncand"]
     with open(os.path.join(a.outdir, "pieces.tsv"), "w") as fh:
         fh.write("\t".join(cols) + "\n")
@@ -190,7 +218,7 @@ def main():
             fh.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
 
     # ---- blind (label-free) selection: lowest residual score, GT never consulted ----
-    est_names = ["nperp", "nperpS1", "pottS1", "potsac_s0"]
+    est_names = ["nperp", "nperpS1", "npar", "nparS1", "pottS1", "potsac_s0"]
 
     def blind_score(r, n):
         # cylindricality + meridional are degrees on the same footing; radius is a sanity
