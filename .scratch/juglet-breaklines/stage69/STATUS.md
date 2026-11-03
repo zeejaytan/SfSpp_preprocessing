@@ -6,7 +6,7 @@ Worker state file. LF only. Worker measurements, NOT lead-verified. A later turn
 `.scratch/juglet-breaklines/issues/69-axis-density-corpus-check.md`. Answers U19, E1.
 Branch `69-axis-density-corpus-check` in `C:/PR/worktrees/sfs/69`. Budget: <= 8 Slurm jobs, <= 24 h wall.
 Order of work: **A (corpus GT axes) -> C (seating gate) -> B (density sweep) -> D (code switches)**.
-Jobs used so far: **4 of 8** (all four were Part A).
+Jobs used so far: **5 submitted** (4 Part A + job 5, the density panel; job 5's first attempt 34274349 FAILED 6:0 and does not count as evidence but does count against the budget).
 
 ## Plan (as written 2026-11-03, before any measurement)
 
@@ -121,20 +121,50 @@ kept, range (0.4,5.0), prints `[SPHERE-69]`), `SFS_RESAMPLE_D_MM` at `:556` (def
 (0.4,5.0), prints `[RESAMPLE-69]`). `sfs_axes/hybrid.py` is the default-off hybrid estimator (module +
 CLI). The byte-identity proof is job 5's Part D section (below).
 
+## Part B / D — job 5 (the density panel), in flight
+
+Run dir `/data/gpfs/projects/punim2657/SfSpp/runs/20261103-0734_601013e_t69-density-panel`, job **34274535**.
+First attempt 34274349 (run `20261103-0729_ae5ad59`) FAILED 6:0 in 2m24s: the Part D proof ran the mesh
+stage from the RUN dir instead of the staged tree, and the binaries resolve their inputs relative to the
+working directory (`filesystem error: recursive directory iterator cannot open directory: No such file or
+directory [Dataset/Point/Pot_A/]`). Fixed in 601013e.
+
+What job 5 does, in one job: build the ticket-69 tree from a git-archive of the pushed commit; assert both
+switch literals still occur exactly once; run the Part D proof (one piece, edge stage twice, unset vs
+explicit 1.8/1.9); then four density cells (Pot A 8, Pot C 4, Pot D 01-10, Pot J 01-11), each piece
+staged ONCE and its post-mesh snapshot copied per arm so the two densities are a paired measurement
+(the mesh stage draws 30 unseeded ray-cast points, so two full chains are not the same input).
+
+**Part D proof, full-file md5, job 5:** unset Bl0 `260e20878d9557cce2556895f888a06e` (203 dots),
+explicit Bl0 `4d94a2e444c7de99d64d2d0fe5ba077b` (203 dots); unset Bl1 `abe000137e947d2d3d1d0a02f1744ddc`
+(210), explicit Bl1 `20eef04a230e4b6922036ed8f57bd995` (210). **"identical no"** — but the two edge logs
+diff ONLY by the two env print lines and the timing lines (measured with `diff`), so the file difference is
+not geometry. The seventh column (curvature) is written from uninitialised memory — t68 measured the same
+thing (identical geometry, 1.1e+23 vs 1.5e-37). Job 6 therefore re-runs the pair and compares COLUMNS 1-6
+(`geomid69.py`), plus the largest nearest-dot distance; that is the honest byte-identity claim and it is
+what Results will quote, with the full-file md5 caveat stated.
+
+**Part B lane counts, job 5 as of the last poll** (bl0_18 / bl1_18 / bl0_09 / bl1_09): Pot A 203/210/415/426,
+162/168/331/343, 152/157/311/319, 147/151/298/309, 144/149/294/305, 146/150/298/305, 63/65/130/134,
+57/61/119/127 — every piece `ok`, and the 0.9 mm lane is 2.04x the 1.8 mm lane on every piece. Pot C 01
+207/226/423/461. Pot C 02-04, Pot D and Pot J were still running.
+
 ## Steps
 
 - [x] Read ticket 69, ticket 68, stage68 STATUS + fit68/hybrid68/pott68, score292.py, stage67 arm/stage scripts
 - [x] Corpus probe (counts, formats, per-pot inventory, python envs)
 - [x] Part A — estimator sweep over all ten pots (4 jobs) + edge gate + sin-alpha mechanism
 - [x] Part D — the two switches written (commit b8fed69); byte-identity proof pending job 5
-- [ ] Part B — density panel (Pot A / C / D / J), lane scoring with score292.py
-- [ ] Part C — Pot A density-only seating arm at floor 50 (assembler job, separate from preprocessing)
+- [~] Part B — density panel submitted (job 5); lane scoring with score292.py pending the lanes
+- [ ] Part C — Pot A density-only seating arm at floor 50 (submit69c.sbatch ready; needs job 5's geom dirs)
 - [ ] Results section in the ticket
 
 ## Runs
 
 | run dir | job | state | what |
 |---|---|---|---|
+| `runs/20261103-0729_ae5ad59_t69-density-panel` | 34274349 | **FAILED 6:0** 00:02:24 | job 5 attempt 1: proof stage ran from the run dir |
+| `runs/20261103-0734_601013e_t69-density-panel` | 34274535 | RUNNING (last poll 00:11) | build + Part D proof + 4 density cells |
 | `runs/20261103-1733_45ba206_t69-axis-corpus` | 34273111 | COMPLETED 0:0 00:00:42 | Part A pass 1 (no npar) |
 | same | 34273167 | COMPLETED 0:0 00:00:53 | Part A pass 2 (+npar) |
 | same | 34273237 | COMPLETED 0:0 00:00:52 | Part A pass 3 (dirs.tsv writer crashed, fixed) |
@@ -145,4 +175,5 @@ Run-dir naming wart to state in Results: the directory is named for commit 45ba2
 
 ## Next action
 
-Submit job 5 (`submit69b.sbatch`, STAGE=all): build + Part D proof + the four density cells.
+Poll job 5 to completion, pull the lanes (`pullB69.py`), score them (`scoreB69.py`), then submit
+Part C (`submit69c.sbatch` via `submitC.sh`) and read `1. Acc.txt` for POTA18 / POTA09 / JUG09F50.

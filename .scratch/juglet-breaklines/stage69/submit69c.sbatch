@@ -61,7 +61,10 @@ git -C "$CANON" fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' > "
 git -C "$CANON" rev-parse --verify --quiet "$NEW^{commit}" > /dev/null || fail 2 "commit $NEW not in $CANON"
 ISRC=$RUN/instrsrc; rm -rf "$ISRC"; mkdir -p "$ISRC"
 git -C "$CANON" archive "$NEW" .scratch/juglet-breaklines/stage69 | tar -x -C "$ISRC" || fail 3 "archive of ticket-69 instruments failed"
-cp -f "$ISRC"/.scratch/juglet-breaklines/stage69/stage69_inputs.py "$INS"/ || fail 3 'stage69_inputs.py missing'
+for f in stage69_inputs.py stage69_piece.sh geomid69.py; do
+  cp -f "$ISRC/.scratch/juglet-breaklines/stage69/$f" "$INS/" || fail 3 "$f missing from the pushed commit"
+done
+SHIPPED="SFS_PAPER_CHAIN=1 SFS_PAPER_THETA=3.4 SFS_PAPER_KAPPA=1.0 SFS_PAPER_NB=10 SFS_SMOOTHNESS_DEG=3.4 SFS_CURVATURE_THRESH=1.0"
 
 # ---------- the ticket-68 guard instruments, copied read-only from that run's guard dir ----------
 G68=/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1523_4b516be_t68-axis-method/guard68/instruments
@@ -158,4 +161,46 @@ for A in POTA18 POTA09 JUG09F50; do
   echo "[$A] Acc.txt: $(tr '\n' ' ' < "$ACC" 2>/dev/null | head -c 200)"
 done
 cat "$LOG/gate.tsv"
+# ---------- Part D proof: unset vs explicit 1.8/1.9, geometry columns ----------
+# Job 5 compared FULL-FILE md5 and got "identical no" even though the two edge logs differ only
+# by the two env print lines and the timing lines. The reason is the seventh column: the lane PCD
+# writes curvature from uninitialised memory (t68 measured the same thing: identical geometry,
+# 1.1e+23 vs 1.5e-37 in column 7). So identity has to be measured on the GEOMETRY columns.
+# This section re-runs the pair on ONE staged surface pair with job 5 binaries and compares
+# (a) full-file md5, (b) md5 of columns 1-6, (c) the largest nearest-dot distance.
+if [ -x "$PREV/bin-EdgeLineExtractionHeadless" ] && [ -x "$PREV/bin-MeshPreprocessingHeadless" ]; then
+  PR=$RUN/proofgeom; rm -rf "$PR"; mkdir -p "$PR"
+  PS=$PR/stage_Pot_A_Piece_01
+  MESH_DIR_69=$CORP/Mesh bash "$INS/stage69_piece.sh" "$PS" Pot_A Pot_A_Piece_01 "$CORP/Axes/Pot_A_Piece_01_Axis.xyz" "$CORP/Point/Pot_A/Pot_A_Piece_01_Point.pcd" REAL-RELEASED-CLOUD > "$PR/stage.log" 2>&1 || fail 7 "proofgeom staging failed"
+  ( cd "$PS" && $APT exec --bind /data:/data "$SIF" env POT_NAME=Pot_A SFS_AXIS_FILE="$PS/Dataset/Axes/Pot_A_Piece_01_Axis.xyz" SFS_STATUS_FILE="$PR/status.tsv" $SHIPPED "$PREV/bin-MeshPreprocessingHeadless" ) > "$PR/mesh.log" 2>&1 || fail 7 "proofgeom mesh stage failed"
+  pg_run () {
+    local NAME=$1; shift
+    # wipe BOTH the previous run's lanes and its Temp/Temp_edge scratch, so run 2 does not
+    # start from run 1's leavings (the edge stage saves and reloads boundary.pcd there,
+    # edgeline_extraction_headless.cpp:1269-1270)
+    rm -rf "$PS/Dataset/Breaklines/Pot_A"; mkdir -p "$PS/Dataset/Breaklines/Pot_A"
+    rm -rf "$PS/Temp/Temp_edge/Pot_A"; mkdir -p "$PS/Temp/Temp_edge/Pot_A"
+    ( cd "$PS" && $APT exec --bind /data:/data "$SIF" env POT_NAME=Pot_A "$@" "$PREV/bin-EdgeLineExtractionHeadless" ) > "$PR/edge_$NAME.log" 2>&1
+    mkdir -p "$PR/$NAME"
+    for K in 0 1; do cp -f "$PS/Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_$K.pcd" "$PR/$NAME/Bl$K.pcd" 2>/dev/null || true; done
+    echo "[PG] $NAME rc=$? env=[$*]"
+  }
+  pg_run unset
+  pg_run explicit SFS_SPHERE_RADIUS_MM=1.8 SFS_RESAMPLE_D_MM=1.9
+  printf "lane\tdots_unset\tdots_explicit\tgeom_md5_unset\tgeom_md5_explicit\tidentical\tmax_nn_mm\n" > "$PR/proofgeom.tsv"
+  for K in 0 1; do
+    U=$PR/unset/Bl$K.pcd; E=$PR/explicit/Bl$K.pcd
+    if [ ! -f "$U" ] || [ ! -f "$E" ]; then
+      printf "Bl%s\tabsent\tabsent\t-\t-\tno\t-\n" "$K" >> "$PR/proofgeom.tsv"; continue
+    fi
+    ROW=$($PY "$INS/geomid69.py" "$U" "$E") || fail 7 "geomid69.py failed on Bl$K"
+    printf "Bl%s\t%s\n" "$K" "$ROW" >> "$PR/proofgeom.tsv"
+    echo "[PG] Bl$K $ROW"
+  done
+  cat "$PR/proofgeom.tsv"
+  rm -rf "$PS"
+else
+  echo "[PG] skipped: job 5 binaries not found under $PREV"
+fi
+
 echo "=== t69c job finished $(date -u +%FT%TZ)"
