@@ -1,0 +1,11 @@
+{
+  "ticket": "302-per-point-cost-landing",
+  "repo": "zeejaytan/SfSpp_preprocessing",
+  "branch": "302-per-point-cost-landing",
+  "commit": "01bff01 (claim tip; code fix uncommitted in worktree, md5s in logs/provenance.log)",
+  "tag": "t302-unit-matlab",
+  "gate": "1 unit proof: per-point biaxial cost + Jacobian, port vs MATLAB, rel tol 1e-9",
+  "pieces": "Pot A 01/04/07, probes released/+2deg/+5deg, stride 10",
+  "matlab": "/data/gpfs/projects/punim2657/sfs_preprocessing/AxisExtraction (pristine, read-only)",
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (read-only)"
+}

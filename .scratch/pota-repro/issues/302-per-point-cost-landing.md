@@ -6,8 +6,8 @@
 
 **Blocked by:** none — the diagnosis is complete (lead session 2026-11-04); this ticket only lands and extends it.
 
-**Status:** in-progress
-Working in: DSH worker session sfs302 (2026-11-04)
+**Status:** landed (lead 2026-11-04) — code on main; gate 4 result says do not swap Pot A axes; renders await the conservator's eye
+Working in: DSH worker session sfs302 (2026-11-04); landed by lead session 2026-11-04
 Branch: 302-per-point-cost-landing, in C:/PR/worktrees/sfs/302-per-point-cost-landing
 
 
@@ -31,13 +31,13 @@ Lead-session validation of the per-point fix (against the authors' own MATLAB, r
 
 **Rules:** MATLAB stays the reference — the port must match it, never the other way round. No corpus files change: corrected axes go to NEW output paths under the run directory; corpus md5s unchanged. Read the run-to-run determinism note (AGENTS.md — mesh stage unseeded rays) before claiming byte-identity. Renders before/after for any geometry claim the conservator will read. Comments-only ticket edits (`## Comments (worker, 2026-11-04)`), checkboxes and Status stay with the lead. Commit nothing; lead commits.
 
-- [ ] Fix: per-point cost in both paths of compute_biaxial_cao_error (cao.py:65, cao.py:72); the scalar-collapse docstring deleted; comment states the MATLAB per-point semantics
-- [ ] Unit proof vs MATLAB on ≥3 pieces: per-point cost vectors agree (rel tol ≤1e-9 or documented float gap), including the Jacobian path
-- [ ] Pot A regression: 8/8 pieces within 0.01 deg / 0.01 mm of the MATLAB-run axis, same K; reassembly 15/15 joins
-- [ ] Corpus re-run (163 pieces): corrected axes written under the run dir; median + %-within-5° table in the Comments, split by released-axis quality tiers as in the diagnosis
-- [ ] Juglet assembler E2E with corrected axes: pieces seated, mutual-consistency numbers beside ticket 68's hybrid (median AND tail, pieces 3/8/9 named), best-of-N reported if N>1
-- [ ] Job IDs + sacct State/ExitCode for every sbatch, recorded in Comments
-- [ ] Branch merged into main and pushed by lead, worktree removed, branch deleted (lead)
+- [x] Fix: per-point cost in both paths of compute_biaxial_cao_error (cao.py:65, cao.py:72); the scalar-collapse docstring deleted; comment states the MATLAB per-point semantics — verified: read the merged diff of `sfs_axes/cao.py` (np.sum(..., axis=0), np.minimum, elementwise log-sum-exp in both paths) and `sfs_axes/potsac.py` (per-point GM robustify, sum ranking, per-point inlier count)
+- [x] Unit proof vs MATLAB on ≥3 pieces: per-point cost vectors agree (rel tol ≤1e-9 or documented float gap), including the Jacobian path — 9/9 cells, R1 rel ~5e-15, Jacobian ≤7.6e-13 (job 34290017)
+- [x] Pot A regression: 8/8 pieces within 0.01 deg / 0.01 mm of the MATLAB-run axis, same K; reassembly 15/15 joins — verified: recomputed from artifacts/pota302/pota302.tsv, 8/8 any-seed PASS (worst 5.18e-5 deg, 1.41e-4 mm). Reassembly 15/15 holds for the CORPUS-axis control arm; with corrected axes substituted it is 13/15 (gate 4)
+- [x] Corpus re-run (163 pieces): corrected axes written under the run dir; median + %-within-5° table in the Comments, split by released-axis quality tiers as in the diagnosis — verified: recomputed corpus302.tsv seed 0, n=163, median 6.809954 deg, 44.2% ≤5 deg; axes to out/axes302, corpus md5 unchanged
+- [x] Juglet assembler E2E with corrected axes: pieces seated, mutual-consistency numbers beside ticket 68's hybrid (median AND tail, pieces 3/8/9 named), best-of-N reported if N>1 — 0/9 seated for both arms; median 12.35 vs hybrid 12.31, tail loses (P3 20.05/10.78, P8 34.36/16.43, P9 55.61/23.83); best-of-3 identical at every seed
+- [x] Job IDs + sacct State/ExitCode for every sbatch, recorded in Comments — 13 jobs, ledger in the worker comment and in /data/gpfs/projects/punim2657/SfSpp/runs/index.tsv
+- [x] Branch merged into main and pushed by lead, worktree removed, branch deleted (lead) — merge commit on main; worktree closed with scripts/ticket_close.sh
 
 ## Comments (worker, 2026-11-04)
 
@@ -134,3 +134,52 @@ COMPLETED 0:0 · 34290434 FAILED 1:0 · 34290594 COMPLETED 0:0. Index rows appen
 pota302.tsv, corpus302.tsv, gate302.tsv, 8 render PNGs. Stage scripts:
 `.scratch/pota-repro/302-stage/`. Nothing committed; nothing pushed beyond the
 ticket-start branch.
+
+## Comments (lead, 2026-11-04 — landing and independent verification)
+
+Landed in merge commit on main (branch `302-per-point-cost-landing`, worktree closed with
+`scripts/ticket_close.sh`). What I re-checked myself rather than taking from the report:
+
+- **The diff is the fix.** Read `sfs_axes/cao.py`: `np.sum(fwd ** 2, axis=0)`,
+  `np.minimum`, elementwise log-sum-exp — in BOTH the plain and the Jacobian path; the
+  false scalar docstring is gone. `sfs_axes/potsac.py`: per-point GM robustify, rank by
+  `np.sum(rob)`, inliers `np.sum(np.abs(rob) < INLIER_THRESHOLD)`. Diffstat +43/−34 over
+  4 files, matching the report.
+- **Tests on main after the merge:** `python -m pytest tests/ -q` → `8 passed in 1.13s`.
+- **Gate 2 recomputed from the TSV, not from the summary line:**
+  `artifacts/pota302/pota302.tsv`, indexed by header name — 8/8 pieces pass the any-seed
+  0.01° / 0.01 mm criterion (p1 0.00e+0° / 1.28e-6 mm; p7 5.18e-5° / 1.41e-4 mm;
+  p4 1.09e-5°; every piece ≤0.01). `verified: artifacts/pota302/pota302.tsv -> 8/8 PASS`
+- **Gate 3 recomputed:** `artifacts/pota302/corpus302.tsv` seed 0, n=163 → median
+  6.809954°, 44.2% within 5°. `verified: artifacts/pota302/corpus302.tsv -> 6.81 deg / 44.2%`
+- **Renders: NOT eye-checked, and that is still owed.** `read_image` refuses (this
+  session's model has no image input) and `modlens_read_image` returned Gemini 503
+  UNAVAILABLE twice. I could only confirm the 8 PNGs are 1540×476 with both overlay
+  colours present (red ~255,0,0 and blue ~0,0,255; 676–2048 saturated pixels each) — that
+  proves the panels rendered, NOT that the axes land on the morphology. **Needs-eye:
+  conservator to look at the four pieces (Pot A 01/02, Juglet 8/9), top and side.**
+
+**What this ticket establishes, in order of confidence:**
+1. The port now computes what the authors' MATLAB computes — the scalar collapse was a
+   translation error, and the saturation it caused (score ≈1.99999998 for every candidate,
+   i.e. all axes ranking the same) is gone. Units prove it to 1e-13, Pot A to 5e-5°.
+2. The corpus axes are corrected on disk at `out/axes302` (163 pieces), corpus md5
+   unchanged.
+3. **Claim (2), measurement finding, stated plainly:** the MATLAB-faithful axes are not the
+   better input for the assembler. Substituting them on Pot A takes the control from 8/8
+   placed and 15/15 joins down to 7/8 and 13/15. So the released Pot A axes stay, and this
+   ticket changes no corpus data. That is a real limit on what "faithful to the paper"
+   buys us, not a reason to distrust the fix.
+4. On the Juglet the corrected chain still does not seat a single piece (0/9, same as the
+   baseline) and it trades t68's hybrid: tie on median mutual consistency (12.35° vs
+   12.31°), worse in the tail (P8 34.36° vs 16.43°). No gain to claim.
+
+**Correction to an earlier lead claim, recorded so it is not repeated:** the pre-ticket
+note that the corrected port "beats" ticket 68 was wrong — it ties on the median and loses
+the tail.
+
+**New finding worth its own line:** `sfs_axes/refine.py` carried a "PROVENANCE FINDING:
+refine is a silent no-op" comment. That too was a port artefact — the no-op followed from
+the scalar collapse making the residual shape inconsistent. With per-point residuals both
+method-2 LM refine stages genuinely run. Anything previously reasoned from "refine never
+runs" should be re-read.
