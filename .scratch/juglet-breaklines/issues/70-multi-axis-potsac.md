@@ -82,6 +82,54 @@ The gap to close is therefore the polisher.
 - If stage 2b clears the gate, proceed to stage 3 (Juglet) with the refined multi-line axes.
 - Same budget discipline: <= 4 further Slurm jobs.
 
+### Lead verification (2026-11-03) — and why the polisher repair cannot work as written
+
+The lead verified the branch independently and then tested the objective the repair optimises.
+
+**Verified from the branch:** `git diff --stat main...70-multi-axis-potsac` touches only
+`sfs_axes/refine.py` (40 lines) and `tests/test_regression_pota.py` (14 lines) outside scratch;
+the suite passes locally ("9 passed, 1020 warnings in 1.30s"); the two jobs' final sacct states are
+COMPLETED 0:0 (34277113 45 s, 34277138 3 min 53 s). The stage-1 audit's two default differences are
+real at the cited lines, and the no-op finding is confirmed in BOTH codes: `optimize_using_lm.m:36`
+multiplies a whole-cloud scalar residual by a per-point Jacobian, and `refine_axis.m:46-58` catches
+the failure and returns the initial axis.
+
+**The new finding — the shipped objective does not have its minimum at the pot's axis.** Measured
+with the repo's own `sfs_axes.refine.refine_axis` (live method 2, commit 18a66d0) on a synthetic
+two-wall sherd with exact normals and a known true axis (60 deg of revolution, R 40 mm, wall 2.5 mm,
+1440 points; probes `C:/PR/.scratch/diag70/objcheck2.py` … `objcheck4.py`):
+
+| start | result | cost |
+|---|---|---|
+| the TRUE axis | 0.00 deg direction error, **36.95 mm radial offset** | 4.05e6 -> 3.56e5 |
+| true axis + 2 deg tilt | same end point, 0.00 deg | 4.05e6 -> 3.56e5 |
+| true axis + 20 mm offset | same end point, 0.00 deg | 1.34e9 -> 3.56e5 |
+
+Every start converges to the same wrong place: direction correct, position ~37 mm off the pot, and
+that place costs **11.4x less** than the true axis. So the refinement is not merely useless on these
+clouds — it is actively pulled off the pot. The cause is visible in the residual
+(`sfs_axes/cao.py:28-33`, `compute_cao_error.m:40`): R = T2 - (|T2|/|T3|) T3, and |T2| is the
+point's distance from the axis, so moving the axis away from the surface lowers the residual while
+the direction term is unchanged. The offset is degenerate; the direction is not.
+
+A scale-free variant (R = T2/|T2| - T3/|T3|) removes the cylinder offset degeneracy but on a curved
+(conical) wall the unconstrained minimisation still escapes (probe `objcheck5.py`), so a naive
+normalisation is not the fix either.
+
+**What this means for the ticket's premise.** The released axes sit 2.3 deg from ground truth, and
+under the shipped objective they score WORSE than axes that are ~45 deg off. Therefore the released
+files cannot have been produced by this objective on these inputs — which is exactly what the corpus
+match already showed (0 of 163, in both the no-op and the live-refine arm). The gap the conservator
+asked us to close is not "the port forgot to refine": it is that **the objective in this repo is not
+the objective that produced the released axes**. Repairing the LM makes our output worse, not closer.
+
+verified: refine_axis(true axis) -> 0.00 deg / 36.95 mm off, cost 4.05e6 -> 3.56e5 (objcheck3.py);
+cost sweep true axis 4,050,000 vs 37 mm off 355,996 (objcheck4.py); pytest 9 passed.
+
+**Lead verdict on ticket 70:** the worker's stage-2b gate failure is correct and its numbers stand.
+Stage 3 was correctly not run. Nothing merges. The ticket's stated premise ("repair the polisher and
+the released axes will follow") is refuted by the measurement above and is superseded.
+
 ## Gates
 
 - Stage 2 before stage 3; no stage 3 if stage 2 shows the port cannot reproduce released lines on the
