@@ -17,7 +17,7 @@ SfS find joins)
 
 **Blocked by:** none (t66 merged d1d0123 supplies the lanes; t58's run of record is read-only)
 
-**Status:** in-progress
+**Status:** ready-for-agent
 **Working in:** worktree 67, worker via cursor_code (lead dispatch) (2026-11-03)
 **Branch:** 67-juglet-assembly, in /c/PR/worktrees/sfs/67
 **Worker:** (unset)
