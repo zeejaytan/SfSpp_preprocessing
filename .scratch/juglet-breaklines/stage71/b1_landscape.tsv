@@ -1,0 +1,13 @@
+geometry	cost	cost_true	cost_90deg	cost_shift20mm	cheaper
+cylinder	cao_shipped	5096256.1	3876136.6	5999438.8	90deg
+cylinder	cao_perpoint	4875264	3746701.7	5796217.4	90deg
+cylinder	proj_signed	1.8087003e-26	657635.56	230400	true
+cylinder	cross	2.0194839e-27	348160	230400	true
+cylinder	triple	2.0194839e-27	348160	230400	true
+cylinder	sin_normal	0	512	0	true
+cone	cao_shipped	2159868.8	17045373	3054779	true
+cone	cao_perpoint	2029158.4	17089320	2943233.1	true
+cone	proj_signed	1.6438481e-26	6718716.9	230400	true
+cone	cross	1.6587773e-27	4606997.2	198620.69	true
+cone	triple	1.6587773e-27	4606997.2	198620.69	true
+cone	sin_normal	158.89655	496.55172	158.89655	true
