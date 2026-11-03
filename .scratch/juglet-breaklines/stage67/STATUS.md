@@ -61,7 +61,21 @@ Reading (worker, unverified): the guard turns the t58 SIGSEGV 139 into a clean e
 floor reproduces 8/8 and 15/15 on the guarded binary. F20 and SCL17 are the same run in effect (all 9 active,
 min lane 22). F30 drops J9 (22). All three make one merge (2,6) and seat nothing.
 
-## Next (resume here)
+## Job 2 (done)
+- **34265479** `submit_b.sbatch` (patch_attitude67.py -> GA.cpp `bc2f2aed832e8513c32970e4cc664c07`): A20 binary
+  `53586a992d1a68d3f04dcdeef27ca633`, APA `bc67e19fafa491dbb29f22ea7827c2be`. sacct COMPLETED 0:0, 00:04:38.
+  Budget 2 of 5 jobs.
+- Harvest at `SfSpp_preprocessing/artifacts/67/` (tar md5 `69c6577413a9c3c8ebd4a6978bdae801`); renders in
+  `artifacts/67/render/` (F20, PACTL) by t58 `render58.py`; Juglet GT fetched to `artifacts/67/juglet_gt/`.
+- `## Results` written in the ticket: binaries, seating, the 18-GT-pair table, the located stages.
+
+## Remaining (for the lead / next turn)
+- Lead verification of `## Results` (re-read `out/A20/T67_*.tsv` at the rows cited).
+- Open question, not run: are `Dataset/Axes/Juglet/Juglet_Piece_{2,5,9}_Axis.xyz` or the Juglet GT wrong for
+  those pieces? (every GT pair touching 2/5/9 reads 46-86 deg folded axis disagreement at the GT pose).
+- PACTL per-piece chamfer not re-scored (`score_pota58.py` exists in t58 stage58/instruments; not run).
+
+## Old next list (job-1 era, superseded by Results)
 1. Check whether (2,6) is a GT edge: `Dataset/Juglet_GT/Juglet_simple_graph.txt` row 2 col 6 (1-based).
    Confirm F20 == SCL17 byte-for-byte (md5 out/*/T_*.txt, Edgeline_*), and F30 vs F20.
 2. Fix the scorer's denominators for F30 (8 active) / F50G (2 active) as t58 flagged; per-piece table from
