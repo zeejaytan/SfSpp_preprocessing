@@ -22,6 +22,11 @@
 # Gate: each arm must be 8/8 pieces and 15/15 joins in '1. Acc.txt'. Arm POTA18 is the
 # in-harness control; the t67 PACTL reading (8/8, 15/15) is the cross-harness one.
 #
+# A third arm rides along, because it costs seconds and answers lead input 5:
+#   JUG09F50  the nine Juglet lanes at 0.9 mm (t68's D2X geom) with the SHIPPED floor 50,
+#             shipped (old) Juglet axes -- i.e. 2x density ALONE, no axis change, no floor change.
+#             At 1.8 mm only 2 of 9 lanes clear 50 dots; at 0.9 mm 8 of 9 do (P9 is 49).
+#
 # The assembler is the pristine tree at cc1d859 (what every t66/t67/t68 arm ran) with the
 # canonical guard68.patch -- the empty ext_state_ guard in StateManager::Initialize -- applied
 # to a git-archive COPY, exactly as guard68's submit did. The patch is what keeps the batch
@@ -86,6 +91,14 @@ chmod +x "$WORK/arm68g.sh"
 # ---------- include roots ----------
 $APT exec $SIF cat /opt/sfs-pristine/class/data_path.h > "$WORK/inc2/class/data_path.h" 2>>"$LOG/provenance.log" || fail 4 'cannot read the SIF data_path.h'
 cp "$WORK/inc2/class/data_path.h" "$WORK/inc1/class/data_path.h"
+# inc1 = the Juglet dataset block (t58/t67 recipe): POT_A renamed out of the way, then the
+# Juglet block appended so the tree can be mounted as Dataset/SfS_pp
+cp -f "$G68/juglet_orig_block.inc" "$INS/juglet_orig_block.inc" || fail 3 "juglet_orig_block.inc missing from $G68"
+sed -i 's/^#define POT_A$/#define POT_A_INFRA_OFF_JUGLET/' "$WORK/inc1/class/data_path.h"
+grep -q "POT_A_INFRA_OFF_JUGLET" "$WORK/inc1/class/data_path.h" || fail 3 "the POT_A rename did not apply to inc1"
+cat "$INS/juglet_orig_block.inc" >> "$WORK/inc1/class/data_path.h"
+grep -c "JUGLET_ORIG_BASE" "$WORK/inc1/class/data_path.h" > "$LOG/inc1.log" 2>&1 || true
+cat "$LOG/inc1.log"
 
 # ---------- cold build ----------
 $APT exec --bind $SRC:/src --bind $WORK:/panel $SIF bash -c 'cd /panel/build && cmake /src -DCMAKE_BUILD_TYPE=Release > /panel/logs/cmake.log 2>&1 && make -j8 > /panel/logs/make.log 2>&1'
@@ -105,6 +118,14 @@ for G in 18 09; do
   echo "[C69] tree pota$G staged: $(ls $T/Breaklines | wc -l) lanes, $(ls $T/Surfaces | wc -l) surfaces"
   { echo "--- pota$G lanes"; for f in "$T/Breaklines"/*.pcd; do printf '%s %s %s\n' "$(basename $f)" "$(md5sum $f | cut -d' ' -f1)" "$(grep -am1 '^POINTS' $f | awk '{print $2}')"; done; } >> "$LOG/lanes.tsv"
 done
+# the Juglet arm: lanes from t68's 0.9 mm cell, shipped (old) Juglet axes, shipped floor 50
+JG=/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1546_6761aed_t68-densify2x/outD2X/geom
+[ -d "$JG" ] || fail 6 "Juglet 0.9 mm geom missing: $JG"
+JGP="Juglet_Piece_1 Juglet_Piece_2 Juglet_Piece_3 Juglet_Piece_4 Juglet_Piece_5 Juglet_Piece_6 Juglet_Piece_7 Juglet_Piece_8 Juglet_Piece_9"
+$PY "$INS/stage69_inputs.py" --geom "$JG" --pot Juglet --pieces "$JGP" --out "$TREES/jug09" --mesh-dir "$DS/Mesh/Juglet" --axis-dir "$DS/Axes/Juglet" --gt-dir "$DS/Juglet_GT" --gt-graph "$DS/Juglet_GT/Juglet_simple_graph.txt" > "$LOG/stage_jug09.log" 2>&1 \
+  || { tail -5 "$LOG/stage_jug09.log"; fail 6 "staging jug09 failed"; }
+echo "[C69] tree jug09 staged: $(ls $TREES/jug09/Breaklines | wc -l) lanes"
+{ echo "--- jug09 lanes"; for f in "$TREES/jug09/Breaklines"/*.pcd; do printf '%s %s %s\n' "$(basename $f)" "$(md5sum $f | cut -d' ' -f1)" "$(grep -am1 '^POINTS' $f | awk '{print $2}')"; done; } >> "$LOG/lanes.tsv"
 cat "$LOG/lanes.tsv"
 
 # ---------- two arms, floor 50 ----------
@@ -122,13 +143,14 @@ runarm () {
 }
 runarm POTA18 50 /panel/inc2 $TREES/pota18 8 NONE
 runarm POTA09 50 /panel/inc2 $TREES/pota09 8 NONE
+runarm JUG09F50 50 /panel/inc1 $TREES/jug09 9 -DJUGLET_ORIG
 cp "$WORK"/logs/* "$LOG"/ 2>/dev/null || true
 md5sum $WORK/build/Hierarchy-* > "$LOG/md5_binaries.txt" 2>/dev/null || true
 cat "$LOG/panel.tsv"
 
 # ---------- read the gate ----------
 printf 'arm\tpieces_seated\tjoins_seated\tacc_file\n' > "$LOG/gate.tsv"
-for A in POTA18 POTA09; do
+for A in POTA18 POTA09 JUG09F50; do
   ACC="$OUT/$A/1. Acc.txt"
   P0=$(grep -aom1 '[0-9]*/[0-9]*' "$ACC" 2>/dev/null | head -1)
   J0=$(grep -ao '[0-9]*/[0-9]*' "$ACC" 2>/dev/null | sed -n 2p)
