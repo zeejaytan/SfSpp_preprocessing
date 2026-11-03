@@ -289,3 +289,13 @@ not excluded.
 - **Renders:** `artifacts/68/render/I20_D095_*`, `I20_D190_*`, `I20_D2X_*`.
 - **Ticket:** Results complete. Part A, Part B (patch, uncompiled), Part C with the densify answer, the sacct table and best-of-N are written. Controls are not run.
 - **Open:** the median best-pose figure is 53.8 deg on the lead's pull and 48.3 deg on `pairs68.py`'s best column; the definitions differ. Also open: the old-axis gate discrepancy against t67 (0.1-3.7 deg), and compiling Part B.
+## Turn 8-9 -- guard proof-build (2026-11-03 16:20) -- ticket work complete
+
+- **Job 34269496:** FAILED 7:0 in 4 s. `git apply` refused, because `guard68.patch` carries the laptop checkout's CRLF and the cc1d859 blobs are LF.
+- **Job 34269593:** COMPLETED 0:0, 00:04:30, MaxRSS 5.91 GB. It applied the LF copy (md5 `fdd52e4f...`); the applied diff is exactly the patch (3 files, +13).
+  - `Hierarchy-Clear`: `b8fa9cd4...`.
+  - GJ50, Juglet at floor 50 (`ca44f1cf...`): 2 candidates, 0 after pruning. Prints both SFS-NO-CANDIDATES lines; exit 0, no crash.
+  - GPA50, Pot A at floor 50 (`bbc211a3...`): 124 candidates, 70 after pruning. Acc 8/8 and 15/15; no guard line.
+- **Canonical repos:** neither was edited (Spartan read via `git archive`).
+- **Budget:** 5 jobs against 4, about 20 min of wall time.
+- **Open, for the lead:** apply the CRLF patch on the laptop, or the LF copy on an LF tree. Still open: Pot A with estimator axes; the old-axis gate discrepancy; the 53.8 against 48.3 deg definitions.

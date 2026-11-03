@@ -237,7 +237,7 @@ Renders: [I20_D095_assembly.png](SfSpp_preprocessing/artifacts/68/render/I20_D09
 [I20_D2X_assembly.png](SfSpp_preprocessing/artifacts/68/render/I20_D2X_assembly.png),
 [I20_D2X_perpiece.png](SfSpp_preprocessing/artifacts/68/render/I20_D2X_perpiece.png).
 
-### Slurm jobs (3 of 4 budget)
+### Slurm jobs (5 against a budget of 4; the extra one replaces a 4-second git-apply failure; total wall about 20 min)
 
 | job | run | what | sacct |
 |---|---|---|---|
@@ -254,6 +254,43 @@ N=1 per arm, and every arm reports its only attempt. The assembler has no seed, 
 bit-reproducible on these inputs: the identical-geometry pair I20N / I20_D190 differs by 1 candidate.
 No arm seats any piece, so no best attempt reaches the bar.
 
+### Guard proof-build
+
+Run area `runs/20261103-1523_4b516be_t68-axis-method/guard68/`. It holds a `git archive` copy of the
+assembler at `cc1d859`, read from the Spartan checkout. `sfs_main/sfspreproc-docker` was read with
+`git archive` only: its HEAD is `40b3529` and its untracked files predate this job. The laptop clone
+`C:/PR/structure-from-sherds-pp` is clean at `cc1d859`. **Neither canonical repo was edited, committed
+or pushed.**
+
+**The patch was cut against the laptop's CRLF working copy.** `guard68.patch` (md5 `00b655b9...`) was made
+from the laptop checkout, which `core.autocrlf=true` turns to CRLF. The repo blobs are LF, so on the
+archive `git apply` refused all three files. That was job 34269496: FAILED 7:0 in 4 s. Stripping CR gives
+`guard68.lf.patch` (md5 `fdd52e4f032dd95ebe01281f8fe4230c`), and the identical hunks then apply cleanly.
+The lead applies from the laptop's CRLF checkout, where the original applies (`git apply --check` passes);
+on any LF tree, use the LF copy.
+
+The applied tree differs from the archive by exactly the patch. `git diff --numstat` gives 5/4/4
+insertions in `class/ranking_system.cpp`, `hpc/tools/main_pristine_batch.cpp` and `main.cpp`
+(3 files, 13 insertions, 0 deletions), and the +/- lines are IDENTICAL to the patch's.
+
+The archive's `class/*` and `main.cpp` are byte-identical to the container's `/opt/sfs-pristine`, so the
+build differs from t67's objects only by the patch. The build follows the arm scripts:
+1. Cold `cmake`/`make` of the patched copy gives `Hierarchy-Clear`, md5 `b8fa9cd4473fe8a6567dbc71b5211a9b`.
+2. `arm67.sh`, with `/opt/sfs-pristine` replaced by the copy, links the patched `main_pristine_batch.cpp`
+   (md5 `13c9ba92579a30feac6045287e4891db`) in place of `main.cpp.o`.
+3. At floor 50 the floor `sed` changes nothing: the diff is 0 bytes for both arms.
+4. The t67 shim guard (`patch_guard67.py`) is **not** used; the only guard is the canonical patch.
+
+| cell | binary md5 | candidates / after pruning | outcome |
+|---|---|---|---|
+| GJ50: Juglet, floor 50, t66 lanes + t68 axes | `ca44f1cf09b585d1eaeb4cfd90b42f42` | 2 / 0 | prints `SFS-NO-CANDIDATES no root graph from 0 pruned pairs; StateManager has no state` (ranking_system guard), then `SFS-NO-CANDIDATES no assembly state to save; exit 0` (batch main); **exit 0, 1 s, no crash** |
+| GPA50: Pot A, floor 50 | `bbc211a304cc72cc710923c2f7f51ad3` | 124 / 70 | no SFS-NO-CANDIDATES line; **Acc.txt 8/8 (100%), 15/15 (100%)**, so the guard is inert when candidates exist |
+
+Job 34269593: COMPLETED 0:0, 00:04:30, MaxRSS 5.91 GB. Logs: `guard68/logs/{apply,provenance,panel}.log` and
+`guard68/work/logs/binary_{GJ50,GPA50}.log`.
+
+The patch still has to be compiled and run on the lead's own merge. This build proves the guard on the
+batch shim; `main.cpp`'s copy compiled into `Hierarchy-Clear` but was not executed.
 ### Controls
 
-Not run in this ticket (budget used: 3 of 4 jobs). Still open: compile the Part B patch, and run the F50G / Pot A controls on the guarded build and Pot A with estimator axes. That belongs with the lead merging Part B.
+The guarded build is covered in "Guard proof-build" above: Juglet F50 exits 0 and Pot A F50 scores 8/8 and 15/15. Pot A with estimator axes was not run.
