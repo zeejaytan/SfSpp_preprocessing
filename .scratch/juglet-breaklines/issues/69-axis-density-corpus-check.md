@@ -15,9 +15,9 @@ use normal agent for this job." — where 1 = the ticket-68 axis method, 2 = the
 
 **Blocked by:** none (t68 merged bb64811; t66 lanes; the released corpus is read-only)
 
-**Status:** ready-for-agent
-**Working in:** worktree 69 (2026-11-03)
-**Branch:** 69-axis-and-density-corpus-check
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-03)
+**Branch:** 69-axis-density-corpus-check, in /c/PR/worktrees/sfs/69
 **Worker:** (unset)
 
 ## Spec
