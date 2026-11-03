@@ -37,7 +37,9 @@ from sfs_axes.io_axes import (direction_angle_deg, radial_axial_errors,  # noqa:
 from sfs_axes.potsac import run_potsac  # noqa: E402
 
 ARMS = {"M0": (10, False, 0), "M1": (10, False, 1), "M2": (10, False, 2),
-        "T0": (10, True, 0)}
+        "T0": (10, True, 0),
+        # stage 2b: same settings as M0/M1/M2, run with live method-2 refine (SFS_AXES_REFINE_NOOP=0)
+        "L0": (10, False, 0), "L1": (10, False, 1), "L2": (10, False, 2)}
 ANG_TOL = 5.0
 RAD_TOL = 2.0
 GATE_DEG = 25.0
