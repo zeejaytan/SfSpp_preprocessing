@@ -78,9 +78,14 @@ def main():
                 raise SystemExit('missing surface: ' + src)
             nv = ply_to_xyz(src, dst)
             man.append('SURF %s S%s verts=%d' % (P, k, nv))
+        # the Juglet meshes are zero-padded (Juglet_Piece_01_Mesh.obj) while its lanes, axes
+        # and GT poses are not (Juglet_Piece_1.*), so try the padded stem as well
+        n_pad = P.rsplit('_', 1)[0] + '_%02d' % int(P.rsplit('_', 1)[1]) if P.rsplit('_', 1)[-1].isdigit() else P
         mesh = None
         for cand in (os.path.join(a.mesh_dir, P + '_Mesh.obj'),
-                     os.path.join(a.mesh_dir, P + '_Mesh_DS.obj')):
+                     os.path.join(a.mesh_dir, P + '_Mesh_DS.obj'),
+                     os.path.join(a.mesh_dir, n_pad + '_Mesh.obj'),
+                     os.path.join(a.mesh_dir, n_pad + '_Mesh_DS.obj')):
             if os.path.isfile(cand):
                 mesh = cand
                 break

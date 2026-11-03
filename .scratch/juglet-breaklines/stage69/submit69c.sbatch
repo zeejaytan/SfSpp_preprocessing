@@ -38,6 +38,10 @@ set -uo pipefail
 RUN=$SLURM_SUBMIT_DIR
 MAIN=/data/gpfs/projects/punim2657/sfs_main
 SIF=$MAIN/sfs_pristine_assembly.sif
+# the preprocessing binaries are built against PCL 1.9 and DIE under the assembly SIF
+# (rc=127 'libpcl_segmentation.so.1.9: cannot open shared object file'), so the Part D proof
+# runs them under the preprocessing container, exactly as job 5 did
+PCLSIF=/data/gpfs/projects/punim2657/sfs_preprocessing/pcl_191_nurbs.sif
 APT=/apps/easybuild-2022/easybuild/software/Compiler/GCCcore/11.3.0/Apptainer/1.3.3/bin/apptainer
 PY=/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3
 CORP=$MAIN/original_samples/SfS_pp
@@ -161,18 +165,22 @@ for A in POTA18 POTA09 JUG09F50; do
   echo "[$A] Acc.txt: $(tr '\n' ' ' < "$ACC" 2>/dev/null | head -c 200)"
 done
 cat "$LOG/gate.tsv"
-# ---------- Part D proof: unset vs explicit 1.8/1.9, geometry columns ----------
-# Job 5 compared FULL-FILE md5 and got "identical no" even though the two edge logs differ only
-# by the two env print lines and the timing lines. The reason is the seventh column: the lane PCD
-# writes curvature from uninitialised memory (t68 measured the same thing: identical geometry,
-# 1.1e+23 vs 1.5e-37 in column 7). So identity has to be measured on the GEOMETRY columns.
-# This section re-runs the pair on ONE staged surface pair with job 5 binaries and compares
-# (a) full-file md5, (b) md5 of columns 1-6, (c) the largest nearest-dot distance.
+# ---------- Part D proof: unset vs explicit 1.8/1.9, the RESTATED gate ----------
+# The md5 gate is INVALID AS WRITTEN and is not used here as a verdict. The lead re-ran it
+# (job 34275026): two runs of the SAME arm already give different md5s (unset_a 280511124d2b vs
+# unset_b 8bb55e10c5ac, both 203 dots) because the writer emits normal columns and a curvature
+# column that are not bit-stable (t68 measured the same defect: 1.1e+23 vs 1.5e-37 in column 7
+# on identical geometry). The gate this section applies, per the lead's restatement:
+#   (a) identical dot COUNTS, (b) identical POSITION columns to 0.000 mm, (c) identical header
+#   POINTS field, with the normal-column delta REPORTED AS A MEASURED NUMBER.
+# Four runs on ONE identical tree: each arm twice. The two same-arm pairs give the writer's own
+# run-to-run floor; the two cross pairs are the switch test, and only mean something if they are
+# no worse than that floor.
 if [ -x "$PREV/bin-EdgeLineExtractionHeadless" ] && [ -x "$PREV/bin-MeshPreprocessingHeadless" ]; then
   PR=$RUN/proofgeom; rm -rf "$PR"; mkdir -p "$PR"
   PS=$PR/stage_Pot_A_Piece_01
   MESH_DIR_69=$CORP/Mesh bash "$INS/stage69_piece.sh" "$PS" Pot_A Pot_A_Piece_01 "$CORP/Axes/Pot_A_Piece_01_Axis.xyz" "$CORP/Point/Pot_A/Pot_A_Piece_01_Point.pcd" REAL-RELEASED-CLOUD > "$PR/stage.log" 2>&1 || fail 7 "proofgeom staging failed"
-  ( cd "$PS" && $APT exec --bind /data:/data "$SIF" env POT_NAME=Pot_A SFS_AXIS_FILE="$PS/Dataset/Axes/Pot_A_Piece_01_Axis.xyz" SFS_STATUS_FILE="$PR/status.tsv" $SHIPPED "$PREV/bin-MeshPreprocessingHeadless" ) > "$PR/mesh.log" 2>&1 || fail 7 "proofgeom mesh stage failed"
+  ( cd "$PS" && $APT exec --bind /data:/data "$PCLSIF" env POT_NAME=Pot_A SFS_AXIS_FILE="$PS/Dataset/Axes/Pot_A_Piece_01_Axis.xyz" SFS_STATUS_FILE="$PR/status.tsv" $SHIPPED "$PREV/bin-MeshPreprocessingHeadless" ) > "$PR/mesh.log" 2>&1 || fail 7 "proofgeom mesh stage failed"
   pg_run () {
     local NAME=$1; shift
     # wipe BOTH the previous run's lanes and its Temp/Temp_edge scratch, so run 2 does not
@@ -180,25 +188,36 @@ if [ -x "$PREV/bin-EdgeLineExtractionHeadless" ] && [ -x "$PREV/bin-MeshPreproce
     # edgeline_extraction_headless.cpp:1269-1270)
     rm -rf "$PS/Dataset/Breaklines/Pot_A"; mkdir -p "$PS/Dataset/Breaklines/Pot_A"
     rm -rf "$PS/Temp/Temp_edge/Pot_A"; mkdir -p "$PS/Temp/Temp_edge/Pot_A"
-    ( cd "$PS" && $APT exec --bind /data:/data "$SIF" env POT_NAME=Pot_A "$@" "$PREV/bin-EdgeLineExtractionHeadless" ) > "$PR/edge_$NAME.log" 2>&1
+    ( cd "$PS" && $APT exec --bind /data:/data "$PCLSIF" env POT_NAME=Pot_A "$@" "$PREV/bin-EdgeLineExtractionHeadless" ) > "$PR/edge_$NAME.log" 2>&1
     mkdir -p "$PR/$NAME"
     for K in 0 1; do cp -f "$PS/Dataset/Breaklines/Pot_A/Pot_A_Piece_01_Breakline_$K.pcd" "$PR/$NAME/Bl$K.pcd" 2>/dev/null || true; done
     echo "[PG] $NAME rc=$? env=[$*]"
   }
-  pg_run unset
-  pg_run explicit SFS_SPHERE_RADIUS_MM=1.8 SFS_RESAMPLE_D_MM=1.9
-  printf "lane\tdots_unset\tdots_explicit\tgeom_md5_unset\tgeom_md5_explicit\tidentical\tmax_nn_mm\n" > "$PR/proofgeom.tsv"
-  for K in 0 1; do
-    U=$PR/unset/Bl$K.pcd; E=$PR/explicit/Bl$K.pcd
-    if [ ! -f "$U" ] || [ ! -f "$E" ]; then
-      printf "Bl%s\tabsent\tabsent\t-\t-\tno\t-\n" "$K" >> "$PR/proofgeom.tsv"; continue
-    fi
-    ROW=$($PY "$INS/geomid69.py" "$U" "$E") || fail 7 "geomid69.py failed on Bl$K"
-    printf "Bl%s\t%s\n" "$K" "$ROW" >> "$PR/proofgeom.tsv"
-    echo "[PG] Bl$K $ROW"
+  # FOUR runs on the identical tree: each arm twice, so the writer's own run-to-run jitter is
+  # measured in the same job and the unset-vs-explicit comparison can be read against it
+  pg_run unset_a
+  pg_run unset_b
+  pg_run explicit_a SFS_SPHERE_RADIUS_MM=1.8 SFS_RESAMPLE_D_MM=1.9
+  pg_run explicit_b SFS_SPHERE_RADIUS_MM=1.8 SFS_RESAMPLE_D_MM=1.9
+  # every PAIR that matters: the two same-arm pairs give the writer's jitter floor, the two
+  # cross pairs (unset vs explicit) are the switch test. A switch result only means something
+  # if it is no worse than the same-arm floor.
+  printf "pair\tlane\tdots_a\tdots_b\tpos_md5_a\tpos_md5_b\tmax_pos_mm\tnorm_med_deg\tnorm_max_deg\tpoints_hdr_a\tpoints_hdr_b\tsame_counts\tsame_positions\n" > "$PR/proofgeom.tsv"
+  for PAIR in unset_a:unset_b explicit_a:explicit_b unset_a:explicit_a unset_b:explicit_b; do
+    L=${PAIR%%:*}; R=${PAIR##*:}
+    for K in 0 1; do
+      U=$PR/$L/Bl$K.pcd; E=$PR/$R/Bl$K.pcd
+      if [ ! -f "$U" ] || [ ! -f "$E" ]; then
+        printf "%s\tBl%s\tabsent\tabsent\t-\t-\t-\t-\t-\t-\t-\tno\tno\n" "$PAIR" "$K" >> "$PR/proofgeom.tsv"; continue
+      fi
+      ROW=$($PY "$INS/geomid69.py" "$U" "$E") || fail 7 "geomid69.py failed on Bl$K ($PAIR)"
+      printf "%s\tBl%s\t%s\n" "$PAIR" "$K" "$ROW" >> "$PR/proofgeom.tsv"
+      echo "[PG] $PAIR Bl$K $ROW"
+    done
   done
   cat "$PR/proofgeom.tsv"
-  rm -rf "$PS"
+  # the staged tree is KEPT: the lead asked for the evidence to survive the run (it was deleted
+  # by an earlier proof block, so nobody could re-check it afterwards).
 else
   echo "[PG] skipped: job 5 binaries not found under $PREV"
 fi
