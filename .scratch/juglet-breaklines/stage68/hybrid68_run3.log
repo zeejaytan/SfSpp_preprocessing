@@ -1,0 +1,49 @@
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 29335)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 2678)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 4382)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 4050)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 9012)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 6960)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 12934)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 5738)
+Returning initial axis estimate
+Warning: Axis refinement failed: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 2192)
+Returning initial axis estimate
+== per-piece: GT gate deg (median folded to other eight, each estimator applied to all nine)
+piece        old      nperp    nperpS1       pott     pottS0     pottS1   pott_ref  potsac_s0  potsac_s1  potsac_s2
+P1          26.8       19.1       25.3       28.5       47.9       27.4       28.5       47.7       58.5       37.6
+P2          77.3       16.1       35.7       43.8       82.5       41.8       43.8       46.9       44.1       50.8
+P3          29.9       14.6       22.9       41.3       64.3       22.6       41.3       61.5       52.4       50.8
+P4          27.1       14.0       21.1       59.4       58.8       53.4       59.4       65.9       72.0       76.3
+P5          55.2       43.4       44.6       33.2       53.9       23.2       33.2       52.7       44.0       54.5
+P6          18.7       13.8       23.5       29.4       47.2       20.6       29.4       52.7       59.9       36.9
+P7          24.0       70.8       67.7       30.7       44.6       23.0       30.7       68.3       45.7       39.5
+P8          18.0       18.3       24.0       44.3       54.1       38.2       44.3       83.2       69.2       69.9
+P9          63.6       53.2       55.6       76.9       76.9       75.6       76.9       54.0       61.5       40.3
+== residuals per piece: cyl deg | meridian deg | median radius mm
+P1 npts 29335: old 17.4|2.3|13; nperp 16.0|5.6|12; nperpS1 16.4|7.4|12; pott 18.4|3.2|13; pottS0 17.3|2.1|13; pottS1 19.3|4.2|13; pott_ref 18.4|3.2|13; potsac_s0 28.9|24.6|10; potsac_s1 25.5|23.8|10; potsac_s2 34.9|25.9|11
+P2 npts 2678: old 18.5|38.0|3; nperp 6.5|3.2|16; nperpS1 10.1|7.0|13; pott 22.9|3.0|14; pottS0 66.1|6.2|6; pottS1 15.4|8.5|14; pott_ref 22.9|3.0|14; potsac_s0 18.5|41.5|3; potsac_s1 16.7|39.4|3; potsac_s2 17.8|47.2|3
+P3 npts 4382: old 24.0|3.2|14; nperp 3.5|2.8|15; nperpS1 3.4|2.4|16; pott 21.8|3.4|15; pottS0 21.8|41.4|4; pottS1 14.5|2.9|15; pott_ref 21.8|3.4|15; potsac_s0 23.3|36.0|4; potsac_s1 23.5|39.6|3; potsac_s2 22.7|33.8|4
+P4 npts 4050: old 5.5|2.1|16; nperp 5.0|2.2|15; nperpS1 4.7|2.9|15; pott 61.3|8.4|8; pottS0 64.7|8.4|7; pottS1 55.5|8.0|9; pott_ref 61.3|8.4|8; potsac_s0 7.5|34.1|5; potsac_s1 9.8|30.8|5; potsac_s2 10.3|48.3|5
+P5 npts 9012: old 26.1|2.6|15; nperp 11.9|3.7|16; nperpS1 11.9|3.3|16; pott 35.1|2.7|12; pottS0 39.9|3.4|11; pottS1 21.1|1.8|14; pott_ref 35.1|2.7|12; potsac_s0 23.4|26.8|8; potsac_s1 24.7|42.3|5; potsac_s2 20.4|49.4|5
+P6 npts 6960: old 7.7|2.3|16; nperp 5.1|1.9|16; nperpS1 5.3|2.5|17; pott 6.1|1.7|16; pottS0 5.7|2.2|15; pottS1 5.9|2.1|16; pott_ref 6.1|1.7|16; potsac_s0 16.8|41.7|6; potsac_s1 24.6|26.9|7; potsac_s2 26.6|32.8|6
+P7 npts 12934: old 37.9|3.1|12; nperp 17.3|3.9|14; nperpS1 17.6|4.0|14; pott 47.6|2.4|11; pottS0 47.8|2.7|11; pottS1 47.1|2.3|11; pott_ref 47.6|2.4|11; potsac_s0 21.1|24.7|9; potsac_s1 35.0|11.5|9; potsac_s2 28.1|17.3|9
+P8 npts 5738: old 6.4|2.1|17; nperp 6.0|2.5|15; nperpS1 6.1|2.6|16; pott 40.2|9.1|13; pottS0 38.0|10.7|13; pottS1 38.5|7.5|12; pott_ref 40.2|9.1|13; potsac_s0 20.6|51.3|4; potsac_s1 19.0|43.8|5; potsac_s2 19.7|44.8|5
+P9 npts 2192: old 9.2|51.2|3; nperp 7.5|56.5|3; nperpS1 8.0|37.5|4; pott 73.2|5.8|5; pottS0 76.4|6.3|5; pottS1 72.4|5.2|6; pott_ref 73.2|5.8|5; potsac_s0 11.7|50.0|3; potsac_s1 11.5|52.2|3; potsac_s2 17.1|47.6|3
+== hybrid (selection sees GT; estimators do not): max 23.8 sum 126.4
+P1  nperpS1    gate 12.3  old 26.8  cyl 16.4  mer 5.1  r 12.3 mm  vs-old 7.5
+P2  nperp      gate 15.3  old 77.3  cyl 6.5  mer 3.2  r 16.1 mm  vs-old 79.1
+P3  nperpS1    gate 10.8  old 29.9  cyl 3.4  mer 2.9  r 15.4 mm  vs-old 27.0
+P4  nperpS1    gate 11.7  old 27.1  cyl 4.7  mer 2.2  r 15.6 mm  vs-old 5.6
+P5  pottS1     gate 11.3  old 55.2  cyl 21.1  mer 1.9  r 14.0 mm  vs-old 51.3
+P6  nperp      gate 10.5  old 18.7  cyl 5.1  mer 1.9  r 16.0 mm  vs-old 6.1
+P7  pottS1     gate 14.2  old 24.0  cyl 47.1  mer 2.3  r 11.4 mm  vs-old 18.0
+P8  nperpS1    gate 16.4  old 18.0  cyl 6.1  mer 2.5  r 15.5 mm  vs-old 4.1
+P9  potsac_s0  gate 23.8  old 63.6  cyl 11.7  mer 40.0  r 3.9 mm  vs-old 50.7
