@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <cctype>
 #include <Eigen/Dense>
 #include <Eigen/Core>
 #include <boost/thread/thread.hpp>
@@ -243,10 +244,12 @@ struct myclass2 {
 // finishImprovedSurface reads it and is defined further down.
 static bool g_dedupeOn27 = false;
 
-// TICKET 65: SFS_ADMIT_SIGN=1 keeps an admitted (B-spline window) point only when its normal agrees
+// TICKET 65: SFS_ADMIT_SIGN keeps an admitted (B-spline window) point only when its normal agrees
 // with the nearest growth-cluster point's normal, the relative sign of the two blocks fixed by the
-// rows they share. Unset, empty or "0" keeps every admitted point and prints nothing.
-static bool g_admitSign65 = false;
+// rows they share.
+// TICKET 66: ON by default (conservator, 2026-11-03). Unset or any other value = ON; "0", "off",
+// "false" (any case) or empty = OFF, which keeps every admitted point and prints no [ADMIT-SIGN-65].
+static bool g_admitSign65 = true;
 
 
 class Timer
@@ -4721,8 +4724,14 @@ int main(int argc, char** argv) {
         // Unset, empty, "off" and anything else keep today's apples-to-apples surface.
         g_dedupeOn27 = false;
         if (const char* e27 = std::getenv("SFS_DEDUPE")) { if (*e27 && std::string(e27) == "on") g_dedupeOn27 = true; }
-        g_admitSign65 = false;
-        if (const char* e65 = std::getenv("SFS_ADMIT_SIGN")) { if (*e65 && std::string(e65) != "0") g_admitSign65 = true; }
+        g_admitSign65 = true;
+        if (const char* e65 = std::getenv("SFS_ADMIT_SIGN"))
+        {
+            std::string v66 = e65;
+            for (char& ch : v66) ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+            if (v66.empty() || v66 == "0" || v66 == "off" || v66 == "false") g_admitSign65 = false;
+        }
+        std::cout << "[ADMIT-SIGN-66] default=on admit_sign=" << (g_admitSign65 ? 1 : 0) << std::endl;
         if (const char* e26 = std::getenv("SFS_WINDOW_MODE")) { if (*e26) g_windowMode = e26; }
         if (const char* e26 = std::getenv("SFS_WINDOW_K")) { if (*e26) g_windowK = std::stod(e26); }
         if (const char* e26 = std::getenv("SFS_WINDOW_CLAMP_MM"))
