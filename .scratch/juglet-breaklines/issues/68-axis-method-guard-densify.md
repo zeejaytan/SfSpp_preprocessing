@@ -15,9 +15,9 @@ The conservator ruled: fix the method that produces axes, merge the guard, and m
 
 **Blocked by:** none (t67 merged 0baa35f; run of record read-only)
 
-**Status:** ready-for-agent
-**Working in:** (ticket_start fills this)
-**Branch:** 68-axis-method, in /c/PR/worktrees/sfs/68
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-03)
+**Branch:** 68-axis-method-guard-densify, in /c/PR/worktrees/sfs/68
 **Worker:** cursor_code worker via lead dispatch (2026-11-03)
 
 ## Spec
