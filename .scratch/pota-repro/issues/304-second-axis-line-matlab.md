@@ -22,7 +22,9 @@ Piece 08's shipped surfaces, dumping **every candidate at every stage**, not onl
 
 **Blocked by:** none. Ticket 303 is landed (merged 6ab14c4); its evidence is the starting point.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 304-second-axis-line-matlab, in /c/PR/worktrees/sfs/304
 
 **Worker:** unassigned
 
