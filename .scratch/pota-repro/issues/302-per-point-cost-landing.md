@@ -199,3 +199,36 @@ The script's Spartan reminder could not be discharged from this session — `ssh
 returns "Permission denied (publickey…)" here, so `squeue` was not read. That is safe: all
 13 jobs in the ledger above are sacct-terminal (COMPLETED/FAILED/CANCELLED), so none of them
 can still be running. Worth one `squeue -u $USER` the next time a session has the key.
+
+
+## Post-landing correction (lead, 2026-11-04 — found while writing ticket 304)
+
+**Defect in this ticket's own instruments, now fixed.** `canonicalize()` in the three stage
+scripts negated the whole six-vector (`vt = -vt`) when `vt[2] < 0`. `vt` is `[dir; pos]` and
+`pos` is an anchor point ON the axis line, so negating both reflects the line through the
+ORIGIN — a different line unless it passes through the origin, which none do. The fix flips only
+the direction (`vt[0:3] = -vt[0:3]`), in `.scratch/pota-repro/302-stage/corpus302.py` (now
+line 42), `pota302.py` (line 40) and `gen302_unit_inputs.py` (line 34); `py_compile` clean on
+all three. `juglet302.py` has no such function and is unaffected.
+
+**What it touched.** `corpus302.py:109` writes `canonicalize(res["vt"][:, k])` straight into
+`out/axes302/<piece>_Axis.xyz`, so the WRITTEN files carry the reflected anchor. Measured over
+the 163 pieces: **22 carry a reflected anchor** — Pot_A_07 (725 mm off vs 42 mm mirrored),
+Pot_B_03/04/05/09, Pot_D_26, Pot_E_03/06/27/29, Pot_H_05/06, Pot_I_07/09/10/17/19/21/22,
+Pot_J_09/10/11. Detection: written point closer to `-released_point` than to `+released_point`
+by >3x.
+
+**What therefore stands and what does not.**
+- Direction-based numbers are UNAFFECTED (the direction sign is flipped either way and every
+  comparison uses `|dot|`): gate 3's median 6.81°/44.2% ≤5°, the tier table, the unit gate, the
+  Pot A vs-MATLAB gate (both sides canonicalised identically, so its 1e-4 mm radial numbers are
+  self-consistent because BOTH sides were reflected the same way).
+- Position-based (radial) numbers on those 22 pieces measure the mirrored line and are NOT
+  usable. Gate 3's `rad_mm` column should be discarded for them.
+- Gate 4's E2E consumed these files; Pot_A_07 was the only Pot A piece affected and it still
+  seated (0.68° in GPA50N), so the "do not swap Pot A axes" conclusion is unchanged.
+- Pot_A_08 (ticket 303's lost piece) was NOT among the 22, so 303's "needs a reference line we
+  never propose" conclusion is not an artefact of this defect.
+
+Re-running `corpus302.py` with the fix is not free (163 pieces x 5 seeds) and is folded into
+ticket 304 rather than re-done here.

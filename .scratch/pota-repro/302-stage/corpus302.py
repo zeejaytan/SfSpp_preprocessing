@@ -28,9 +28,18 @@ SEEDS = 5
 
 
 def canonicalize(vt):
+    """Flip the DIRECTION's sign only, for a reproducible comparison.
+
+    vt is [dir; pos] and pos is an anchor point ON the axis line, so negating
+    the whole six-vector (as this did until 2026-11-04) moves the line to the
+    other side of the piece frame - on Pot A it shifted Piece 07 by 2|pos| =
+    712.6 mm, and it moves any piece whose line runs far from the origin.
+    Direction-only comparisons are unchanged by the fix; position-based ones are
+    corrected.
+    """
     vt = np.asarray(vt, dtype=float).copy()
     if vt[2] < 0:
-        vt = -vt
+        vt[0:3] = -vt[0:3]
     return vt
 
 
