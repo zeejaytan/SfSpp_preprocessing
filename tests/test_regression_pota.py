@@ -99,6 +99,24 @@ def test_adaptive_step_table():
     assert adaptive_step(60000) == 6
 
 
+def test_under_5k_rule_beats_explicit_step10(monkeypatch):
+    """run_potsac.m:19-20 is the default, not an opt-in (ticket 304).
+
+    Piece 08 (3,337 pts) and Piece 07 (3,541 pts) must be run whole even when
+    the caller passes the paper's step=10; the larger Pot A pieces keep it.
+    """
+    import sfs_axes.potsac as potsac
+
+    assert potsac.ADAPTIVE_UNDER_5K is True
+    assert potsac.effective_step(3337, 10) == 1   # Pot A Piece 08
+    assert potsac.effective_step(3541, 10) == 1   # Pot A Piece 07
+    assert potsac.effective_step(9102, 10) == 10  # Pot A Pieces 01-06
+    assert potsac.effective_step(3337, None) == 1
+
+    monkeypatch.setattr(potsac, "ADAPTIVE_UNDER_5K", False)
+    assert potsac.effective_step(3337, 10) == 10  # opt-out restores the old rule
+
+
 def test_mlesac_ranking_by_cost():
     rng = np.random.default_rng(3)
     X = make_cylinder(rng, n=300)

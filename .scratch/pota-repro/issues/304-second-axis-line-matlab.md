@@ -22,7 +22,7 @@ Piece 08's shipped surfaces, dumping **every candidate at every stage**, not onl
 
 **Blocked by:** none. Ticket 303 is landed (merged 6ab14c4); its evidence is the starting point.
 
-**Status:** resolved
+**Status:** landed (lead 2026-11-05) — Piece 08's second line is reproducible from the shipped surfaces under `run_potsac.m:19-20`; the `< 5,000`-point rule is now the default (`SFS_AXES_ADAPTIVE_UNDER_5K=0` opts out), Pot A reassembles 8/8 15/15 with our axes alone, and the `truncate=True` CLI default is left for ticket 305 to measure.
 
 **Worker:** sfs304
 
@@ -303,4 +303,56 @@ All four renders have been generated on Spartan, fetched to `C:/PR/SfSpp_preproc
 2. `SfSpp_preprocessing/artifacts/pota304/p8_axes_side.png` — Side elevation view of the same Piece 08 surfaces and axis lines.
 3. `SfSpp_preprocessing/artifacts/pota304/assembly_before_top_side.png` — Before (`step=10` `axes302`, `GPA50N_r1`): 7/8 sherds, 13/15 joins; Piece 08 (in red) is stranded in the middle of the pot (`167.1° / 379.5 mm` off), leaving the rim gap between Piece 02 and Piece 04 empty.
 4. `SfSpp_preprocessing/artifacts/pota304/assembly_after_top_side.png` — After (`step=1` `sfs_axes`, `py_s1_best` in Job `34350986`): 8/8 sherds, 15/15 joins; Piece 08 (in red) seats cleanly into the rim gap between Piece 02 (`2.47° / 11.01 mm`) and Piece 04 (`2.05° / 10.84 mm`).
+
+---
+
+## Lead verification and landing (`lead`, 2026-11-05)
+
+Recomputed from the raw artefacts, not from the write-back. The result holds.
+
+1. **The end-to-end answer is real, and the pieces are ours.** `md5sum` of
+   `trees/pota_py_s1_best/Axes/Pot_A_Piece_01..07_Axis.xyz` equals the 304 corpus run's
+   `out/axes302` (`f0c6ba68, 08780356, fba9684a, 6171ce01, 1fd208b7, ad0d381a, fec45924`) and
+   differs from the released `Axes/` (`74086636, c7edaa76, 4199c8b6, e6d2b617, 9bc89ee0,
+   97d9c450, ab8edae4`); Piece 08 is `e255a302`, equal to `out/py_step1_best_P8_Axis.xyz`.
+   No released axis entered the assembly.
+   `verified: md5sum over trees/pota_py_s1_best/Axes vs 20261105-0153.../out/axes302 vs
+   20261103-1620.../trees/pota/Axes -> 7 of 8 = ours, 8/8 differ from released`
+2. **15/15 joins, independently.** Re-implemented `CountResult`'s test (`inv(GT_i) GT_j` against
+   `inv(T_i) T_j`, bar 0.35 rad = 20.05 deg and 50 mm) and scored all 15 ground-truth joins from
+   the `T_ito_i.txt` files: `py_s1_best` 15/15 (worst 2-5 at 3.79 deg / 26.8 mm),
+   `ml_s1_final` 15/15, and the control `GPA50N` 13/15 failing exactly 2-8 (168.02 deg /
+   374.0 mm) and 4-8 (166.60 deg / 379.9 mm) — Piece 08's only two contacts.
+   `verified: recompute over out/*/T_ito_i.txt and trees/pota/Ground Truth -> 15/15, 15/15, 13/15`
+3. **The stationary-point numbers are in the dump as written.** `out/stageC_analysis.txt`:
+   Piece 08 line 1 `notrunc_all` 5.2280 deg / cost 261557.01; `trunc_all` 88.1548 deg;
+   `notrunc_step10` 21.0818 deg / cost 25054.63; Python seeds 1,4,5,8,9 settle at
+   5.4165 / 5.2289 / 5.2286 / 5.2285 / 5.2292 deg.
+   `verified: out/stageC_analysis.txt:1-60 -> 5.2280 / 88.1548 / 21.0818`
+4. **Stage D is unchanged direction-wise.** Recomputed seed 0 from `out/corpus302.tsv`
+   (n=163): median 6.810 deg, 44.2 % <= 5 deg, `rad_mm` median 21.171; tiers gt_close 92/3.200,
+   gt_off 49/19.692, no_gt 22/15.744.
+   `verified: csv.DictReader over 20261105-0153.../out/corpus302.tsv, seed 0 -> 6.81 / 44.2 % / 21.171`
+
+### What the landing changed
+
+**The `< 5,000` rule is now the default, not an opt-in.** As merged, `SFS_AXES_ADAPTIVE_UNDER_5K`
+defaulted to OFF and `cli.py`/the stage scripts pass `step=10`, so nothing in the shipped pipeline
+would ever have taken the rule — the ticket's own proof would not reproduce from the CLI.
+`sfs_axes/potsac.py` now reads the variable as ON unless set to `0`, and the choice lives in a new
+`effective_step(n, step)` so it can be tested without a search; `cli.py`'s `--step` help says so.
+`tests/test_regression_pota.py` gains `test_under_5k_rule_beats_explicit_step10` (3337 -> 1,
+3541 -> 1, 9102 -> 10, opt-out -> 10). Suite: 9 passed. Rationale for ON: this is the authors' own
+rule (`AxisExtraction/run_potsac.m:19-20`), and the port only diverged by passing a fixed stride;
+44 of the 163 corpus pieces are under 5,000 points (measured), so this is a corpus-wide default.
+
+**Not changed, deliberately: `read_surfaces(truncate=True)`, which the CLI still defaults to.** The
+same dump shows the basin does not survive truncation (`trunc_all` collapses 88.15 deg from
+released line 1), and the proof arm used `truncate=False`. So "8/8 from the CLI's own defaults"
+is NOT yet established — it is the first thing ticket 305 must measure, because the sweep is
+exactly the instrument for a corpus-wide default change.
+
+**Needs-eye:** the four renders in `SfSpp_preprocessing/artifacts/pota304/` have not been looked at
+by a person who can see them (the lead session cannot view images).
+
 

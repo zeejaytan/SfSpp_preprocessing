@@ -48,7 +48,9 @@ def main(argv=None):
     ap.add_argument("--pieces", default="1-8", help="e.g. 1-8 or 3,5")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--step", type=int, default=10,
-                    help="candidate stride, paper-letter 10%% (default 10)")
+                    help="candidate stride, paper-letter 10%% (default 10); "
+                         "pieces under 5,000 points use 1 (run_potsac.m:19-20, "
+                         "ticket 304 — SFS_AXES_ADAPTIVE_UNDER_5K=0 to disable)")
     ap.add_argument("--adaptive", action="store_true",
                     help="working-tree adaptive step instead of paper 10%%")
     ap.add_argument("--no-truncate", action="store_true",

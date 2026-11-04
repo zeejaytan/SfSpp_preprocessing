@@ -65,6 +65,17 @@ reassembles 8/8 and 15/15 using our own axes alone.**
   diff: median `6.81 deg`, `44.2% <= 5 deg`) and restores valid radial distances (`rad_mm` median
   `26.74 -> 21.17 mm`, p90 `680.86 -> 136.70 mm`, `gt_close` median `14.09 -> 12.25 mm`).
 
+**Lead verification and landing (2026-11-05).** Recomputed from the artefacts: the three
+`step=1` arms' `T_ito_i.txt` re-scored against `Pot_A_simple_graph.txt` give **15/15 joins**
+(`py_s1_best` and `ml_s1_final`; worst 2-5 at 3.79 deg / 26.8 mm) and the `step=10` control
+`GPA50N` **13/15**, failing exactly 2-8 and 4-8; `md5sum` shows the staged Pieces 01-07 ARE our
+`axes302` and 8/8 differ from the released axes, and Piece 08 is our `step=1` file. Two things the
+landing changed: the `< 5,000` rule is now **on by default** (`SFS_AXES_ADAPTIVE_UNDER_5K=0` opts
+out — this is the authors' own `run_potsac.m:19-20` rule, and 44 of 163 corpus pieces are under
+5,000 points), and `truncate` was deliberately left alone: the CLI still defaults to
+`truncate=True`, where the same dump shows the basin collapsing 88.15 deg, so "8/8 from the CLI's
+own defaults" is unproven and is ticket 305's first measurement.
+
 **2026-11-04, tickets 302 and 303 (merged 6ab14c4) — the axis port now ranks, and Pot A's last
 unseated piece is a missing REFERENCE axis line, not a defect in our selection rule.** Two
 measurements, one negative result.
