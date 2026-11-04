@@ -10,7 +10,9 @@ axes we compare against.
 
 **Blocked by:** none. 304 (under-5,000 rule, default ON, 646a387) and 305 (sweep, landed) are on main.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 306-complete-axis-candidate-set, in /c/PR/worktrees/sfs/306
 
 **Worker:** sfs306
 
