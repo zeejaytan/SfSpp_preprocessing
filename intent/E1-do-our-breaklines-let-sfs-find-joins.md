@@ -41,6 +41,50 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-04, tickets 302 and 303 (merged 6ab14c4) — the axis port now ranks, and Pot A's last
+unseated piece is a missing REFERENCE axis line, not a defect in our selection rule.** Two
+measurements, one negative result.
+
+- **302: the axis ranking was noise and now is not.** `sfs_axes/cao.py:65` collapsed the Cao cost
+  to ONE whole-cloud scalar (`np.sum(fwd ** 2)`) where MATLAB's `sum(T2.^2)` collapses one
+  dimension and leaves a per-point vector; at `s = 100` the scalar saturated the robustifier, so
+  every candidate scored 1.99999998 and the good axis could never win. With per-point costs the
+  port matches MATLAB on Pot A (0.0031 deg / 0.0012 mm measured, gate bar 0.01) and on 163 corpus
+  pieces the median axis error to the released axes falls from 49.5 to **6.81 deg, 44.2 % within
+  5 deg** (seed 0; the earlier 6.19/46 % was the same number inside seed noise). `refine.py`'s
+  "refine is a silent no-op" provenance note was itself a port artefact — both LM stages run.
+- **303: corrected Pot A axes seat 7/8 and 13/15 against the released axes' 8/8 and 15/15, on
+  5/5 replays, and the lost piece is grossly wrong rather than slightly off** — Piece 08 lands
+  167.08 deg / 379.5 mm from truth while every other piece stays within 0.4 deg / 2 mm of the
+  control. It is a singleton in the assembly graph, not a mis-join: the Piece 02-08 pair reaches
+  inlier 18 / area 2 in the failing arm against 37 / 15.5 in the 8/8 arm. **No re-ranking seats
+  it** — oracle line order, first-line-only, our best line alone, post-refine cost re-sort, the
+  paper's dedup, patch contiguity all return 7/8. What does seat it: **our three lines plus the
+  released file's second line** (8/8 and 15/15, two replays; diagnostic only). Our whole
+  100-candidate set never comes within **20.73 deg** of that line.
+- **So the claim is (3) the reference answer is made with something we do not have**, not (1) the
+  method failed and not (2) the measurement broke — for this piece. The NURBS route is ruled
+  out: `read_surfaces_nurbs.m` reads the same `Surfaces/*.xyz` and calls the same
+  `run_potsac`. What remains is different surfaces or a different estimator, and ticket 304
+  separates them by running the authors' own MATLAB `run_potsac` on Piece 08's shipped surfaces.
+- **Weight.** One piece, one pot, and the released-axis control has itself scored 6/8 in another
+  run — one 7/8 alone would not be evidence. What makes this one worth a ticket is 5/5 replays
+  with a 167 deg placement, and that the fix's own control stayed at 8/8 throughout.
+- **Corpus-wide shape of the axes, measured for the first time:** 34 of 163 released axis files
+  are multi-line (21 %: 19 two, 11 three, 1 four, 2 five, 1 six); ours are 135 single, 15 two, 11
+  three, 2 four. Over all released lines 76 sit within 5 deg of one of ours and 51 are more than
+  20 deg away, and the worst gap per piece has median 3.9 deg where the reference is single-line
+  against **36.3 deg where it is multi-line** — i.e. what we systematically do not produce is the
+  reference's SECOND and further lines, exactly the line Piece 08 needs.
+- **Do not swap Pot A's axes in the assembler on the strength of 302.** The MATLAB-faithful axes
+  are the worse input: 7/8 13/15 against the released axes' 8/8 15/15, and on the Juglet they tie
+  ticket 68's hybrid on mutual consistency (12.35 vs 12.31 deg) and lose its tail (P8 34.36 vs
+  16.43, P9 55.61 vs 23.83, P3 20.05 vs 10.78); 0/9 seated either way.
+- **Instrument correction, same day:** 302's stage scripts reflected the axis ANCHOR through the
+  origin when writing (22 of 163 written files affected; fixed in
+  `302-stage/corpus302.py:42`). Direction-based numbers above stand; radial distances on those
+  22 pieces do not.
+
 **2026-11-03, ticket 62 (merged 0a0d9eb) — the sheet flip is not wall bridging, and a 1.0 mm
 radius fixes the field where carrying the input normals could not be defaulted.** The suspected
 mechanism (the neighbour ball reaching through the clay and averaging both sheets together) is
