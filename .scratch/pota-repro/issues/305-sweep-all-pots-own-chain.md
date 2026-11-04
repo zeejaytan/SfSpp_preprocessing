@@ -13,7 +13,9 @@ and it must be read as best-of-N with N stated, because beam variance in this as
 **Blocked by:** none. 302 (per-point cost) and 304 (under-5,000-point rule, now default ON) are
 landed on main; the 304 merge is 71ac6d4 and the default flip is 646a387.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 305-sweep-all-pots-own-chain, in /c/PR/worktrees/sfs/305
 
 **Worker:** sfs305
 
