@@ -41,6 +41,30 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-05, ticket 304 — Piece 08's missing second axis line IS reproducible from the shipped
+surfaces when `run_potsac.m:19-20`'s `< 5,000`-point rule (`step = 1`) is respected, and Pot A
+reassembles 8/8 and 15/15 using our own axes alone.**
+
+- **Why `axes302` missed it (Explanation 1 — caller `step=10` override):** `Pot_A_Piece_08` is the
+  smallest sherd in Pot A (`1,576` interior + `1,761` exterior = `3,337` points `< 5,000`). Both
+  `AxisExtraction/run_potsac.m:19-20` and `sfs_axes/potsac.py:154-160` (`adaptive_step`) set
+  `step = 1` when `n < 5000`, but `corpus302.py:79` hard-coded `step = 10`, decimating Piece 08 to
+  `334` points. On `334` points the secondary Huber basin does not exist (initializing `refine_axis`
+  at released line 1 drifts `21.08 deg` away). On all `3,337` points (`step = 1`, `truncate=False`),
+  a stationary local minimum sits at `5.2280 deg` from released line 1 (`cost = 261,557.01`):
+  MATLAB `run_potsac.m` (`rng(0)`) reaches `1.53 / 1.61 deg` at Stage 1 and `5.2290 deg` at Stage 2,
+  and Python `sfs_axes` reaches `1.37-1.59 deg` at Stage 1 and `5.2285-5.2292 deg` at Stage 2 on
+  5/10 seeds (`seeds 1, 4, 5, 8, 9`; gated behind `SFS_AXES_ADAPTIVE_UNDER_5K`).
+- **End-to-end Pot A proof (job `34350986`):** Assembling Pot A with our own axes (`step = 1` on
+  Piece 08, zero reference axes read anywhere) reaches **8/8 sherds (100%) and 15/15 joins (100%)**
+   across all three `step = 1` arms (`py_s1_best`, `ml_s1_final`, `ml_s1_stage1`), seating Piece 08
+  via its `5.23 deg` line (`ax_m = 3`) against both ground-truth neighbours: Piece 02 (`2.47 deg /
+  11.01 mm`) and Piece 04 (`2.05 deg / 10.84 mm`).
+- **Stage D instrument re-run (job `34350497`):** Re-running `corpus302.py` across all 163 pieces
+  with the fixed `canonicalize` (`942fe1a`) leaves all direction numbers unchanged (`0.000e+00`
+  diff: median `6.81 deg`, `44.2% <= 5 deg`) and restores valid radial distances (`rad_mm` median
+  `26.74 -> 21.17 mm`, p90 `680.86 -> 136.70 mm`, `gt_close` median `14.09 -> 12.25 mm`).
+
 **2026-11-04, tickets 302 and 303 (merged 6ab14c4) — the axis port now ranks, and Pot A's last
 unseated piece is a missing REFERENCE axis line, not a defect in our selection rule.** Two
 measurements, one negative result.
@@ -249,6 +273,15 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-05, ticket 304: **Piece 08's second axis line is recovered at `step = 1` (`n = 3,337 < 5,000`,
+  `run_potsac.m:19-20`), seating Pot A 8/8 sherds and 15/15 joins with our own axes alone (job
+  `34350986`).** Passing `step = 10` in `corpus302.py:79` decimated Piece 08 to 334 points and
+  erased the secondary Huber basin; at `step = 1` (`truncate=False`), both MATLAB and `sfs_axes`
+  reach `1.4-1.6 deg` from released line 1 at stage-1 and converge to the `5.23 deg` stationary
+  minimum at stage-2 (`SFS_AXES_ADAPTIVE_UNDER_5K`), joining `(2, 8)` at `2.47 deg / 11.01 mm` and
+  `(4, 8)` at `2.05 deg / 10.84 mm`. Stage D re-ran `corpus302.py` (`942fe1a`, job `34350497`):
+  direction errors are untouched (`6.81 deg` median, `44.2% <= 5 deg`) and `rad_mm` is now valid
+  (`21.17 mm` overall median, `12.25 mm` on `gt_close`). Renders: `artifacts/pota304/`.
 - 2026-11-04, ticket 302 (merged 3d55af5): **the axis chain now computes what the authors'
   MATLAB computes, and that is still not the better assembler input on Pot A.** The port had
   collapsed MATLAB's per-point Cao cost to one whole-cloud scalar, so the robustifier

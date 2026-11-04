@@ -57,6 +57,16 @@ PATCH_GAP = os.environ.get("SFS_AXES_PATCH_GAP", "") not in ("", "0")
 # anything from a small fraction of the pot to most of it, and the two axes this
 # rule has to demote leave 3-4 deg empty, so the exact value is not delicate.
 PATCH_GAP_MIN_DEG = 90.0
+# Ticket 304 switch, default OFF (caller-supplied step is respected as-is).
+#   ON: enforce run_potsac.m:19-20 (if num_points < 5000: step = 1) even when
+#   the caller passes step=10 (as corpus302.py:79 and cli.py:19 do).
+#   Why: Pot A Piece 08 has 3,337 surface points (< 5,000); step=10 decimates
+#   it to 334 points and destroys the secondary Huber basin near released
+#   line 1 (stationary point drifts 21.08 deg away). At step=1 (all 3,337
+#   points), both MATLAB run_potsac.m and sfs_axes recover the secondary basin
+#   (1.4-1.6 deg at stage-1, 5.23 deg stationary point at stage-2) and seat
+#   Pot A 8/8 sherds, 15/15 joins using our own axes alone (job 34350986).
+ADAPTIVE_UNDER_5K = os.environ.get("SFS_AXES_ADAPTIVE_UNDER_5K", "") not in ("", "0")
 MAX_ITERS = 1000
 SAMPLE_SET = 6
 INLIER_THRESHOLD = 1.0
@@ -179,6 +189,8 @@ def run_potsac(C1, C2=None, rng=None, step=None, num_candidates=10, verbose=Fals
         n = C.shape[1]
     if step is None:
         step = adaptive_step(n)
+    elif ADAPTIVE_UNDER_5K and n < 5000:
+        step = 1
     if verbose:
         print("[POTSAC] num_points=%d, step=%d (downsampled to %d points)"
               % (n, step, n // step))
