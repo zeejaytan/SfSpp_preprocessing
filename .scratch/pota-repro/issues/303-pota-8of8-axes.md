@@ -6,7 +6,9 @@
 
 **Blocked by:** 302 (landed 2026-11-04, merge 3d55af5)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-04)
+**Branch:** 303-pota-8of8-axes, in /c/PR/worktrees/sfs/303
 
 **Worker:** unassigned
 
