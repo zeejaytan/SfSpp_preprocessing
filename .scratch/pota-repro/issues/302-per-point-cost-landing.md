@@ -6,7 +6,7 @@
 
 **Blocked by:** none — the diagnosis is complete (lead session 2026-11-04); this ticket only lands and extends it.
 
-**Status:** landed (lead 2026-11-04) — code on main; gate 4 result says do not swap Pot A axes; renders await the conservator's eye
+**Status:** landed (lead 2026-11-04) — code on main; gate 4 result says do not swap Pot A axes; renders seen by the conservator 2026-11-04 (no correctness conclusion drawn)
 Working in: DSH worker session sfs302 (2026-11-04); landed by lead session 2026-11-04
 Branch: 302-per-point-cost-landing — merged into main (9b2fdef), worktree removed, branch deleted locally and on GitHub (lead 2026-11-04)
 
@@ -152,12 +152,16 @@ Landed in merge commit on main (branch `302-per-point-cost-landing`, worktree cl
   p4 1.09e-5°; every piece ≤0.01). `verified: artifacts/pota302/pota302.tsv -> 8/8 PASS`
 - **Gate 3 recomputed:** `artifacts/pota302/corpus302.tsv` seed 0, n=163 → median
   6.809954°, 44.2% within 5°. `verified: artifacts/pota302/corpus302.tsv -> 6.81 deg / 44.2%`
-- **Renders: NOT eye-checked, and that is still owed.** `read_image` refuses (this
-  session's model has no image input) and `modlens_read_image` returned Gemini 503
-  UNAVAILABLE twice. I could only confirm the 8 PNGs are 1540×476 with both overlay
-  colours present (red ~255,0,0 and blue ~0,0,255; 676–2048 saturated pixels each) — that
-  proves the panels rendered, NOT that the axes land on the morphology. **Needs-eye:
-  conservator to look at the four pieces (Pot A 01/02, Juglet 8/9), top and side.**
+- **Renders: eye-checked by the conservator, 2026-11-04 — and it settles less than it looks.**
+  The lead could not view them (`read_image` refuses: this session's model has no image
+  input; `modlens_read_image` returned Gemini 503 UNAVAILABLE twice), and could only confirm
+  the 8 PNGs are 1540×476 with both overlay colours present (red ~255,0,0 and blue
+  0,0,255; 676–2048 saturated pixels each) — which proves the panels rendered, not that the
+  axes land on the morphology. The conservator then looked at all eight: **Pot A 01 and 02
+  read as very similar between the two arms; Juglet 8 reads as different; Juglet 9 as very
+  different.** Stated plainly: *that is a description of the pictures, not a verdict that
+  any of the four axes is correct.* No box is ticked on the strength of it, and the Pot A
+  judgement this ticket rests on stays the assembler's own count (8/8 vs 7/8), not the eye.
 
 **What this ticket establishes, in order of confidence:**
 1. The port now computes what the authors' MATLAB computes — the scalar collapse was a
