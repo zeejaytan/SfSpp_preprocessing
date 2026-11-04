@@ -1,0 +1,16 @@
+[
+ {
+  "runid": "20261105-0435_9c5eec2_t305-lane-c",
+  "template": "lanes66.sbatch",
+  "subs": {},
+  "envs": [
+   "NEW=9c5eec2",
+   "RUNID=20261105-0435_9c5eec2_t305-lane-c",
+   "POT=C",
+   "PIECES=Pot_C_Piece_01 Pot_C_Piece_02 Pot_C_Piece_03 Pot_C_Piece_04"
+  ],
+  "helpers": [
+   "stage305.sh"
+  ]
+ }
+]

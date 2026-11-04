@@ -41,6 +41,61 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-05, ticket 305 — the whole sample set on our own chain: our breaklines reproduce Pot A, our
+axes do not, and the reason is a MISSING hypothesis rather than a wrong one.**
+
+Ten pots, 163 pieces, eleven end-to-end runs (41 run dirs, 41 index rows, corpus md5 unchanged). The
+small pots ran a four-arm grid — OO (the authors' breaklines and axes), MO (ours breaklines, their
+axes), OM (their breaklines, our axes), MM (both ours) — and the large ones OO + MM. Pot H is not in
+the sweep: all eleven of its pieces are refused at the assembler's admission gate (ticket 39).
+
+- **Pot A: our breaklines are clean and our axes are the whole loss.** MO reproduces the authors' own
+  8/8 sherds and 15/15 joins; OM is 6/8 + 10/15, identical to MM (6/8 + 10/15, 3/3 repeats); and the
+  strict per-join table says the same thing — OO 30/30 directed = 15/15, MM 20/30 = 10/15, failing
+  exactly 1-7, 2-8, 4-7, 4-8 and 6-7, i.e. every failure touches piece 07 or 08. Turning truncation
+  off (MMu) buys 7/8 + 12/15 at one seed only, so `read_surfaces(truncate=True)` is exonerated and
+  304's 8/8 does not reproduce from the shipped defaults.
+- **The grid, best-of-N.** A: OO 8/8+15/15, MO 8/8+15/15. B: OO 9/9+15/15, MO 9/9+15/15, OM 7/9+10/15,
+  MM 7/9+10/15. C: all four arms 4/4+5/5 — **no defect**. D: OO 22/27+53/66, MM 19/28+33/69 —
+  **the reference is wrong**, the authors' own arm misses the same joins ticket 301 traced to the
+  released axes of D18 and D29. E: OO 31/31+62/62, MM 23/31+37/62 — our method. F: OO/OM 6/6+9/9,
+  MO/MM 5/5+7/7 — **our breakline drops piece 06** and our axes are clean. G: OO/MO 7/7+10/10, OM/MM
+  5/7 and 3/10 vs 2/10 — our method. I: OO 25/27+59/65, MM 18/26+26/65 — our method, the largest
+  single loss in the sweep. J: OO 8/11+16/21, MM 5/11+7/21 — reference (J09 has no GT) plus method.
+- **The counter hides a drop.** Its denominator is the pieces that produced a T, so a piece that never
+  gets one disappears from the fraction: Pot F reads a perfect 5/5 sherds while piece 06 is missing
+  and the joins are 7/9. Only the strict table exposes it.
+- **The mechanism, counted on all 163 pieces** (line counts of the released `Axes/` files against
+  `out/axes305/`): we emit **fewer lines than the reference on 20 pieces**, more on 19, the same on
+  124. The four that decide A and B: `Pot_A_Piece_07` 3 lines -> 1 (2 with truncation off), and our
+  single line is 5.91 deg from released line 0 — the direction is right and the other two hypotheses
+  are simply absent, which is exactly the three joins that fail on that piece; `Pot_A_Piece_08` 2 -> 3
+  with none within 5 deg (36.03 / 15.82 / 65.79), its 5.667 deg candidate appearing only with
+  truncation off; `Pot_B_Piece_08` 2 -> 1 at 13.61 deg; and `Pot_G_Piece_07` 1 -> 1 at **51.43 deg**,
+  the only loss in the sweep that is a wrong DIRECTION. The assembler pushes every 6-number line into
+  `axis_point_`/`axis_norm_` (`class/data_structure.cpp` ReadAxis) and loops every pair
+  (`class/feature_matching.cpp:1461-1475`), so a line we do not emit is a join that cannot even be
+  tested. That is a candidate-set deficit, not a ranking failure — the opposite of ticket 71's
+  Juglet disease, where the pool holds the answer and no ranker finds it.
+- **Juglet: unchanged, in the same direction as 302.** F20O (Dataset axes) 0/9 seated with 2 piece
+  transforms and a 156.55 deg gauge residual; F20N (our axes) 0/9 with 8 transforms and 117.94 deg.
+  More candidate placements and a smaller residual, still nothing seats; the prior bars were t67
+  23 candidates, t68 35, ticket 302 37.
+
+Weight: eleven E2E runs, 81 arm directories, three repeats on Pot A and the small-pot MM arms. The
+lead re-read every arm's `1. Acc.txt` (one correction: Pot F MM is 5/5 + 7/7, not 5/6 + 7/9),
+recomputed Pot A's joins from the transforms, and recounted the axis lines on all 163 pieces. D, E,
+I and J ran only OO + MM, so their attribution is inference from two arms, not a measured MO/OM split;
+the strict per-piece angle column is frame-dependent and is not a measurement; and the renders
+(`artifacts/pota305/`) have not been eye-checked by the lead — this session has no image input.
+
+Correction to the ticket's own spec: 48 pieces are under 5,000 points on our surfaces (A2 B1 C1 D10
+E8 F4 G1 H2 I7 J12), not 44, and the rule fired on all 48 and none of the 115 larger ones.
+
+The question E1 poses is now answerable in two halves: **do our breaklines let SfS find joins — yes, on
+Pot A and cleanly on B, F and G except F06; on E and I they do not yet.** What stops our AXES is that
+the extractor emits fewer candidate lines than the reference on 20 of 163 pieces, and no re-ranking can
+recover a hypothesis that was never written down.
 **2026-11-05, ticket 304 — Piece 08's missing second axis line IS reproducible from the shipped
 surfaces when `run_potsac.m:19-20`'s `< 5,000`-point rule (`step = 1`) is respected, and Pot A
 reassembles 8/8 and 15/15 using our own axes alone.**
@@ -284,6 +339,13 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-05, ticket 305: **all ten pots end-to-end on our own chain. Our breaklines reproduce Pot A
+  (MO 8/8 + 15/15) and are clean on B, F and G except F06; our axes lose Pot A (MM 6/8 + 10/15, the
+  same five joins every repeat) because the extractor emits fewer axis lines than the released files on
+  **20 of 163 pieces** — `Pot_A_Piece_07` 3 -> 1 with the direction right (5.91 deg), `Pot_A_Piece_08`
+  2 -> 3 with none within 5 deg. E (23/31) and I (18/26) are our method, D and J are reference-wrong,
+  C has no defect, H is excluded at the admission gate. Juglet is still 0/9 with either axis set.**
+  Renders: `artifacts/pota305/`.
 - 2026-11-05, ticket 304: **Piece 08's second axis line is recovered at `step = 1` (`n = 3,337 < 5,000`,
   `run_potsac.m:19-20`), seating Pot A 8/8 sherds and 15/15 joins with our own axes alone (job
   `34350986`).** Passing `step = 10` in `corpus302.py:79` decimated Piece 08 to 334 points and
