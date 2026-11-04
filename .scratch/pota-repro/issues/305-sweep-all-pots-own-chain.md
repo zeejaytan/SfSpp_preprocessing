@@ -15,7 +15,7 @@ landed on main; the 304 merge is 71ac6d4 and the default flip is 646a387.
 
 **Status:** ready-for-agent
 
-**Worker:** unassigned
+**Worker:** sfs305
 
 **Budget:** large 12
 
