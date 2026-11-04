@@ -22,9 +22,7 @@ Piece 08's shipped surfaces, dumping **every candidate at every stage**, not onl
 
 **Blocked by:** none. Ticket 303 is landed (merged 6ab14c4); its evidence is the starting point.
 
-**Status:** landed (lead 2026-11-05) — Piece 08's secondary axis basin exists at step=1 (n=3337 < 5000, run_potsac.m:19-20) and is destroyed by step=10 (334 pts); step=1 sfs_axes seats Pot A 8/8, 15/15 (job 34350986); Stage D 163-piece canonicalize re-run verified (job 34350497).
-**Working in:** chat on Thinkbook16 (2026-11-05)
-**Branch:** 304-second-axis-line-matlab, in /c/PR/worktrees/sfs/304
+**Status:** resolved
 
 **Worker:** sfs304
 
