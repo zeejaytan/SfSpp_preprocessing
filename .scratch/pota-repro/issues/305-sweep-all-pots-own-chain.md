@@ -13,7 +13,7 @@ and it must be read as best-of-N with N stated, because beam variance in this as
 **Blocked by:** none. 302 (per-point cost) and 304 (under-5,000-point rule, now default ON) are
 landed on main; the 304 merge is 71ac6d4 and the default flip is 646a387.
 
-**Status:** results-in (lead verified 2026-11-05) — the sweep ran. Our chain reproduces Pot A only when the authors' breaklines are kept; the whole Pot A loss is our axes, and the mechanism is a candidate-set deficit: 20 of 163 pieces carry fewer axis lines than the released files, and the assembler tests every line as a hypothesis. See 'Lead verification and what it means' at the end.
+**Status:** landed (lead 2026-11-05) — the sweep ran. Our chain reproduces Pot A only when the authors' breaklines are kept; the whole Pot A loss is our axes, and the mechanism is a candidate-set deficit: 20 of 163 pieces carry fewer axis lines than the released files, and the assembler tests every line as a hypothesis. See 'Lead verification and what it means' at the end.
 **Working in:** chat on Thinkbook16 (2026-11-05)
 **Branch:** 305-sweep-all-pots-own-chain, in /c/PR/worktrees/sfs/305
 
