@@ -1,0 +1,129 @@
+[
+ {
+  "runid": "20261105-0520_9c5eec2_t305-lane-f3",
+  "template": "lanes66.sbatch",
+  "subs": {},
+  "envs": [
+   "NEW=9c5eec2",
+   "RUNID=20261105-0520_9c5eec2_t305-lane-f3",
+   "POT=F",
+   "PIECES=Pot_F_Piece_01 Pot_F_Piece_02 Pot_F_Piece_03 Pot_F_Piece_04 Pot_F_Piece_05 Pot_F_Piece_06 Pot_F_Piece_07"
+  ],
+  "helpers": [
+   "stage305.sh"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-lane-i3",
+  "template": "lanes66.sbatch",
+  "subs": {},
+  "envs": [
+   "NEW=9c5eec2",
+   "RUNID=20261105-0520_9c5eec2_t305-lane-i3",
+   "POT=I",
+   "PIECES=Pot_I_Piece_01 Pot_I_Piece_02 Pot_I_Piece_03 Pot_I_Piece_04 Pot_I_Piece_05 Pot_I_Piece_06 Pot_I_Piece_07 Pot_I_Piece_08 Pot_I_Piece_09 Pot_I_Piece_10 Pot_I_Piece_11 Pot_I_Piece_12 Pot_I_Piece_13 Pot_I_Piece_14 Pot_I_Piece_15 Pot_I_Piece_16 Pot_I_Piece_17 Pot_I_Piece_18 Pot_I_Piece_19 Pot_I_Piece_20 Pot_I_Piece_21 Pot_I_Piece_22 Pot_I_Piece_23 Pot_I_Piece_24 Pot_I_Piece_25 Pot_I_Piece_26 Pot_I_Piece_27 Pot_I_Piece_28 Pot_I_Piece_29 Pot_I_Piece_30"
+  ],
+  "helpers": [
+   "stage305.sh"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-lane-j3",
+  "template": "lanes66.sbatch",
+  "subs": {},
+  "envs": [
+   "NEW=9c5eec2",
+   "RUNID=20261105-0520_9c5eec2_t305-lane-j3",
+   "POT=J",
+   "PIECES=Pot_J_Piece_01 Pot_J_Piece_02 Pot_J_Piece_03 Pot_J_Piece_04 Pot_J_Piece_05 Pot_J_Piece_06 Pot_J_Piece_07 Pot_J_Piece_08 Pot_J_Piece_09 Pot_J_Piece_10 Pot_J_Piece_11 Pot_J_Piece_12"
+  ],
+  "helpers": [
+   "stage305.sh"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-jug2",
+  "template": "jug305.sbatch",
+  "subs": {
+   "JAXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/jug/axes305_jug"
+  },
+  "envs": [],
+  "helpers": [
+   "patch_guard67.py",
+   "mk_inc.py",
+   "stage67_inputs.py",
+   "arm67.sh",
+   "acc305.py",
+   "score58.py"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-e2e-a-s0",
+  "template": "e2e305.sbatch",
+  "envs": [],
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "8",
+   "FLOOR": "50",
+   "ARMSPEC": "OO:3 MM:3 MMu:3",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/a305/axes305",
+   "NOTRUNC": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/notrunc/axes305"
+  },
+  "helpers": [
+   "stage305.py",
+   "arm67.sh",
+   "patch_guard67.py",
+   "mk_inc.py",
+   "acc305.py",
+   "score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-e2e-a-s1",
+  "template": "e2e305.sbatch",
+  "envs": [],
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "8",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:3 MMu:3",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/a305/axes_seed1",
+   "NOTRUNC": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/notrunc/axes_seed1"
+  },
+  "helpers": [
+   "stage305.py",
+   "arm67.sh",
+   "patch_guard67.py",
+   "mk_inc.py",
+   "acc305.py",
+   "score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0520_9c5eec2_t305-e2e-a-s2",
+  "template": "e2e305.sbatch",
+  "envs": [],
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "8",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:3 MMu:3",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/a305/axes_seed2",
+   "NOTRUNC": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/notrunc/axes_seed2"
+  },
+  "helpers": [
+   "stage305.py",
+   "arm67.sh",
+   "patch_guard67.py",
+   "mk_inc.py",
+   "acc305.py",
+   "score305.py"
+  ]
+ }
+]

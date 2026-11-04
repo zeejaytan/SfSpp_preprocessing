@@ -1,0 +1,18 @@
+[
+ {
+  "runid": "20261105-0510_9c5eec2_t305-jug",
+  "template": "jug305.sbatch",
+  "subs": {
+   "JAXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0455_9c5eec2_t305-axes-stage0c/out/jug/axes305_jug"
+  },
+  "envs": [],
+  "helpers": [
+   "patch_guard67.py",
+   "mk_inc.py",
+   "stage67_inputs.py",
+   "arm67.sh",
+   "acc305.py"
+  ],
+  "extra_files": []
+ }
+]

@@ -1,0 +1,15 @@
+[
+ {
+  "runid": "20261105-0455_9c5eec2_t305-axes-stage0c",
+  "template": "axes305.sbatch",
+  "subs": {},
+  "envs": [
+   "NEW=9c5eec2",
+   "RUNID=20261105-0455_9c5eec2_t305-axes-stage0c",
+   "MODE=stage0"
+  ],
+  "helpers": [
+   "axes305.py"
+  ]
+ }
+]

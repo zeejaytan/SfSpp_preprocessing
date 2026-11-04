@@ -1,0 +1,25 @@
+[
+ {
+  "runid": "20261105-0605_9c5eec2_t305-e2e-i",
+  "template": "e2e305.sbatch",
+  "envs": [],
+  "subs": {
+   "POT": "I",
+   "NAMED": "30",
+   "NP": "30",
+   "FLOOR": "50",
+   "ARMSPEC": "OO:2 MM:2",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0520_9c5eec2_t305-lane-i3/out/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0420_9c5eec2_t305-axes-corpus/out/axes305",
+   "NOTRUNC": "NONE"
+  },
+  "helpers": [
+   "stage305.py",
+   "arm67.sh",
+   "patch_guard67.py",
+   "mk_inc.py",
+   "acc305.py",
+   "score305.py"
+  ]
+ }
+]
