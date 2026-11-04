@@ -11,6 +11,8 @@ MATLAB fidelity notes:
     (first survivor, not the minimum — MATLAB quirk, kept).
 """
 
+import os
+
 import numpy as np
 
 from .cao import compute_biaxial_cao_error
@@ -19,6 +21,42 @@ from .refine import refine_axis
 from .robust import apply_robustifier, robustifier_gm, robustifier_huber
 
 DEDUP_COS = 0.9848  # cos(10 deg), run_potsac.m:65,86
+# Ticket 303 switch, default OFF (MATLAB-faithful stale cost).
+#   ON: after the all-points refinement, recompute each surviving axis' Huber
+#   cost on all points and re-dedup/re-order with it. run_potsac.m:82-84 sorts
+#   by the stage-1 subsample cost even though stage-2 has moved the axes, so the
+#   axis handed to the assembler as line 0 may not be the best refined one.
+#   Paper (papers/text/sfspp-2502.13986v1.md:175) defines the cost as the axis'
+#   robustified residual error; after refinement that is the refined axis' cost.
+#   MEASURED (ticket 303, Pot A): 7/8 13/15 on 3 replays — the sort order is not
+#   what loses Piece 08, so this is a fidelity option and NOT a fix.
+POST_REFINE_COST = os.environ.get("SFS_AXES_POST_REFINE_COST", "") not in ("", "0")
+# Ticket 303 switch, default OFF (MATLAB-faithful: order by residual cost).
+#   ON: order the surviving axes by whether they make the piece ONE CONTIGUOUS
+#   PATCH about the axis, then by cost (see patch_gap_deg, and _patch_order).
+#   Why: the assembler z-aligns every piece on axis LINE 0
+#   (main_pristine_batch.cpp, AxisAlignment with the default index), so whichever
+#   candidate the estimator ranks first fixes the frame that piece is searched
+#   in. Cost is not a reliable rank for that purpose: on Pot A Piece 08 all four
+#   residual costs (stage-1 subsample, all-points Huber, per-face Huber,
+#   worst-face) prefer the axis 35.9 deg from the released line over the 7.7-deg
+#   one, because several distinct symmetries explain a small patch equally well.
+#   What a wrong axis cannot do is make the patch contiguous: a sherd is one
+#   connected piece cut out of a pot, so about the true axis its points fill one
+#   arc of azimuth and leave one large empty gap, while Piece 08's two
+#   cost-favoured axes wrap a full 3.3 deg and 4.4 deg around with no empty gap
+#   at all (the good one leaves 287.6 deg empty). See also the paper's premise
+#   that a fragment may have several Pottmann-valid axes
+#   (papers/text/sfspp-2502.13986v1.md:175).
+#   MEASURED (ticket 303, Pot A): 7/8 13/15 on 2 replays — Piece 08 is never
+#   joined in any order, so this reorders correctly and still does not seat it.
+#   Kept for the axis-ranking work; NOT a fix.
+PATCH_GAP = os.environ.get("SFS_AXES_PATCH_GAP", "") not in ("", "0")
+# An axis that leaves at least this much of the circle empty is treated as
+# making the piece one patch. 90 deg is deliberately loose: real sherds wrap
+# anything from a small fraction of the pot to most of it, and the two axes this
+# rule has to demote leave 3-4 deg empty, so the exact value is not delicate.
+PATCH_GAP_MIN_DEG = 90.0
 MAX_ITERS = 1000
 SAMPLE_SET = 6
 INLIER_THRESHOLD = 1.0
@@ -78,6 +116,41 @@ def _dedup(vt, cost):
     return vt[:, keep], cost[keep]
 
 
+def patch_gap_deg(vt, X):
+    """Largest empty arc of azimuth (deg) left by X about the axis vt.
+
+    A surface of revolution about vt, sampled over one connected patch of an
+    object, fills one arc of azimuth: the rest of the circle is missing. A line
+    that is not a symmetry of the piece does not carve it into one arc, so its
+    azimuths cover the whole circle and the largest empty gap collapses to a few
+    degrees. Blind: uses the piece's own surface points only.
+    """
+    d = vt[0:3] / np.linalg.norm(vt[0:3])
+    p = vt[3:6] - vt[3:6].dot(d) * d
+    a = np.array([1.0, 0.0, 0.0])
+    if abs(a.dot(d)) > 0.9:
+        a = np.array([0.0, 1.0, 0.0])
+    e1 = a - a.dot(d) * d
+    e1 = e1 / np.linalg.norm(e1)
+    e2 = np.cross(d, e1)
+    rel = X[0:3, :] - p[:, None]
+    axial = d @ rel
+    rad = rel - np.outer(d, axial)
+    th = np.sort(np.degrees(np.arctan2(e2 @ rad, e1 @ rad)) % 360.0)
+    gaps = np.diff(np.r_[th, th[0] + 360.0])
+    return float(gaps.max())
+
+
+def _patch_order(vt, cost, X):
+    """Candidates that make the piece one patch first, then by cost (stable)."""
+    if vt.shape[1] < 2:
+        return np.arange(vt.shape[1])
+    gap = np.array([patch_gap_deg(vt[:, i], X) for i in range(vt.shape[1])])
+    contiguous = gap >= PATCH_GAP_MIN_DEG
+    # sort key: contiguous group first (False < True), then ascending cost
+    return np.lexsort((cost, np.logical_not(contiguous)))
+
+
 def adaptive_step(n):
     """Working-tree sampling rule, run_potsac.m:18-30."""
     if n < 5000:
@@ -93,7 +166,8 @@ def run_potsac(C1, C2=None, rng=None, step=None, num_candidates=10, verbose=Fals
     C1, C2: (6, n) surface clouds (C2 optional; single-arg half-split kept).
     step: downsampling stride for candidacy/stage-1 (None = adaptive working-tree
     rule; pass 10 for the paper-letter 10% sampling). Stage-2 always uses all
-    points. Returns vt (6, K) cost-ordered, K >= 0.
+    points. Returns vt (6, K), K >= 0, ordered by residual cost unless
+    SFS_AXES_PATCH_GAP is set, in which case by patch contiguity first.
     """
     C1 = np.asarray(C1, dtype=float)
     if C2 is None:
@@ -121,6 +195,14 @@ def run_potsac(C1, C2=None, rng=None, step=None, num_candidates=10, verbose=Fals
     vt, cost = _dedup(vt, cost)
     for i in range(vt.shape[1]):
         vt[:, i] = refine_axis(vt[:, i], C, 2, 300, 1e-9, verbose=verbose)
+    if POST_REFINE_COST:
+        for i in range(vt.shape[1]):
+            resid = compute_biaxial_cao_error(vt[:, i], C)
+            cost[i] = float(np.sum(apply_robustifier(
+                robustifier_huber, np.atleast_1d(resid))))
     vt, cost = _dedup(vt, cost)
-    order = np.argsort(cost, kind="stable")
+    if PATCH_GAP:
+        order = _patch_order(vt, cost, C)
+    else:
+        order = np.argsort(cost, kind="stable")
     return vt[:, order]
