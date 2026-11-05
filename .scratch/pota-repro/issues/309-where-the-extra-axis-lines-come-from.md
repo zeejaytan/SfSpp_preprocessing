@@ -2,7 +2,9 @@
 
 **Answers:** E1
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** wontfix (lead 2026-11-05) — superseded by ticket 310; this ticket's premise was the lead's mis-framing
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 309-where-the-extra-axis-lines-come-from, in /c/PR/worktrees/sfs/309
 **Worker:** sfs309
 **Budget:** large 8
 **Hand-over:** Claude (Spartan compute node, MATLAB, assembler E2E)
@@ -193,3 +195,50 @@ One job, axes-only substitution proved by `diff -rq` (the only files that may di
 - Budget: 8 failed acceptance checks. On the 8th failure, stop and report what is blocked.
 - Report: the Stage A/B tables, the Stage C verdict with its measurement, the Stage D tables with NP, the
   exact diff with its paper or `.m` warrant, the corpus md5, and every job id with its sacct line.
+
+## Comments
+
+### Lead, 2026-11-05 — superseded before any measurement was reported
+
+This ticket was dispatched and stopped the same evening, at the conservator's direction, because its premise was
+wrong in a way that changes what the next ticket must measure. Recording it rather than deleting it.
+
+**What the ticket assumed.** That the gap between our axes and the authors' on the sample pots is partly a
+missing-candidate problem, because the authors' files carry more lines on 13 of 163 pieces.
+
+**What is actually true, measured by the lead on the ticket-308 run
+`runs/20261105-0532_d330469_t308a-axes/out/pota/paper_s0..s7`:** our own chain already produces the correct
+Pot A axis, and Pot A seats 8/8 + 15/15 whenever it does. Per seed, the angle from each line in
+`Pot_A_Piece_08_Axis.xyz` to the good axis (direction from ticket 304's step-1 file, 5.23 deg from the
+released line 1), and the seed's seating result:
+
+| seed | Piece 08 lines, deg from the good axis | seated |
+|---|---|---|
+| 0 | 68.77, 89.36, 38.28 | 13/15 |
+| 1 | 68.77, 48.85, 89.36, **0.19**, 30.41 | **15/15** |
+| 2 | 68.77, 89.36, 33.56 | 13/15 |
+| 3 | 48.85, 89.36, 38.28, 26.01 | 13/15 |
+| 4 | 68.77, 89.36, 43.23, **0.00** | **15/15** |
+| 5 | 68.77, 48.85, 89.36, **0.00** | **15/15** |
+| 6 | 48.85, 89.36, 26.01 | 13/15 |
+| 7 | 68.77, 48.85 | 13/15 |
+
+The three seating seeds are exactly the three whose file contains the good line, and in those seeds the file
+carries 4-5 lines including three wrong ones — MORE than the authors' 2 — and still seats 15/15. So on this
+piece extra lines are not the problem, a missing correct line is, and the correct line is our own product:
+ticket 304 recovered it with our code at step 1 with the equal-count cut off.
+
+**So the question is not where the authors' extra lines come from. It is why our own sampler finds the correct
+axis in 3 draws in 8 and not in the other 5** — a selection problem inside our own output, which is what
+ticket 310 measures.
+
+### What this ticket did before it stopped
+
+- Worker `sfs309` was stopped after ~10 minutes, at the conservator's direction, with no measurement reported.
+- It had submitted exactly one Slurm job, **34393029** (`t309a-axes`, Stage A stationarity with a B-spline
+  resample). The lead cancelled it: `sacct -j 34393029` -> `CANCELLED+ 0:0`, elapsed `00:01:08`
+  (`batch` CANCELLED 0:15, `extern` COMPLETED 0:0). No result was used from it.
+- Its instruments were kept because they are reusable: `.scratch/pota-repro/309-stage/` holds
+  `bspline309.py` (B-spline resampling of a piece's two surfaces) and `stagea309.py` (refine-from-a-given-line
+  stationarity harness), plus `submit309a.sbatch`/`.sh`.
+- Nothing was landed and no corpus file was touched.
