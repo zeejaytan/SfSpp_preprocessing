@@ -1,0 +1,10 @@
+310: the seating axis is chosen wrong, not generated wrong - the rule is a switch, off by default
+
+On 24 seeds of Pot A Piece 08 the axis that seats the pot is in the written file in 13 of 24 and
+first in 0 of 24; no statistic computed on the piece separates it from the wrong basins, and
+widening the shortlist or drawing ten times more does not help. Ranking the union pool's 10-deg
+basins by the worse wall's cost and refining them on all points puts it first in 24 of 24. Pot A
+seats 8/8 + 15/15 in 9 of 10 repeats (paper chain: 3 of 8) and four pots improve, but E loses
+three sherds and eleven joins and G one sherd, at 3x assembly and 60x axes time - so it ships
+behind --union + SFS_AXES_CONVERGE_BEFORE_RANK=1 with the default path bit-identical, not as the
+default. Corpus 92 of 163 within 5 deg (was 84), line 0 worse at 10.29 deg median, md5 unchanged.

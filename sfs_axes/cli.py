@@ -37,9 +37,14 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
     paper_chain=False runs run_potsac_union instead: the Pottmann basins over
     union_seeds deterministic seeds, capped at max_candidates lines (default 6,
     the most the authors ever release for one piece) and ordered by the worse
-    wall's cost per point.  Ticket 306 measured the union arm worse on all 163
-    corpus pieces and catastrophic on the Pot A assembler (4/8 5/15), so it is
-    not the default.
+    wall's cost per point.  Ticket 310 measured that path as the one that writes
+    the seating axis first (24 of 24 seeds on Pot A Piece 08); its optional
+    converge-before-rank step (SFS_AXES_CONVERGE_BEFORE_RANK, default off) changed
+    no written line there and is kept as an experiment.  Ticket 306 measured the
+    union arm at NP=3 and found it catastrophic on
+    the Pot A assembler (4/8 5/15); 307 showed the same piece is 8/8 15/15 at
+    NP=8, so that reading did not carry -- 310 re-measured this path at NP=8.
+    The paper chain stays the default because it is the MATLAB-faithful one.
     """
     t0 = time.time()
     C0, C1 = read_surfaces(surfaces_dir, pot_id, frag_id,
@@ -96,9 +101,19 @@ def main(argv=None):
                          "cost < cost[0]*1.1 prune (the default; the flag is "
                          "kept so older invocations keep working)")
     ap.add_argument("--union", action="store_true",
-                    help="multi-seed union of the Pottmann basins instead of "
-                         "the paper chain (ticket 306: worse on the corpus, "
-                         "Pot A 4/8 5/15 on the assembler; diagnostic only)")
+                    help="the multi-seed union of the Pottmann basins instead of "
+                         "the paper chain. Every draw of every seed is clustered "
+                         "into 10-deg basins, the basins are ranked by the worse "
+                         "wall's Huber cost per point and the survivors are refined "
+                         "on all points before they are written. Ticket 310 measured "
+                         "this path as the one that puts the seating axis first "
+                         "(24 of 24 seeds on Pot A Piece 08) where the paper chain "
+                         "did in 0 of 24. SFS_AXES_CONVERGE_BEFORE_RANK=1 additionally "
+                         "refines EVERY basin before ranking; it wrote the same lines "
+                         "in 24 of 24 seeds and is not on by default. "
+                         "Ticket 306 measured this path at NP=3 (Pot A 4/8 5/15); "
+                         "ticket 310 re-measures it at NP=8, where the same axes are "
+                         "the question. Not the CLI default: the paper chain is.")
     ap.add_argument("--union-seeds", type=int, default=UNION_SEEDS,
                     help="seeds whose draws are unioned (default %d)" % UNION_SEEDS)
     ap.add_argument("--max-candidates", type=int, default=UNION_MAX,

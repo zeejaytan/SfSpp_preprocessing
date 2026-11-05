@@ -41,6 +41,86 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-06, ticket 310 — the seating axis is already in the file in 13 seeds of 24 and is first in none: the
+pick was wrong, not the geometry. Ranking every draw's refined basins by the worse wall seats 9 Pot A repeats of
+10, buys 4 pots of 9 and costs 2.**
+
+The failure ticket 308 saw is **selection**, and it is now measured on 24 seeds of the same pipeline on Pot A
+Piece 08 (job 34393365): the axis that seats the pot (8 sherds + 15 joints) is in the written file in **13 of 24
+seeds** (1, 4, 5, 8, 9, 10, 11, 13, 16, 17, 18, 20, 21) and is **line 0 in 0 of 24**. Ticket 306 had already put
+the global cost minimum on a wrong basin (529 of 1000 draws, 30.2 deg off, good basin 13th-38th by cost) and 304
+that the good axis is a genuine stationary point of the full-cloud cost; nothing in the chain is broken except
+which candidate the paper's order keeps.
+
+**No statistic computed on the piece separates a good line from a wrong one** (27 statistics per written line
+and per 10-deg basin, good n=25 vs wrong n=485). Nearest misses: the worse wall's Huber cost per point
+78.38/78.38/78.41 (min/med/max) good vs 60.47/77.25/213 wrong · the ratio of the two walls' costs 1.234-1.258 vs
+1.230-2.909 · line-to-centroid 32.7-35.7 mm vs 1.3-39.9 · fraction inside the 90th-percentile cylinder 0.79-0.94
+vs 0.46-1.00 · thickness spread 0.46-0.58 vs 0.20-1.81 · cross-wall agreement (angle between the two walls'
+independent optima) 1.34-8.66 deg vs 0.02-88.57. Every range overlaps, so no threshold rule was built. The cheap
+nulls fail too: widening the paper chain's shortlist from 10 to 30 reaches a good draw in 11 of 24 seeds (not
+24), and 10,000 draws instead of 1,000 leaves a good draw out of the shipped top 10 in **0 of 3** seeds
+(job 34398895) — the sample is not the problem.
+
+**What separates them is refinement.** Refined on all points at 1e-9, each 10-deg basin's representative moves
+onto its own stationary point, and the cheap wrong basins converge onto the seating axis: 0.00-0.19 deg from it
+in **24 of 24 seeds** (job 34393545). So the rule keeps **every draw of every seed**, forms 10-deg direction
+basins, refines each basin on all points, ranks survivors by the worse wall's Huber cost per point, and writes
+the top 6 (the most lines the authors ever release for one piece; 220 lines over 163 pieces). On Piece 08 at cap
+6 the union path puts the seating axis **first in 24 of 24 seeds** — 12 of 12 at cap 2 (jobs 34398847,
+34398908) — against the shipped chain's 13 of 24 anywhere and 0 of 24 first. On the two large pieces tried (Pot D
+Pieces 01 and 03, 35k points per wall) it returns **one basin per seed, K=1 in 6 of 6**: nothing is invented where
+the geometry is already determined (job 34399109). The optional converge-before-rank step (`CONVERGE_BEFORE_RANK`,
+**default OFF** — a heuristic with no paper clause) adds nothing measurable here, writes 6 lines instead of 4 and
+costs 63 s/seed instead of 61; with it OFF the union path is **bit-identical** to its pre-310 form (3 files,
+max|dA| = 0.000e+00, job 34399090).
+
+**The pick belongs to the union path, not to the switch.** In the same table the pre-310 union order (switch
+OFF) also writes the seating axis first in **24 of 24** seeds, and at cap 2 in 7 of 7 — so what buys the
+seating is the whole-pool basins ranked by the worse wall plus the all-points refinement of the survivors,
+not the converge-before-rank reordering. That is why the switch ships **default OFF** and why the default
+path is unchanged: the option is worth having, the reordering is not. The repeats also spread: Pot E's two
+repeats are 17/31 and 18/31 sherds, Pot J's are 16/21 and 10/21 joins, so the delta table below is best of
+two and no single-repeat cell should be quoted as the figure.
+
+**On all 163 pieces the rule buys a better best line and a worse first line.** 750 lines written (median 6, was
+238 lines under 308's chain), 11516 s wall on 20 workers — about **60x** the axes time of 308 (193 s for the same
+pieces), because every basin is refined on all points over ten seeds' draws. Best line within 5 deg of the
+released line 0: **92 of 163 (56.4%), median 4.19 deg**, against 308's 84 (51.5%), 4.56. Where the released axis
+is good (81 pieces) it is 100% within 5 deg, median 2.24 (308: 78 pieces, 100%, 2.13); where the released axis is
+off (82 pieces) 13.4% against 7.1%, median 10.60 vs 12.50. But **line 0 is worse — median 10.29 deg, 65 of 163
+within 5** — because the rule fills the file with hypotheses and the first is not the authors' line. The seating
+runs show the assembler uses the whole file, so that is not paid for downstream. The corpus is untouched: 652
+paths, md5 before == md5 after, corpus.diff empty.
+
+**Seating, Pot A, ten repeats** (our breaklines + rule axes, NP=8, floor 50, job 34399394): **9 of 10 repeats
+reach 8/8 + 15/15**, against 308's paper chain at 3 of 8. Each repeat now takes 22-24 min instead of ~8. The one
+miss (MMR7, 7/8 + 13/15) moves **Piece 08 alone**, 119.09 deg / 322.60 mm from where the nine seated repeats put
+it — joins 2-8 at 115.96 deg / 319.6 mm and 4-8 at 117.73 deg / 325.4 mm fail while the other 13 pass at
+0.66-4.38 deg. The axes files are identical across the ten repeats, so that miss is the assembler's own search
+picking a wrong candidate line for Piece 08, not a different axis in the file.
+
+**The grid, best of two repeats, control in the same job** (`MO:2 MM:2`; MO = the authors' Axes on our
+breaklines reproduces 308 on **every** pot, so the harness and inputs are unchanged and the only difference is
+the axis set, proved per run by `logs/substitution.tsv`). And the MO control does nothing but sit still, while
+the rule's axes move the seating: **A 7/8 + 13/15 → 8/8 + 15/15 · B 6/9 + 9/15 → 9/9 + 15/15 · C 4/4 + 5/5
+unchanged · D 17/28 + 35/69 → 24/28 + 49/69 · E 21/31 + 36/62 → 18/31 + 25/62 (worse) · F 5/5 + 7/7 unchanged ·
+G 5/7 + 2/10 → 4/7 + 2/10 (worse) · I 22/26 + 41/62 → 26/26 + 62/62 (past the control's 25/26 + 59/62) ·
+J 8/11 + 16/21 unchanged**. Summed over the nine pots run: **95 → 106 sherds of 129, 164 → 196 joins of 266**.
+**Four pots better (A, B, D, I), three unchanged, two worse — G loses a sherd and E loses three plus 11 joins**,
+and E is the pot where the authors' axes seat perfectly (31/31 + 62/62) so the rule is at its worst exactly where
+the reference is at its best. Pot H was not run: it has no 308 arm to compare against and its 11 pieces are
+counted in the 163-piece corpus row instead.
+
+Where it stands: on the piece every earlier ticket lands on, the seating axis went from **in the file in 13 of 24
+seeds, first in 0 of 24** to **first in 24 of 24** under the union rule, and Pot A seating went from **3 of 8
+repeats** (308) to **9 of 10** (C1). The grid moved 4 pots up, 2 down (95 → 106 sherds, 164 → 196 joins) and the
+corpus's best line improved (84 → 92 of 163 within 5 deg) while its first line got worse (median 4.56 → 10.29).
+No statistic on the piece did the work — 27 were measured and none separates — the mechanism is refining each
+basin on all its points before ranking, which is what collapses the cheap wrong basins onto the axis the good
+draw found. The new pathway is behind a switch that defaults OFF and is bit-identical to the shipped one there,
+so nothing downstream changes until the switch is turned on for a run.
+
 **2026-11-05, ticket 308 — the paper's set measured on all ten pots: better than the pruned set, still
 behind the reference axes, and the Juglet zero is neither an axes nor a floor effect.**
 
