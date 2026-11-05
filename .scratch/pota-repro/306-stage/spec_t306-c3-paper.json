@@ -1,0 +1,14 @@
+[
+ {
+  "runid": "20261105-1142_c333dc7_t306-c3-paper",
+  "template": "C:/PR/worktrees/sfs/306/.scratch/pota-repro/306-stage/submit306c2.sbatch",
+  "subs": {
+   "COMMIT": "c333dc7",
+   "TAG": "t306-c3-paper"
+  },
+  "envs": [
+   "MODE=paper"
+  ],
+  "helpers": []
+ }
+]

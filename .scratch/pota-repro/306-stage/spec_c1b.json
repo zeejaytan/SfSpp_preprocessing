@@ -1,0 +1,27 @@
+[
+ {
+  "runid": "20261105-0018_c333dc7_t306-c1b-diag",
+  "template": "e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2 MMu:2",
+   "NOTRUNC": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0018_c333dc7_t306-c1b-diag/work/d3",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0018_c333dc7_t306-c1b-diag/work/d1",
+   "COMMIT": "c333dc7",
+   "TAG": "t306-c1b-diag"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/worktrees/sfs/306/.scratch/pota-repro/306-stage/c1_helpers/arm67.sh",
+   "patch_guard67.py",
+   "mk_inc.py",
+   "stage305.py",
+   "acc305.py",
+   "score305.py"
+  ]
+ }
+]

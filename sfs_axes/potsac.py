@@ -75,6 +75,22 @@ MAX_ITERS = 1000
 SAMPLE_SET = 6
 INLIER_THRESHOLD = 1.0
 
+# Ticket 306 (default ON for the corpus path): the number of deterministic seeds
+# whose 1000 Pottmann draws are unioned, and the cap on lines written per piece.
+# Why 10 seeds: the single-seed pool does contain every basin (Piece 07's second
+# released axis is 228-252 of 1000 draws; Piece 08's released axis is a basin of
+# 7-18 draws), but which draws survive the top-10 cut and the duplicate filter
+# swings with the seed -- on Piece 08 the released basin is rank 1 of 20 at one
+# seed and rank 38 at another. Ten seeds x 1000 draws lands in every basin of
+# every piece measured, without best-of-N on the assembler.
+# Why a cap of 6: the authors' own released axis files hold at most 6 lines
+# (129 pieces 1 line, 19 with 2, 11 with 3, 1 with 4, 2 with 5, 1 with 6), so 6 is
+# their practical candidate budget. The assembler's matching is quadratic in
+# candidates per piece (feature_matching.cpp FeatureCompGraphBuilding loops
+# axis_x x axis_y), so an uncapped basin list would also cost run time.
+UNION_SEEDS = int(os.environ.get("SFS_AXES_UNION_SEEDS", "10"))
+UNION_MAX = int(os.environ.get("SFS_AXES_UNION_MAX", "6"))
+
 
 def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
     """Port of compute_axis_of_symmetry.m.
@@ -234,3 +250,112 @@ def run_potsac(C1, C2=None, rng=None, step=None, num_candidates=10, verbose=Fals
     else:
         order = np.argsort(cost, kind="stable")
     return vt[:, order]
+
+# --------------------------------------------------------------- union path
+# Ticket 306: hand the assembler every distinct symmetry basin, not one ranked
+# guess. Measured on Pot A (see the ticket for the full tables): the shipped
+# chain's cost < cost[0]*1.1 prune drops Piece 07's second released axis (a
+# basin of 228-252 of 1000 draws at 3.5x the best cluster's cost) and the
+# 10-deg dedup prunes Piece 08's released axis at one seed of four. Cost is not
+# a rank the universal quantifier can rely on here: on Piece 08 the global cost
+# minimum belongs to an axis 30.2 deg from released line 0 and 57.8 deg from
+# line 1, and the released axis is the 13th cheapest of 20 basins.
+
+
+def _huber_per_point(vt, X):
+    """Huber cost per point of axis vt on cloud X (the run_potsac cost, / n)."""
+    err = compute_biaxial_cao_error(vt, X)
+    return float(np.sum(apply_robustifier(
+        robustifier_huber, np.atleast_1d(err)))) / max(X.shape[1], 1)
+
+
+def _worst_surface_cost(vt, C0, C1):
+    """Cost per point on the worse of the two walls.
+
+    The only statistic measured to rank Piece 08's released axis first of 20
+    basins; the concatenated cost ranks it 13th, because Surface_0's residual
+    dominates the sum.
+    """
+    return max(_huber_per_point(vt, C0), _huber_per_point(vt, C1))
+
+
+def _cluster_union(V, cos=DEDUP_COS):
+    """Greedy 10-deg basin clustering of candidate axes; first candidate wins.
+
+    V: (6, K) in preference order. Returns (reps (6, R), sizes (R,)), reps[r]
+    being the first candidate of basin r and sizes[r] how many fell in it.
+    Deterministic: the order of V fixes the outcome.
+    """
+    d = V[0:3, :] / np.linalg.norm(V[0:3, :], axis=0)
+    reps = []
+    dreps = np.empty((3, 0))
+    sizes = []
+    for i in range(d.shape[1]):
+        if dreps.shape[1]:
+            sim = np.abs(dreps.T @ d[:, i])
+            hit = np.flatnonzero(sim > cos)
+        else:
+            hit = np.empty(0, dtype=int)
+        if hit.size:
+            sizes[int(hit[0])] += 1
+        else:
+            reps.append(i)
+            dreps = np.column_stack([dreps, d[:, i]])
+            sizes.append(1)
+    return V[:, reps], np.array(sizes, dtype=int)
+
+
+def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
+                     verbose=False):
+    """Deterministic union of the Pottmann basins over S seeds (ticket 306).
+
+    C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
+    seeds: RNG seeds, an int count or an iterable, default range(UNION_SEEDS).
+    max_candidates: cap on returned lines, default UNION_MAX.
+    Returns vt (6, K), 1 <= K <= max_candidates, best (worst-wall cost) first.
+
+    Rule: every draw of every seed is refined on the sampled cloud and the whole
+    set is clustered at 10 deg in ascending GM-cost order, so each real basin
+    contributes its GM-best representative and no basin is lost to the top-10
+    cut or to the cost prune. Survivors are ranked by the worst wall's Huber
+    cost per point, capped, then stage-2 refined on all points and re-clustered
+    and re-ranked. Pure function of the clouds and the seeds.
+    """
+    C0 = np.asarray(C0, dtype=float)
+    S1 = C0 if C1 is None else np.asarray(C1, dtype=float)
+    C = C0 if C1 is None else np.concatenate([C0, S1], axis=1)
+    n = C.shape[1]
+    step = effective_step(n, step)
+    if seeds is None:
+        seeds = range(UNION_SEEDS)
+    elif isinstance(seeds, (int, np.integer)):
+        seeds = range(int(seeds))
+    seeds = list(seeds)
+    max_candidates = UNION_MAX if max_candidates is None else int(max_candidates)
+    Cd = C[:, 0:n:step]
+    if verbose:
+        print("[POTSAC-UNION] num_points=%d, step=%d (downsampled to %d), seeds=%d"
+              % (n, step, Cd.shape[1], len(seeds)))
+    cand = []
+    for seed in seeds:
+        vt = compute_axis_of_symmetry(Cd, rng=np.random.default_rng(seed))[0]
+        for k in range(vt.shape[1]):
+            cand.append(refine_axis(vt[:, k], Cd, 2, 300, 1e-3))
+    V = np.column_stack(cand)
+    reps, sizes = _cluster_union(V)
+    score = np.array([_worst_surface_cost(reps[:, j], C0, S1)
+                      for j in range(reps.shape[1])])
+    order = np.argsort(score, kind="stable")
+    V = reps[:, order[:max_candidates]]
+    for j in range(V.shape[1]):
+        V[:, j] = refine_axis(V[:, j], C, 2, 300, 1e-9, verbose=verbose)
+    reps, sizes2 = _cluster_union(V)
+    score = np.array([_worst_surface_cost(reps[:, j], C0, S1)
+                      for j in range(reps.shape[1])])
+    order = np.argsort(score, kind="stable")
+    if verbose:
+        print("[POTSAC-UNION] %d draws -> %d basins (sizes %s), kept %d, "
+              "costs %s" % (len(cand), len(sizes), sizes.tolist(),
+                            reps.shape[1],
+                            np.round(score[order], 1).tolist()))
+    return reps[:, order]

@@ -5,8 +5,11 @@ a surfaces directory; files are Pot_A_Piece_%02d_Surface_{0,1}.xyz, ascii N x 6
 (x y z nx ny nz, mm). Returned as (6, n) MATLAB-layout arrays.
 
 Equal-count truncation (read_surfaces.m:34-37, first-min_points of each cloud)
-is kept as an explicit option defaulting to True for MATLAB parity, flagged
-for removal: it discards tail points of the denser wall arbitrarily.
+is available as an explicit option (truncate=True) but is NOT the default. It
+discards the tail of the denser wall arbitrarily; ticket 306 measured that on Pot A
+Piece 08 those 185 points are the only ones carrying the released second
+symmetry axis -- the untruncated cost has a minimum 5.23 deg from the released
+line, the truncated cost has none -- so the search loses that basin's catchment.
 """
 
 import os
@@ -28,11 +31,14 @@ def load_surface(path):
     return arr.T
 
 
-def read_surfaces(surfaces_dir, pot_id="A", frag_id=1, truncate=True, verbose=False):
+def read_surfaces(surfaces_dir, pot_id="A", frag_id=1, truncate=False, verbose=False):
     """Port of read_surfaces.m (parameterised root dir).
 
-    Returns (C0, C1) as (6, n) arrays. With truncate=True (default, MATLAB
-    parity) both walls are cut to the shorter wall's point count.
+    Returns (C0, C1) as (6, n) arrays. truncate=True reproduces the MATLAB rule
+    (both walls cut to the shorter wall's point count) and is kept for parity;
+    the default is False, because that cut deletes points the search needs
+    (ticket 306: the tail of the denser wall can be the only carrier of a
+    symmetry axis).
     """
     C0 = load_surface(surface_path(surfaces_dir, pot_id, frag_id, 0))
     C1 = load_surface(surface_path(surfaces_dir, pot_id, frag_id, 1))

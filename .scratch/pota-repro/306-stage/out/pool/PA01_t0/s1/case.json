@@ -1,0 +1,14 @@
+{
+ "pot": "A",
+ "piece": 1,
+ "seed": 1,
+ "tag": "PA01_t0_s1",
+ "n": 36608,
+ "n0": 36608,
+ "step": 10,
+ "K": 1000,
+ "n_clusters": 12,
+ "n_kept": 1,
+ "faithful_K": 1,
+ "secs": 107.7
+}

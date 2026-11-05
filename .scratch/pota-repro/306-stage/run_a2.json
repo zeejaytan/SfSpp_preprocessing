@@ -1,0 +1,19 @@
+{
+ "runid": "20261104-2318_c333dc7_t306a2-persurface",
+ "jobid": "PENDING",
+ "commit": "c333dc732f43881a61342160612ed78e8c61ee00",
+ "tag": "t306a2-persurface",
+ "ticket": ".scratch/pota-repro/issues/306-complete-axis-candidate-set.md",
+ "purpose": "Stage A second pass: same 12 pool cases (Pot A 01 control, 07, 08; trunc 0/1; seeds 0/1) recording axis position, per-surface cost of every candidate (c0_pt, c1_pt), and for each 10-deg cluster representative a refine on Surface_0 alone and Surface_1 alone with cross-surface costs. Decides the Stage B selection rule.",
+ "code": {
+  "sfs_axes": "git archive c333dc7 sfs_axes",
+  "probe": "probe306c.py (md5 in logs/code.md5)",
+  "imports": "probe306.py must sit beside it"
+ },
+ "inputs": {
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+  "read_only": true
+ },
+ "notes": "Identical draws to 20261104-2306_c333dc7_t306a-pool (same C, step, rng seed), so cluster counts must match that run's case.json.",
+ "submitted_utc": "2026-11-04T23:18:34Z"
+}
