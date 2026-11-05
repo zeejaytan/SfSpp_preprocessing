@@ -41,6 +41,39 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-05, ticket 308 — the paper's set measured on all ten pots: better than the pruned set, still
+behind the reference axes, and the Juglet zero is neither an axes nor a floor effect.**
+
+The whole grid was re-run on the 307 default with the control in the same job and the prune-on arm beside
+it (same commit, same trees, one flag apart), floor 50, `NP` = the pot's named piece count, best of two
+repeats — `sherd` + `join`: A **7/8 + 13/15** vs 6/8 + 10/15 pruned vs 8/8 + 15/15 control · B 6/9 + 9/15
+vs 6/9 + 9/15 vs 9/9 + 15/15 · C 4/4 + 5/5 everywhere · D 17/28 + 35/69 vs 17/28 + 35/69 vs 23/28 + 55/69 ·
+E 21/31 + 36/62 vs 20/31 + 34/62 vs 31/31 + 62/62 · F 5/5 + 7/7 everywhere (our breaklines cap F at 5/5
+where the authors' give 6/6) · G 5/7 + 2/10 vs the same vs 7/7 + 10/10 · I 22/26 + 41/62 vs 22/26 + 42/62 vs
+25/26 + 59/62 · J 8/11 + 16/21 vs 7/11 + 13/21 vs 8/11 + 16/21. So the 1.1 prune costs A, E and J one piece
+each and gains one join on I; the paper's set is never worse than the pruned set by more than a single join.
+The control here is `MO` (the authors' `Axes/` on **our** breaklines), which is 305's `MO`, not 305's `OO`;
+305's `OO` differs on F exactly because of the breaklines.
+
+**Pot A across eight seeds: 3 of 8 reach 8/8 + 15/15** (seeds 1, 4, 5). The other five miss only Piece 08,
+on joins 2-8 and 4-8 — seed 0 by 81.4 deg / 148.0 mm and 80.3 / 152.6, seeds 2, 3, 6 and 7 by 166-170 deg /
+375-409 mm. Two wrong arrangements, one piece, and the bar is 20 deg, so this is the search choosing a
+self-consistent but wrong configuration, not a tolerance problem.
+
+**The Juglet seats 0 of 9 at every floor from 5 to 30**, with both axis sets, in both repeats (0/9 + 0/18
+at 5-20; 0/8 + 0/13 at 30, where Piece 09's 22-dot lane drops at admission). Our axes place 8 of the 9
+pieces and all eight are the wrong candidate (44-178 deg, 88-463 mm); the authors' axes place only 2, both
+wrong. A Juglet piece offers 0-30 candidate lines where a Pot A piece offers 133-1261, so the candidate set
+is thin and wrong rather than the floor being too tight. **The old F20 zero was never evidence about the
+axes**, and this is the same conclusion ticket 305 reached from the other side.
+
+Claim type: **(1) the method**, on every pot. Not (2) the measurement — the control is stable, the corpus md5
+is 652/652 unchanged and the axes-only substitution is proved by `diff -rq`; not (3) the reference — nothing
+was excluded or re-scored. Open: why Piece 08's wrong choice wins 5 seeds in 8, and whether the axis set can
+bias that choice without fitting to the released file. Also open and not new: Pot I Piece 27 is never placed
+by any arm, the control included, so its counters are over 26 pieces and 62 joins (`k/n` there is not
+comparable across arms; the join count is).
+
 **2026-11-05, ticket 307 — the paper and the authors' MATLAB disagree on one line, and the paper's
 reading is the better assembler input.**
 
@@ -402,6 +435,12 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-05, ticket 308: **the paper's set is better than the pruned set on A, E and J and never worse by
+  more than a join, but our axes still trail the reference on seven of nine pots, and Pot A seats 8/8 + 15/15
+  in only 3 of 8 seeds.** The five misses are all Piece 08 on joins 2-8 and 4-8 (81 deg flip or 168 deg
+  half-turn). The Juglet seats 0/9 at every floor 5-30 with both axis sets, our axes placing 8 of 9 pieces
+  and all of them wrong — so the floor and the axes are both ruled out as its cause. Renders:
+  `artifacts/pota308/`.
 - 2026-11-05, ticket 307: **the axis code matches the paper clause for clause, and the one clause where
   the paper and the authors' `.m` disagree is settled by measurement — the paper's set seats Pot A better
   at every seed (8/8 + 15/15 at seed 1) and does not regress the corpus (84/163 within 5 deg, 4.56 deg).**
