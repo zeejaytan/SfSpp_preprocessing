@@ -1,0 +1,302 @@
+[
+ {
+  "runid": "20261105-0407_e6adf69_t307-b1-s0",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b1_s0",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b1-s0"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b1-s1",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b1_s1",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b1-s1"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b1-s2",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b1_s2",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b1-s2"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-base-s0",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/base_s0",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-base-s0"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-base-s1",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/base_s1",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-base-s1"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-base-s2",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/base_s2",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-base-s2"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b5-s0",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b5_s0",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b5-s0"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b5-s1",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b5_s1",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b5-s1"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b5-s2",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b5_s2",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b5-s2"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b4-s0",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b4_s0",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b4-s0"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b4-s1",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b4_s1",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b4-s1"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ },
+ {
+  "runid": "20261105-0407_e6adf69_t307-b4-s2",
+  "template": "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/e2e305.sbatch",
+  "subs": {
+   "POT": "A",
+   "NAMED": "8",
+   "NP": "3",
+   "FLOOR": "50",
+   "ARMSPEC": "MM:2",
+   "NOTRUNC": "NONE",
+   "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+   "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/b4_s2",
+   "COMMIT": "e6adf69",
+   "TAG": "t307-b4-s2"
+  },
+  "envs": [],
+  "helpers": [
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/arm67.sh",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/patch_guard67.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/mk_inc.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/stage305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/acc305.py",
+   "C:/PR/SfSpp_preprocessing/.scratch/pota-repro/305-stage/score305.py"
+  ]
+ }
+]
