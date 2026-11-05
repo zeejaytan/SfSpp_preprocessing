@@ -41,6 +41,37 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-05, ticket 307 — the paper and the authors' MATLAB disagree on one line, and the paper's
+reading is the better assembler input.**
+
+The clause audit found exactly one difference that changes what is emitted: `run_potsac.m:61` and `:78`
+drop every candidate whose Huber cost is above 1.1x the first survivor's; paper `:175` describes only the
+top-10 cut and the 10-degree dedup. That prune is in the vendored pristine tree
+(`original_nurbs_preprocessing/AxisExtraction/`, provenance back to 405c048, Sisung Liu), so it is the
+authors' code and not ours. Provenance correction: the pristine tree and the local copy differ in ONE
+behavioural line across the whole axis chain — the under-5,000-point step rule at
+`AxisExtraction/run_potsac.m:18-27`, which is a local fix (ff40fc9, Zeejay Tan). Ticket 304's statement
+that the rule "IS the authors' rule" was wrong; it is a deviation and stays on its own measurement
+(without it Piece 08's released line is lost at all three seeds).
+
+With the prune off the emitted set is the paper's: Pot A, our axes, assembler `NP=8`, two internal
+repeats — **7/8 13/15 · 8/8 15/15 · 7/8 13/15** at seeds 0/1/2, against **6/8 10/15 · 7/8 12/15 ·
+6/8 10/15** with the prune on. The two arms differ on Pot A by one line: Piece 07 gets two candidates
+instead of one. Corpus (163 pieces): **84/163 within 5 deg, median best 4.56 deg**, 238 lines written,
+120 pieces with the same count as the released file, against 83/163 and 4.66 deg (211 lines, 122 equal);
+the previous default was 84/163 and 4.63 deg. MATLAB parity still passes 9/9 at the 1e-9 bar and pytest
+is 9/9.
+
+`SFS_AXES_COST_PRUNE` now defaults to OFF; `=1` restores the authors' chain. C1 was **not** met: 8/8
+at 1 of 3 seeds. The named blocker is Pot A Piece 08, joins 2-8 and 4-8 — 86.0 deg / 164.7 mm and
+84.9 / 169.0 at seed 0, 168.6 / 375.9 and 167.1 / 379.9 at seed 2, and 15/15 at seed 1 — the sherd is
+seated but spun a quarter- or half-turn, because the assembler chose among its 3-5 candidate lines; on
+seeds 1 and 2 both of its released lines are within 5 deg of one of ours, so no axis is missing.
+`NP` must be quoted with any such number: the same axis set gives 7/8 12/15 at `NP=8` and 5/8 7/15 at
+`NP=3`, and ticket 306's "a second line on Piece 07 collapses Pot A to 4/8 5/15" was measured at
+`NP=3` (recorded in `run.json` of jobs 34358233 and 34358971) — at `NP=8` that construct reaches
+8/8 15/15. Juglet at the F20 floor seats **0/9 with our axes and 0/9 with the authors' own Dataset
+axes**, so that lane does not discriminate. Renders: `artifacts/pota307/`.
 **2026-11-05, ticket 306 — the candidate set was not the limit: the missing hypotheses are all in the
 pool, and handing them to the assembler makes Pot A worse.**
 
@@ -371,6 +402,13 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-05, ticket 307: **the axis code matches the paper clause for clause, and the one clause where
+  the paper and the authors' `.m` disagree is settled by measurement — the paper's set seats Pot A better
+  at every seed (8/8 + 15/15 at seed 1) and does not regress the corpus (84/163 within 5 deg, 4.56 deg).**
+  The 1.1 cost prune (`run_potsac.m:61/:78`, absent from the paper) is off by default;
+  `SFS_AXES_COST_PRUNE=1` restores the authors' chain. Still not 8/8 at 2 of 3 seeds: Pot A Piece 08 is
+  spun a quarter- or half-turn (joins 2-8, 4-8), which is the assembler's choice among lines the paper
+  allows. Renders: `artifacts/pota307/`.
 - 2026-11-05, ticket 306: **the axis candidate set is complete enough and still does not seat Pot A.**
   Piece 07's missing second line is in 25% of the draws (deleted by the undocumented
   `cost < cost[0]*1.1` prune) and Piece 08's is deleted by the top-10 cut; writing them back blind
