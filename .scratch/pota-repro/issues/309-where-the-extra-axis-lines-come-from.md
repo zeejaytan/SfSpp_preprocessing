@@ -2,7 +2,9 @@
 
 **Answers:** E1
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 309-where-the-extra-axis-lines-come-from, in /c/PR/worktrees/sfs/309
 **Worker:** sfs309
 **Budget:** large 8
 **Hand-over:** Claude (Spartan compute node, MATLAB, assembler E2E)
