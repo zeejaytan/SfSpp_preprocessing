@@ -520,4 +520,14 @@ Reasons: the union is worse on all 163 corpus pieces and catastrophic on the ass
 
 **Needs-eye:** `artifacts/pota306/pota_axes_before_after.png` (this session has no image input, so it has not been eye-checked).
 
+## Where the worktree's untracked outputs went (lead, 2026-11-05, before close)
+
+`ticket_close.sh` refused to retire the worktree because it held 5.7 MB of git-ignored files under
+`.scratch/pota-repro/306-stage/out/` (the C3 axis dumps in `out/rel/`, `out/union/`, `out/union_chk/`,
+`out/c3notrunc/`, `out/pool/`, plus `__pycache__` and a `slurm.out`). Nothing was deleted: the whole
+`306-stage/` tree, ignored files included, was copied into the canonical checkout's
+`.scratch/pota-repro/306-stage/` first (`cp -a`), and only then was `git clean -Xdf` run on the
+worktree's `306-stage/`. The run directories themselves remain the unit of record on Spartan.
+
+
 
