@@ -119,6 +119,43 @@ INLIER_THRESHOLD = 1.0
 UNION_SEEDS = int(os.environ.get("SFS_AXES_UNION_SEEDS", "10"))
 UNION_MAX = int(os.environ.get("SFS_AXES_UNION_MAX", "6"))
 
+# Ticket 310, DEFAULT OFF: converge every basin before it is scored and ranked.
+#   ON: cluster the whole draw pool into 10-deg basins, refine EVERY basin
+#   representative on all points at 1e-9 (the tolerance the written file gets),
+#   re-cluster the converged axes, then rank by the worse wall's Huber cost and
+#   only then cap to the candidate budget.
+#   OFF (pre-310 behaviour, also the authors' stage order): score the stage-1
+#   basin representatives, cap, and refine only the survivors
+#   (run_potsac_union's original body, kept below).
+#   Why the step exists: at the stage-1 tolerance (1e-3 on the sampled cloud) a
+#   candidate 5-25 deg off the seating axis measures CHEAPER than the seating
+#   axis itself -- 6.26 deg at 87.05 against 87.66 per point (job 34393545) --
+#   because it is not at a stationary point of the full-cloud cost; 83 of 1000
+#   draws land in that band and every cost statistic reads it alike. Refining a
+#   basin on all points collapses it onto its own stationary point (the seating
+#   basin onto 0.00-0.19 deg of itself in 24 of 24 seeds).
+#   Why it is NOT the default (measured, ticket 310): the collapse happens
+#   whenever a basin is refined, and the union path refines the basins it writes
+#   anyway; the step only chooses WHICH basins are refined before the cap. On
+#   Pot A Piece 08 the written file is the same with the step on or off in 24 of
+#   24 seeds at cap 6 and 12 of 12 at cap 2 (seating axis first in 24 of 24
+#   either way, job 34398847); on the large pieces the whole pool refines into
+#   ONE 10-deg basin (Pot D Pieces 01 and 03, K=1 in all 6 seeds, job 34399109),
+#   so the arms cannot differ there either. ON costs 1.03x the time (63 against
+#   61 s/seed) and writes more lines (K=6 against 4 at cap 6). The "axis every
+#   time" gain belongs to the union path's whole-pool basins ranked by the worse
+#   wall's cost, not to this step. Reading of
+#   papers/text/sfspp-2502.13986v1.md:175: the cost it ranks by is "the
+#   robustified residual error" of the axis, which is not yet that number while
+#   the axis is unconverged; the "sample only 10% ... after pruning all surface
+#   points are used" clause is an efficiency statement and is what OFF restores.
+CONVERGE_BEFORE_RANK = os.environ.get(
+    "SFS_AXES_CONVERGE_BEFORE_RANK", "0") not in ("", "0")
+# Cap on how many basins the all-points refinement above may run on, so a piece
+# with a very scattered pool cannot blow up the run time. Basins are dropped by
+# their stage-1 worst-wall cost, i.e. only after the cheap score has been used.
+BASIN_REFINE_MAX = int(os.environ.get("SFS_AXES_BASIN_REFINE_MAX", "32"))
+
 
 def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
     """Port of compute_axis_of_symmetry.m.
@@ -333,6 +370,28 @@ def _cluster_union(V, cos=DEDUP_COS):
     return V[:, reps], np.array(sizes, dtype=int)
 
 
+# The union rule, one warrant per term (ticket 310 B1).  The paper's clause is
+# papers/text/sfspp-2502.13986v1.md:175 unless a measurement is named.
+#   1. every draw of every seed, not one draw        -- the paper's MLESAC returns one
+#      axis per run; a single run carried the seating axis in 3 of 8 (ticket 308,
+#      Pot A Piece 08) and 13 of 24 (ticket 310 A3, job 34393365), so the hypothesis
+#      is in the pool but not reliably first.
+#   2. cluster draws into 10-deg basins              -- paper:175, duplicates are axes
+#      within 10 deg, the dearer one pruned.  Kept as given.
+#   3. rank by the WORSE wall's Huber cost per point -- paper:175 names the cost the
+#      "robustified residual error"; the worse wall because a single wall alone cannot
+#      place the cylinder on a small sherd (ticket 310 A1: the two wall-alone optima
+#      differ by 1.3-8.7 deg on Piece 08).  Measurement: this ranking put the seating
+#      axis first in 24 of 24 seeds (ticket 310 B2, job 34398847).
+#   4. cap at max_candidates (6)                     -- the most lines the authors ever
+#      release for one piece (Axes/, 220 lines over 163 pieces).
+#   5. refine the survivors on ALL points at 1e-9    -- paper:175, "after pruning, all
+#      surface points are used"; 1e-9 is the tolerance at which the written file is
+#      produced.  Measurement: this is the step that moves a basin onto its own
+#      stationary point, 0.00-0.19 deg in 24 of 24 seeds (job 34393545).
+# Blind: nothing here reads the released Axes/ files, the GT poses, or any per-piece
+# constant; the only inputs are the piece's own two surfaces and the draws' own optima.
+# SFS_AXES_CONVERGE_BEFORE_RANK (default off) reorders 2 and 5; see the switch above.
 def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                      verbose=False):
     """Deterministic union of the Pottmann basins over S seeds (ticket 306).
@@ -371,6 +430,26 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             cand.append(refine_axis(vt[:, k], Cd, 2, 300, 1e-3))
     V = np.column_stack(cand)
     reps, sizes = _cluster_union(V)
+    if CONVERGE_BEFORE_RANK:
+        # ticket 310: converge first, then score. See the switch above.
+        if reps.shape[1] > BASIN_REFINE_MAX:
+            pre = np.array([_worst_surface_cost(reps[:, j], C0, S1)
+                            for j in range(reps.shape[1])])
+            reps = reps[:, np.argsort(pre, kind="stable")[:BASIN_REFINE_MAX]]
+        V = reps.copy()
+        for j in range(V.shape[1]):
+            V[:, j] = refine_axis(V[:, j], C, 2, 300, 1e-9, verbose=verbose)
+        reps, sizes2 = _cluster_union(V)
+        score = np.array([_worst_surface_cost(reps[:, j], C0, S1)
+                          for j in range(reps.shape[1])])
+        order = np.argsort(score, kind="stable")
+        if verbose:
+            print("[POTSAC-UNION] %d draws -> %d basins (sizes %s), refined %d "
+                  "-> %d converged, kept %d, costs %s"
+                  % (len(cand), len(sizes), sizes.tolist(), V.shape[1],
+                     reps.shape[1], min(reps.shape[1], max_candidates),
+                     np.round(score[order], 1).tolist()))
+        return reps[:, order[:max_candidates]]
     score = np.array([_worst_surface_cost(reps[:, j], C0, S1)
                       for j in range(reps.shape[1])])
     order = np.argsort(score, kind="stable")
