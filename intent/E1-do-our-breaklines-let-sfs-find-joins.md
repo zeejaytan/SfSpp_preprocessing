@@ -41,6 +41,38 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-05, ticket 306 — the candidate set was not the limit: the missing hypotheses are all in the
+pool, and handing them to the assembler makes Pot A worse.**
+
+Piece 07's second released axis **is** in the pool at every seed and every truncation setting (228-252
+of 1,000 draws, 5.06-6.54 deg), ranked 4th-12th, at 3.5x the best cost — deleted by the undocumented
+`keep = cost < cost[0] * 1.1` at `sfs_axes/potsac.py:129`, which the paper never describes. Piece 08's
+needed basin is also in every pool, ranked 13th-38th, deleted by the top-10 cut twice and by the same
+1.1 prune once; on Piece 08 the global cost minimum is itself a WRONG basin (529/1,000 draws, 30.2 deg
+from released line 0). Piece 07's third released line is in no pool at all (nearest 8.55 deg, one
+draw), so the reference still holds one line our search never proposes.
+
+Removing both deletions and unioning 10 seeds writes the missing lines blind (P07 3 lines, one 7.08 deg
+from released line 1; P08 4 lines, 5.23 deg from line 1 and 16.02 deg from line 0), and the corpus gets
+worse, not better: **76 of 163** pieces within 5 deg against **84** for the cut chain and **83** for
+walls whole, median best **6.32 deg** against **4.63**. On the assembler it is worse still: Pot A
+**4/8 + 5/15**, the same five joins wrong and pieces 07 and 08 absent, whichever second line Piece 07
+is given — our union line, the authors' released line 1 verbatim, or their whole three-line file. (The
+poses differ in low-order digits between those arms; the outcome does not, so the conclusion rests on
+the counts.)
+
+Best arm in the whole ticket: **7/8 + 12/15**, from the paper chain with the equal-count cut off, seed
+1, 3/3 repeats. MO (the authors' axes on our breaklines) is 8/8 + 15/15 in the same job. **No arm
+reaches 8/8 with our axes.**
+
+So both deviations the last three tickets found are real and both are now fixed and reachable
+(`read_surfaces(truncate=False)`, `runs_potsac` without the 1.1 prune), and fixing them does not seat
+Pot A. **The limit is downstream**: which candidate the assembler's global search trusts, since one
+extra plausible line on one piece is enough to move it to a different, self-consistent, wrongly-joined
+solution (the 4/8 arms sit ~102-107 deg from ground truth as a rigid offset, invisible to the per-edge
+check). Claim type: the method has not failed — the authors' axes on our breaklines seat 8/8; our axis
+set fails, and it fails in the search rather than in the pool. The default now ships the authors'
+chain; `--union` keeps the sweep for later work. Renders: `artifacts/pota306/`.
 **2026-11-05, ticket 305 — the whole sample set on our own chain: our breaklines reproduce Pot A, our
 axes do not, and the reason is a MISSING hypothesis rather than a wrong one.**
 
@@ -339,6 +371,12 @@ test cannot fail is a breakline nobody can assemble from.
 
 ## Where it stands
 
+- 2026-11-05, ticket 306: **the axis candidate set is complete enough and still does not seat Pot A.**
+  Piece 07's missing second line is in 25% of the draws (deleted by the undocumented
+  `cost < cost[0]*1.1` prune) and Piece 08's is deleted by the top-10 cut; writing them back blind
+  gives 7/8 + 12/15 at best and 4/8 + 5/15 once Piece 07 carries a second line. The equal-count cut and
+  the 1.1 prune are off by default now (`--union` keeps the sweep); the blocker is the assembly
+  search's choice among candidates. Renders: `artifacts/pota306/`.
 - 2026-11-05, ticket 305: **all ten pots end-to-end on our own chain. Our breaklines reproduce Pot A
   (MO 8/8 + 15/15) and are clean on B, F and G except F06; our axes lose Pot A (MM 6/8 + 10/15, the
   same five joins every repeat) because the extractor emits fewer axis lines than the released files on
