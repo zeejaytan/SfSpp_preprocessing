@@ -3,12 +3,16 @@
 Usage:
   python -m sfs_axes.cli extract-pot-a --surfaces DIR --out DIR [--seed N]
 
-Ticket 306 defaults: no equal-count wall truncation, and the authors' paper
-chain (one seed, 10-degree dedup, the cost < cost[0]*1.1 prune).  --union
-switches to the multi-seed union; ticket 306 measured that arm worse on the
-corpus and catastrophic on the assembler (Pot A 4/8 5/15), so it is opt-in
-only.  --truncate restores the equal-count wall cut (read_surfaces.m:34-37)
-for MATLAB parity.
+Ticket 306 defaults: no equal-count wall truncation (extract_axis.m:8 passes
+both walls whole).  Ticket 307 defaults: the paper's candidate set - one seed,
+top 10 by robustified cost, 10-degree dedup keeping the cheaper, and NO
+cost < cost[0]*1.1 prune (papers/text/sfspp-2502.13986v1.md:175; the authors'
+run_potsac.m:61,:78 does prune, and that chain is still selectable with
+SFS_AXES_COST_PRUNE=1).  Measured better on Pot A at every seed - see
+potsac.py's COST_PRUNE comment.  --union switches to the multi-seed union;
+ticket 306 measured that arm worse on the corpus and catastrophic on the
+assembler (Pot A 4/8 5/15), so it is opt-in only.  --truncate restores the
+equal-count wall cut for comparison.
 """
 
 import argparse
@@ -27,8 +31,9 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
                   paper_chain=True, union_seeds=None, max_candidates=None):
     """Run the full chain for one piece; write its assembly-layout axis file.
 
-    Default (ticket 306): both walls whole and the authors' paper chain -
-    run_potsac, one seed, 10-degree dedup, the cost < cost[0]*1.1 prune.
+    Default (tickets 306 + 307): both walls whole, and the paper's candidate
+    set - run_potsac, one seed, top 10 by cost, 10-degree dedup, no
+    cost < cost[0]*1.1 prune (SFS_AXES_COST_PRUNE=1 restores the authors').
     paper_chain=False runs run_potsac_union instead: the Pottmann basins over
     union_seeds deterministic seeds, capped at max_candidates lines (default 6,
     the most the authors ever release for one piece) and ordered by the worse

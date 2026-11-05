@@ -1,0 +1,18 @@
+{
+  "runid": "20261105-0437_e6adf69_t307f-def",
+  "ticket": "307",
+  "stage": "B/C (second pass)",
+  "what": "the shipped default after the COST_PRUNE flip (arm paper), the paper-faithful 10% sample (b1b5) and the b1 control, Pot A 3 seeds + corpus 163 each; proves paper == b1 byte for byte",
+  "template": "307-stage/submit307f.sbatch",
+  "commit": "e6adf69",
+  "arms": "paper b1b5 b1",
+  "corpus_arms": "paper b1b5 b1",
+  "env": {
+    "paper": "no override: COST_PRUNE off by default since 307, under-5k step rule on",
+    "b1": "SFS_AXES_COST_PRUNE=0 (control: must equal paper byte for byte)",
+    "b1b5": "SFS_AXES_COST_PRUNE=0 SFS_AXES_ADAPTIVE_UNDER_5K=0 (paper 10% sample, no size exception)"
+  },
+  "worktree": "uncommitted sfs_axes at e6adf69 + the 307 edits (cli.py, potsac.py)",
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (read-only; md5 before/after)",
+  "note": "axes only; no assembly here"
+}

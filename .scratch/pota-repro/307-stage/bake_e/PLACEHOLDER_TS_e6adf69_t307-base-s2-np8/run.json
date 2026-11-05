@@ -1,0 +1,20 @@
+{
+ "runid": "PLACEHOLDER_TS_e6adf69_t307-base-s2-np8",
+ "commit": "e6adf69",
+ "tag": "t307-base-s2-np8",
+ "params": {
+  "POT": "A",
+  "NAMED": "8",
+  "NP": "8",
+  "FLOOR": "50",
+  "ARMSPEC": "MM:2",
+  "LANES": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_pota/geom",
+  "AXDIR": "/data/gpfs/projects/punim2657/SfSpp/runs/20261105-0406_e6adf69_t307a-axes/out/pota/base_s2",
+  "NOTRUNC": "NONE",
+  "COMMIT": "e6adf69",
+  "TAG": "t307-base-s2-np8"
+ },
+ "env": [],
+ "stage": "B at NP=8: shipped default (cost prune ON)",
+ "submitted_from": "307-stage/bake307e.py"
+}

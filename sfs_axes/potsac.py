@@ -7,8 +7,11 @@ MATLAB fidelity notes:
   * The biaxial cost is PER-POINT (MATLAB sum collapses only dim 1):
     the inlier count is sum(per-point GM-robustified cost < 1.0) and the
     ranking cost is the sum of those per-point costs.
-  * Dedup threshold 0.9848 = cos(10deg); cost prune keeps cost < cost[0]*1.1
-    (first survivor, not the minimum — MATLAB quirk, kept).
+  * Dedup threshold 0.9848 = cos(10deg).
+  * run_potsac.m:61 and :78 additionally keep only axes with cost < cost(0)*1.1
+    ("first survivor, not the minimum" — MATLAB quirk). The paper has no such
+    prune; SFS_AXES_COST_PRUNE (default OFF since ticket 307) selects which of
+    the two chains is used. See the block below.
 """
 
 import os
@@ -57,20 +60,45 @@ PATCH_GAP = os.environ.get("SFS_AXES_PATCH_GAP", "") not in ("", "0")
 # anything from a small fraction of the pot to most of it, and the two axes this
 # rule has to demote leave 3-4 deg empty, so the exact value is not delicate.
 PATCH_GAP_MIN_DEG = 90.0
-# Ticket 304, default ON: enforce run_potsac.m:19-20 (if num_points < 5000:
-#   step = 1) even when the caller passes step=10 (as corpus302.py:79 and
-#   cli.py:19 do). SFS_AXES_ADAPTIVE_UNDER_5K=0 turns it off.
-#   Why: Pot A Piece 08 has 3,337 surface points (< 5,000); step=10 decimates
-#   it to 334 points and destroys the secondary Huber basin near released
-#   line 1 (stationary point drifts 21.08 deg away). At step=1 (all 3,337
-#   points), both MATLAB run_potsac.m and sfs_axes recover the secondary basin
-#   (1.4-1.6 deg at stage-1, 5.23 deg stationary point at stage-2) and seat
-#   Pot A 8/8 sherds, 15/15 joins using our own axes alone (job 34350986).
-#   On by default because this IS the authors' rule, not a deviation from it:
-#   the port only diverged by handing the stage scripts a fixed step=10.
-#   44 of the 163 corpus pieces are under 5,000 points, so this is the corpus
-#   default too (ticket 305 measures what it does across the pots).
+# Ticket 304, default ON: use step = 1 on pieces under 5,000 points even when
+#   the caller passes step=10 (as corpus302.py:79 and cli.py:19 do).
+#   SFS_AXES_ADAPTIVE_UNDER_5K=0 turns it off (step=10 always).
+#   PROVENANCE, corrected by ticket 307: this is a DEVIATION, not the authors'
+#   rule. run_potsac.m:18 samples C(:,1:10:num_points) with no size exception;
+#   the under-5,000 block lives only in the locally patched copy
+#   (AxisExtraction/run_potsac.m:18-27, ff40fc9, Zeejay Tan) and is absent from
+#   the vendored upstream tree (original_nurbs_preprocessing/AxisExtraction/).
+#   Why it is kept anyway: Pot A Piece 08 has 3,337 surface points; step=10
+#   decimates it to 334 and destroys the secondary Huber basin near released
+#   line 1 (stationary point drifts 21.08 deg away). At step=1 all 3,337 points
+#   are used, the basin is recovered (1.4-1.6 deg at stage-1, 5.23 deg at
+#   stage-2) and Pot A seats 8/8 + 15/15 with our own axes (job 34350986).
+#   44 of the 163 corpus pieces are under 5,000 points. MEASURED (ticket 307,
+#   arm B5, step=10 always): Pot A NP=8 7/8 13/15, 6/8 10/15, 6/8 10/15 over
+#   seeds 0/1/2 vs 6/8 10/15, 7/8 12/15, 6/8 10/15 with the rule on -- no seed
+#   improves consistently, so the rule stays on its own 304 measurement.
 ADAPTIVE_UNDER_5K = os.environ.get("SFS_AXES_ADAPTIVE_UNDER_5K", "1") not in ("", "0")
+# Ticket 307: the paper's candidate set, DEFAULT since this ticket.
+#   ON (SFS_AXES_COST_PRUNE=1): the authors' cost < cost(1)*1.1 prune, run twice
+#   (run_potsac.m:61 after the stage-1 dedup, :78 again after the all-points
+#   refinement, on the stale stage-1 cost).
+#   OFF (default): the top 10 survivors of the dedup are all written, which is
+#   what papers/text/sfspp-2502.13986v1.md:175 describes -- "selects the top 10
+#   candidate axes ... those with an angle of 10 degrees or less are considered
+#   duplicates, with the axis having the higher cost ... being removed through
+#   pruning" -- with no cost cut. Paper and the authors' .m genuinely disagree,
+#   so this is decided by measurement, not by preference.
+#   MEASURED (ticket 307, Pot A, assembler NP=8, two internal repeats each,
+#   our axes only): OFF 7/8 13/15, 8/8 15/15, 7/8 13/15 at seeds 0/1/2;
+#   ON 6/8 10/15, 7/8 12/15, 6/8 10/15. Every seed improves by at least one
+#   sherd and no seed regresses; seed 1 reaches the paper's own 8/8 + 15/15.
+#   Corpus (163 pieces): 84/163 within 5 deg, median best 4.56 deg with OFF vs
+#   83/163, 4.66 deg with ON -- no worse. Juglet F20 (floor 20, NP=9): 0/9
+#   seated with our axes; the authors' own released Dataset axes also seat 0/9,
+#   so that lane does not discriminate. The extra lines cost little at the
+#   assembler: 120 of 163 pieces write the same count either way and matching is
+#   quadratic in candidates per piece.
+COST_PRUNE = os.environ.get("SFS_AXES_COST_PRUNE", "0") not in ("", "0")
 MAX_ITERS = 1000
 SAMPLE_SET = 6
 INLIER_THRESHOLD = 1.0
@@ -140,7 +168,7 @@ def _dedup(vt, cost):
     keep = np.ones(vt.shape[1], dtype=bool)
     keep[jj] = False
     vt, cost = vt[:, keep], cost[keep]
-    if vt.shape[1] == 0:
+    if vt.shape[1] == 0 or not COST_PRUNE:
         return vt, cost
     keep = cost < cost[0] * 1.1
     return vt[:, keep], cost[keep]
