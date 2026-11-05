@@ -74,3 +74,7 @@ graphify-out/
 archive_old_datasets/
 temp_download/
 build_new/
+
+# Python bytecode (ticket 305 carried .pyc files into a merge; do not repeat)
+__pycache__/
+*.pyc

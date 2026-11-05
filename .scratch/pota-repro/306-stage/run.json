@@ -1,0 +1,51 @@
+{
+ "runid": "20261104-2306_c333dc7_t306a-pool",
+ "ticket": "306-complete-axis-candidate-set",
+ "tag": "t306a-pool",
+ "commit": "c333dc732f43881a61342160612ed78e8c61ee00",
+ "branch": "306-complete-axis-candidate-set",
+ "purpose": "Stage A: dump the pre-dedup axis candidate pool (1000 Pottmann draws per case) for Pot A pieces 01/07/08, truncation on+off, seeds 0+1, with cluster assignment, per-cut survival, and released-line angles; plus the A3 perturb-and-refine provenance probe on Piece 08's released line 1 for both clouds.",
+ "instrument": "work/probe306.py (md5 in logs/code.md5); code = git archive c333dc7 sfs_axes",
+ "params": {
+  "pot": "A",
+  "pieces": [
+   1,
+   7,
+   8
+  ],
+  "truncate": [
+   0,
+   1
+  ],
+  "seeds": [
+   0,
+   1
+  ],
+  "num_candidates_pipeline": 10,
+  "dedup_cos": 0.9848,
+  "prune_margin": 1.1,
+  "max_iters": 1000,
+  "sample_set": 6,
+  "stage1_refine": [
+   2,
+   300,
+   0.001
+  ],
+  "released_probe_line": 1,
+  "released_probe_degrees": 5,
+  "released_probe_basins": 8,
+  "env_overrides": "none (all SFS_* unset)"
+ },
+ "inputs": {
+  "surfaces": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Surfaces (read-only, md5 before/after in logs/corpus_md5_*.log)",
+  "released_axes": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes (scoring only)"
+ },
+ "outputs": [
+  "out/pool/<tag>/s<seed>/{candidates,clusters,survivors}.tsv",
+  "out/pool/<tag>/s<seed>/{faithful.xyz,case.json}",
+  "out/released/<tag>/{basin,perturb,released}.tsv",
+  "logs/code.md5",
+  "logs/corpus_md5.diff"
+ ],
+ "expected": "12 pool cases x 1000 candidate rows; 2 released probes x (8 basins x 13 degrees + 16 refine trials)"
+}
