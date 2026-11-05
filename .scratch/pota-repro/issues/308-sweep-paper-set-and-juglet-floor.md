@@ -11,7 +11,9 @@ for the authors' own, so sweep the floor instead of reporting a single zero.
 **Blocked by:** none. 302 (per-point cost), 304 (under-5,000 rule), 305 (the grid to beat), 306 (no
 equal-count cut, paper chain default), 307 (cost prune OFF by default) are all on main at `eb14046`.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 308-sweep-paper-set-and-juglet-floor, in /c/PR/worktrees/sfs/308
 **Worker:** sfs308
 
 **Budget:** large 12
