@@ -12,7 +12,7 @@ the paper's method. The released axis files are a scoring reference, never a thi
 equal-count cut; paper chain default) are all on main.
 
 **Status:** ready-for-agent
-**Worker:** unassigned
+**Worker:** sfs307
 
 **Budget:** large 12
 
