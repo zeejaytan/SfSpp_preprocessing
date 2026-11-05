@@ -2,7 +2,9 @@
 
 **Answers:** E1
 **Blocked by:** none
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-05)
+**Branch:** 310-find-the-correct-axis-every-time, in /c/PR/worktrees/sfs/310
 **Worker:** sfs310
 **Budget:** large 12
 **Hand-over:** Claude (Spartan compute node, assembler E2E)
