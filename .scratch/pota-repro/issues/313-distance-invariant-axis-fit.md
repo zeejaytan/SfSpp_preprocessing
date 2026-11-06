@@ -10,13 +10,12 @@
 **Working in:** worker sfs313 (2026-11-06)
 **Branch:** 313-distance-invariant-axis-fit, in /c/PR/worktrees/sfs/313
 
-**Worker:** unassigned
+**Worker:** sfs313
 
 **Budget:** large 8
 
 **Hand-over:** worker with Spartan access; needs `sfs_axes` Python package, Spartan Slurm access, and C++ SIF assembler harness. Judgement stays with the lead.
 
-<!-- When work starts: **Status:** in-progress, plus
 
 ## Context & The Problem to Solve
 
