@@ -2,14 +2,14 @@
 
 Answers: E1
 Blocked by: none (ticket 311 landed; Pot E failure mechanism isolated to objective bias on small sherds)
-Status: ready-for-agent
+Status: in-progress
+Working in: worker sfs312 (2026-11-06)
+Branch: 312-reverse-engineer-author-axes, in /c/PR/worktrees/sfs/312
 Worker: unassigned
 Budget: large 8
 Hand-over: worker with Spartan access; needs MATLAB / Python / C++ access to SfSpp pipelines and Spartan scratch. Judgement stays with the lead.
 
 <!-- When work starts: **Status:** in-progress, plus
-**Working in:** <project thread title / laptop chat / Spartan job ID> (<date>)
-**Branch:** 312-reverse-engineer-author-axes, in C:/PR/worktrees/SfSpp_preprocessing/312 (code tickets only; scripts/ticket_start.sh writes all three lines) -->
 
 ## What to build
 
