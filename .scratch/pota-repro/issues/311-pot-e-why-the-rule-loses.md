@@ -2,7 +2,9 @@
 
 Answers: E1
 Blocked by: none (310 landed; the rule is reachable with `--union` + `SFS_AXES_CONVERGE_BEFORE_RANK=1`)
-Status: ready-for-agent
+Status: in-progress
+Working in: chat on Thinkbook16 (2026-11-06)
+Branch: 311-pot-e-why-the-rule-loses, in /c/PR/worktrees/sfs/311
 Worker: unassigned
 Budget: large 8
 Hand-over: worker with Spartan access; needs the pristine SIF assembler, ~20-worker axes runs and MATLAB only if the basin table is asked for. Judgement stays with the lead.
