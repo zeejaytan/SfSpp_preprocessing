@@ -5,11 +5,10 @@ Blocked by: none (ticket 311 landed; Pot E failure mechanism isolated to objecti
 Status: in-progress
 Working in: worker sfs312 (2026-11-06)
 Branch: 312-reverse-engineer-author-axes, in /c/PR/worktrees/sfs/312
-Worker: unassigned
+Worker: sfs312
 Budget: large 8
 Hand-over: worker with Spartan access; needs MATLAB / Python / C++ access to SfSpp pipelines and Spartan scratch. Judgement stays with the lead.
 
-<!-- When work starts: **Status:** in-progress, plus
 
 ## What to build
 
