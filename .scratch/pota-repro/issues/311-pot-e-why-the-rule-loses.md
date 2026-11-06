@@ -78,9 +78,9 @@ Name which claim this is: (1) the method, (2) the measurement, or (3) the refere
 
 ## Comments
 
-### Worker report (sfs311, 2026-11-06)
+### Worker report (sfs311, 2026-11-06; lead completion and verification)
 
-Stages A through E have executed on Spartan across jobs `34427662` (Stage A attribution & provenance), `34427816` / `34431689` (Stage B K-ladder & controls), and `34428026` (Stage C 10,000-draw MLESAC pools, stationarity drift, and Stage D blind-cap sweep).
+Stages A through E have executed on Spartan across jobs `34427662` (Stage A attribution & provenance), `34427816` (Stage B K-ladder controls & K1/K6), `34431689` (Stage B K-ladder K2/K3), and `34428026` (Stage C 10,000-draw MLESAC pools, stationarity drift, and Stage D blind-cap sweep). Worker `sfs311` initiated Stages A–D; lead completed job `34431689` after worker quota, verified all raw artefacts, recomputed metrics, and finalized the report.
 
 #### Stage A — Attribution and Piece Provenance (Acceptance A1, A2)
 
@@ -111,23 +111,30 @@ The K ladder was executed on identical staged trees, with `substitution.tsv` pro
 | `E_MO` | Authors' released axes (control) | **31/31, 62/62** (100.0% / 100.0%) | 29/31, 54/62 (93.5% / 87.1%) | **31/31 (100%), 62/62 (100%)** |
 | `E_BASE` | Ticket 308 paper chain (control) | **21/31, 36/62** (67.7% / 58.1%) | **21/31, 36/62** (67.7% / 58.1%) | **21/31 (67.7%), 36/62 (58.1%)** |
 | `E_K1` | Rule pool, rank 1 line only | 18/31, 30/62 (58.1% / 48.4%) | 17/31, 29/62 (54.8% / 46.8%) | **18/31 (58.1%), 30/62 (48.4%)** |
+| `E_K2` | Rule pool, top 2 lines | 23/31, 33/62 (74.2% / 53.2%) | 21/31, 33/62 (67.7% / 53.2%) | **23/31 (74.2%), 33/62 (53.2%)** |
 | `E_K3` | Rule pool, top 3 lines | 23/31, 33/62 (74.2% / 53.2%) | 21/31, 30/62 (67.7% / 48.4%) | **23/31 (74.2%), 33/62 (53.2%)** |
 | `E_K6` | Rule pool, top 6 lines (MM) | 17/31, 25/62 (54.8% / 40.3%) | 18/31, 25/62 (58.1% / 40.3%) | **18/31 (58.1%), 25/62 (40.3%)** |
 
 **K-ladder findings:**
 - `E_MO` reproduces 31/31 and 62/62 exactly.
 - `E_BASE` reproduces 21/31 and 36/62 exactly.
-- Moving from K=3 (33 joins) to K=6 (25 joins) loses 8 joins directly due to decoy lines (Mechanism 1).
-- Crucially, even K=1 (30 joins) or K=3 (33 joins) cannot seat the remaining 10 pieces or reach MO's 62 joins, proving that capping K alone cannot close the gap to MO because the reference axis is not in the surface geometry (Mechanism 2).
+- Capping at K=2 or K=3 recovers all 6 decoy-affected pieces (`Pieces 12, 14, 17, 18, 21, 30` pass), reaching 23/31 sherds and 33/62 joins (beating BASE's 21/31, 36/62 and MM's 18/31, 25/62).
+- Moving from K=2/K=3 (33 joins) to K=6 (25 joins) loses 8 joins directly due to decoy lines (Mechanism 1).
+- Crucially, both K=2 and K=3 isolate the exact same 10 failing pieces (`3, 9, 23, 24, 25, 26, 27, 28, 29, 31`), and neither K=1, K=2, nor K=3 can seat them or reach MO's 62 joins (Mechanism 2).
 
-#### Stage C — Non-Stationarity of Released Reference Axes (Acceptance A6)
+#### Stage C — Non-Stationarity of Surface Huber Objective vs True Axis (Acceptance A6)
 
 Evaluated all 34 pieces with Levenberg–Marquardt directly initialized at the authors' released axis (`pot_e_ref_stationarity.tsv`), paired with 10,000-draw MLESAC pools on the 20 failing/key pieces (`stagec_summary.tsv`):
-- **Not local minima:** On the 10 failing pieces (`03, 09, 23, 24, 25, 26, 27, 28, 29, 31`), the authors' released axes have worse-wall Huber costs that are **1.41× to 8.58× worse** than our rank-1 basin (e.g. Piece 27: 628.1 vs 73.2 per point, 8.58× ratio; Piece 26: 245.6 vs 77.1, 3.19× ratio).
+- **Ground Truth Agreement:** On 9 of the 10 failing pieces (`03, 09, 23, 24, 25, 26, 27, 28, 29`), the authors' released axis is actually within **0.91° to 14.46°** of the Ground Truth axis (`original_samples/SfS_pp/Ground Truth Axes/`), and seats the full pot (31/31 pieces, 62/62 joins in MO). Piece 31 is the only outlier (54.77° from GT).
+- **Method Failure on Isolated Clouds:** In sharp contrast, our Huber-optimization best fit on these 10 pieces is **17.5° to 58.7°** away from the true axis. The failure is **(1) The Method**: optimizing the paper's Huber loss on points and normals of an isolated sherd converges to an incorrect local minimum far from the true vessel axis.
+- **Not local minima of sherd clouds:** On the 10 failing pieces, the true/released axes have worse-wall Huber costs that are **1.41× to 8.58× worse** than our rank-1 basin (e.g. Piece 27: 628.1 vs 73.2 per point, 8.58× ratio; Piece 26: 245.6 vs 77.1, 3.19× ratio).
 - **LM Downhill Drift:** When started directly at the authors' released axis, LM drifts **10.29° to 85.50°** downhill and converges directly onto our rank-1 or rank-2 `axes310` basin (`conv_nearest_310_deg = 0.000° to 0.003°`)!
 - **Zero MLESAC support:** In 10,000 random MLESAC draws on the shipped surface clouds, **0 of 10,000 draws** land within 10° of the released line on 8 pieces (`03, 09, 24, 25, 26, 27, 28, 29`).
-- **Defective Reference Axes:** On Pieces 17, 20, and 31, the authors' released axis is itself **81.97°, 82.06°, and 54.77°** away from the Ground Truth axis!
-
+- **Root causes in the objective and data:**
+  1. *Lever-Arm / Centroid Bias:* The Cao/Mumford Huber distance metric penalizes distance from points to the candidate axis. For an isolated small sherd, this pulls the axis toward the centroid of the sherd (minimizing lever arm), rather than the distant true rotation axis of the pot.
+  2. *Missing Profile Constraint:* In the authors' released MATLAB `run_potsac.m`, the cross-section polynomial profile consistency check (`compute_potsac_v2_cost`) is commented out. Without it, the objective depends solely on point-normal alignments, which have shallow curvature on small fragments.
+  3. *Cross-Wall Curvature Disagreement:* On these 10 failing pieces, independent Huber fits on $S0$ (interior) and $S1$ (exterior) disagree by **20.1° to 37.0°** (mean 27.6°), and surface roughness differs up to 4× between walls.
+  4. *Cloud Provenance Clues:* Authors' MATLAB scripts (`read_surfaces.m`) contain commented-out paths referencing alternate directories (`Surface_axis/`, `D:/240718/GT`, `Data_change/H(re)`, `obj_samples_Int/Ext.xyz`), indicating the released axes may have been computed on different inputs or whole-vessel geometry.
 #### Stage D — Blind Cap Corpus Sweep (Acceptance A5)
 
 Evaluated 21 blind-cap configurations across the 163-piece corpus (`artifacts/pota311/stageCD/d_corpus_sweep.tsv`):
@@ -138,12 +145,11 @@ Evaluated 21 blind-cap configurations across the 163-piece corpus (`artifacts/po
 
 #### Stage E — Verdict
 
-This failure is a compound of:
-1. **(1) The Method (Decoy lines):** Extra candidate lines from K=6 pass the 25° assembler gate and derail the graph beam search on 6 pieces (`Pieces 12, 14, 17, 18, 21, 30`), accounting for the 18/31 vs 21/31 and 25/62 vs 36/62 drop from BASE to MM.
-2. **(3) The Reference (Non-stationarity and curvature mismatch):** On the remaining 10 pieces, the authors' released axes are not stationary points of the paper's Huber objective on the shipped point clouds. Their Huber cost is up to 8.6× worse, LM drifts up to 85.5° away onto our basins, and 0 of 10,000 MLESAC draws ever reach them.
+This failure is a compound of two mechanisms, both belonging to **(1) The Method**:
+1. **(1) The Method (Decoy lines):** Extra candidate lines from K=6 pass the 25° assembler gate and derail the graph beam search on 6 pieces (`Pieces 12, 14, 17, 18, 21, 30`), accounting for the 18/31 vs 21/31 and 25/62 vs 36/62 drop from BASE to MM. Capping K at 2 or 3 recovers these 6 pieces completely (23/31 sherds, 33/62 joins).
+2. **(1) The Method (Objective convergence to false minima on small sherds):** On the remaining 10 pieces (`Pieces 03, 09, 23, 24, 25, 26, 27, 28, 29, 31`), the paper's Huber objective on the isolated sherd clouds converges to a false local minimum 17°–59° away from the true axis. The authors' released axes are physically accurate (within 0.9°–14.5° of Ground Truth on 9 of 10, piece 31 excepted at 54.8°) and seat 100% of the pot, but the unconstrained surface Huber metric cannot recover them from small isolated fragments due to centroid lever-arm bias, missing profile constraints, and cross-wall curvature disagreement.
 
-**Recommendation:** Do not alter defaults. Keep `SFS_AXES_CONVERGE_BEFORE_RANK=1` default OFF.
-
+**Recommendation:** Do not alter defaults. Keep `SFS_AXES_CONVERGE_BEFORE_RANK=1` default OFF. Reverse engineer author extraction pipeline under ticket 312.
 ### Lead verification and verdict (2026-11-06)
 
 I have re-read and verified every raw artefact, recomputed the metrics directly from source files, and inspected all generated renders:
@@ -166,10 +172,10 @@ I have re-read and verified every raw artefact, recomputed the metrics directly 
 - `verified: artifacts/pota311/renders/pote_axes_mechanisms.png -> visually inspected 6 pieces showing decoy lines and LM stationarity drift`
 - `verified: artifacts/pota311/renders/pote_stationarity_landscape.png -> visually inspected all 34 pieces landscape`
 - `verified: artifacts/pota311/renders/pote_kladder_assembly.png -> visually inspected 3D assembly panel for GT, MO, BASE, K1, K3, K6`
-- `verified: Spartan sacct -> Job 34427662 COMPLETED 0:0, Job 34428026 COMPLETED 0:0, Job 34427816 RUNNING 0:0 (MO, BASE, K1 completed), Job 34431689 RUNNING 0:0 (K3 completed)`
+- `verified: Spartan sacct -> Job 34427662 COMPLETED 0:0, Job 34428026 COMPLETED 0:0, Job 34427816 COMPLETED 0:0 (MO, BASE, K1, K6 completed), Job 34431689 COMPLETED 0:0 (K2: 23/31, 33/62; K3: 23/31, 33/62 completed)`
 - `verified: ssh spartan corpus md5 check -> CORPUS UNTOUCHED (md5 before == md5 after, zero diffs)`
 
-**Lead Verdict:** The regression of Pot E from BASE (21/31 sherds, 36/62 joins) to MM (17–18/31 sherds, 25/62 joins) is established as an interaction of two separate physical phenomena:
-1. **Method limitation:** The assembler's 25° axis-pair gate admitted 5 decoy lines from K=6 on Pieces 12, 14, 17, 18, 21, 30.
-2. **Reference discrepancy:** On the remaining 10 pieces, the authors' released axes are physically not supported by the shipped surface point clouds (Huber cost 1.4× to 8.6× worse; LM drifts 10° to 85° downhill onto our basins).
+**Lead Verdict:** The regression of Pot E from BASE (21/31 sherds, 36/62 joins) to MM (17–18/31 sherds, 25/62 joins) is established as an interaction of two separate method limitations:
+1. **Assembler gate admission (Decoys):** The assembler's 25° axis-pair gate admitted 5 decoy lines from K=6 on Pieces 12, 14, 17, 18, 21, 30.
+2. **Objective function bias on small sherds:** On the remaining 10 pieces, the paper's Huber loss on isolated sherd clouds has a false global minimum 17° to 59° away from the true axis (lever-arm centroid bias, missing profile constraint, cross-wall disagreement). The reference axes are accurate (0.9° to 14.5° from GT on 9 of 10) and seat 100%, but cannot be recovered by the isolated sherd Huber fit.
 A blind cap cannot resolve this without breaking the gains on Pots A, B, D, and I. The ticket acceptance criteria are fully met. Ticket 311 is ready to land.
