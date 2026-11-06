@@ -41,6 +41,16 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-06, ticket 311 — why Pot E regressed under the axis rule: decoy lines break 6 pieces, but 10 fail because the authors' released axes are physically not stationary points of the shipped point clouds.**
+
+Pot E is the one pot where ticket 310's axis rule regressed (from 21/31 sherds, 36/62 joins in 308 BASE down to 17–18/31 sherds, 25/62 joins in 310 MM), despite the authors' released axes seating all 31 pieces and 62 joins (MO control). Dissecting this on Spartan across Stages A–E established two distinct physical mechanisms:
+
+1. **Mechanism 1 (The Method — Decoys):** On 6 pieces (`Pieces 12, 14, 17, 18, 21, 30`) that passed in BASE but failed in MM, the rank-1 axis was good (e.g. Piece 18 is 0.52° from released), but K=6 emitted up to 5 decoy lines (e.g. perpendicular lines at 88°–89°) that passed the assembler's 25° axis-pair gate (`class/feature_matching.cpp:1715`), creating false graph expansions that derailed beam search. The K ladder proves this: capping at K=3 recovers 23/31 sherds and 33/62 joins (beating BASE's 21/31 and K1's 18/31).
+2. **Mechanism 2 (The Reference — Non-stationarity and data curvature mismatch):** On the remaining 10 failing pieces (`Pieces 03, 09, 23, 24, 25, 26, 27, 28, 29, 31`), BASE, K1, and MM all fail with 0 joins. Here, the authors' released axes are **not local minima** of the paper's Huber objective on the shipped point clouds: their Huber cost is **1.41× to 8.58× worse** than our rank-1 basin. Initialized directly at the authors' axis, Levenberg–Marquardt drifts **10.29° to 85.50°** downhill and converges (0.000° to 0.003°) directly onto our rank-1 or rank-2 basin. In a 10,000-draw MLESAC pool on the surface data, **0 of 10,000 draws** ever land within 10° of the authors' released line on 8 pieces (`03, 09, 24, 25, 26, 27, 28, 29`). On Pieces 17, 20, and 31, the authors' released axis is itself 81.97°, 82.06°, and 54.77° away from Ground Truth.
+3. **Why a blind cap is not a fix:** Sweeping 21 cap configurations over the 163-piece corpus showed that any blind cap (capping K=1 or imposing Huber cost-ratio thresholds) severely degrades the rest of the corpus: K=1 drops corpus coverage within 5° from 84/163 down to 65/163 and drops Pot A from 6/8 down to 2/8 (destroying ticket 310's 8/8 + 15/15 seating).
+
+Therefore, no blind cap should be applied. `SFS_AXES_CONVERGE_BEFORE_RANK=1` remains default OFF. The provenance of all 34 pieces is documented (Pieces 32–34 are dropped by `SHARD_NUMBER 31` and missing GT/breaklines, Piece 34 having only 42 dots). Corpus untouched (md5 verified).
+
 **2026-11-06, ticket 310 — the seating axis is already in the file in 13 seeds of 24 and is first in none: the
 pick was wrong, not the geometry. Ranking every draw's refined basins by the worse wall seats 9 Pot A repeats of
 10, buys 4 pots of 9 and costs 2.**

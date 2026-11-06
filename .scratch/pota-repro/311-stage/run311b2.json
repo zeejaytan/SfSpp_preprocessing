@@ -1,0 +1,12 @@
+{
+  "runid": "20261106-0624_3695976_t311b2-kladder-K23",
+  "ticket": "311",
+  "stage": "B (companion): Pot E K2 & K3 on 4 dedicated 12-CPU slices",
+  "commit": "3695976",
+  "pot": "E",
+  "named": 31,
+  "np": 31,
+  "floor": 50,
+  "arms": ["E_K2", "E_K3"],
+  "repeats": 2
+}
