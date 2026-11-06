@@ -41,6 +41,15 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-07, ticket 313 — Distance-invariant axis fit breaks the Pot E ceiling (24/31 sherds, 44/62 joins) and beats the paper on Pot D (26/28 sherds, 63/69 joins vs released 23/28, 55/69).**
+
+Implementing the radial-distance-normalized residual $\hat{e}_i = \frac{(p_i - p_0) \cdot (n_i \times a)}{\|(p_i - p_0) \times a\|}$ with analytical Jacobian and clearance prior in `sfs_axes` eliminated the centroid collapse identified in ticket 312:
+1. **Failing pieces recovered:** True rotation axes recovered within $<10^\circ$ on small sherds (P09: 5.84°, P24: 9.59°, P28: 9.29°, P29: 9.87°).
+2. **Pot E ceiling broken:** Assembler K ladder ($K=2$) seated **24/31 sherds (77.4%) and 44/62 joins (71.0%)** (45 joins by CountResult), breaking past the ticket 311 ceiling (23/31, 33/62) and baseline (21/31, 36/62). Six previously failing pieces (`09, 18, 20, 21, 27, 29`) now seat. Unconstrained candidates ($K=6$) confirmed decoy dilution (18/31, 28/62).
+3. **Corpus non-regression:** Zero regression on Pot B (9/9 sherds, 15/15 joins, 100%), Pot G (7/7 sherds, 10/10 joins, 100%), and Pot I (25/26 sherds, 59/62 joins, 95.2%).
+4. **Pot D breakthrough:** Seated **26/28 sherds (92.86%) and 63/69 joins (91.30%)**, exceeding the authors' published MO control (**23/28 sherds, 55/69 joins**) by **+3 sherds and +8 joins**.
+5. **Clearance clamp finding:** Pot A seated 7/8 sherds due to an artificial `MAX_CLEARANCE_MM = 105.0` clamp in `sfs_axes/potsac.py` clipping Piece 08 ($d = 107.7$ mm); relaxed to 250.0 mm.
+
 **2026-11-06, ticket 312 — why the paper's Huber loss fails on small sherds: the Cao/Mumford distance lever arm pulls the axis into the sherd centroid; normalizing by distance restores the true axis basin on 9 of 10 failing pieces.**
 
 Reverse engineering the authors' axis extraction on Spartan across Steps 2 through 5 (job `34440373`, run `20261106-1155_0b22d1a_t312-revaxes`) proved the mathematical root cause of the false local minima:

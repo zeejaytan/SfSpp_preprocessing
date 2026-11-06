@@ -19,6 +19,12 @@ import os
 import numpy as np
 
 from .cao import compute_biaxial_cao_error
+from .normalized import (
+    DEFAULT_CLEARANCE_MM,
+    centroid_distance,
+    refine_axis_normalized,
+    worst_wall_normalized_cost,
+)
 from .pottmann import compute_pottmann_axis
 from .refine import refine_axis
 from .robust import apply_robustifier, robustifier_gm, robustifier_huber
@@ -155,6 +161,26 @@ CONVERGE_BEFORE_RANK = os.environ.get(
 # with a very scattered pool cannot blow up the run time. Basins are dropped by
 # their stage-1 worst-wall cost, i.e. only after the cheap score has been used.
 BASIN_REFINE_MAX = int(os.environ.get("SFS_AXES_BASIN_REFINE_MAX", "32"))
+
+# Ticket 313: distance-invariant normal alignment loss and clearance prior.
+# Default ON: eliminates centroid lever-arm bias proven in ticket 312.
+NORMALIZED = os.environ.get("SFS_AXES_NORMALIZED", "1") not in ("", "0")
+MAX_CLEARANCE_MM = float(os.environ.get("SFS_AXES_MAX_CLEARANCE_MM", "250.0"))
+
+
+def is_base_sherd(X, vt):
+    """Detect whether a piece is a base fragment containing the vessel bottom."""
+    a = vt[:3] / np.linalg.norm(vt[:3])
+    p0 = vt[3:6] - (vt[3:6] @ a) * a
+    P = X[:3, :]
+    N = X[3:6, :]
+    dp = P - p0[:, None]
+    r = np.linalg.norm(dp - a[:, None] * (a @ dp)[None, :], axis=0)
+    near = r < 20.0
+    if np.sum(near) < 50:
+        return False
+    axial = np.abs(a @ N[:, near])
+    return bool(np.mean(axial) > 0.80)
 
 
 def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
@@ -393,21 +419,19 @@ def _cluster_union(V, cos=DEDUP_COS):
 # constant; the only inputs are the piece's own two surfaces and the draws' own optima.
 # SFS_AXES_CONVERGE_BEFORE_RANK (default off) reorders 2 and 5; see the switch above.
 def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
-                     verbose=False):
+                     verbose=False, normalized=None):
     """Deterministic union of the Pottmann basins over S seeds (ticket 306).
 
     C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
     seeds: RNG seeds, an int count or an iterable, default range(UNION_SEEDS).
     max_candidates: cap on returned lines, default UNION_MAX.
+    normalized: whether to use distance-invariant normal alignment loss and
+    clearance prior (ticket 313, default NORMALIZED).
     Returns vt (6, K), 1 <= K <= max_candidates, best (worst-wall cost) first.
-
-    Rule: every draw of every seed is refined on the sampled cloud and the whole
-    set is clustered at 10 deg in ascending GM-cost order, so each real basin
-    contributes its GM-best representative and no basin is lost to the top-10
-    cut or to the cost prune. Survivors are ranked by the worst wall's Huber
-    cost per point, capped, then stage-2 refined on all points and re-clustered
-    and re-ranked. Pure function of the clouds and the seeds.
     """
+    if normalized is None:
+        normalized = NORMALIZED
+
     C0 = np.asarray(C0, dtype=float)
     S1 = C0 if C1 is None else np.asarray(C1, dtype=float)
     C = C0 if C1 is None else np.concatenate([C0, S1], axis=1)
@@ -421,8 +445,85 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
     max_candidates = UNION_MAX if max_candidates is None else int(max_candidates)
     Cd = C[:, 0:n:step]
     if verbose:
-        print("[POTSAC-UNION] num_points=%d, step=%d (downsampled to %d), seeds=%d"
-              % (n, step, Cd.shape[1], len(seeds)))
+        print("[POTSAC-UNION] num_points=%d, step=%d (downsampled to %d), seeds=%d, normalized=%s"
+              % (n, step, Cd.shape[1], len(seeds), bool(normalized)))
+
+    if normalized:
+        nd = Cd.shape[1]
+        all_cands = []
+        for seed in seeds:
+            rng = np.random.default_rng(seed)
+            for _ in range(MAX_ITERS):
+                kidx = rng.choice(nd, SAMPLE_SET, replace=False)
+                Cs = Cd[:, kidx].copy()
+                mCs = Cs[:3, :].mean(axis=1)
+                Cs[:3, :] -= mCs[:, None]
+                scale = float(np.mean(np.abs(Cs)))
+                if scale < 1e-8:
+                    continue
+                Cs[:3, :] /= scale
+                try:
+                    vt = compute_pottmann_axis(Cs)
+                    vt[3:6] = vt[3:6] * scale + mCs
+                    vt[3:6] -= (vt[:3] @ vt[3:6]) * vt[:3]
+                    all_cands.append(vt)
+                except Exception:
+                    pass
+        if not all_cands:
+            return np.zeros((6, 1))
+        V = np.column_stack(all_cands)
+        reps, sizes = _cluster_union(V)
+
+        # Physical clearance window and axial decoy filtering
+        valid_reps = []
+        for j in range(reps.shape[1]):
+            cand_axis = reps[:, j]
+            d_c = centroid_distance(cand_axis, C)
+            base = is_base_sherd(C, cand_axis)
+            if not base and (d_c < DEFAULT_CLEARANCE_MM or d_c > MAX_CLEARANCE_MM):
+                continue
+            a_cand = cand_axis[:3] / np.linalg.norm(cand_axis[:3])
+            mean_axial = np.mean(np.abs(a_cand @ C[3:6, :]))
+            if not base and mean_axial > 0.60:
+                continue
+            valid_reps.append(cand_axis)
+
+        if not valid_reps:
+            valid_reps = [reps[:, 0]]
+
+        V_valid = np.column_stack(valid_reps)
+        score = np.array([worst_wall_normalized_cost(
+            V_valid[:, j], C0, S1,
+            min_clearance_mm=(0.0 if is_base_sherd(C, V_valid[:, j]) else DEFAULT_CLEARANCE_MM))
+            for j in range(V_valid.shape[1])])
+        order = np.argsort(score, kind="stable")
+        V = V_valid[:, order[:BASIN_REFINE_MAX]]
+
+        refined = []
+        for j in range(V.shape[1]):
+            orig_cand = V[:, j]
+            orig_cost = worst_wall_normalized_cost(orig_cand, C0, S1, min_clearance_mm=0.0)
+            v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
+            d_ref = centroid_distance(v_ref, C)
+            base = is_base_sherd(C, v_ref)
+            ref_cost = worst_wall_normalized_cost(v_ref, C0, S1, min_clearance_mm=0.0)
+            if base or (DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and ref_cost <= orig_cost * 1.05):
+                refined.append(v_ref)
+            else:
+                refined.append(orig_cand)
+
+        V_ref = np.column_stack(refined)
+        reps, sizes2 = _cluster_union(V_ref)
+        score = np.array([worst_wall_normalized_cost(
+            reps[:, j], C0, S1,
+            min_clearance_mm=(0.0 if is_base_sherd(C, reps[:, j]) else DEFAULT_CLEARANCE_MM))
+            for j in range(reps.shape[1])])
+        order = np.argsort(score, kind="stable")
+        if verbose:
+            print("[POTSAC-UNION-NORMALIZED] kept %d, costs %s"
+                  % (reps.shape[1], np.round(score[order], 4).tolist()))
+        return reps[:, order[:max_candidates]]
+
     cand = []
     for seed in seeds:
         vt = compute_axis_of_symmetry(Cd, rng=np.random.default_rng(seed))[0]
