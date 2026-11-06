@@ -6,7 +6,9 @@
 
 **Blocked by:** none (ticket 312 landed; root cause proven to be Cao/Mumford distance lever-arm bias)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** worker sfs313 (2026-11-06)
+**Branch:** 313-distance-invariant-axis-fit, in /c/PR/worktrees/sfs/313
 
 **Worker:** unassigned
 
@@ -15,8 +17,6 @@
 **Hand-over:** worker with Spartan access; needs `sfs_axes` Python package, Spartan Slurm access, and C++ SIF assembler harness. Judgement stays with the lead.
 
 <!-- When work starts: **Status:** in-progress, plus
-**Working in:** <project thread title / laptop chat / Spartan job ID> (<date>)
-**Branch:** 313-distance-invariant-axis-fit, in C:/PR/worktrees/SfSpp_preprocessing/313 (code tickets only; scripts/ticket_start.sh writes all three lines) -->
 
 ## Context & The Problem to Solve
 
