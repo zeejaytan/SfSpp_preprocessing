@@ -19,9 +19,12 @@ import os
 import numpy as np
 
 from .cao import compute_biaxial_cao_error
+from .io_axes import direction_angle_deg
 from .normalized import (
     DEFAULT_CLEARANCE_MM,
     centroid_distance,
+    is_base_fragment,
+    normalized_huber_cost,
     refine_axis_normalized,
     worst_wall_normalized_cost,
 )
@@ -170,17 +173,7 @@ MAX_CLEARANCE_MM = float(os.environ.get("SFS_AXES_MAX_CLEARANCE_MM", "250.0"))
 
 def is_base_sherd(X, vt):
     """Detect whether a piece is a base fragment containing the vessel bottom."""
-    a = vt[:3] / np.linalg.norm(vt[:3])
-    p0 = vt[3:6] - (vt[3:6] @ a) * a
-    P = X[:3, :]
-    N = X[3:6, :]
-    dp = P - p0[:, None]
-    r = np.linalg.norm(dp - a[:, None] * (a @ dp)[None, :], axis=0)
-    near = r < 20.0
-    if np.sum(near) < 50:
-        return False
-    axial = np.abs(a @ N[:, near])
-    return bool(np.mean(axial) > 0.80)
+    return is_base_fragment(X, vt)
 
 
 def compute_axis_of_symmetry(C, rng=None, max_iters=MAX_ITERS, verbose=False):
@@ -436,6 +429,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
     S1 = C0 if C1 is None else np.asarray(C1, dtype=float)
     C = C0 if C1 is None else np.concatenate([C0, S1], axis=1)
     n = C.shape[1]
+    if normalized and step is None:
+        step = 10
     step = effective_step(n, step)
     if seeds is None:
         seeds = range(UNION_SEEDS)
@@ -474,55 +469,115 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         V = np.column_stack(all_cands)
         reps, sizes = _cluster_union(V)
 
-        # Physical clearance window and axial decoy filtering
+        # Invariant (Ticket 314 Stage A): detect whether sherd contains a cylinder wall
+        has_cyl_wall = False
+        for j in range(reps.shape[1]):
+            cand = reps[:, j]
+            d_c = centroid_distance(cand, C)
+            a_cand = cand[:3] / np.linalg.norm(cand[:3])
+            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+            if d_c >= DEFAULT_CLEARANCE_MM and mean_ax <= 0.50 and sizes[j] >= 5:
+                has_cyl_wall = True
+                break
+
+        # Physical clearance window and axial decoy filtering (Ticket 314 Stage A)
         valid_reps = []
+        valid_sizes = []
         for j in range(reps.shape[1]):
             cand_axis = reps[:, j]
             d_c = centroid_distance(cand_axis, C)
-            base = is_base_sherd(C, cand_axis)
-            if not base and (d_c < DEFAULT_CLEARANCE_MM or d_c > MAX_CLEARANCE_MM):
-                continue
             a_cand = cand_axis[:3] / np.linalg.norm(cand_axis[:3])
             mean_axial = np.mean(np.abs(a_cand @ C[3:6, :]))
-            if not base and mean_axial > 0.60:
-                continue
+            if has_cyl_wall:
+                if d_c < DEFAULT_CLEARANCE_MM:
+                    continue
+                if mean_axial > 0.50:
+                    continue
+                if d_c > MAX_CLEARANCE_MM:
+                    continue
+            else:
+                if d_c > MAX_CLEARANCE_MM:
+                    continue
             valid_reps.append(cand_axis)
+            valid_sizes.append(sizes[j])
 
         if not valid_reps:
             valid_reps = [reps[:, 0]]
+            valid_sizes = [1]
 
         V_valid = np.column_stack(valid_reps)
-        score = np.array([worst_wall_normalized_cost(
-            V_valid[:, j], C0, S1,
-            min_clearance_mm=(0.0 if is_base_sherd(C, V_valid[:, j]) else DEFAULT_CLEARANCE_MM))
-            for j in range(V_valid.shape[1])])
-        order = np.argsort(score, kind="stable")
+        valid_sizes = np.array(valid_sizes)
+
+        def r_prior(d):
+            if d < 40.0:
+                return 0.01 * (40.0 - d)
+            elif d > 120.0:
+                return 0.0005 * (d - 120.0) ** 2
+            return 0.0
+
+        scores = []
+        for j in range(V_valid.shape[1]):
+            cand = V_valid[:, j]
+            d_c = centroid_distance(cand, C)
+            c0 = normalized_huber_cost(cand, C0)
+            c1 = normalized_huber_cost(cand, S1)
+            c = 0.5 * (c0 + c1)
+            pen = r_prior(d_c) if has_cyl_wall else 0.0
+            a_cand = cand[:3] / np.linalg.norm(cand[:3])
+            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+            ax_pen = 0.002 * mean_ax
+            score = (c + pen + ax_pen) / (valid_sizes[j] ** 0.12)
+            scores.append(score)
+
+        order = np.argsort(scores, kind="stable")
         V = V_valid[:, order[:BASIN_REFINE_MAX]]
+        surv_sizes = valid_sizes[order[:BASIN_REFINE_MAX]]
 
         refined = []
+        ref_sizes = []
         for j in range(V.shape[1]):
             orig_cand = V[:, j]
-            orig_cost = worst_wall_normalized_cost(orig_cand, C0, S1, min_clearance_mm=0.0)
-            v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
+            orig_cost = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
+            v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
+            drift = direction_angle_deg(v_ref[:3], orig_cand[:3])
             d_ref = centroid_distance(v_ref, C)
-            base = is_base_sherd(C, v_ref)
-            ref_cost = worst_wall_normalized_cost(v_ref, C0, S1, min_clearance_mm=0.0)
-            if base or (DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and ref_cost <= orig_cost * 1.05):
+            a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
+            mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
+            ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+            if drift <= 8.0 and (not has_cyl_wall or (DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50)) and ref_cost <= orig_cost:
                 refined.append(v_ref)
             else:
                 refined.append(orig_cand)
+            ref_sizes.append(surv_sizes[j])
 
-        V_ref = np.column_stack(refined)
-        reps, sizes2 = _cluster_union(V_ref)
-        score = np.array([worst_wall_normalized_cost(
-            reps[:, j], C0, S1,
-            min_clearance_mm=(0.0 if is_base_sherd(C, reps[:, j]) else DEFAULT_CLEARANCE_MM))
-            for j in range(reps.shape[1])])
-        order = np.argsort(score, kind="stable")
+        final_scored = []
+        for j in range(len(refined)):
+            cand = refined[j]
+            d_c = centroid_distance(cand, C)
+            c0 = normalized_huber_cost(cand, C0)
+            c1 = normalized_huber_cost(cand, S1)
+            c = 0.5 * (c0 + c1)
+            pen = r_prior(d_c) if has_cyl_wall else 0.0
+            a_cand = cand[:3] / np.linalg.norm(cand[:3])
+            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+            ax_pen = 0.002 * mean_ax
+            score = (c + pen + ax_pen) / (ref_sizes[j] ** 0.12)
+            final_scored.append((score, cand))
+
+        final_scored.sort(key=lambda x: x[0])
+        deduped = []
+        for sc, cand in final_scored:
+            is_dup = False
+            for kept in deduped:
+                if direction_angle_deg(cand[:3], kept[:3]) < 15.0:
+                    is_dup = True
+                    break
+            if not is_dup:
+                deduped.append(cand)
+
         if verbose:
-            print("[POTSAC-UNION-NORMALIZED] kept %d, costs %s"
-                  % (reps.shape[1], np.round(score[order], 4).tolist()))
-        return reps[:, order[:max_candidates]]
+            print("[POTSAC-UNION-NORMALIZED] kept %d" % len(deduped))
+        return np.column_stack(deduped[:max_candidates])
 
     cand = []
     for seed in seeds:
