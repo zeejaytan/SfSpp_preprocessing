@@ -516,7 +516,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 a_cand = cand[:3] / np.linalg.norm(cand[:3])
                 mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
                 sc = (c + r_prior(d_c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
-                cyl_scored.append((sc, c, cw, cand))
+                cyl_scored.append((sc, c, cw, cand, s_cyl[j]))
             cyl_scored.sort(key=lambda x: x[0])
 
         # Branch 2: Conical / sloped shoulder candidates (Ticket 315: 50-iter refine, d_ref in [25, 105], mean_ax_ref in (0.50, 0.925])
@@ -543,21 +543,31 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
             if base or (DEFAULT_CLEARANCE_MM <= d_ref <= 105.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095):
                 sc = (c_ref + r_prior(d_ref) + 0.002 * mean_ax_ref) / (sz ** 0.12)
-                cone_scored.append((sc, c_ref, cw_ref, v_ref))
+                cone_scored.append((sc, c_ref, cw_ref, v_ref, sz))
         cone_scored.sort(key=lambda x: x[0])
 
-        # Combine: if best cone candidate has strictly lower raw cost c than best cyl candidate (or cyl is weak), promote cone candidate to Rank 0!
+        # Combine: if best cone candidate has solid support (sz >= 50 and c < 0.95 * cyl_c or cw > 0.0085) or decisive cost (c < 0.80 * cyl_c), promote to Rank 0!
+        cone_promoted = False
+        if cone_scored:
+            c_cone, cw_cone, v_cone, sz_cone = cone_scored[0][1], cone_scored[0][2], cone_scored[0][3], cone_scored[0][4]
+            if not cyl_scored:
+                cone_promoted = True
+            elif sz_cone >= 50 and (c_cone < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085):
+                cone_promoted = True
+            elif c_cone < cyl_scored[0][1] * 0.80:
+                cone_promoted = True
+
         combined = []
-        if cone_scored and (not cyl_scored or cone_scored[0][1] < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085):
+        if cone_promoted:
             combined.append(cone_scored[0][3])
-            for sc, c, cw, cand in cyl_scored:
+            for sc, c, cw, cand, sz in cyl_scored:
                 combined.append(cand)
-            for sc, c, cw, cand in cone_scored[1:]:
+            for sc, c, cw, cand, sz in cone_scored[1:]:
                 combined.append(cand)
         else:
-            for sc, c, cw, cand in cyl_scored:
+            for sc, c, cw, cand, sz in cyl_scored:
                 combined.append(cand)
-            for sc, c, cw, cand in cone_scored:
+            for sc, c, cw, cand, sz in cone_scored:
                 combined.append(cand)
 
         deduped = []
