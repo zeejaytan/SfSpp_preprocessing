@@ -469,45 +469,6 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         V = np.column_stack(all_cands)
         reps, sizes = _cluster_union(V)
 
-        # Invariant (Ticket 314 Stage A): detect whether sherd contains a cylinder wall
-        has_cyl_wall = False
-        for j in range(reps.shape[1]):
-            cand = reps[:, j]
-            d_c = centroid_distance(cand, C)
-            a_cand = cand[:3] / np.linalg.norm(cand[:3])
-            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-            if d_c >= DEFAULT_CLEARANCE_MM and mean_ax <= 0.50 and sizes[j] >= 5:
-                has_cyl_wall = True
-                break
-
-        # Physical clearance window and axial decoy filtering (Ticket 314 Stage A)
-        valid_reps = []
-        valid_sizes = []
-        for j in range(reps.shape[1]):
-            cand_axis = reps[:, j]
-            d_c = centroid_distance(cand_axis, C)
-            a_cand = cand_axis[:3] / np.linalg.norm(cand_axis[:3])
-            mean_axial = np.mean(np.abs(a_cand @ C[3:6, :]))
-            if has_cyl_wall:
-                if d_c < DEFAULT_CLEARANCE_MM:
-                    continue
-                if mean_axial > 0.50:
-                    continue
-                if d_c > MAX_CLEARANCE_MM:
-                    continue
-            else:
-                if d_c > MAX_CLEARANCE_MM:
-                    continue
-            valid_reps.append(cand_axis)
-            valid_sizes.append(sizes[j])
-
-        if not valid_reps:
-            valid_reps = [reps[:, 0]]
-            valid_sizes = [1]
-
-        V_valid = np.column_stack(valid_reps)
-        valid_sizes = np.array(valid_sizes)
-
         def r_prior(d):
             if d < 40.0:
                 return 0.01 * (40.0 - d)
@@ -515,65 +476,96 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 return 0.0005 * (d - 120.0) ** 2
             return 0.0
 
-        scores = []
-        for j in range(V_valid.shape[1]):
-            cand = V_valid[:, j]
+        # Branch 1: Cylindrical wall candidates (Ticket 314: mean_ax <= 0.50, guarded 20-iter refine)
+        cyl_reps, cyl_sizes = [], []
+        for j in range(reps.shape[1]):
+            cand = reps[:, j]
             d_c = centroid_distance(cand, C)
-            c0 = normalized_huber_cost(cand, C0)
-            c1 = normalized_huber_cost(cand, S1)
-            c = 0.5 * (c0 + c1)
-            pen = r_prior(d_c) if has_cyl_wall else 0.0
             a_cand = cand[:3] / np.linalg.norm(cand[:3])
             mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-            ax_pen = 0.002 * mean_ax
-            score = (c + pen + ax_pen) / (valid_sizes[j] ** 0.12)
-            scores.append(score)
+            if DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and mean_ax <= 0.50:
+                cyl_reps.append(cand)
+                cyl_sizes.append(sizes[j])
 
-        order = np.argsort(scores, kind="stable")
-        V = V_valid[:, order[:BASIN_REFINE_MAX]]
-        surv_sizes = valid_sizes[order[:BASIN_REFINE_MAX]]
+        cyl_scored = []
+        if cyl_reps:
+            V_cyl = np.column_stack(cyl_reps)
+            s_cyl = np.array(cyl_sizes)
+            pre_scores = []
+            for j in range(V_cyl.shape[1]):
+                cand = V_cyl[:, j]
+                d_c = centroid_distance(cand, C)
+                c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
+                a_cand = cand[:3] / np.linalg.norm(cand[:3])
+                mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+                pre_scores.append((c + r_prior(d_c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
+            order = np.argsort(pre_scores, kind="stable")[:BASIN_REFINE_MAX]
+            for j in order:
+                orig_cand = V_cyl[:, j]
+                orig_cost = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
+                v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
+                drift = direction_angle_deg(v_ref[:3], orig_cand[:3])
+                d_ref = centroid_distance(v_ref, C)
+                a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
+                mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
+                ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+                cand = v_ref if (drift <= 8.0 and DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
+                d_c = centroid_distance(cand, C)
+                c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
+                cw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
+                a_cand = cand[:3] / np.linalg.norm(cand[:3])
+                mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+                sc = (c + r_prior(d_c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
+                cyl_scored.append((sc, c, cw, cand))
+            cyl_scored.sort(key=lambda x: x[0])
 
-        refined = []
-        ref_sizes = []
-        for j in range(V.shape[1]):
-            orig_cand = V[:, j]
-            orig_cost = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
-            v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
-            drift = direction_angle_deg(v_ref[:3], orig_cand[:3])
+        # Branch 2: Conical / sloped shoulder candidates (Ticket 315: 50-iter refine, d_ref in [25, 105], mean_ax_ref in (0.50, 0.925])
+        cone_pre = []
+        for j in range(reps.shape[1]):
+            cand = reps[:, j]
+            d_c = centroid_distance(cand, C)
+            base = is_base_fragment(C, cand)
+            a_cand = cand[:3] / np.linalg.norm(cand[:3])
+            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+            if base or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sizes[j] >= 50 and mean_ax <= 0.90))):
+                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if base else DEFAULT_CLEARANCE_MM))
+                cone_pre.append((cw, sizes[j], cand))
+        cone_pre.sort(key=lambda x: x[0])
+
+        cone_scored = []
+        for cw_orig, sz, orig_cand in cone_pre[:min(BASIN_REFINE_MAX, 16)]:
+            v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
             d_ref = centroid_distance(v_ref, C)
             a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
             mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
-            ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
-            if drift <= 8.0 and (not has_cyl_wall or (DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50)) and ref_cost <= orig_cost:
-                refined.append(v_ref)
-            else:
-                refined.append(orig_cand)
-            ref_sizes.append(surv_sizes[j])
+            base = is_base_fragment(C, v_ref)
+            c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+            cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
+            if base or (DEFAULT_CLEARANCE_MM <= d_ref <= 105.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095):
+                sc = (c_ref + r_prior(d_ref) + 0.002 * mean_ax_ref) / (sz ** 0.12)
+                cone_scored.append((sc, c_ref, cw_ref, v_ref))
+        cone_scored.sort(key=lambda x: x[0])
 
-        final_scored = []
-        for j in range(len(refined)):
-            cand = refined[j]
-            d_c = centroid_distance(cand, C)
-            c0 = normalized_huber_cost(cand, C0)
-            c1 = normalized_huber_cost(cand, S1)
-            c = 0.5 * (c0 + c1)
-            pen = r_prior(d_c) if has_cyl_wall else 0.0
-            a_cand = cand[:3] / np.linalg.norm(cand[:3])
-            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-            ax_pen = 0.002 * mean_ax
-            score = (c + pen + ax_pen) / (ref_sizes[j] ** 0.12)
-            final_scored.append((score, cand))
+        # Combine: if best cone candidate has strictly lower raw cost c than best cyl candidate (or cyl is weak), promote cone candidate to Rank 0!
+        combined = []
+        if cone_scored and (not cyl_scored or cone_scored[0][1] < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085):
+            combined.append(cone_scored[0][3])
+            for sc, c, cw, cand in cyl_scored:
+                combined.append(cand)
+            for sc, c, cw, cand in cone_scored[1:]:
+                combined.append(cand)
+        else:
+            for sc, c, cw, cand in cyl_scored:
+                combined.append(cand)
+            for sc, c, cw, cand in cone_scored:
+                combined.append(cand)
 
-        final_scored.sort(key=lambda x: x[0])
         deduped = []
-        for sc, cand in final_scored:
-            is_dup = False
-            for kept in deduped:
-                if direction_angle_deg(cand[:3], kept[:3]) < 15.0:
-                    is_dup = True
-                    break
-            if not is_dup:
+        for cand in combined:
+            if not any(direction_angle_deg(cand[:3], k[:3]) < 15.0 for k in deduped):
                 deduped.append(cand)
+        if not deduped:
+            deduped = [reps[:, 0]]
 
         if verbose:
             print("[POTSAC-UNION-NORMALIZED] kept %d" % len(deduped))

@@ -186,3 +186,33 @@ def test_large_radius_penalty_on_degenerate_cands():
     # Degenerate infinite-radius candidate must incur large-radius penalty
     assert cost_phys < 0.1
     assert cost_degen > cost_phys + 1.0
+
+def test_conical_shoulder_retains_true_axis_at_rank_0():
+    from sfs_axes.potsac import run_potsac_union
+
+    rng = np.random.default_rng(42)
+    # Synthetic conical sherd: slope 45 deg, radius 55 mm, 60 deg azimuth patch
+    def make_conical_patch(n=500, r0=55.0, half_h=15.0, arc=np.pi/3.0):
+        th = rng.uniform(-arc/2, arc/2, n)
+        z = rng.uniform(-half_h, half_h, n)
+        r = r0 + z
+        P = np.stack([r * np.cos(th), r * np.sin(th), z])
+        c45 = 1.0 / np.sqrt(2.0)
+        N = np.stack([c45 * np.cos(th), c45 * np.sin(th), -c45 * np.ones(n)])
+        return np.vstack([P, N])
+
+    C0 = make_conical_patch(n=500, r0=55.0)
+    S1 = make_conical_patch(n=500, r0=51.0)
+
+    # Axial mean of surface normal is ~0.707 (> 0.50)
+    mean_ax = np.mean(np.abs(C0[5, :]))
+    assert 0.65 < mean_ax < 0.75
+
+    # Run potsac candidate extraction
+    vt = run_potsac_union(C0, S1, seeds=range(3), normalized=True)
+    assert vt.shape[1] >= 1
+
+    # True axis [0, 0, 1] must be retained at Rank 0 within < 5 degrees
+    err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
+    assert err_deg < 5.0
+
