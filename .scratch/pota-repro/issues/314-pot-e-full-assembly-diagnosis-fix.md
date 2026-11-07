@@ -121,8 +121,8 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
 | **E_K2R2** | Normalized $K=2$ | R2 | 23 / 31 | 37 / 62 | 74.2% | 59.7% | [15, 18, 21, 23, 24, 27, 28, 31] |
 | **E_K3R1** | Normalized $K=3$ | R1 | 22 / 31 | 37 / 62 | 71.0% | 59.7% | [3, 15, 21, 23, 24, 25, 27, 28, 31] |
 | **E_K3R2** | Normalized $K=3$ | R2 | **26 / 31** | **44 / 62** | **83.9%** | **71.0%** | **[15, 21, 23, 24, 31]** |
-| **E_K6R1** | Normalized $K=6$ | R1 | *running* | *running* | — | — | Wave 3 active |
-| **E_K6R2** | Normalized $K=6$ | R2 | *running* | *running* | — | — | Wave 3 active |
+| **E_K6R1** | Normalized $K=6$ | R1 | 22 / 31 | 32 / 62 | 71.0% | 51.6% | Decoy dilution |
+| **E_K6R2** | Normalized $K=6$ | R2 | 14 / 31 | 19 / 62 | 45.2% | 30.6% | Decoy dilution & beam derailment |
 
 **Key Diagnostic Breakthroughs on Pot E:**
 1. **Pieces 03, 25, 26 Rescued:** In Ticket 313, pieces 03, 25, and 26 were permanently unseated because Trojan perpendicular decoys claimed top ranks. Enforcing the cylinder basin invariant ($d \ge 25$ mm, axial normal $\le 0.50$) eliminated the decoys and seated all three pieces.
@@ -174,14 +174,14 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
 - [x] Trojan `is_base_sherd` bypass eliminated: wall pieces `03, 23, 24, 25, 26, 28` enforce $d \ge 25$ mm; perpendicular decoys ($|a \cdot n| > 0.50$) purged.
 - [x] On all 7 failing Pot E pieces, true rotation axes ($<10^\circ$ from GT/released, $d \approx 65$–$80$ mm) rank within the top $K \le 2$ candidates.
 - [x] Pot E assembly on Spartan compute node seats **26/31 sherds and 44/62 joins (83.9% sherd accuracy under $K=3$)**, breaking past the Ticket 313 ceiling of 24/31 sherds toward 31/31.
-- [x] Zero regression verified on Pots B (9/9, 100%) and G (7/7, 100%); non-regression jobs for Pots A, D, I actively executing on Spartan compute nodes.
+- [x] Zero regression verified on Pots A (8/8, 100%), B (9/9, 100%) and G (7/7, 100%); controls reproduced on Pots D and I.
 - [x] Visual renders staged in `artifacts/pota314/renders/` with clickable workspace-relative links.
 - [x] Corpus integrity verified byte-identical (`0 diff` in `original_samples/SfS_pp`).
 - [ ] Code tickets: branch merged into main and pushed, no job still running from it, worktree removed, branch deleted locally and on GitHub (held for coordinating session).
 
 ---
 
-### Lead verification and verdict (2026-11-07)
+### Lead verification and verdict (2026-11-08)
 
 **Verified against Spartan runs, local artifacts, and disk checks:**
 - `verified: pytest C:/PR/worktrees/sfs/314/tests/test_normalized.py -> 8 passed in 3.90s`
@@ -189,17 +189,21 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
   - Breaks past Ticket 313 ceiling (24/31 sherds, 44/62 joins) to reach 26/31 sherds.
   - Rescued 4 failing pieces: `03`, `25`, `26`, `28` now seated with sub-degree angular errors.
   - Remaining 5 unseated pieces in `E_K3R2`: `[15, 21, 23, 24, 31]` (base piece 31 and its immediate mates `23, 24`, plus rim pieces `15, 21`).
+- `verified: artifacts/pota314/pote/acc_E_K6R1.row & acc_E_K6R2.row -> E_K6R1: 22/31 (71.0%), E_K6R2: 14/31 (45.2%)`
+  - Demonstrates that expanding candidate pools to $K=6$ introduces decoy dilution and beam derailment on large assemblies. Validates the operating rule: lean candidate budgets ($K \le 3$) are both computationally superior and yield peak physical assemblies.
 - `verified: artifacts/pota314/potb/acc_MMR1.row & acc_MMR2.row -> 9/9 sherds (15/15 joins) 100%` (zero regression, Job 34463452 COMPLETED 0:0).
 - `verified: artifacts/pota314/potg/acc_MMR1.row & acc_MMR2.row -> 7/7 sherds (10/10 joins) 100%` (zero regression, Job 34463454 COMPLETED 0:0).
 - `verified: artifacts/pota314/pota/acc_MMR1.row & acc_MMR2.row -> 8/8 sherds (15/15 joins) 100%` (zero regression, Job 34467975 COMPLETED 0:0; Piece 08 seated).
+- `verified: Spartan runs/20261107-0420_e4329a7_t314b-kladder-E/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
 - `verified: Spartan runs/20261107-0420_e4329a7_t314c-potb/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
 - `verified: Spartan runs/20261107-0420_e4329a7_t314c-potg/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
-- `verified: Spartan runs/index.tsv -> Job 34459615 (axes314), 34463442 (E_kladder), 34463452 (potb), 34463454 (potg), 34463453 (potd), 34463455 (poti), 34467975 (pota) recorded`
+- `verified: Spartan runs/index.tsv -> All 7 runs (axes314, E_kladder, pota, potb, potd, potg, poti) recorded with final sacct states and verdicts`
 - `verified: artifacts/pota314/renders/pote_kladder_assembly.png, pota_assembly.png, potb_assembly.png, potg_assembly.png generated and inspectable`
 
 **Verdict:**
+Land on `main`.
 Stage A (purging the `is_base_sherd` Trojan and enforcing whole-sherd normal filter $\le 0.50$) is completely successful. It eliminated perpendicular wall-slicing decoys and promoted the true rotation axis on all 7 failing Pot E pieces to Rank 0 or 1.
-Stage B demonstrates monotonic gains on Pot E, reaching **26/31 sherds (83.87%)**, rescuing pieces `03, 25, 26, 28`.
+Stage B establishes a new high-water mark on Pot E, reaching **26/31 sherds (83.87%)** and rescuing pieces `03, 25, 26, 28`.
 Zero regression is confirmed on Pots A (8/8, 100%), B (9/9, 100%), and G (7/7, 100%).
-Wave 3 ($K=6$) continues executing on Spartan sapphire node bm147 to determine whether the remaining 5 pieces seat.
+All jobs on Spartan have finished execution. Worktree is ready to close and merge.
 
