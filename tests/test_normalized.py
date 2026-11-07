@@ -126,3 +126,63 @@ def test_clearance_prior_penalizes_centroid_slicing():
     # False axis must incur massive clearance penalty
     assert cost_fake > 1000.0
     assert cost_true < 0.01
+
+
+def test_base_classification_rejects_perpendicular_wall_slicing():
+    rng = np.random.default_rng(202)
+    # A wall sherd at R=75 mm with small azimuth span (e.g. 20 deg) and height 40 mm
+    th = rng.uniform(-0.15, 0.15, 300)
+    z = rng.uniform(-20.0, 20.0, 300)
+    P = np.stack([75.0 * np.cos(th), 75.0 * np.sin(th), z])
+    N = np.stack([np.cos(th), np.sin(th), np.zeros(300)])
+    X = np.vstack([P, N])
+    C = np.mean(P, axis=1)
+
+    # A perpendicular axis piercing through the wall: a ~= n_wall = [1, 0, 0]
+    vt_perp = np.array([1.0, 0.0, 0.0, C[0], C[1], C[2]])
+
+    from sfs_axes.normalized import is_base_fragment
+    # Must NOT be classified as a base fragment
+    assert not is_base_fragment(X, vt_perp)
+
+
+def test_base_classification_accepts_true_base_disk():
+    rng = np.random.default_rng(303)
+    # A base disk covering the bottom of a pot: radius up to 40 mm, z in [0, 20], normals vertical
+    r = np.sqrt(rng.uniform(0.0, 40.0**2, 400))
+    th = rng.uniform(0.0, 2 * np.pi, 400)
+    z = rng.uniform(0.0, 20.0, 400)  # base floor + footring height
+    P = np.stack([r * np.cos(th), r * np.sin(th), z])
+    # Normals mostly axial: [0, 0, 1]
+    N = np.stack([rng.normal(0, 0.05, 400), rng.normal(0, 0.05, 400), np.ones(400)])
+    N /= np.linalg.norm(N, axis=0, keepdims=True)
+    X = np.vstack([P, N])
+
+    # True axis passes through (0, 0, 0) pointing in z [0, 0, 1]
+    vt_base = np.array([0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+
+    from sfs_axes.normalized import is_base_fragment
+    assert is_base_fragment(X, vt_base)
+
+
+def test_large_radius_penalty_on_degenerate_cands():
+    rng = np.random.default_rng(404)
+    # A wall sherd at R=75 mm with small azimuth span [0, pi/4]
+    th = rng.uniform(0.0, np.pi / 4.0, 200)
+    z = rng.uniform(-20.0, 20.0, 200)
+    P = np.stack([75.0 * np.cos(th), 75.0 * np.sin(th), z])
+    N = np.stack([np.cos(th), np.sin(th), np.zeros(200)])
+    X = np.vstack([P, N])
+
+    # Candidate at true axis (0, 0, 0): centroid distance ~75 mm (physical)
+    vt_phys = np.array([0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+    # Candidate at d = 250 mm from centroid (degenerate plane decoy)
+    C = np.mean(P, axis=1)
+    vt_degen = np.array([0.0, 0.0, 1.0, C[0] + 250.0, C[1], 0.0])
+
+    cost_phys = worst_wall_normalized_cost(vt_phys, X, min_clearance_mm=25.0)
+    cost_degen = worst_wall_normalized_cost(vt_degen, X, min_clearance_mm=25.0)
+
+    # Degenerate infinite-radius candidate must incur large-radius penalty
+    assert cost_phys < 0.1
+    assert cost_degen > cost_phys + 1.0

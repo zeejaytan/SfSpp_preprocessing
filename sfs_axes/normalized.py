@@ -122,13 +122,20 @@ def centroid_distance(vt, X):
     return float(np.linalg.norm(np.cross(C - p0, a)))
 
 
-def is_base_fragment(X, vt=None, r_base_thresh=15.0, normal_axial_thresh=0.7):
+def is_base_fragment(X, vt=None, r_base_thresh=25.0, normal_axial_thresh=0.70):
     """Detect whether a piece is a base fragment containing the vessel bottom.
 
-    A base fragment has points near the axis (r < r_base_thresh mm) whose surface
-    normals are approximately parallel to the rotation axis (|n . a| > normal_axial_thresh).
+    A true base fragment containing the vessel rotation axis satisfies:
+    1. Centroid distance d(C, L) < 25.0 mm.
+    2. Substantial points near the axis (r < r_base_thresh) with axial normals
+       (|a . n| >= normal_axial_thresh).
+    3. Azimuthal span of near points delta_theta >= 160 degrees around the axis.
+    4. Axial extent delta_z >= 15.0 mm (ruling out thin wall sheet perpendicular slices).
     """
     if vt is None:
+        return False
+    d_c = centroid_distance(vt, X)
+    if d_c >= DEFAULT_CLEARANCE_MM:
         return False
     a = vt[0:3] / np.linalg.norm(vt[0:3])
     p0 = vt[3:6] - (vt[3:6] @ a) * a
@@ -136,12 +143,34 @@ def is_base_fragment(X, vt=None, r_base_thresh=15.0, normal_axial_thresh=0.7):
     N = X[3:6, :]
     dp = P - p0[:, None]
     z = a @ dp
-    r = np.linalg.norm(dp - a[:, None] * z[None, :], axis=0)
+    r_vec = dp - a[:, None] * z[None, :]
+    r = np.linalg.norm(r_vec, axis=0)
     near = r < r_base_thresh
-    if np.sum(near) < 20:
+    if np.sum(near) < 80:
         return False
     axial_normals = np.abs(a @ N[:, near])
-    return bool(np.mean(axial_normals) > normal_axial_thresh)
+    if np.mean(axial_normals) < normal_axial_thresh:
+        return False
+    ref = np.array([1.0, 0.0, 0.0])
+    if abs(np.dot(ref, a)) > 0.9:
+        ref = np.array([0.0, 1.0, 0.0])
+    u = ref - np.dot(ref, a) * a
+    u /= np.linalg.norm(u)
+    v = np.cross(a, u)
+    r_near = r_vec[:, near]
+    x_proj = u @ r_near
+    y_proj = v @ r_near
+    angles = np.sort(np.arctan2(y_proj, x_proj))
+    gaps = np.diff(angles)
+    wrap_gap = 2 * np.pi - (angles[-1] - angles[0])
+    max_gap = np.max(np.append(gaps, wrap_gap))
+    span_deg = 360.0 - np.degrees(max_gap)
+    if span_deg < 160.0:
+        return False
+    z_extent = float(np.max(z) - np.min(z))
+    if z_extent < 15.0:
+        return False
+    return True
 
 
 def normalized_huber_cost(vt, X, width=1.0):
@@ -167,10 +196,14 @@ def worst_wall_normalized_cost(vt, C0, C1=None, width=1.0, min_clearance_mm=DEFA
 
     # Physical clearance penalty for non-base sherds
     d_centroid = centroid_distance(vt, X_all)
-    if d_centroid < min_clearance_mm and not is_base_fragment(X_all, vt):
+    base = is_base_fragment(X_all, vt)
+    if d_centroid < min_clearance_mm and not base:
         # Heavy penalty for slicing through sherd centroid
         penalty = 1000.0 * (min_clearance_mm - d_centroid) ** 2
         cost += penalty
+    if d_centroid > 200.0 and not base:
+        # Penalize degenerate infinite-radius / planar decoys
+        cost += 0.001 * (d_centroid - 200.0) ** 2
     return cost
 
 
