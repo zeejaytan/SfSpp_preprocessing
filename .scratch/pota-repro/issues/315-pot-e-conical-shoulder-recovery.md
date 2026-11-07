@@ -6,7 +6,9 @@
 
 **Blocked by:** none (Ticket 314 landed on main)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-08)
+**Branch:** 315-pot-e-conical-shoulder-recovery, in /c/PR/worktrees/sfs/315
 
 **Worker:** sfs315
 
