@@ -6,8 +6,7 @@
 
 **Blocked by:** none (Ticket 313 landed on main)
 
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-07)
+**Status:** resolved
 **Branch:** 314-pot-e-full-assembly-diagnosis-fix, in /c/PR/worktrees/sfs/314
 
 **Worker:** sfs314
@@ -177,7 +176,7 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
 - [x] Zero regression verified on Pots A (8/8, 100%), B (9/9, 100%) and G (7/7, 100%); controls reproduced on Pots D and I.
 - [x] Visual renders staged in `artifacts/pota314/renders/` with clickable workspace-relative links.
 - [x] Corpus integrity verified byte-identical (`0 diff` in `original_samples/SfS_pp`).
-- [ ] Code tickets: branch merged into main and pushed, no job still running from it, worktree removed, branch deleted locally and on GitHub (held for coordinating session).
+- [x] Code tickets: branch merged into main and pushed, no job still running from it, worktree removed, branch deleted locally and on GitHub.
 
 ---
 
