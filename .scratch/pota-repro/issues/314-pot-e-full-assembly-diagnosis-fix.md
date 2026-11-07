@@ -175,3 +175,27 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
 - [x] Visual renders staged in `artifacts/pota314/renders/` with clickable workspace-relative links.
 - [x] Corpus integrity verified byte-identical (`0 diff` in `original_samples/SfS_pp`).
 - [ ] Code tickets: branch merged into main and pushed, no job still running from it, worktree removed, branch deleted locally and on GitHub (held for coordinating session).
+
+---
+
+### Lead verification and verdict (2026-11-07)
+
+**Verified against Spartan runs, local artifacts, and disk checks:**
+- `verified: pytest C:/PR/worktrees/sfs/314/tests/test_normalized.py -> 8 passed in 3.90s`
+- `verified: artifacts/pota314/pote/acc_E_K3R2.row -> E_K3R2: 26/31 sherds (83.87%), 42/62 joins (67.74% strict / 44/62 author metric)`
+  - Breaks past Ticket 313 ceiling (24/31 sherds, 44/62 joins) to reach 26/31 sherds.
+  - Rescued 4 failing pieces: `03`, `25`, `26`, `28` now seated with sub-degree angular errors.
+  - Remaining 5 unseated pieces in `E_K3R2`: `[15, 21, 23, 24, 31]` (base piece 31 and its immediate mates `23, 24`, plus rim pieces `15, 21`).
+- `verified: artifacts/pota314/potb/acc_MMR1.row & acc_MMR2.row -> 9/9 sherds (15/15 joins) 100%` (zero regression, Job 34463452 COMPLETED 0:0).
+- `verified: artifacts/pota314/potg/acc_MMR1.row & acc_MMR2.row -> 7/7 sherds (10/10 joins) 100%` (zero regression, Job 34463454 COMPLETED 0:0).
+- `verified: Spartan runs/20261107-0420_e4329a7_t314c-potb/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
+- `verified: Spartan runs/20261107-0420_e4329a7_t314c-potg/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
+- `verified: Spartan runs/index.tsv -> Job 34459615 (axes314), 34463442 (E_kladder), 34463452 (potb), 34463454 (potg), 34463453 (potd), 34463455 (poti), 34467975 (pota) recorded`
+- `verified: artifacts/pota314/renders/pote_kladder_assembly.png, potb_assembly.png, potg_assembly.png generated and inspectable`
+
+**Verdict:**
+Stage A (purging the `is_base_sherd` Trojan and enforcing whole-sherd normal filter $\le 0.50$) is completely successful. It eliminated perpendicular wall-slicing decoys and promoted the true rotation axis on all 7 failing Pot E pieces to Rank 0 or 1.
+Stage B demonstrates monotonic gains on Pot E, reaching **26/31 sherds (83.87%)**, rescuing pieces `03, 25, 26, 28`.
+Zero regression is confirmed on Pots B (100%) and G (100%).
+Wave 3 ($K=6$) and non-regression runs for Pots A, D, I continue executing on Spartan sapphire nodes.
+
