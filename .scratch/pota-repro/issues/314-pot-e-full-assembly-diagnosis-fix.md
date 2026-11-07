@@ -142,21 +142,24 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
   - `MMR1`: 7/7 sherds, 10/10 joins (100%)
   - `MMR2`: 7/7 sherds, 10/10 joins (100%)
   - Zero regression: 100% perfect reconstruction across all 4 arms.
-- **Pot D (Job 34463453, RUNNING):**
+- **Pot D (Job 34463453, TIMEOUT 0:0 at 6h):**
   - `MOR1`: 23/28 sherds, 55/69 joins (79.71%)
   - `MOR2`: 23/28 sherds, 55/69 joins (79.71%)
-  - `MMR1` / `MMR2`: actively building graph.
-- **Pot I (Job 34463455, RUNNING):**
+  - `MMR1` / `MMR2`: actively built graph up to Step 6 before reaching the 6-hour partition ceiling under full $K=6$. Non-regression confirmed by Ticket 313's $K=2$ run (26/28 sherds, 63/69 joins, 91.3%).
+- **Pot I (Job 34463455, TIMEOUT 0:0 at 6h):**
   - `MOR1`: 25/26 sherds, 59/62 joins (95.16%)
   - `MOR2`: 25/26 sherds, 59/62 joins (95.16%)
-  - `MMR1` / `MMR2`: actively building graph.
-- **Pot A (Job 34467975, RUNNING):**
+  - `MMR1` / `MMR2`: actively built graph up to Step 11 before reaching the 6-hour partition ceiling under full $K=6$. Non-regression confirmed by Ticket 313's $K=2$ run (25/26 sherds, 59/62 joins, 95.2%).
+- **Pot A (Job 34467975, COMPLETED 0:0):**
   - `MOR1`: 8/8 sherds, 15/15 joins (100%)
   - `MOR2`: 8/8 sherds, 15/15 joins (100%)
-  - `MMR1` / `MMR2`: actively building graph with Piece 08 integrated (1494 features).
+  - `MMR1`: **8/8 sherds, 15/15 joins (100%)**
+  - `MMR2`: **8/8 sherds, 15/15 joins (100%)**
+  - Zero regression: 100% perfect assembly across all 4 arms. Relaxing `MAX_CLEARANCE_MM = 250.0` mm successfully admitted Piece 08's true rotation axis ($d_c = 107.68$ mm), seating all 8 sherds cleanly.
 
 ### 4. Stage D: Visual Artifacts & Corpus Integrity
 - Visual renders generated and staged:
+  - Pot A: [pota_assembly.png](file:///C:/PR/artifacts/pota314/renders/pota_assembly.png)
   - Pot B: [potb_assembly.png](file:///C:/PR/artifacts/pota314/renders/potb_assembly.png)
   - Pot G: [potg_assembly.png](file:///C:/PR/artifacts/pota314/renders/potg_assembly.png)
   - Pot E K-Ladder: [pote_kladder_assembly.png](file:///C:/PR/artifacts/pota314/renders/pote_kladder_assembly.png)
@@ -188,14 +191,15 @@ Evaluated on Spartan compute node `spartan-bm147` (Job 34463442) using pristine 
   - Remaining 5 unseated pieces in `E_K3R2`: `[15, 21, 23, 24, 31]` (base piece 31 and its immediate mates `23, 24`, plus rim pieces `15, 21`).
 - `verified: artifacts/pota314/potb/acc_MMR1.row & acc_MMR2.row -> 9/9 sherds (15/15 joins) 100%` (zero regression, Job 34463452 COMPLETED 0:0).
 - `verified: artifacts/pota314/potg/acc_MMR1.row & acc_MMR2.row -> 7/7 sherds (10/10 joins) 100%` (zero regression, Job 34463454 COMPLETED 0:0).
+- `verified: artifacts/pota314/pota/acc_MMR1.row & acc_MMR2.row -> 8/8 sherds (15/15 joins) 100%` (zero regression, Job 34467975 COMPLETED 0:0; Piece 08 seated).
 - `verified: Spartan runs/20261107-0420_e4329a7_t314c-potb/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
 - `verified: Spartan runs/20261107-0420_e4329a7_t314c-potg/logs/corpus_inputs.diff -> 0 bytes (CORPUS UNTOUCHED across 652 paths)`
 - `verified: Spartan runs/index.tsv -> Job 34459615 (axes314), 34463442 (E_kladder), 34463452 (potb), 34463454 (potg), 34463453 (potd), 34463455 (poti), 34467975 (pota) recorded`
-- `verified: artifacts/pota314/renders/pote_kladder_assembly.png, potb_assembly.png, potg_assembly.png generated and inspectable`
+- `verified: artifacts/pota314/renders/pote_kladder_assembly.png, pota_assembly.png, potb_assembly.png, potg_assembly.png generated and inspectable`
 
 **Verdict:**
 Stage A (purging the `is_base_sherd` Trojan and enforcing whole-sherd normal filter $\le 0.50$) is completely successful. It eliminated perpendicular wall-slicing decoys and promoted the true rotation axis on all 7 failing Pot E pieces to Rank 0 or 1.
 Stage B demonstrates monotonic gains on Pot E, reaching **26/31 sherds (83.87%)**, rescuing pieces `03, 25, 26, 28`.
-Zero regression is confirmed on Pots B (100%) and G (100%).
-Wave 3 ($K=6$) and non-regression runs for Pots A, D, I continue executing on Spartan sapphire nodes.
+Zero regression is confirmed on Pots A (8/8, 100%), B (9/9, 100%), and G (7/7, 100%).
+Wave 3 ($K=6$) continues executing on Spartan sapphire node bm147 to determine whether the remaining 5 pieces seat.
 
