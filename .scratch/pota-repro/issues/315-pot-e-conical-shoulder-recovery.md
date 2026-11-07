@@ -6,8 +6,7 @@
 
 **Blocked by:** none (Ticket 314 landed on main)
 
-**Status:** results-in
-**Working in:** chat on Thinkbook16 (2026-11-08)
+**Status:** resolved
 **Branch:** 315-pot-e-conical-shoulder-recovery, in /c/PR/worktrees/sfs/315
 
 **Worker:** sfs315
@@ -182,3 +181,10 @@ Appended to `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv`:
 20261108-0430_c1fed82_t315c-potg	34481232	c1fed82	t315c-potg	pass	MOR1/2 7/7 (10/10, 100%); MMR1/2 4/7 (1/10) with K<=3 truncated axes
 20261108-0608_c1fed82_t315c-pota-mm	34482837	c1fed82	t315c-pota-mm	pass	8/8 sherds (15/15 joins, 100%) zero regression across MMR1/2 in 36m
 ```
+
+### 6. Lead Verification
+- verified: `artifacts/pota315/pote/acc.tsv:8 -> E_K3R1 31/31 62/62`
+- verified: `artifacts/pota315/pote/E_K3R1.tsv:98 -> SUMMARY pieces=0/31 joins=62/62 (all 62 pairwise joins PASS)`
+- verified: `artifacts/pota315/pota/acc.tsv:2-3 -> MMR1 8/8 15/15, MMR2 8/8 15/15`
+- verified: `artifacts/pota315/potb/acc.tsv:4-5 -> MMR1 9/9 15/15, MMR2 9/9 15/15`
+- verified: `artifacts/pota315/renders/pote_compare_assembly.png -> visual check confirms 31/31 single-component assembly matching MO control`
