@@ -6,7 +6,9 @@
 
 **Blocked by:** none (Ticket 313 landed on main)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-07)
+**Branch:** 314-pot-e-full-assembly-diagnosis-fix, in /c/PR/worktrees/sfs/314
 
 **Worker:** unassigned
 
