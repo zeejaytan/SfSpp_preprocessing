@@ -570,20 +570,20 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             d_c = dcs[j]
             mean_ax = mean_axs[j]
             sz = sizes[j]
-            base = is_base_fragment(C, cand)
+            base = is_base_fragment(C, cand) and not (diag > 65.0 and mean_ax > 0.925 and sz < 6000)
             if base or sz >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
                 cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if (base or sz >= 6000) else DEFAULT_CLEARANCE_MM))
-                cone_pre.append((cw, sz, cand))
+                cone_pre.append((cw, sz, cand, mean_ax))
         cone_pre.sort(key=lambda x: x[0])
 
         cone_scored = []
-        for cw_orig, sz, orig_cand in cone_pre[:min(BASIN_REFINE_MAX, 16)]:
+        for cw_orig, sz, orig_cand, orig_mean_ax in cone_pre[:min(BASIN_REFINE_MAX, 16)]:
             v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
             d_ref = centroid_distance(v_ref, C)
             a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
             mean_ax_ref = float(np.mean(np.abs(a_ref @ C[3:6, :])))
-            base = is_base_fragment(C, v_ref)
-            orig_base = is_base_fragment(C, orig_cand)
+            orig_base = is_base_fragment(C, orig_cand) and not (diag > 65.0 and orig_mean_ax > 0.925 and sz < 6000)
+            base = orig_base and not (diag > 65.0 and mean_ax_ref > 0.925 and sz < 6000)
             c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
             cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
 
@@ -591,8 +591,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             valid_dish = (35.0 <= d_ref <= 115.0 and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)
             valid_flat = (sz >= 6000 and cw_ref <= 0.014)
 
-            if base or orig_base or valid_cone or valid_dish or valid_flat:
-                if orig_base and sz >= 1000 and direction_angle_deg(v_ref[:3], orig_cand[:3]) > 4.0:
+            if base or valid_cone or valid_dish or valid_flat:
+                if orig_base and sz >= 100 and direction_angle_deg(v_ref[:3], orig_cand[:3]) > 4.0:
                     cand_use = orig_cand
                     c_use = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
                     cw_use = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
@@ -605,7 +605,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                     cw_use = cw_ref
                     d_use = d_ref
                     ax_use = mean_ax_ref
-                    r_p = 0.0 if (valid_dish or valid_flat or base or orig_base) else r_prior(d_ref, c_ref)
+                    r_p = 0.0 if (valid_dish or valid_flat or base) else r_prior(d_ref, c_ref)
                 sc = (c_use + r_p + 0.002 * ax_use) / (sz ** 0.12)
                 cone_scored.append((sc, c_use, cw_use, cand_use, sz))
         cone_scored.sort(key=lambda x: x[0])
