@@ -251,6 +251,61 @@ def test_flared_conical_bowl_promotes_cone_at_rank_0():
     err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
     assert err_deg < 5.0
 
+
+def test_tight_radius_miniature_regime():
+    from sfs_axes.potsac import run_potsac_union
+
+    rng = np.random.default_rng(202)
+    # Synthetic miniature vessel sherd: radius dc ~= 8 mm, height 20 mm, diag < 50 mm
+    def make_mini_patch(n=600, r0=8.0, half_h=10.0, arc=np.radians(120.0)):
+        th = rng.uniform(-arc / 2, arc / 2, n)
+        z = rng.uniform(-half_h, half_h, n)
+        P = np.stack([r0 * np.cos(th), r0 * np.sin(th), z])
+        N = np.stack([np.cos(th), np.sin(th), np.zeros(n)])
+        return np.vstack([P, N])
+
+    C0 = make_mini_patch(n=600, r0=8.0)
+    S1 = make_mini_patch(n=600, r0=6.0)
+
+    diag = float(np.linalg.norm(C0[:3].max(axis=1) - C0[:3].min(axis=1)))
+    assert diag <= 65.0
+
+    vt = run_potsac_union(C0, S1, seeds=range(3), normalized=True)
+    assert vt.shape[1] >= 1
+    # True cylinder axis [0, 0, 1] must be extracted within 5 degrees
+    err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
+    assert err_deg < 5.0
+
+
+def test_shallow_dish_regime():
+    from sfs_axes.potsac import run_potsac_union
+
+    rng = np.random.default_rng(303)
+    # Shallow dish with wall angle 75 deg from vertical -> mean_ax ~ sin(75 deg) ~= 0.966
+    slope_rad = np.radians(75.0)
+    tan_slope = np.tan(slope_rad)
+    cos_slope = np.cos(slope_rad)
+    sin_slope = np.sin(slope_rad)
+
+    def make_dish_patch(n=600, r0=60.0, half_h=5.0, arc=np.radians(60.0)):
+        th = rng.uniform(-arc / 2, arc / 2, n)
+        z = rng.uniform(-half_h, half_h, n)
+        r = r0 + z * tan_slope
+        P = np.stack([r * np.cos(th), r * np.sin(th), z])
+        N = np.stack([cos_slope * np.cos(th), cos_slope * np.sin(th), -sin_slope * np.ones(n)])
+        return np.vstack([P, N])
+
+    C0 = make_dish_patch(n=600, r0=60.0)
+    S1 = make_dish_patch(n=600, r0=56.0)
+
+    mean_ax = np.mean(np.abs(C0[5, :]))
+    assert mean_ax > 0.925
+
+    vt = run_potsac_union(C0, S1, seeds=range(3), normalized=True)
+    assert vt.shape[1] >= 1
+    err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
+    assert err_deg < 5.0
+
 if __name__ == "__main__":
     names = sorted(n for n, f in sorted(globals().items())
                    if n.startswith("test_") and callable(f))

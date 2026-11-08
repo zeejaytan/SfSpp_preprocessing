@@ -469,20 +469,64 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         V = np.column_stack(all_cands)
         reps, sizes = _cluster_union(V)
 
-        def r_prior(d):
-            if d < 40.0:
-                return 0.01 * (40.0 - d)
+        # Precompute geometry features across all basin representatives
+        diag = float(np.linalg.norm(C[:3].max(axis=1) - C[:3].min(axis=1)))
+        dcs = np.array([centroid_distance(reps[:, j], C) for j in range(reps.shape[1])])
+        mean_axs = np.array([float(np.mean(np.abs((reps[:3, j] / np.linalg.norm(reps[:3, j])) @ C[3:6, :])))
+                             for j in range(reps.shape[1])])
+        hcws = np.array([_worst_surface_cost(reps[:, j], C0, S1) for j in range(reps.shape[1])])
+        w_dc = float(np.sum(dcs * sizes) / max(np.sum(sizes), 1))
+        min_hcw = min([hcws[j] for j in range(reps.shape[1]) if sizes[j] >= 20] or [9999.0])
+
+        # Regime 1: Self-calibrating tight-radius / miniature vessel regime (Ticket 318)
+        if w_dc <= 15.5 and min_hcw <= 38.0 and diag <= 65.0:
+            cands_idx = [j for j in range(reps.shape[1]) if sizes[j] >= 20 and (mean_axs[j] <= 0.70 or sizes[j] >= 1500)]
+            if not cands_idx:
+                cands_idx = list(range(min(6, reps.shape[1])))
+            c_scores = []
+            for j in cands_idx:
+                cand_j = reps[:, j]
+                c_j = 0.5 * (normalized_huber_cost(cand_j, C0) + normalized_huber_cost(cand_j, S1))
+                score_j = (hcws[j] * (c_j ** 0.5)) / (sizes[j] ** 0.45)
+                c_scores.append((score_j, j, c_j))
+            c_scores.sort(key=lambda x: x[0])
+
+            tight_cands = []
+            for sc, j, c_j in c_scores[:8]:
+                orig_cand = reps[:, j]
+                if dcs[j] >= 16.0 or sizes[j] >= 1500:
+                    v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
+                    d_ref = centroid_distance(v_ref, C)
+                    ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+                    if d_ref <= 22.0 and ref_cost <= c_j:
+                        tight_cands.append(v_ref)
+                tight_cands.append(orig_cand)
+
+            deduped = []
+            for cand in tight_cands:
+                if not any(direction_angle_deg(cand[:3], k[:3]) < 10.0 for k in deduped):
+                    deduped.append(cand)
+            if not deduped:
+                deduped = [reps[:, 0]]
+            if verbose:
+                print("[POTSAC-UNION-NORMALIZED-TIGHT] kept %d" % len(deduped))
+            return np.column_stack(deduped[:max_candidates])
+
+        def r_prior(d, c_val=1.0):
+            knee = 30.0 if (diag >= 140.0 and c_val <= 0.0058) else 40.0
+            if d < knee:
+                return 0.01 * (knee - d)
             elif d > 120.0:
                 return 0.0005 * (d - 120.0) ** 2
             return 0.0
 
-        # Branch 1: Cylindrical wall candidates (Ticket 314: mean_ax <= 0.50, guarded 20-iter refine)
+        # Branch 1: Cylindrical wall candidates (Ticket 314 & Ticket 318 large-sherd relaxation)
+        max_drift = 25.0 if diag >= 140.0 else 8.0
         cyl_reps, cyl_sizes = [], []
         for j in range(reps.shape[1]):
             cand = reps[:, j]
-            d_c = centroid_distance(cand, C)
-            a_cand = cand[:3] / np.linalg.norm(cand[:3])
-            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+            d_c = dcs[j]
+            mean_ax = mean_axs[j]
             if DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and mean_ax <= 0.50:
                 cyl_reps.append(cand)
                 cyl_sizes.append(sizes[j])
@@ -498,7 +542,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
                 a_cand = cand[:3] / np.linalg.norm(cand[:3])
                 mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-                pre_scores.append((c + r_prior(d_c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
+                pre_scores.append((c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
             order = np.argsort(pre_scores, kind="stable")[:BASIN_REFINE_MAX]
             for j in order:
                 orig_cand = V_cyl[:, j]
@@ -509,27 +553,27 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
                 mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
                 ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
-                cand = v_ref if (drift <= 8.0 and DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
+                cand = v_ref if (drift <= max_drift and DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
                 d_c = centroid_distance(cand, C)
                 c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
                 cw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
                 a_cand = cand[:3] / np.linalg.norm(cand[:3])
                 mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-                sc = (c + r_prior(d_c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
+                sc = (c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
                 cyl_scored.append((sc, c, cw, cand, s_cyl[j]))
             cyl_scored.sort(key=lambda x: x[0])
 
-        # Branch 2: Conical / sloped shoulder candidates (Ticket 315: 50-iter refine, d_ref in [25, 105], mean_ax_ref in (0.50, 0.925])
+        # Branch 2: Unified Conical / Shallow-Dish / High-Consensus Base Track (Ticket 315, 317, 318)
         cone_pre = []
         for j in range(reps.shape[1]):
             cand = reps[:, j]
-            d_c = centroid_distance(cand, C)
+            d_c = dcs[j]
+            mean_ax = mean_axs[j]
+            sz = sizes[j]
             base = is_base_fragment(C, cand)
-            a_cand = cand[:3] / np.linalg.norm(cand[:3])
-            mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-            if base or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sizes[j] >= 50 and mean_ax <= 0.90))):
-                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if base else DEFAULT_CLEARANCE_MM))
-                cone_pre.append((cw, sizes[j], cand))
+            if base or sz >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
+                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if (base or sz >= 6000) else DEFAULT_CLEARANCE_MM))
+                cone_pre.append((cw, sz, cand))
         cone_pre.sort(key=lambda x: x[0])
 
         cone_scored = []
@@ -537,13 +581,33 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
             d_ref = centroid_distance(v_ref, C)
             a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
-            mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
+            mean_ax_ref = float(np.mean(np.abs(a_ref @ C[3:6, :])))
             base = is_base_fragment(C, v_ref)
+            orig_base = is_base_fragment(C, orig_cand)
             c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
             cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
-            if base or (DEFAULT_CLEARANCE_MM <= d_ref <= 105.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095):
-                sc = (c_ref + r_prior(d_ref) + 0.002 * mean_ax_ref) / (sz ** 0.12)
-                cone_scored.append((sc, c_ref, cw_ref, v_ref, sz))
+
+            valid_cone = (DEFAULT_CLEARANCE_MM <= d_ref <= 110.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095)
+            valid_dish = (35.0 <= d_ref <= 115.0 and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)
+            valid_flat = (sz >= 6000 and cw_ref <= 0.014)
+
+            if base or orig_base or valid_cone or valid_dish or valid_flat:
+                if orig_base and sz >= 1000 and direction_angle_deg(v_ref[:3], orig_cand[:3]) > 4.0:
+                    cand_use = orig_cand
+                    c_use = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
+                    cw_use = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
+                    d_use = centroid_distance(orig_cand, C)
+                    ax_use = float(np.mean(np.abs((orig_cand[:3] / np.linalg.norm(orig_cand[:3])) @ C[3:6, :])))
+                    r_p = 0.0
+                else:
+                    cand_use = v_ref
+                    c_use = c_ref
+                    cw_use = cw_ref
+                    d_use = d_ref
+                    ax_use = mean_ax_ref
+                    r_p = 0.0 if (valid_dish or valid_flat or base or orig_base) else r_prior(d_ref, c_ref)
+                sc = (c_use + r_p + 0.002 * ax_use) / (sz ** 0.12)
+                cone_scored.append((sc, c_use, cw_use, cand_use, sz))
         cone_scored.sort(key=lambda x: x[0])
 
         # Combine: if best cone candidate has solid support (sz >= 50 and c < 0.95 * cyl_c or cw > 0.0085) or decisive cost (c < 0.80 * cyl_c), promote to Rank 0!
