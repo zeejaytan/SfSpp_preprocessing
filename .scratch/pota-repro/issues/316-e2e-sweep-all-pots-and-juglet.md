@@ -21,7 +21,7 @@ Hand-over: worker with Spartan access; needs `sfs_axes`, the pristine SIF assemb
 - Pot E assembly, run `20261108-0430_c1fed82_t315b-kladder-E` (job 34481205): `E_MOR1/2` 31/31 + 62/62; `E_K1R1` 21/31 + 36/62; `E_K1R2` 24/31 + 39/62; `E_K2R1` 30/31 + 58/62; `E_K2R2` 29/31 + 57/62; `E_K3R1` **31/31 + 62/62**; `E_K3R2` 30/31 + 51/62.
 - Pot A `20261108-0608_c1fed82_t315c-pota-mm` (job 34482837, 36 min): `MMR1/2` 8/8 + 15/15.
 - Pot B `20261108-0430_c1fed82_t315c-potb` (job 34481231, 58 min): 9/9 + 15/15 in all four arms.
-- Pot G `20261108-0430_c1fed82_t315c-potg` (job 34481232, 47 min): `MOR1/2` 7/7 + 10/10; `MMR1/2` 4/7 + 1/10 at K<=3. **G is the warning**: truncating to 3 lines costs it, so the sweep must keep a K=6 arm.
+- Pot G `20261108-0430_c1fed82_t315c-potg` (job 34481232, 47 min): `MOR1/2` 7/7 + 10/10 (authors' axes, control); `MMR1/2` 4/7 + 1/10 at K<=3. **G is the warning and an open confound**: ticket 314's own-axes run on G was 7/7 + 10/10 with **6** lines per piece, and this one used **3** — so the 3-sherd, 9-join loss could be the 315 axes or the line cap, and nothing yet separates them.
 - Corpus unchanged in every 315 job (`corpus.diff` empty). The corpus is 163 pieces: A 8, B 9, C 6, D 32, E 34 (31 scored), F 7, G 7, H 11, I 30, J 19. H has no GT-bearing pipe and must **refuse**, not seat.
 
 ## Stage 0 — determinism (do this first; it is cheap and it gates everything)
@@ -30,6 +30,10 @@ Run one arm twice with byte-identical inputs (`E_K3`, same axes, same lane, same
 
 - If they differ: find the random source. The obvious suspect is `class/axis_estimation.cpp:139-140` (`std::random_device rd; std::mt19937 gen(rd());`) — confirm it is on the assembly path before changing anything, and if it is, make the seed settable and record the seed in `run.json`.
 - If it cannot be made deterministic inside the harness patch guard, run **3** repeats per arm for the whole sweep and report **median and spread** plus the union of seated sherds across repeats. Never quote the best repeat alone.
+
+## Stage 0b — settle the Pot G confound before the sweep (one small job)
+
+Ticket 314 seated Pot G 7/7 + 10/10 with our axes at 6 lines per piece; 315 sits at 4/7 + 1/10 at 3 lines. Run Pot G on the **315 axes at K=6** (both repeats) and compare against 314's `20261107-0420_e4329a7_t314c-potg`. That single job decides whether 315 damaged G's axes or only lost the extra lines, and it must land before any other pot's K=6 row is interpreted.
 
 ## Stage 1 — regenerate the corpus axes with the current code
 

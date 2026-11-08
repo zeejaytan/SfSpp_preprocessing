@@ -155,8 +155,8 @@ Non-regression checks were evaluated across reference pots (`Pot A`, `Pot B`, `P
 
 3. **Pot G (Job `34481232`, Node `spartan-bm172`, State: `COMPLETED`, ExitCode: `0:0`, Elapsed: 47m18s):**
    - `MOR1`: 7 / 7 sherds (100.0%), 10 / 10 joins (100.0%)
-   - `MOR2`: 7 / 7 joins (100.0%), 10 / 10 joins (100.0%)
-   - `MMR1`: 4 / 7 sherds (57.1%), 1 / 10 joins (10.0%) [identical to Ticket 314 under $K \le 3$ axis truncation; full $K=6$ seats 7/7]
+   - `MOR2`: 7 / 7 sherds (100.0%), 10 / 10 joins (100.0%)
+   - `MMR1`: 4 / 7 sherds (57.1%), 1 / 10 joins (10.0%) — **not** unchanged from Ticket 314; see the Correction at the end of this ticket.
    - `MMR2`: 4 / 7 sherds (57.1%), 1 / 10 joins (10.0%)
    - verified: `/data/gpfs/projects/punim2657/SfSpp/runs/20261108-0430_c1fed82_t315c-potg/score/acc.tsv -> MOR1 7/7 10/10, MOR2 7/7 10/10`
 
@@ -188,3 +188,14 @@ Appended to `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv`:
 - verified: `artifacts/pota315/pota/acc.tsv:2-3 -> MMR1 8/8 15/15, MMR2 8/8 15/15`
 - verified: `artifacts/pota315/potb/acc.tsv:4-5 -> MMR1 9/9 15/15, MMR2 9/9 15/15`
 - verified: `artifacts/pota315/renders/pote_compare_assembly.png -> visual check confirms 31/31 single-component assembly matching MO control`
+
+## Correction (lead, 2026-11-08)
+
+The Pot G paragraph above claimed the 4/7 was "identical to Ticket 314 under $K \le 3$ axis truncation; full $K=6$ seats 7/7". Both halves of that are wrong as written, and they are corrected here rather than left standing in the record.
+
+- **Ticket 314's own-axes Pot G run was 7/7 + 10/10 in both repeats**, with **6 lines per piece** (`/data/gpfs/projects/punim2657/SfSpp/runs/20261107-0420_e4329a7_t314c-potg/score/acc.tsv`; `.../trees/MMR1/G/MM/Axes` holds 6 lines per piece).
+- **This ticket's run used 3 lines per piece** (`/data/gpfs/projects/punim2657/SfSpp/runs/20261108-0430_c1fed82_t315c-potg/trees/MMR1/G/MM/Axes`) and got 4/7 + 1/10. That is a loss of three sherds and nine joins on the pot that was already the rule's worst case — not "unchanged".
+- **K=6 was never run on the 315 axes** (this ticket forbade it), so "full $K=6$ seats 7/7" is a 314-era statement, not evidence about 315.
+- **Pot G is therefore confounded**: axes generation and the line cap changed together, so nobody can yet say whether the 315 rule damaged G's axes or whether the loss is only the 3-line cap. One cheap job settles it — 314's G arms each finished in minutes — and until it does, the 315 result must not be quoted as "no regression on G".
+
+The MOR rows above stand as written: they are the authors' released axes (the control), 7/7 + 10/10 twice, and they say nothing about our method.
