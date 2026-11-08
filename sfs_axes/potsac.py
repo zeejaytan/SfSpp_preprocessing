@@ -552,7 +552,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             c_cone, cw_cone, v_cone, sz_cone = cone_scored[0][1], cone_scored[0][2], cone_scored[0][3], cone_scored[0][4]
             if not cyl_scored:
                 cone_promoted = True
-            elif sz_cone >= 50 and (c_cone < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085):
+            elif sz_cone >= 50 and (c_cone < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085 or (c_cone <= cyl_scored[0][1] and sz_cone > cyl_scored[0][4])):
                 cone_promoted = True
             elif c_cone < cyl_scored[0][1] * 0.80:
                 cone_promoted = True
