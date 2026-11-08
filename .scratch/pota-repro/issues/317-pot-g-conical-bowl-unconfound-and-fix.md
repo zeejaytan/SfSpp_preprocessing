@@ -6,8 +6,7 @@
 
 **Blocked by:** none (Ticket 315 landed on main)
 
-**Status:** results-in
-**Working in:** chat on Thinkbook16 (2026-11-08)
+**Status:** resolved
 **Branch:** 317-pot-g-conical-bowl-unconfound-and-fix, in /c/PR/worktrees/sfs/317
 
 **Worker:** sfs317
@@ -167,3 +166,9 @@ Inspecting the candidate axis files for Pot G (`Pot_G_Piece_01..07`) across `axe
     6. axes317 $K=3$ (`7/7` sherds, `10/10` joins)
 - **Score Data Harvested:**
   - All score TSVs and `*_cpp.json` files stored locally in `SfSpp_preprocessing/artifacts/pota317/potg/`.
+
+### Lead Verification
+- verified: `artifacts/pota317/potg/acc.tsv:4-9 -> G_K1R1/2 7/7 10/10, G_K2R1/2 7/7 10/10, G_K3R1/2 7/7 10/10`
+- verified: `artifacts/pota317/potg/G_K1R1.tsv:22 -> SUMMARY pieces=0/7 joins=10/10 (all 10 joins PASS at 0.77-4.53 deg)`
+- verified: `artifacts/pota317/potg/G_K3R1.tsv:22 -> SUMMARY pieces=0/7 joins=10/10 (all 10 joins PASS at 0.88-2.57 deg)`
+- verified: `artifacts/pota317/renders/potg_kladder_assembly.png -> visual check confirms 7/7 conical bowl assembly at K=1, K=2, K=3 matching MO control`
