@@ -1,11 +1,12 @@
 # Ticket 318 — Research, simplify, and test scale-invariant generalizable axis extraction across all sample pots and Juglet
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-09)
+**Branch:** 318-scale-invariant-generalizable-axis-extraction, in /c/PR/worktrees/sfs/318
 **Answers:** E1
 **Depends on:** 317
 **Blocks:** none
 **Worker:** sfs318
-**Working in:** `/c/PR/worktrees/sfs/318` · branch `ticket/318`
 **Hold:** 318; E1; Pot_A..Pot_J + Juglet (`sfs_axes/potsac.py`)
 
 ## Context & 172-Piece Audit Findings (Lead Diagnosis)
