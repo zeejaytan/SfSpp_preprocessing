@@ -1,12 +1,10 @@
 # Ticket 318 — Research, simplify, and test scale-invariant generalizable axis extraction across all sample pots and Juglet
 
-**Status:** results-in
-**Branch:** 318-scale-invariant-generalizable-axis-extraction, in /c/PR/worktrees/sfs/318
+**Status:** resolved
 **Answers:** E1
 **Depends on:** 317
 **Blocks:** none
 **Worker:** sfs318
-**Hold:** 318; E1; Pot_A..Pot_J + Juglet (`sfs_axes/potsac.py`)
 
 ## Context & 172-Piece Audit Findings (Lead Diagnosis)
 
@@ -107,7 +105,7 @@ Even though **172 of 172 pieces (`100%`)** contain a basin within $0.76^\circ$�
   2. *Regime 2 — Large High-Curvature Sherd Relaxation (`diag >= 140.0` mm):* Relaxes `r_prior` inner knee from `40.0` mm to `30.0` mm when `c <= 0.0058`, and expands LM drift threshold from `8.0°` to `25.0°`. Unlocks true converged stationary points for `Pot_C_Piece_01` ($0.61^\circ$ at $d_{\text{ref}}=36.8$ mm) and `Pot_C_Piece_02` ($0.92^\circ$ at $d_{\text{ref}}=39.0$ mm) directly into Rank 0 ($K=1$).
   3. *Regime 3 — Unified Conical / Shallow-Dish / Base Track (`cone_scored`):* Admits basins with `base or sizes[j] >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sizes[j] >= 50 and mean_ax <= 0.985)))`. Refines top 16 with 50-step normalized LM, admitting `v_ref` when `valid_cone` (`cw <= 0.0095`), `valid_dish` (`35 <= d_ref <= 115`, $0.925 < \text{mean\_ax} \le 0.985$, `cw <= 0.0092`, `sz >= 50`), or `valid_flat` (`sz >= 6000`, `cw <= 0.014`). Waives `r_prior` for dish/flat/base. For base fragments with `orig_base and sz >= 1000 and drift > 4.0`, retains `orig_cand` to prevent normal-dot attractor drift (`Pot_G_Piece_07` at $4.90^\circ$).
 - **Unit Tests:** All 21 tests pass:
-  `pytest C:/PR/worktrees/sfs/318/tests/test_potsac.py` -> `21 passed in 4.90s`.
+  `python -m pytest C:/PR/worktrees/sfs/318 -v` -> `21 passed in 5.63s`.
 
 ---
 
@@ -164,8 +162,8 @@ Targeted verification was executed on Spartan compute nodes for the four critica
 #### C. Juglet (9 pieces, 18 joins)
 - **Slurm Run:** `runs/20261108-1615_ecd5bb8_t318b-juglet` (Job `34534787` on `spartan-bm152`, wall 1m45s, `COMPLETED 0:0`).
 - **Results:**
-  - `F20O_r1`, `F20O_r2` (released Dataset axes): **0/9 sherds (0%), 0/18 joins (0%)** (reproduces author key defect).
-  - `F20N_r1`, `F20N_r2` (`axes318` $K=3$): **Matched all 9 shards** (`End condition : All shards are matched`), Piece 3 raw rotation error $9.02^\circ$, Edge 1-8 passing with 20 contact pairs.
+  - `F20O_r1`, `F20O_r2` (released Dataset axes): **0/9 sherds (0%), 0/18 joins (0%)** (`only 2 transforms emitted`, reproduces author key defect).
+  - `F20N_r1`, `F20N_r2` (`axes318` $K=3$): `1. Acc.txt` scores **0/9 sherds (0%), 0/18 joins (0%)**, while the matcher links all 9 shards (`End condition : All shards are matched`, 9 transforms emitted, Piece 3 raw rotation error $9.02^\circ$, Edge 1-8 passing with 20 contact pairs). Visual inspection of the render confirms all 9 pieces are aligned upright along the vertical rotation axis column (`F20N`) instead of collapsing to 2 pieces (`F20O`), but stacked vertically along the axis rather than closed radially into the 3D juglet (consistent with Ticket 58/308's breakline/admission findings on the Juglet).
 - **Render:** [Juglet assembly comparison](file:///C:/PR/SfSpp_preprocessing/artifacts/pota318/renders/juglet_assembly_comparison.png)
 
 #### D. Pot H (11 pieces, 17 joins)
@@ -194,4 +192,18 @@ The following rows have been appended to `/data/gpfs/projects/punim2657/SfSpp/ru
 20261109-0525_ecd5bb8_t318c-poth-mm	34537397	ecd5bb8	t318c-poth-mm	pass	Pot H ours (axes318 K=3): R1=11/11 sherds, 17/17 joins (100%); R2=11/11 sherds, 17/17 joins (100%); 100% full assembly across 11 pieces
 20261109-0525_ecd5bb8_t318c-poth-mo	34537402	ecd5bb8	t318c-poth-mo	pass	Pot H control (released MO axes): R1=5/11 sherds, 7/17 joins; R2=8/11 sherds, 9/17 joins; reproduces author baseline shortfall
 ```
+
+---
+
+### 5. Lead Verification
+
+- `verified: python -m pytest C:/PR/worktrees/sfs/318 -v -> 21 passed in 5.63s`
+- `verified: sacct -j 34533055,34533056,34534787,34537397,34537402 -> all 5 jobs COMPLETED 0:0 (34533055 on spartan-bm169 00:17:37; 34533056 on spartan-bm173 00:14:43; 34534787 on spartan-bm152 00:01:45; 34537397 on spartan-bm167 00:14:19; 34537402 on spartan-bm166 00:15:19)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261108-1615_ecd5bb8_t318b-potg/out/G_K3R1/1. Acc.txt:2-3 -> Sherd accuracy : 7 / 7 (100 %), Sherd accuracy : 10 / 10 (100 %) (and G_K3R2, G_MOR1, G_MOR2 all 7/7, 10/10)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261108-1615_ecd5bb8_t318b-potc/out/C_MM318R1/1. Acc.txt:2-3 -> Sherd accuracy : 4 / 4 (100 %), Sherd accuracy : 5 / 5 (100 %) (and C_MM318R2, C_MOR1, C_MOR2 all 4/4, 5/5)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261109-0525_ecd5bb8_t318c-poth-mm/out/H_MM318R1/1. Acc.txt:2-3 -> Sherd accuracy : 11 / 11 (100 %), Sherd accuracy : 17 / 17 (100 %) (and H_MM318R2: 11/11, 17/17)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261109-0525_ecd5bb8_t318c-poth-mo/out/H_MOR1/1. Acc.txt:2-3 -> Sherd accuracy : 5 / 11 (45.4545 %), Sherd accuracy : 7 / 17 (41.1765 %); H_MOR2/1. Acc.txt:2-3 -> Sherd accuracy : 8 / 11 (72.7273 %), Sherd accuracy : 9 / 17 (52.9412 %)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261108-1615_ecd5bb8_t318b-juglet/out/F20N_r1/1. Acc.txt:2-3 -> Sherd accuracy : 0 / 9 (0 %), Sherd accuracy : 0 / 18 (0 %) (with 9 T_ito_i.txt transforms emitted vs 2 in F20O_r1/r2)`
+- `verified: visual inspection of SfSpp_preprocessing/artifacts/pota318/renders/{poth,potg,potc,juglet}_assembly_comparison.png -> Pot H, Pot G, and Pot C renders show closed 100% assemblies matching GT; Juglet F20N shows all 9 shards aligned vertically along the axis column (unclosed radially) vs F20O collapsed to 2 shards`
+
 
