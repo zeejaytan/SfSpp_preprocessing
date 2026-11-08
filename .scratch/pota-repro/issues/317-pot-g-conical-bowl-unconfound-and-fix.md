@@ -6,7 +6,9 @@
 
 **Blocked by:** none (Ticket 315 landed on main)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-08)
+**Branch:** 317-pot-g-conical-bowl-unconfound-and-fix, in /c/PR/worktrees/sfs/317
 
 **Worker:** sfs317
 
