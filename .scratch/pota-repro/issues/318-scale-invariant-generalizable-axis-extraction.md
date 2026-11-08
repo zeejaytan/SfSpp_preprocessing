@@ -1,6 +1,6 @@
 # Ticket 318 — Research, simplify, and test scale-invariant generalizable axis extraction across all sample pots and Juglet
 
-**Status:** in-progress
+**Status:** ready-for-agent
 **Answers:** E1
 **Depends on:** 317
 **Blocks:** none
