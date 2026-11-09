@@ -41,6 +41,20 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-09, ticket 319 — Full 10-pot $K=3$ assembly sweep of `axes318` (`20261109-1426_ecd5bb8_t319-potA..J`, Jobs `34542030..34542039`): 9 of 10 sample pots (`B, C, D, E, F, G, H, I, J`) hold or improve over `axes310` and `MO`, while Pot A collapses to 3/8 sherds + 3/15 joins because `axes318`'s ad-hoc base veto (`not (diag > 65.0 and mean_ax > 0.925 and sz < 6000)`) stripped `Pot_A_Piece_01`'s true base axis ($0.10^\circ \to 65.2^\circ$).**
+
+- **9 of 10 sample pots (`B–J`) at $K=3$ (`axes318`):**
+  - **Pot B:** **9/9 sherds, 15/15 joins (100%)** (`B_MMK3R1/R2`).
+  - **Pot C:** **4/4 sherds, 5/5 joins (100%)** (`C_MMK3R1/R2`).
+  - **Pot D:** **25/28 sherds, 62/69 joins (89.9%)** (`D_MMK3R2`; beats `MO` control's `23/28 sherds, 55/69 joins` by **+2 sherds, +7 joins**).
+  - **Pot E:** **31/31 sherds, 62/62 joins (100%)** (`E_MMK3R1`; `30/31, 51/62` on `R2`).
+  - **Pot F:** **5/6 sherds, 7/9 joins (77.8%)** (`F_MMK3R1/R2`; `F06` remains the edgeline blocker).
+  - **Pot G:** **7/7 sherds, 10/10 joins (100%)** (`G_MMK3R1/R2`).
+  - **Pot H:** **11/11 sherds, 17/17 joins (100%)** (`H_MMK3R1/R2`; beats `MO` control's `5/11..8/11 sherds, 7/17..9/17 joins` by **+3 to +6 sherds, +8 to +10 joins**).
+  - **Pot I:** **25/26 sherds, 58/62 joins (93.5%)** (`I_MMK3R2`; matches `MO` control's `25/26`).
+  - **Pot J:** **11/12 sherds, 14/21 joins** (`J_MMK3R1`).
+- **Why Pot A collapsed (`3/8 sherds, 3/15 joins` in `A_MMK3R1/R2`, Job `34542030`):** Diffing `axes318` against `axes315`/`axes317` (which scored `8/8 sherds, 15/15 joins`) shows `Pot_A_Piece_02..08` are byte-for-byte identical, while `Pot_A_Piece_01` (the large flat base disk, `diag = 170.2` mm, `mean_ax = 0.957`, `dc = 8.38` mm, `cw = 0.00204`, `sz = 5076 < 6000`) had its $0.10^\circ$ base axis vetoed by `potsac.py:573, 585-586`, leaving only $65.2^\circ$–$88.5^\circ$ decoys across all 6 lines. Addressed in Ticket 320.
+
 **2026-11-09, ticket 318 — Self-calibrating scale-invariant and shallow-dish axis extraction (`axes318`) lifts corpus-wide $K \le 3$ coverage from 121/172 to 137/172 (+16 pieces across Pots A–J + Juglet), seats Pot H 11/11 (17/17 joins, 100%, beating the authors' released MO control at 5/11 and 8/11), and holds Pot G (7/7, 10/10), Pot C (4/4, 5/5), and Pot E (31/31) at 100%.**
 
 Auditing `axes317` across all 172 pieces (163 sample-pot pieces `A–J` + 9 `Juglet` pieces, Job `34462441`) showed that while 172/172 pieces contain a basin within $0.76^\circ$–$8.24^\circ$ of the reference axis in the 10-seed Pottmann MLESAC pool, three vessel geometries failed under constants tuned to Pot E ($R \approx 75$ mm) and Pot G ($R \approx 35$ mm):
