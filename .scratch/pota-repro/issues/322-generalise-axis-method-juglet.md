@@ -1165,3 +1165,31 @@ the axes320 commit. Shipped behaviour has not changed.
 4. **Record now:** Pot F 06 (rank 0 14.7 deg, no seating cost) and the Pot H repeat spread (assembler
    nondeterminism) as named single-piece costs; the Juglet reference correction in the corpus caveats of
    `AGENTS.md` if the lead agrees it belongs there.
+## Follow-up (lead, 2026-11-10): the K=1 sweep finished, and the key is now saved with the ground truth
+
+**The six outstanding K=1 jobs finished; the verdict is unchanged and now complete.** Pots D, E and I
+(jobs 34620560 / 34620561 / 34620565, all COMPLETED 0:0):
+
+| pot | floor | K=1 repeat 1 | K=1 repeat 2 | verdict |
+|---|---|---|---|---|
+| D | 23-25/28, 55-60/69 | 24/28 58/69 | 24/28 58/69 | at floor |
+| E | 29-31/31, 57-62/62 | 26/31 44/62 | 28/31 51/62 | **below** |
+| I | 25/26, 59/62 | 25/26 59/62 | 25/26 59/62 | at floor |
+
+So the K=1 sweep ends **4 pots below floor** — A (joins 9/15), E (26-28/31, 44-51/62), H (9/11 11/17),
+J (6/11 5-8/21) — against the 3 the pre-registered rule required to fail. Six pots hold at floor
+(B, C, D, F, G, I). The three-line (K=3) arms for D, E and I were still RUNNING at 2h48m when this note
+was written; they are not needed for either verdict and can be read from
+`runs/20261110-0420_d628fc0_t322-pot<D|E|I>/score/acc.tsv` when they finish.
+
+**The Juglet key is now where the ground truth lives.** The nine `Juglet_Piece_N_Axis.xyz` files from
+`out/jugkey/key` were copied into `Dataset/Juglet_GT/` beside the nine `Juglet_Piece_N_T.txt` matrices,
+in **both** Dataset copies (`/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset` and
+`/data/gpfs/projects/punim2657/Dataset`), md5 identical between them. `README-axes.md` there records the
+provenance, the format and the three caveats (33 mm vessel, 8 of 18 joins never touch, 9/9 unattainable);
+a `README-not-a-reference.md` was dropped in `Dataset/Axes/Juglet/` so the old folder cannot be mistaken
+for a reference again, and the project `AGENTS.md` now carries the same warning under its corpus caveats.
+
+Read back after the copy: 9 axis files in each folder, `Juglet_Piece_1_Axis.xyz` md5
+`e0f70a34288ea8f80fdd659908912961` in both, first line
+`183.903911286378 148.464809059142 -134.053282670196 0.345475597391 0.356039490652 0.868264068532`.

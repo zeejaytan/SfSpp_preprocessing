@@ -134,6 +134,34 @@ release→ours (p99 0.23 / 0.36, max 0.39 / 0.94); signed offset along the relea
 difference is that the sampler is unseeded, so a rebuild is a different draw of the same surface — the
 spread measured between two draws is 0.14-0.16 mm on the median, about one sample spacing.
 
+## The Juglet has no authors' reference — use `Dataset/Juglet_GT/Juglet_Piece_N_Axis.xyz`
+
+**`Dataset/Axes/Juglet` is not a reference.** It is our own MATLAB PotSAC output of 2026-09-16
+(`run_juglet_preprocessing.sbatch` step 3, `run_ticket04_juglet.sh:5-6`); the Juglet is not in the
+paper's released sample, so no authors' Juglet axes exist. Every late-2026 Juglet axis number,
+including the "0 of 9", was scored against it — a method compared with its own September answer,
+not with truth.
+
+The real key is `Dataset/Juglet_GT/`: the nine `Juglet_Piece_N_T.txt` matrices, validated at
+0.0001 mm RMS against `TORA/dataset/juglet_gt.hdf5`, plus the nine `Juglet_Piece_N_Axis.xyz` lines
+fitted to the assembled vessel (body-only 1.20 deg / 0.38 mm, leave-one-out under 0.8 deg). Against
+it the old folder is right on 1 of 9 pieces; `axes320` is right on 4 of 9 at rank 0 and 8 of 9
+within six. Both Dataset copies (`/data/gpfs/projects/punim2657/Dataset` and
+`.../sfs_preprocessing/Dataset`) carry the key, with `README-axes.md` beside it.
+
+Three facts that must travel with any Juglet number:
+
+- the vessel is **33 mm across, 60 mm tall** (the pots are 75-150 mm in radius), so every
+  absolute-millimetre threshold in `sfs_axes` asks a different question on it;
+- **8 of the 18 pairs in `Juglet_simple_graph.txt` do not touch at all** in the true pose
+  (0.62-18.8 mm apart), so "/18 joins" over-counts what is attainable; the ten touching pairs meet
+  at 0.011-0.030 mm;
+- 9 of 9 axes is not attainable either: refined from the key, three sherds' own walls prefer a line
+  25-52 deg off the vessel axis.
+
+Recorded by ticket 322, 2026-11-10:
+`.scratch/pota-repro/issues/322-generalise-axis-method-juglet.md`.
+
 ## Repo history note (2026-07-19 migration)
 
 The pre-migration fork on GitHub and the cluster checkout had **unrelated histories**: the cluster repo re-created upstream's commits with different hashes, then added ~20 research commits. Migration merged the fork lineage into the cluster lineage with `-s ours` (fork content was verified byte-identical to its cluster mirror commit `ad6f415`, so nothing was lost). History contains ~1GB of committed Pot A dataset revisions — cloning is slow; that is expected.
