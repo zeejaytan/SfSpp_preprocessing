@@ -1,8 +1,8 @@
 # Ticket 320 — Restore Pot A base sherd (`Pot_A_Piece_01`) axis extraction without regressing Pots B–J or Juglet
 
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-09)
-**Branch:** 320-fix-pota-base-axis-regression, in /c/PR/worktrees/sfs/320
+**Status:** resolved
+
+
 **Answers:** E1
 **Depends on:** 319
 **Blocks:** none
