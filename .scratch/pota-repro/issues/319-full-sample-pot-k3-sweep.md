@@ -10,9 +10,11 @@ This is a **measurement ticket**. Do not tune thresholds, do not edit `sfs_axes/
 
 **Blocked by:** none — 318 landed at `b7db3eb`.
 
-**Status:** ready-for-agent
+**Status:** in-progress
 
-**Worker:** unassigned
+**Worker:** sfs319
+
+**Working in:** DSH worker session sfs319 (dispatched 2026-11-04)
 
 **Budget:** large 8
 
