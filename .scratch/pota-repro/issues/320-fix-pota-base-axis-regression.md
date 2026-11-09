@@ -89,11 +89,43 @@ In Ticket 319 (`20261109-1426_ecd5bb8_t319-potA`), **Pot A** collapsed from **8/
 
 ## Acceptance Criteria
 
-- [ ] `sfs_axes/potsac.py` updated so large axisymmetric base fragments (`cw <= 0.0065` or `sz >= 4000`) are not vetoed by the wall-skewer filter, and `max_drift = 25.0` is gated by `w_ax <= 0.90`.
-- [ ] Unit test added in `tests/test_normalized.py` and `pytest` passes (`22 passed`).
-- [ ] 172-piece verification on Spartan confirms `Pot_A_Piece_01` is restored to $0.10^\circ$ at Rank 0 (`Pot_A_Piece_01..08` identical to `axes317`) and **0/164 pieces** across `Pots B–J + Juglet` change relative to `axes318`.
-- [ ] End-to-end Pot A assembly at $K=3$ (`axes320`) on Spartan achieves **8/8 sherds, 15/15 joins**, with before/after render saved to `artifacts/pota320/renders/potA_assembly_comparison.png`.
+- [x] `sfs_axes/potsac.py` updated so large axisymmetric base fragments (`cw <= 0.0065` or `sz >= 4000`) are not vetoed by the wall-skewer filter, and `max_drift = 25.0` is gated by `w_ax <= 0.90`.
+- [x] Unit test added in `tests/test_normalized.py` and `pytest` passes (`22 passed`).
+- [x] 172-piece verification on Spartan confirms `Pot_A_Piece_01` is restored to $0.10^\circ$ at Rank 0 (`Pot_A_Piece_01..08` identical to `axes317`) and **0/164 pieces** across `Pots B–J + Juglet` change relative to `axes318`.
+- [x] End-to-end Pot A assembly at $K=3$ (`axes320`) on Spartan achieves **8/8 sherds, 15/15 joins**, with before/after render saved to `artifacts/pota320/renders/potA_assembly_comparison.png`.
 
 ## Write-back
 
-*(To be filled by worker `sfs320`)*
+### Stage A — Unit Test & 172-Piece Verification
+- Code changes in commit `97dad1e`:
+  - `sfs_axes/potsac.py`:
+    - Gate LM drift relaxation by axis alignment: `w_ax = float(np.sum(mean_axs * sizes) / max(np.sum(sizes), 1)); max_drift = 25.0 if (diag >= 140.0 and w_ax <= 0.90) else 8.0`.
+    - Wall-skewer veto refined in `cone_pre` and `cone_scored` to require `sz < 4000 and cw > 0.0065` before rejecting a base fragment.
+  - `tests/test_normalized.py`: added `test_large_base_fragment_not_vetoed` constructing synthetic axisymmetric base fragment (`diag > 140 mm`, `d_c < 15 mm`, `mean_ax > 0.93`, `cw <= 0.0065`).
+  - Unit test verification: `pytest tests/test_normalized.py -v` -> 22 passed in 37.60s.
+- Spartan 172-piece verification (`spartan-bm024`, allocation `34462441`):
+  - `Pot_A_Piece_01` Rank-0 error vs `Axes/Pot_A_Piece_01_Axis.xyz`: dropped from **65.20° (`axes318`) to 0.10° (`axes320`)**.
+  - Pot A Pieces 01..08 vs `axes317`: `np.allclose(atol=1e-6)` confirmed True for all 8 pieces (max absolute diff 0.00e+00).
+  - Non-Pot-A pieces (164 pieces across Pots B–J + Juglet) vs `axes318`: 0/164 pieces changed (164/164 identical, 0 diff).
+  - Pot A 172 benchmark:
+    - vs `Axes/`: K=1: 6/8 (75.0%), K<=3: 6/8 (75.0%), K<=6: 6/8 (75.0%) (up from 5/8 in `axes318`).
+    - vs `min(Axes/, Ground Truth Axes/)`: K=1: 6/8 (75.0%), K<=3: 6/8 (75.0%), K<=6: 6/8 (75.0%).
+
+### Stage B — End-to-End Pot A Assembly Verification
+- Run directory: `/data/gpfs/projects/punim2657/SfSpp/runs/20261109-1928_97dad1e_t320-potA`
+- Slurm Job ID: `34577139` (partition `sapphire`, 48 CPUs, 160G memory)
+- `sacct` State: `COMPLETED`, ExitCode: `0:0`, Elapsed: `00:08:09`
+- `runs/index.tsv` entry:
+  `20261109-1928_97dad1e_t320-potA	34577139	97dad1e	t320-potA		`
+- End-to-end assembly scores (`1. Acc.txt` / `logs/panel.tsv` / `score/acc.tsv`):
+  | Arm | Exit Code | Wall Time | Sherd Accuracy | Join / Edge Accuracy |
+  |---|---|---|---|---|
+  | `A_MOR1` (Author released Axes control) | 0 | 113s | 8/8 (100%) | 15/15 (100%) |
+  | `A_MOR2` (Author released Axes control) | 0 | 211s | 8/8 (100%) | 15/15 (100%) |
+  | `A_K3R1` (`axes320` top-3) | 0 | 461s | 8/8 (100%) | 15/15 (100%) |
+  | `A_K3R2` (`axes320` top-3) | 0 | 475s | 8/8 (100%) | 15/15 (100%) |
+- Visual QA Comparison:
+  - 3-panel comparison rendered on Spartan and saved locally to [potA_assembly_comparison.png](file:///C:/PR/SfSpp_preprocessing/artifacts/pota320/renders/potA_assembly_comparison.png) (`SfSpp_preprocessing/artifacts/pota320/renders/potA_assembly_comparison.png`).
+  - Panel 1: `axes318` K=3 collapse (3/8 sherds, 3/15 joins).
+  - Panel 2: `axes320` K=3 restored (8/8 sherds, 15/15 joins).
+  - Panel 3: `MO` control (8/8 sherds, 15/15 joins).
