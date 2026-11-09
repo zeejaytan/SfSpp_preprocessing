@@ -350,6 +350,37 @@ def test_large_base_fragment_not_vetoed():
     assert err_deg < 2.0
 
 
+def test_profile_objective_is_minimal_at_true_axis_at_any_scale():
+    """Ticket 322: profile thickness prefers the true axis of a globular sherd at 0.2x, 1x and 5x."""
+    from sfs_axes.profile import profile_cost, refine_axis_profile
+
+    def make_belly(rng, scale, n=700, arc=np.radians(80.0)):
+        # bulbous wall: r(z) = 16 - 0.02 z^2 (mm at scale 1), z in [-14, 14]
+        walls = []
+        for off in (0.0, 1.8):
+            th = rng.uniform(-arc / 2, arc / 2, n)
+            z = rng.uniform(-14.0, 14.0, n)
+            r = 16.0 - off - 0.02 * z ** 2
+            drdz = -0.04 * z
+            P = np.stack([r * np.cos(th), r * np.sin(th), z]) * scale
+            N = np.stack([np.cos(th), np.sin(th), -drdz])
+            N /= np.linalg.norm(N, axis=0, keepdims=True)
+            walls.append(np.vstack([P, N]))
+        return walls
+
+    tilt = np.radians(8.0)
+    for scale in (0.2, 1.0, 5.0):
+        walls = make_belly(np.random.default_rng(7), scale)
+        X = np.concatenate(walls, axis=1)
+        centre = X[0:3].mean(axis=1)
+        size = float(np.linalg.norm(X[0:3].max(axis=1) - X[0:3].min(axis=1)))
+        true_axis = np.array([0.0, 0, 1, 0, 0, 0])
+        tilted = np.array([np.sin(tilt), 0, np.cos(tilt), 0, 0, 0])
+        assert profile_cost(true_axis, walls) < profile_cost(tilted, walls)
+        vt, _ = refine_axis_profile(tilted, walls, centre, size)
+        assert direction_angle_deg(vt[:3], [0, 0, 1]) < 2.0
+
+
 if __name__ == "__main__":
     names = sorted(n for n, f in sorted(globals().items())
                    if n.startswith("test_") and callable(f))

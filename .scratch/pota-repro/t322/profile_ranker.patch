@@ -1,0 +1,337 @@
+diff --git a/sfs_axes/potsac.py b/sfs_axes/potsac.py
+index 809876c..cdea1bf 100644
+--- a/sfs_axes/potsac.py
++++ b/sfs_axes/potsac.py
+@@ -20,15 +20,9 @@ import numpy as np
+ 
+ from .cao import compute_biaxial_cao_error
+ from .io_axes import direction_angle_deg
+-from .normalized import (
+-    DEFAULT_CLEARANCE_MM,
+-    centroid_distance,
+-    is_base_fragment,
+-    normalized_huber_cost,
+-    refine_axis_normalized,
+-    worst_wall_normalized_cost,
+-)
++from .normalized import is_base_fragment, refine_axis_normalized
+ from .pottmann import compute_pottmann_axis
++from .profile import profile_cost, refine_axis_profile, stride
+ from .refine import refine_axis
+ from .robust import apply_robustifier, robustifier_gm, robustifier_huber
+ 
+@@ -165,10 +159,20 @@ CONVERGE_BEFORE_RANK = os.environ.get(
+ # their stage-1 worst-wall cost, i.e. only after the cheap score has been used.
+ BASIN_REFINE_MAX = int(os.environ.get("SFS_AXES_BASIN_REFINE_MAX", "32"))
+ 
+-# Ticket 313: distance-invariant normal alignment loss and clearance prior.
+-# Default ON: eliminates centroid lever-arm bias proven in ticket 312.
++# Ticket 313: the pool path (normalized=True, default ON). Since ticket 322 its
++# basins are ranked by profile thickness (_rank_by_profile); the distance-invariant
++# normal cost is kept only as a basin's first local refinement.
+ NORMALIZED = os.environ.get("SFS_AXES_NORMALIZED", "1") not in ("", "0")
+-MAX_CLEARANCE_MM = float(os.environ.get("SFS_AXES_MAX_CLEARANCE_MM", "250.0"))
++
++# Ticket 322 ranking budget. Counts, not lengths: the 60 most-drawn basins enter
++# (the pool held a line within 10 deg of the reference on 163/163 pot pieces at 60),
++# each normal-refined on at most 12,000 points, and the 8 cheapest distinct lines are
++# refined on the profile cost before the final order is taken.
++PROFILE_BASINS = 60
++PROFILE_NREF = 12000
++PROFILE_NORMAL_ITERS = 60
++PROFILE_REFINE_K = 8
++PROFILE_DEDUP_DEG = 15.0
+ 
+ 
+ def is_base_sherd(X, vt):
+@@ -389,6 +393,51 @@ def _cluster_union(V, cos=DEDUP_COS):
+     return V[:, reps], np.array(sizes, dtype=int)
+ 
+ 
++def _distinct_lines(lines, tol_deg=PROFILE_DEDUP_DEG):
++    """Keep each line unless it is within tol_deg of one already kept (first wins)."""
++    kept = []
++    for v in lines:
++        if all(direction_angle_deg(v[0:3], k[0:3]) >= tol_deg for k in kept):
++            kept.append(v)
++    return kept
++
++
++def _rank_by_profile(reps, sizes, C0, C1, C, max_candidates, verbose=False):
++    """Ticket 322: order the pool's basins by profile thickness (sfs_axes/profile.py).
++
++    One test for every shape and size of vessel: about its axis each wall collapses to
++    one curve in the (r, z) plane. No shape branch, no base exception, no millimetre
++    window -- the cost is compared only between lines of this piece. Each of the
++    PROFILE_BASINS most-drawn basins enters twice (its representative and that
++    representative after the normal-cost refinement); the PROFILE_REFINE_K cheapest
++    distinct lines are refined on the profile cost itself and re-ordered.
++    """
++    n = C.shape[1]
++    centre = C[0:3].mean(axis=1)
++    size = float(np.linalg.norm(C[0:3].max(axis=1) - C[0:3].min(axis=1)))
++    walls = [stride(C0), stride(C1)]
++    Cr = C[:, 0:n:max(1, int(np.ceil(n / PROFILE_NREF)))]
++    pool = []
++    for j in np.argsort(-sizes, kind="stable")[:PROFILE_BASINS]:
++        raw = reps[:, j]
++        ref = refine_axis_normalized(raw, Cr, max_iters=PROFILE_NORMAL_ITERS, tolerance=1e-6)
++        pool.append((profile_cost(raw, walls), raw))
++        pool.append((profile_cost(ref, walls), ref))
++    pool.sort(key=lambda x: x[0])
++    top = _distinct_lines([v for _, v in pool])[:PROFILE_REFINE_K]
++    fin = []
++    for v in top:
++        v_ref, c_ref = refine_axis_profile(v, walls, centre, size)
++        fin.append((c_ref, v_ref))
++    fin.sort(key=lambda x: x[0])
++    kept = _distinct_lines([v for _, v in fin])
++    if verbose:
++        print("[POTSAC-UNION-PROFILE] %d basins scored, %d refined, kept %d, costs %s"
++              % (len(pool) // 2, len(top), len(kept),
++                 [round(c, 4) for c, _ in fin][:max_candidates]))
++    return np.column_stack(kept[:max_candidates])
++
++
+ # The union rule, one warrant per term (ticket 310 B1).  The paper's clause is
+ # papers/text/sfspp-2502.13986v1.md:175 unless a measurement is named.
+ #   1. every draw of every seed, not one draw        -- the paper's MLESAC returns one
+@@ -418,9 +467,11 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
+     C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
+     seeds: RNG seeds, an int count or an iterable, default range(UNION_SEEDS).
+     max_candidates: cap on returned lines, default UNION_MAX.
+-    normalized: whether to use distance-invariant normal alignment loss and
+-    clearance prior (ticket 313, default NORMALIZED).
+-    Returns vt (6, K), 1 <= K <= max_candidates, best (worst-wall cost) first.
++    normalized: the pool path (default NORMALIZED): every draw is clustered and
++    the basins are ordered by profile thickness (_rank_by_profile, ticket 322).
++    False keeps the pre-313 Huber-cost path below.
++    Returns vt (6, K), 1 <= K <= max_candidates, best first (lowest profile
++    thickness on the pool path, lowest worst-wall cost on the pre-313 path).
+     """
+     if normalized is None:
+         normalized = NORMALIZED
+@@ -469,184 +520,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
+         V = np.column_stack(all_cands)
+         reps, sizes = _cluster_union(V)
+ 
+-        # Precompute geometry features across all basin representatives
+-        diag = float(np.linalg.norm(C[:3].max(axis=1) - C[:3].min(axis=1)))
+-        dcs = np.array([centroid_distance(reps[:, j], C) for j in range(reps.shape[1])])
+-        mean_axs = np.array([float(np.mean(np.abs((reps[:3, j] / np.linalg.norm(reps[:3, j])) @ C[3:6, :])))
+-                             for j in range(reps.shape[1])])
+-        hcws = np.array([_worst_surface_cost(reps[:, j], C0, S1) for j in range(reps.shape[1])])
+-        w_dc = float(np.sum(dcs * sizes) / max(np.sum(sizes), 1))
+-        min_hcw = min([hcws[j] for j in range(reps.shape[1]) if sizes[j] >= 20] or [9999.0])
+-
+-        # Regime 1: Self-calibrating tight-radius / miniature vessel regime (Ticket 318)
+-        if w_dc <= 15.5 and min_hcw <= 38.0 and diag <= 65.0:
+-            cands_idx = [j for j in range(reps.shape[1]) if sizes[j] >= 20 and (mean_axs[j] <= 0.70 or sizes[j] >= 1500)]
+-            if not cands_idx:
+-                cands_idx = list(range(min(6, reps.shape[1])))
+-            c_scores = []
+-            for j in cands_idx:
+-                cand_j = reps[:, j]
+-                c_j = 0.5 * (normalized_huber_cost(cand_j, C0) + normalized_huber_cost(cand_j, S1))
+-                score_j = (hcws[j] * (c_j ** 0.5)) / (sizes[j] ** 0.45)
+-                c_scores.append((score_j, j, c_j))
+-            c_scores.sort(key=lambda x: x[0])
+-
+-            tight_cands = []
+-            for sc, j, c_j in c_scores[:8]:
+-                orig_cand = reps[:, j]
+-                if dcs[j] >= 16.0 or sizes[j] >= 1500:
+-                    v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
+-                    d_ref = centroid_distance(v_ref, C)
+-                    ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+-                    if d_ref <= 22.0 and ref_cost <= c_j:
+-                        tight_cands.append(v_ref)
+-                tight_cands.append(orig_cand)
+-
+-            deduped = []
+-            for cand in tight_cands:
+-                if not any(direction_angle_deg(cand[:3], k[:3]) < 10.0 for k in deduped):
+-                    deduped.append(cand)
+-            if not deduped:
+-                deduped = [reps[:, 0]]
+-            if verbose:
+-                print("[POTSAC-UNION-NORMALIZED-TIGHT] kept %d" % len(deduped))
+-            return np.column_stack(deduped[:max_candidates])
+-
+-        def r_prior(d, c_val=1.0):
+-            knee = 30.0 if (diag >= 140.0 and c_val <= 0.0058) else 40.0
+-            if d < knee:
+-                return 0.01 * (knee - d)
+-            elif d > 120.0:
+-                return 0.0005 * (d - 120.0) ** 2
+-            return 0.0
+-
+-        # Branch 1: Cylindrical wall candidates (Ticket 314 & Ticket 318 large-sherd relaxation)
+-        w_ax = float(np.sum(mean_axs * sizes) / max(np.sum(sizes), 1))
+-        max_drift = 25.0 if (diag >= 140.0 and w_ax <= 0.90) else 8.0
+-        cyl_reps, cyl_sizes = [], []
+-        for j in range(reps.shape[1]):
+-            cand = reps[:, j]
+-            d_c = dcs[j]
+-            mean_ax = mean_axs[j]
+-            if DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and mean_ax <= 0.50:
+-                cyl_reps.append(cand)
+-                cyl_sizes.append(sizes[j])
+-
+-        cyl_scored = []
+-        if cyl_reps:
+-            V_cyl = np.column_stack(cyl_reps)
+-            s_cyl = np.array(cyl_sizes)
+-            pre_scores = []
+-            for j in range(V_cyl.shape[1]):
+-                cand = V_cyl[:, j]
+-                d_c = centroid_distance(cand, C)
+-                c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
+-                a_cand = cand[:3] / np.linalg.norm(cand[:3])
+-                mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+-                pre_scores.append((c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
+-            order = np.argsort(pre_scores, kind="stable")[:BASIN_REFINE_MAX]
+-            for j in order:
+-                orig_cand = V_cyl[:, j]
+-                orig_cost = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
+-                v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
+-                drift = direction_angle_deg(v_ref[:3], orig_cand[:3])
+-                d_ref = centroid_distance(v_ref, C)
+-                a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
+-                mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
+-                ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+-                cand = v_ref if (drift <= max_drift and DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
+-                d_c = centroid_distance(cand, C)
+-                c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
+-                cw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
+-                a_cand = cand[:3] / np.linalg.norm(cand[:3])
+-                mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
+-                sc = (c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
+-                cyl_scored.append((sc, c, cw, cand, s_cyl[j]))
+-            cyl_scored.sort(key=lambda x: x[0])
+-
+-        # Branch 2: Unified Conical / Shallow-Dish / High-Consensus Base Track (Ticket 315, 317, 318)
+-        cone_pre = []
+-        for j in range(reps.shape[1]):
+-            cand = reps[:, j]
+-            d_c = dcs[j]
+-            mean_ax = mean_axs[j]
+-            sz = sizes[j]
+-            cw_raw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
+-            base = is_base_fragment(C, cand) and not (diag > 65.0 and mean_ax > 0.925 and sz < 4000 and cw_raw > 0.0065)
+-            if base or sz >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
+-                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if (base or sz >= 6000) else DEFAULT_CLEARANCE_MM))
+-                cone_pre.append((cw, sz, cand, mean_ax))
+-        cone_pre.sort(key=lambda x: x[0])
+-
+-        cone_scored = []
+-        for cw_orig, sz, orig_cand, orig_mean_ax in cone_pre[:min(BASIN_REFINE_MAX, 16)]:
+-            v_ref = refine_axis_normalized(orig_cand, C, max_iters=50, tolerance=1e-3, verbose=verbose)
+-            d_ref = centroid_distance(v_ref, C)
+-            a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
+-            mean_ax_ref = float(np.mean(np.abs(a_ref @ C[3:6, :])))
+-            c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
+-            cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
+-            cw_orig_raw = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
+-            orig_base = is_base_fragment(C, orig_cand) and not (diag > 65.0 and orig_mean_ax > 0.925 and sz < 4000 and cw_orig_raw > 0.0065)
+-            base = is_base_fragment(C, v_ref) and orig_base and not (diag > 65.0 and mean_ax_ref > 0.925 and sz < 4000 and cw_ref > 0.0065)
+-
+-            valid_cone = (DEFAULT_CLEARANCE_MM <= d_ref <= 110.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095)
+-            valid_dish = (35.0 <= d_ref <= 115.0 and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)
+-            valid_flat = (sz >= 6000 and cw_ref <= 0.014)
+-
+-            if base or valid_cone or valid_dish or valid_flat:
+-                if orig_base and sz >= 100 and direction_angle_deg(v_ref[:3], orig_cand[:3]) > 4.0:
+-                    cand_use = orig_cand
+-                    c_use = 0.5 * (normalized_huber_cost(orig_cand, C0) + normalized_huber_cost(orig_cand, S1))
+-                    cw_use = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
+-                    d_use = centroid_distance(orig_cand, C)
+-                    ax_use = float(np.mean(np.abs((orig_cand[:3] / np.linalg.norm(orig_cand[:3])) @ C[3:6, :])))
+-                    r_p = 0.0
+-                else:
+-                    cand_use = v_ref
+-                    c_use = c_ref
+-                    cw_use = cw_ref
+-                    d_use = d_ref
+-                    ax_use = mean_ax_ref
+-                    r_p = 0.0 if (valid_dish or valid_flat or base) else r_prior(d_ref, c_ref)
+-                sc = (c_use + r_p + 0.002 * ax_use) / (sz ** 0.12)
+-                cone_scored.append((sc, c_use, cw_use, cand_use, sz))
+-        cone_scored.sort(key=lambda x: x[0])
+-
+-        # Combine: if best cone candidate has solid support (sz >= 50 and c < 0.95 * cyl_c or cw > 0.0085) or decisive cost (c < 0.80 * cyl_c), promote to Rank 0!
+-        cone_promoted = False
+-        if cone_scored:
+-            c_cone, cw_cone, v_cone, sz_cone = cone_scored[0][1], cone_scored[0][2], cone_scored[0][3], cone_scored[0][4]
+-            if not cyl_scored:
+-                cone_promoted = True
+-            elif sz_cone >= 50 and (c_cone < cyl_scored[0][1] * 0.95 or cyl_scored[0][2] > 0.0085 or (c_cone <= cyl_scored[0][1] and sz_cone > cyl_scored[0][4])):
+-                cone_promoted = True
+-            elif c_cone < cyl_scored[0][1] * 0.80:
+-                cone_promoted = True
+-
+-        combined = []
+-        if cone_promoted:
+-            combined.append(cone_scored[0][3])
+-            for sc, c, cw, cand, sz in cyl_scored:
+-                combined.append(cand)
+-            for sc, c, cw, cand, sz in cone_scored[1:]:
+-                combined.append(cand)
+-        else:
+-            for sc, c, cw, cand, sz in cyl_scored:
+-                combined.append(cand)
+-            for sc, c, cw, cand, sz in cone_scored:
+-                combined.append(cand)
+-
+-        deduped = []
+-        for cand in combined:
+-            if not any(direction_angle_deg(cand[:3], k[:3]) < 15.0 for k in deduped):
+-                deduped.append(cand)
+-        if not deduped:
+-            deduped = [reps[:, 0]]
+-
+-        if verbose:
+-            print("[POTSAC-UNION-NORMALIZED] kept %d" % len(deduped))
+-        return np.column_stack(deduped[:max_candidates])
++        return _rank_by_profile(reps, sizes, C0, S1, C, max_candidates, verbose=verbose)
+ 
+     cand = []
+     for seed in seeds:
+diff --git a/tests/test_normalized.py b/tests/test_normalized.py
+index d427465..bc7c6be 100644
+--- a/tests/test_normalized.py
++++ b/tests/test_normalized.py
+@@ -350,6 +350,33 @@ def test_large_base_fragment_not_vetoed():
+     assert err_deg < 2.0
+ 
+ 
++def test_profile_ranking_is_scale_free():
++    """Ticket 322: the same globular sherd at 1/5, 1 and 5 times its size gets the same axis."""
++    from sfs_axes.potsac import run_potsac_union
++
++    def make_belly(rng, scale, n=700, arc=np.radians(80.0)):
++        # bulbous wall: r(z) = 16 - 0.02 z^2 (mm at scale 1), z in [-14, 14]
++        walls = []
++        for off in (0.0, 1.8):
++            th = rng.uniform(-arc / 2, arc / 2, n)
++            z = rng.uniform(-14.0, 14.0, n)
++            r = 16.0 - off - 0.02 * z ** 2
++            drdz = -0.04 * z
++            P = np.stack([r * np.cos(th), r * np.sin(th), z]) * scale
++            N = np.stack([np.cos(th), np.sin(th), -drdz])
++            N /= np.linalg.norm(N, axis=0, keepdims=True)
++            walls.append(np.vstack([P, N]))
++        return walls
++
++    dirs = []
++    for scale in (0.2, 1.0, 5.0):
++        C0, S1 = make_belly(np.random.default_rng(7), scale)
++        vt = run_potsac_union(C0, S1, seeds=range(3), normalized=True)
++        assert direction_angle_deg(vt[:3, 0], [0, 0, 1]) < 5.0
++        dirs.append(vt[:3, 0])
++    assert direction_angle_deg(dirs[0], dirs[2]) < 1.0
++
++
+ if __name__ == "__main__":
+     names = sorted(n for n, f in sorted(globals().items())
+                    if n.startswith("test_") and callable(f))
