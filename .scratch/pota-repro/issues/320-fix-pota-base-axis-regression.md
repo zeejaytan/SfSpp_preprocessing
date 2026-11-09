@@ -129,3 +129,11 @@ In Ticket 319 (`20261109-1426_ecd5bb8_t319-potA`), **Pot A** collapsed from **8/
   - Panel 1: `axes318` K=3 collapse (3/8 sherds, 3/15 joins).
   - Panel 2: `axes320` K=3 restored (8/8 sherds, 15/15 joins).
   - Panel 3: `MO` control (8/8 sherds, 15/15 joins).
+
+### Lead Verification (`2026-11-09`)
+- `verified: python -m pytest C:/PR/worktrees/sfs/320 -v -> 22 passed in 42.11s`
+- `verified: /tmp/basins_172.pkl (task-2803) -> Exact diffs between solve_318 and solve_320_exact across all 172 pieces: [('A', 'Pot_A_Piece_01')] (0/164 pieces changed across Pots B-J + Juglet; Pot_A_Piece_01..08 allclose to axes317 = True, Pot_A_Piece_01 Rank 0 = 0.10 deg)`
+- `verified: sacct -j 34577139 -> COMPLETED 0:0 (Elapsed 00:08:09)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261109-1928_97dad1e_t320-potA/out/A_K3R1/1. Acc.txt -> Sherd accuracy : 8 / 8 (100 %) | Sherd accuracy : 15 / 15 (100 %)`
+- `verified: /data/gpfs/projects/punim2657/SfSpp/runs/20261109-1928_97dad1e_t320-potA/out/A_K3R2/1. Acc.txt -> Sherd accuracy : 8 / 8 (100 %) | Sherd accuracy : 15 / 15 (100 %)`
+- `verified: visual inspection of SfSpp_preprocessing/artifacts/pota320/renders/potA_assembly_comparison.png -> axes320 K=3 forms an intact closed circular vessel dome matching MO control (8/8 sherds, 15/15 joins), curing the axes318 3/8 collapse`
