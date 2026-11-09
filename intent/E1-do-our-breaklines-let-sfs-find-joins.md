@@ -41,6 +41,16 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-10, ticket 323 — one scale-free rule now holds all ten pots at once: each sherd hands the assembler its best line plus any candidate within 1.2x that line's own wall-thickness cost, up to three. The winning change is purely a deletion from the three-line set, so the failure the earlier tickets were chasing was too many candidates, not a weak ranking.**
+
+Each piece keeps its profile-ranked first line and every later line (15 deg apart) whose cost is at most **1.2x** its own cheapest line. The ratio divides two thicknesses of the same sherd: no millimetres, no per-pot constant. Pre-registered in the ticket before any job. Against that rule, **20 of 20 end-to-end runs (ten pots, two repeats) scored at or above their floor**; the authors'-axes control in the same jobs was beaten on Pot D (26/28 sherds, 63/69 joins against 23/28, 55/69) and Pot H (11/11, 17/17 against 8-10/11, 9-10/17) and tied on the other eight. Pot E went from 20-29/31 sherds with three lines and 26/31 with one, to **31/31 62/62 twice**; Pot G's joins came back to 10/10.
+
+**axes323 is a strict subset of axes322's three-line set**: line 1 identical on 172 of 172 pieces (lead re-checked), all 251 kept lines present verbatim in axes322 (0 missing, 0 reordered), 248 lines deleted. No line was re-estimated or re-ranked, so the gain is line selection alone.
+
+**Mechanism:** the assembler scores every piece pair over every pair of their lines and accepts a join when the two lines it used agree within 25 deg (`class/feature_matching.cpp:1715`, byte-identical inside the SIF); it never checks a line against the assembly the piece is joining, so every extra candidate is another chance to build a self-consistent wrong group. Rescue lines (A06 3.9 deg at 1.06x, H08 1.13x, H11 1.01x, E14 1.03x, J07 1.06x) are cheap; the wrong alternatives sit at a median 1.83x.
+
+**The Juglet still does not reassemble**: 0 of 9 sherds, 0 of 18 joins against `Dataset/Juglet_GT` on the same rule, with the pose convention verified (`a' = R a`; the key is in the same convention as the pots' ground truth), and the assembled pieces' axes 16 deg apart at the median, 76 deg at worst. On a 33 mm vessel the method fails outright, so the ten-pot result does not transfer; that is the open question, not a tuning gap.
+
 **2026-11-10, ticket 322 — the Juglet's "0/9" was measured against our own earlier output, not against a reference; on the vessel's real axis the shipped finder is right on 4 of 9 pieces (6 of 9 in its top three), and a better axis estimator is now demonstrated — but no set of lines built from it holds all ten pots, so the open problem is which lines to hand the assembler, not how to find one.**
 
 - **The reference was wrong, and that is the whole of the 0/9.** `Dataset/Axes/Juglet` is not an authors' release — the juglet is not in the paper's set. It is our own MATLAB PotSAC output of 2026-09-16 (`run_juglet_preprocessing.sbatch` step 3, staged by `run_ticket04_juglet.sh:5-6`); both copies on disk are md5-identical. It was being scored as though it were the answer key.
