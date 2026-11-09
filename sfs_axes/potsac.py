@@ -521,7 +521,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             return 0.0
 
         # Branch 1: Cylindrical wall candidates (Ticket 314 & Ticket 318 large-sherd relaxation)
-        max_drift = 25.0 if diag >= 140.0 else 8.0
+        w_ax = float(np.sum(mean_axs * sizes) / max(np.sum(sizes), 1))
+        max_drift = 25.0 if (diag >= 140.0 and w_ax <= 0.90) else 8.0
         cyl_reps, cyl_sizes = [], []
         for j in range(reps.shape[1]):
             cand = reps[:, j]
@@ -570,7 +571,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             d_c = dcs[j]
             mean_ax = mean_axs[j]
             sz = sizes[j]
-            base = is_base_fragment(C, cand) and not (diag > 65.0 and mean_ax > 0.925 and sz < 6000)
+            cw_raw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
+            base = is_base_fragment(C, cand) and not (diag > 65.0 and mean_ax > 0.925 and sz < 4000 and cw_raw > 0.0065)
             if base or sz >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
                 cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if (base or sz >= 6000) else DEFAULT_CLEARANCE_MM))
                 cone_pre.append((cw, sz, cand, mean_ax))
@@ -582,10 +584,11 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             d_ref = centroid_distance(v_ref, C)
             a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
             mean_ax_ref = float(np.mean(np.abs(a_ref @ C[3:6, :])))
-            orig_base = is_base_fragment(C, orig_cand) and not (diag > 65.0 and orig_mean_ax > 0.925 and sz < 6000)
-            base = orig_base and not (diag > 65.0 and mean_ax_ref > 0.925 and sz < 6000)
             c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
             cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
+            cw_orig_raw = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
+            orig_base = is_base_fragment(C, orig_cand) and not (diag > 65.0 and orig_mean_ax > 0.925 and sz < 4000 and cw_orig_raw > 0.0065)
+            base = is_base_fragment(C, v_ref) and orig_base and not (diag > 65.0 and mean_ax_ref > 0.925 and sz < 4000 and cw_ref > 0.0065)
 
             valid_cone = (DEFAULT_CLEARANCE_MM <= d_ref <= 110.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095)
             valid_dish = (35.0 <= d_ref <= 115.0 and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)

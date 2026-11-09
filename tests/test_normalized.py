@@ -306,6 +306,50 @@ def test_shallow_dish_regime():
     err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
     assert err_deg < 5.0
 
+
+
+def test_large_base_fragment_not_vetoed():
+    from sfs_axes.potsac import run_potsac_union
+    from sfs_axes.normalized import is_base_fragment
+
+    rng = np.random.default_rng(42)
+    n = 800
+
+    def make_base_disk(r_max=100.0, z_base=0.0):
+        r = np.sqrt(rng.uniform(0.0, r_max**2, n))
+        th = rng.uniform(-np.pi, np.pi, n)
+        r_rim = np.maximum(r - 90.0, 0.0)
+        slope = np.where(r <= 90.0, 0.01, 0.01 + 1.2 * (r_rim / 10.0)**0.5 * (15.5 / 10.0))
+        z = np.where(r <= 90.0, z_base + 0.01 * r, z_base + 0.01 * 90.0 + (r_rim / 10.0)**1.5 * 15.5)
+        P = np.stack([r * np.cos(th), r * np.sin(th), z])
+        norm_factor = np.sqrt(1.0 + slope**2)
+        nr = -slope / norm_factor
+        nz = 1.0 / norm_factor
+        N = np.stack([nr * np.cos(th), nr * np.sin(th), nz])
+        return np.vstack([P, N])
+
+    C0 = make_base_disk(100.0, 5.0)
+    S1 = make_base_disk(100.0, 0.0)
+    C = np.hstack([C0, S1])
+
+    diag = float(np.linalg.norm(C[:3].max(axis=1) - C[:3].min(axis=1)))
+    d_c = centroid_distance(np.array([0, 0, 1, 0, 0, 0]), C)
+    mean_ax = np.mean(np.abs(C[5, :]))
+    cw = max(normalized_huber_cost(np.array([0, 0, 1, 0, 0, 0]), C0),
+             normalized_huber_cost(np.array([0, 0, 1, 0, 0, 0]), S1))
+
+    assert diag > 140.0
+    assert d_c < 15.0
+    assert mean_ax > 0.93
+    assert cw <= 0.0065
+    assert is_base_fragment(C, np.array([0, 0, 1, 0, 0, 0]))
+
+    vt = run_potsac_union(C0, S1, seeds=range(3), normalized=True)
+    assert vt.shape[1] >= 1
+    err_deg = direction_angle_deg(vt[:3, 0], [0, 0, 1])
+    assert err_deg < 2.0
+
+
 if __name__ == "__main__":
     names = sorted(n for n, f in sorted(globals().items())
                    if n.startswith("test_") and callable(f))
