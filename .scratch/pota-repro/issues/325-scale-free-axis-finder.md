@@ -1,6 +1,8 @@
 # Ticket 325 — Make the axis finder scale-free, so a 33 mm vessel is not judged by pot-sized millimetres
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-10)
+**Branch:** 325-scale-free-axis-finder, in /c/PR/worktrees/sfs/325
 **Answers:** E1
 **Depends on:** 324 (the shipped rule and the byte-identical reference set), 322 (the Juglet answer key)
 **Blocks:** none
