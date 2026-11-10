@@ -6,7 +6,7 @@
 **Answers:** E1
 **Depends on:** 327 (results-in, merged 0868d14) — the filing rule, the two failure modes, and the swap's 3/5
 **Blocks:** none
-**Worker:** unassigned
+**Worker:** dsh-subagent dsh-opencode-go/deepseek-v4.1-flash, agent 50cc731e
 **Budget:** large (8 failed acceptance runs; waiting costs none)
 
 > **In one line.** 327 proved the defect is two independent faults upstream of the assembler: the mesh stage
