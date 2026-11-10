@@ -1,0 +1,22 @@
+{
+ "runid": "20261110-2028_1b131dc_t327-swap",
+ "ticket": 327,
+ "tag": "t327-swap",
+ "commit": "1b131dc (ticket worktree; ticket file only, no code change)",
+ "image": "sfs_main/sfs_pristine_assembly.sif (pristine, unchanged)",
+ "purpose": "bar 4 causality proof: diag326 pair harness on COPIES of the 326 juglet GT tree, S0<->S1 and Breakline_0<-Bl1 swapped on pieces 2, 6, 9 only; untouched control run in the same job",
+ "harness": {
+  "work/diag326.sh": "fb48c6ef741dacc853827136a4a0e299",
+  "work/tools/diag326_pairs.cpp": "4486b2d31b0194b5f0d3550fd73cfbdd"
+ },
+ "trees": {
+  "work/trees/juglet_GT_ctrl": "copy of /data/gpfs/projects/punim2657/SfSpp/runs/20261110-1640_22151d0_t325-juglet/work/trees/juglet_GT_r1, byte-identical to source (Surfaces+Breaklines md5 2c0c39c37d3311e97d9bb79c08c4c7de)",
+  "work/trees/juglet_SWAP": "same copy, then for P2/P6/P9: Surface_0<->Surface_1 swapped, Breakline_0 replaced by the t66 geom Bl1 (Bl0 kept as Breakline_1, unread)"
+ },
+ "inputs_readonly": [
+  "20261110-1640_22151d0_t325-juglet/work/inc_jug",
+  "20261110-1640_22151d0_t325-juglet/work/trees/juglet_GT_r1",
+  "20261103-1332_fab76f5_t66-admitsign-default/outU_jug/geom"
+ ],
+ "writes": "this run dir only"
+}
