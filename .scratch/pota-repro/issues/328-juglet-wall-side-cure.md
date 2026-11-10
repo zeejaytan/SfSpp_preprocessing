@@ -1,6 +1,8 @@
 # Ticket 328 — Cure the Juglet wall side: file the interior face without trusting a broken axis, and re-sign the exported line
 
-**Status:** ready-for-agent (327 is results-in; both halves of the cure are now measured)
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/328-juglet-wall-side-cure
+**Branch:** 328-juglet-wall-side-cure
 **Answers:** E1
 **Depends on:** 327 (results-in, merged 0868d14) — the filing rule, the two failure modes, and the swap's 3/5
 **Blocks:** none
