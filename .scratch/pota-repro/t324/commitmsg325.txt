@@ -1,0 +1,14 @@
+ticket 325: the axis finder's gates are pot-sized millimetres, which a 33 mm vessel cannot satisfy
+
+Written, not dispatched. Measured for the ticket: the Juglet's known-good axis passes 3.5-15.3 mm
+from each piece's centroid, while the normalized union path makes 25 mm a hard floor on that
+distance (normalized.py:20/:138, potsac.py:542/568/587/604). On 16 pot pieces from the ticket-305
+lanes the same quantity is 40-105 mm. So the floor is unsatisfiable on all nine Juglet pieces, and
+the clearance prior (knee 30/40 mm) plus the 1000*(25-d)^2 penalty push the ranking outward.
+
+The ticket asks for one denormalisation: every length in that path becomes a fraction of the
+piece's own size, calibrated so the ten pots stay byte-identical to axes323, then the Juglet is
+tested for admissibility, axis quality and assembly - with the answer key's own axes as the
+control arm. No per-object table, no assembler changes, no threshold nudging.
+
+Also commits the four scale-measurement scripts and the t324 helpers left in .scratch/pota-repro/.
