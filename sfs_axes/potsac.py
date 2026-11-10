@@ -21,9 +21,11 @@ import numpy as np
 from .cao import compute_biaxial_cao_error
 from .io_axes import direction_angle_deg
 from .normalized import (
-    DEFAULT_CLEARANCE_MM,
+    CLEARANCE_FLOOR_FRAC,
+    RADIUS_CEILING_FRAC,
     centroid_distance,
     is_base_fragment,
+    line_radial_gates,
     normalized_huber_cost,
     refine_axis_normalized,
     worst_wall_normalized_cost,
@@ -173,7 +175,9 @@ NORMALIZED = os.environ.get("SFS_AXES_NORMALIZED", "1") not in ("", "0")
 # select.select_union_lines (tickets 322-323); "normal" is the ticket 313-320 regime
 # branch below, kept only so axes318/axes320 stay reproducible.
 UNION_RANKER = os.environ.get("SFS_AXES_UNION_RANKER", "profile")
-MAX_CLEARANCE_MM = float(os.environ.get("SFS_AXES_MAX_CLEARANCE_MM", "250.0"))
+# Ticket 325: the mm d_c bands below became ratio gates (CLEARANCE_FLOOR_FRAC /
+# RADIUS_CEILING_FRAC in normalized.py); the SFS_AXES_MAX_CLEARANCE_MM knob died
+# with the 250 mm cap it overrode.
 
 
 def is_base_sherd(X, vt):
@@ -490,7 +494,11 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         min_hcw = min([hcws[j] for j in range(reps.shape[1]) if sizes[j] >= 20] or [9999.0])
 
         # Regime 1: Self-calibrating tight-radius / miniature vessel regime (Ticket 318)
-        if w_dc <= 15.5 and min_hcw <= 38.0 and diag <= 65.0:
+        # Ticket 325: w_dc <= 0.24 * diag replaces w_dc <= 15.5 mm AND drops the
+        # diag <= 65 mm miniature-size branch: the tight regime is entered when
+        # the basin pool hugs the piece relative to its own diagonal, whatever
+        # the physical size (15.5/65 = 0.238 on the calibration pieces).
+        if w_dc <= 0.24 * diag and min_hcw <= 38.0:
             cands_idx = [j for j in range(reps.shape[1]) if sizes[j] >= 20 and (mean_axs[j] <= 0.70 or sizes[j] >= 1500)]
             if not cands_idx:
                 cands_idx = list(range(min(6, reps.shape[1])))
@@ -505,11 +513,11 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             tight_cands = []
             for sc, j, c_j in c_scores[:8]:
                 orig_cand = reps[:, j]
-                if dcs[j] >= 16.0 or sizes[j] >= 1500:
+                if dcs[j] >= 0.24 * diag or sizes[j] >= 1500:
                     v_ref = refine_axis_normalized(orig_cand, C, max_iters=20, tolerance=1e-3, verbose=verbose)
                     d_ref = centroid_distance(v_ref, C)
                     ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
-                    if d_ref <= 22.0 and ref_cost <= c_j:
+                    if d_ref <= 0.34 * diag and ref_cost <= c_j:
                         tight_cands.append(v_ref)
                 tight_cands.append(orig_cand)
 
@@ -523,23 +531,28 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 print("[POTSAC-UNION-NORMALIZED-TIGHT] kept %d" % len(deduped))
             return np.column_stack(deduped[:max_candidates])
 
-        def r_prior(d, c_val=1.0):
-            knee = 30.0 if (diag >= 140.0 and c_val <= 0.0058) else 40.0
-            if d < knee:
-                return 0.01 * (knee - d)
-            elif d > 120.0:
-                return 0.0005 * (d - 120.0) ** 2
+        # Ticket 325: r_prior is ratio-based. u1 = d_c / r_mean replaces the raw
+        # centroid distance (the 30/40 mm knees were pot calibrations; a single
+        # 0.45 knee serves both), and the far-decoy falloff rides v = r_mean / D
+        # instead of the 120 mm mm-knee. Pot-scale far decoys (v < 2 on large
+        # pots) lose the old mm-calibrated penalty; the default profile ranker
+        # (the shipped writer path) never calls this.
+        def r_prior(u1, v):
+            if u1 < 0.45:
+                return 0.01 * (0.45 - u1)
+            elif v > 2.0:
+                return 0.5 * (v - 2.0) ** 2
             return 0.0
 
         # Branch 1: Cylindrical wall candidates (Ticket 314 & Ticket 318 large-sherd relaxation)
         w_ax = float(np.sum(mean_axs * sizes) / max(np.sum(sizes), 1))
-        max_drift = 25.0 if (diag >= 140.0 and w_ax <= 0.90) else 8.0
+        max_drift = 25.0 if w_ax <= 0.90 else 8.0  # t325: size branch dropped
         cyl_reps, cyl_sizes = [], []
         for j in range(reps.shape[1]):
             cand = reps[:, j]
-            d_c = dcs[j]
             mean_ax = mean_axs[j]
-            if DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and mean_ax <= 0.50:
+            g_j = line_radial_gates(cand, C)
+            if g_j["u_clr"] >= CLEARANCE_FLOOR_FRAC and g_j["v"] <= RADIUS_CEILING_FRAC and mean_ax <= 0.50:
                 cyl_reps.append(cand)
                 cyl_sizes.append(sizes[j])
 
@@ -550,11 +563,11 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             pre_scores = []
             for j in range(V_cyl.shape[1]):
                 cand = V_cyl[:, j]
-                d_c = centroid_distance(cand, C)
+                g_c = line_radial_gates(cand, C)
                 c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
                 a_cand = cand[:3] / np.linalg.norm(cand[:3])
                 mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-                pre_scores.append((c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
+                pre_scores.append((c + r_prior(g_c["u1"], g_c["v"]) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12))
             order = np.argsort(pre_scores, kind="stable")[:BASIN_REFINE_MAX]
             for j in order:
                 orig_cand = V_cyl[:, j]
@@ -565,13 +578,14 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                 a_ref = v_ref[:3] / np.linalg.norm(v_ref[:3])
                 mean_ax_ref = np.mean(np.abs(a_ref @ C[3:6, :]))
                 ref_cost = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
-                cand = v_ref if (drift <= max_drift and DEFAULT_CLEARANCE_MM <= d_ref <= MAX_CLEARANCE_MM and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
-                d_c = centroid_distance(cand, C)
+                g_ref = line_radial_gates(v_ref, C)
+                cand = v_ref if (drift <= max_drift and g_ref["u_clr"] >= CLEARANCE_FLOOR_FRAC and g_ref["v"] <= RADIUS_CEILING_FRAC and mean_ax_ref <= 0.50 and ref_cost <= orig_cost) else orig_cand
+                g_c = line_radial_gates(cand, C)
                 c = 0.5 * (normalized_huber_cost(cand, C0) + normalized_huber_cost(cand, S1))
                 cw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
                 a_cand = cand[:3] / np.linalg.norm(cand[:3])
                 mean_ax = np.mean(np.abs(a_cand @ C[3:6, :]))
-                sc = (c + r_prior(d_c, c) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
+                sc = (c + r_prior(g_c["u1"], g_c["v"]) + 0.002 * mean_ax) / (s_cyl[j] ** 0.12)
                 cyl_scored.append((sc, c, cw, cand, s_cyl[j]))
             cyl_scored.sort(key=lambda x: x[0])
 
@@ -583,9 +597,12 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             mean_ax = mean_axs[j]
             sz = sizes[j]
             cw_raw = max(normalized_huber_cost(cand, C0), normalized_huber_cost(cand, S1))
-            base = is_base_fragment(C, cand) and not (diag > 65.0 and mean_ax > 0.925 and sz < 4000 and cw_raw > 0.0065)
-            if base or sz >= 6000 or (DEFAULT_CLEARANCE_MM <= d_c <= MAX_CLEARANCE_MM and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
-                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_mm=(0.0 if (base or sz >= 6000) else DEFAULT_CLEARANCE_MM))
+            g_j = line_radial_gates(cand, C)
+            # t325: the diag > 65 mm big-flat-decoy escape is now the scale-free
+            # flatness test z_frac < 0.05 (axial extent of all points / D).
+            base = is_base_fragment(C, cand) and not (g_j["z_frac"] < 0.05 and mean_ax > 0.925 and sz < 4000 and cw_raw > 0.0065)
+            if base or sz >= 6000 or (g_j["u_clr"] >= CLEARANCE_FLOOR_FRAC and g_j["v"] <= RADIUS_CEILING_FRAC and (mean_ax <= 0.60 or (sz >= 50 and mean_ax <= 0.985))):
+                cw = worst_wall_normalized_cost(cand, C0, S1, min_clearance_frac=(0.0 if (base or sz >= 6000) else CLEARANCE_FLOOR_FRAC))
                 cone_pre.append((cw, sz, cand, mean_ax))
         cone_pre.sort(key=lambda x: x[0])
 
@@ -598,11 +615,18 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             c_ref = 0.5 * (normalized_huber_cost(v_ref, C0) + normalized_huber_cost(v_ref, S1))
             cw_ref = max(normalized_huber_cost(v_ref, C0), normalized_huber_cost(v_ref, S1))
             cw_orig_raw = max(normalized_huber_cost(orig_cand, C0), normalized_huber_cost(orig_cand, S1))
-            orig_base = is_base_fragment(C, orig_cand) and not (diag > 65.0 and orig_mean_ax > 0.925 and sz < 4000 and cw_orig_raw > 0.0065)
-            base = is_base_fragment(C, v_ref) and orig_base and not (diag > 65.0 and mean_ax_ref > 0.925 and sz < 4000 and cw_ref > 0.0065)
+            g_orig = line_radial_gates(orig_cand, C)
+            g_rr = line_radial_gates(v_ref, C)
+            orig_base = is_base_fragment(C, orig_cand) and not (g_orig["z_frac"] < 0.05 and orig_mean_ax > 0.925 and sz < 4000 and cw_orig_raw > 0.0065)
+            base = is_base_fragment(C, v_ref) and orig_base and not (g_rr["z_frac"] < 0.05 and mean_ax_ref > 0.925 and sz < 4000 and cw_ref > 0.0065)
 
-            valid_cone = (DEFAULT_CLEARANCE_MM <= d_ref <= 110.0 and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095)
-            valid_dish = (35.0 <= d_ref <= 115.0 and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)
+            # t325: the 25-110 / 35-115 mm cone/dish d_ref bands become the
+            # scale-free u_clr floor (anti-slicing) plus d_ref <= 0.9 * diag
+            # (0.9 sits between the loosest 1.31*D and tightest 0.79*D the mm
+            # caps implied across the ten pots; the 35 mm dish-only lower bound
+            # was extra glue and is gone).
+            valid_cone = (g_rr["u_clr"] >= CLEARANCE_FLOOR_FRAC and d_ref <= 0.9 * diag and 0.50 < mean_ax_ref <= 0.925 and cw_ref <= 0.0095)
+            valid_dish = (g_rr["u_clr"] >= CLEARANCE_FLOOR_FRAC and d_ref <= 0.9 * diag and 0.925 < mean_ax_ref <= 0.985 and cw_ref <= 0.0092 and sz >= 50)
             valid_flat = (sz >= 6000 and cw_ref <= 0.014)
 
             if base or valid_cone or valid_dish or valid_flat:
@@ -619,7 +643,7 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                     cw_use = cw_ref
                     d_use = d_ref
                     ax_use = mean_ax_ref
-                    r_p = 0.0 if (valid_dish or valid_flat or base) else r_prior(d_ref, c_ref)
+                    r_p = 0.0 if (valid_dish or valid_flat or base) else r_prior(g_rr["u1"], g_rr["v"])
                 sc = (c_use + r_p + 0.002 * ax_use) / (sz ** 0.12)
                 cone_scored.append((sc, c_use, cw_use, cand_use, sz))
         cone_scored.sort(key=lambda x: x[0])

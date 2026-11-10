@@ -1,0 +1,9 @@
+{
+ "runid": "20261110-1416_22151d0_t325-measure",
+ "ticket": 325,
+ "tag": "t325-measure",
+ "commit": "22151d0 (ticket start; measurement only, no code change)",
+ "args": "measure_gate_stats.py over axes323 rank0 + authors' released + corpus Ground Truth Axes + Juglet_GT",
+ "python": "/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3",
+ "out": ["out/gate_stats.tsv", "out/measure_summary.txt"]
+}

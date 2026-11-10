@@ -1,0 +1,21 @@
+{
+ "runid": "20261110-1640_22151d0_t325-juglet",
+ "ticket": 325,
+ "pot": "Juglet",
+ "tag": "t325-juglet",
+ "commit": "22151d0",
+ "arms": [
+  "O_r1",
+  "K3_r1",
+  "GT_r1",
+  "O_r2",
+  "K3_r2",
+  "GT_r2"
+ ],
+ "axes_k3": "/data/gpfs/projects/punim2657/SfSpp/runs/20261110-1450_22151d0_t325-axes/out/axes325",
+ "axes_gt": "/data/gpfs/projects/punim2657/Dataset/Juglet_GT",
+ "axes_o": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset/Axes/Juglet (as staged)",
+ "template": "/data/gpfs/projects/punim2657/SfSpp/runs/20261110-0740_d628fc0_t323-juglet",
+ "preregistration": "ticket 325 Comments (lead, 2026-11-10), bar 5",
+ "claim": "geometric: >=1 of 18 joins seated and >=2 of 9 pieces placed, both repeats"
+}

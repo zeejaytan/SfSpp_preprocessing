@@ -1,0 +1,17 @@
+{
+  "ticket": ".scratch/pota-repro/issues/325-scale-free-axis-finder.md",
+  "tag": "t325-axes",
+  "purpose": "acceptance 2: byte identity of the shipped writer over the 172 pieces after the scale-free gate conversion",
+  "commit": "22151d0 (ticket start; sfs_axes/normalized.py + sfs_axes/potsac.py carry the UNCOMMITTED t325 conversion - see out/axes325_code.md5 for the exact bytes run)",
+  "code_state": "worktree C:/PR/worktrees/sfs/325, branch 325-scale-free-axis-finder, dirty (lead commits)",
+  "writer": "scripts/run_benchmark_172.py --out <R>/out/axes325 --jobs 24 --cap 6 --seeds 10 --step 10 (line rule default on)",
+  "ranker": "profile (SFS_AXES_UNION_RANKER unset; shipped default)",
+  "reference": "/data/gpfs/projects/punim2657/SfSpp/runs/20261010-0740_d628fc0_t323-axes/out/axes323",
+  "python": "/data/gpfs/projects/punim2657/TORA/envs/tora/bin/python3",
+  "inputs": {
+    "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp (Surfaces 326 files, read-only)",
+    "juglet_geom": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_jug/geom"
+  },
+  "expected": "IDENTICAL 172 DIFFER 0 MISSING 0 (profile path executes zero changed lines)",
+  "worker": "ea7da6de-bca6-4a5d-8530-9b63d7adaa09 (dsh one-shot subagent, glm-5.3)"
+}

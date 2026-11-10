@@ -16,8 +16,52 @@ from .cao import compute_biaxial_cao_error
 from .refine import cao_update_func, optimize_using_lm
 from .robust import apply_robustifier, robustifier_huber
 
-# Minimum clearance threshold for non-base sherds (archaeological ceramics prior)
-DEFAULT_CLEARANCE_MM = 25.0
+# Ticket 325: scale-free gate constants. Every threshold below is a ratio of two
+# lengths measured on the SAME piece, so the gates ask the same question on a
+# 33 mm juglet and a 300 mm pot. They replace the 2026 mm-calibrated constants
+# (25/35/110/115/120/200/250 mm) that made the axis gates size branches.
+#
+# CLEARANCE_FLOOR_FRAC: material clearance u_clr = r_q01 / r_mean, where r_q01
+#   is the 1st-percentile point-to-line radial distance and r_mean the mean.
+#   A true wall axis never comes closer to the pottery than its own profile
+#   allows. Calibrated on the corpus (ticket 325 measurement run
+#   20261110-1416_22151d0_t325-measure): trusted wall axes bottom out at
+#   u_clr = 0.077 (Pot J 18, released), so 0.05 admits every wall with a
+#   1.55x margin while dense-cloud slicing lines measure 0.001-0.02. Unlike
+#   a d_c (centroid-distance) floor this admits hollow-centered axes at any
+#   wrap angle.
+# RADIUS_CEILING_FRAC: implied radius v = r_mean / D (D = piece bbox diagonal).
+#   A wall band's mean radius cannot exceed the piece's own diagonal by much;
+#   far decoys (line hundreds of mm off) reach v >= 3.6 on synthetic tests.
+CLEARANCE_FLOOR_FRAC = 0.05
+RADIUS_CEILING_FRAC = 2.5
+
+
+def line_radial_gates(vt, X):
+    """Scale-free per-candidate geometry: u_clr, v, u1, z_frac.
+
+    u_clr   r_q01 / r_mean   material clearance (floor test)
+    v       r_mean / D       implied radius vs piece size (ceiling test)
+    u1      d_c / r_mean     wall standoff ratio (prior input)
+    z_frac  axial extent of ALL points / D (flatness test; thin wall sheets
+            measured along a perpendicular axis fall under ~0.02, true base
+            depth sits near 0.15)
+    """
+    vt = np.asarray(vt, dtype=float).reshape(6)
+    a = vt[0:3] / np.linalg.norm(vt[0:3])
+    p0 = vt[3:6] - (vt[3:6] @ a) * a
+    P = X[0:3, :]
+    dp = P - p0[:, None]
+    z = a @ dp
+    r_vec = dp - a[:, None] * z[None, :]
+    r = np.linalg.norm(r_vec, axis=0)
+    r_q01 = float(np.percentile(r, 1))
+    r_mean = float(r.mean())
+    D = float(np.linalg.norm(P.max(axis=1) - P.min(axis=1)))
+    d_c = centroid_distance(vt, X)
+    u_clr = r_q01 / r_mean if r_mean > 0 else np.inf
+    return dict(u_clr=u_clr, v=(r_mean / D if D > 0 else np.inf), u1=(d_c / r_mean if r_mean > 0 else np.inf),
+                z_frac=(float(z.max() - z.min()) / D if D > 0 else np.inf), r_mean=r_mean, d_c=d_c, D=D)
 
 
 def compute_normalized_residual(vt, X, with_jacobian=False, eps=1e-6):
@@ -122,20 +166,25 @@ def centroid_distance(vt, X):
     return float(np.linalg.norm(np.cross(C - p0, a)))
 
 
-def is_base_fragment(X, vt=None, r_base_thresh=25.0, normal_axial_thresh=0.70):
+def is_base_fragment(X, vt=None, r_base_frac=0.75, normal_axial_thresh=0.70):
     """Detect whether a piece is a base fragment containing the vessel bottom.
 
-    A true base fragment containing the vessel rotation axis satisfies:
-    1. Centroid distance d(C, L) < 25.0 mm.
-    2. Substantial points near the axis (r < r_base_thresh) with axial normals
-       (|a . n| >= normal_axial_thresh).
-    3. Azimuthal span of near points delta_theta >= 160 degrees around the axis.
-    4. Axial extent delta_z >= 15.0 mm (ruling out thin wall sheet perpendicular slices).
+    Ticket 325: all tests are scale-free; no millimetre appears. A true base
+    fragment containing the vessel rotation axis satisfies:
+    1. Substantial points near the axis (r < r_base_frac * r_mean, the piece's
+       own mean radius) with axial normals (|a . n| >= normal_axial_thresh).
+       A line far from the piece fails here on count, which replaces the old
+       d_c < 25 mm first test.
+    2. Azimuthal span of near points delta_theta >= 160 degrees around the axis.
+    3. Axial extent of ALL points >= 0.05 * D (D = piece bbox diagonal):
+       a base carries real depth along the axis relative to the piece (large
+       synthetic base disk 0.075, full-height base 0.17), while a thin wall
+       sheet measured along a perpendicular axis carries under 2% of D
+       (synthetic wall slice: 0.018). The depth often lives in the rim rise
+       outside the near set, so the extent is taken over all points, exactly
+       as the 15.0 mm test this replaces did.
     """
     if vt is None:
-        return False
-    d_c = centroid_distance(vt, X)
-    if d_c >= DEFAULT_CLEARANCE_MM:
         return False
     a = vt[0:3] / np.linalg.norm(vt[0:3])
     p0 = vt[3:6] - (vt[3:6] @ a) * a
@@ -145,7 +194,8 @@ def is_base_fragment(X, vt=None, r_base_thresh=25.0, normal_axial_thresh=0.70):
     z = a @ dp
     r_vec = dp - a[:, None] * z[None, :]
     r = np.linalg.norm(r_vec, axis=0)
-    near = r < r_base_thresh
+    r_mean = float(r.mean())
+    near = r < r_base_frac * r_mean
     if np.sum(near) < 80:
         return False
     axial_normals = np.abs(a @ N[:, near])
@@ -167,8 +217,9 @@ def is_base_fragment(X, vt=None, r_base_thresh=25.0, normal_axial_thresh=0.70):
     span_deg = 360.0 - np.degrees(max_gap)
     if span_deg < 160.0:
         return False
+    D = float(np.linalg.norm(P.max(axis=1) - P.min(axis=1)))
     z_extent = float(np.max(z) - np.min(z))
-    if z_extent < 15.0:
+    if z_extent < 0.05 * D:
         return False
     return True
 
@@ -180,10 +231,16 @@ def normalized_huber_cost(vt, X, width=1.0):
     return float(np.mean(rob))
 
 
-def worst_wall_normalized_cost(vt, C0, C1=None, width=1.0, min_clearance_mm=DEFAULT_CLEARANCE_MM):
-    """Worst-wall normalized Huber cost with physical clearance prior.
+def worst_wall_normalized_cost(vt, C0, C1=None, width=1.0, min_clearance_frac=CLEARANCE_FLOOR_FRAC):
+    """Worst-wall normalized Huber cost with scale-free clearance prior.
 
     E_hat_worst(a, p0) = max(E0, E1) + clearance_penalty.
+
+    Ticket 325: the prior is ratio-based, so it bites identically at any object
+    size. u_clr = r_q01 / r_mean < CLEARANCE_FLOOR_FRAC (line cutting into the
+    material) draws 1000 * (floor - u_clr)^2 on non-base pieces; an implied
+    radius v = r_mean / D above RADIUS_CEILING_FRAC (far decoy) draws
+    10 * (v - ceiling)^2. min_clearance_frac=0.0 disables the floor penalty.
     """
     c0 = normalized_huber_cost(vt, C0, width=width)
     if C1 is None or C1.shape[1] == 0:
@@ -194,16 +251,14 @@ def worst_wall_normalized_cost(vt, C0, C1=None, width=1.0, min_clearance_mm=DEFA
         cost = max(c0, c1)
         X_all = np.concatenate([C0, C1], axis=1)
 
-    # Physical clearance penalty for non-base sherds
-    d_centroid = centroid_distance(vt, X_all)
+    gates = line_radial_gates(vt, X_all)
     base = is_base_fragment(X_all, vt)
-    if d_centroid < min_clearance_mm and not base:
-        # Heavy penalty for slicing through sherd centroid
-        penalty = 1000.0 * (min_clearance_mm - d_centroid) ** 2
-        cost += penalty
-    if d_centroid > 200.0 and not base:
+    if min_clearance_frac > 0 and gates["u_clr"] < min_clearance_frac and not base:
+        # Heavy penalty for slicing through the sherd body
+        cost += 1000.0 * (min_clearance_frac - gates["u_clr"]) ** 2
+    if gates["v"] > RADIUS_CEILING_FRAC and not base:
         # Penalize degenerate infinite-radius / planar decoys
-        cost += 0.001 * (d_centroid - 200.0) ** 2
+        cost += 10.0 * (gates["v"] - RADIUS_CEILING_FRAC) ** 2
     return cost
 
 

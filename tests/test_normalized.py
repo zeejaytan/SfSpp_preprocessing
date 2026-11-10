@@ -123,11 +123,15 @@ def test_clearance_prior_penalizes_centroid_slicing():
     d_fake = centroid_distance(vt_fake, X)
     assert d_fake < 1.0
 
-    cost_true = worst_wall_normalized_cost(vt_true, X, min_clearance_mm=25.0)
-    cost_fake = worst_wall_normalized_cost(vt_fake, X, min_clearance_mm=25.0)
+    cost_true = worst_wall_normalized_cost(vt_true, X, min_clearance_frac=0.25)
+    cost_fake = worst_wall_normalized_cost(vt_fake, X, min_clearance_frac=0.25)
 
-    # False axis must incur massive clearance penalty
-    assert cost_fake > 1000.0
+    # False axis must incur massive clearance penalty. Ticket 325: the penalty
+    # is ratio-based, 1000 * (0.25 - u_clr)^2; this sparse 200-point synthetic
+    # puts u_clr at 0.093 (a dense corpus cloud drives it toward 0), so the
+    # fake cost is ~25 - dominance over the true axis is what is asserted.
+    assert cost_fake > 20.0
+    assert cost_fake > 1000.0 * cost_true
     assert cost_true < 0.01
 
 
@@ -183,10 +187,12 @@ def test_large_radius_penalty_on_degenerate_cands():
     C = np.mean(P, axis=1)
     vt_degen = np.array([0.0, 0.0, 1.0, C[0] + 250.0, C[1], 0.0])
 
-    cost_phys = worst_wall_normalized_cost(vt_phys, X, min_clearance_mm=25.0)
-    cost_degen = worst_wall_normalized_cost(vt_degen, X, min_clearance_mm=25.0)
+    cost_phys = worst_wall_normalized_cost(vt_phys, X, min_clearance_frac=0.25)
+    cost_degen = worst_wall_normalized_cost(vt_degen, X, min_clearance_frac=0.25)
 
-    # Degenerate infinite-radius candidate must incur large-radius penalty
+    # Degenerate infinite-radius candidate must incur large-radius penalty.
+    # Ticket 325: penalty is 10 * (v - 2.5)^2 on the implied-radius ratio
+    # v = r_mean / D; this decoy sits at v ~ 3.6, so the penalty is ~12.
     assert cost_phys < 0.1
     assert cost_degen > cost_phys + 1.0
 
