@@ -1,10 +1,10 @@
 # Ticket 324 — Ship the 1.2x line rule in `sfs_axes`, so the axis writer produces axes323 by itself
 
-**Status:** ready-for-agent
+**Status:** resolved (2026-11-10)
 **Answers:** E1
 **Depends on:** 323 (the rule and the set that proved it), 322 (the profile cost it is built on)
 **Blocks:** none
-**Worker:** unassigned
+**Worker:** cursor_code (dispatched 2026-11-10, model grok-4.7); verified and landed by the lead
 **Budget:** medium
 
 > **In one line.** Ticket 323 showed that handing the assembler fewer, better lines holds all ten pots
@@ -107,3 +107,51 @@ test names, the 172-file identity count, and — if you had to run an assembly �
 `sacct` State and ExitCode. If identity failed, lead with that, with the file that differs.
 
 ## Comments
+
+### 2026-11-10 12:05 - worker: API in, identity run submitted
+
+- API: `sfs_axes/select.py` - `rank_by_profile` (:55), `keep_lines` (:79), `select_union_lines` (:92);
+  `run_potsac_union(..., line_rule=None)` (`sfs_axes/potsac.py:420`, calls it at :479).
+  Call sites: `scripts/run_benchmark_172.py:73`, `sfs_axes/cli.py:66` (`--union`).
+- Switch: rule on by default; off with `SFS_AXES_LINE_RULE=0` or `--no-line-rule` (both writers). Both, because
+  the env var matches every other `SFS_AXES_*` switch in potsac.py and the flag is what a person reading
+  `--help` finds. The ticket 313-320 branch is kept behind `SFS_AXES_UNION_RANKER=normal` (axes318/320 only).
+- Tests: `tests/test_select.py`, 10 tests; `pytest tests` 33 passed (laptop).
+- Basin set: same as `t322/dump_basins.py` (10 seeds x 1000 draws, step 10, `_cluster_union`, 60 most-drawn,
+  Cr at 12 000 points; `basins_all.json` holds 60 basins on 171/172 pieces). The offline normal refinement's
+  `--iters` is unrecorded (default 40; shipped 60), and the axes323 cut used `profile_rank.json` costs, not
+  in-run ones. Five pieces sit within 0.015 of 1.2 there (H 11 1.201, J 08 1.198, I 30 1.204, D 18 1.188,
+  D 21 1.213): a flip on any of them fails identity.
+- Identity run: job **34636308**, run `/data/gpfs/projects/punim2657/SfSpp/runs/20261110-1202_e94d8fb_t324-axes`
+  (`submit.sbatch` = `t324/submit_axes324.sbatch`). Pass 1 rule on -> `out/axes324`, cmp vs axes323
+  (`out/cmp_axes323.txt`); pass 2 `--no-line-rule` -> `out/axes324_off`, cmp vs axes322 on all pots
+  (`out/cmp_axes322.txt`); `CORPUS-UNCHANGED` by listing before/after. Code staged in `impl/`: every module
+  byte-equal to axes322's `impl/` except cli.py, potsac.py, profile.py (this ticket) and the new select.py.
+  sacct: pending.
+
+### 2026-11-10 12:25 - lead: identity verified independently; ticket closed
+
+Verified by the lead from the run's own files, not from the worker's cmp output:
+
+- Job **34636308** COMPLETED 0:0 in 00:08:17 (`sacct -j 34636308`).
+- `diff -rq out/axes324 <axes323>` -> **0 files differ**, 9 "only in" (the legacy
+  `Pot_JUGLET_Piece_NN_Axis.xyz` names axes323 did not write). A per-file `cmp` loop over all 172
+  axes323 names printed no BAD line. Line totals 264 vs 251; the 13 extra are in the 9 JUGLET files.
+- `diff -rq out/axes324_off <axes322>` -> **no output at all**: 181 files identical.
+- So the shipped path reproduces BOTH proven sets byte for byte, ladder step (2) is met and **no assembly
+  job is needed**. The log prints `CORPUS-UNCHANGED`; its own scoring table is 137/172, 149/172, 154/172.
+- Code read by the lead: 5 tracked files, 58 insertions / 9 deletions; new `sfs_axes/select.py` 124 lines;
+  `pytest tests` re-run on the laptop -> **33 passed**; 0 carriage returns in all six touched files.
+- Shipped surface: `rank_by_profile` (:55), `keep_lines` (:79), `select_union_lines` (:92) in
+  `sfs_axes/select.py`; `run_potsac_union(..., line_rule=None)` at `sfs_axes/potsac.py:420` calling it at
+  `sfs_axes/potsac.py:479`; writers `scripts/run_benchmark_172.py:73` and `sfs_axes/cli.py:66`.
+  Off switch `SFS_AXES_LINE_RULE=0` / `--no-line-rule`; the ticket 313-320 regime stays reachable as
+  `SFS_AXES_UNION_RANKER=normal`, which is how axes318/320 stay reproducible. `run_potsac` (paper chain) untouched.
+
+**Verdict: the rule is merged as the shipped default, and the proof is byte identity on both sides of the switch.**
+Identity held even though the offline refinement's iteration count was never recorded and five pieces sat
+within 0.015 of the 1.2 cut (H 11 1.201, J 08 1.198, I 30 1.204, D 18 1.188, D 21 1.213) — so the shipped
+costs agree with the offline ones on the side of the cut that matters.
+
+Committed by the lead (the worker did not commit), with `.scratch/pota-repro/t324/submit_axes324.sbatch`.
+

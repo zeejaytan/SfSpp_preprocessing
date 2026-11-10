@@ -61,7 +61,7 @@ def get_piece_info(stem):
     return pot, c0_path, c1_path, rel_path, gt_path
 
 def one(job):
-    stem, outdir, cap, seeds, step = job
+    stem, outdir, cap, seeds, step, line_rule = job
     pot, c0_path, c1_path, rel_path, gt_path = get_piece_info(stem)
     try:
         C0 = load_wall(c0_path)
@@ -70,7 +70,8 @@ def one(job):
         return dict(stem=stem, pot=pot, error=str(exc))
 
     t0 = time.time()
-    vt = ps.run_potsac_union(C0, C1, seeds=list(range(seeds)), step=step, max_candidates=cap, normalized=True)
+    vt = ps.run_potsac_union(C0, C1, seeds=list(range(seeds)), step=step, max_candidates=cap, normalized=True,
+                             line_rule=line_rule)
     secs = time.time() - t0
     K = int(vt.shape[1]) if vt.size else 0
 
@@ -156,6 +157,9 @@ def main():
     ap.add_argument("--seeds", type=int, default=10)
     ap.add_argument("--step", type=int, default=10)
     ap.add_argument("--pots", default="ALL")
+    ap.add_argument("--no-line-rule", action="store_true",
+                    help="write every profile-ranked line up to --cap (the axes322 set) "
+                         "instead of the ticket 324 keep rule; same as SFS_AXES_LINE_RULE=0")
     a = ap.parse_args()
 
     selected_pots = None if a.pots == "ALL" else set(a.pots.split(","))
@@ -175,7 +179,8 @@ def main():
             stems.append(f"Juglet_Piece_{i}")
 
     print(f"[axes318] Total {len(stems)} pieces to process, output to {a.out}", flush=True)
-    jobs = [(s, a.out, a.cap, a.seeds, a.step) for s in stems]
+    line_rule = False if a.no_line_rule else None
+    jobs = [(s, a.out, a.cap, a.seeds, a.step, line_rule) for s in stems]
 
     t0 = time.time()
     if a.jobs > 1:

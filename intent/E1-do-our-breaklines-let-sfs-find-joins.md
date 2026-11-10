@@ -41,6 +41,8 @@ us. **But the released code does not implement what the paper specifies**
 constant.** That is a better-defined and more defensible target than
 "make the walk local".
 
+**2026-11-10, ticket 324 — the 1.2x rule is now the shipped default, and it reproduces both proven sets byte for byte: with the rule on the axis writer writes exactly the 172 files of axes323, with it off exactly the 181 of axes322 (job 34636308, COMPLETED 0:0). No per-pot table, no millimetre constant, and the paper chain is untouched.**
+
 **2026-11-10, ticket 323 — one scale-free rule now holds all ten pots at once: each sherd hands the assembler its best line plus any candidate within 1.2x that line's own wall-thickness cost, up to three. The winning change is purely a deletion from the three-line set, so the failure the earlier tickets were chasing was too many candidates, not a weak ranking.**
 
 Each piece keeps its profile-ranked first line and every later line (15 deg apart) whose cost is at most **1.2x** its own cheapest line. The ratio divides two thicknesses of the same sherd: no millimetres, no per-pot constant. Pre-registered in the ticket before any job. Against that rule, **20 of 20 end-to-end runs (ten pots, two repeats) scored at or above their floor**; the authors'-axes control in the same jobs was beaten on Pot D (26/28 sherds, 63/69 joins against 23/28, 55/69) and Pot H (11/11, 17/17 against 8-10/11, 9-10/17) and tied on the other eight. Pot E went from 20-29/31 sherds with three lines and 26/31 with one, to **31/31 62/62 twice**; Pot G's joins came back to 10/10.

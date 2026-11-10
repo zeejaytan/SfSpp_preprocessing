@@ -28,7 +28,8 @@ from .potsac import UNION_MAX, UNION_SEEDS, adaptive_step, run_potsac, run_potsa
 
 def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
                   step=10, adaptive=False, truncate=False, verbose=False,
-                  paper_chain=True, union_seeds=None, max_candidates=None):
+                  paper_chain=True, union_seeds=None, max_candidates=None,
+                  line_rule=None):
     """Run the full chain for one piece; write its assembly-layout axis file.
 
     Default (tickets 306 + 307): both walls whole, and the paper's candidate
@@ -45,6 +46,9 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
     the Pot A assembler (4/8 5/15); 307 showed the same piece is 8/8 15/15 at
     NP=8, so that reading did not carry -- 310 re-measured this path at NP=8.
     The paper chain stays the default because it is the MATLAB-faithful one.
+    Ticket 324: the union path ranks its lines by profile thickness and keeps
+    the first plus any within 1.2x its cost, at most 3 (select.py);
+    line_rule=False writes every ranked line (the axes322 set).
     """
     t0 = time.time()
     C0, C1 = read_surfaces(surfaces_dir, pot_id, frag_id,
@@ -60,7 +64,8 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
             raise RuntimeError("piece %02d: no axis survived dedup" % frag_id)
     else:
         vt = run_potsac_union(C0, C1, seeds=union_seeds, step=step,
-                              max_candidates=max_candidates, verbose=verbose)
+                              max_candidates=max_candidates, verbose=verbose,
+                              line_rule=line_rule)
         mode = "union"
         if vt.shape[1] < 1:
             raise RuntimeError("piece %02d: no axis found" % frag_id)
@@ -118,6 +123,11 @@ def main(argv=None):
                     help="seeds whose draws are unioned (default %d)" % UNION_SEEDS)
     ap.add_argument("--max-candidates", type=int, default=UNION_MAX,
                     help="cap on lines written per piece (default %d)" % UNION_MAX)
+    ap.add_argument("--no-line-rule", action="store_true",
+                    help="--union only: write every profile-ranked line (up to "
+                         "--max-candidates) instead of the first plus those within "
+                         "1.2x its cost, at most 3 (ticket 324; same as "
+                         "SFS_AXES_LINE_RULE=0)")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
     if "-" in args.pieces:
@@ -135,7 +145,8 @@ def main(argv=None):
                       args.step, args.adaptive, truncate=truncate,
                       verbose=args.verbose, paper_chain=not args.union,
                       union_seeds=args.union_seeds,
-                      max_candidates=args.max_candidates)
+                      max_candidates=args.max_candidates,
+                      line_rule=False if args.no_line_rule else None)
 
 
 if __name__ == "__main__":

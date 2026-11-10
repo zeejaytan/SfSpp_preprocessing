@@ -31,6 +31,7 @@ from .normalized import (
 from .pottmann import compute_pottmann_axis
 from .refine import refine_axis
 from .robust import apply_robustifier, robustifier_gm, robustifier_huber
+from .select import select_union_lines
 
 DEDUP_COS = 0.9848  # cos(10 deg), run_potsac.m:65,86
 # Ticket 303 switch, default OFF (MATLAB-faithful stale cost).
@@ -168,6 +169,10 @@ BASIN_REFINE_MAX = int(os.environ.get("SFS_AXES_BASIN_REFINE_MAX", "32"))
 # Ticket 313: distance-invariant normal alignment loss and clearance prior.
 # Default ON: eliminates centroid lever-arm bias proven in ticket 312.
 NORMALIZED = os.environ.get("SFS_AXES_NORMALIZED", "1") not in ("", "0")
+# Ticket 324: how the normalized union path orders its basins. "profile" (default) is
+# select.select_union_lines (tickets 322-323); "normal" is the ticket 313-320 regime
+# branch below, kept only so axes318/axes320 stay reproducible.
+UNION_RANKER = os.environ.get("SFS_AXES_UNION_RANKER", "profile")
 MAX_CLEARANCE_MM = float(os.environ.get("SFS_AXES_MAX_CLEARANCE_MM", "250.0"))
 
 
@@ -412,7 +417,7 @@ def _cluster_union(V, cos=DEDUP_COS):
 # constant; the only inputs are the piece's own two surfaces and the draws' own optima.
 # SFS_AXES_CONVERGE_BEFORE_RANK (default off) reorders 2 and 5; see the switch above.
 def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
-                     verbose=False, normalized=None):
+                     verbose=False, normalized=None, line_rule=None):
     """Deterministic union of the Pottmann basins over S seeds (ticket 306).
 
     C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
@@ -420,7 +425,9 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
     max_candidates: cap on returned lines, default UNION_MAX.
     normalized: whether to use distance-invariant normal alignment loss and
     clearance prior (ticket 313, default NORMALIZED).
-    Returns vt (6, K), 1 <= K <= max_candidates, best (worst-wall cost) first.
+    line_rule: with normalized, keep only the lines select.keep_lines passes
+    (ticket 324, default select.LINE_RULE); False writes every ranked line.
+    Returns vt (6, K), 1 <= K <= max_candidates, best first.
     """
     if normalized is None:
         normalized = NORMALIZED
@@ -468,6 +475,10 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
             return np.zeros((6, 1))
         V = np.column_stack(all_cands)
         reps, sizes = _cluster_union(V)
+        if UNION_RANKER == "profile":
+            vt, _ = select_union_lines(reps, sizes, C0, S1, C, max_candidates,
+                                       line_rule=line_rule, verbose=verbose)
+            return vt
 
         # Precompute geometry features across all basin representatives
         diag = float(np.linalg.norm(C[:3].max(axis=1) - C[:3].min(axis=1)))

@@ -17,7 +17,8 @@ Measured (ticket 322, 172 pieces): refined from the reference axis, this cost mo
 a median 1.5 deg (>10 deg on 9/163 pot pieces), where the distance-invariant normal
 cost moves 6.4 deg (>10 deg on 70/163).
 
-Not called by run_potsac or run_potsac_union: no shipped path ranks by this cost.
+Called by select.py, which ranks run_potsac_union's normalized basins by this cost
+(ticket 324); run_potsac (the paper chain) does not use it.
 """
 
 import numpy as np

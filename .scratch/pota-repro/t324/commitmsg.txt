@@ -1,0 +1,12 @@
+ticket 324: the 1.2x line rule is the shipped default, proven by byte identity
+
+sfs_axes/select.py ranks a piece's union basins by profile thickness and keeps the
+first line plus any later one within 1.2x its cost, at most three (tickets 322-323;
+20 of 20 runs at or above floor, D and H beaten against the authors' own axes).
+Wired into run_potsac_union (line_rule) and both writers; off with
+SFS_AXES_LINE_RULE=0 or --no-line-rule, and SFS_AXES_UNION_RANKER=normal keeps the
+ticket 313-320 regime so axes318/320 stay reproducible.
+
+Checked: job 34636308 (COMPLETED 0:0) wrote axes324 identical to axes323 on all 172
+files, and axes324_off identical to axes322 on all 181; 33 tests pass; the paper chain
+is untouched; the corpus listing is unchanged.
