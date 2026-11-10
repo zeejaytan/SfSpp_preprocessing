@@ -1,0 +1,18 @@
+{
+  "runid": "20261110-2345_123f2ca_t328-e2e",
+  "ticket": "SfSpp_preprocessing .scratch/pota-repro/issues/328-juglet-wall-side-cure.md",
+  "commit": "123f2ca",
+  "tag": "t328-e2e",
+  "purpose": "Ticket 328 bar 4: Juglet end-to-end reassembly through the pristine assembler, GT-axes arm, two repeats of the cured lanes (assembler is non-deterministic) plus one repeat of the shipped t66 lanes as the control.",
+  "template": "/data/gpfs/projects/punim2657/SfSpp/runs/20261110-0320_41494d0_t320b-juglet/submit.sbatch",
+  "cured_lanes": "/data/gpfs/projects/punim2657/SfSpp/runs/20261110-2325_123f2ca_t328-trim5/outgt_jug/geom (job G, gt_jug cell)",
+  "shipped_lanes": "/data/gpfs/projects/punim2657/SfSpp/runs/20261103-1332_fab76f5_t66-admitsign-default/outU_jug/geom",
+  "arms": [
+    "T328C_r1 (cured, repeat 1)",
+    "T328C_r2 (cured, repeat 2)",
+    "T66O_r1 (shipped control)"
+  ],
+  "axes": "Dataset/Juglet_GT overwritten into every tree after staging (GT-axes arm)",
+  "gates": "FLOOR=20 NP=9, seam gate untouched",
+  "scoring": "acc305.py + score58.py (RAD 0.35 rad, TT 50 mm, strict 5 deg / 10 mm, POT_SIZE_MM 65, SEAT_FRAC 0.0707)"
+}

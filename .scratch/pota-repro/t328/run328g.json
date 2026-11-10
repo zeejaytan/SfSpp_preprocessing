@@ -1,0 +1,43 @@
+{
+  "runid": "20261110-2325_123f2ca_t328-trim5",
+  "ticket": "SfSpp_preprocessing .scratch/pota-repro/issues/328-juglet-wall-side-cure.md",
+  "commit": "123f2ca",
+  "tag": "t328-trim5",
+  "submitted": "2026-11-10T12:25Z (approx)",
+  "purpose": "Ticket 328 job G: rebuild the mesh and edge binaries with the trimmed 5 mm plane-fit line normal (edgeline_extraction_headless.cpp) and the curvature/radius/axis-fit filing rule (mesh_processing_headless.cpp); re-measure bars 1-3.",
+  "source": "seeded from runs/20261110-2252_123f2ca_t328-planenorm/build/src (commits are forbidden; the two patched files are overwritten from patch3.tar, md5 recorded in src.md5)",
+  "patch": {
+    "file": "patch3.tar",
+    "md5": "adef1f675bda2920b56e4798fd1f46e3",
+    "files": [
+      "edgeline_extraction_headless.cpp",
+      "mesh_processing_headless.cpp"
+    ]
+  },
+  "cells": [
+    {
+      "name": "gt_jug",
+      "pot": "Juglet",
+      "pieces": "1-9",
+      "axis_dir": "$DS/Juglet_GT",
+      "worness": 0.7,
+      "env": "SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=1.0"
+    },
+    {
+      "name": "ds_jug",
+      "pot": "Juglet",
+      "pieces": "1-9",
+      "axis_dir": "$DS/Axes/Juglet",
+      "worness": 0.7,
+      "env": "SFS_NORMAL_MODE=radius SFS_NORMAL_RADIUS_MM=1.0"
+    }
+  ],
+  "harness": {
+    "source": "326 diag326_pairs.cpp (md5 recorded in out/harness.md5)",
+    "before_tree": "t66 outU_jug/geom",
+    "after_tree": "this run outgt_jug/geom",
+    "images": "sfs_main/sfs_pristine_assembly.sif, inc_jug from runs/20261110-1640_22151d0_t325-juglet"
+  },
+  "expected": "dot_med_d3 >= +0.7 on all nine touching pairs (local replica predicts 9/9)",
+  "notes": "pot cells not re-run: their slot decisions were identical under jobs A and D and the pot identity gate is the axes benchmark (job E, 172 files byte-identical to t323)."
+}

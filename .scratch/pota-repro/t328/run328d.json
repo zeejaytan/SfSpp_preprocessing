@@ -1,0 +1,19 @@
+{
+ "runid": "20261110-2252_123f2ca_t328-planenorm",
+ "ticket": 328,
+ "tag": "t328-planenorm",
+ "commit": "123f2ca",
+ "note": "worktree has uncommitted ticket-328 patches (commits forbidden); source seeded from run 20261110-2205_123f2ca_t328-wallside-short build/src with mesh_processing_headless.cpp and edgeline_extraction_headless.cpp replaced (patch2.tar, md5s in src.md5)",
+ "patch": "mesh stage: classifyAndOrderPaper234 geometric self-check (kappa ratio, radius, axisFit, vote gap; no size-order fallback). edge stage: Breakline normals = smallest principal direction of a 3 mm disc of the ridden wall, sign from the fitted surface normal.",
+ "jobs": {
+  "D": "t328p: build + gt_jug/ds_jug/new_pota/new_potc + 326 harness on the cured tree",
+  "E": "t328ax: run_benchmark_172.py byte-identity vs axes322/axes323"
+ },
+ "inputs": {
+  "corpus": "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp",
+  "dataset": "/data/gpfs/projects/punim2657/sfs_preprocessing/Dataset",
+  "gt": "Dataset/Juglet_GT",
+  "prev_src": "runs/20261110-2205_123f2ca_t328-wallside-short/build/src"
+ },
+ "outputs": "out/, pass*.classify.txt, pass*.linenormals.txt, out/pot_identity.tsv"
+}

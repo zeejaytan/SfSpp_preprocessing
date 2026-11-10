@@ -1,0 +1,500 @@
+diff --git a/.scratch/pota-repro/issues/328-juglet-wall-side-cure.md b/.scratch/pota-repro/issues/328-juglet-wall-side-cure.md
+index c0647c3..e906be0 100644
+--- a/.scratch/pota-repro/issues/328-juglet-wall-side-cure.md
++++ b/.scratch/pota-repro/issues/328-juglet-wall-side-cure.md
+@@ -97,3 +97,155 @@ slot-exchange surgery (fallback arm only). 175: parent-surface separation. The a
+   `-DJUGLET_ORIG`, `juglet_orig_block.inc`, FLOOR=20, NP=9).
+ - Precedents: `296-seat-a-pot-and-prove-the-interior-slot.md`, `175-two-walks-two-slots.md`,
+   `81-swap-cure.md`, `210-swap-reseat-fresh.md`.
++
++
++## Comments (worker, 2026-11-10)
++
++### Bar 1 — a filing that a bad axis cannot invert: PASS (both arms)
++
++Two code sites, both in the worktree (uncommitted by rule):
++- `mesh_processing_headless.cpp:3680` new `namespace t328` (helper `faceStats` at :3705), decision rewritten at
++  :3846-3912 inside `classifyAndOrderPaper234` (:3688, called :4008 right after `std::sort(clusters, myobject3)`).
++- `edgeline_extraction_headless.cpp:92` (`kdtree_flann.h`), :2402-2438 the per-point wall normal (bar 2 below).
++
++**The rule.** Two measurements, neither of which reads the normal sign or the supplied axis:
++- **G — local curvature.** Per face, a local quadric `z = ½(Au²+2Buv+Cv²)+Du+Ev` over k=60 nearest neighbours in
++  the frame of each point's own normal; `κmax = max(|tr±disc|)`; the **median over a deterministic stride
++  subsample of 600 points**. The interior face is the face of *smaller radius of revolution*, so its curvature is
++  larger; `κ` is sign-free, so a globally negated normal set cannot flip it, and it never touches the axis file.
++  Valid when `ratio = κ_interior/κ_other ≥ 1.10`.
++- **V — the existing axis-ray vote** (`inFrac`/`satA`/`satB`), now printed with two new diagnostics:
++  `axisfit` = fraction of each face's normal-vs-girth angles within 90°−? (sign-free), and
++  `vote_gap = (satA−satB)/(n0+n1)`. Valid when `axisfit ≥ 0.80` **and** `|vote_gap| ≥ 0.50`.
++- **Precedence.** geometry decides whenever G is valid; if G is invalid the vote decides only when V is valid;
++  if neither is valid the piece is filed by `kPick` (the measured curvature order) with a printed
++  `WARN undecidable piece` — **there is no size-order fallback anywhere**, and no piece ID, constant or
++  small-object flag. On disagreement one line names geometry as the winner and says why: the vote is inverted
++  both by a wrong-side axis and by a globally negated normal set, geometry by neither.
++
++**Arm A — the GT axis** (`SFS_AXIS_FILE=Dataset/Juglet_GT`), cell outgt_jug of job 34696906:
++slot 0 is the interior on **9/9**, `decider=geometry-kappa` on all nine, `axisfit` 0.90-1.00,
++`κ ratio` 1.27 1.43 2.40 2.13 2.43 1.98 1.92 2.48 3.00.
++
++**Arm B — the shipped, broken axis** (`Dataset/Axes/Juglet`), cell outds_jug of the same job:
++slot 0 is the interior on **9/9** as well. The two pieces whose axis is wrong are exactly the two the vote
++mis-files, and geometry overrode both:
++- piece 2 `axisfit=0.24`, `radius0=2.34`/`radius1=3.31`, `vote_pick=0`, geometry → face 1 (correct);
++- piece 9 `axisfit=0.14`, `radius0=3.43`/`radius1=2.10`, `vote_pick=1`, geometry → face 0 (correct);
++- the other seven match the GT arm to three decimals.
++
++One more disagreement is worth naming: with the **GT** axis, piece 6's vote still points the wrong way
++(`vote_pick=0`, `vote_gap=+1.00` — decisive and wrong) because that piece's normals are globally negated
++upstream and its walls are near-tangential; geometry decides it correctly. So the vote disagrees with geometry on
++1/9 in the GT arm (piece 6, sign) and on 3/9 in the shipped-axis arm (2, 9: axis; 6: sign), and geometry is right
++in every case. Tables: `artifacts/pota328/probe/filing_gt_jug.tsv`, `filing_ds_jug.tsv`
++(parser `.scratch/pota-repro/t328/parse_filing.py`; the census column is the smaller median perpendicular radius
++about the GT axis, reproducing 327).
++
++### Bar 2 — line normals re-derived against the wall, per point: PASS (Breakline_0)
++
++`edgeline_extraction_headless.cpp:2402-2438`: right after the B-spline block that used to hand the line its
++normals, the cleaned single-face wall cloud (`cloud_OriginalSurfaceWithNormals`, loaded at :2342 — the wall the
++line rides) is searched with a `pcl::KdTreeFLANN<pcl::PointNormal>` at k=5 for every projected line point; the
++mean wall normal replaces the fitted surface normal. **Positions are untouched**, so the correspondence set
++(kd-nearest on points) and `gap_min` cannot move. The old per-line global sign vote stays in the file and is now
++a no-op for Bl0 by construction.
++
++Percent of a line's normals agreeing (dot>0) with the wall it rides, before → after, per piece:
++
++| piece | Bl0 before | Bl0 after | median after | Bl1 after (not read by the assembler) |
++|---|---|---|---|---|
++| 1 | 1.000 +0.951 | 1.000 | +0.993 | 0.672 +0.362 |
++| 2 | 1.000 +0.939 | 1.000 | +0.992 | 0.094 −0.438 |
++| 3 | 1.000 +0.906 | 1.000 | +0.991 | 0.195 −0.438 |
++| 4 | 1.000 +0.910 | 1.000 | +0.984 | 0.000 −0.648 |
++| 5 | 1.000 +0.931 | 1.000 | +0.995 | 0.000 −0.711 |
++| 6 | 0.733 +0.871 | 0.732 | +0.991 | 0.289 −0.185 |
++| 7 | 1.000 +0.920 | 1.000 | +0.990 | 0.345 −0.354 |
++| 8 | 1.000 +0.904 | 1.000 | +0.995 | 0.262 −0.593 |
++| 9 | 1.000 +0.942 | 1.000 | +0.982 | 0.318 −0.365 |
++
++- The before column is the shipped t66 bundle, i.e. 327's measurement reproduced, and it is the *bundle* that
++  looked healthy: agreement 1.000 on 15 of 18 face-lines. The defect was never a whole-line inversion on Bl0 —
++  it was the per-point mixture, which is why 1-9 and 6-7 kept failing after the swap (327: −0.039 and −0.183).
++- After the cure every Bl0 point carries its wall's normal. `checkvote328.py` verifies the exported block is
++  exactly the k=5 wall mean: `dot(exported, k5mean) = +1.0000` on every Bl0 point of all nine pieces except the
++  5 piece-6 points below.
++- Piece 6's Bl0 is 0.732 rather than 1.000 and its median dot is still +0.991: 5 of its 41 points take the k=5
++  mean of neighbours whose normals lean the other way because that fragment's walls are near-tangential
++  (`|mean unit n|` 0.017/0.041 per 327). The wall itself is ambiguous there, not the line; the median direction
++  is unambiguous.
++- **Bl1 is not cured and is deliberately left alone**: the global vote still negates whole exterior lines
++  (`dot(exported, k5mean) = −1.0000` for 100% of piece 1's 64 points). Only `Breakline_0` is read by the
++  assembler (`class/data_path.h`, 326's finding), so curing Bl1 would grow the diff without moving any bar.
++  Recorded here as a known, unmoved defect.
++
++**Job bookkeeping for this bar.** 34696906 (run dir `20261110-2205_123f2ca_t328-wallside-short`) FAILED 6:0 at
++22:19:49 — but only at the 326-harness build, which needs `/opt/sfs-pristine`: that path exists in
++`sfs_main/sfs_pristine_assembly.sif`, not in `pcl_191_nurbs.sif`. Both binaries compiled and all six cells ran
++before that line, so the two arms above are live results. 34696293 (the 4 h copy) was cancelled by the lead while
++PENDING. The harness re-run is **34700288** (run dir `20261110-2235_123f2ca_t328-harness-after`) — bar 3 below.
++
++### Bar 3 — the correspondence bar. First measurement FAILS, and it convicts the bar-2 estimator, not the filing
++
++Run **34700288** (`20261110-2235_123f2ca_t328-harness-after`) **COMPLETED 0:0**, 00:00:18. It clones t325's
++`trees/juglet_GT_r1`, regenerates `Surfaces/*.xyz` from the cured `geom`, replaces `Breaklines/*.pcd` with the
++cured `Bl0`/`Bl1`, hardlinks 326's pristine objects (`34671027`) and runs `diag326.sh jug_cured /inc 20
++-DJUGLET_ORIG` in `sfs_main/sfs_pristine_assembly.sif`. Its before table is 326's own `out/diag_jug_GT.txt`.
++
++`dot_med_d3` = median over the harness's correspondences of `n_A·n_B` (both normals are the exported PCD
++normals); `inl` = the strict gate's `n_inl15_15deg`. **Before** = shipped t66 bundle; **after** = this cure.
++
++| pair | before dot_med_d3 | before inl | after dot_med_d3 | after inl | after n_d3 (neg) |
++|---|---|---|---|---|---|
++| 1-2 | −0.896 | 11 | **+0.311** | 0 | 13 (0) |
++| 1-4 | +0.786 | 4 | **+0.469** | 0 | 9 (0) |
++| 1-8 | +0.971 | 22 | **+0.741** | 0 | 19 (0) |
++| 1-9 | −0.945 | 0 | **−0.408** | 0 | 7 (6) |
++| 2-5 | −0.991 | 0 | **+0.642** | 0 | 1 (0) |
++| 2-9 | +0.991 | 8 | **+0.693** | 0 | 4 (0) |
++| 3-5 | +0.987 | 6 | **+0.674** | 0 | 3 (0) |
++| 6-7 | +0.106 | 0 | **−0.786** | 0 | 15 (12) |
++| 7-9 | −0.674 | 0 | **+0.287** | 0 | 3 (0) |
++
++One pair of nine clears +0.7 (1-8) and the strict gate is empty on all nine: **bar 3 fails as implemented**. The
++cured tree is a fresh draw (the mesh stage's 30 unseeded ray-cast points), so `gap_min` moved too — 1-2
++1.103→0.514, 1-9 2.124→0.998, 6-7 0.357→0.809 mm — and the before/after columns are two draws of the same
++pipeline, not the same draw.
++
++**Why it fails, measured rather than guessed.** `.scratch/pota-repro/t328/mutualpair2.py` is an exact local
++replica of the harness's pair statistic (GTRel on the 4×4 `T` matrices, mutual nearest, |Δp| < 3 mm, dot of the
++PCD normals, median). It reproduces both trees to three decimals *and* reproduces 327's swap table exactly
++(1-2 +0.704, 1-4 +0.786, 1-8 +0.971, 1-9 −0.039, 2-5 +0.948, 2-9 +0.967, 3-5 +0.987, 6-7 −0.183, 7-9 +0.708),
++so the statistic is trustworthy. On **that** bundle, with the filing already correct, four normal estimators:
++
++| pair | fitted (327 swap) | fitted, sign per point from wall | wall k=5 mean | wall nearest-1 | 3 mm wall plane |
++|---|---|---|---|---|---|
++| 1-2 | +0.704 | +0.704 | +0.311 | +0.278 | **+0.926** |
++| 1-4 | +0.786 | +0.786 | +0.469 | +0.199 | **+0.874** |
++| 1-8 | +0.971 | +0.971 | +0.741 | +0.605 | **+0.984** |
++| 1-9 | −0.039 | −0.039 | −0.408 | −0.808 | **+0.652** |
++| 2-5 | +0.948 | +0.948 | +0.642 | +0.608 | **+0.953** |
++| 2-9 | +0.967 | +0.967 | +0.688 | +0.400 | **+0.959** |
++| 3-5 | +0.987 | +0.987 | +0.674 | +0.636 | **+0.989** |
++| 6-7 | −0.183 | −0.177 | −0.609 | −0.499 | **+0.372** |
++| 7-9 | +0.708 | +0.708 | +0.287 | +0.126 | **+0.797** |
++
++- The **k=5 mean of the wall's own vertex normals** — what bar 2 shipped — is worse than the fitted normal on
++  every one of the nine pairs, including the seven that were already passing. The wall's per-vertex normals right
++  at a break edge are contaminated by the break face and by the last jagged triangle row, so the mean is pulled
++  tens of degrees off the wall; the fitted B-spline normal is a smooth field over the whole fragment and does not
++  suffer that.
++- **Signing the fitted normal per point from the wall changes nothing** (−0.039 → −0.039, −0.183 → −0.177). The
++  fitted normal already agrees in sign with the local wall, so 327's reading — that 1-9 and 6-7's residual is a
++  per-point sign defect — is **not supported**: those correspondences are between surfaces that genuinely differ
++  in orientation, not between a normal and its negation.
++- A **3 mm disc of the wall, fitted as a plane** (smallest principal direction, sign from the fitted normal) is
++  best of all: it beats the fitted normal on six of nine pairs and recovers 1-9 and 6-7 from −0.039/−0.183 to
++  +0.652/+0.372 on this bundle. On the cured geometry it predicts 7/9 at bar (1-2 +0.926, 1-4 +0.874, 1-8 +0.984,
++  2-5 +0.953, 2-9 +0.959, 3-5 +0.989, 7-9 +0.797) with 1-9 +0.652 and 6-7 +0.285 still short.
++
++So the bar-2 code is being changed from the k=5 mean to the 3 mm plane fit (`edgeline_extraction_headless.cpp`,
++the block after `fitBSplineSurfaceAndGetNormalsOnProjectedPoints`), and bars 1-3 are re-measured on the rebuild:
++**34702694** (run dir `20261110-2252_123f2ca_t328-planenorm`), which also carries one fresh pot cell pair so the
++filing change stays visible on the pots. Bar 5's byte-identity test is **34702695** in the same run directory.
+diff --git a/edgeline_extraction_headless.cpp b/edgeline_extraction_headless.cpp
+index dcb85c7..7930c61 100644
+--- a/edgeline_extraction_headless.cpp
++++ b/edgeline_extraction_headless.cpp
+@@ -89,6 +89,7 @@
+ #include <pcl/ModelCoefficients.h>
+ #include <pcl/filters/extract_indices.h>
+ #include <pcl/kdtree/kdtree.h>
++#include <pcl/kdtree/kdtree_flann.h>   // TICKET 328: wall-normal lookup for the breakline normals
+ #include <pcl/sample_consensus/method_types.h>
+ #include <pcl/sample_consensus/model_types.h>
+ 
+@@ -2388,6 +2389,122 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
+ 	pcl::PointCloud<pcl::PointNormal>::Ptr projectedCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
+ 	fitBSplineSurfaceAndGetNormalsOnProjectedPoints(fileName, cloud, projectedCloudWithNormals);
+ 
++	// TICKET 328: the exported normal of a breakline point must be the normal of the wall
++	// the line rides, measured at that point. Until now it was the fitted B-spline patch's
++	// normal at the projected point -- an unoriented surface normal that changes sign inside
++	// a single line -- and the only correction was one sign vote for the whole line, so a
++	// line could leave with its normals split about 50/50 and read downstream as an opposing
++	// rim (Juglet pairs 1-9 and 6-7 stayed at -0.039 and -0.183 after the slot swap). The
++	// wall cloud of this face is in scope and carries the mesh stage's normals, so each line
++	// point takes the mean of its nearest wall normals. Positions are not touched, so the
++	// correspondence set (kd-nearest on points) cannot move.
++	{
++		pcl::KdTreeFLANN<pcl::PointNormal> wallTree328;
++		wallTree328.setInputCloud(cloud_OriginalSurfaceWithNormals);
++		// The wall's per-vertex normals are unusable right at the boundary: the break face and the
++		// jagged last row of triangles sit in the same k-neighbourhood, so a mean of the nearest
++		// normals is pulled tens of degrees off the wall (measured on the Juglet: it lowered every
++		// touching pair's normal agreement). The plane through a patch of the wall is not -- it
++		// averages the whole patch -- so the wall's orientation is the smallest principal direction
++		// of that patch. The patch radius is half the smallest vessel radius the pipeline sees on
++		// the Juglet (the interior faces are 10.5-17 mm), so it stays on one wall but still spans
++		// many times the mesh spacing; and because the patch still contains the break face, points
++		// whose OWN normal disagrees with the first plane by more than 45 deg are dropped and the
++		// plane is refitted (twice). A plane has no handedness, so the sign comes from the fitted
++		// surface normal this point already had.
++		const double rWall328 = 5.0;
++		const int kFallback328 = 20;
++		long agreed328 = 0, flipped328 = 0, empty328 = 0, fallback328 = 0, trimmed328 = 0;
++		auto planeFrom328 = [&](const std::vector<int>& ids, Eigen::Vector3f& c, Eigen::Vector3f& n) -> bool
++		{
++			if (ids.size() < 3)
++				return false;
++			c = Eigen::Vector3f::Zero();
++			for (size_t q = 0; q < ids.size(); ++q)
++			{
++				const pcl::PointNormal& pp = cloud_OriginalSurfaceWithNormals->points[ids[q]];
++				c += Eigen::Vector3f(pp.x, pp.y, pp.z);
++			}
++			c /= static_cast<float>(ids.size());
++			Eigen::Matrix3f cov328 = Eigen::Matrix3f::Zero();
++			for (size_t q = 0; q < ids.size(); ++q)
++			{
++				const pcl::PointNormal& pp = cloud_OriginalSurfaceWithNormals->points[ids[q]];
++				Eigen::Vector3f d328(pp.x - c[0], pp.y - c[1], pp.z - c[2]);
++				cov328 += d328 * d328.transpose();
++			}
++			Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es328(cov328);
++			n = es328.eigenvectors().col(0);
++			return n.allFinite() && n.norm() > 1e-9f;
++		};
++		for (size_t i = 0; i < projectedCloudWithNormals->points.size(); ++i)
++		{
++			std::vector<int> nn328;
++			std::vector<float> dd328;
++			wallTree328.radiusSearch(projectedCloudWithNormals->points[i], rWall328, nn328, dd328);
++			if (nn328.size() < 8)
++			{
++				++fallback328;
++				wallTree328.nearestKSearch(projectedCloudWithNormals->points[i], kFallback328, nn328, dd328);
++			}
++			if (nn328.size() < 3)
++			{
++				++empty328;
++				continue;
++			}
++			Eigen::Vector3f c328, n328;
++			if (!planeFrom328(nn328, c328, n328))
++			{
++				++empty328;
++				continue;
++			}
++			n328.normalize();
++			// The patch is not one plane: the break face and the jagged last row of triangles sit
++			// inside it, and their own normals point away from the wall. Drop every neighbour whose
++			// own normal disagrees with the patch plane by more than 45 deg and refit, twice.
++			std::vector<int> keep328 = nn328;
++			for (int it328 = 0; it328 < 2; ++it328)
++			{
++				std::vector<int> sub328;
++				for (size_t q = 0; q < keep328.size(); ++q)
++				{
++					const pcl::PointNormal& pp328 = cloud_OriginalSurfaceWithNormals->points[keep328[q]];
++					Eigen::Vector3f np328(pp328.normal_x, pp328.normal_y, pp328.normal_z);
++					if (np328.norm() > 1e-9f && std::fabs(np328.normalized().dot(n328)) >= 0.7071f)
++						sub328.push_back(keep328[q]);
++				}
++				if (sub328.size() < 3 || sub328.size() == keep328.size())
++					break;
++				trimmed328 += static_cast<long>(keep328.size() - sub328.size());
++				keep328.swap(sub328);
++				if (!planeFrom328(keep328, c328, n328))
++					break;
++				n328.normalize();
++			}
++			Eigen::Vector3f old328(projectedCloudWithNormals->points[i].normal_x,
++				projectedCloudWithNormals->points[i].normal_y,
++				projectedCloudWithNormals->points[i].normal_z);
++			if (old328.dot(n328) < 0.0f)
++			{
++				n328 = -n328;
++				++flipped328;
++			}
++			else
++			{
++				++agreed328;
++			}
++			projectedCloudWithNormals->points[i].normal_x = n328[0];
++			projectedCloudWithNormals->points[i].normal_y = n328[1];
++			projectedCloudWithNormals->points[i].normal_z = n328[2];
++		}
++		std::cout << "[T328-LINENORMALS] points=" << projectedCloudWithNormals->points.size()
++			<< " radius_mm=" << rWall328 << " sign_from_fitted_kept=" << agreed328
++			<< " sign_from_fitted_flipped=" << flipped328
++			<< " radius_fallback=" << fallback328 << " no_wall_patch=" << empty328
++			<< " trim_dropped=" << trimmed328
++			<< " -> line normals now the ridden wall's own trimmed plane normal, per point" << std::endl;
++	}
++
+ 	numberOfPoints = projectedCloudWithNormals->points.size();
+ 	MatrixXd MatrixXYZ;// (3, numberOfPoints);
+ 	MatrixXd MatrixNormals;// (3, numberOfPoints);
+diff --git a/mesh_processing_headless.cpp b/mesh_processing_headless.cpp
+index f16929b..f1fc368 100644
+--- a/mesh_processing_headless.cpp
++++ b/mesh_processing_headless.cpp
+@@ -3667,6 +3667,112 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     }
+ }
+ 
++// TICKET 328: the slot decision has to survive a wrong-side axis file and a globally
++// negated normal set, and neither may leave the denser face in slot 0 by default.
++// Under a global negation inFrac -> 1 - inFrac, so satA and satB trade places exactly:
++// the axis-ray vote is not flip invariant, and a wrong-side axis makes it vote
++// confidently for the wrong face (Juglet pieces 2 and 9: axes 87.8 and 73.3 deg off).
++// So the vote stays as evidence and two geometric witnesses decide, both read off the
++// piece itself: (a) the local curvature, whose median is larger on the interior face
++// because that face has the smaller radius of revolution, and (b) the median radius
++// about the supplied axis, which is the definition but only meaningful while the axis
++// behaves like the piece's axis (t328AxisFit). Neither depends on the normal sign.
++namespace t328
++{
++    static double medianOf(std::vector<double>& v)
++    {
++        if (v.empty()) return 0.0;
++        const size_t m = v.size() / 2;
++        std::nth_element(v.begin(), v.begin() + m, v.end());
++        double a = v[m];
++        if (v.size() % 2 == 0) {
++            std::nth_element(v.begin(), v.begin() + m - 1, v.end());
++            a = 0.5 * (a + v[m - 1]);
++        }
++        return a;
++    }
++
++    struct FaceGeom {
++        double kappa = 0.0;    // median of the local max |principal curvature|
++        double radius = 0.0;   // median perpendicular distance to the axis line
++        double axisFit = 0.0;  // frac(|n . girth| < 0.3): the axis behaves like the axis
++        size_t samples = 0;
++        size_t points = 0;
++    };
++
++    // One face of the piece: deterministic stride subsample, no random draws, so the
++    // classification is reproducible (the stage's random ray cast stays the only RNG).
++    static FaceGeom faceStats(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
++                              const pcl::PointCloud<pcl::Normal>::Ptr& normals,
++                              const pcl::PointIndices& ids,
++                              const Eigen::Vector3f& axPt, const Eigen::Vector3f& axDir,
++                              int kNeighbours, size_t cap)
++    {
++        FaceGeom g;
++        g.points = ids.indices.size();
++        if (ids.indices.empty()) return g;
++        pcl::PointCloud<pcl::PointXYZ>::Ptr sub(new pcl::PointCloud<pcl::PointXYZ>());
++        sub->points.reserve(ids.indices.size());
++        for (int id : ids.indices) sub->points.push_back(cloud->points[id]);
++        pcl::KdTreeFLANN<pcl::PointXYZ> tree;
++        tree.setInputCloud(sub);
++        const int kn = std::min<int>(kNeighbours, static_cast<int>(sub->points.size()));
++        const size_t stride = std::max<size_t>(1, sub->points.size() / cap);
++        std::vector<double> kappas, radii, fits;
++        std::vector<int> nbrs;
++        std::vector<float> sqd;
++        for (size_t i = 0; i < sub->points.size(); i += stride) {
++            const int id = ids.indices[i];
++            Eigen::Vector3f p = cloud->points[id].getVector3fMap();
++            Eigen::Vector3f n(normals->points[id].normal_x, normals->points[id].normal_y,
++                              normals->points[id].normal_z);
++            const float nl = n.norm();
++            if (nl < 1e-9f) continue;
++            n /= nl;
++            Eigen::Vector3f w = p - axPt;
++            Eigen::Vector3f perp = w - w.dot(axDir) * axDir;
++            radii.push_back(static_cast<double>(perp.norm()));
++            if (perp.norm() > 1e-6f) {
++                Eigen::Vector3f gd = axDir.cross(perp.normalized());
++                if (gd.norm() > 1e-9f) {
++                    gd.normalize();
++                    // sign free, so a globally negated normal set cannot move it
++                    fits.push_back(std::fabs(n.dot(gd)) < 0.3f ? 1.0 : 0.0);
++                }
++            }
++            if (kn < 10) continue;
++            if (tree.nearestKSearch(sub->points[i], kn, nbrs, sqd) < 10) continue;
++            Eigen::Vector3f a = (std::fabs(n[0]) < 0.9f) ? Eigen::Vector3f(1.0f, 0.0f, 0.0f)
++                                                         : Eigen::Vector3f(0.0f, 1.0f, 0.0f);
++            Eigen::Vector3f t1 = n.cross(a);
++            if (t1.norm() < 1e-9f) continue;
++            t1.normalize();
++            Eigen::Vector3f t2 = n.cross(t1);
++            Eigen::Matrix<double, 5, 5> A = Eigen::Matrix<double, 5, 5>::Zero();
++            Eigen::Matrix<double, 5, 1> b = Eigen::Matrix<double, 5, 1>::Zero();
++            for (int q : nbrs) {
++                Eigen::Vector3f d = sub->points[q].getVector3fMap() - p;
++                const double u = d.dot(t1), v = d.dot(t2), h = d.dot(n);
++                Eigen::Matrix<double, 5, 1> x;
++                x << 0.5 * u * u, u * v, 0.5 * v * v, u, v;
++                A += x * x.transpose();
++                b += x * h;
++            }
++            Eigen::Matrix<double, 5, 1> c = A.ldlt().solve(b);
++            const double aa = c[0], bb = c[1], cc = c[2];
++            const double tr = 0.5 * (aa + cc);
++            const double disc = std::sqrt(0.25 * (aa - cc) * (aa - cc) + bb * bb);
++            kappas.push_back(std::max(std::fabs(tr + disc), std::fabs(tr - disc)));
++        }
++        g.samples = radii.size();
++        g.kappa = medianOf(kappas);
++        g.radius = medianOf(radii);
++        g.axisFit = fits.empty() ? 0.0 : static_cast<double>(std::count(fits.begin(), fits.end(), 1.0)) /
++                                           static_cast<double>(fits.size());
++        return g;
++    }
++}
++
+ // TICKET 277: no symmetry axis is a hard failure, not a fallback. Keeping size order
+ // silently swaps the labels -- Surface_0 becomes whichever cluster is larger, so Bl0/Bl1
+ // stop matching the authors' lanes and the run reads downstream as a method failure.
+@@ -3722,7 +3828,86 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
+     std::cout << "[PAPER-234] classify: face0 n=" << pclusters[0].indices.size() << " interior_frac=" << inFrac[0]
+               << " face1 n=" << pclusters[1].indices.size() << " interior_frac=" << inFrac[1]
+               << " satA=" << satA << " satB=" << satB << std::endl;
+-    if (satB > satA) {
++
++    // TICKET 328: geometry decides, the axis-ray vote is evidence. The three floors
++    // below are scale free and stated once here, not per piece:
++    //   T328_KAPPA_FLOOR  the interior face's median |kappa| must exceed the other
++    //                     face's by 10% before the curvature witness counts at all
++    //                     (a vessel wall's offset shell gives ~1/R ratio: 1.13-1.20 on
++    //                     the Juglet, but the measured ratio is 1.27-3.47 because the
++    //                     surfaces' own fine structure inflates both faces, so the floor
++    //                     is set under the measured range and over a noise tie);
++    //   T328_AXIS_FLOOR   frac(|n . girth| < 0.3) >= 0.8 means the supplied axis behaves
++    //                     like the piece's own axis (right axes measure 0.93-0.98,
++    //                     an 88 deg wrong-side axis measured 0.24 and 0.15);
++    //   T328_VOTE_FLOOR   |satA - satB| / (n0 + n1) >= 0.5: one assignment is at least
++    //                     3:1 over the other. Below it the vote is degenerate and must
++    //                     not decide (Juglet piece 6 measured 0.041).
++    const double T328_KAPPA_FLOOR = 1.10;
++    const double T328_AXIS_FLOOR = 0.80;
++    const double T328_VOTE_FLOOR = 0.50;
++
++    t328::FaceGeom g0 = t328::faceStats(pcloud, pnormals, pclusters[0], axPt, axDir, 60, 600);
++    t328::FaceGeom g1 = t328::faceStats(pcloud, pnormals, pclusters[1], axPt, axDir, 60, 600);
++    const double kLo = std::min(g0.kappa, g1.kappa), kHi = std::max(g0.kappa, g1.kappa);
++    const double kRatio = (kLo > 1e-9) ? kHi / kLo : 0.0;
++    const int kPick = (g1.kappa > g0.kappa) ? 1 : 0;
++    const int rPick = (g1.radius < g0.radius) ? 1 : 0;
++    const double axisFit = (g0.samples + g1.samples) > 0
++        ? (g0.axisFit * g0.samples + g1.axisFit * g1.samples) / static_cast<double>(g0.samples + g1.samples)
++        : 0.0;
++    const double voteGap = (n0 + n1) > 0.0 ? (satA - satB) / (n0 + n1) : 0.0;
++    const int votePick = (satB > satA) ? 1 : 0;
++    const bool kValid = (kRatio >= T328_KAPPA_FLOOR);
++    const bool aValid = (axisFit >= T328_AXIS_FLOOR);
++    const bool vValid = aValid && (std::fabs(voteGap) >= T328_VOTE_FLOOR);
++
++    int interiorFace = 0;
++    const char* decider = "geometry-kappa";
++    if (kValid && aValid && rPick != kPick) {
++        // The two geometric witnesses disagree, so the axis is behaving well enough for
++        // the definition itself to be read: the interior face is the one nearer the axis.
++        interiorFace = rPick;
++        decider = "radius-over-kappa";
++        std::cout << "[PAPER-234] t328: WARN curvature and radius order disagree"
++                  << " (kpick=" << kPick << " rpick=" << rPick << " ratio=" << kRatio << ")"
++                  << " -> radius decides: it is the definition, curvature is its proxy" << std::endl;
++    } else if (kValid) {
++        interiorFace = kPick;
++        decider = "geometry-kappa";
++    } else if (vValid) {
++        interiorFace = votePick;
++        decider = "axis-vote";
++        std::cout << "[PAPER-234] t328: WARN curvature below its floor (ratio=" << kRatio
++                  << " < " << T328_KAPPA_FLOOR << ") -> the decisive axis-ray vote decides"
++                  << std::endl;
++    } else {
++        // Nothing is confident, but a weak geometric ordering is still a measurement read
++        // off the piece; the denser face is not one, so it is never used as the fallback.
++        interiorFace = kPick;
++        decider = "geometry-kappa-weak";
++        std::cout << "[PAPER-234] t328: WARN undecidable piece: curvature ratio=" << kRatio
++                  << " < " << T328_KAPPA_FLOOR << " and the vote is unusable (axisFit=" << axisFit
++                  << " < " << T328_AXIS_FLOOR << " or |vote_gap|=" << std::fabs(voteGap)
++                  << " < " << T328_VOTE_FLOOR << "); filing by the measured curvature order,"
++                  << " NOT by size order" << std::endl;
++    }
++
++    std::cout << "[PAPER-234] t328: kappa0=" << g0.kappa << " kappa1=" << g1.kappa
++              << " ratio=" << kRatio << " kpick=" << kPick
++              << " radius0=" << g0.radius << " radius1=" << g1.radius
++              << " dr=" << (g0.radius - g1.radius) << " rpick=" << rPick
++              << " axisfit=" << axisFit << " vote_pick=" << votePick
++              << " vote_gap=" << voteGap
++              << " -> interior_face=" << interiorFace << " decider=" << decider << std::endl;
++    if (decider != std::string("axis-vote") && interiorFace != votePick) {
++        std::cout << "[PAPER-234] t328: the axis-ray vote disagrees (vote_pick=" << votePick
++                  << ", geometry says " << interiorFace << "); geometry wins because the vote is"
++                  << " inverted by a wrong-side axis and by a globally negated normal set,"
++                  << " neither of which enters the geometric witnesses" << std::endl;
++    }
++
++    if (interiorFace == 1) {
+         pcl::PointIndices tmp = pclusters[0];
+         pclusters[0] = pclusters[1];
+         pclusters[1] = tmp;

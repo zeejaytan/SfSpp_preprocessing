@@ -3667,6 +3667,112 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     }
 }
 
+// TICKET 328: the slot decision has to survive a wrong-side axis file and a globally
+// negated normal set, and neither may leave the denser face in slot 0 by default.
+// Under a global negation inFrac -> 1 - inFrac, so satA and satB trade places exactly:
+// the axis-ray vote is not flip invariant, and a wrong-side axis makes it vote
+// confidently for the wrong face (Juglet pieces 2 and 9: axes 87.8 and 73.3 deg off).
+// So the vote stays as evidence and two geometric witnesses decide, both read off the
+// piece itself: (a) the local curvature, whose median is larger on the interior face
+// because that face has the smaller radius of revolution, and (b) the median radius
+// about the supplied axis, which is the definition but only meaningful while the axis
+// behaves like the piece's axis (t328AxisFit). Neither depends on the normal sign.
+namespace t328
+{
+    static double medianOf(std::vector<double>& v)
+    {
+        if (v.empty()) return 0.0;
+        const size_t m = v.size() / 2;
+        std::nth_element(v.begin(), v.begin() + m, v.end());
+        double a = v[m];
+        if (v.size() % 2 == 0) {
+            std::nth_element(v.begin(), v.begin() + m - 1, v.end());
+            a = 0.5 * (a + v[m - 1]);
+        }
+        return a;
+    }
+
+    struct FaceGeom {
+        double kappa = 0.0;    // median of the local max |principal curvature|
+        double radius = 0.0;   // median perpendicular distance to the axis line
+        double axisFit = 0.0;  // frac(|n . girth| < 0.3): the axis behaves like the axis
+        size_t samples = 0;
+        size_t points = 0;
+    };
+
+    // One face of the piece: deterministic stride subsample, no random draws, so the
+    // classification is reproducible (the stage's random ray cast stays the only RNG).
+    static FaceGeom faceStats(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud,
+                              const pcl::PointCloud<pcl::Normal>::Ptr& normals,
+                              const pcl::PointIndices& ids,
+                              const Eigen::Vector3f& axPt, const Eigen::Vector3f& axDir,
+                              int kNeighbours, size_t cap)
+    {
+        FaceGeom g;
+        g.points = ids.indices.size();
+        if (ids.indices.empty()) return g;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr sub(new pcl::PointCloud<pcl::PointXYZ>());
+        sub->points.reserve(ids.indices.size());
+        for (int id : ids.indices) sub->points.push_back(cloud->points[id]);
+        pcl::KdTreeFLANN<pcl::PointXYZ> tree;
+        tree.setInputCloud(sub);
+        const int kn = std::min<int>(kNeighbours, static_cast<int>(sub->points.size()));
+        const size_t stride = std::max<size_t>(1, sub->points.size() / cap);
+        std::vector<double> kappas, radii, fits;
+        std::vector<int> nbrs;
+        std::vector<float> sqd;
+        for (size_t i = 0; i < sub->points.size(); i += stride) {
+            const int id = ids.indices[i];
+            Eigen::Vector3f p = cloud->points[id].getVector3fMap();
+            Eigen::Vector3f n(normals->points[id].normal_x, normals->points[id].normal_y,
+                              normals->points[id].normal_z);
+            const float nl = n.norm();
+            if (nl < 1e-9f) continue;
+            n /= nl;
+            Eigen::Vector3f w = p - axPt;
+            Eigen::Vector3f perp = w - w.dot(axDir) * axDir;
+            radii.push_back(static_cast<double>(perp.norm()));
+            if (perp.norm() > 1e-6f) {
+                Eigen::Vector3f gd = axDir.cross(perp.normalized());
+                if (gd.norm() > 1e-9f) {
+                    gd.normalize();
+                    // sign free, so a globally negated normal set cannot move it
+                    fits.push_back(std::fabs(n.dot(gd)) < 0.3f ? 1.0 : 0.0);
+                }
+            }
+            if (kn < 10) continue;
+            if (tree.nearestKSearch(sub->points[i], kn, nbrs, sqd) < 10) continue;
+            Eigen::Vector3f a = (std::fabs(n[0]) < 0.9f) ? Eigen::Vector3f(1.0f, 0.0f, 0.0f)
+                                                         : Eigen::Vector3f(0.0f, 1.0f, 0.0f);
+            Eigen::Vector3f t1 = n.cross(a);
+            if (t1.norm() < 1e-9f) continue;
+            t1.normalize();
+            Eigen::Vector3f t2 = n.cross(t1);
+            Eigen::Matrix<double, 5, 5> A = Eigen::Matrix<double, 5, 5>::Zero();
+            Eigen::Matrix<double, 5, 1> b = Eigen::Matrix<double, 5, 1>::Zero();
+            for (int q : nbrs) {
+                Eigen::Vector3f d = sub->points[q].getVector3fMap() - p;
+                const double u = d.dot(t1), v = d.dot(t2), h = d.dot(n);
+                Eigen::Matrix<double, 5, 1> x;
+                x << 0.5 * u * u, u * v, 0.5 * v * v, u, v;
+                A += x * x.transpose();
+                b += x * h;
+            }
+            Eigen::Matrix<double, 5, 1> c = A.ldlt().solve(b);
+            const double aa = c[0], bb = c[1], cc = c[2];
+            const double tr = 0.5 * (aa + cc);
+            const double disc = std::sqrt(0.25 * (aa - cc) * (aa - cc) + bb * bb);
+            kappas.push_back(std::max(std::fabs(tr + disc), std::fabs(tr - disc)));
+        }
+        g.samples = radii.size();
+        g.kappa = medianOf(kappas);
+        g.radius = medianOf(radii);
+        g.axisFit = fits.empty() ? 0.0 : static_cast<double>(std::count(fits.begin(), fits.end(), 1.0)) /
+                                           static_cast<double>(fits.size());
+        return g;
+    }
+}
+
 // TICKET 277: no symmetry axis is a hard failure, not a fallback. Keeping size order
 // silently swaps the labels -- Surface_0 becomes whichever cluster is larger, so Bl0/Bl1
 // stop matching the authors' lanes and the run reads downstream as a method failure.
@@ -3722,7 +3828,86 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     std::cout << "[PAPER-234] classify: face0 n=" << pclusters[0].indices.size() << " interior_frac=" << inFrac[0]
               << " face1 n=" << pclusters[1].indices.size() << " interior_frac=" << inFrac[1]
               << " satA=" << satA << " satB=" << satB << std::endl;
-    if (satB > satA) {
+
+    // TICKET 328: geometry decides, the axis-ray vote is evidence. The three floors
+    // below are scale free and stated once here, not per piece:
+    //   T328_KAPPA_FLOOR  the interior face's median |kappa| must exceed the other
+    //                     face's by 10% before the curvature witness counts at all
+    //                     (a vessel wall's offset shell gives ~1/R ratio: 1.13-1.20 on
+    //                     the Juglet, but the measured ratio is 1.27-3.47 because the
+    //                     surfaces' own fine structure inflates both faces, so the floor
+    //                     is set under the measured range and over a noise tie);
+    //   T328_AXIS_FLOOR   frac(|n . girth| < 0.3) >= 0.8 means the supplied axis behaves
+    //                     like the piece's own axis (right axes measure 0.93-0.98,
+    //                     an 88 deg wrong-side axis measured 0.24 and 0.15);
+    //   T328_VOTE_FLOOR   |satA - satB| / (n0 + n1) >= 0.5: one assignment is at least
+    //                     3:1 over the other. Below it the vote is degenerate and must
+    //                     not decide (Juglet piece 6 measured 0.041).
+    const double T328_KAPPA_FLOOR = 1.10;
+    const double T328_AXIS_FLOOR = 0.80;
+    const double T328_VOTE_FLOOR = 0.50;
+
+    t328::FaceGeom g0 = t328::faceStats(pcloud, pnormals, pclusters[0], axPt, axDir, 60, 600);
+    t328::FaceGeom g1 = t328::faceStats(pcloud, pnormals, pclusters[1], axPt, axDir, 60, 600);
+    const double kLo = std::min(g0.kappa, g1.kappa), kHi = std::max(g0.kappa, g1.kappa);
+    const double kRatio = (kLo > 1e-9) ? kHi / kLo : 0.0;
+    const int kPick = (g1.kappa > g0.kappa) ? 1 : 0;
+    const int rPick = (g1.radius < g0.radius) ? 1 : 0;
+    const double axisFit = (g0.samples + g1.samples) > 0
+        ? (g0.axisFit * g0.samples + g1.axisFit * g1.samples) / static_cast<double>(g0.samples + g1.samples)
+        : 0.0;
+    const double voteGap = (n0 + n1) > 0.0 ? (satA - satB) / (n0 + n1) : 0.0;
+    const int votePick = (satB > satA) ? 1 : 0;
+    const bool kValid = (kRatio >= T328_KAPPA_FLOOR);
+    const bool aValid = (axisFit >= T328_AXIS_FLOOR);
+    const bool vValid = aValid && (std::fabs(voteGap) >= T328_VOTE_FLOOR);
+
+    int interiorFace = 0;
+    const char* decider = "geometry-kappa";
+    if (kValid && aValid && rPick != kPick) {
+        // The two geometric witnesses disagree, so the axis is behaving well enough for
+        // the definition itself to be read: the interior face is the one nearer the axis.
+        interiorFace = rPick;
+        decider = "radius-over-kappa";
+        std::cout << "[PAPER-234] t328: WARN curvature and radius order disagree"
+                  << " (kpick=" << kPick << " rpick=" << rPick << " ratio=" << kRatio << ")"
+                  << " -> radius decides: it is the definition, curvature is its proxy" << std::endl;
+    } else if (kValid) {
+        interiorFace = kPick;
+        decider = "geometry-kappa";
+    } else if (vValid) {
+        interiorFace = votePick;
+        decider = "axis-vote";
+        std::cout << "[PAPER-234] t328: WARN curvature below its floor (ratio=" << kRatio
+                  << " < " << T328_KAPPA_FLOOR << ") -> the decisive axis-ray vote decides"
+                  << std::endl;
+    } else {
+        // Nothing is confident, but a weak geometric ordering is still a measurement read
+        // off the piece; the denser face is not one, so it is never used as the fallback.
+        interiorFace = kPick;
+        decider = "geometry-kappa-weak";
+        std::cout << "[PAPER-234] t328: WARN undecidable piece: curvature ratio=" << kRatio
+                  << " < " << T328_KAPPA_FLOOR << " and the vote is unusable (axisFit=" << axisFit
+                  << " < " << T328_AXIS_FLOOR << " or |vote_gap|=" << std::fabs(voteGap)
+                  << " < " << T328_VOTE_FLOOR << "); filing by the measured curvature order,"
+                  << " NOT by size order" << std::endl;
+    }
+
+    std::cout << "[PAPER-234] t328: kappa0=" << g0.kappa << " kappa1=" << g1.kappa
+              << " ratio=" << kRatio << " kpick=" << kPick
+              << " radius0=" << g0.radius << " radius1=" << g1.radius
+              << " dr=" << (g0.radius - g1.radius) << " rpick=" << rPick
+              << " axisfit=" << axisFit << " vote_pick=" << votePick
+              << " vote_gap=" << voteGap
+              << " -> interior_face=" << interiorFace << " decider=" << decider << std::endl;
+    if (decider != std::string("axis-vote") && interiorFace != votePick) {
+        std::cout << "[PAPER-234] t328: the axis-ray vote disagrees (vote_pick=" << votePick
+                  << ", geometry says " << interiorFace << "); geometry wins because the vote is"
+                  << " inverted by a wrong-side axis and by a globally negated normal set,"
+                  << " neither of which enters the geometric witnesses" << std::endl;
+    }
+
+    if (interiorFace == 1) {
         pcl::PointIndices tmp = pclusters[0];
         pclusters[0] = pclusters[1];
         pclusters[1] = tmp;

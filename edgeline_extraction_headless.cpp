@@ -89,6 +89,7 @@
 #include <pcl/ModelCoefficients.h>
 #include <pcl/filters/extract_indices.h>
 #include <pcl/kdtree/kdtree.h>
+#include <pcl/kdtree/kdtree_flann.h>   // TICKET 328: wall-normal lookup for the breakline normals
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/sample_consensus/model_types.h>
 
@@ -2387,6 +2388,122 @@ void estimatePatchNormalsAndBreakLinesFromSimpleAlgo_BSplineSurface(string fileN
 
 	pcl::PointCloud<pcl::PointNormal>::Ptr projectedCloudWithNormals(new pcl::PointCloud<pcl::PointNormal>);
 	fitBSplineSurfaceAndGetNormalsOnProjectedPoints(fileName, cloud, projectedCloudWithNormals);
+
+	// TICKET 328: the exported normal of a breakline point must be the normal of the wall
+	// the line rides, measured at that point. Until now it was the fitted B-spline patch's
+	// normal at the projected point -- an unoriented surface normal that changes sign inside
+	// a single line -- and the only correction was one sign vote for the whole line, so a
+	// line could leave with its normals split about 50/50 and read downstream as an opposing
+	// rim (Juglet pairs 1-9 and 6-7 stayed at -0.039 and -0.183 after the slot swap). The
+	// wall cloud of this face is in scope and carries the mesh stage's normals, so each line
+	// point takes the mean of its nearest wall normals. Positions are not touched, so the
+	// correspondence set (kd-nearest on points) cannot move.
+	{
+		pcl::KdTreeFLANN<pcl::PointNormal> wallTree328;
+		wallTree328.setInputCloud(cloud_OriginalSurfaceWithNormals);
+		// The wall's per-vertex normals are unusable right at the boundary: the break face and the
+		// jagged last row of triangles sit in the same k-neighbourhood, so a mean of the nearest
+		// normals is pulled tens of degrees off the wall (measured on the Juglet: it lowered every
+		// touching pair's normal agreement). The plane through a patch of the wall is not -- it
+		// averages the whole patch -- so the wall's orientation is the smallest principal direction
+		// of that patch. The patch radius is half the smallest vessel radius the pipeline sees on
+		// the Juglet (the interior faces are 10.5-17 mm), so it stays on one wall but still spans
+		// many times the mesh spacing; and because the patch still contains the break face, points
+		// whose OWN normal disagrees with the first plane by more than 45 deg are dropped and the
+		// plane is refitted (twice). A plane has no handedness, so the sign comes from the fitted
+		// surface normal this point already had.
+		const double rWall328 = 5.0;
+		const int kFallback328 = 20;
+		long agreed328 = 0, flipped328 = 0, empty328 = 0, fallback328 = 0, trimmed328 = 0;
+		auto planeFrom328 = [&](const std::vector<int>& ids, Eigen::Vector3f& c, Eigen::Vector3f& n) -> bool
+		{
+			if (ids.size() < 3)
+				return false;
+			c = Eigen::Vector3f::Zero();
+			for (size_t q = 0; q < ids.size(); ++q)
+			{
+				const pcl::PointNormal& pp = cloud_OriginalSurfaceWithNormals->points[ids[q]];
+				c += Eigen::Vector3f(pp.x, pp.y, pp.z);
+			}
+			c /= static_cast<float>(ids.size());
+			Eigen::Matrix3f cov328 = Eigen::Matrix3f::Zero();
+			for (size_t q = 0; q < ids.size(); ++q)
+			{
+				const pcl::PointNormal& pp = cloud_OriginalSurfaceWithNormals->points[ids[q]];
+				Eigen::Vector3f d328(pp.x - c[0], pp.y - c[1], pp.z - c[2]);
+				cov328 += d328 * d328.transpose();
+			}
+			Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> es328(cov328);
+			n = es328.eigenvectors().col(0);
+			return n.allFinite() && n.norm() > 1e-9f;
+		};
+		for (size_t i = 0; i < projectedCloudWithNormals->points.size(); ++i)
+		{
+			std::vector<int> nn328;
+			std::vector<float> dd328;
+			wallTree328.radiusSearch(projectedCloudWithNormals->points[i], rWall328, nn328, dd328);
+			if (nn328.size() < 8)
+			{
+				++fallback328;
+				wallTree328.nearestKSearch(projectedCloudWithNormals->points[i], kFallback328, nn328, dd328);
+			}
+			if (nn328.size() < 3)
+			{
+				++empty328;
+				continue;
+			}
+			Eigen::Vector3f c328, n328;
+			if (!planeFrom328(nn328, c328, n328))
+			{
+				++empty328;
+				continue;
+			}
+			n328.normalize();
+			// The patch is not one plane: the break face and the jagged last row of triangles sit
+			// inside it, and their own normals point away from the wall. Drop every neighbour whose
+			// own normal disagrees with the patch plane by more than 45 deg and refit, twice.
+			std::vector<int> keep328 = nn328;
+			for (int it328 = 0; it328 < 2; ++it328)
+			{
+				std::vector<int> sub328;
+				for (size_t q = 0; q < keep328.size(); ++q)
+				{
+					const pcl::PointNormal& pp328 = cloud_OriginalSurfaceWithNormals->points[keep328[q]];
+					Eigen::Vector3f np328(pp328.normal_x, pp328.normal_y, pp328.normal_z);
+					if (np328.norm() > 1e-9f && std::fabs(np328.normalized().dot(n328)) >= 0.7071f)
+						sub328.push_back(keep328[q]);
+				}
+				if (sub328.size() < 3 || sub328.size() == keep328.size())
+					break;
+				trimmed328 += static_cast<long>(keep328.size() - sub328.size());
+				keep328.swap(sub328);
+				if (!planeFrom328(keep328, c328, n328))
+					break;
+				n328.normalize();
+			}
+			Eigen::Vector3f old328(projectedCloudWithNormals->points[i].normal_x,
+				projectedCloudWithNormals->points[i].normal_y,
+				projectedCloudWithNormals->points[i].normal_z);
+			if (old328.dot(n328) < 0.0f)
+			{
+				n328 = -n328;
+				++flipped328;
+			}
+			else
+			{
+				++agreed328;
+			}
+			projectedCloudWithNormals->points[i].normal_x = n328[0];
+			projectedCloudWithNormals->points[i].normal_y = n328[1];
+			projectedCloudWithNormals->points[i].normal_z = n328[2];
+		}
+		std::cout << "[T328-LINENORMALS] points=" << projectedCloudWithNormals->points.size()
+			<< " radius_mm=" << rWall328 << " sign_from_fitted_kept=" << agreed328
+			<< " sign_from_fitted_flipped=" << flipped328
+			<< " radius_fallback=" << fallback328 << " no_wall_patch=" << empty328
+			<< " trim_dropped=" << trimmed328
+			<< " -> line normals now the ridden wall's own trimmed plane normal, per point" << std::endl;
+	}
 
 	numberOfPoints = projectedCloudWithNormals->points.size();
 	MatrixXd MatrixXYZ;// (3, numberOfPoints);
