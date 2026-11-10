@@ -1,10 +1,12 @@
 # Ticket 327 — Bind why three Juglet pieces draw the crack line on the outer wall, and prove the cure direction
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/327-juglet-wall-side-cause
+**Branch:** 327-juglet-wall-side-cause
 **Answers:** E1
 **Depends on:** none (326's bar-1 diagnosis is input; it lives in the 326 worktree)
 **Blocks:** 328 (the cure)
-**Worker:** unassigned
+**Worker:** dsh-subagent (glm-5.3)
 **Budget:** medium (4 failed acceptance runs; waiting costs none)
 
 > **In one line.** The interior/exterior breakline defect was fixed in the edgeline processing itself
