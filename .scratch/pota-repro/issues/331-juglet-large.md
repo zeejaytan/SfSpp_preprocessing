@@ -6,7 +6,7 @@
 **Answers:** S1
 **Depends on:** 328 (merged to main 2026-11-12, commit `3ec34bd` — the wall side is cured, all nine joins face the same way)
 **Blocks:** 332 (the assembly run on this input; not written yet)
-**Worker:** unassigned
+**Worker:** d4b5fdfa-000b-4cbd-bf46-53d36196cdb1 (dsh one-shot subagent, dsh-opencode-go/deepseek-v4.1-flash; dispatched 2026-11-12 02:05 by the lead)
 **Budget:** large (8 failed acceptance runs; waiting on Slurm costs none)
 
 > **In one line.** The conservator's proposal (2026-11-11): the Juglet fails because its break edges are
