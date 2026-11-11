@@ -1,8 +1,8 @@
 # Ticket 331 — juglet_large: build the vessel at 3x and run the whole chain
 
-**Status:** ready-for-agent
-**Working in:** unassigned
-**Branch:** none yet (the start script makes it)
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/331-juglet-large
+**Branch:** 331-juglet-large
 **Answers:** S1
 **Depends on:** 328 (merged to main 2026-11-12, commit `3ec34bd` — the wall side is cured, all nine joins face the same way)
 **Blocks:** 332 (the assembly run on this input; not written yet)
