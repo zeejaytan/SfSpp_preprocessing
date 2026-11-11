@@ -1,6 +1,6 @@
 # Ticket 328 — Cure the Juglet wall side: file the interior face without trusting a broken axis, and re-sign the exported line
 
-**Status:** results-in
+**Status:** landed — merged to main 2026-11-12 (commit `3ec34bd`); the conservator ruled the merge on 2026-11-11 and the acceptance is recorded in the lead merge block at the end
 **Working in:** C:/PR/worktrees/sfs/328-juglet-wall-side-cure
 **Branch:** 328-juglet-wall-side-cure
 **Answers:** E1
@@ -493,5 +493,25 @@ never started. Only the resource ask differs between the three: the sbatch is ot
 
 Scripts: `.scratch/pota-repro/t328/render328.py`, `render328b.py` (bars 2-3), `render328c.py`, `render328d.py`
 (bar 4).
+
+## Lead merge record (2026-11-12)
+
+**Ruling (conservator, 2026-11-11):** merge. 328's filing decides the wall side by measured curvature
+instead of the axis vote, and the exported line's normals are re-derived against the wall it sits on;
+after the cure all nine touching pairs face the same way (bar 3: dot_med_d3 +0.786..+0.997, n_d3_dotneg
+0 on every pair), which is what the correspondence stage needs.
+
+**What was verified before merging:** the ten-pot axes are byte-identical when regenerated with this
+branch's FINAL binaries - 172 files, `diff -rq` 0 lines (ticket 329 bar 1.1, job 34723217); and the
+ten-pot run of 2026-11-11 staged the shipped corpus with those axes (axes329f) and reproduced the
+recorded bars on the K3 lanes (lead-read acc.tsv, ticket 329 bar 1.2).
+
+**Merged:** `git merge --ff-only 328-juglet-wall-side-cure` into `SfSpp_preprocessing` main; main is now
+`3ec34bd` (was `55bf7ce`).
+
+**Residual risk, stated not buried:** bar 1 re-runs only the AXIS half of this change on pots - the
+edgeline/breakline half is not re-run on the ten pots, so pot neutrality is proven for the axes and
+unmeasured for the breakline normals. The Juglet E2E still seats 0/9 with this cure in place; the seam
+is shorter than the matcher's 7-dot window, which is a different gate from the one this ticket fixes.
 
 
