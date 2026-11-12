@@ -515,3 +515,24 @@ unmeasured for the breakline normals. The Juglet E2E still seats 0/9 with this c
 is shorter than the matcher's 7-dot window, which is a different gate from the one this ticket fixes.
 
 
+
+---
+
+## Correction note (lead, 2026-11-12, after ticket 334)
+
+Ticket 334 re-measured the wall side on both trees with a script of its own and asked the lead to settle the
+conflict. Result: **`Surface_0` is the INNER wall on all nine Juglet pieces, at 1x and at 3x.** Method:
+perpendicular radius about each piece's own GT axis plus the fraction of surface normals pointing toward that
+axis. 1x tree (332 base18): S0 outward-normal fraction 0.00-0.09, S1 0.97-1.00, r(S1) - r(S0) = +1.41 to
++2.36 mm. 3x tree (333): same class on all nine, r(S1) - r(S0) = +4.27 to +7.08 mm. No flips between the trees.
+
+So the earlier reading in this ticket — "Surface_0 is the outer wall on pieces 2, 6, 9" — does not reproduce. The
+difference is the measuring axis: this ticket compared radii about the **vessel** axis after applying gtT, which
+on a piece whose wall faces the vessel axis is not a wall-thickness quantity; ticket 334 used each piece's **own**
+GT axis.
+
+What is unaffected: the cure itself (wall side filed by curvature at the seam) never reads the label, and the
+breakline `Bl0` dots are on `Surface_0` at 0.28-0.35 mm as recorded here. What is affected: the explanation that
+the five negative-normal pairs were "cross-wall". With S0 inner everywhere, all nine seams are inner-to-inner, and
+the negative normals in that earlier diagnostic need their own explanation (ticket 334 found the flip is admitted
+by a sign-blind axis test and outranks the correct pose on score, not that the walls disagree).
