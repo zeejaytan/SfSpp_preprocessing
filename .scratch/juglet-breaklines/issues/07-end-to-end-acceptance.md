@@ -10,7 +10,9 @@ preprocessing half)
 
 **Blocked by:** none — 06 resolved 2026-09-30, so 01–06 are settled
 
-**Status:** ready-for-agent — revived 2026-10-26 as the vehicle for U19 (see the section
+**Status:** blocked — paused by the conservator at stage 2 (segmentation failure first) and its
+worktree removed 2026-11-12; the branch `07-end-to-end-acceptance` at `6dc91bf` keeps the paused
+state, and `## Where it stands (2026-11-12)` below records what has since moved under it. — revived 2026-10-26 as the vehicle for U19 (see the section
 at the end). Pot_A half done by our own output (15/15,
 `t14_patches` arm, re-verified identical under ticket-17 code); Juglet half
 retracted-and-remeasured: old 0/10 rested on copied surfaces (ticket 17)
@@ -341,3 +343,19 @@ their geometry, and only `SfS_pp/Ground Truth/` survives inside
 retries, so five of the ten touching joins cannot be scored at all. Decision 2026-10-26: report
 the partial result on seven sherds with those five stated as unmeasurable, and let a separate
 ticket own the clustering diagnosis. Nothing here may turn an absent pair into a failed one.
+
+## Where it stands (2026-11-12)
+
+The worktree at `C:/PR/worktrees/sfs/07` was removed at the conservator's instruction; nothing was
+lost (it was clean, and every commit is on `origin/07-end-to-end-acceptance`, four commits ahead of
+main). Resume by opening a worktree on that branch again, not by re-claiming the ticket cold.
+
+The ticket's premise has moved since it was paused. Its "0 of 5 scorable touching pairs pass" was
+measured before tickets 328-332: the binding gate turned out to be the physical length of the
+breakline (33 mm vessel, seven of nine lines under the authors' own 50-dot floor), not the axis and
+not the count floors. Ticket 331 built a 3x copy of the nine meshes and showed 7 of 9 seams reach
+the matcher's 12.6 mm window; ticket 333 is the assembler run on that input. So this ticket should
+not be resumed as written: its acceptance was "the Juglet now joins", and that question is now
+being answered on the scaled input. The decision left for the conservator is whether to retire it
+in favour of 333's result or keep it as the 1x-input statement of the original claim.
+
