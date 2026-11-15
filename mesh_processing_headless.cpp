@@ -3919,6 +3919,309 @@ static void classifyAndOrderPaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     }
 }
 
+// ============================================================================
+// TICKET 72: SFS_BREAK_TRIM -- trim the break face out of the interior surface.
+//
+// The interior patch (Surface_0) also carries the sherd's break face: a point on
+// the broken edge stands on material whose other side is air, so no opposing wall
+// lies within a wall's thickness of it. Ticket 59's ray-pair predicate (march both
+// ways along the point's normal and accept a hit that is an opposing normal inside
+// eps) separates the two populations. Measured on the 3x Juglet tree, ticket 72
+// part A: 18.6% of the carriers of off-lip Breakline_0 dots pair, 88.9% of the
+// on-lip ones do. This switch removes the unpaired points from the cluster that
+// becomes Surface_0, before its boundary is fitted and walked, so the break face
+// stops being part of the surface the interior line is read from.
+//
+// Nothing here is absolute: every length is a multiple of t, the wall thickness
+// measured on this piece by pass 1, because the run's units are tree units on the
+// 3x tree and millimetres at 1x and the binary is not told which (ticket 72 part A
+// found the two chains' t differs by the scale factor, not by the piece).
+// Default off: unset, no point is moved and the shipped surface is reproduced.
+// ============================================================================
+namespace t72
+{
+    static bool   g_trim72    = false;
+    static bool   g_read72    = false;
+    static double g_lo72      = 0.5;    // SFS_BREAK_TRIM_LO, window near edge, x t
+    static double g_hi72      = 2.5;    // SFS_BREAK_TRIM_HI, window far edge, x t
+    static double g_maxDrop72 = 0.35;   // SFS_BREAK_TRIM_MAXDROP, starvation guard
+    static double g_minPt72   = 400.0;  // SFS_BREAK_TRIM_MINPT, starvation guard
+    static double g_epsUser72 = 0.0;    // SFS_BREAK_TRIM_EPS, absolute; 0 = 0.20*t
+    static const double g_exitDot72 = -0.4;  // ticket 59's opposite-normal bar
+
+    static double envDouble72(const char* name, double dflt)
+    {
+        const char* e = std::getenv(name);
+        if (!e || !*e) return dflt;
+        char* end = NULL;
+        errno = 0;
+        const double v = std::strtod(e, &end);
+        if (end == e || errno != 0 || !std::isfinite(v) || !(v > 0.0)) return dflt;
+        return v;
+    }
+
+    static void readEnv72()
+    {
+        if (g_read72) return;
+        g_read72 = true;
+        const char* e = std::getenv("SFS_BREAK_TRIM");
+        g_trim72 = false;
+        if (e && *e)
+        {
+            const std::string v = e;
+            g_trim72 = !(v == "0" || v == "off" || v == "false" || v == "no");
+        }
+        g_lo72 = envDouble72("SFS_BREAK_TRIM_LO", 0.5);
+        g_hi72 = envDouble72("SFS_BREAK_TRIM_HI", 2.5);
+        g_maxDrop72 = envDouble72("SFS_BREAK_TRIM_MAXDROP", 0.35);
+        g_minPt72 = envDouble72("SFS_BREAK_TRIM_MINPT", 400.0);
+        g_epsUser72 = envDouble72("SFS_BREAK_TRIM_EPS", 0.0);
+        if (!(g_hi72 > g_lo72)) g_hi72 = 2.0 * g_lo72;  // an emptied window is refused below, not run
+        if (g_maxDrop72 > 1.0) g_maxDrop72 = 1.0;
+    }
+
+    // Median distance to the 5th nearest neighbour over a deterministic stride
+    // sample: the run's own length unit for the generous pass-1 window. It scales
+    // with the tree (0.44-0.52 tu at 3x, ~0.15 at 1x), which is the property t and
+    // eps need and no constant in this file has.
+    static double spacing72(const pcl::KdTreeFLANN<pcl::PointXYZ>& tree,
+                            const pcl::PointCloud<pcl::PointXYZ>& all,
+                            const std::vector<int>& samp)
+    {
+        std::vector<double> d5;
+        std::vector<int> idx(5);
+        std::vector<float> sqd(5);
+        for (size_t s = 0; s < samp.size(); ++s)
+        {
+            if (tree.nearestKSearch(all.points[samp[s]], 5, idx, sqd) >= 5)
+                d5.push_back(std::sqrt(static_cast<double>(sqd[4])));
+        }
+        if (d5.empty()) return 0.0;
+        return t328::medianOf(d5);
+    }
+
+    // Ticket 59's predicate, unchanged except that the window and eps are arguments
+    // and both marching directions are tried for the same point. probeIdx indexes
+    // all.points, and is also the index whose self-hit is skipped, so the caller
+    // must hand in the point's own position in the search cloud.
+    static void march72(const pcl::KdTreeFLANN<pcl::PointXYZ>& tree,
+                        const pcl::PointCloud<pcl::PointNormal>& all,
+                        const std::vector<int>& probeIdx,
+                        double lo, double hi, double eps,
+                        std::vector<char>& paired, std::vector<double>& dist)
+    {
+        const size_t np = probeIdx.size();
+        paired.assign(np, 0);
+        dist.assign(np, 0.0);
+        if (!(eps > 0.0) || !(hi >= lo)) return;
+        const double step = 0.75 * eps;   // ticket 59: max(0.10, 0.75*eps); 0.75*eps rules at every scale here
+        const int nstep = static_cast<int>(std::floor((hi - lo) / step)) + 1;
+        std::vector<int> idx(1);
+        std::vector<float> sqd(1);
+        for (int dir = 0; dir < 2; ++dir)
+        {
+            const double sign = (dir == 0) ? 1.0 : -1.0;
+            for (int k = 0; k < nstep; ++k)
+            {
+                const double s = lo + static_cast<double>(k) * step;
+                if (s > hi) break;
+                for (size_t i = 0; i < np; ++i)
+                {
+                    if (paired[i]) continue;   // first hit along the ray wins
+                    const pcl::PointNormal& P = all.points[probeIdx[i]];
+                    if (!std::isfinite(P.x) || !std::isfinite(P.y) || !std::isfinite(P.z) ||
+                        !std::isfinite(P.normal_x) || !std::isfinite(P.normal_y) || !std::isfinite(P.normal_z))
+                        continue;
+                    const double nx = P.normal_x, ny = P.normal_y, nz = P.normal_z;
+                    const double ln = std::sqrt(nx * nx + ny * ny + nz * nz);
+                    if (!(ln > 0.0)) continue;
+                    pcl::PointXYZ q;
+                    q.x = static_cast<float>(P.x + sign * s * nx / ln);
+                    q.y = static_cast<float>(P.y + sign * s * ny / ln);
+                    q.z = static_cast<float>(P.z + sign * s * nz / ln);
+                    if (tree.nearestKSearch(q, 1, idx, sqd) <= 0) continue;
+                    const int j = idx[0];
+                    if (j < 0 || static_cast<size_t>(j) >= all.points.size()) continue;
+                    if (j == probeIdx[i]) continue;
+                    if (static_cast<double>(sqd[0]) > eps * eps) continue;
+                    const pcl::PointNormal& Q = all.points[j];
+                    const double dot = (nx * Q.normal_x + ny * Q.normal_y + nz * Q.normal_z) / ln;
+                    if (dot > g_exitDot72) continue;
+                    paired[i] = 1;
+                    dist[i] = s;
+                }
+            }
+        }
+    }
+
+    // Removes every point of the Surface_0 cluster the predicate calls unpaired.
+    // Keeps the untrimmed cluster and says so when the trim would starve the surface.
+    static void trimBreakFace72(pcl::PointCloud<pcl::PointNormal>::Ptr& surf0,
+                                const pcl::PointCloud<pcl::PointNormal>::Ptr& surf1,
+                                const std::string& piece)
+    {
+        readEnv72();
+        const std::string tag = "[SFS-72] piece=" + (piece.empty() ? std::string("NA") : piece);
+        if (!g_trim72)
+        {
+            std::cout << tag << " break trim: off" << std::endl;
+            return;
+        }
+        const size_t n0 = surf0->points.size();
+        if (n0 == 0)
+        {
+            std::cout << tag << " break trim: on n=0 [SFS-72] TRIM-REFUSED " << tag
+                      << " reason=empty-cluster kept=0 dropped=0 n=0" << std::endl;
+            return;
+        }
+
+        // Search cloud: the interior cluster first, then the opposing one, so the
+        // "other wall" of an interior point is found on the other face. Non-finite
+        // points are left out of the tree and therefore out of the probe set; the
+        // index recorded for each kept point is its position in this cloud.
+        pcl::PointCloud<pcl::PointNormal> all;
+        std::vector<int> treeIdx0(n0, -1);
+        for (size_t i = 0; i < n0; ++i)
+        {
+            const pcl::PointNormal& P = surf0->points[i];
+            if (!std::isfinite(P.x) || !std::isfinite(P.y) || !std::isfinite(P.z) ||
+                !std::isfinite(P.normal_x) || !std::isfinite(P.normal_y) || !std::isfinite(P.normal_z))
+                continue;
+            treeIdx0[i] = static_cast<int>(all.points.size());
+            all.points.push_back(P);
+        }
+        const size_t n0Use = all.points.size();
+        for (size_t i = 0; i < surf1->points.size(); ++i)
+        {
+            const pcl::PointNormal& P = surf1->points[i];
+            if (!std::isfinite(P.x) || !std::isfinite(P.y) || !std::isfinite(P.z) ||
+                !std::isfinite(P.normal_x) || !std::isfinite(P.normal_y) || !std::isfinite(P.normal_z))
+                continue;
+            all.points.push_back(P);
+        }
+        all.width = static_cast<int>(all.points.size());
+        all.height = 1;
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr xyz(new pcl::PointCloud<pcl::PointXYZ>);
+        xyz->points.reserve(all.points.size());
+        for (size_t i = 0; i < all.points.size(); ++i)
+        {
+            pcl::PointXYZ p;
+            p.x = all.points[i].x;
+            p.y = all.points[i].y;
+            p.z = all.points[i].z;
+            xyz->points.push_back(p);
+        }
+        xyz->width = static_cast<int>(xyz->points.size());
+        xyz->height = 1;
+        pcl::KdTreeFLANN<pcl::PointXYZ> tree;
+        tree.setInputCloud(xyz);
+
+        std::vector<int> samp;
+        const size_t stride = std::max<size_t>(1, all.points.size() / 2000);
+        for (size_t i = 0; i < all.points.size(); i += stride) samp.push_back(static_cast<int>(i));
+
+        const double sp = spacing72(tree, *xyz, samp);
+        if (!(sp > 0.0))
+        {
+            std::cout << tag << " break trim: on [SFS-72] TRIM-REFUSED " << tag
+                      << " reason=no-spacing kept=" << n0Use << " dropped=0 n=" << n0Use << std::endl;
+            return;
+        }
+
+        // Pass 1: the wall thickness, over the sample, in a window wide enough that
+        // the measurement is the piece's answer and not the earlier chain's constant.
+        std::vector<char> p1;
+        std::vector<double> d1;
+        march72(tree, all, samp, 2.0 * sp, 100.0 * sp, 6.0 * sp, p1, d1);
+        std::vector<double> hits;
+        for (size_t i = 0; i < p1.size(); ++i) if (p1[i]) hits.push_back(d1[i]);
+        std::cout << tag << " break trim: on pass1 n=" << samp.size()
+                  << " spacing=" << sp << " hits=" << hits.size() << std::endl;
+        if (hits.size() < 20)
+        {
+            std::cout << tag << " [SFS-72] TRIM-REFUSED " << tag
+                      << " reason=no-opposing-wall hits=" << hits.size() << " of " << samp.size()
+                      << " kept=" << n0Use << " dropped=0 n=" << n0Use << std::endl;
+            return;
+        }
+        const double t = t328::medianOf(hits);
+        const double eps = (g_epsUser72 > 0.0) ? g_epsUser72 : 0.20 * t;
+        const double lo2 = g_lo72 * t;
+        const double hi2 = g_hi72 * t;
+        std::cout << tag << " break trim: on n=" << n0Use << " spacing=" << sp
+                  << " t=" << t << " tu (" << (t / 3.0) << " mm on the 3x tree)"
+                  << " eps=" << eps << " window=[" << lo2 << "," << hi2 << "] tu"
+                  << " (" << (lo2 / 3.0) << "," << (hi2 / 3.0) << " mm)"
+                  << " x t=" << g_lo72 << "/" << g_hi72
+                  << " maxdrop=" << g_maxDrop72 << " minpt=" << static_cast<int>(g_minPt72) << std::endl;
+
+        // Pass 2: the predicate on the whole interior cluster.
+        std::vector<int> probe0;
+        std::vector<size_t> orig0;
+        probe0.reserve(n0Use);
+        orig0.reserve(n0Use);
+        for (size_t i = 0; i < n0; ++i)
+        {
+            if (treeIdx0[i] >= 0)
+            {
+                probe0.push_back(treeIdx0[i]);
+                orig0.push_back(i);
+            }
+        }
+        std::vector<char> p2;
+        std::vector<double> d2;
+        march72(tree, all, probe0, lo2, hi2, eps, p2, d2);
+        size_t kept = 0;
+        for (size_t i = 0; i < p2.size(); ++i) if (p2[i]) ++kept;
+        const size_t dropped = probe0.size() - kept;
+        const double dropFrac = static_cast<double>(dropped) / static_cast<double>(probe0.size());
+
+        if (dropFrac > g_maxDrop72)
+        {
+            std::cout << tag << " [SFS-72] TRIM-REFUSED " << tag
+                      << " reason=maxdrop dropped=" << dropped << " of " << probe0.size()
+                      << " (" << (100.0 * dropFrac) << "%) > " << (100.0 * g_maxDrop72)
+                      << "% kept=" << n0Use << std::endl;
+            return;
+        }
+        if (static_cast<double>(kept) < g_minPt72)
+        {
+            std::cout << tag << " [SFS-72] TRIM-REFUSED " << tag
+                      << " reason=minpt kept=" << kept << " < " << static_cast<int>(g_minPt72)
+                      << " dropped=" << dropped << " of " << probe0.size() << std::endl;
+            return;
+        }
+
+        pcl::PointCloud<pcl::PointNormal>::Ptr trimmed(new pcl::PointCloud<pcl::PointNormal>);
+        trimmed->points.reserve(kept);
+        for (size_t i = 0; i < p2.size(); ++i)
+            if (p2[i]) trimmed->points.push_back(surf0->points[orig0[i]]);
+        trimmed->width = static_cast<int>(trimmed->points.size());
+        trimmed->height = 1;
+        surf0 = trimmed;
+        std::cout << tag << " [SFS-72] TRIM-APPLIED " << tag
+                  << " kept=" << kept << " dropped=" << dropped << " of " << probe0.size()
+                  << " (" << (100.0 * dropFrac) << "%) n_in=" << n0 << " n_out="
+                  << surf0->points.size() << std::endl;
+    }
+
+    // One surviving cluster has no opposing face to pair against, so the predicate
+    // cannot run there. Say so rather than leave the switch looking inert.
+    static void skipTrimSingleCluster72(const std::string& piece)
+    {
+        readEnv72();
+        const std::string tag = "[SFS-72] piece=" + (piece.empty() ? std::string("NA") : piece);
+        if (!g_trim72)
+        {
+            std::cout << tag << " break trim: off" << std::endl;
+            return;
+        }
+        std::cout << tag << " break trim: on [SFS-72] TRIM-SKIP " << tag
+                  << " reason=single-cluster no opposing face, surface left untrimmed" << std::endl;
+    }
+}
+
 void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbours, double smoothnessAngleThreshold, double curvatureThreshold,
         bool planeRule = false, double planeJoinDeg = 60.0, double planeDistMM = 2.0, int planeWindow = 100,
         bool paperChain = true, double paperTheta = 3.4, double paperKappa = 1.0, int paperNB = 10,
@@ -4390,6 +4693,11 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             otherForCluster2->width = static_cast<int>(otherForCluster2->points.size());
             otherForCluster2->height = 1;
 
+            // TICKET 72: default-off break-face trim, applied to the cluster that became
+            // Surface_0 by the interior/exterior decision above and before its boundary is
+            // fitted. Off (unset), nothing here moves a point.
+            t72::trimBreakFace72(cloudWithNormals_Cluster1, cloudWithNormals_Cluster2, fileNameOnly);
+
             if (reassignMode == "own")
             {
                 improveSurfaceBoundaryByFittingBSplineSurfaceOwn(sampledPointCloudNormal, cloudWithNormals_Cluster1, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster1, improvedSurfacePoints_Cluster2, otherForCluster1, otherForCluster2);
@@ -4513,6 +4821,8 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
             // and checkNormalsIntersection has no second cluster to test against.
             if (g_singleClusterMode == "write")
             {
+                // TICKET 72: the break-face trim needs an opposing face and this branch has none.
+                t72::skipTrimSingleCluster72(fileNameOnly);
                 pcl::PointCloud<pcl::PointNormal>::Ptr improvedSurfacePoints_Cluster1(new pcl::PointCloud<pcl::PointNormal>);
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1);
                 cloudWithNormals_Cluster1->points.clear();
