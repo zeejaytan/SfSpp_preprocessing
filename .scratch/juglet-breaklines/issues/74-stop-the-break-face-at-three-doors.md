@@ -17,6 +17,11 @@ splits the break face off on sherds 6-8, Arm M is what stops the merge gluing it
 ray-pair signal), 328 (the wall side)
 **Budget:** medium. Four 3x cells, three 1x cells, three Pot A cells, one read-only stage.
 
+**Status:** ready-for-agent
+**Working in:** chat on Thinkbook16 (2026-11-15)
+**Branch:** to be created at dispatch
+**Worker:** unassigned
+
 ## Given — what the numbers already say
 
 1. **On the nine sherds there are exactly three merges**, from the stage dumps of the
