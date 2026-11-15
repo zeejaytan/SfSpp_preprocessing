@@ -1971,6 +1971,52 @@ static void dumpWriteJson25(const std::string& base, const std::string& fields)
 	o.close();
 }
 
+// TICKET 73 (observation only): the trim mask, as its own rung.
+//
+// Rung 4 records the cluster id the segmentation produced, and the trim only rewrites the
+// cluster cloud it is handed, not that id, so rungs 2-5 cannot say which cluster points the
+// trim removed. Stage 0 has to tell a refinement-added carrier from a growth-carried one, so
+// this writes one row per point of the cluster handed to the trim, in its own order, with
+// kept=1 for a survivor and kept=0 for a dropped point. It is written only when
+// SFS_DUMP_STAGE is armed, it moves no point, and it writes nothing on the off path.
+static void dumpTrimMask73(const pcl::PointCloud<pcl::PointNormal>& pts,
+                           const std::vector<int>& kept)
+{
+	if (!g_dumpOn25) return;
+	const size_t n = pts.points.size();
+	if (kept.size() != n)
+	{
+		std::cerr << "[SFS-73] trim mask REFUSED: " << n << " points but " << kept.size()
+		          << " flags" << std::endl;
+		return;
+	}
+	const std::string path = g_dumpPieceDir25 + "r3b_trim_mask.ply";
+	std::ofstream o(path.c_str(), std::ios::out | std::ios::trunc | std::ios::binary);
+	if (!o.is_open()) { std::cerr << "[SFS-73] CANNOT WRITE " << path << std::endl; return; }
+	long nkept = 0;
+	for (size_t i = 0; i < n; ++i) if (kept[i]) ++nkept;
+	o << "ply\nformat ascii 1.0\n";
+	o << "comment ticket-73 observation-only trim mask piece=" << g_dumpPieceName25
+	  << " kept=1 survives the ticket-72 break trim, kept=0 is dropped, rows are the cluster"
+	  << " handed to the trim in its own order\n";
+	o << "element vertex " << n << "\n";
+	o << "property float x\nproperty float y\nproperty float z\n";
+	o << "property float nx\nproperty float ny\nproperty float nz\n";
+	o << "property int kept\nend_header\n";
+	char buf[256];
+	for (size_t i = 0; i < n; ++i)
+	{
+		snprintf(buf, sizeof(buf), "%.6f %.6f %.6f %.6f %.6f %.6f %d",
+			(double)pts.points[i].x, (double)pts.points[i].y, (double)pts.points[i].z,
+			(double)pts.points[i].normal_x, (double)pts.points[i].normal_y,
+			(double)pts.points[i].normal_z, kept[i] ? 1 : 0);
+		o << buf << "\n";
+	}
+	o.close();
+	std::cout << "[SFS-73] trim mask " << path << " points=" << n << " kept=" << nkept
+	          << " dropped=" << (long)(n - nkept) << std::endl;
+}
+
 // TICKET 25: the input cloud's own point count, read from its PCD header.
 static long dumpPcdPoints25(const std::string& path)
 {
@@ -2371,6 +2417,75 @@ static void window26Print(int surfaceIndex, const Window26Window& w, long admitt
 	}
 }
 
+// TICKET 73: two default-off cures for one defect, measured one arm at a time.
+//
+//   Arm A  SFS_REFINE_ADD_GATE=1 (+ SFS_REFINE_ADD_ANGLE_DEG) -- improveSurfaceBoundaryByFitting
+//          B-splineSurface re-admits every trimmed point of the sherd because it tests the whole
+//          mesh, not just the grown patch, and an admitted point keeps its original coordinates.
+//          This arm refuses a candidate that is NOT in the segmented cluster unless its normal
+//          agrees with the normal of the nearest cluster point within the angle Stage 0 measured.
+//          Points already in the cluster pass exactly as they do today.
+//   Arm B  SFS_GROW_BASE_MM=<real mm> -- growPaper234 judges a candidate's turn against the
+//          CURRENT FRONT POINT's normal, so on a 3x tree (0.09 mm between points) a 90 degree
+//          lip turned over a millimetre reads as 1-2 deg per step and the growth walks round it.
+//          This arm judges the same turn against the mean normal of the claimed points within
+//          that real distance (at least 3 of them; fewer falls back to the neighbour rule).
+//          SFS_TREE_UNITS_PER_MM converts mm to this run's units: 3.0 on the 3x tree, 1.0 at 1x.
+//
+// Both read the environment lazily, print one banner line each when first used, and when unset
+// execute today's code path unchanged.
+// ============================================================================
+namespace t73
+{
+    static bool   g_refineGate   = false;
+    static double g_refineAngle  = 30.0;   // SFS_REFINE_ADD_ANGLE_DEG, stage 0's measured value
+    static double g_growBaseMM   = 0.0;    // SFS_GROW_BASE_MM, 0 = arm off
+    static double g_unitsPerMM   = 3.0;    // SFS_TREE_UNITS_PER_MM
+    static bool   g_read73       = false;
+    static long   g_refineNew    = 0;      // non-cluster candidates reaching an admission branch
+    static long   g_refineRefused = 0;     // ... of those, refused by this arm
+
+    static double envDouble73(const char* name, double dflt)
+    {
+        const char* e = std::getenv(name);
+        if (!e || !*e) return dflt;
+        char* end = NULL;
+        errno = 0;
+        const double v = std::strtod(e, &end);
+        if (end == e || errno != 0 || !std::isfinite(v)) return dflt;
+        return v;
+    }
+
+    static bool envFlag73(const char* name)
+    {
+        const char* e = std::getenv(name);
+        if (!e || !*e) return false;
+        const std::string v = e;
+        return !(v == "0" || v == "off" || v == "false" || v == "no");
+    }
+
+    static void ensure73()
+    {
+        if (g_read73) return;
+        g_read73 = true;
+        g_refineGate = envFlag73("SFS_REFINE_ADD_GATE");
+        g_refineAngle = envDouble73("SFS_REFINE_ADD_ANGLE_DEG", 30.0);
+        g_growBaseMM = envDouble73("SFS_GROW_BASE_MM", 0.0);
+        g_unitsPerMM = envDouble73("SFS_TREE_UNITS_PER_MM", 3.0);
+        if (!(g_unitsPerMM > 0.0)) g_unitsPerMM = 3.0;
+        if (!(g_growBaseMM > 0.0)) g_growBaseMM = 0.0;   // 0 or negative means off
+        std::cout << "[SFS-73] refine add gate: " << (g_refineGate ? "on" : "off");
+        if (g_refineGate) std::cout << " angle=" << g_refineAngle << " deg";
+        std::cout << std::endl;
+        std::cout << "[SFS-73] grow base: ";
+        if (g_growBaseMM > 0.0)
+            std::cout << g_growBaseMM << " mm (" << (g_growBaseMM * g_unitsPerMM) << " units)";
+        else
+            std::cout << "off";
+        std::cout << std::endl;
+    }
+}
+
 // TICKET 26: what the surface actually is after finishImprovedSurface, which is where an empty
 // recruited set stops being empty.
 static void window26PrintFinal(int surfaceIndex, long ownBefore, long otherBefore, long finalPoints)
@@ -2396,6 +2511,14 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	std::string str;
 	std::string file_contents;
 	int numberOfPoints;
+
+	// TICKET 73 Arm A: the gate needs the cluster the spline was fitted to (the points the growth
+	// claimed), and it counts per surface, so the counters are snapshotted here.
+	t73::ensure73();
+	const long t73New0 = t73::g_refineNew;
+	const long t73Ref0 = t73::g_refineRefused;
+	pcl::KdTreeFLANN<PointNormal> kd73;
+	if (t73::g_refineGate) kd73.setInputCloud(segmentedSurfacePointCloud);
 
 	FittedSplineSurface fitted;
 	fitSplineSurfaceToCluster(segmentedSurfacePointCloud, fitted);
@@ -2471,7 +2594,44 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 
 		angles.push_back(angleDiff);
 		dists.push_back(pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh));
-		if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff > 140) // TICKET 26: the 3 mm literal is now this surface's clamped measured window (3.0 by default).
+		// TICKET 73 Arm A: this candidate reaches an admission branch; if the growth never claimed
+		// it, let it back in only when its normal agrees with the nearest claimed point.
+		bool admit73 = true;
+		if (t73::g_refineGate)
+		{
+			const double d73 = pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh);
+			const bool would73 = (d73 < windowLenMM) && (angleDiff > 140 || angleDiff < 40);
+			std::vector<int> nb73;
+			std::vector<float> ds73;
+			int jNear73 = -1;
+			double dNear73 = 1.0e9;
+			if (!segmentedSurfacePointCloud->points.empty()
+				&& kd73.nearestKSearch(meshPointCloud->points[i], 1, nb73, ds73) > 0 && !nb73.empty())
+			{
+				jNear73 = nb73[0];
+				dNear73 = std::sqrt(static_cast<double>(ds73[0]));
+			}
+			const bool inCluster73 = (jNear73 >= 0 && dNear73 <= 1.0e-4);
+			if (!inCluster73 && would73)
+			{
+				++t73::g_refineNew;
+				double ang73 = 180.0;
+				if (jNear73 >= 0)
+				{
+					const PointNormal& g73 = segmentedSurfacePointCloud->points[jNear73];
+					Eigen::Vector4f a73(meshPointCloud->points[i].normal_x, meshPointCloud->points[i].normal_y,
+						meshPointCloud->points[i].normal_z, 0.0f);
+					Eigen::Vector4f b73(g73.normal_x, g73.normal_y, g73.normal_z, 0.0f);
+					ang73 = pcl::getAngle3D(a73, b73, true);
+				}
+				if (!(ang73 <= t73::g_refineAngle))
+				{
+					admit73 = false;
+					++t73::g_refineRefused;
+				}
+			}
+		}
+		if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff > 140 && admit73) // TICKET 26: the 3 mm literal is now this surface's clamped measured window (3.0 by default). TICKET 73: admit73 is true unless Arm A refused this point.
 		{
 			window26AdmittedOwn++;
 			pcl::PointNormal ptTmp;
@@ -2483,7 +2643,7 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			ptTmp.normal_z = meshPointCloud->points[i].normal_z; //-normalEst.z;
 			improvedSurfacePointCloud->points.push_back(ptTmp);
 		}
-		else if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff < 40) // TICKET 26: same window, other-angle branch.
+		else if (pcl::euclideanDistance(ptOnFittedSurface, ptOnOriginalMesh) < windowLenMM && angleDiff < 40 && admit73) // TICKET 26: same window, other-angle branch. TICKET 73: same Arm A gate.
 		{
 			window26AdmittedOther++;
 			pcl::PointNormal ptTmp;
@@ -2506,6 +2666,8 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 			if (d25 >= windowLenMM) { code25 = DR25_REJECT_DIST; rank25 = 2; }
 			else if (angleDiff > 140) { code25 = DR25_ADMIT_OWN; rank25 = 4; }
 			else if (angleDiff < 40) { code25 = DR25_ADMIT_OTHER; rank25 = 3; }
+			// TICKET 73: a point Arm A refused is not admitted, so its rung code must not claim it was.
+			if (!admit73) { code25 = DR25_REJECT_NORMAL; rank25 = 1; }
 			const int prev25 = g_r4Code25[i];
 			int prevRank25 = 0;
 			if (prev25 == DR25_ADMIT_OWN) prevRank25 = 4;
@@ -2540,6 +2702,14 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	bSplineSurface->height = 1;
 	// pcl::io::savePCDFile("bSplineSurfacePoints.pcd", *bSplineSurface);
 
+
+	if (t73::g_refineGate)
+	{
+		std::cout << "[SFS-73] REFGATE piece=" << fileNameOnly << " surface=" << surfaceIndex
+			<< " new=" << (t73::g_refineNew - t73New0)
+			<< " refused=" << (t73::g_refineRefused - t73Ref0)
+			<< " angle=" << t73::g_refineAngle << std::endl;
+	}
 
 	window26Print(surfaceIndex, window26, window26AdmittedOwn, window26AdmittedOther,
 		(long)meshPointCloud->points.size());
@@ -2600,6 +2770,20 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	long window26AdmittedOwn[2] = { 0, 0 };
 	long window26AdmittedOther[2] = { 0, 0 };
 
+	// TICKET 73: the default reassign mode is "own", so THIS is the function the cells run and
+	// this is where both the Arm A gate and the rung-4 decision records have to live.
+	t73::ensure73();
+	const long t73New0 = t73::g_refineNew;
+	const long t73Ref0 = t73::g_refineRefused;
+	long refNew73[2] = { 0, 0 };
+	long refRefused73[2] = { 0, 0 };
+	pcl::KdTreeFLANN<PointNormal> kd73[2];
+	if (t73::g_refineGate)
+	{
+		kd73[0].setInputCloud(segmentedSurfacePointCloud1);
+		kd73[1].setInputCloud(segmentedSurfacePointCloud2);
+	}
+
 	for (size_t i = 0; i < meshPointCloud->points.size(); i++)
 	{
 		Eigen::Vector3d originalPt(meshPointCloud->points[i].x, meshPointCloud->points[i].y, meshPointCloud->points[i].z);
@@ -2651,10 +2835,50 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 			if (!(dist[k] < windowLenMM[k])) continue; // TICKET 26: this surface's clamped measured window (3.0 by default).
 			if (!(dist[k] < dist[1 - k])) continue;
 
+			// TICKET 73 Arm A: the growth did not claim this candidate; the refinement may add it
+			// back only when its normal agrees with the nearest claimed point of THIS surface.
+			bool admit73 = true;
+			if (t73::g_refineGate)
+			{
+				const bool would73 = (angleDiff[k] > 140 || angleDiff[k] < 40);
+				pcl::PointCloud<PointNormal>::Ptr cl73 = (k == 0) ? segmentedSurfacePointCloud1 : segmentedSurfacePointCloud2;
+				std::vector<int> nb73;
+				std::vector<float> ds73;
+				int jNear73 = -1;
+				double dNear73 = 1.0e9;
+				if (!cl73->points.empty()
+					&& kd73[k].nearestKSearch(meshPointCloud->points[i], 1, nb73, ds73) > 0 && !nb73.empty())
+				{
+					jNear73 = nb73[0];
+					dNear73 = std::sqrt(static_cast<double>(ds73[0]));
+				}
+				const bool inCluster73 = (jNear73 >= 0 && dNear73 <= 1.0e-4);
+				if (!inCluster73 && would73)
+				{
+					++t73::g_refineNew;
+					++refNew73[k];
+					double ang73 = 180.0;
+					if (jNear73 >= 0)
+					{
+						const PointNormal& g73 = cl73->points[jNear73];
+						Eigen::Vector4f a73(meshPointCloud->points[i].normal_x, meshPointCloud->points[i].normal_y,
+							meshPointCloud->points[i].normal_z, 0.0f);
+						Eigen::Vector4f b73(g73.normal_x, g73.normal_y, g73.normal_z, 0.0f);
+						ang73 = pcl::getAngle3D(a73, b73, true);
+					}
+					if (!(ang73 <= t73::g_refineAngle))
+					{
+						admit73 = false;
+						++t73::g_refineRefused;
+						++refRefused73[k];
+					}
+				}
+			}
+
 			pcl::PointCloud<pcl::PointNormal>::Ptr own = (k == 0) ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2;
 			pcl::PointCloud<pcl::PointNormal>::Ptr other = (k == 0) ? improvedSurfacePointCloud1_other : improvedSurfacePointCloud2_other;
 
-			if (angleDiff[k] > 140)
+			if (angleDiff[k] > 140 && admit73) // TICKET 73: Arm A may refuse this point.
 			{
 				window26AdmittedOwn[k]++;
 				pcl::PointNormal ptTmp;
@@ -2666,7 +2890,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
 				own->points.push_back(ptTmp);
 			}
-			else if (angleDiff[k] < 40)
+			else if (angleDiff[k] < 40 && admit73) // TICKET 73: same gate on this branch.
 			{
 				window26AdmittedOther[k]++;
 				pcl::PointNormal ptTmp;
@@ -2678,6 +2902,23 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
 				other->points.push_back(ptTmp);
 			}
+
+			// TICKET 25 rung 4, recorded here because the default mode never calls the plain
+			// function's copy of this: what this surface decided about this point, strongest kept.
+			if (g_dumpOn25 && (size_t)i < g_r4Code25.size())
+			{
+				int code25 = DR25_REJECT_NORMAL;
+				int rank25 = 1;
+				if (angleDiff[k] > 140) { code25 = DR25_ADMIT_OWN; rank25 = 4; }
+				else if (angleDiff[k] < 40) { code25 = DR25_ADMIT_OTHER; rank25 = 3; }
+				const int prev25 = g_r4Code25[i];
+				int prevRank25 = 0;
+				if (prev25 == DR25_ADMIT_OWN) prevRank25 = 4;
+				else if (prev25 == DR25_ADMIT_OTHER) prevRank25 = 3;
+				else if (prev25 == DR25_REJECT_DIST) prevRank25 = 2;
+				else if (prev25 == DR25_REJECT_NORMAL) prevRank25 = 1;
+				if (rank25 > prevRank25) g_r4Code25[i] = code25;
+			}
 		}
 	}
 
@@ -2686,6 +2927,16 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	const long window26Candidates = (long)meshPointCloud->points.size();
 	window26Print(0, window26[0], window26AdmittedOwn[0], window26AdmittedOther[0], window26Candidates);
 	window26Print(1, window26[1], window26AdmittedOwn[1], window26AdmittedOther[1], window26Candidates);
+	if (t73::g_refineGate)
+	{
+		for (int s73 = 0; s73 < 2; ++s73)
+			std::cout << "[SFS-73] REFGATE piece=" << fileNameOnly << " surface=" << s73
+				<< " new=" << refNew73[s73] << " refused=" << refRefused73[s73]
+				<< " angle=" << t73::g_refineAngle << std::endl;
+		std::cout << "[SFS-73] REFGATE piece=" << fileNameOnly << " surface=both total_new="
+			<< (t73::g_refineNew - t73New0) << " total_refused=" << (t73::g_refineRefused - t73Ref0)
+			<< std::endl;
+	}
 
 	finishImprovedSurface(improvedSurfacePointCloud1, improvedSurfacePointCloud1_other, segmentedSurfacePointCloud1, 0);
 	finishImprovedSurface(improvedSurfacePointCloud2, improvedSurfacePointCloud2_other, segmentedSurfacePointCloud2, 1);
@@ -3360,6 +3611,16 @@ static std::vector<pcl::PointIndices> growPaper234(
     std::vector<pcl::PointIndices> pclusters;
     const int NP = static_cast<int>(pcloud->points.size());
     if (NP == 0) return pclusters;
+    // TICKET 73 Arm B: judge a candidate's turn against the claimed points within a real
+    // distance, not against the current front point. baseU73 = 0 means the arm is off and the
+    // neighbour test below is the only one that runs.
+    t73::ensure73();
+    const double baseU73 = (t73::g_growBaseMM > 0.0) ? (t73::g_growBaseMM * t73::g_unitsPerMM) : 0.0;
+    long used73 = 0;
+    long fallback73 = 0;
+    std::vector<int> pnbR;
+    std::vector<float> pdR;
+    std::vector<int> pstamp(NP, -1);   // which seed's cluster each claimed point belongs to
     std::vector<int> seedOrder(NP);
     for (int i = 0; i < NP; ++i) seedOrder[i] = i;
     std::sort(seedOrder.begin(), seedOrder.end(), [&](int a, int b) {
@@ -3380,6 +3641,7 @@ static std::vector<pcl::PointIndices> growPaper234(
         preg.clear();
         preg.push_back(sd);
         pclaimed[sd] = 1;
+        pstamp[sd] = s;
         pfront.clear();
         pfront.push_back(sd);
         size_t fh2 = 0;
@@ -3397,8 +3659,42 @@ static std::vector<pcl::PointIndices> growPaper234(
                 Eigen::Vector4f nn4(pnormals->points[cand].normal_x,
                                     pnormals->points[cand].normal_y,
                                     pnormals->points[cand].normal_z, 0.0f);
-                if (pcl::getAngle3D(curN4, nn4, true) > thetaDeg) continue;
+                // TICKET 73 Arm B: the turn over a real distance.
+                double candAng73 = pcl::getAngle3D(curN4, nn4, true);
+                if (baseU73 > 0.0)
+                {
+                    pnbR.clear();
+                    pdR.clear();
+                    Eigen::Vector3f sum73(0.0f, 0.0f, 0.0f);
+                    int cnt73 = 0;
+                    if (pkdtree.radiusSearch(pcloud->points[cand], (float)baseU73, pnbR, pdR) > 0)
+                    {
+                        for (size_t q73 = 0; q73 < pnbR.size(); ++q73)
+                        {
+                            const int id73 = pnbR[q73];
+                            if (id73 == cand) continue;
+                            if (!pclaimed[id73] || pstamp[id73] != s) continue;
+                            sum73 += Eigen::Vector3f(pnormals->points[id73].normal_x,
+                                                     pnormals->points[id73].normal_y,
+                                                     pnormals->points[id73].normal_z);
+                            ++cnt73;
+                        }
+                    }
+                    if (cnt73 >= 3)
+                    {
+                        sum73.normalize();
+                        Eigen::Vector4f m73(sum73.x(), sum73.y(), sum73.z(), 0.0f);
+                        candAng73 = pcl::getAngle3D(nn4, m73, true);
+                        ++used73;
+                    }
+                    else
+                    {
+                        ++fallback73;   // too few claimed points that close: today's neighbour rule
+                    }
+                }
+                if (candAng73 > thetaDeg) continue;
                 pclaimed[cand] = 1;
+                pstamp[cand] = s;
                 preg.push_back(cand);
                 pfront.push_back(cand);
             }
@@ -3408,6 +3704,27 @@ static std::vector<pcl::PointIndices> growPaper234(
             pi.indices = preg;
             pclusters.push_back(pi);
         }
+    }
+    if (baseU73 > 0.0)
+    {
+        std::cout << "[SFS-73] GROWBASE piece=" << fileNameOnly << " used=" << used73
+                  << " fallback=" << fallback73 << " base=" << baseU73 << std::endl;
+    }
+    // TICKET 73: settle Given 5 -- the curvature field the >= kappa gate at :3442 actually reads.
+    // Guarded, because it costs a sort and this line is documentation, not a decision input.
+    if (t73::envFlag73("SFS_CURV73"))
+    {
+        std::vector<double> cv73;
+        cv73.reserve(NP);
+        for (int i = 0; i < NP; ++i) cv73.push_back(static_cast<double>(pnormals->points[i].curvature));
+        std::sort(cv73.begin(), cv73.end());
+        const size_t n73 = cv73.size();
+        std::cout << "[SFS-73] CURV piece=" << fileNameOnly << " n=" << n73
+                  << " min=" << cv73[0]
+                  << " med=" << cv73[n73 / 2]
+                  << " p99=" << cv73[(size_t)(0.99 * (double)(n73 - 1))]
+                  << " max=" << cv73[n73 - 1] << " kappa_gate_inert=" << (cv73[n73 - 1] < 1.0 ? "yes" : "no")
+                  << std::endl;
     }
     return pclusters;
 }
@@ -4068,6 +4385,10 @@ namespace t72
             return;
         }
         const size_t n0 = surf0->points.size();
+        // TICKET 73: all-survive until the predicate says otherwise; the mask is dumped on
+        // every path that reaches the predicate, refused ones included, so Stage 0 can tell
+        // a refused trim (nothing dropped) from an applied one point by point.
+        std::vector<int> kept73(n0, 1);
         if (n0 == 0)
         {
             std::cout << tag << " break trim: on n=0 [SFS-72] TRIM-REFUSED " << tag
@@ -4143,6 +4464,7 @@ namespace t72
             std::cout << tag << " [SFS-72] TRIM-REFUSED " << tag
                       << " reason=no-opposing-wall hits=" << hits.size() << " of " << samp.size()
                       << " kept=" << n0Use << " dropped=0 n=" << n0Use << std::endl;
+            dumpTrimMask73(*surf0, kept73);
             return;
         }
         const double t = t328::medianOf(hits);
@@ -4183,6 +4505,7 @@ namespace t72
                       << " reason=maxdrop dropped=" << dropped << " of " << probe0.size()
                       << " (" << (100.0 * dropFrac) << "%) > " << (100.0 * g_maxDrop72)
                       << "% kept=" << n0Use << std::endl;
+            dumpTrimMask73(*surf0, kept73);
             return;
         }
         if (static_cast<double>(kept) < g_minPt72)
@@ -4190,20 +4513,26 @@ namespace t72
             std::cout << tag << " [SFS-72] TRIM-REFUSED " << tag
                       << " reason=minpt kept=" << kept << " < " << static_cast<int>(g_minPt72)
                       << " dropped=" << dropped << " of " << probe0.size() << std::endl;
+            dumpTrimMask73(*surf0, kept73);
             return;
         }
 
+        for (size_t i = 0; i < p2.size(); ++i) if (!p2[i]) kept73[orig0[i]] = 0;
         pcl::PointCloud<pcl::PointNormal>::Ptr trimmed(new pcl::PointCloud<pcl::PointNormal>);
         trimmed->points.reserve(kept);
         for (size_t i = 0; i < p2.size(); ++i)
             if (p2[i]) trimmed->points.push_back(surf0->points[orig0[i]]);
         trimmed->width = static_cast<int>(trimmed->points.size());
         trimmed->height = 1;
+        // TICKET 73: the mask is over the cluster as it was handed in, so the pre-trim cloud is
+        // kept alive for the dump while surf0 takes the trimmed one.
+        pcl::PointCloud<pcl::PointNormal>::Ptr preTrim73 = surf0;
         surf0 = trimmed;
         std::cout << tag << " [SFS-72] TRIM-APPLIED " << tag
                   << " kept=" << kept << " dropped=" << dropped << " of " << probe0.size()
                   << " (" << (100.0 * dropFrac) << "%) n_in=" << n0 << " n_out="
                   << surf0->points.size() << std::endl;
+        dumpTrimMask73(*preTrim73, kept73);
     }
 
     // One surviving cluster has no opposing face to pair against, so the predicate
