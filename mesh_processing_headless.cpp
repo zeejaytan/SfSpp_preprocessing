@@ -3640,6 +3640,49 @@ static std::vector<pcl::PointIndices> growRegionsPlaneContinuity234(
 // NOTE: no local named `qh` (qhull -Dqh_QHpointer hijacks it) and no `queue`
 // shadowing games -- names below are collision-checked against this TU.
 // ============================================================================
+// TICKET 75 Stage 0 -- the growth decision census.  This namespace only PRINTS: it changes
+// no branch and no threshold.  --dec75() gates one line per growth candidate in growPaper234,
+// so a surviving off-lip dot can be joined to the decision that created it (cnt73, chord or
+// fallback, the angle that was judged, and whether it was accepted).
+namespace t75
+{
+    static bool g_dec75 = false;         // SFS_75_DEC
+    static std::string g_decPiece75;     // SFS_75_DEC_PIECE, empty = every piece
+    static bool g_read75 = false;
+    static long g_nDec75 = 0, g_nAcc75 = 0, g_nAccFb75 = 0, g_nAccUsed75 = 0;
+
+    // TICKET 75 Arm L -- a SECOND chord turn measured over a LONGER base, with a bound of its
+    // own, in addition to the 1.5 mm / 25 deg test above.  Off by default: SFS_GROW_BASE2_MM=0
+    // means the growth asks exactly what it asks today.
+    static double g_base2MM75 = 0.0;            // SFS_GROW_BASE2_MM   (0 = off)
+    static double g_base2Theta75 = 45.0;        // SFS_GROW_BASE2_THETA_DEG
+
+    static void ensure75()
+    {
+        if (g_read75) return;
+        g_read75 = true;
+        g_dec75 = t73::envFlag73("SFS_75_DEC");
+        g_base2MM75 = t73::envDouble73("SFS_GROW_BASE2_MM", 0.0);
+        if (!(g_base2MM75 > 0.0)) g_base2MM75 = 0.0;   // 0 or negative means off
+        g_base2Theta75 = t73::envDouble73("SFS_GROW_BASE2_THETA_DEG", 45.0);
+        if (g_base2MM75 > 0.0)
+            std::cout << "[SFS-75] CHORD2 on, base2=" << g_base2MM75
+                      << " mm bound2=" << g_base2Theta75 << " deg" << std::endl;
+        const char* p75 = std::getenv("SFS_75_DEC_PIECE");
+        if (p75) g_decPiece75 = p75;
+        if (g_dec75)
+            std::cout << "[SFS-75] decision census on, piece filter='" << g_decPiece75
+                      << "' base=1.5 mm" << std::endl;
+    }
+
+    static bool dec75()
+    {
+        if (!g_dec75) return false;
+        if (g_decPiece75.empty()) return true;
+        return g_decPiece75 == fileNameOnly;
+    }
+}
+
 static std::vector<pcl::PointIndices> growPaper234(
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     pcl::PointCloud<pcl::Normal>::Ptr pnormals,
@@ -3653,6 +3696,8 @@ static std::vector<pcl::PointIndices> growPaper234(
     // neighbour test below is the only one that runs.
     t73::ensure73();
     t74::ensure74();
+    t75::ensure75();
+    const long n75s = t75::g_nDec75, a75s = t75::g_nAcc75, f75s = t75::g_nAccFb75, u75s = t75::g_nAccUsed75;
     const double baseU73 = (t73::g_growBaseMM > 0.0) ? (t73::g_growBaseMM * t73::g_unitsPerMM) : 0.0;
     long used73 = 0;
     long fallback73 = 0;
@@ -3702,12 +3747,12 @@ static std::vector<pcl::PointIndices> growPaper234(
                 // TICKET 74 Arm G: the per-step angle, kept because the chord term may replace it.
                 const double stepAng74 = candAng73;
                 bool chord74 = false;
+                int cnt73 = 0;   // TICKET 75: hoisted so the census can print it
                 if (baseU73 > 0.0)
                 {
                     pnbR.clear();
                     pdR.clear();
                     Eigen::Vector3f sum73(0.0f, 0.0f, 0.0f);
-                    int cnt73 = 0;
                     if (pkdtree.radiusSearch(pcloud->points[cand], (float)baseU73, pnbR, pdR) > 0)
                     {
                         for (size_t q73 = 0; q73 < pnbR.size(); ++q73)
@@ -3737,12 +3782,71 @@ static std::vector<pcl::PointIndices> growPaper234(
                 // TICKET 74 Arm G: where the chord term replaced the per-step angle, the chord
                 // turn answers to its own bound and the per-step test stays as a second,
                 // independent condition -- both must pass. Off (default) is today's one line.
+                bool acc75 = true;
                 if (chord74 && t74::g_growBaseTheta > 0.0)
                 {
-                    if (candAng73 > t74::g_growBaseTheta) continue;
-                    if (stepAng74 > thetaDeg) continue;
+                    if (candAng73 > t74::g_growBaseTheta) acc75 = false;
+                    else if (stepAng74 > thetaDeg) acc75 = false;
                 }
-                else if (candAng73 > thetaDeg) continue;
+                else if (candAng73 > thetaDeg) acc75 = false;
+                // TICKET 75 Arm L: the second, LONGER chord test -- the turn over 3.0 mm about
+                // the candidate must also pass its own (looser) bound.  Runs only when
+                // SFS_GROW_BASE2_MM > 0, i.e. never with the switch unset.
+                double chord2Ang75 = -1.0;   // < 0 = the longer test did not run
+                int cnt2_75 = 0;
+                if (t75::g_base2MM75 > 0.0)
+                {
+                    const double base2U75 = t75::g_base2MM75 * t73::g_unitsPerMM;
+                    pnbR.clear();
+                    pdR.clear();
+                    Eigen::Vector3f sum75b(0.0f, 0.0f, 0.0f);
+                    if (pkdtree.radiusSearch(pcloud->points[cand], (float)base2U75, pnbR, pdR) > 0)
+                    {
+                        for (size_t q75 = 0; q75 < pnbR.size(); ++q75)
+                        {
+                            const int id75 = pnbR[q75];
+                            if (id75 == cand) continue;
+                            if (!pclaimed[id75] || pstamp[id75] != s) continue;
+                            sum75b += Eigen::Vector3f(pnormals->points[id75].normal_x,
+                                                      pnormals->points[id75].normal_y,
+                                                      pnormals->points[id75].normal_z);
+                            ++cnt2_75;
+                        }
+                    }
+                    if (cnt2_75 >= 3)
+                    {
+                        sum75b.normalize();
+                        Eigen::Vector4f m75b(sum75b.x(), sum75b.y(), sum75b.z(), 0.0f);
+                        chord2Ang75 = pcl::getAngle3D(nn4, m75b, true);
+                        if (chord2Ang75 > t75::g_base2Theta75) acc75 = false;
+                    }
+                    if (t75::dec75())
+                        std::cout << "[SFS-75] CHORD2 piece=" << fileNameOnly << " dot=" << cand
+                                  << " cnt2=" << cnt2_75 << " angle2=" << chord2Ang75
+                                  << " bound=" << t75::g_base2Theta75
+                                  << " refused=" << ((chord2Ang75 > t75::g_base2Theta75) ? 1 : 0)
+                                  << std::endl;
+                }
+                // TICKET 75 Stage 0: the decision that made (or refused) this candidate, with
+                // the candidate's own coordinates so a surviving off-lip dot can be joined to it.
+                if (t75::dec75())
+                {
+                    ++t75::g_nDec75;
+                    if (acc75) { ++t75::g_nAcc75; if (chord74) ++t75::g_nAccUsed75; else ++t75::g_nAccFb75; }
+                    std::cout << "[SFS-75] GROWDEC piece=" << fileNameOnly << " dot=" << cand
+                              << " x=" << pcloud->points[cand].x
+                              << " y=" << pcloud->points[cand].y
+                              << " z=" << pcloud->points[cand].z
+                              << " cnt=" << (baseU73 > 0.0 ? cnt73 : 0)
+                              << " used=" << (chord74 ? 1 : 0)
+                              << " fallback=" << ((baseU73 > 0.0 && !chord74) ? 1 : 0)
+                              << " angle=" << candAng73
+                              << " step=" << stepAng74
+                              << " chord=" << (chord74 ? 1 : 0)
+                              << " chord2=" << chord2Ang75 << " cnt2=" << cnt2_75
+                              << " acc=" << (acc75 ? 1 : 0) << std::endl;
+                }
+                if (!acc75) continue;
                 pclaimed[cand] = 1;
                 pstamp[cand] = s;
                 preg.push_back(cand);
@@ -3759,6 +3863,14 @@ static std::vector<pcl::PointIndices> growPaper234(
     {
         std::cout << "[SFS-73] GROWBASE piece=" << fileNameOnly << " used=" << used73
                   << " fallback=" << fallback73 << " base=" << baseU73 << std::endl;
+        // TICKET 75 Stage 0: this piece's decisions, counted, so the census can be checked
+        // against the log it was built from.
+        if (t75::g_dec75)
+            std::cout << "[SFS-75] GROWSUM piece=" << fileNameOnly
+                      << " dec=" << (t75::g_nDec75 - n75s)
+                      << " acc=" << (t75::g_nAcc75 - a75s)
+                      << " acc_used=" << (t75::g_nAccUsed75 - u75s)
+                      << " acc_fallback=" << (t75::g_nAccFb75 - f75s) << std::endl;
     }
     // TICKET 73: settle Given 5 -- the curvature field the >= kappa gate at :3442 actually reads.
     // Guarded, because it costs a sort and this line is documentation, not a decision input.
