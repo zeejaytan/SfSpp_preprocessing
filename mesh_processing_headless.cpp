@@ -2486,6 +2486,43 @@ namespace t73
     }
 }
 
+// ============================================================================
+// TICKET 74: the two doors the break face gets in through besides refinement.
+// Arm M  SFS_MERGE_CLUSTER_DOT (default 0.0 = off): after every test of the paper's pair
+//        predicate has passed, refuse the merge when the two clusters' whole-member mean unit
+//        normals give a dot below the switch.  Stage 0's census measured the break-face merge
+//        at 0.8838 and every benign event at 0.8901 or above, so the window is narrow by
+//        measurement, not by choice.
+// Arm G  SFS_GROW_BASE_THETA_DEG (default 0.0 = off): where the chord term replaced the
+//        per-step angle, bound the chord turn by this angle instead of thetaDeg, and keep the
+//        per-step test as a second, independent condition -- both must pass.
+// Both read the environment lazily, print one banner line, and when unset execute today's
+// code path unchanged.
+// ============================================================================
+namespace t74
+{
+    static double g_mergeClusterDot = 0.0;   // SFS_MERGE_CLUSTER_DOT
+    static double g_growBaseTheta   = 0.0;   // SFS_GROW_BASE_THETA_DEG, 0 = arm off
+    static bool   g_read74          = false;
+    static long   g_mergeRefused    = 0;     // pairs refused by Arm M in the current merge call
+
+    static void ensure74()
+    {
+        if (g_read74) return;
+        g_read74 = true;
+        g_mergeClusterDot = t73::envDouble73("SFS_MERGE_CLUSTER_DOT", 0.0);
+        g_growBaseTheta = t73::envDouble73("SFS_GROW_BASE_THETA_DEG", 0.0);
+        if (!(g_mergeClusterDot > 0.0)) g_mergeClusterDot = 0.0;
+        if (!(g_growBaseTheta > 0.0)) g_growBaseTheta = 0.0;
+        std::cout << "[SFS-74] merge cluster dot: ";
+        if (g_mergeClusterDot > 0.0) std::cout << g_mergeClusterDot; else std::cout << "off";
+        std::cout << std::endl;
+        std::cout << "[SFS-74] grow base theta: ";
+        if (g_growBaseTheta > 0.0) std::cout << g_growBaseTheta << " deg"; else std::cout << "off";
+        std::cout << std::endl;
+    }
+}
+
 // TICKET 26: what the surface actually is after finishImprovedSurface, which is where an empty
 // recruited set stops being empty.
 static void window26PrintFinal(int surfaceIndex, long ownBefore, long otherBefore, long finalPoints)
@@ -3615,6 +3652,7 @@ static std::vector<pcl::PointIndices> growPaper234(
     // distance, not against the current front point. baseU73 = 0 means the arm is off and the
     // neighbour test below is the only one that runs.
     t73::ensure73();
+    t74::ensure74();
     const double baseU73 = (t73::g_growBaseMM > 0.0) ? (t73::g_growBaseMM * t73::g_unitsPerMM) : 0.0;
     long used73 = 0;
     long fallback73 = 0;
@@ -3661,6 +3699,9 @@ static std::vector<pcl::PointIndices> growPaper234(
                                     pnormals->points[cand].normal_z, 0.0f);
                 // TICKET 73 Arm B: the turn over a real distance.
                 double candAng73 = pcl::getAngle3D(curN4, nn4, true);
+                // TICKET 74 Arm G: the per-step angle, kept because the chord term may replace it.
+                const double stepAng74 = candAng73;
+                bool chord74 = false;
                 if (baseU73 > 0.0)
                 {
                     pnbR.clear();
@@ -3685,6 +3726,7 @@ static std::vector<pcl::PointIndices> growPaper234(
                         sum73.normalize();
                         Eigen::Vector4f m73(sum73.x(), sum73.y(), sum73.z(), 0.0f);
                         candAng73 = pcl::getAngle3D(nn4, m73, true);
+                        chord74 = true;
                         ++used73;
                     }
                     else
@@ -3692,7 +3734,15 @@ static std::vector<pcl::PointIndices> growPaper234(
                         ++fallback73;   // too few claimed points that close: today's neighbour rule
                     }
                 }
-                if (candAng73 > thetaDeg) continue;
+                // TICKET 74 Arm G: where the chord term replaced the per-step angle, the chord
+                // turn answers to its own bound and the per-step test stays as a second,
+                // independent condition -- both must pass. Off (default) is today's one line.
+                if (chord74 && t74::g_growBaseTheta > 0.0)
+                {
+                    if (candAng73 > t74::g_growBaseTheta) continue;
+                    if (stepAng74 > thetaDeg) continue;
+                }
+                else if (candAng73 > thetaDeg) continue;
                 pclaimed[cand] = 1;
                 pstamp[cand] = s;
                 preg.push_back(cand);
@@ -3876,6 +3926,33 @@ static bool tryMergePair234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
     if (na.dot(nb) / (la * lb) < rhoInN) return false;
     if (g_dumpOn25) g_pairStats25.inCDiff = std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature));
     if (std::fabs(static_cast<double>(pnormals->points[ia].curvature) - static_cast<double>(pnormals->points[ib].curvature)) >= rhoInC) return false;
+    // TICKET 74 Arm M: every test of the paper's pair predicate has passed; ask the question it
+    // never asks -- do the two clusters' whole-member mean normals agree?  Off (default) falls
+    // straight through to the unchanged path.
+    if (t74::g_mergeClusterDot > 0.0)
+    {
+        Eigen::Vector3f mA74(0.0f, 0.0f, 0.0f), mB74(0.0f, 0.0f, 0.0f);
+        for (size_t k74 = 0; k74 < A.size(); ++k74)
+            mA74 += Eigen::Vector3f(pnormals->points[A[k74]].normal_x,
+                                    pnormals->points[A[k74]].normal_y,
+                                    pnormals->points[A[k74]].normal_z);
+        for (size_t k74 = 0; k74 < B.size(); ++k74)
+            mB74 += Eigen::Vector3f(pnormals->points[B[k74]].normal_x,
+                                    pnormals->points[B[k74]].normal_y,
+                                    pnormals->points[B[k74]].normal_z);
+        if (mA74.norm() > 1e-9f && mB74.norm() > 1e-9f)
+        {
+            const double cdot74 = static_cast<double>(mA74.normalized().dot(mB74.normalized()));
+            if (cdot74 < t74::g_mergeClusterDot)
+            {
+                ++t74::g_mergeRefused;
+                std::cout << "[SFS-74] MERGEGATE piece=" << fileNameOnly << " into=" << A.size()
+                          << " from=" << B.size() << " dot=" << cdot74
+                          << " gate=" << t74::g_mergeClusterDot << " refused" << std::endl;
+                return false;
+            }
+        }
+    }
     if (g_dumpOn25) g_pairStats25.fired = true;
     return true;
 }
@@ -3889,6 +3966,8 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
               << " rhoInN=" << rhoInN << " rhoInC=" << rhoInC << " k1=" << k1 << " k2=" << k2
               << " minPairs=" << g_mergeMinPairs << std::endl;
     const int NP = static_cast<int>(pcloud->points.size());
+    t74::ensure74();
+    t74::g_mergeRefused = 0;
     // TICKET 25: each cluster's pre-merge ids, carried through every pass and its
     // compaction, so a merge can be reported by identity instead of by size.
     std::vector<std::vector<int> > tags25(pclusters.size());
@@ -3982,6 +4061,9 @@ static void mergePaper234(pcl::PointCloud<pcl::PointXYZ>::Ptr pcloud,
                 g_pointWinnerTags25[pclusters[c25].indices[k25]] = winner25;
         }
     }
+    if (t74::g_mergeClusterDot > 0.0)
+        std::cout << "[SFS-74] MERGEGATE-SUM piece=" << fileNameOnly
+                  << " refused=" << t74::g_mergeRefused << std::endl;
 }
 
 // TICKET 328: the slot decision has to survive a wrong-side axis file and a globally
