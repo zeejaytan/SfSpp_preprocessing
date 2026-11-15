@@ -75,11 +75,26 @@ ray-pair signal), 328 (the wall side)
    return "merged"`, so every merged point is counted as grown and "merged 0" was reported
    for every sherd. Correct order: r3c == 2 first.
 
-7. **Pot A has no stage dumps in the Ticket 73 arms** (only the 3x Juglet arm ran with
-   `SFS_DUMP_STAGE`). The lead has submitted a Pot A dump cell (job 35130532, arm 8 with the
-   dump armed, `submit_potadump.sbatch` in the Ticket 73 run directory); Stage 0 must read
-   its `r3_after_merge.json` files, and the baseline Pot A arm's own log shows one merge
-   (P07, 51 -> 348).
+7. **Pot A's merges are now measured too** (job 35130532_8, COMPLETED 0:0, the dump cell the
+   lead submitted in the Ticket 73 run directory; eight pieces, `out/pota_dump/`). Four of the
+   eight pieces merge, seven events in all:
+
+   | piece | into <- from | pairs | nDot | inNDot |
+   |---|---|---|---|---|
+   | 01 | 33 179 <- 6 564 | 25 | 0.977155 | 0.918083 |
+   | 04 | 346 <- 131 | 5 | 0.995521 | 0.954072 |
+   | 04 | 477 <- 111 | 3 | 0.963387 | 0.981484 |
+   | 04 | 588 <- 326 | 4 | 0.990480 | 0.990145 |
+   | 06 | 11 033 <- 66 | 66 | 0.965815 | **0.807346** |
+   | 07 | 326 <- 131 | 4 | 0.995778 | **0.814598** |
+   | 02, 03, 05, 08 | none | 6 / 10 / 15 / 10 tested | - | - |
+
+   **The consequence for Arm M, and this is the hard constraint:** two of Pot A's accepted
+   merges have the paper's internal dot at 0.807 and 0.815, i.e. BELOW Sherd 5's 0.9776. So the
+   paper's median-point term cannot separate the Juglet's bad merge from Pot A's good ones, and
+   a gate built on it would block them. Arm M must therefore stand on the cluster-level term
+   alone, and the census must show that term separating sherd 5's event from both Pot A's
+   0.807/0.815 events and the benign sherd 9 event — or Stop rule A2 fires.
 
 8. **3x stays** (conservator's ruling, 2026-11-15): the sherds 5-8 defect is measured at 3x
    and the 1x arm is the control ruler only.
@@ -169,7 +184,9 @@ Bars:
 - Pair 1-4 **positive with 0 opposed dots**, 6-7 unchanged, no other pair moved by more
   than 0.10.
 - J1's ruler: **no column worse by more than 10 %** than the off arm.
-- Pot A: every piece within 1 dot of the off arm, 8 of 8.
+- Pot A: every piece within 1 dot of the off arm, 8 of 8. A gate that refuses one of
+  Pot A's seven merges must be reported with the census numbers that justify the refusal, and
+  Pot A must still meet this bar with it refused.
 - Render `C:/PR/artifacts/t74/render74_before_after.png`: per sherd 5-8 and Pot A, before
   above and the winning arm below, with the off-lip dots marked.
 
