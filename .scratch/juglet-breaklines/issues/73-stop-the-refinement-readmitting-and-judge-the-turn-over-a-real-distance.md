@@ -22,10 +22,10 @@ SfS find joins)
 **Blocked by:** none. Reads ticket 72's cells and ticket 25's dump switch; writes two
 default-off switches in the repo-root `mesh_processing_headless.cpp` only.
 
-**Status:** in-progress
+**Status:** landed
 **Working in:** chat on Thinkbook16 (2026-11-15)
 **Branch:** 73-stop-the-refinement-readmitting-and-judge-the-turn-over-a-real-distance, in /c/PR/worktrees/sfs/73
-**Worker:** dsh one-shot subagent, dispatched 2026-11-15 by the lead
+**Worker:** dsh one-shot subagent w73, dispatched 2026-11-15 by the lead
 
 ## Spec
 
