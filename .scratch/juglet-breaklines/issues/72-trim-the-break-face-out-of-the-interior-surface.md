@@ -25,10 +25,10 @@ SfS find joins)
 Ticket 65's separation scorer is the J1 ruler and must not be re-invented; ticket 328's
 per-pair sign numbers are the sign ruler.
 
-**Status:** ready-for-agent
-**Working in:** not started
-**Branch:** to be created at dispatch
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-15)
+**Branch:** 72-trim-the-break-face-out-of-the-interior-surface, in /c/PR/worktrees/sfs/72
+**Worker:** dsh one-shot subagent, dispatched 2026-11-15 by the lead
 
 ## Spec
 
