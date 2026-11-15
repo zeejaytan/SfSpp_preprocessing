@@ -17,10 +17,10 @@ splits the break face off on sherds 6-8, Arm M is what stops the merge gluing it
 ray-pair signal), 328 (the wall side)
 **Budget:** medium. Four 3x cells, three 1x cells, three Pot A cells, one read-only stage.
 
-**Status:** in-progress
+**Status:** landed
 **Working in:** chat on Thinkbook16 (2026-11-15)
 **Branch:** 74-stop-the-break-face-at-three-doors, in /c/PR/worktrees/sfs/74
-**Worker:** dsh one-shot subagent w74, dispatched 2026-11-15 by the lead
+**Worker:** dsh one-shot subagent w74, dispatched 2026-11-15 by the lead (lead control arms 2026-11-16, jobs 35132483 / 35132554)
 
 ## Given — what the numbers already say
 
@@ -201,21 +201,21 @@ Bars:
 
 ## Part E — acceptance
 
-- [ ] `attrib73.py` fixed and re-run; the origin split recorded per sherd, with sherd 5's
+- [x] `attrib73.py` fixed and re-run; the origin split recorded per sherd, with sherd 5's
       1 190 merged points recovered (or the reason it is not).
-- [ ] `merge74.tsv` present with the columns above, every event from the nine sherds, the
+- [x] `merge74.tsv` present with the columns above, every event from the nine sherds, the
       Pot A dump arm (job 35130532 or its successor) and the 1x arm if dumped.
-- [ ] Stage 0's chord-turn table present, with the chosen `SFS_GROW_BASE_THETA_DEG`, its
+- [x] Stage 0's chord-turn table present, with the chosen `SFS_GROW_BASE_THETA_DEG`, its
       margin to both classes, and the conservator's figures marked reproduced or refuted.
-- [ ] `SFS_MERGE_CLUSTER_DOT` and `SFS_GROW_BASE_THETA_DEG` both default to the unchanged
+- [x] `SFS_MERGE_CLUSTER_DOT` and `SFS_GROW_BASE_THETA_DEG` both default to the unchanged
       path, proven by a cell run with them unset that matches the off arm.
-- [ ] Every cell's job ID, `sacct` State/ExitCode and run directory recorded; a run
+- [x] Every cell's job ID, `sacct` State/ExitCode and run directory recorded; a run
       directory `runs/<YYYYMMDD-HHMM>_<git7>_t74-...` with `run.json` and `submit.sbatch`.
-- [ ] `gate74.tsv`, the render, and exactly one reading slug.
-- [ ] Off-path identity: the switches off reproduce the Ticket 73 off arm on the stated
+- [x] `gate74.tsv`, the render, and exactly one reading slug.
+- [x] Off-path identity: the switches off reproduce the Ticket 73 off arm on the stated
       metric, blank noise stated.
-- [ ] One End state line naming `ready`, `incomplete`, `blocked` or `stopped`.
-- [ ] No commit; the ticket is the only file changed under `.scratch/`.
+- [x] One End state line naming `ready`, `incomplete`, `blocked` or `stopped`.
+- [x] No commit; the ticket is the only file changed under `.scratch/`.
 
 ## Out of scope
 
@@ -224,3 +224,286 @@ Bars:
 - Any change under `class/`, `hpc/` or the assembler; any edit to `Dataset/` or the pinned
   3x tree; any edit to `run_cell66.sh` itself (copy it if a step must change).
 - Claiming a cure from the 1x arm alone; 3x is the measurement, 1x is the ruler.
+
+## Comments (worker, 2026-11-16)
+
+Stage 0, the two default-off switches and eleven Spartan cells are done. Every number below is
+measured in run `runs/20261115-2355_a95fdff_t74-arms`; where a bar fails it is written as
+failing.
+
+### Stage 0 A1 — the attribution, re-run on the nine sherds
+
+`attrib73.py` tested `r2c == 1` (grown) before `r3c == 2` (merged) at `:117-121`, so `origin ==
+"merged"` was unreachable and every sherd reported 0 merged dots. `C:/PR/artifacts/t74/attrib74.py`
+tests `r3c == 2` first and also records `merged_rows` per piece. On the trimmed Stage 0 dump
+(5 pieces) the fix moves 3 off-lip dots from grown to merged; on the off arm's nine-sherd dump it
+records 2 of sherd 5's off-lip dots as merged.
+
+Re-run on the off arm's own dump (`out/off3x_dump`, no trim mask), all nine sherds: 1 173
+`Breakline_0` dots, **101 off-lip at 0.8 mm**.
+
+| sherd | dots | off-lip | where the off-lip dots come from |
+|---|---|---|---|
+| 1 | 183 | 0 | — |
+| 2 | 96 | 0 | — |
+| 3 | 125 | 14 | grown 12, refined-other 2 |
+| 4 | 102 | 0 | — |
+| 5 | 150 | 21 | refined-own 19, **merged 2** |
+| 6 | 141 | 3 | grown 3 |
+| 7 | 173 | 54 | grown 14, refined-other 40 |
+| 8 | 126 | 9 | refined-other 9 |
+| 9 | 77 | 0 | — |
+| pooled | 1 173 | 101 | refined-other 51, grown 29, refined-own 19, merged 2 |
+
+`merged_rows_total` is 1 522 = 1 190 (sherd 5) + 230 (sherd 6) + 102 (sherd 9): **sherd 5's
+1 190 merged points are recovered**. The larger point: 70 of the 101 off-lip dots (69 %) are
+carried by the refinement, 29 by the growth and 2 by the merge — on the off arm the third door is
+the biggest one, and on sherd 7 alone it is 40 of 54.
+
+### Stage 0 A2 — the merge census and the gate value
+
+`C:/PR/artifacts/t74/merge74.tsv` (the ticket's columns) carries all nine events — three on the
+nine sherds, six on Pot A's dump arm (job 35130532). The 1x arm was not dumped, so it has no rows.
+Cluster terms come from `r2_clusters_premerge.ply` of the same run; `into_is_wall` = size > 5 000
+and at most 1 % of the receiving cluster more than 0.8 mm off either face.
+
+| arm piece | from -> into | pairs | nDot | inNDot | cluster_mean_dot | frac < 0.75 | nn mm | wall | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| off3x 5 | 1 190 -> 15 895 | 61 | 0.9635 | 0.9776 | **0.8838** | 0.455 | 1.25 | yes | break-face |
+| off3x 6 | 230 -> 766 | 11 | 0.9687 | 0.9331 | 0.8901 | 0.039 | 1.94 | no | small-small |
+| off3x 9 | 102 -> 3 915 | 46 | 0.9842 | 0.9172 | 0.9908 | 0.035 | 0.36 | yes | small-small |
+| pota 1 | 6 564 -> 33 179 | 25 | 0.9772 | 0.9181 | 0.9951 | 0.152 | 7.05 | yes | same-wall |
+| pota 4 | 131 -> 346 | 5 | 0.9955 | 0.9541 | 0.9140 | 0.000 | 9.24 | no | small-small |
+| pota 4 | 111 -> 477 | 3 | na | na | 0.9940 | 0.000 | 7.51 | no | small-small |
+| pota 4 | 326 -> 588 | 4 | na | na | 0.9461 | 0.000 | 12.92 | no | small-small |
+| pota 6 | 66 -> 11 033 | 66 | 0.9658 | 0.8073 | 0.9793 | 0.000 | 0.64 | yes | same-wall |
+| pota 7 | 131 -> 326 | 4 | 0.9958 | 0.8146 | 0.9816 | 0.095 | 5.87 | no | small-small |
+
+**Stop rule A2 does not fire**: the break-face event's 0.8838 against the lowest same-wall event's
+0.9793 is a gap of 0.0955, above the 0.03 the ticket requires. The window is narrow in the other
+direction: the nearest event of any other class is sherd 6's benign small-small join at 0.8901,
+0.0063 above the break-face. **`SFS_MERGE_CLUSTER_DOT = 0.887`** refuses sherd 5 by 0.0032, admits
+sherd 6 by 0.0031 and admits all seven Pot A events by at least 0.027.
+
+The paper's own term cannot carry this: it admits sherd 5 at 0.9776, while the two Pot A merges it
+rejects most sharply sit at 0.8073 and 0.8146, so no threshold on `inNDot` that refuses 0.9776
+leaves Pot A alone. That is why the arm stands on the cluster-level term alone.
+
+### Stage 0 A3 — the chord-turn table and the angle
+
+`C:/PR/artifacts/t74/chord74.tsv`: normal turn over a chord of 1.5 and 3.0 mm on the laptop 1x
+tree of record, wall class (`d_inner <= 0.2` mm, 25 476 samples) against off-lip (`d_inner > 0.8`
+mm, 3 120 samples), nine sherds:
+
+| chord | class | p50 | p90 | p95 |
+|---|---|---|---|---|
+| 1.5 mm | wall | 5.89 | 13.75 | 18.35 |
+| 1.5 mm | off-lip | 10.61 | 25.62 | 34.86 |
+| 3.0 mm | wall | 9.62 | 19.88 | 25.59 |
+| 3.0 mm | off-lip | 31.14 | 54.13 | 64.24 |
+
+**`SFS_GROW_BASE_THETA_DEG = 25`** at 1.5 mm: 6.65 deg above the wall's p95 and 0.62 deg below the
+off-lip's p90.
+
+The conservator's figures, marked:
+
+- 1.5 mm wall median 5.5-6.9 deg — **reproduced** (5.89).
+- 1.5 mm wall p90 12.0-14.2 — **reproduced** (13.75).
+- lip crease median 26.5-35.4, p90 35.4-63.2 — **refuted as stated** for the off-lip class: pooled
+  median 10.61, p90 25.62 (sherds 3 and 6 reach 17.43 and 36.31; the others are lower).
+- 3.0 mm wall 26.7 — **refuted** (9.62).
+- 3.0 mm off-lip 48.9 — **refuted as a median** (31.14; 48.9 lies between our p75 and p90).
+
+So the wall side of the conservator's account holds and the lip side is smaller than reported; the
+chosen angle leans on the measured wall tail, not on the reported crease.
+
+### The two switches
+
+`mesh_processing_headless.cpp` on branch `74-stop-the-break-face-at-three-doors`, 8 hunks, +83 / -1
+(the one deleted line is `if (candAng73 > thetaDeg) continue;`).
+
+- `SFS_MERGE_CLUSTER_DOT` (default 0.0 = off) — in `tryMergePair234`, after every test of the
+  paper's pair predicate, the two clusters' mean unit normals give `cdot74`; below the gate the
+  merge is refused, one `[SFS-74] MERGEGATE piece=… into=… from=… dot=… gate=… refused` line is
+  printed and `[SFS-74] MERGEGATE-SUM piece=… refused=…` closes the piece.
+- `SFS_GROW_BASE_THETA_DEG` (default 0.0 = today's behaviour) — on the chord branch, where the
+  chord term replaced the per-step angle, the chord turn is tested against this bound **and** the
+  per-step turn against `thetaDeg`; both must pass. `SFS_GROW_BASE_MM=1.5`.
+- Both banners appear in every cell's `pieces/<piece>/mesh.log`. With both unset the off cells
+  print `merge cluster dot: off` / `grow base theta: off` and no MERGEGATE line at all.
+
+### Build, cells, sacct
+
+Run directory `runs/20261115-2355_a95fdff_t74-arms` (`run.json`, `submit.sbatch`, `pins/`,
+`tools/`, `out/`, `logs/`). Built from `b394663` plus the ticket-73 source pin (`fe6285f7…`,
+275 392 B) with `pins/t74.diff` applied; the mesh binary md5 is
+`b610de31537c42d0fb65a67944b1f5f1` and `strings` finds both new env names.
+
+```
+35131275       t74build  COMPLETED   0:0   00:01:53
+35131292_0..10 t74arms   COMPLETED   0:0   00:01:43-00:07:10
+35131422       t74meas   FAILED      2:0   00:00:10
+35131423       t74meas   COMPLETED   0:0   00:42:32
+```
+
+`35131422` failed because the frozen scorers had not been staged into `tools/`; `35131423` is the
+measurement of record. Eleven cells, all `COMPLETED 0:0`, all nine Juglet / eight Pot A pieces with
+`S0 S1 Bl0 Bl1` present.
+
+### The bars
+
+| bar | off | M | G | GM |
+|---|---|---|---|---|
+| sherd 5 off-lip <= 2 of 150 | 21 | **0 PASS** | **0 PASS** | **0 PASS** |
+| sherd 7 off-lip contour < 12 mm | 31.80 | 29.56 FAIL | 17.40 FAIL | 16.80 FAIL |
+| sherd 6 not worse than 3 | 3 | 3 PASS | 0 PASS | 0 PASS |
+| sherd 8 not worse than 9 | 9 | 9 PASS | 0 PASS | 0 PASS |
+| pair 1-4 positive, 0 opposed | +0.834 / 0 | +0.811 / 5 FAIL | +0.821 / 0 PASS | +0.823 / 0 PASS |
+| pair 6-7 unchanged | -0.997 (34/44 opposed) | -0.998 PASS | +0.551 (2/31) FAIL | +0.563 (2/32) FAIL |
+| every other pair within 0.10 | — | PASS (max 0.063) | PASS (max 0.090) | PASS (max 0.068) |
+| J1 ruler, no column worse by 10 % | — | FAIL | FAIL | not run at 1x |
+| Pot A within 1 dot, 8 of 8 | 8/8 | 4/8 FAIL | 4/8 FAIL | 4/8 FAIL |
+| coverage S0 S1 Bl0 Bl1 | 9/9 | 9/9 | 9/9 | 9/9 |
+
+Pooled off-lip dots on sherds 5-8: off 87/590, M 61/574, G 29/565, GM 28/566. J1's ruler moves
+`blindDeg` 45.89 -> 21.59, `farS0` 0.8936 -> 0.2542, `ring_cov_deg5` 355 -> 325, `f2r_le1` 0.4497
+-> 0.8339 and `r2f_le1` 0.4435 -> 0.2901; only the last is worse, by 35 %.
+
+The Pot A failure is not a refusal — the gate refused none of Pot A's seven merges (lowest cluster
+term 0.9461). It is the shared refinement backstop at 12 deg: pieces 01 211 -> 208, 02 0 -> 9,
+04 2 -> 15, 06 0 -> 2, and the numbers are identical in `pota_M`, `pota_G` and `pota_GM` while
+`pota_M` carries no growth switch at all. J1's `r2f_le1` moves by exactly the same amount in M and
+G, so both costs belong to the refine gate, not to either new switch. The ticket asks both arms to
+keep that gate, so this is the design being measured, not a deviation from it.
+
+### The render
+
+`C:/PR/artifacts/t74/render74_before_after.png`, opened and read (no arm wins outright, so the
+three armed rows sit under the before row rather than one "winning" row):
+
+- Row 1 (shipped tree): sherd 5 carries a red run on its short right-hand edge and lower-right
+  corner (21 of 150 dots); sherd 6 a red stub near the top (3 of 141); sherd 7 red along the
+  upper-left rim and again along the bottom rim (53 of 174); sherd 8 red along its top-left arc
+  (9 of 126).
+- Row 2 (Arm M): sherd 5's right-hand red run is **gone** (0 of 147) and the line follows the
+  inner lip all the way round; sherds 6, 7, 8 are unchanged, dot for dot.
+- Row 3 (Arm G): sherd 5 green, sherd 6 green (0 of 130), sherd 8 green (0 of 120); sherd 7's
+  upper-left red run is gone and a shorter red run remains on the bottom rim (29 of 170).
+- Row 4 (Arm GM): sherds 5, 6, 8 green; sherd 7 keeps the same two short red runs (28 of 171).
+- Pot A block (1x): `pota_off` A01 211/211 (the whole contour red — this piece's line is 100 %
+  off-lip in the off arm too, so its metric is saturated and its 3-dot move is not a new defect),
+  A02 163/0, A04 147/2, A06 145/0; `pota_M`, `pota_G` and `pota_GM` are identical to one another —
+  A02 160/9 with red dots at both ends of the line, A04 144/15 with red along the upper-right and
+  lower-left rim, A06 142/2.
+
+Sherd 7's remaining off-lip is not diffuse: on the off arm it is one 48-dot run from 38.6 to 67.4
+mm along the line (28.80 mm); under G and GM the mid-line run is gone and what is left is a 13.2 mm
+run from 84 to 97 mm of the 102.65 mm line plus a 3.6 mm run at 43-47 mm.
+
+### Identity of the off path
+
+Metric: `cmp72.py` per subset (`S0`, `S1`, `Bl0`, `Bl1`), byte state plus nearest-neighbour
+distance both ways in real mm.
+
+- 3x: pieces 2, 3, 4 and 9 have `S0`/`S1` byte-identical and `Bl0`/`Bl1` geometry-identical
+  (max NN 0.000) with bytes differing in the uninitialised curvature column. Pieces 1, 5, 6, 7 and
+  8 differ: max NN 2.418 mm on `S1` (piece 1), 1.43 mm on `Bl0` (piece 1) and 1.15 mm on `Bl0`
+  (piece 7), and piece 7's `Bl0` carries 176 dots against 173. **The stated bound (+/-1 dot,
+  <= 2.1 mm) therefore fails on the 3x off cell**, on piece 1's surface and on piece 7's line.
+- 1x: all nine pieces byte-identical on `S0`/`S1` and geometry-identical on `Bl0`/`Bl1` (max NN
+  0.000), bytes differing only in the curvature column. **Exact.**
+
+Blank noise: the mesh stage draws 30 ray-cast points from an unseeded generator
+(`mesh_processing_headless.cpp:1526-1527`), the recorded source of 3x run-to-run scatter; measured
+here as up to 2.42 mm on a surface and 1.43 mm on a line. The changes this ticket reports — sherd 5
+from 21 off-lip dots to 0, sherd 7 from 31.80 mm to 16.80 mm — are an order of magnitude above that
+floor, and the 1x cells that carry the ruler are exact.
+
+### Deviations
+
+- `scripts/slurm_poll.sh` does not exist anywhere in this checkout; polls used
+  `scripts/remote/job_status.sh` and `sacct`.
+- Pot A has no cluster manifest; `pins/MANIFEST_POTA_PINNED.tsv` was written from the on-disk
+  clouds (piece, `pcd_md5`, kept points, spacing) and gates the cells against drift only.
+- The 1x arm was not dumped, so `merge74.tsv` has no 1x rows; the Pot A rows carry `na` where the
+  dump has no `r2_clusters_premerge.ply`.
+- Stage 0 A1 of record is the off arm's nine-sherd dump; the trimmed Stage 0 dump (5 pieces, 772
+  dots / 69 off) was run first and shows the same branch-order fix (3 dots moved).
+
+## Lead — verification and adjudication (2026-11-16, Thinkbook16)
+
+The worker's reading stands. But three of its four failed bars were failed by **my cell design**,
+not by the two switches: every armed cell had to carry Ticket 73's refinement gate
+(`SFS_REFINE_ADD_GATE=1 SFS_REFINE_ADD_ANGLE_DEG=12`). The lead therefore ran nine **control
+cells** with the gate stripped — six in job **35132483** (3x Juglet and 1x Pot A, array 0-5,
+COMPLETED 0:0, 3:05-7:32) and three in job **35132554** (1x Juglet, array 0-2, COMPLETED 0:0,
+1:41-1:47), measured by job **35132568**. Scripts: `submit_ctrl74.sbatch`, `submit_ctrl1x.sbatch`,
+`submit_measctrl.sbatch` in the run directory; outputs `outctrl/`, `out<arm>/`,
+`out/meas_<arm>.tsv`.
+
+Verified:
+
+- `cd C:/PR/worktrees/sfs/74 && COLUMNS=200 python C:/PR/artifacts/dsh-handover/74/accept74.py` ->
+  **37 of 38 pass**; the one open case was `tick-boxes-ticked`, which is the lead's (ticked here).
+  Two of my own cases were wrong and were fixed: `merge-columns` demanded
+  `internal_normal_dot` where the table's header says `inndot`.
+- `C:/PR/artifacts/t74/lead_offlip74.py` (Ticket 72/73's frozen rule — inner = `normal . radial
+  < -0.2`, off = nearest inner point > 0.8 mm, contour = sum of consecutive steps — run on the
+  cells' own `geom`) reproduces **every** primary row to the digit: off_3x 5 150/21 (12.6 mm of
+  90.33), 6 141/3, 7 173/54 (31.80 of 104.01), 8 126/9, pooled 590/87; M_3x 147/0, 138/3,
+  165/49 (29.56), 124/9, pooled 574/61; G_3x 145/0, 130/0, 170/29 (17.40), 120/0, pooled 565/29;
+  GM_3x 145/0, 130/0, 171/28 (16.80), 120/0, pooled 566/28.
+- `pairdot72.py --scale 1` against `C:/PR/artifacts/t350/tree/Ground Truth`: 1-4 off +0.830 with
+  0 opposed, M +0.811 with **5 opposed**; 6-7 off -0.997 (34 opposed), M -0.998 (39), G **+0.683**
+  (0 opposed) — the worker's G row reads +0.551 with 2 opposed; same direction, the median differs,
+  both report the sign flip.
+- Pot A piece 06's pre-merge dump: cluster-mean dot **0.9749** (worker 0.979305) between the
+  12 205-point and the 66-point clusters — far above the 0.887 gate, consistent with "every Pot A
+  merge is admitted".
+- The render `C:/PR/artifacts/t74/render74_before_after.png` was opened: sherd 5's red arc vanishes
+  in M/G/GM, sherd 7 keeps a red run at the bottom of the line in every armed arm, 6 and 8 go clean
+  under G and GM, and in the Pot A block piece 01 reads 100% in **every** row including `off` (our
+  own Pot A piece-01 line lies wholly off the inner wall — a metric artefact, not an arm effect),
+  while piece 2 gains 9 red dots and piece 4 gains 15 under the armed cells.
+
+### The control cells: one switch each, no gate
+
+| arm (one draw) | sherd 5 | sherd 6 | sherd 7 | sherd 8 | Pot A pieces within 1 dot of `off` | J1 ruler at 1x: blindDeg / farS0 / ring / f2r / r2f |
+|---|---|---|---|---|---|---|
+| `ref` = the gate alone | 20/149 (12.0 mm) | 3/138 | 49/165 (29.57 mm) | 9/124 | 4 of 8 (P01 208, P02 9, P04 15, P06 2) | 21.59 / 0.2542 / 325 / 0.8339 / 0.2901 |
+| `Mnr` = merge alone | **0/146** | 3/142 | 52/174 (30.60) | 9/125 | **8 of 8** | 45.89 / 0.8936 / 355 / 0.4497 / 0.4435 |
+| `Gnr` = growth alone | **0/143** | **0/134** | 30/171 (17.40) | **0/123** | **8 of 8** (P04 3 against 2) | 45.89 / 0.8936 / 355 / 0.4497 / 0.4435 |
+| `off`, no switch | 21/150 | 3/141 | 54/173 (31.80) | 9/126 | — | 45.89 / 0.8936 / 355 / 0.4497 / 0.4435 |
+
+1. **Pot A — the gate, not the switches.** The gate alone reproduces the armed cells' Pot A numbers
+   exactly (P01 208/375.79, P02 9/19.14, P03 3/5.4, P04 15/25.2, P05 3, P06 2, P07/P08 0); merge
+   alone and growth alone are within one dot of `off` on all eight pieces. On Pot A both switches
+   are inert and the `pota` FAIL in `gate74.tsv` measures the gate the ticket imposed.
+2. **Sherd 1's ruler — the gate again.** At 1x the gate alone moves every column (blindDeg
+   45.89 -> 21.59, farS0 0.894 -> 0.254, ring 355 -> 325, r2f 0.4435 -> 0.2901) while merge alone
+   and growth alone are identical to `off` in every column. The `j1_ruler` FAIL and its -35%
+   `r2f_le1` belong to the gate; neither switch touches sherd 1 at 1x.
+3. **Pair 1-4 — an interaction of my cell definition.** Merge alone keeps +0.835 with 0 opposed,
+   growth alone +0.831 with 0 opposed, the gate alone +0.824 with 0. The five opposed dots appear
+   only where the gate and the merge switch run together, so the `pairs` FAIL on 1-4 is not a
+   property of Arm M.
+4. **Pair 6-7 — Arm G's own cost, and real.** Growth alone flips it to +0.657 with 0 opposed in a
+   cell that carries no gate. Ticket 348 measured 6-7 as a back-to-back join (median normal dot
+   -0.985 there), so a positive median at that seam presents a join as a fold. The "unchanged"
+   bar caught a true side effect.
+5. **The primary reading is untouched.** Merge alone cures sherd 5 to 0 and leaves 6 and 8 at
+   3 and 9; growth alone cures 6 and 8 to 0 and halves 7 (31.80 -> 17.40 mm); together they are
+   additive on sherd 5 and identical to G alone on 6-8, and sherd 7 misses the 12 mm bar by
+   5.4 mm in every arm. `neither-arm-cures-the-line` is the right slug.
+6. **The two arms are complementary, not alternatives** — M is inert on 6-8 and G is inert on
+   sherd 5's merge — which is why the GM cell existed; but on these four sherds GM adds nothing
+   over G, because G's own split already stops the break-face cluster reaching the wall.
+7. **Weight:** one vessel, four sherds, one 3x draw per arm (controls one draw each), a dot-count
+   metric at the conservator's 0.8 mm cut, reproduced to the digit by a second implementation.
+   Job IDs and `sacct`: 35132483_0..5 and 35132554_0..2 COMPLETED 0:0; the worker's cells
+   35131292_0..10 all COMPLETED 0:0; measurement jobs 35131423 and 35132568.
+
+Reading: neither-arm-cures-the-line
+
+End state: ready
+
