@@ -188,21 +188,22 @@ across sherds to make an arm look better.
 
 ### Part F — acceptance
 
-- [ ] `attrib73.tsv` with the columns above, one row per carrier dot, pieces 5-8 plus 1.
-- [ ] `attrib73_summary.md`: per-piece and pooled origin split, curvature range, the two angle
+- [x] `attrib73.tsv` with the columns above, one row per carrier dot, pieces 5-8 plus 1.
+- [x] `attrib73_summary.md`: per-piece and pooled origin split, curvature range, the two angle
       distributions, the turn-over-base table at 1/2/3/5 mm, and the chosen `ANGLE_A`, `BASE_MM`.
-- [ ] Two switches, both default off, banner lines printed, a `[SFS-73]` count line per piece,
+- [x] Two switches, both default off, banner lines printed, a `[SFS-73]` count line per piece,
       `git diff --stat` showing the ticket and the one source file only.
-- [ ] `off` cell reproduces ticket 72's `trim_off` within ±1 dot / 2.1 mm (3x) and byte-identical
+- [x] `off` cell reproduces ticket 72's `trim_off` within ±1 dot / 2.1 mm (3x) and byte-identical
+      (lead: 8 of 9 at 3x — piece 1 Surface_1 2.418 mm, adjudication 5 above; 1x surfaces identical)
       (1x); the diff of the CAND-equivalent surface files stated per piece.
-- [ ] `gate73.tsv` with every group and every row's verdict, and the two `before` columns filled
+- [x] `gate73.tsv` with every group and every row's verdict, and the two `before` columns filled
       from the cells, not copied from this ticket.
-- [ ] `render73_before_after.png` opened and described in the write-back (what moved, what did not).
-- [ ] Nine touching-pair dots recomputed from the cells' own `Bl0` (ticket 72's `pairdot72.py`
+- [x] `render73_before_after.png` opened and described in the write-back (what moved, what did not).
+- [x] Nine touching-pair dots recomputed from the cells' own `Bl0` (ticket 72's `pairdot72.py`
       needs `--scale 1` against the 3x ground truth).
-- [ ] `sacct` recorded for every job; any failed attempt explained.
-- [ ] `Reading: <slug>` and one `End state: ready|incomplete|blocked|stopped` line.
-- [ ] Nothing committed, nothing pushed, no default changed, no threshold swept.
+- [x] `sacct` recorded for every job; any failed attempt explained.
+- [x] `Reading: <slug>` and one `End state: ready|incomplete|blocked|stopped` line.
+- [x] Nothing committed, nothing pushed, no default changed, no threshold swept.
 
 ### Out of scope
 
@@ -227,3 +228,115 @@ across sherds to make an arm look better.
   the cell against drift only, not against a shipped corpus.
 - `wsl rsync` from the laptop to Spartan is the transfer route; base64 over `ssh` is the
   fallback when rsync hangs (it has, twice).
+
+---
+
+### Lead — verification (2026-11-15, Thinkbook16)
+
+verified: `cd C:/PR/worktrees/sfs/73 && COLUMNS=200 python C:/PR/artifacts/dsh-handover/73/accept73.py` -> 35 cases, 35 pass, 0 skip.
+verified: my own recompute of the primary number, `C:/PR/artifacts/t73/lead_offlip73.py`, frozen definition (inner = normal.radial < -0.2 against the cell's own Surface_0, real mm, off = nearest inner point > 0.8 mm, contour = sum of consecutive dot steps) on the three cells' own `geom`: `off_3x` 20/150, 3/142, 54/176, 9/126 = 86/594; `A_3x` 21/150, 2/142, 50/173, 9/124 = 82/589; `B_3x` piece 1 has no inner point at all, then 101/107, 0/92, 135/139, 0/77. Reproduces `gate73.tsv` row for row.
+verified: `attrib73.tsv` 772 rows; the 69 off-lip carriers split grown 30, refined_own 19, refined_other 20 (= 39, 56.5 %), merged 0, trimmed 29 - the stop rule does not fire.
+verified: `out/pair_*.tsv` row 1-4 — before 20 dots / +0.821 / 0 opposed, `off_3x` 27 / +0.828 / 0, `A_3x` 28 / +0.834 / 0, `B_3x` 11 / -0.946 / 11, `C_3x` 9 / -0.949 / 9.
+verified: `out/meas_off_1x.tsv` piece 1 blindDeg 45.89, farS0 0.8936, ring 355.0, r2f_le1 0.4435; `meas_A_1x.tsv` 21.59, 0.2542, 325.0, 0.2901.
+verified: `out/meas_pota_{off,C}.tsv` piece 01 210 dots / 38.579 mm -> 161 / 3.455; every other piece within 1 dot.
+verified: `out/cmp_off3x_vs_t72.tsv` piece 1 S1 max 2.4181 mm (bar 2.1), pieces 2/3/4/9 identical on all four subsets, 5-8 <= 0.71 mm.
+verified: the code — Arm A decision at `mesh_processing_headless.cpp:2599-2630` (nearest cluster point, in-cluster test `d <= 1e-4`, angle to that point's normal, refusal counted), Arm B at `:3662-3695` (mean normal of claimed points within `baseU73`, `cnt73 >= 3`, else the legacy neighbour rule), defaults `false` / `0.0` at `:2477-2485`, banners there, `[SFS-73] REFGATE` :2708, `GROWBASE` :3710, `CURV` :3722; diff is the ticket plus that one file, 339 insertions / 14 deletions, nothing committed.
+verified: `render73_before_after.png` opened — row `A_3x`: sherd 7's red arc shortens (53 -> 50) and sherd 5's long red stretch does not move (21 -> 21); row `C_3x`: lines almost entirely red (101/107, 135/140) and the pair 1-4 panel falls to 9 dots, all opposed.
+
+**Adjudications.**
+
+1. **The baseline label in Given 7 is wrong, and it is my error.** `24.0 mm` is ticket 72's
+   trim-ON contour for sherd 7, not its baseline. Measured baseline: 31.2 mm (shipped tree) /
+   31.8 mm (`off_3x`). Arm A's 29.4 mm is a 7.5 % cut against 31.8 mm, not a move from 24.0,
+   and the 12 mm bar — set as half a number that belonged to another arm — fails either way.
+   The reading does not depend on the mislabel: A is the only arm that moves the pooled number.
+2. **Arm B was specified wrong, and that is my error too.** The ticket reused the per-step
+   `thetaDeg` (3.87-6.77 deg on these pieces) as the bound at a 5 mm base, where Stage 0's own
+   table puts intact wall at 22.8-27.2 deg. The arm therefore refuses wall growth by
+   construction; B and C collapse for that reason and are **not** evidence against a long base.
+   The measured separation at 5 mm (off-lip 67.0 vs wall 27.2 deg) says the bound belongs at
+   about 45-55 deg.
+3. **Both causes are real and neither dominates.** The refinement carries 39 of the 69 off-lip
+   carriers (56.5 %) and gating it buys 4 dots of 86; the growth carries 30 and is untouched by
+   Arm A. A cure that only gates the refinement cannot reach the 30.
+4. **`gate73.tsv`'s `trim_on` column is hard-coded** (`tools/gate73.py:87`, `T72_TRIM_ON`)
+   and does not match ticket 72's per-piece record (piece 5 18/150 here against 20/151 there;
+   the pooled 69/591 agrees). No verdict uses that column; `before` is measured in the same
+   job and reproduces 86/591 = 14.6 %.
+5. **3x identity is 8 of 9, not 9 of 9.** Piece 1 Surface_1 max nearest-neighbour 2.418 mm
+   against the 2.1 mm bar, from the mesh stage's unseeded ray cast (30 random points), on the
+   switches-off path — not attributable to either arm.
+6. **The 1x breakline byte difference is a writer defect, not geometry**: the PCD `curvature`
+   field is uninitialised memory (ticket 72's files carry -35709.2 there, these carry
+   2.97e-38); every dot's position is identical to 0.000 mm.
+7. **The off-lip metric is undefined on 1x pieces 2 and 9** (no point passes the inner mask
+   against `Dataset/Axes/Juglet`) — a statement about our September axis output, not the pieces.
+8. **J1 is not uniformly no-worse under A**: blind stretch 45.89 -> 21.59 deg and far-skin
+   0.894 -> 0.254 improve, ring coverage 355 -> 325 deg and r2f_le1 0.4435 -> 0.2901 worsen.
+9. **Weight**: one vessel, four sherds, one 3x draw per arm; `before` / `trim_on` / `off`
+   agree within 1 dot, so the 4-dot move is larger than the draw noise but small in absolute
+   terms — a twelfth of the defect.
+
+## Comments (worker, 2026-11-15)
+
+Ticket 73. Worktree `C:/PR/worktrees/sfs/73`, branch `73-stop-the-refinement-readmitting-and-judge-the-turn-over-a-real-distance`, HEAD `d516b0e` (unchanged, nothing committed, nothing pushed). Run directory `/data/gpfs/projects/punim2657/SfSpp/runs/20261115-2005_b394663_t73-arms`.
+
+### What the source actually was
+
+The brief's pins (244887 bytes, md5 `8eab296cc80a4029753bcaaa355a38fa`) are ticket 72's **pristine base** `b394663`, not this branch. On this branch `mesh_processing_headless.cpp` was already ticket 72's patched file (260046 bytes), i.e. `SFS_BREAK_TRIM` is already committed here; after this ticket it is 275392 bytes with 334 insertions / 5 deletions, all in that one file. `scripts/slurm_poll.sh` does not exist anywhere in the workspace - job state was read with `scripts/remote/job_status.sh` and `sacct`.
+
+### Stage 0 - who carries the off-lip dots (read-only)
+
+One 3x cell, trim on, pieces 1,5,6,7,8, from a single call (job 35128063) so the rungs and the exported lines come from the same draw: 772 `Breakline_0` dots, **69 off the inner lip at 0.8 mm** (pieces 5:22, 6:1, 7:39, 8:7; piece 1 contributes zero). Origin of those 69: **refined 39 = 56.5 %** (refined_own 19, refined_other 20), grown 30, merged 0, other 0; 29 of the 69 were also in the trim-dropped set, and every one of those is a grown point. The 40 % stop rule therefore does **not** fire and Arm A is run. The attribution needed a new observation-only mask (`r3b_trim_mask.ply`, written under `SFS_DUMP_STAGE` at the ticket-72 trim point) because the rung-4 cluster ids come from the pre-trim clustering and cannot say which points the trim dropped.
+
+Two angle distributions, measured two ways, both in `attrib73_summary.md`:
+
+- angle to the nearest **grown** point's normal: refinement off-lip 19.5 deg median / 36.3 p90 (n=39) against refinement on-lip 21.5 / 38.8 (n=612) - **no separation**, so this is not the discriminator;
+- **turn over a real base** (angle between the dot's own normal and the mean of the field normals within r mm, at least 3 neighbours): pooled off-lip 20.7 / 30.6 / 48.4 / 67.0 deg at 1 / 2 / 3 / 5 mm against wall points 22.8 / 26.2 / 27.5 / 27.2, i.e. separation -5.2 / +6.0 / +22.2 / **+39.6 deg**. The turn only becomes a signal once the base is several millimetres wide.
+
+Chosen constants: **ANGLE_A = 40 deg** (above the on-lip p90 of 38.8-39.7, so the gate refuses only additions that visibly point away) and **BASE_MM = 5.0** (the first base where the two distributions separate by more than the per-step threshold itself). Per-piece pixel curvature (k=10 PCA, since the rungs carry none): min 0.0, median 0.0096, p99 0.0805, max 0.1345 - all well below the kappa 1.0 gate, which therefore never fires (Given 5 settled by measurement, and the in-run `[SFS-73] CURV` line agrees).
+
+### The three arms, and what the numbers say
+
+All cells 3x on Juglet_large pieces 1,5,6,7,8 unless stated; `before` is the shipped tree measured in the same job, so it is not copied from the ticket (it reproduces it exactly: 21/150, 3/141, 53/174, 9/126 = 86/591 = 14.6 %, off-lip contour 51.0 mm).
+
+| cell | off-lip dots | pooled | off-lip contour |
+|---|---|---|---|
+| before (shipped tree) | 21/150, 3/141, 53/174, 9/126 | 86/591 = 14.6 % | 51.0 mm |
+| off_3x (this build, switches unset) | 20/150, 3/142, 54/176, 9/126 | 86/594 = 14.5 % | 51.0 mm |
+| A_3x (refine gate) | 21/150, 2/142, 50/173, 9/124 | **82/589 = 13.9 %** | 48.0 mm |
+| B_3x (5 mm grow base) | - , 0/92, 101/107, 135/139 | 236/415 = 56.9 % | 143 mm |
+| C_3x (both) | - , 0/91, 101/107, 135/140 | 236/414 = 57.0 % | 142 mm |
+
+**Arm A** is the only arm that moves the pooled number the right way (-4 dots, -3.0 mm of off-lip contour), and it is the only arm with no piece gaining two dots (5: +1, 6: -1, 7: -4, 8: 0). It still **fails the primary bar**: sherd 7's off-lip contour is 29.4 mm against the 12 mm bar (it was 31.8 mm in `off_3x`; the ticket quotes 24.0 mm for its own draw). Refusals are real work: `[SFS-73] REFGATE piece=Juglet_Piece_1 surface=0 new=4712 refused=364, surface=1 new=3935 refused=1784`, and only 1 refusal in the C cell.
+
+**Arm B collapses the breakline and Arm C inherits that**: piece 1's line is not merely wrong, it is absent (Surface_0 falls to 6753 points, no point passes the inner mask, `nBl0` empty); pieces 5 and 7 read 101/107 and 135/139 off-lip at a median 9.7-10.1 mm from the lip; pieces 6 and 8 read 0 off-lip only because their lines shrink to 92 and 77 dots. The mechanism was predicted before submission from the Stage 0 turn table: `[SFS-73] GROWBASE piece=Juglet_Piece_1 used=375201 fallback=68321 base=15.00000` - the 5 mm base does find neighbours, and then the acceptance test (candidate normal against the 5 mm mean, bound = the per-step `thetaDeg`, 3.87-6.77 deg per piece) refuses essentially every growth, because a 5 mm turn on intact wall is about 26 deg. **The per-step threshold cannot be reused unchanged at a real base** - that is the ticket's second question, answered negatively by construction rather than by parameter search.
+
+Pairs, recomputed from each cell's own `Bl0` with ticket 72's `pairdot72.py --scale 1` (median of n_A.n_B, mutual nearest, |dp| < 3 mm): 1-4 is +0.821 (n=20, 0 opposed) before, +0.828 (n=27) in `off_3x`, **+0.834 (n=28, 0 opposed) under arm A** - positive, zero opposed, so the pair row passes for A; B/C give -0.946 / -0.949 and lose the touching dots entirely on six other pairs. 6-7 stays negative everywhere (excluded, as the ticket says); every other pair holds within 0.10 under A (largest move +0.090 on 1-9).
+
+J1 ruler at 1x (control piece 1, from `check_separation.py`): `off_1x` reproduces ticket 72's `ctl_jug` on all five columns (blind stretch 45.89 deg, far-skin 0.8936, f2r 0.4497, r2f 0.4435, ring coverage 355.0), so the ruler itself is sound. Under arm A: blind stretch 21.59 deg and far-skin 0.2542 both improve sharply, but **reverse coverage drops 355 -> 325 deg and r2f 0.4435 -> 0.2901**, so A is *not* uniformly no-worse than `off_1x`; B and C are far worse on every column (blind stretch 105.8 deg, ring 195-200 deg). The `gate73.tsv` `j1_ruler` rows judge each column separately rather than averaging.
+
+Pot A (1x, 8 released pieces, pinned manifest written from the on-disk clouds as instructed - it gates drift only, there is no shipped Pot A corpus): `pota_off` reproduces ticket 72's `ctl_pota` column for column (210/163/153/146/144/145/63/58 dots), and `pota_C` moves piece 01 from 210/210 to 161/204 and leaves every other row within 1 dot. Piece 01 is 100 % off-lip with a 38.58 mm median d_inner in the baseline too (ticket 72: 210/210, 38.46 mm), so that cell's failure is a property of the cell, not something this ticket moved.
+
+### Identity against ticket 72
+
+3x `off_3x` against ticket 72's `outtrim_off`: pieces 2, 3, 4, 9 byte-identical on all four subsets; pieces 5-8 differ with max nearest-neighbour distance <= 0.71 mm; **piece 1 does not meet the bar** - Surface_1 2.418 mm against the 2.1 mm bar (Surface_0 1.763, Breakline_0 1.741, Breakline_1 2.082). The mesh stage draws 30 random ray-cast points from an unseeded generator, so a line that walks can move between two runs of the same bytes; the honest statement is that the `off` path is bounded-identical on eight of nine pieces and exceeded by 0.3 mm on piece 1's Surface_1.
+
+1x `off_1x` against ticket 72's `outctl_jug`: Surface_0 and Surface_1 **byte-identical on all nine pieces**; `Breakline_0`/`Breakline_1` are identical in geometry (max nearest-neighbour 0.0 on every dot) but differ in bytes, because their PCD `curvature` column is **uninitialised memory** (ticket 72's files carry 2.42588e-38 / 1.39718e-38 / 9.09685e-38, one arbitrary constant per file; mine carry -1.99577e+12 / 2.16596e+08 / 1.5028e-38; at 3x both write 0). That is a pre-existing defect worth its own ticket, and it is why byte identity cannot be claimed for the breakline files.
+
+`off` path with both switches unset is the shipped path: the gate block is entered only under `SFS_REFINE_ADD_GATE`, the base block only under `SFS_GROW_BASE_MM`, both env parses default off, and `off_3x` above is the measurement of that path.
+
+### The render
+
+`render73_before_after.png` (opened and described here): four rows of 12 - rows `before`, `A_3x`, `C_3x` over pieces 5-8 as Surface_0 (grey) with `Breakline_0` dots coloured green when within 0.8 mm of the inner lip and red when not, plus a bottom row with the pair 1-4 panel for each of the three cells. What moves: on sherd 7 (the worst piece) the red arc along the lower-left rim shortens by 4 dots between `before` and `A_3x` and the line follows the rim more tightly at the top; sherd 6 loses one red dot at its lower tip; nothing visible changes on sherd 5's long red stretch at the left rim, and that is the honest picture of a 4-dot move. What does not move: the axis, the sherd silhouettes, and the pair 1-4 seating, where `before` (20 dots, dot +0.821) and `A_3x` (28 dots, dot +0.834) look the same ring with the two sherds touching along the same arc. The `C_3x` row is the collapse: sherds 5 and 7 keep only a 107-dot and a 140-dot line that is almost entirely red (101/107, 135/140), the pair panel falls apart into two disjoint curves (9 dots, dot -0.949).
+
+### Slack, and what is not claimed
+
+- Coverage: `S0`, `S1`, `Bl0` present for 9 of 9 pieces in every 1x cell, 5 of 5 in every 3x cell, 8 of 8 in both Pot A cells. The off-lip metric is defined on **7 of 9** pieces at 1x only: pieces 2 and 9 have no point passing the inner mask against `Dataset/Axes/Juglet` (n.radial min -0.119 and -0.032). That folder is our own September-2026 MATLAB output, not truth, so this is a statement about the axis file, not about the pieces.
+- `gate73.tsv` has 85 data rows and every row's verdict; the two `before` columns are measured, not copied.
+- `sacct` for every job (all COMPLETED, ExitCode 0:0): build 35111218, array 35128016 tasks 1-9, off_3x 35127850 task 0, st0d 35128063, measurement 35128131; the discarded first Stage 0 job 35110367 is also COMPLETED (it was superseded only because its dump and its geometry came from two different calls).
+- No default changed (both switches default off), no threshold swept (three arms at the two chosen constants, nothing scanned), nothing committed or pushed, nothing under `class/`, `hpc/`, `Dataset/` or the px3 tree touched, `run_cell66.sh` unchanged.
+
+Reading: the-refinement-readmits-and-the-gate-does-not-cure-it
+
+End state: ready
