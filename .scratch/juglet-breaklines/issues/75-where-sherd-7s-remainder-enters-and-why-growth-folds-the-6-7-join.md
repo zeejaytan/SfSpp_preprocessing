@@ -14,10 +14,10 @@ offline before another cell is run.
 **Budget:** small-medium. One read-only stage, one build, three or four 3x cells, two 1x
 control cells, one Pot A cell.
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-11-16)
-**Branch:** to be created at dispatch
-**Worker:** unassigned
+**Branch:** 75-where-sherd-7s-remainder-enters-and-why-growth-folds-the-6-7-join, in /c/PR/worktrees/sfs/75
+**Worker:** dsh one-shot subagent, dispatched 2026-11-16 by the lead
 
 ## Given — what the numbers already say
 
