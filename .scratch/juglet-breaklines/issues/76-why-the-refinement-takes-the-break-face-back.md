@@ -20,10 +20,10 @@ signal), 26 (the admission window), 328 (the wall side)
 **Budget:** medium. One read-only stage over the nine 3x pieces plus Pot A and 1x baselines,
 one build, six to eight cells.
 
-**Status:** ready-for-agent
+**Status:** in-progress
 **Working in:** chat on Thinkbook16 (2026-11-16)
-**Branch:** to be created at dispatch
-**Worker:** unassigned
+**Branch:** 76-why-the-refinement-takes-the-break-face-back, in /c/PR/worktrees/sfs/76
+**Worker:** dsh one-shot subagent, dispatched 2026-11-16 by the lead
 
 ## Given — what the numbers already say
 
