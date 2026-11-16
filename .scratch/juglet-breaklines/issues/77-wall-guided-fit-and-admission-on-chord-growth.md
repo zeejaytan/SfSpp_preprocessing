@@ -13,8 +13,7 @@
 
 **Answers:** E1
 **Depends on:** 74 (`fad4e5f`), 75 (`7a69763`), 76 (`c9b8ecc`, merged `e8f4760`), 328 (`t328::axisFit`)
-**Status:** landed
-**Working in:** chat on Thinkbook16 (2026-11-16)
+**Status:** resolved
 **Branch:** 77-wall-guided-fit-and-admission-on-chord-growth (merged, 40b2691)
 **Worker:** dsh one-shot subagent w77
 **Budget:** medium
