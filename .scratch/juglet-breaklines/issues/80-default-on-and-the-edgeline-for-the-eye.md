@@ -5,7 +5,7 @@
 **Answers:** E1
 **Blocked by:** none — ticket 79 is merged on `main` (`b00d02f`; do not merge it again, verify it is an ancestor of `HEAD` instead).
 **Status:** ready-for-human
-**Branch:** 80-default-on-and-the-edgeline-for-the-eye, in /c/PR/worktrees/sfs/80
+**Branch:** 80-default-on-and-the-edgeline-for-the-eye, in /c/PR/worktrees/sfs/80 (merged, c16a3f0)
 **Worker:** dsh one-shot subagent w80
 **Budget:** medium (one default literal plus its banner, one rebuild, the six cells plus two identity re-runs, one overlay builder over 27 piece-arms, three visual-qa descs, one offscreen render)
 **Hand-over:** DeepSeek: read ticket 79 in full (the switch, its five overrides, the cells, the identity trap) and `C:/PR/artifacts/t79/gate79.tsv`, plus the overlay precedent `C:/PR/artifacts/visual-qa/edgeline_juglet/build_overlay.py` and its two descs `C:/PR/visual-qa/viewer/pairs/edgeline_juglet_{gallery,truepose}.json`. Do Part A, then Part B, then stop at the eye gate with `End state: waiting:`. Do not run any assembler work; that is ticket 81.

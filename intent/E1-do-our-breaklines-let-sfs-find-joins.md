@@ -3230,3 +3230,24 @@ so identity here means within the run-to-run spread, measured: 8 of 36 geometry 
 two runs of the same build and the switch-off off-lip count itself moves 34 / 36 / 33, while the wall-pair arm's 2 is
 outside that spread and no `[SFS-79]` line appears in any switch-off cell.
 
+## 2026-11-17 - The wall-pair rule is on by default, and the new line is staged for the eye (ticket 80)
+
+The conservator's decision: the rule is **on unless asked off**. `SFS_WALL_PAIR_FILTER` now defaults to
+`pair`, only `off`/`0` turns it off, an unreadable value still warns and stays off, and the banner names
+where the state came from — `on (default)`, `on (env)`, `off (env)` — so a log can never be ambiguous
+about whether a run meant to filter (`mesh_processing_headless.cpp:2727-2754`). `bin-80` reproduces ticket 79
+in both directions: sherd 7 **2 dots / 0.601 mm** (a second draw 3 / 1.199 mm), 1x J1 **6 dots / 5.400 mm**
+against 20 / 33.998 off, Pot A Piece 05 **62 of 15,460 = 0.401 %**, P01 `base_skip`, coverage 36/36, 36/36,
+32/32, and the off cells print no rule line. Two limits are recorded on the ticket: P04's **one** on-lip flip
+breaches the ticket's zero-flip bar and is proven to be the ray-cast draw (its S0 is 32,683 points either way
+but differs in md5), and ticket 79's "34 off-lip dots" is one draw of four (30 / 33 / 34 / 36, largest run
+12.6-16.2 mm), so the off arm must be quoted as a range.
+
+The line itself is not yet accepted. Three visual-qa looks stage the **old** edgeline (grey-blue) and the
+**new** one (red-orange) together on all nine pieces — `edgeline_t80_3x`, `edgeline_t80_1x`, and
+`edgeline_t80_truepose` (pieces 5-8 in the key pose, where the 6-7 seam is read directly) — because a stepped
+boundary where the flap was removed is invisible to a dot count. Reading: `default-on-holds-and-overlay-staged`.
+What it means for E1: the rule is the default from now on, but **the breakline is accepted by the conservator's
+eye, not by this measurement**, and assembly on it (ticket 362) waits behind that look.
+
+
