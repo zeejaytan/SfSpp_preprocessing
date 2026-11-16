@@ -3225,3 +3225,8 @@ assembler's question (ticket 361 measured 6 of 9 sherds and no seating with the 
 Reading: `wall-pair-filter-cures-sherd-7-in-pipeline`. What it means for E1: the surface side is closed on this
 family in the pipeline as well as offline, and the remaining question is no longer the breakline.
 
+The switch-off arm is not byte-reproducible (the mesh stage draws 30 ray-cast points from an unseeded generator),
+so identity here means within the run-to-run spread, measured: 8 of 36 geometry files come out identical between
+two runs of the same build and the switch-off off-lip count itself moves 34 / 36 / 33, while the wall-pair arm's 2 is
+outside that spread and no `[SFS-79]` line appears in any switch-off cell.
+
