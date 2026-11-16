@@ -28,9 +28,11 @@ together)
 **Blocked by:** 77 (resolved — this ticket stands on its stage-0 tables), 74 (the GM recipe),
 75 (the 6–7 seam), 67 (the floor, the crash guard, the seating bar), 59 (the ray-pair test)
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-16)
+**Branch:** 78-localised-wall-pair-replay-and-gmnr-assembly, in /c/PR/worktrees/sfs/78
+**Worker:** dsh one-shot subagent w78
 
-**Worker:** unassigned
 
 **Budget:** medium (5)
 
