@@ -13,8 +13,10 @@
 
 **Answers:** E1
 **Depends on:** 74 (`fad4e5f`), 75 (`7a69763`), 76 (`c9b8ecc`, merged `e8f4760`), 328 (`t328::axisFit`)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** landed
+**Working in:** chat on Thinkbook16 (2026-11-16)
+**Branch:** 77-wall-guided-fit-and-admission-on-chord-growth, in /c/PR/worktrees/sfs/77
+**Worker:** dsh one-shot subagent w77
 **Budget:** medium
 **Hand-over:** DeepSeek — dsh one-shot subagent w77, dispatched 2026-11-16 by the lead (acceptance re-read by the lead from `stage0_77.tsv`, `gate77.tsv`, `render77_before_after.png`)
 
@@ -112,3 +114,145 @@ Deliver `C:/PR/artifacts/t77/gate77.tsv` (columns `group metric piece off gmnr w
 - Ticket 73's `SFS_REFINE_ADD_GATE` or Ticket 76's `SFS_REFINE_WALL_GATE` (`nearest_claimed_mm`).
 - Re-tuning `SFS_GROW_BASE_MM`, `SFS_GROW_BASE_THETA_DEG`, `SFS_MERGE_CLUSTER_DOT`, or `thetaDeg` as sweeps.
 - Editing `class/`, `hpc/`, `run_cell66.sh`, `Dataset/`, or the `px3` tree.
+
+---
+
+## Comments (worker, 2026-11-16) — w77
+
+**Reading:** `wall-core-hurts-controls`
+
+**Stage 0 stop rule: FIRED (limb 1).** Part B was not built, Part C was not run, nothing was committed.
+
+Stage 0 ran offline and read-only on the existing `t74`/`t75`/`t76` geometry (`t75/geom_Gnr75`, `t75/dump75`,
+`t76/outoff_3x/geom`, `t76/outoff_1x/geom`, `t76/outpota_off/geom`, `t76/refine76.tsv`, axes `t355/tree/juglet/Axes`
++ `Dataset/Axes/Juglet` fetched to `t77/ax_1x` + `t76/Axes_PotA`). Zero `sbatch`, zero `sacct` rows, no source
+file touched, no `git` write of any kind.
+
+### Stop-rule arithmetic
+
+| piece | dropped of S0 | bar | |
+|---|---|---|---|
+| Pot A P02 | 1945 / 42398 = 4.59% | 5% | under |
+| Pot A P03 | 314 / 40050 = 0.78% | 5% | under |
+| Pot A P04 | 1147 / 32697 = 3.51% | 5% | under |
+| **Pot A P05** | **2468 / 31786 = 7.76%** | 5% | **OVER** |
+| Pot A P06 / P07 / P08 | 0 | 5% | under |
+| Pot A P01 | guard inactive (`\|medRad\|` 0.3123 < 0.40) | — | skipped, as predicted |
+| **1× J1** | **1056 / 13834 = 7.63%** | 5% | **OVER** |
+
+Flip limb (>= 2 valid on-lip `Bl0` dots off-wall on P02–P08 or 1× J1): P04 **1**, all others **0** — not fired.
+The drop limb alone fires, on two controls.
+
+### (a) `c0_wall` vs `S0_wall` (0.80 mm verdict agreement)
+
+Point-level agreement 0.9898–1.0000 (worst off J7 0.9898, gnr J7 0.9910 — max disagreement 1.02%, under the
+ticket's 2% `SFS_REFINE_WALL_FROM` trigger). Carrier-level 0.9597–1.0000 (off J3 0.9597, off J7 0.9598,
+gnr J7 0.9706 — 4.03% disagreement, over 2% on the carrier metric only). Full 10-row table in
+`stage0_77_summary.md` §(a). Side finding that matters below: measured against the `c0` core the off-lip
+contour *grows* (off J1 0 → 34 dots / 20.84 mm; off J7 53 → 75 / 44.40; gnr J7 30 → 50 / 30.00) because the
+add-backs put wall-oriented points back at the lip. The `c0` core is a subset of the `S0` core, so the `S0`
+core is the strict reading and the one used in (c) where no dump exists.
+
+### (b) add-backs-only vs cluster+fit+add-backs (Sherd 7, carrier radius 0.40 mm)
+
+| arm | add-backs-only | cluster+fit+add-backs |
+|---|---|---|
+| gnr_3x (30 off-lip dots) | **19/30** (nearest-any-distance 27) | **0/30** (nearest 4 / 0) |
+| off_3x (53 off-lip dots) | **45/53** (nearest 50) | **0/53** (nearest 4 / 0) |
+
+The ticket's contrast holds: only trimming `c0` itself reaches 0. Your baseline **24/30 and 46/53 reproduces**
+under the looser reading (carrier = nearest surviving point, any distance) with the `S0`-core gate and
+`wall_offset` to the `S0` core; with the single-pass `c0`-core gate that reading gives 27/30 and 50/53.
+
+### (c) the mechanism of the stop
+
+- **Pot A P05, the 2468 refused points:** one coherent annulus, t 236.2–237.5 mm, radius 42.6–49.9 mm,
+  `\|n·D\|` 0.982–0.995 (median 0.988), 0.9–2.65 mm outside the band; the kept wall band starts at radius
+  50.7 mm. That is **the pot's interior base floor** — the wall band cuts the floor off where the wall meets it.
+  P02 is the same signature (t 350–352 mm, radius 47.6–57.2 mm, 4.59%). The whole-piece guard cannot save it:
+  the floor is 5–8% of the points, so `\|median nd\|` stays 0.63–0.67 and the guard stays active.
+- **1× J1, the 1056 refused points:** coherent arcs 1.5–2.2 mm from the band with `sgn·nd` median -0.946 — a
+  strip of the wall's own thickness whose normals fail the 0.2 test. On off_3x J7 the same red mass *is* the
+  off-lip flap the filter is meant to remove: the same rule is the cure on the target and the defect on the control.
+- Band-width sensitivity (`w77_sens.tsv`): P05 7.76 / 6.50 / 5.80 / 3.86 / 2.31% at W = 0.8 / 1.0 / 1.2 / 1.6 / 2.0 mm,
+  1× J1 7.63 / 7.35 / 7.21 / 5.75 / 1.86%, off_3x J7 4.88 / 3.74 / 2.86 / 1.43 / 0.36%. No W clears the 5% bar on
+  P05 while still acting on Sherd 7.
+- Skips, as predicted: `Pot_A_Piece_01` (0.3123), 1× J2 (axisFit 0.3588), 1× J9 (0.2404); plus 1× J6
+  (`\|medRad\|` 0.0470, mixed normals) which the ticket did not name. With the cross-frame `Juglet_large/3` axis
+  on all nine 1× pieces axisFit is 0.024–0.471 ⇒ guard inactive, 0 dropped anywhere: a wrong axis only disables
+  the rule, it never damages a surface.
+
+### Render (looked at before choosing the Reading)
+
+`C:/PR/artifacts/t77/stage0_77_drops.png` — 4 panels in axis space (axial t vs radius), grey kept / red dropped
+(P05, P02, 1× J1, off_3x J7). The eye sees, on P05 and P02, a **solid red ring at the end of the profile where
+the wall becomes the base** — a whole feature removed, not scattered noise; on 1× J1 a red band running along
+the wall at a constant offset; on off_3x J7 a red patch on the off-lip flap. That is why the reading is
+`wall-core-hurts-controls` rather than a tolerance complaint about the 5% bar. `render77_before_after.png` was
+not produced — it needs the Part C cells, which the stop rule forbids.
+
+### Artifacts
+
+`C:/PR/artifacts/t77/stage0_77.tsv` (62 rows: 10 + 8 + 26 + 9), `stage0_77_summary.md` (full (a)/(b)/(c)
+tables, frames, c0 recovery, corrections), `stage0_77.py`, `render_stage0.py`, `stage0_77_drops.png`,
+`w77_sens.py`, `w77_sens.tsv`, `ax_1x/`, `ax_large/`.
+
+### What went wrong, and how I knew
+
+1. Off-lip contour summed dot steps in tree units (93.59 mm instead of 31.20 mm). Caught against the frozen
+   ruler `lead_offlip76.py`; fixed by dividing by `SFS_TREE_UNITS_PER_MM` — now reproduces 31.20 mm / 53 dots
+   (off J7) and 18.00 mm / 30 dots (gnr J7; your 17.40 mm came from a 171-dot dump, this dump has 170).
+2. A dump↔export match at 1e-6 found 818 coincidences and looked like a frame mismatch. At 1e-3 it is 41 750 of
+   44 799 and `c0` + the 3 098 add-back rows account for all of `S0` (`c0` carries exactly **536** points
+   > 0.8 mm off the wall core, your ticket-76 figure). Tolerance, not frame.
+3. A first sensitivity run mixed frames (axis point divided, geometry not) and reported a 41% drop on Sherd 7;
+   aligned, it is 2.96%. The per-arm radius sanity check (Juglet 10–16 mm, Pot A 69–78 mm, P01 37 mm flat) is
+   what now guards the instrument.
+
+`git status --short` in the worktree: this ticket file only (no `mesh_processing_headless.cpp` change exists,
+because Part B was not built).
+
+**End state:** ready
+## Lead verification (2026-11-16) — lead
+
+Read the render, recomputed the rule and the stop-rule fractions from the staged clouds, and re-read the
+tables this record rests on.
+
+1. **The eye agrees with the table, and that is the point.** `artifacts/t77/stage0_77_drops.png` shows on
+   Pot A P05 and P02 a **solid red band at the end of the profile where the wall turns into the base** —
+   one contiguous feature, the whole interior floor beyond 0.8 mm of the wall band; on 1× J1 a red strip
+   running along the wall at constant offset; on J7 the flap patch the rule exists to remove. Nothing is
+   scattered.
+2. **The stop rule fires as claimed.** Recomputed with the lead's own code (`artifacts/t77/lead_verify77.py`:
+   core from the S0 cloud, sign from median(nd), W×units): P05 **7.76%** (2 468/31 786), 1× J1 **7.63%**
+   (1 056/13 834), P02 4.59%, P03 0.78%, P04 3.51% with 1 on-lip flip; guard inactive on P01 (0.3123),
+   1× J2 (0.3588), 1× J6 (0.0470), 1× J9 (0.2404). The bar is met on two controls, neither predicted.
+3. **The refused points are whole surfaces, measured.** P05's 2 468 sit in one annulus, t 236–238 mm,
+   r 42.6–49.9 mm, |n·D| median **0.988** — the interior base floor; P02's 1 945 the same (r 47.6–57.2 mm,
+   |n·D| 0.988). J1's 1 056 are arcs 1.5–2.2 mm off the band with median |n·D| 0.311, i.e. wall thickness
+   the radial test misses. The worker's mechanism is reproduced independently.
+4. **(b) holds.** add-backs-only leaves 19/30 (gnr) and 45/53 (off) of Sherd 7's off-lip dots;
+   cluster+fit+add-backs leaves 0/30 and 0/53. Only trimming `c0` reaches zero — which is why the control
+   cost above is the decisive measurement and not a side effect.
+5. **One correction to the worker's text, none to the verdict.** The `c` rows' J7 fractions (gnr 3.86%,
+   off 5.90%) are computed against the `c0` core; under the `S0` core — the strict reading the ticket
+   names and the one its own sensitivity run and the lead's recomputation use — J7 drops **2.96% / 4.88%**.
+   The stop rule fires on P05 and J1 under either core.
+6. **The sensitivity is a trade-off, not a missing setting.** At W = 1.6 mm P05's cut falls to 3.86%,
+   under the bar, but J7's falls to 0.81% (gnr) and 1.43% (off) — about a quarter of the flap — and at
+   2.0 mm to 0.31% / 0.36%. No width clears the control bar while still removing the flap.
+
+**Verdict: `wall-core-hurts-controls` accepted — claim (1), the rule fails; the measurement is sound.**
+For E1 this closes the wall-distance family in the form the ticket tested: distance to a wall-oriented
+band cannot tell a fracture flap from a legitimate surface that is simply not the inner wall (Pot A's
+base floor, J1's wall thickness), which is why the only filter that reaches 0 off-lip dots on Sherd 7
+also cuts 7.76% of a control's points. What it does **not** settle: a **localised** form — the same
+ruler applied only inside the break-face neighbourhood, or only to add-backs already flagged at the
+fracture edge — which is untested and must be replayed offline on `stage0_77.tsv` before any job.
+
+verified: `C:/PR/artifacts/t77/lead_verify77.py` -> P05 7.76/3.86/2.31%, J1 7.63/5.75/1.86%,
+gnr J7 2.96/0.81/0.31%, off J7 4.88/1.43/0.36% at W 0.8/1.6/2.0 mm; `stage0_77.tsv` rows
+`c pota Pot_A_Piece_02` 1945/42398 and `Pot_A_Piece_05` 2468/31786, `c off_1x Juglet_Piece_1`
+1056/13834; `w77_sens.tsv` rows match the recomputation; `stage0_77_drops.png` read.
+
+

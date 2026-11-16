@@ -66,6 +66,25 @@ Each piece keeps its profile-ranked first line and every later line (15 deg apar
 - Weight: one cluster session, 172 pieces of axis scoring, ten end-to-end jobs at K=3 and ten at K=1 (all finished jobs COMPLETED 0:0), two pre-registered rules that both failed, one render panel. Not run: anything end to end on the Juglet with the new axes; Pots D, E and I were still running on both arms when the ticket closed.
 - Open objective carried by this: **which extra lines (if any) a piece needs so that A, H and J keep their joins without handing Pot G alternatives it misuses** — the single question the next ticket should ask.
 
+**2026-11-16, ticket 77 — trimming the grown core by distance to a wall-oriented band is not admissible
+as a whole-piece rule: on Pot A it removes the interior base floor and on the 1x Juglet a strip of the
+wall's own thickness, while it is the only filter that would have taken Sherd 7 to zero off-lip dots.**
+
+- Stage 0, offline on the frozen dumps (`artifacts/t77/stage0_77.tsv`), with the ticket's pre-registered
+  stop rule: Pot A P05 drops **7.76%** of S0 (2 468 points) and 1× J1 **7.63%** (1 056), both over the 5%
+  bar; P02 4.59%, P03 0.78%, P04 3.51% with 1 flipped on-lip dot; P01/P06–P08 at 0.
+- The refused points are contiguous surfaces, not noise: P05's annulus sits at t 236–238 mm, r 42.6–49.9 mm,
+  |n·D| median 0.988 — the interior base floor; J1's arcs have median |n·D| 0.311 — wall thickness the
+  radial test misses. The whole-piece axisFit/|median nd| guard cannot save them: the floor is 5–8% of the
+  points, so the guard stays active.
+- Why it mattered: add-backs-only leaves **19/30** and **45/53** of Sherd 7's off-lip dots; only trimming
+  `c0` itself with this rule reaches **0/30 and 0/53**. The cure and the defect are the same rule, and no
+  band width (0.8–2.0 mm swept) separates them: at W = 1.6 mm P05 is under the bar at 3.86% but J7's cut
+  falls to 0.81%/1.43%, keeping most of the flap.
+- Open for E1: a **localised** form — the wall ruler applied only inside the break-face neighbourhood, or
+  only to add-backs already flagged at the fracture edge — is untested and must be replayed on the Stage 0
+  tables before any job.
+
 **2026-11-10, ticket 321 — Pot A's repair holds under re-verification, but the Juglet is not measurable: its released axes and its ground-truth transforms disagree (20–81°), so neither the 0/9 assembly nor the 5/9 axis column on that object can be attributed to our method.**
 
 - Verification of 320 from source, not from its own write-back: exactly one of 181 axis files differs between `axes318` and `axes320` (`Pot_A_Piece_01`), that file's rank 0 is 0.10° from the released axis (was 68.97°), and job `34577139` seats Pot A 8/8 sherds + 15/15 joins on both K=3 repeats and both MO controls. The veto's thresholds sit in a ~3.8x (`cw`) and ~3x (`sz`) gap between true base disks and wall-piercing skewers, so the rule is a measured class boundary, not a fit to one piece.
