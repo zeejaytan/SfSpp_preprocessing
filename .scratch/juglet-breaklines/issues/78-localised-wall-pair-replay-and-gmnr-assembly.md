@@ -29,7 +29,7 @@ together)
 75 (the 6–7 seam), 67 (the floor, the crash guard, the seating bar), 59 (the ray-pair test)
 
 **Status:** resolved
-**Branch:** 78-localised-wall-pair-replay-and-gmnr-assembly, in /c/PR/worktrees/sfs/78
+**Branch:** 78-localised-wall-pair-replay-and-gmnr-assembly (merged, c86272b)
 **Worker:** dsh one-shot subagent w78
 
 
@@ -370,3 +370,59 @@ number is 4 / 36 — a tagging bug in `gen_gate78.py`; the numbers are right and
 correct. (2) The A.1 precondition rows carry the R1 arm's 12 refused points, so the precondition and
 an arm share a row. (3) The bar is 13.788 mm at 3×, not score58's hard-coded 4.596; the worker re-read
 the seat verdict at the 3× bar and the ranking is unchanged (smallest chamfer 10.4× it).
+
+## Correction (lead, 2026-11-17) — two measurement defects, and what actually survives
+
+Both readings this ticket recorded were re-checked against the artefacts and one of them, plus one arm,
+is a **measurement defect (claim 2: the measurement was broken)**, not a fact about the method. The
+corrections below are mine; every number was recomputed from the same dumps
+(`C:/PR/artifacts/t78/lead_verify78b.py`, `lead_verify78c.py`).
+
+**Defect 1 — the off-lip length summed chords across deleted dots.** `offlip_contour`
+(`stage0_78.py:65-68`) computes `np.diff` over the array it is handed, and it is handed
+`dots[still]` (`:137`) — the *surviving* dots only. Every gap left by a deleted dot therefore
+enters the total as a straight chord. For 3× Sherd 7 at ed −0.70 the recorded **14.538 mm** is
+exactly three terms: **0.601 mm** (dots 39→40, a real traced step), **1.791 mm** (40→43, two
+deleted dots) and **12.146 mm** (105→131, twenty-five deleted dots — the straight chord across
+the flap this rule had just removed). The surviving off-lip dots are **three**, at trace indices
+40, 43 and 131, in two spatially separate patches, of which the larger spans **1.79 mm**; no
+contiguous off-lip boundary survives. On the 3× off lanes the same defect turns 5 dots into
+23.85 mm, and on 1× Piece 7 8.98 mm is 5 isolated dots.
+
+Consequences, stated plainly:
+
+1. **R1 at ed −0.70 meets the offline bar.** The ticket's own bar for Sherd 7 was ≤ 3 off-lip
+   dots and ≤ 3 mm, with ≤ 12.0 mm as the outer limit; the corrected measurement is 3 dots and a
+   largest patch of 1.79 mm, with the controls untouched (Pot A P05 0.04 %, P02 0.02 %, 1× J1
+   3.54 %, no on-lip flip). The Part A reading `localised-rule-too-weak` is
+   **withdrawn** — it was the chord, not the rule. (`localised-rule-hurts-controls` for R2 stands:
+   R2's 7.00 % on 1× J1 is a point count, not a contour length.)
+2. The offline result is still **not** a pipeline result: it deletes S0 points and keeps dots
+   within 0.6 tree units of a surviving point, but the boundary is not re-traced. Confirming it
+   needs `edgeline_extraction_headless` on the trimmed cloud — ticket 79.
+
+**Defect 2 — the oracle seeded the wrong frame.** `patch_oracle78.py` set the seed pose to
+`Gy⁻¹·Gx` (`GT_trans[y].InvOut` then `* GTx`). The assembler's own documented form is
+`G_axis = T_axis[y] · GT[y]⁻¹ · GT[x] · T_axis[x]⁻¹` (`hpc/tools/main_pristine_batch.cpp:319`,
+implemented at `:333`), because `AxisAlignment` has already rotated every lane by `T_axis[i]`.
+Without the conjugation the seeded lanes land 0.5–2.2 m away, which is precisely the
+554–2,218 mm residual the arm reported. So **J_ORACLE tests the patch, not the data**, and
+the sentence "the oracle reproduced the blind arm to 0.006 mm" is a defect, not a finding.
+
+**Defect 3 — the blind arm re-tested a known failure.** `J_GMNR` ran the GMnr 3× lanes on the
+*shipped* assembler. Ticket 333 had already measured the 3× Juglet on that assembler at **0 of 9**
+(shipped gates, floor 20, container build). A 0 of 9 therefore cannot separate "the assembler
+fails at 3×" from "cleaner breaklines change nothing", and the Part C reading
+`gmnr-bundle-seats-nothing` — though correctly measured — does not answer whether cleaner
+inner-wall breaklines close the Juglet's remaining joins.
+
+**What survives unchanged.** The C.1 instrument check (nine cells, 8 of 9 inner-wall sherds,
+Sherd 7 alone at 32 dots / 18.60 mm) and the Pot A control (`PA_CTRL` 8/8 seated, 15/15 joins,
+0.777–1.930 mm) are unaffected by all three defects; the cell run, the shim md5s, the job
+sacct states and the run directory are as recorded.
+
+**Where the question goes.** `structure-from-sherds-pp` ticket 361 runs the same GMnr 3× lanes
+through ticket 358's 6-DoF assembler (`SFS_XY_BREAK_NORMALS=1`, `SFS_XY_STATE_NORMALS=1`), which
+already seats 9 of 14 measured joins on the older t331/t355 lanes, with a correctly conjugated
+oracle. Ticket 79 (this repo) wires R1 into the pipeline and re-traces the boundary. Neither is
+a reopening of this ticket: the stage-0 tables are good, the contour figure and the oracle were not.
