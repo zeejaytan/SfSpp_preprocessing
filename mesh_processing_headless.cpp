@@ -2657,6 +2657,415 @@ namespace t76
     }
 }
 
+// ============================================================================
+// TICKET 79 -- the wall-pair filter (ticket 78's R1 rule), default off.
+//
+// The rule, in the units the mesh stage works in (SFS_TREE_UNITS_PER_MM: 3 on the
+// 3x bundle, 1 on 1x and Pot A):
+//   (1) axis guard -- axisFit = frac(|n . (D x radial)| < 0.3) >= 0.80 and
+//       |median(n . radial)| >= 0.40, the median's sign deciding which way is
+//       outward. A surface that fails the guard keeps every point (reason=bad_axis);
+//       Pot A Piece 01, the pot's base, is named base_skip instead. A wrong axis
+//       therefore disables the rule -- it never trims.
+//   (2) wall band -- a point is wall-oriented when sgn*(n . radial) > 0.20, and it is
+//       in the band when wall-oriented or within SFS_WALL_PAIR_MM (0.80 mm) of a
+//       wall-oriented point of the same surface.
+//   (3) ray pair -- from the point, both ways along its own normal, at t = 1.5 ... 10
+//       mm in steps of 0.75*0.45 mm (ticket 78's replay grid): a sample pairs the
+//       point when some point of the piece lies within 0.45 mm of it and the two
+//       normals meet at SFS_WALL_PAIR_ED (-0.70) or better.
+//   (4) DROP iff out of band AND unpaired.
+// Refusals: a surface that would lose more than SFS_WALL_PAIR_MAXDROP (0.35) of its
+// points keeps all of them (reason=maxdrop). The same test refuses a refinement
+// add-back, exactly where tickets 73 and 76 refuse theirs.
+// One line per piece, after both surfaces have been fitted and refined:
+//   [SFS-79] WALLPAIR piece=<p> mode=<m> active=<0|1> axisFit=<f> medRad=<f>
+//             c0_in=<n> c0_kept=<n> add_refused=<n> reason=<ok|base_skip|bad_axis|maxdrop>
+// The guard numbers reported are surface 0's (the interior face, which is what the
+// offline replay measured); the counts are summed over both surfaces.
+namespace t79
+{
+    static std::string g_mode = "off";
+    static double g_wallMM = 0.80;
+    static double g_ed = -0.70;
+    static double g_radialMin = 0.20;
+    static double g_axisFitMin = 0.80;
+    static double g_medRadMin = 0.40;
+    static double g_maxDrop = 0.35;
+    static double g_units = 3.0;
+    static bool g_read = false;
+
+    static bool on() { return g_mode == "pair"; }
+
+    static double envD(const char* name, double dflt)
+    {
+        const char* e = std::getenv(name);
+        if (!e || !*e) return dflt;
+        errno = 0;
+        char* end = NULL;
+        const double v = std::strtod(e, &end);
+        if (errno != 0 || end == e || *end != '\0' || !std::isfinite(v))
+        {
+            std::cerr << "[SFS-79] ignoring " << name << "='" << e
+                      << "' (not a finite number), using " << dflt << std::endl;
+            return dflt;
+        }
+        return v;
+    }
+
+    static void readEnv()
+    {
+        if (g_read) return;
+        g_read = true;
+        const char* e = std::getenv("SFS_WALL_PAIR_FILTER");
+        g_mode = "off";
+        if (e && *e)
+        {
+            const std::string m(e);
+            if (m == "pair") g_mode = "pair";
+            else if (m == "off" || m == "0") g_mode = "off";
+            else std::cerr << "[SFS-79] SFS_WALL_PAIR_FILTER='" << m
+                           << "' is neither 'pair' nor 'off'; the filter stays off" << std::endl;
+        }
+        if (!on()) return;
+        g_wallMM = envD("SFS_WALL_PAIR_MM", g_wallMM);
+        g_ed = envD("SFS_WALL_PAIR_ED", g_ed);
+        g_radialMin = envD("SFS_WALL_PAIR_RADIAL_MIN", g_radialMin);
+        g_axisFitMin = envD("SFS_WALL_PAIR_AXISFIT_MIN", g_axisFitMin);
+        g_medRadMin = envD("SFS_WALL_PAIR_MEDRAD_MIN", g_medRadMin);
+        g_maxDrop = envD("SFS_WALL_PAIR_MAXDROP", g_maxDrop);
+        g_units = envD("SFS_TREE_UNITS_PER_MM", g_units);
+        if (!(g_units > 0.0)) g_units = 3.0;
+        if (!(g_maxDrop > 0.0) || g_maxDrop > 1.0) g_maxDrop = 0.35;
+        std::cout << "[SFS-79] wall pair filter: on max_mm=" << g_wallMM
+                  << " ed=" << g_ed << " radial_min=" << g_radialMin
+                  << " axisfit_min=" << g_axisFitMin << " medrad_min=" << g_medRadMin
+                  << " maxdrop=" << g_maxDrop << " units=" << g_units << std::endl;
+    }
+
+    struct Axis
+    {
+        bool ok = false;
+        Eigen::Vector3d P = Eigen::Vector3d::Zero();
+        Eigen::Vector3d D = Eigen::Vector3d::UnitZ();
+    };
+
+    static Axis readAxis()
+    {
+        Axis a;
+        const char* p = std::getenv("SFS_AXIS_FILE");
+        if (!p || !*p) return a;
+        std::ifstream f(p);
+        if (!f.is_open()) return a;
+        double x, y, z, dx, dy, dz;
+        f >> x >> y >> z >> dx >> dy >> dz;
+        if (f.fail()) return a;
+        Eigen::Vector3d d(dx, dy, dz);
+        if (!(d.norm() > 1e-12)) return a;
+        a.P = Eigen::Vector3d(x, y, z);
+        a.D = d.normalized();
+        a.ok = true;
+        return a;
+    }
+
+    // The axis frame at one point: u is the outward radial, nd the normal's radial part.
+    static bool frame(const PointNormal& p, const Axis& a, Eigen::Vector3d& n,
+                      Eigen::Vector3d& u, double& nd)
+    {
+        n = Eigen::Vector3d(p.normal_x, p.normal_y, p.normal_z);
+        const double ln = n.norm();
+        if (!(ln > 1e-12)) return false;
+        n /= ln;
+        const Eigen::Vector3d w(p.x - a.P.x(), p.y - a.P.y(), p.z - a.P.z());
+        const Eigen::Vector3d perp = w - w.dot(a.D) * a.D;
+        const double r = perp.norm();
+        if (!(r > 1e-9)) return false;
+        u = perp / r;
+        nd = n.dot(u);
+        return true;
+    }
+
+    struct Guard
+    {
+        bool active = false;
+        double axisFit = 0.0;
+        double medRad = 0.0;
+        double sgn = 1.0;
+    };
+
+    static Guard guard(const pcl::PointCloud<PointNormal>& c, const Axis& a)
+    {
+        Guard g;
+        if (!a.ok) return g;
+        std::vector<double> nd;
+        nd.reserve(c.points.size());
+        long fit = 0;
+        for (size_t i = 0; i < c.points.size(); ++i)
+        {
+            Eigen::Vector3d n, u;
+            double v = 0.0;
+            if (!frame(c.points[i], a, n, u, v)) continue;
+            if (std::fabs(n.dot(a.D.cross(u))) < 0.3) ++fit;
+            nd.push_back(v);
+        }
+        if (nd.empty()) return g;
+        g.axisFit = (double)fit / (double)nd.size();
+        std::vector<double> s(nd);
+        std::nth_element(s.begin(), s.begin() + s.size() / 2, s.end());
+        g.medRad = s[s.size() / 2];
+        g.sgn = (g.medRad < 0.0) ? -1.0 : 1.0;
+        g.active = (g.axisFit >= g_axisFitMin) && (std::fabs(g.medRad) >= g_medRadMin);
+        return g;
+    }
+
+    // In the wall band: wall-oriented, or within the band width of a wall-oriented point
+    // of this same surface. A point with no radial frame is never trimmed.
+    static bool inBand(const PointNormal& p, const Axis& a, double sgn,
+                       const pcl::KdTreeFLANN<PointNormal>& coreKd)
+    {
+        Eigen::Vector3d n, u;
+        double nd = 0.0;
+        if (!frame(p, a, n, u, nd)) return true;
+        if (sgn * nd > g_radialMin) return true;
+        std::vector<int> nb;
+        std::vector<float> ds;
+        if (coreKd.nearestKSearch(p, 1, nb, ds) <= 0) return true;
+        return std::sqrt((double)ds[0]) <= g_wallMM * g_units;
+    }
+
+    // Ticket 59's ray-pair predicate, sampled on ticket 78's replay grid, both ways along
+    // the normal. The pair cloud is the piece, so a point may pair with the other face.
+    static bool paired(const PointNormal& p, double nx, double ny, double nz,
+                       const pcl::KdTreeFLANN<PointNormal>& kd,
+                       const pcl::PointCloud<PointNormal>& cloud)
+    {
+        const double eps = 0.45 * g_units;
+        const double step = std::max(0.10, 0.75 * 0.45) * g_units;
+        const double t0 = 1.5 * g_units;
+        const double t1 = 10.0 * g_units;
+        std::vector<int> nb;
+        std::vector<float> ds;
+        for (int dir = 0; dir < 2; ++dir)
+        {
+            const double s = (dir == 0) ? -1.0 : 1.0;
+            for (double t = t0; t <= t1 + 1e-9; t += step)
+            {
+                PointNormal q;
+                q.x = (float)((double)p.x + s * t * nx);
+                q.y = (float)((double)p.y + s * t * ny);
+                q.z = (float)((double)p.z + s * t * nz);
+                q.normal_x = (float)nx;
+                q.normal_y = (float)ny;
+                q.normal_z = (float)nz;
+                nb.clear();
+                ds.clear();
+                if (kd.nearestKSearch(q, 1, nb, ds) <= 0) continue;
+                if (std::sqrt((double)ds[0]) > eps) continue;
+                const int j = nb[0];
+                if (j < 0 || (size_t)j >= cloud.points.size()) continue;
+                const PointNormal& Q = cloud.points[j];
+                const double dot = nx * (double)Q.normal_x + ny * (double)Q.normal_y
+                    + nz * (double)Q.normal_z;
+                if (dot <= g_ed) return true;
+            }
+        }
+        return false;
+    }
+
+    struct Ctx
+    {
+        bool used = false;
+        bool active = false;
+        double sgn = 1.0;
+        double axisFit = 0.0;
+        double medRad = 0.0;
+        long in = 0;
+        long kept = 0;
+        Axis ax;
+        pcl::PointCloud<PointNormal>::Ptr core;
+        pcl::PointCloud<PointNormal>::Ptr pair;
+        pcl::KdTreeFLANN<PointNormal>::Ptr coreKd;
+        pcl::KdTreeFLANN<PointNormal>::Ptr pairKd;
+    };
+
+    static Ctx g_ctx[2];
+    static std::string g_piece;
+    static long g_in = 0;
+    static long g_kept = 0;
+    static long g_add = 0;
+    static bool g_activeAny = false;
+    static bool g_reported = false;
+    static std::string g_reason = "ok";
+
+    // Pot A Piece 01 is the pot's base: its normals do not face the axis, the guard keeps
+    // it whole, and the log names that reason rather than bad_axis.
+    static bool basePiece(const std::string& piece)
+    {
+        return piece.find("Pot_A_Piece_01") != std::string::npos;
+    }
+
+    static void beginPiece(const std::string& piece)
+    {
+        if (piece == g_piece && !g_reported) return;
+        g_piece = piece;
+        g_in = 0;
+        g_kept = 0;
+        g_add = 0;
+        g_activeAny = false;
+        g_reported = false;
+        g_reason = "ok";
+        g_ctx[0] = Ctx();
+        g_ctx[1] = Ctx();
+    }
+
+    // The one place the rule trims: the clustered cloud immediately before its spline is
+    // fitted. slot is the surface's index; the pair cloud is that surface plus every
+    // other cluster, which is what ticket 78 measured S0 against.
+    static void filter(pcl::PointCloud<PointNormal>::Ptr& cluster,
+                       const pcl::PointCloud<PointNormal>::Ptr& partner,
+                       int slot)
+    {
+        readEnv();
+        if (!on()) return;
+        beginPiece(fileNameOnly);
+        if (slot < 0 || slot > 1 || !cluster) return;
+        Ctx& c = g_ctx[slot];
+        c = Ctx();
+        c.used = true;
+        if (cluster->points.empty()) return;
+
+        c.ax = readAxis();
+        const Guard g = guard(*cluster, c.ax);
+        c.active = g.active;
+        c.sgn = g.sgn;
+        c.axisFit = g.axisFit;
+        c.medRad = g.medRad;
+        c.in = (long)cluster->points.size();
+        g_in += c.in;
+
+        if (!g.active)
+        {
+            c.kept = c.in;
+            g_kept += c.in;
+            if (!g_activeAny && g_reason == "ok")
+                g_reason = (c.ax.ok && basePiece(fileNameOnly)) ? "base_skip" : "bad_axis";
+            return;
+        }
+        g_activeAny = true;
+        g_reason = "ok";
+
+        c.core.reset(new pcl::PointCloud<PointNormal>);
+        c.core->points.reserve(cluster->points.size());
+        for (size_t i = 0; i < cluster->points.size(); ++i)
+        {
+            const PointNormal& p = cluster->points[i];
+            Eigen::Vector3d n, u;
+            double nd = 0.0;
+            if (!frame(p, c.ax, n, u, nd)) continue;
+            if (g.sgn * nd > g_radialMin) c.core->points.push_back(p);
+        }
+        c.core->width = (int)c.core->points.size();
+        c.core->height = 1;
+        c.coreKd.reset(new pcl::KdTreeFLANN<PointNormal>);
+        c.coreKd->setInputCloud(c.core);
+
+        c.pair.reset(new pcl::PointCloud<PointNormal>);
+        *c.pair += *cluster;
+        if (partner && !partner->points.empty()) *c.pair += *partner;
+        c.pair->width = (int)c.pair->points.size();
+        c.pair->height = 1;
+        c.pairKd.reset(new pcl::KdTreeFLANN<PointNormal>);
+        c.pairKd->setInputCloud(c.pair);
+
+        std::vector<int> keepIdx;
+        keepIdx.reserve(cluster->points.size());
+        long dropped = 0;
+        for (size_t i = 0; i < cluster->points.size(); ++i)
+        {
+            const PointNormal& p = cluster->points[i];
+            if (inBand(p, c.ax, g.sgn, *c.coreKd))
+            {
+                keepIdx.push_back((int)i);
+                continue;
+            }
+            Eigen::Vector3d n, u;
+            double nd = 0.0;
+            if (!frame(p, c.ax, n, u, nd))
+            {
+                keepIdx.push_back((int)i);
+                continue;
+            }
+            if (paired(p, n.x(), n.y(), n.z(), *c.pairKd, *c.pair))
+            {
+                keepIdx.push_back((int)i);
+                continue;
+            }
+            ++dropped;
+        }
+
+        const long n0 = (long)cluster->points.size();
+        if (dropped > 0 && (double)dropped / (double)n0 > g_maxDrop)
+        {
+            c.kept = n0;
+            g_kept += n0;
+            if (g_reason == "ok") g_reason = "maxdrop";
+            std::cout << "[SFS-79] WALLPAIR-REFUSED piece=" << fileNameOnly << " surface=" << slot
+                      << " reason=maxdrop drop=" << dropped << " n=" << n0 << std::endl;
+            return;
+        }
+        if (dropped > 0)
+        {
+            pcl::PointCloud<PointNormal> out;
+            out.points.reserve(keepIdx.size());
+            for (size_t k = 0; k < keepIdx.size(); ++k) out.points.push_back(cluster->points[keepIdx[k]]);
+            out.width = (int)out.points.size();
+            out.height = 1;
+            cluster->points.swap(out.points);
+            cluster->width = (int)cluster->points.size();
+            cluster->height = 1;
+        }
+        c.kept = (long)cluster->points.size();
+        g_kept += c.kept;
+    }
+
+    // The refinement add-back, judged by the same rule: refused when the rule would have
+    // dropped that point from the surface it is about to join.
+    static bool refuse(const PointNormal& p, int slot)
+    {
+        if (!on() || slot < 0 || slot > 1) return false;
+        const Ctx& c = g_ctx[slot];
+        if (!c.used || !c.active || !c.coreKd || !c.pairKd) return false;
+        if (inBand(p, c.ax, c.sgn, *c.coreKd)) return false;
+        Eigen::Vector3d n, u;
+        double nd = 0.0;
+        if (!frame(p, c.ax, n, u, nd)) return false;
+        if (paired(p, n.x(), n.y(), n.z(), *c.pairKd, *c.pair)) return false;
+        ++g_add;
+        return true;
+    }
+
+    static void report()
+    {
+        if (!on()) return;
+        char buf[600];
+        snprintf(buf, sizeof(buf),
+                 "[SFS-79] WALLPAIR piece=%s mode=%s active=%d axisFit=%.4f medRad=%+.4f"
+                 " c0_in=%ld c0_kept=%ld add_refused=%ld reason=%s",
+                 fileNameOnly.c_str(), g_mode.c_str(), g_activeAny ? 1 : 0,
+                 g_ctx[0].used ? g_ctx[0].axisFit : 0.0,
+                 g_ctx[0].used ? g_ctx[0].medRad : 0.0,
+                 g_ctx[0].in, g_ctx[0].kept, g_add, g_reason.c_str());
+        std::cout << buf << std::endl;
+        if (g_ctx[1].used)
+        {
+            std::cout << "[SFS-79] WALLPAIR-SUM piece=" << fileNameOnly
+                      << " surface1_in=" << g_ctx[1].in << " surface1_kept=" << g_ctx[1].kept
+                      << " total_in=" << g_in << " total_kept=" << g_kept << std::endl;
+        }
+        g_reported = true;
+    }
+}
+
 // TICKET 26: what the surface actually is after finishImprovedSurface, which is where an empty
 // recruited set stops being empty.
 static void window26PrintFinal(int surfaceIndex, long ownBefore, long otherBefore, long finalPoints)
@@ -2690,6 +3099,10 @@ void improveSurfaceBoundaryByFittingBSplineSurface(pcl::PointCloud<PointNormal>:
 	const long t73Ref0 = t73::g_refineRefused;
 	pcl::KdTreeFLANN<PointNormal> kd73;
 	if (t73::g_refineGate) kd73.setInputCloud(segmentedSurfacePointCloud);
+
+	// TICKET 79: the wall-pair filter, when armed, trims this cluster immediately before
+	// its spline is fitted; the pair test's cloud is this surface plus every other cluster.
+	t79::filter(segmentedSurfacePointCloud, otherSurvivingCloud, surfaceIndex);
 
 	FittedSplineSurface fitted;
 	fitSplineSurfaceToCluster(segmentedSurfacePointCloud, fitted);
@@ -2920,6 +3333,13 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 	pcl::PointCloud<PointNormal>::Ptr otherSurvivingCloud1 = pcl::PointCloud<PointNormal>::Ptr(),
 	pcl::PointCloud<PointNormal>::Ptr otherSurvivingCloud2 = pcl::PointCloud<PointNormal>::Ptr())
 {
+	// TICKET 79: both clusters are filtered before either spline is fitted, so the pair test's
+	// cloud is the surface plus every other cluster, as the offline replay had it.
+	t79::filter(segmentedSurfacePointCloud1,
+		otherSurvivingCloud1 ? otherSurvivingCloud1 : segmentedSurfacePointCloud2, 0);
+	t79::filter(segmentedSurfacePointCloud2,
+		otherSurvivingCloud2 ? otherSurvivingCloud2 : segmentedSurfacePointCloud1, 1);
+
 	FittedSplineSurface fitted1;
 	FittedSplineSurface fitted2;
 	fitSplineSurfaceToCluster(segmentedSurfacePointCloud1, fitted1);
@@ -3136,10 +3556,20 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				}
 			}
 
+			// TICKET 79: the same add-backs, judged by the wall-pair rule when it is armed: a
+			// point the rule would drop from the surface it is about to join is refused.
+			bool admit79 = true;
+			if (t79::on() && admit73 && admit76
+				&& (angleDiff[k] > 140 || angleDiff[k] < 40)
+				&& t79::refuse(meshPointCloud->points[i], k))
+			{
+				admit79 = false;
+			}
+
 			pcl::PointCloud<pcl::PointNormal>::Ptr own = (k == 0) ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2;
 			pcl::PointCloud<pcl::PointNormal>::Ptr other = (k == 0) ? improvedSurfacePointCloud1_other : improvedSurfacePointCloud2_other;
 
-			if (angleDiff[k] > 140 && admit73 && admit76) // TICKET 73 / 76: either gate may refuse.
+			if (angleDiff[k] > 140 && admit73 && admit76 && admit79) // TICKET 73 / 76 / 79: any gate may refuse.
 			{
 				window26AdmittedOwn[k]++;
 				pcl::PointNormal ptTmp;
@@ -3151,7 +3581,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
 				own->points.push_back(ptTmp);
 			}
-			else if (angleDiff[k] < 40 && admit73 && admit76) // TICKET 73 / 76: same gate on this branch.
+			else if (angleDiff[k] < 40 && admit73 && admit76 && admit79) // TICKET 73 / 76 / 79: the same gates.
 			{
 				window26AdmittedOther[k]++;
 				pcl::PointNormal ptTmp;
@@ -5503,6 +5933,8 @@ void surfaceSegmentation(std::string filePath, int minCluster, int noOfNeighbour
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster1, improvedSurfacePoints_Cluster1, 0, otherForCluster1);
                 improveSurfaceBoundaryByFittingBSplineSurface(sampledPointCloudNormal, cloudWithNormals_Cluster2, improvedSurfacePoints_Cluster2, 1, otherForCluster2);
             }
+            // TICKET 79: one line per piece, after both surfaces have been fitted and refined.
+            t79::report();
             // TICKET 25 rung 4: the window each fit used and what became of every point.
             if (g_dumpOn25)
             {
