@@ -3,7 +3,7 @@
 **What to build:** Put ticket 78's **R1** rule — drop a point only where it is outside the wall band **and** fails the −n ray-pair test — behind one default-off switch in `mesh_processing_headless.cpp`, apply it to the clustered cloud **before** the surface fit and to the refinement add-backs, and then **re-trace** the breakline on the filtered cloud so the result is a pipeline result, not an offline point count. Success is Sherd 7's off-lip flap gone in a real cell, with the controls untouched.
 
 **Answers:** E1
-**Blocked by:** `structure-from-sherds-pp` ticket 361 — **ordering set by the conservator (2026-11-17): the cross-lane assembler check lands before any C++ change here.** Nothing in this ticket may be started before 361 reports.
+**Blocked by:** none — `structure-from-sherds-pp` ticket 361 landed 2026-11-17 (`f5b924f`: the GMnr lanes close the 6-7 fit; the reading is join-level and seating is unchanged). Originally — **ordering set by the conservator (2026-11-17): the cross-lane assembler check lands before any C++ change here.** Nothing in this ticket may be started before 361 reports.
 **Status:** ready-for-agent
 **Worker:** unassigned
 **Budget:** medium (one switch with five overrides in one file, one extractor re-run, nine 3× cells plus 1× and Pot A controls, one gate table and one render)
