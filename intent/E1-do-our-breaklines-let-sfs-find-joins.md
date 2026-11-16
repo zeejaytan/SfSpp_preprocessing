@@ -3205,3 +3205,23 @@ The conservator's rule - refuse a point only when it is off the wall **and** fai
 
 Two measurement defects in ticket 78 were found on review and re-measured here (`C:/PR/artifacts/t78/lead_verify78b.py`, `lead_verify78c.py`). **First**, the off-lip contour length was summed as `np.diff` over the *surviving* dots (`stage0_78.py:65-68`, called at `:137`), so every gap left by a deleted dot became a straight chord: 3x sherd 7 at ed -0.70 decomposes into 0.601 mm (39->40) + 1.791 mm (40->43, two deleted dots) + **12.146 mm** (105->131, twenty-five deleted dots). The surviving off-lip dots are **three** (trace indices 40, 43, 131) in two patches, the larger spanning **1.79 mm**; no contiguous off-lip boundary survives. So R1 - wall band **and** ray-pair at ed -0.70, guard active - meets the offline bar of <= 3 dots and <= 3 mm on sherd 7, with the controls untouched (Pot A Piece 05 0.04 %, 1x Juglet Piece 1 3.54 %, no on-lip flip), and ticket 78's Part A reading `localised-rule-too-weak` is **withdrawn** as a measurement artifact. **Second**, the oracle arm seeded ground-truth poses without the axis conjugation the assembler documents (`hpc/tools/main_pristine_batch.cpp:319`, implemented at `:333` as `T_axis[y].GT[y]^-1.GT[x].T_axis[x]^-1`), so its 554-2,218 mm residuals measure the patch, not the data; and the blind arm's 0 of 9 cannot speak for the cleaned breaklines, because ticket 333 had already measured 0 of 9 for the 3x Juglet on that same shipped assembler. What stands from ticket 78 is the cell check (8 of 9 inner-wall sherds, sherd 7 alone at 32 dots / 18.60 mm) and the Pot A control (8 of 8, 15 of 15). The question now moves to two tickets: `structure-from-sherds-pp` ticket 361 puts the GMnr 3x breaklines through ticket 358's 6-DoF assembler, which already seats 9 of 14 joins on the older lanes; ticket 79 wires R1 into this pipeline and re-traces the boundary, because the offline replay deletes points but never re-traces.
 
+## 2026-11-17 - The wall-pair rule is in the pipeline and clears sherd 7's flap in a real cell (ticket 79)
+
+R1 (wall band **and** ticket 59's ray-pair test) is now one default-off switch, `SFS_WALL_PAIR_FILTER=pair`,
+applied to the clustered cloud before the spline fit and to the refinement add-backs (`mesh_processing_headless.cpp:3105`,
+`:3338-3340`, `:3561-3566`), and the extractor was run again on the trimmed cloud rather than the points merely deleted.
+On the 3x bundle, sherd 7 goes from **34 off-lip dots / 13.6 mm** (switch off) to **2 dots in one adjacent pair,
+**0.599 mm** — the bar is <= 3 dots and <= 3.0 mm. Controls hold: Pot A Piece 05 drops **0.401 %** of its S0
+(62 of 15,460; P02 0.077 %, P03 0.082 %, P04 0.094 %, P06-P08 0, P01 `base_skip`), no on-lip Bl0 dot flips, and 1x
+Juglet Piece 1 drops **0.947 %** (20 -> 6 off-lip dots). Coverage 36/36, 36/36, 32/32 files. The switch-off arm is
+unchanged apart from the mesh stage's own unseeded ray-cast draw (34 / 36 / 33 off-lip dots across arms), so the
+improvement is outside the run-to-run spread; identity is measured, not asserted.
+
+Two limits travel with it. The gate's patch column was computed with a 3 mm spatial linkage rather than chords
+between adjacent surviving dots, so the off-arm patch is **15.601 mm** by the ticket's metric, not the printed 13.639,
+and 1x J1 keeps a **5.4 mm** contiguous run (its bar is the point share, not the patch). And the boundary where the
+flap was removed is visibly stepped — the dot count cannot see that, so whether the new line helps assembly is the
+assembler's question (ticket 361 measured 6 of 9 sherds and no seating with the GMnr lanes before this change).
+Reading: `wall-pair-filter-cures-sherd-7-in-pipeline`. What it means for E1: the surface side is closed on this
+family in the pipeline as well as offline, and the remaining question is no longer the breakline.
+
