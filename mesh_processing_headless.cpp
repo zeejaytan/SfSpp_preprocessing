@@ -2658,7 +2658,9 @@ namespace t76
 }
 
 // ============================================================================
-// TICKET 79 -- the wall-pair filter (ticket 78's R1 rule), default off.
+// TICKET 79 -- the wall-pair filter (ticket 78's R1 rule). TICKET 80 made it default
+// ON: unset means on, SFS_WALL_PAIR_FILTER=off|0 turns it off, and any other value
+// warns and stays off. The banner names the origin -- on (default), on (env), off (env).
 //
 // The rule, in the units the mesh stage works in (SFS_TREE_UNITS_PER_MM: 3 on the
 // 3x bundle, 1 on 1x and Pot A):
@@ -2685,7 +2687,8 @@ namespace t76
 // offline replay measured); the counts are summed over both surfaces.
 namespace t79
 {
-    static std::string g_mode = "off";
+    static std::string g_mode = "pair";
+    static std::string g_source = "default";
     static double g_wallMM = 0.80;
     static double g_ed = -0.70;
     static double g_radialMin = 0.20;
@@ -2717,17 +2720,31 @@ namespace t79
     {
         if (g_read) return;
         g_read = true;
+        // TICKET 80: unset means ON. SFS_WALL_PAIR_FILTER=off|0 is the only way to
+        // turn the filter off; any other value warns and leaves it off, exactly as
+        // ticket 79 did. g_source records where the state came from so the banner
+        // below can never be ambiguous about whether the run meant to filter.
         const char* e = std::getenv("SFS_WALL_PAIR_FILTER");
-        g_mode = "off";
+        g_mode = "pair";
+        g_source = "default";
         if (e && *e)
         {
             const std::string m(e);
-            if (m == "pair") g_mode = "pair";
-            else if (m == "off" || m == "0") g_mode = "off";
-            else std::cerr << "[SFS-79] SFS_WALL_PAIR_FILTER='" << m
-                           << "' is neither 'pair' nor 'off'; the filter stays off" << std::endl;
+            if (m == "pair") { g_mode = "pair"; g_source = "env"; }
+            else if (m == "off" || m == "0") { g_mode = "off"; g_source = "env"; }
+            else
+            {
+                g_mode = "off";
+                g_source = "env";
+                std::cerr << "[SFS-79] SFS_WALL_PAIR_FILTER='" << m
+                          << "' is neither 'pair' nor 'off'; the filter stays off" << std::endl;
+            }
         }
-        if (!on()) return;
+        if (!on())
+        {
+            std::cout << "[SFS-79] wall pair filter: off (" << g_source << ")" << std::endl;
+            return;
+        }
         g_wallMM = envD("SFS_WALL_PAIR_MM", g_wallMM);
         g_ed = envD("SFS_WALL_PAIR_ED", g_ed);
         g_radialMin = envD("SFS_WALL_PAIR_RADIAL_MIN", g_radialMin);
@@ -2737,7 +2754,7 @@ namespace t79
         g_units = envD("SFS_TREE_UNITS_PER_MM", g_units);
         if (!(g_units > 0.0)) g_units = 3.0;
         if (!(g_maxDrop > 0.0) || g_maxDrop > 1.0) g_maxDrop = 0.35;
-        std::cout << "[SFS-79] wall pair filter: on max_mm=" << g_wallMM
+        std::cout << "[SFS-79] wall pair filter: on (" << g_source << ") max_mm=" << g_wallMM
                   << " ed=" << g_ed << " radial_min=" << g_radialMin
                   << " axisfit_min=" << g_axisFitMin << " medrad_min=" << g_medRadMin
                   << " maxdrop=" << g_maxDrop << " units=" << g_units << std::endl;
