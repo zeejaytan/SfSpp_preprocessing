@@ -5,7 +5,7 @@
 **Answers:** E1
 **Blocked by:** none — `structure-from-sherds-pp` ticket 361 landed 2026-11-17 (`f5b924f`: the GMnr lanes close the 6-7 fit; the reading is join-level and seating is unchanged). Originally — **ordering set by the conservator (2026-11-17): the cross-lane assembler check lands before any C++ change here.** Nothing in this ticket may be started before 361 reports.
 **Status:** resolved
-**Branch:** 79-wall-pair-filter-in-the-pipeline, in /c/PR/worktrees/sfs/79
+**Branch:** 79-wall-pair-filter-in-the-pipeline (merged, b00d02f)
 **Worker:** dsh one-shot subagent w79
 **Budget:** medium (one switch with five overrides in one file, one extractor re-run, nine 3× cells plus 1× and Pot A controls, one gate table and one render)
 **Hand-over:** DeepSeek: read this ticket and ticket 78 in full, plus the R1 numbers in `C:/PR/artifacts/t78/stage0_78.tsv` and the correction section of ticket 78. Build the switch, re-trace, run the cells, score `C:/PR/artifacts/t79/gate79.tsv`, render `render79_before_after.png`, and append your Comments section with one Reading line.
