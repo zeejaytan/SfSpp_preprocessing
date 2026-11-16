@@ -84,6 +84,7 @@ wall's own thickness, while it is the only filter that would have taken Sherd 7 
 - Open for E1: a **localised** form — the wall ruler applied only inside the break-face neighbourhood, or
   only to add-backs already flagged at the fracture edge — is untested and must be replayed on the Stage 0
   tables before any job.
+- Nothing shipped: Part B was never built, so `SFS_WALL_FILTER` does not exist and no geometry moved.
 
 **2026-11-10, ticket 321 — Pot A's repair holds under re-verification, but the Juglet is not measurable: its released axes and its ground-truth transforms disagree (20–81°), so neither the 0/9 assembly nor the 5/9 axis column on that object can be attributed to our method.**
 
