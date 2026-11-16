@@ -2523,6 +2523,140 @@ namespace t74
     }
 }
 
+// ============================================================================
+// TICKET 76: why the refinement takes the break face back.
+//
+// Stage 0 (record only, moves nothing): SFS_76_ADMIT_TSV=<file> writes one row per point
+// the refinement adds back -- the residual, the normal angle, which branch took it, the
+// nearest claimed point of the surface and the ticket-59 ray-pair rate. It needs no dump
+// and changes no coordinate. The three ruler columns (wall offset, carrier of the line,
+// off-lip carrier) are written as -1 here because the interior wall a dot is measured
+// against only exists after Surface_0 is exported; the stage-0 scoring pass fills them in
+// from the piece's Surface_0 and Breakline_0 and rewrites the table as refine76.tsv.
+//
+// Part B, one switch, default off: SFS_REFINE_WALL_GATE=1 refuses an add-back whose
+// nearest claimed point of the same surface is further than SFS_REFINE_WALL_MAX_MM
+// (default 0.8 mm) away -- the wall-side band test of the ticket's candidate (d) -- and,
+// when SFS_REFINE_PAIR_MIN is given, also refuses one whose ray-pair rate is below it.
+// The starvation guard SFS_REFINE_MAXDROP (default 0.35) restores every refusal on a
+// surface when they would cost that surface more than this share of its points.
+// With the switch unset and no record file asked for, no kd-tree is built, no branch is
+// added and today's path runs unchanged.
+// ============================================================================
+namespace t76
+{
+    static bool   g_read76    = false;
+    static bool   g_wallGate  = false;    // SFS_REFINE_WALL_GATE
+    static double g_wallMaxMM = 0.8;      // SFS_REFINE_WALL_MAX_MM, <= 0 = off
+    static double g_pairMin   = -1.0;     // SFS_REFINE_PAIR_MIN, < 0 = off
+    static double g_maxDrop   = 0.35;     // SFS_REFINE_MAXDROP
+    static double g_unitsPerMM = 3.0;     // SFS_TREE_UNITS_PER_MM, for the mm columns only
+    static std::string g_tsv;             // SFS_76_ADMIT_TSV
+
+    static bool active76()
+    {
+        return g_wallGate || !g_tsv.empty();
+    }
+
+    static void ensure76()
+    {
+        if (g_read76) return;
+        g_read76 = true;
+        g_wallGate = t73::envFlag73("SFS_REFINE_WALL_GATE");
+        g_wallMaxMM = t73::envDouble73("SFS_REFINE_WALL_MAX_MM", 0.8);
+        g_pairMin = t73::envDouble73("SFS_REFINE_PAIR_MIN", -1.0);
+        g_maxDrop = t73::envDouble73("SFS_REFINE_MAXDROP", 0.35);
+        g_unitsPerMM = t73::envDouble73("SFS_TREE_UNITS_PER_MM", 3.0);
+        if (!(g_unitsPerMM > 0.0)) g_unitsPerMM = 3.0;
+        if (!(g_maxDrop > 0.0) || g_maxDrop > 1.0) g_maxDrop = 0.35;
+        const char* e = std::getenv("SFS_76_ADMIT_TSV");
+        if (e && *e) g_tsv = e;
+        std::cout << "[SFS-76] wall gate: " << (g_wallGate ? "on" : "off");
+        if (g_wallGate)
+        {
+            std::cout << " max_mm=" << g_wallMaxMM;
+            if (g_pairMin >= 0.0) std::cout << " pair_min=" << g_pairMin;
+            std::cout << " maxdrop=" << g_maxDrop;
+        }
+        std::cout << std::endl;
+        if (!g_tsv.empty()) std::cout << "[SFS-76] admit record: " << g_tsv << std::endl;
+    }
+
+    // Ticket 59's ray-pair predicate, ported as written: 24 samples from 1.5 to 10 scene
+    // units along -n, a hit when any cloud point lies within 0.45 scene units. The literals
+    // are the frozen ones -- ticket 59 measured them in scene units and ticket 76 quotes
+    // them that way -- so they are NOT rescaled by SFS_TREE_UNITS_PER_MM. Rescaling would
+    // change the very rate the ticket compares against.
+    static double pairRate76(const pcl::KdTreeFLANN<PointNormal>& kd, const PointNormal& p)
+    {
+        const int N = 24;
+        int hits = 0;
+        std::vector<int> nb;
+        std::vector<float> ds;
+        for (int t = 0; t < N; ++t)
+        {
+            const double s = 1.5 + (10.0 - 1.5) * (double)t / (double)(N - 1);
+            PointNormal q;
+            q.x = p.x - (float)(s * (double)p.normal_x);
+            q.y = p.y - (float)(s * (double)p.normal_y);
+            q.z = p.z - (float)(s * (double)p.normal_z);
+            nb.clear();
+            ds.clear();
+            if (kd.radiusSearch(q, 0.45f, nb, ds, 1) > 0) ++hits;
+        }
+        return (double)hits / (double)N;
+    }
+
+    // A refusal held back until the whole surface has been seen, so the starvation guard can
+    // put it back: the guard must judge the loss against the surface's final size, and the
+    // loop cannot know that size until it ends.
+    struct Deferred76
+    {
+        int k;
+        bool own;
+        PointNormal p;
+    };
+
+    static void writeRow76(const std::string& piece, int surface, size_t idx,
+                           double dFitMM, double angDeg, const char* branch,
+                           double nearMM, double nearAngDeg, double pair, double winMM,
+                           const PointNormal& p)
+    {
+        if (g_tsv.empty()) return;
+        static std::ofstream ofs;
+        static bool headerDone = false;
+        if (!ofs.is_open())
+        {
+            bool empty = true;
+            {
+                std::ifstream chk(g_tsv.c_str(), std::ios::binary | std::ios::ate);
+                if (chk.is_open() && chk.tellg() > 0) empty = false;
+            }
+            ofs.open(g_tsv.c_str(), std::ios::out | std::ios::app);
+            if (!ofs.is_open())
+            {
+                std::cerr << "[SFS-76] CANNOT WRITE " << g_tsv << std::endl;
+                g_tsv.clear();
+                return;
+            }
+            headerDone = true;
+            if (empty)
+                ofs << "piece\tsurface\tpoint_index\td_fitted_mm\tangle_deg\tbranch"
+                       "\tnearest_claimed_mm\tnearest_claimed_ang_deg\tpair_rate\twindow_mm"
+                       "\twall_offset_mm\tcarrier_of_line\toff_lip_carrier"
+                       "\tx\ty\tz\n";
+        }
+        char buf[512];
+        snprintf(buf, sizeof(buf),
+                 "%s\t%d\t%ld\t%.4f\t%.2f\t%s\t%.4f\t%.2f\t%.4f\t%.4f\t-1\t-1\t-1\t%.6f\t%.6f\t%.6f\n",
+                 piece.c_str(), surface, (long)idx, dFitMM, angDeg, branch,
+                 nearMM, nearAngDeg, pair, winMM,
+                 (double)p.x, (double)p.y, (double)p.z);
+        ofs << buf;
+        ofs.flush();
+    }
+}
+
 // TICKET 26: what the surface actually is after finishImprovedSurface, which is where an empty
 // recruited set stops being empty.
 static void window26PrintFinal(int surfaceIndex, long ownBefore, long otherBefore, long finalPoints)
@@ -2821,6 +2955,28 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 		kd73[1].setInputCloud(segmentedSurfacePointCloud2);
 	}
 
+	// TICKET 76: the two claimed-surface trees serve both the record file and the wall gate,
+	// and the piece cloud itself serves the ray-pair column. Built only when one is asked for.
+	t76::ensure76();
+	const bool t76on = t76::active76();
+	pcl::KdTreeFLANN<PointNormal> kd76[2];
+	pcl::KdTreeFLANN<PointNormal> kdpiece76;
+	bool kdpiece76on = false;
+	if (t76on)
+	{
+		kd76[0].setInputCloud(segmentedSurfacePointCloud1);
+		kd76[1].setInputCloud(segmentedSurfacePointCloud2);
+		if (t76::g_pairMin >= 0.0 || !t76::g_tsv.empty())
+		{
+			kdpiece76.setInputCloud(meshPointCloud);
+			kdpiece76on = true;
+		}
+	}
+	long cand76[2] = { 0, 0 };
+	long ref76[2] = { 0, 0 };
+	long kept76[2] = { 0, 0 };
+	std::vector<t76::Deferred76> deferred76;
+
 	for (size_t i = 0; i < meshPointCloud->points.size(); i++)
 	{
 		Eigen::Vector3d originalPt(meshPointCloud->points[i].x, meshPointCloud->points[i].y, meshPointCloud->points[i].z);
@@ -2912,10 +3068,78 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				}
 			}
 
+			// TICKET 76: record this add-back, and when the wall gate is armed decide it.
+			// Nothing here runs unless SFS_REFINE_WALL_GATE or SFS_76_ADMIT_TSV asked for it.
+			bool admit76 = true;
+			if (t76on && admit73)
+			{
+				const bool would76 = (angleDiff[k] > 140 || angleDiff[k] < 40);
+				pcl::PointCloud<PointNormal>::Ptr cl76 = (k == 0) ? segmentedSurfacePointCloud1 : segmentedSurfacePointCloud2;
+				std::vector<int> nb76;
+				std::vector<float> ds76;
+				int jNear76 = -1;
+				double dNear76 = 1.0e9;
+				if (!cl76->points.empty()
+					&& kd76[k].nearestKSearch(meshPointCloud->points[i], 1, nb76, ds76) > 0 && !nb76.empty())
+				{
+					jNear76 = nb76[0];
+					dNear76 = std::sqrt(static_cast<double>(ds76[0]));
+				}
+				const bool inCluster76 = (jNear76 >= 0 && dNear76 <= 1.0e-4);
+				if (!inCluster76 && would76)
+				{
+					const PointNormal& p76 = meshPointCloud->points[i];
+					double angNear76 = 180.0;
+					if (jNear76 >= 0)
+					{
+						const PointNormal& g76 = cl76->points[jNear76];
+						Eigen::Vector4f a76(p76.normal_x, p76.normal_y, p76.normal_z, 0.0f);
+						Eigen::Vector4f b76(g76.normal_x, g76.normal_y, g76.normal_z, 0.0f);
+						angNear76 = pcl::getAngle3D(a76, b76, true);
+					}
+					const double pair76 = kdpiece76on ? t76::pairRate76(kdpiece76, p76) : -1.0;
+					const double dFitMM76 = dist[k] / t76::g_unitsPerMM;
+					const double dNearMM76 = dNear76 / t76::g_unitsPerMM;
+					const char* br76 = (angleDiff[k] > 140) ? "own" : "other";
+					if (t76::g_wallGate)
+					{
+						++cand76[k];
+						bool refuse76 = false;
+						const char* why76 = "";
+						if (t76::g_wallMaxMM > 0.0 && dNearMM76 > t76::g_wallMaxMM) { refuse76 = true; why76 = "band"; }
+						if (!refuse76 && t76::g_pairMin >= 0.0 && pair76 < t76::g_pairMin) { refuse76 = true; why76 = "pair"; }
+						if (refuse76)
+						{
+							admit76 = false;
+							++ref76[k];
+							t76::Deferred76 d76;
+							d76.k = k;
+							d76.own = (angleDiff[k] > 140);
+							d76.p = p76;
+							deferred76.push_back(d76);
+							std::cout << "[SFS-76] REFWALL piece=" << fileNameOnly << " surface=" << k
+								<< " idx=" << (long)i << " branch=" << br76 << " why=" << why76
+								<< " band_mm=" << dNearMM76 << " pair=" << pair76
+								<< " d_fitted_mm=" << dFitMM76 << std::endl;
+						}
+						else ++kept76[k];
+					}
+					if (admit76)
+					{
+						t76::writeRow76(fileNameOnly, k, i, dFitMM76, angleDiff[k], br76,
+							dNearMM76, angNear76, pair76, windowLenMM[k] / t76::g_unitsPerMM, p76);
+						std::cout << "[SFS-76] ADMITDOT piece=" << fileNameOnly << " surface=" << k
+							<< " idx=" << (long)i << " branch=" << br76 << " d_fitted_mm=" << dFitMM76
+							<< " angle_deg=" << angleDiff[k] << " nearest_claimed_mm=" << dNearMM76
+							<< " pair=" << pair76 << std::endl;
+					}
+				}
+			}
+
 			pcl::PointCloud<pcl::PointNormal>::Ptr own = (k == 0) ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2;
 			pcl::PointCloud<pcl::PointNormal>::Ptr other = (k == 0) ? improvedSurfacePointCloud1_other : improvedSurfacePointCloud2_other;
 
-			if (angleDiff[k] > 140 && admit73) // TICKET 73: Arm A may refuse this point.
+			if (angleDiff[k] > 140 && admit73 && admit76) // TICKET 73 / 76: either gate may refuse.
 			{
 				window26AdmittedOwn[k]++;
 				pcl::PointNormal ptTmp;
@@ -2927,7 +3151,7 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				ptTmp.normal_z = meshPointCloud->points[i].normal_z;
 				own->points.push_back(ptTmp);
 			}
-			else if (angleDiff[k] < 40 && admit73) // TICKET 73: same gate on this branch.
+			else if (angleDiff[k] < 40 && admit73 && admit76) // TICKET 73 / 76: same gate on this branch.
 			{
 				window26AdmittedOther[k]++;
 				pcl::PointNormal ptTmp;
@@ -2956,6 +3180,55 @@ void improveSurfaceBoundaryByFittingBSplineSurfaceOwn(pcl::PointCloud<PointNorma
 				else if (prev25 == DR25_REJECT_NORMAL) prevRank25 = 1;
 				if (rank25 > prevRank25) g_r4Code25[i] = code25;
 			}
+		}
+	}
+
+	// TICKET 76: the starvation guard. A gate that would cost a surface more than
+	// SFS_REFINE_MAXDROP of its points is refused for that surface and every refusal it made
+	// is put back, so the surface keeps today's geometry; the log says so.
+	if (t76::g_wallGate)
+	{
+		for (int s76 = 0; s76 < 2; ++s76)
+		{
+			const long base76 = (s76 == 0)
+				? (long)segmentedSurfacePointCloud1->points.size()
+				: (long)segmentedSurfacePointCloud2->points.size();
+			const long added76 = window26AdmittedOwn[s76] + window26AdmittedOther[s76];
+			const long total76 = base76 + added76 + ref76[s76];
+			const double drop76 = (total76 > 0) ? (double)ref76[s76] / (double)total76 : 0.0;
+			if (ref76[s76] > 0 && drop76 > t76::g_maxDrop)
+			{
+				long restored76 = 0;
+				for (size_t d76 = 0; d76 < deferred76.size(); ++d76)
+				{
+					if (deferred76[d76].k != s76) continue;
+					if (deferred76[d76].own)
+					{
+						(s76 == 0 ? improvedSurfacePointCloud1 : improvedSurfacePointCloud2)->points.push_back(deferred76[d76].p);
+						++window26AdmittedOwn[s76];
+					}
+					else
+					{
+						(s76 == 0 ? improvedSurfacePointCloud1_other : improvedSurfacePointCloud2_other)->points.push_back(deferred76[d76].p);
+						++window26AdmittedOther[s76];
+					}
+					++restored76;
+				}
+				kept76[s76] += ref76[s76];
+				ref76[s76] = 0;
+				std::cout << "[SFS-76] REFUSED piece=" << fileNameOnly << " surface=" << s76
+					<< " reason=maxdrop restored=" << restored76
+					<< " drop=" << drop76 << " max=" << t76::g_maxDrop << std::endl;
+			}
+		}
+		for (int s76 = 0; s76 < 2; ++s76)
+		{
+			std::cout << "[SFS-76] REFWALL-SUM piece=" << fileNameOnly << " surface=" << s76
+				<< " candidates=" << cand76[s76] << " refused=" << ref76[s76]
+				<< " kept=" << kept76[s76] << " max_mm=" << t76::g_wallMaxMM;
+			if (t76::g_pairMin >= 0.0) std::cout << " pair_min=" << t76::g_pairMin;
+			else std::cout << " pair_min=off";
+			std::cout << std::endl;
 		}
 	}
 
