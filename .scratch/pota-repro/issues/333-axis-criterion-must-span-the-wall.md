@@ -13,7 +13,7 @@ do not build on it**; this ticket works from `main` at the commit that carries 3
 gate is the 172-pot `cmp` against `axes323`.
 **Status:** resolved
 **Working in:** chat on Thinkbook16 (2026-11-17)
-**Branch:** 333-axis-criterion-must-span-the-wall, in /c/PR/worktrees/sfs/333
+**Branch:** 333-axis-criterion-must-span-the-wall, in /c/PR/worktrees/sfs/333 (merged, 4a3b400)
 **Worker:** dsh one-shot subagent w333
 **Budget:** medium 5
 **Hand-over:** DeepSeek — dsh one-shot subagent w333, dispatched 2026-11-17 by the lead. Check path: the lead

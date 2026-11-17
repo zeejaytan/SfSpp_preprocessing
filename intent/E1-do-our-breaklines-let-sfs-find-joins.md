@@ -3261,6 +3261,17 @@ shipped: 172 of 172 pot axes byte-identical. So the 9-of-9 seating stands, but i
 our own axes an end-to-end run would be reading breakline error and axis error together, and the axis error is
 the larger of the two.
 
+**2026-11-17 — the axis cannot be found by shell thinness at all, so the answer key stays (ticket 333).** A
+wider-width statistic (the p90-p10 radial spread of both walls, behind a default-on switch, polish capped at
+5 deg) was built and measured against seven bars: 1x rank-0 **5 of 9**, 3x **3 of 9**, and **163 of 163** pot
+axes moved (median 39.99 deg, max 89.83) — so it was discarded, not shipped, and `sfs_axes/` is unchanged.
+The decisive number is not the score but its sign: on **all nine** pieces the GT axis costs **more** than our
+wrong line (+0.12 to +0.39 mm). A wall patch of a surface of revolution is almost as thin about any nearby axis,
+so no reweighting of this family can find the vessel axis — it can only move which wrong line wins. What did
+work is the 5 deg bound on the polish (9 of 9, max 5.00 deg), which is where the current 6-of-9 partly comes
+from luck. The key is therefore still the answer key, and the next axis design must use evidence that is not
+the shell's thickness: the rim or base ring, the piece's boundary curvature, or several pieces at once.
+
 **2026-11-17 — the eye passed, and the way it was shown was wrong.** The conservator looked and ruled the
 Juglet's new edgeline right (*"the juglet new edgeline proven to work now"*), so the switch stays on and
 assembly on it is legitimate. But the look itself failed: the old and the new line drawn colour-coded **in
