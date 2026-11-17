@@ -7,8 +7,10 @@
 
 **Answers:** E1
 **Blocked by:** None (can start immediately). Tickets 332 (`3c4b118`) and 333 (`4a3b400`) closed the single-sherd `(r, z)` thinness route; `sfs_axes/` on `main` is unchanged.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-17)
+**Branch:** 334-axis-conditioning-and-multi-piece-consensus, in /c/PR/worktrees/sfs/334
+**Worker:** dsh one-shot subagent w334
 **Budget:** medium 5
 **Hand-over:** DeepSeek — Spartan compute node (read-only over frozen corpora and existing `runs/`). Check path: the lead re-reads `artifacts/t334/gate334.tsv` (Stages A–C), verifies the 172-pot rank-0 / best-of-3 comparison against `axes323`, verifies the multi-piece Juglet table against `Dataset/Juglet_GT`, and **looks at** `artifacts/t334/render334_multi.png` before recording any verdict. No `sfs_axes/` or `class/` source edit ships from this ticket.
 
