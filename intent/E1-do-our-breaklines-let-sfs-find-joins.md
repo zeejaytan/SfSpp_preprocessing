@@ -3250,4 +3250,13 @@ boundary where the flap was removed is invisible to a dot count. Reading: `defau
 What it means for E1: the rule is the default from now on, but **the breakline is accepted by the conservator's
 eye, not by this measurement**, and assembly on it (ticket 362) waits behind that look.
 
+**2026-11-17 — the eye passed, and the way it was shown was wrong.** The conservator looked and ruled the
+Juglet's new edgeline right (*"the juglet new edgeline proven to work now"*), so the switch stays on and
+assembly on it is legitimate. But the look itself failed: the old and the new line drawn colour-coded **in
+one space** made neither readable — *"i can't see either very well"*. His ruling, now a standing rule in
+`docs/agents/visual-qa.md`: never draw two candidates in one space to compare them; stage each as its own
+look or as switchable toggles, and keep overlay for locking a disagreeing frame. Ticket 80's Status is
+`resolved` on his eye, and what it does **not** say is that the line is right on any other pot — the 1x
+set moved on seven of nine pieces and J1 keeps a 5.4 mm run, measured by the gate, not seen.
+
 
