@@ -14,7 +14,7 @@ seating result so far used an axis our current code produced.
 **Blocked by:** None (can start immediately). If the mechanism turns out to be the size-keyed branch, this
 ticket supplies the answer ticket 325 needs; it does not replace 325's whole-corpus rewrite.
 **Status:** resolved
-**Branch:** 332-juglet-axis-must-match-the-key, in /c/PR/worktrees/sfs/332
+**Branch:** 332-juglet-axis-must-match-the-key, in /c/PR/worktrees/sfs/332 (merged, 3c4b118)
 **Worker:** dsh one-shot subagent w332
 **Budget:** medium 5
 **Hand-over:** DeepSeek — check path: the lead re-reads the per-piece rank table against the key from a

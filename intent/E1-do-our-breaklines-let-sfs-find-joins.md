@@ -3250,6 +3250,17 @@ boundary where the flap was removed is invisible to a dot count. Reading: `defau
 What it means for E1: the rule is the default from now on, but **the breakline is accepted by the conservator's
 eye, not by this measurement**, and assembly on it (ticket 362) waits behind that look.
 
+**2026-11-17 — the axis stage is fed the answer key, and our own axis is one to four wall thicknesses off
+(ticket 332).** Every Juglet seating so far read its axis from `Dataset/Juglet_large` (the GT axis ×3) or from
+the authors' released Pot A axes; the axes our code produces are right on **6 of 9** pieces (p2 13.16, p3 28.39,
+p7 **47.92** deg). The cause is a criterion, not a unit or a pool: `profile_cost` measures a width over a k=24
+neighbourhood of **0.116-0.175 mm** while the walls are **2.0-2.3 mm** apart, so a 2 deg line and a 48 deg line
+differ by 3.8-6.7 % and piece 2's wrong line is preferred 0.00595 against 0.04594; a good line exists within
+10 deg on 9 of 9 pieces (0.36-8.68) but sits at pre-refine cost rank 64-100 of 120 and is discarded. Nothing
+shipped: 172 of 172 pot axes byte-identical. So the 9-of-9 seating stands, but it stands with a loan in it — on
+our own axes an end-to-end run would be reading breakline error and axis error together, and the axis error is
+the larger of the two.
+
 **2026-11-17 — the eye passed, and the way it was shown was wrong.** The conservator looked and ruled the
 Juglet's new edgeline right (*"the juglet new edgeline proven to work now"*), so the switch stays on and
 assembly on it is legitimate. But the look itself failed: the old and the new line drawn colour-coded **in
