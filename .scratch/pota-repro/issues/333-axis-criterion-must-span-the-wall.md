@@ -11,8 +11,10 @@ the axis keeps its own gate, and a seating re-run is a later ticket once the axi
 `325-scale-free-axis-finder`, **not merged**) changes `normalized.py`'s clearance gates — **do not merge it and
 do not build on it**; this ticket works from `main` at the commit that carries 332, and its own non-regression
 gate is the 172-pot `cmp` against `axes323`.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-17)
+**Branch:** 333-axis-criterion-must-span-the-wall, in /c/PR/worktrees/sfs/333
+**Worker:** dsh one-shot subagent w333
 **Budget:** medium 5
 **Hand-over:** DeepSeek — dsh one-shot subagent w333, dispatched 2026-11-17 by the lead. Check path: the lead
 re-reads `artifacts/t333/gate333.tsv` (nine rows, deg per piece), re-runs the 172-file `cmp` itself against
