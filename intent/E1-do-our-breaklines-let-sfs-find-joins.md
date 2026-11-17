@@ -3261,6 +3261,18 @@ shipped: 172 of 172 pot axes byte-identical. So the 9-of-9 seating stands, but i
 our own axes an end-to-end run would be reading breakline error and axis error together, and the axis error is
 the larger of the two.
 
+**2026-11-17 — the axis is recoverable once the join is given, and not before (ticket 334).** Joining two or three
+sherds at their true pose and pooling them drags piece 2 from 13.2 deg to about 1, piece 3 from 28.4 to about 1,
+piece 9 from 29.8 to about 0.9: 9 of 9 pieces within 5 deg at 1x exact, 8 of 9 pairs within 5 deg under a +3 deg /
++1 mm joint error. But the pose was **given**, and the pipeline needs the axis first to find the pose, so this is a
+refinement that belongs *inside* a join → pool → re-fit → re-join loop, not a fix that runs before it. Every
+single-sherd route is now closed by measurement: the wall-thickness cost (333), a bounded polish (A1: 7/9 at 1x,
+**3/9 at 3x**, and 15 of 141 corpus pieces lost), an uncollapsed shortlist (A2: 5/9, 75/141), and conditioning,
+which flags three of the four spherical pieces but puts p9 at the 34th corpus percentile and flags four pieces that
+are already solved. On the 3x lane the pair level is 6 of 9 at 200k and 5 of 9 at full density, with 3-5 and 7-9
+failing at every estimator and density — so the 1x numbers must not be quoted for the seating lane. Nothing
+shipped; the corpus is byte-identical.
+
 **2026-11-17 — the axis cannot be found by shell thinness at all, so the answer key stays (ticket 333).** A
 wider-width statistic (the p90-p10 radial spread of both walls, behind a default-on switch, polish capped at
 5 deg) was built and measured against seven bars: 1x rank-0 **5 of 9**, 3x **3 of 9**, and **163 of 163** pot
