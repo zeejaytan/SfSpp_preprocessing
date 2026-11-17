@@ -4,8 +4,8 @@
 
 **Answers:** E1
 **Blocked by:** none — ticket 79 is merged on `main` (`b00d02f`; do not merge it again, verify it is an ancestor of `HEAD` instead).
-**Status:** ready-for-human
-**Branch:** 80-default-on-and-the-edgeline-for-the-eye, in /c/PR/worktrees/sfs/80 (merged, c16a3f0)
+**Status:** resolved
+**Branch:** 80-default-on-and-the-edgeline-for-the-eye, in /c/PR/worktrees/sfs/80
 **Worker:** dsh one-shot subagent w80
 **Budget:** medium (one default literal plus its banner, one rebuild, the six cells plus two identity re-runs, one overlay builder over 27 piece-arms, three visual-qa descs, one offscreen render)
 **Hand-over:** DeepSeek: read ticket 79 in full (the switch, its five overrides, the cells, the identity trap) and `C:/PR/artifacts/t79/gate79.tsv`, plus the overlay precedent `C:/PR/artifacts/visual-qa/edgeline_juglet/build_overlay.py` and its two descs `C:/PR/visual-qa/viewer/pairs/edgeline_juglet_{gallery,truepose}.json`. Do Part A, then Part B, then stop at the eye gate with `End state: waiting:`. Do not run any assembler work; that is ticket 81.
@@ -298,6 +298,29 @@ re-traced line is not fit to assemble on, and that is a verdict about ticket 79'
 the stager.
 
 Nothing from this ticket is merged until that look is recorded.
+
+## The eye (conservator, 2026-11-17) — passed, and one staging rule changed
+
+**Verdict: the new edgeline is right, and the switch stays on.** Quoted from the conservator: *"i have
+checked the ticket 80 ... the juglet new edgeline proven to work now"*, and *"i can't see either very
+well"* of the look itself.
+
+So the result stands on his eye, and the staging is the part that failed: drawing the **old and the new
+line colour-coded in one space** meant neither could be read. That was my choice of look, not the
+worker's geometry, and it is now a standing rule — recorded in `C:/PR/docs/agents/visual-qa.md`
+("Never draw two candidates in one space to compare them", committed `e0010de`
+on the workspace docs): stage each candidate as its own look or as separate switchable toggles; overlay
+stays for locking a disagreeing frame, never for comparing two versions of the same thing.
+
+**What this releases and what it does not.** The line is fit to assemble on, so ticket 362's arms on these
+lanes are legitimate (already run: 9 of 9 seated, `structure-from-sherds-pp` ticket 362). It does **not**
+say the line is correct on any other pot: the 1× set moved on seven of nine pieces and J1 keeps a 5.4 mm
+run, both recorded above, and that is the state of the rule — proved for the Juglet by eye, measured
+elsewhere by the gate.
+
+Nothing further is staged for this ticket; the three `edgeline_t80_*` looks stay in the viewer as the
+record of what was judged, and the viewer is stopped.
+
 
 
 
