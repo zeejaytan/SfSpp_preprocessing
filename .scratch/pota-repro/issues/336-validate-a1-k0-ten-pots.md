@@ -4,7 +4,7 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 335 resolved and landed on `SfSpp_preprocessing` `main` at `9e0fe6a`)
-**Status:** results-in
+**Status:** resolved
 **Branch:** 336-validate-a1-k0-ten-pots, in /c/PR/worktrees/sfs/336
 **Worker:** dsh one-shot subagent w336
 **Budget:** medium 5
@@ -215,6 +215,16 @@ On the corpus, `a1_k0` changes the axis on all 163 pieces and is worse than ship
 `verified: python3 -c "...axes336_summary.json totals..." -> k1 116 (335: 135), k3 131 (335: 143), mean_deg0 10.951 (335: 8.069)`
 `verified: score/axes336_juglet_def3x.json -> sign_guard 0/18, base_pieces ["Juglet_Piece_7"], mean_d_perp_sherd_mm 0.941, max 4.552`
 
+### Lead verification (2026-11-19)
+
+- **Claim classification & decision:** **Claim (1) method regression — reject promoting `2-DoF a1_k0` as default; keep Ticket 335's shipped blind `orient_base_axis` + `4-DoF c_ref` (`commit 9e0fe6a`) as the shipped default.**
+- `verified: python C:/PR/artifacts/dsh-handover/336/accept.py -> ACCEPTANCE PASSED (exit 0)` (`42 passed` in `pytest`, canonical repos & sibling worktrees clean, `git diff --name-only main..HEAD` touches only `.scratch/pota-repro/issues/336-validate-a1-k0-ten-pots.md`).
+- `verified: read_file visual check C:/PR/artifacts/t336/render336_tenpots.png, cropD.png, cropJ.png` -> `def_3x` Juglet closes cleanly (`9/9`); Pots `A`, `B`, `C`, `E`, `F`, `G`, `H`, `I` render as cohesive seated vessels; `Pot J` shows severe sparse coverage against its grey GT hull (`5/11` seated in both repeats); `Pot D` shows a red base fragment visibly displaced below the grey GT outline (consistent with losing joins `52/69` vs control `55/69`, `57/69`).
+- `verified: C:/PR/artifacts/t336/axes336_summary.json -> totals: k1=116/163 (335: 135), k3=131/163 (335: 143), k1_gt=105 (335: 115), k3_gt=117 (335: 128), mean_deg0=10.951 (335: 8.069), changed=163/163`; per-pot `K1<=10deg`: `A 7/8, B 5/9, C 4/6, D 21/32, E 25/34, F 4/7, G 3/7, H 10/11, I 25/30, J 12/19`.
+- `verified: C:/PR/artifacts/t336/score/axes336_juglet_def3x.json & axes336_summary.json['juglet_def3x'] -> sign_guard=0/18 (0.0%), base_pieces=['Juglet_Piece_7'], rank0 mean_d_perp_sherd_mm=0.941 (max=4.552, P1=0.132 in real 1x mm after /3.0), max numeric diff vs t366 axes_a1_base = 0.000000 deg / 0.000000 mm` (superseding the worker commit `28af5c8` message phrasing `"byte-identical"`: numeric values agree to `<= 6e-13 mm`, while formatting differs as `12` decimals vs `%.17g`).
+- `verified: C:/PR/artifacts/t336/score/acc_pot{A..J}.tsv` -> 6 pots hold/pass floor (`A 8/8 15/15` [2/2], `B 9/9 15/15` best of 2 [`R1 8/9 12/15`], `C 4/4 5/5` [2/2], `F 5/5 7/7` best of 2 [`R1 5/5 6/7`], `G 7/7 10/10` [2/2], `I 25/26 59/62` [2/2]); 4 pots fail floor cleanly across both repeats (`D 23/28 52/69` vs floor `>=23/28 >=55/69` and intact `MOR` `23/28 55/69`, `24/28 57/69`; `E 25/31 47/62` vs floor `>=29/31 >=57/62` and intact `MOR` `31/31 62/62` [2/2]; `H 10/11 15/17` vs floor `11/11 17/17`, `MOR` `8/11 9/17`, `5/11 7/17`; `J 5/11 8/21` vs floor `>=8/11 >=16/21` and intact `MOR` `8/11 16/21` [2/2]). Note: intact `MOR` controls on `D`, `E`, and `J` rule out environment/binary regression.
+- `verified: C:/PR/artifacts/t336/juglet/juglet_a1_k0_r{1..4}*.json` -> best of 4 repeats (`r1`): `9/9` sherds, `12/18` edges, `25/36` directed, `18/18` GT joins, `4/4` Piece 7 joins (`r1..r4`: sherds `[9,8,9,7]`, edges `[12,7,11,4]`, cluster `9/9` across all 4 at `[0.482, 0.486, 0.467, 0.556] mm`, vs GT-axes control `juglet_oracle_xy{,2,3}` `[8,9,9]` sherds, `[8,13,13]` edges, `[0.469, 0.471, 0.459] mm`).
+
 Reading: a1-k0-regresses-corpus-pot
 
-**End state:** ready
+**End state:** resolved
