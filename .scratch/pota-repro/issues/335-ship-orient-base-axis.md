@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None (structure-from-sherds-pp Tickets 366, 367, and 368 resolved and recorded 2026-11-19)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH Baton w335 (2026-11-19) (2026-11-19)
+**Branch:** 335-ship-orient-base-axis, in /c/PR/worktrees/sfs/335
+**Worker:** dsh one-shot subagent w335
 **Budget:** medium 5
 **Hand-over:** DeepSeek — C:/PR/artifacts/dsh-handover/335/accept.py
 
