@@ -4,8 +4,7 @@
 
 **Answers:** E1
 **Blocked by:** None (can start immediately; Tickets 335 `9e0fe6a` and 336 `e0cfcce` complete)
-**Status:** in-review
-**Working in:** chat on Thinkbook16 (2026-11-20)
+**Status:** resolved
 **Branch:** 01-diagnose-14-losses-and-own-surfaces-audit, in /c/PR/worktrees/sfs/01
 **Worker:** DeepSeek -- dsh one-shot subagent w01-axis-parity
 **Budget:** medium 5
@@ -188,4 +187,12 @@ Six rows, each a 3D four-axis view plus the GT-frame `(r,z)` view where a correc
 Reading: normal-profile-gap-isolated-ready-for-t02
 
 **End state:** done
+
+### Lead verification (2026-11-20)
+
+- `verified:` `python C:/PR/artifacts/dsh-handover/axis-parity-01/accept.py` -> `ACCEPTANCE PASSED` (0 errors: worktree touches ticket file only, `pytest` 42/42, JSON/TSV/PNG deliverables valid, zero unchecked boxes, bare `Reading:` present).
+- `verified:` `ssh spartan` `sacct -X` -> `35409752`, `35409788`, `35409950`, `35409951`, `35410066`, `35410187`, `35410190`, `35410257`, `35410291` all `COMPLETED 0:0`; `out_poth/geom` contains 44 files; `CORPUS-UNCHANGED: yes (2103 files)` in `t01-cache_35409752.out` and `t01-own_35409951.out`; `runs/index.tsv` rows appended.
+- `verified:` `C:/PR/artifacts/axis-parity-01/diag01_summary.json` -> Stage A `loss_modes` `{'M2': 7, 'M4': 3, 'M3': 2, 'M5': 2}` (`M1=0`; `Pot_A_Piece_07` double-dominated: winning profile cost `0.031897` vs true `0.047763`, winning `cnorm` `0.006143` vs `0.006652`), Stage B `joint-both-lm-11` flat at `109/141` `K1` and `121/141` `K3` (`Pot_A_Piece_08 = 2.293°`, Juglet `sign_guard pairs_gt_90 = 0/18`), Stage C own surfaces `113/141` `K1` / `118/141` `K3` (med `3.135° / 10.251 mm`) vs `109/141` `K1` / `121/141` `K3` (`3.064° / 11.881 mm`) on Authors' surfaces and `105/141` `K1` / `116/141` `K3` (`2.777° / 11.638 mm`) Authors' released `Axes/` (`3` regressions vs `7` recoveries, no pot broken).
+- `verified:` visual inspection of `C:/PR/artifacts/axis-parity-01/render01_misses.png` -> confirms green (`joint-both-lm-11`) tilts toward GT only on `Pot_A_Piece_07` (`6.7° / 36.1 mm` radial error remains) and `Pot_A_Piece_06` (`3.9° / 10.6 mm`) while lying coincident on red (`axes335`) in `Pot_E_Piece_29`, `Pot_I_Piece_20`, `Pot_J_Piece_02`, and `Pot_J_Piece_07`; Stage B's negative result on joint `(pc, cn)` re-weighting establishes that Ticket 02 must change the axis-cost landscape itself rather than tuning weights.
+
 
