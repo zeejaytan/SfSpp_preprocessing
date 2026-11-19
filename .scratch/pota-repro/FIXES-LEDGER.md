@@ -614,5 +614,17 @@ KEPT (588 files, 458 MB) because most corpus clouds cannot be regenerated (secti
 
 **Not applied, deliberately:** no growth/merge retune (ticket 74's chord growth is what cures the other eight sherds and stands); no change to the 100-bar merge-overlap sweep, whose structural defect (erasing an entry on a cross pair under a pose fitted to one pair, printing no pair name) is diagnosed in ticket 362's D0 and left for a ticket; no assembler `score58` change yet — its hard-coded 1× bar must derive from `SFS_TREE_UNITS_PER_MM`.
 
+## V. Blind base-to-rim axis sign orientation (`orient_base_axis`, 2026-11-19, ticket 335)
+
+**Applied:** `BASE_ORIENT` (`SFS_AXES_BASE_ORIENT=1` default ON, `0` / `--no-base-orient` opts out) in `sfs_axes/select.py` (`9e0fe6a`), wired through `sfs_axes/potsac.py`, `sfs_axes/cli.py`, and `scripts/run_benchmark_172.py` (without `canonicalize` when `base_orient` is active). `run_potsac` (paper chain) and the `UNION_RANKER == "normal"` branch are untouched.
+
+**The rule:** On each candidate `vt[:, k]`, if `is_base_fragment(C_all, line)` is true, compare mean axial projection `z_wall` (wall points `|n . a| < 0.50`, quantile fallback `< 50` pts) against `z_pole` (base-cap points `|n . a| > 0.85`, quantile fallback `< 50` pts). When `z_wall < z_pole`, negate `out[0:3, k] = -out[0:3, k]` leaving `out[3:6, k]` untouched; when not flipped, `out[:, k]` is bit-for-bit identical. Non-base fragments keep `dir_z >= 0`.
+
+**What it bought (172-piece corpus + `def_3x` Juglet + E2E):** Run `20261119-1644_ac60d8d_t335-ship-base-orient` (`42/42` pytest, `CORPUS-UNCHANGED`):
+- Pass 1 (`35395994 COMPLETED 0:0`): **`170/172` byte-identical** to `axes323` (`0` non-sign diffs); only genuine inverted base scans `Pot_F_Piece_01` (`-14.326 mm` wall-pole) and `Pot_J_Piece_03` (`-32.8392 mm`) flipped 180°. Pass 2 `--no-base-orient` (`35396519`): `172/172` byte-identical.
+- Pass 3 `def_3x` Juglet (`35396816 COMPLETED 0:0`): `is_base_fragment = True` on `Juglet_Piece_7` alone, flipping `175.31° → 4.69°` and dropping `SignAxisGuard` from `4/18` (`22.22%`) to **`0/18` (`0.00%`)** (`9/9` match to `t367` `axes_shipped_base` at `0.0000° / 0.0000 mm`, which seats `9/9` in Juglet E2E at `0.466–0.476 mm` vertex cluster).
+- Pass 4 E2E (`35396814` Pot F, `35396815` Pot J, `COMPLETED 0:0`): both flipped pots hold their `t323` floors in 2/2 repeats (`F_K3R1/2` `5/5, 7/7`; `J_K3R1/2` `8/11, 16/21`).
+- **Companion negative (not applied):** `2-DoF` tilt-only `a1_k0` layered on top of `orient_base_axis` was validated across all 10 pots in ticket 336 (`20261119-1823_f86432b_t336-a1-k0-ten-pots`, `e0cfcce`) and **rejected as default** (`K1 ≤ 10°` `135/163 → 116/163`, `Pot D/E/H/J` below `t323` floors in 2/2 repeats). Keep `4-DoF c_ref + orient_base_axis`.
+
 ## Pending proofs (not yet in this ledger)
 194 (B harmless -- LANDED regression, in F above), 195 (D harmless -- LANDED regression, in F above), 196 (A control holds -- LANDED regression, in F above), 189/190/193 (E/F/J cure-or-vacuous). Each enters above ONLY on a landed PASS with E2E numbers.
