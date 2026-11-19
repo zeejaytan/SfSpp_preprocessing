@@ -4,7 +4,9 @@
 
 **Answers:** E1
 **Blocked by:** None (can start immediately; Tickets 335 `9e0fe6a` and 336 `e0cfcce` complete)
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-20)
+**Branch:** 01-diagnose-14-losses-and-own-surfaces-audit, in /c/PR/worktrees/sfs/01
 **Worker:** unassigned
 **Budget:** medium 5
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-01/accept.py` to be staged before dispatch
