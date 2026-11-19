@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 335 resolved and landed on `SfSpp_preprocessing` `main` at `9e0fe6a`)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH Baton w336 (2026-11-19) (2026-11-19)
+**Branch:** 336-validate-a1-k0-ten-pots, in /c/PR/worktrees/sfs/336
+**Worker:** dsh one-shot subagent w336
 **Budget:** medium 5
 **Hand-over:** DeepSeek — C:/PR/artifacts/dsh-handover/336/accept.py
 
