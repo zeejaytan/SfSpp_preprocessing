@@ -11,6 +11,7 @@ for p in [HERE, os.path.join(HERE, ".."), os.getcwd(), os.path.join(os.getcwd(),
         break
 
 import sfs_axes.potsac as ps
+import sfs_axes.select as sel
 from sfs_axes.io_axes import direction_angle_deg, read_axes
 
 CORPUS = "/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp"
@@ -61,7 +62,10 @@ def get_piece_info(stem):
     return pot, c0_path, c1_path, rel_path, gt_path
 
 def one(job):
-    stem, outdir, cap, seeds, step, line_rule = job
+    job = tuple(job)
+    if len(job) == 6:
+        job = job + (None,)
+    stem, outdir, cap, seeds, step, line_rule, base_orient = job
     pot, c0_path, c1_path, rel_path, gt_path = get_piece_info(stem)
     try:
         C0 = load_wall(c0_path)
@@ -71,7 +75,11 @@ def one(job):
 
     t0 = time.time()
     vt = ps.run_potsac_union(C0, C1, seeds=list(range(seeds)), step=step, max_candidates=cap, normalized=True,
-                             line_rule=line_rule)
+                             line_rule=line_rule, base_orient=base_orient)
+    # Ticket 335: with base orientation on the written line must NOT be
+    # canonicalized to dir_z >= 0 (that would flip an inverted base back); only
+    # the unturned path restores the exact axes323 bytes.
+    use_base_orient = sel.BASE_ORIENT if base_orient is None else bool(base_orient)
     secs = time.time() - t0
     K = int(vt.shape[1]) if vt.size else 0
 
@@ -104,7 +112,7 @@ def one(job):
     outpath = os.path.join(outdir, stem + "_Axis.xyz")
     with open(outpath, "w") as fh:
         for k in range(K):
-            v = canonicalize(vt[:, k])
+            v = vt[:, k] if use_base_orient else canonicalize(vt[:, k])
             fh.write(" ".join("%.17g" % x for x in np.r_[v[3:6], v[0:3]]) + "\n")
 
     if stem.startswith("Juglet_"):
@@ -112,7 +120,7 @@ def one(job):
         alt_path = os.path.join(outdir, f"Pot_JUGLET_Piece_{idx:02d}_Axis.xyz")
         with open(alt_path, "w") as fh:
             for k in range(K):
-                v = canonicalize(vt[:, k])
+                v = vt[:, k] if use_base_orient else canonicalize(vt[:, k])
                 fh.write(" ".join("%.17g" % x for x in np.r_[v[3:6], v[0:3]]) + "\n")
 
     # Check 317 top-3 comparison if available
@@ -160,6 +168,11 @@ def main():
     ap.add_argument("--no-line-rule", action="store_true",
                     help="write every profile-ranked line up to --cap (the axes322 set) "
                          "instead of the ticket 324 keep rule; same as SFS_AXES_LINE_RULE=0")
+    ap.add_argument("--no-base-orient", action="store_true",
+                    help="leave each line's direction sign as ranked instead of pointing "
+                         "base fragments base -> rim (ticket 335; same as "
+                         "SFS_AXES_BASE_ORIENT=0). Written files are then "
+                         "canonicalized to dir_z >= 0 exactly as in axes323.")
     a = ap.parse_args()
 
     selected_pots = None if a.pots == "ALL" else set(a.pots.split(","))
@@ -180,7 +193,8 @@ def main():
 
     print(f"[axes318] Total {len(stems)} pieces to process, output to {a.out}", flush=True)
     line_rule = False if a.no_line_rule else None
-    jobs = [(s, a.out, a.cap, a.seeds, a.step, line_rule) for s in stems]
+    base_orient = False if a.no_base_orient else None
+    jobs = [(s, a.out, a.cap, a.seeds, a.step, line_rule, base_orient) for s in stems]
 
     t0 = time.time()
     if a.jobs > 1:

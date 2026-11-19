@@ -417,7 +417,8 @@ def _cluster_union(V, cos=DEDUP_COS):
 # constant; the only inputs are the piece's own two surfaces and the draws' own optima.
 # SFS_AXES_CONVERGE_BEFORE_RANK (default off) reorders 2 and 5; see the switch above.
 def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
-                     verbose=False, normalized=None, line_rule=None):
+                     verbose=False, normalized=None, line_rule=None,
+                     base_orient=None):
     """Deterministic union of the Pottmann basins over S seeds (ticket 306).
 
     C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
@@ -427,6 +428,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
     clearance prior (ticket 313, default NORMALIZED).
     line_rule: with normalized, keep only the lines select.keep_lines passes
     (ticket 324, default select.LINE_RULE); False writes every ranked line.
+    base_orient: with normalized, point each kept line base -> rim
+    (ticket 335, default select.BASE_ORIENT); False leaves the sign as ranked.
     Returns vt (6, K), 1 <= K <= max_candidates, best first.
     """
     if normalized is None:
@@ -477,7 +480,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         reps, sizes = _cluster_union(V)
         if UNION_RANKER == "profile":
             vt, _ = select_union_lines(reps, sizes, C0, S1, C, max_candidates,
-                                       line_rule=line_rule, verbose=verbose)
+                                       line_rule=line_rule,
+                                       base_orient=base_orient, verbose=verbose)
             return vt
 
         # Precompute geometry features across all basin representatives

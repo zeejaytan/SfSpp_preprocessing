@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from .io_axes import direction_angle_deg
-from .normalized import refine_axis_normalized
+from .normalized import is_base_fragment, refine_axis_normalized
 from .profile import profile_cost, refine_axis_profile, stride
 
 # Ticket 322 ranking budget. Counts, not lengths: the 60 most-drawn basins enter
@@ -40,6 +40,16 @@ PROFILE_DEDUP_DEG = 15.0
 LINE_RULE = os.environ.get("SFS_AXES_LINE_RULE", "1") not in ("", "0")
 LINE_RULE_TAU = 1.2
 LINE_RULE_KMAX = 3
+
+# Ticket 335 base-to-rim sign orientation. SFS_AXES_BASE_ORIENT=0 restores the
+# previous behaviour (every direction canonicalized to dir_z >= 0, which writes an
+# inverted base scan rim-to-base). The masks and their 50-point fallbacks are the
+# ticket 366 prototype's.
+BASE_ORIENT = os.environ.get("SFS_AXES_BASE_ORIENT", "1") not in ("", "0")
+BASE_ORIENT_MAX_POINTS = 30000
+BASE_ORIENT_POLE_AX = 0.85
+BASE_ORIENT_WALL_AX = 0.50
+BASE_ORIENT_MIN_COUNT = 50
 
 
 def _distinct(items, key, tol_deg):
@@ -89,8 +99,84 @@ def keep_lines(costs, tau=LINE_RULE_TAU, kmax=LINE_RULE_KMAX):
     return keep[:kmax]
 
 
+def orient_base_axis(vt, C0, C1=None, max_points=BASE_ORIENT_MAX_POINTS,
+                     return_info=False):
+    """Point every candidate line base -> rim, blindly (ticket 335).
+
+    PotSAC returns an undirected line: +a and -a cost the same, so an inverted base
+    scan (one whose own frame has the vessel bottom along -z) comes out rim-to-base
+    once it is canonicalized to dir_z >= 0. This rewrites that sign from the piece's
+    own geometry: for a base fragment (normalized.is_base_fragment), the cap points
+    (|a . n| > 0.85) and the wall points (|a . n| < 0.50) are separated along the
+    line and the direction is negated when the wall sits below the cap. Non-base
+    fragments keep the old dir_z >= 0 canonicalization. Nothing here reads a
+    reference axis, a GT pose, or a per-piece constant.
+
+    vt: (6,) or (6, K) candidate lines (direction, point). C0, C1: the piece's
+    walls (C1 optional); together they are the cloud the masks are taken on.
+    Strided to max_points columns, which is a no-op below 30,000 points.
+    Returns (6,) / (6, K) with the input's dimensionality. Only out[0:3, k] is ever
+    touched, and only negated: positions and directions are never renormalized or
+    rewritten, so an unflipped column is byte-identical to its input.
+    return_info: also return a list of per-column dicts (cand, base, flipped,
+    z_wall, z_pole, z_wall_minus_z_pole, n_pole, n_wall).
+    """
+    vt = np.asarray(vt, dtype=float)
+    one_d = vt.ndim == 1
+    vt2d = vt.reshape(6, 1) if one_d else vt
+    out = vt2d.copy()
+    info = []
+
+    C_all = np.asarray(C0, dtype=float)
+    if C1 is not None:
+        C_all = np.concatenate([C_all, np.asarray(C1, dtype=float)], axis=1)
+    C_s = stride(C_all, n=max_points) if C_all.shape[1] > 0 else C_all
+    if C_s.shape[1] > 0:
+        n_norm = np.linalg.norm(C_s[3:6, :], axis=0)
+        N_unit = C_s[3:6, :] / np.maximum(n_norm, 1e-12)
+
+    for k in range(out.shape[1]):
+        rec = dict(cand=k, base=False, flipped=False, z_wall=None, z_pole=None,
+                   z_wall_minus_z_pole=None, n_pole=0, n_wall=0)
+        norm_d = float(np.linalg.norm(out[0:3, k]))
+        if norm_d < 1e-12:
+            info.append(rec)
+            continue
+        a = out[0:3, k] / norm_d
+        p0 = out[3:6, k] - float(out[3:6, k] @ a) * a
+        line = np.r_[a, p0]
+        if C_s.shape[1] > 0 and is_base_fragment(C_s, line):
+            z = a @ (C_s[0:3, :] - p0[:, None])
+            n_ax = np.abs(a @ N_unit)
+            pole = n_ax > BASE_ORIENT_POLE_AX
+            if int(pole.sum()) < BASE_ORIENT_MIN_COUNT:
+                pole = n_ax >= np.quantile(n_ax, 0.90)
+            wall = n_ax < BASE_ORIENT_WALL_AX
+            if int(wall.sum()) < BASE_ORIENT_MIN_COUNT:
+                wall = n_ax <= np.quantile(n_ax, 0.50)
+            z_wall = float(z[wall].mean())
+            z_pole = float(z[pole].mean())
+            rec["base"] = True
+            rec["z_wall"] = round(z_wall, 4)
+            rec["z_pole"] = round(z_pole, 4)
+            rec["z_wall_minus_z_pole"] = round(z_wall - z_pole, 4)
+            rec["n_pole"] = int(pole.sum())
+            rec["n_wall"] = int(wall.sum())
+            if z_wall < z_pole:
+                out[0:3, k] = -out[0:3, k]
+                rec["flipped"] = True
+        elif out[2, k] < 0:
+            out[0:3, k] = -out[0:3, k]
+            rec["flipped"] = True
+        info.append(rec)
+
+    out_shaped = out[:, 0] if one_d else out
+    return (out_shaped, info) if return_info else out_shaped
+
+
 def select_union_lines(reps, sizes, C0, C1, C, max_candidates, line_rule=None,
-                       tau=LINE_RULE_TAU, kmax=LINE_RULE_KMAX, verbose=False):
+                       tau=LINE_RULE_TAU, kmax=LINE_RULE_KMAX, base_orient=None,
+                       verbose=False):
     """Ticket 324: from the union path's basins to the lines written for the piece.
 
     reps, sizes: basin representatives (6, m) and their draw counts (_cluster_union);
@@ -98,10 +184,13 @@ def select_union_lines(reps, sizes, C0, C1, C, max_candidates, line_rule=None,
     basins enters twice (its representative and that representative after the
     normal-cost refinement); the pool is ranked by rank_by_profile, cut to
     max_candidates, and, with line_rule (default LINE_RULE), reduced by keep_lines.
-    Returns (vt (6, K), costs (K,)).
+    base_orient (default BASE_ORIENT, ticket 335) then points each kept line base ->
+    rim on the combined cloud C. Returns (vt (6, K), costs (K,)).
     """
     if line_rule is None:
         line_rule = LINE_RULE
+    if base_orient is None:
+        base_orient = BASE_ORIENT
     n = C.shape[1]
     centre = C[0:3].mean(axis=1)
     size = float(np.linalg.norm(C[0:3].max(axis=1) - C[0:3].min(axis=1)))
@@ -118,6 +207,8 @@ def select_union_lines(reps, sizes, C0, C1, C, max_candidates, line_rule=None,
     if line_rule:
         idx = keep_lines(c, tau=tau, kmax=kmax)
         vt, c = vt[:, idx], c[idx]
+    if base_orient:
+        vt = orient_base_axis(vt, C)
     if verbose:
         print("[POTSAC-UNION-PROFILE] %d basins scored, line_rule=%s, kept %d, costs %s"
               % (len(lines) // 2, bool(line_rule), vt.shape[1], [round(x, 4) for x in c]))
