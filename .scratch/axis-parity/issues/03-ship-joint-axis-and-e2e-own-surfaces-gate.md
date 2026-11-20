@@ -1,10 +1,10 @@
 # 03: Ship joint axis refiner into `sfs_axes/` and run 100%-own-code E2E gate
 
-**What to build:** Promote Ticket 05's proven parallel dual-invariant `A1 + B2` selector (`impl_t05.diff`) into `SfSpp_preprocessing/sfs_axes/` as the default on the normalized profile-ranked union path (keeping Ticket 335's `orient_base_axis` ON, adding a clean env/CLI opt-out that restores exact `axes335` bytes), add unit tests with zero CRLF line endings, and run the **100%-own-code E2E verification gate** (`MeshPreprocessingHeadless` surfaces -> landed `sfs_axes` -> `EdgeLineExtraction` breaklines -> `structure-from-sherds-pp` assembler) across all 10 paper pots (`Pot A..J`) and `def_3x` Juglet.
+**What to build:** Promote Ticket 06's proven parallel tri-invariant `A1 + B2 + P` selector (`impl_t06.diff`, or fallback `t05`) into `SfSpp_preprocessing/sfs_axes/` as the default on the normalized profile-ranked union path (keeping Ticket 335's `orient_base_axis` ON, adding a clean env/CLI opt-out that restores exact `axes335` bytes), add unit tests with zero CRLF line endings, and run the **100%-own-code E2E verification gate** (`MeshPreprocessingHeadless` surfaces -> landed `sfs_axes` -> `EdgeLineExtraction` breaklines -> `structure-from-sherds-pp` assembler) across all 10 paper pots (`Pot A..J`) and `def_3x` Juglet.
 
 **Answers:** E1
-**Blocked by:** 05-parallel-a1-b2-selector-and-e2e (with `Reading: dual-selector-achieves-author-parity-and-passes-ten-pots`)
-**Status:** needs-triage — blocked by Ticket 05
+**Blocked by:** 06-tri-invariant-selector-potj-and-tenpots (with `Reading: tri-selector-passes-all-ten-pots-and-juglet`)
+**Status:** needs-triage — blocked by Ticket 06
 **Worker:** unassigned
 **Budget:** medium 5
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-03/accept.py` to be staged before dispatch
