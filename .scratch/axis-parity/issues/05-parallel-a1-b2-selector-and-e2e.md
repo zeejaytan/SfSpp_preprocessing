@@ -7,8 +7,7 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 02 resolved at `46f064c` / `4246c74`)
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-20)
+**Status:** resolved
 **Branch:** 05-parallel-a1-b2-selector-and-e2e, in /c/PR/worktrees/sfs/05
 **Worker:** dsh one-shot subagent w05-axis-parity
 **Budget:** large 8
@@ -256,3 +255,13 @@ Local `score/juglet/` was refreshed after the native run: `score_juglet_own_xy_r
 Reading: dual-selector-improves-axes-but-misses-e2e-bar
 
 **End state:** ready
+
+### Lead verification (2026-11-21)
+
+- `verified:` `python C:/PR/artifacts/dsh-handover/axis-parity-05/accept.py` -> `ACCEPTANCE PASSED (reading=dual-selector-improves-axes-but-misses-e2e-bar)`.
+- `verified:` `ssh spartan` `sacct -X` -> all active jobs (`35448549`, `35448730`, `35449224`, `35449734`..`35450471` 10 pots, `35450477`, `35450478`, `35452596` pytest `71 passed in 30.97s`, native 3x Juglet re-extraction `35453049` and 4-repeat array `35453073_0..3`, `35454485` render11, `35454552`/`35454569`/`35454806`) are `COMPLETED 0:0`; `CORPUS-UNCHANGED` verified across all 3 checkpoints (`md5-35448730.log`, `corpus2-35450478.out`, `jugax-35453049.log`); `runs/index.tsv` rows appended through line 904 with blank `verdict`/`human_note`; `squeue -u zhuojiat` has zero `t05-*` jobs.
+- `verified:` `C:/PR/artifacts/axis-parity-05/{axes05_summary.json,gate05.tsv}` -> `dual_k2` clears 12/12 Part A bars (`110/141 K1`, `121/141 K3`, median `2.7054°`, `d_gt_to_est = 4.3383 mm`, `d_est_to_gt = 9.9252 mm`, `Pot A 2.4733 mm`, `Pot_A_Piece_08 = 4.741°`, `Pot G 7/7 K=1`, `7/8` K3 recoveries; Own surfaces `116/141 K1`, `122/141 K3`, `2.5631°`, `3.7781 mm`, `Pot G 7/7 K=1`; `def_3x` Juglet `7/9 K1`, `8/9 K3`, `Juglet_Piece_7` only base, `SignAxisGuard = 0/18` rank-0 & `0` worst-case across candidates).
+- `verified:` `C:/PR/artifacts/axis-parity-05/score/acc_pot{A..J}.tsv` and `submit.sbatch` (`AX_MO` = Authors control, `AX_318` = `dual_k2`) -> `dual_k2` (`K3R1/2`) passes **9/10 paper pots** (`A 8/8 15/15`, `B 9/9 15/15`, `C 4/4 5/5`, `D 25/28 60/69 & 24/28 58/69` beating Authors `23/28 55/69 & 22/28 53/69`, `E 31/31 62/62`, `F 5/5 7/7`, `G 7/7 10/10`, `H 11/11 17/17` beating Authors `10/11 10/17`, `I 26/26 62/62` 100% beating both Authors and `t323` `25/26 59/62`); only `Pot J` falls below floor (`6/11 9/21`, `5/11 8/21` vs `8/11 16/21`).
+- `verified:` native 3x `Juglet_Piece_{1,7}_Axis.xyz` (`548.049, 431.528, -379.551`; Piece 7 `-741.489, -38.668, -908.529`, `dir_z=-0.6327`), `score/juglet/score_juglet_own_xy_r{1..4}_cluster.json`, and Spartan `1. Acc.txt` -> after catching and fixing DeepSeek's v1 `1/3`-scale write bug (Claim 2), `dual_k2` passes **4/4 Juglet repeats**: `9/9` sherds, `11–13/18` edges (best `13/18` matching oracle, up from shipped `8/18`), `9/9` vertex cluster `0.465–0.477 mm` (`<= 0.50 mm`, within `0.006 mm` of oracle `0.459 mm`), and `4/4` Piece 7 joins (`1.79°–3.05°`).
+- `verified:` visual inspection of `C:/PR/artifacts/axis-parity-05/render05_dual.png` and updated `C:/PR/artifacts/axis-parity-05/render05_tenpots.png` -> confirms `H_K3R1` pulls the splayed rim pieces cleanly into the vessel, `J_K3R1` is visibly looser than `J_MOR1`, and Row 11 native 3x `dual_k2` Juglet forms a compact 9-piece cup matching oracle.
+- `verified:` lead per-piece audit (`axes05_summary.json` vs `diag01_summary.json`) -> isolates the exact cause of `Pot J`'s drop: `Pot_J_Piece_05` (`axes335 = 2.8°` vs `A1 = 20.6° / B2 = 26.7°`) is the **only** piece out of 141 where position-only `axes335` beats both normal-based arms (`A1` and `B2`), and `15°` dedup dropped `B2 <= 4.9°` behind `A1 10.0°–14.3°` on 5 pieces (`Pot_E_Piece_03`, `E23`, `E28`, `Pot_H_Piece_04`, and `Pot_J_Piece_11` `3.4°` vs `11.0°`).
