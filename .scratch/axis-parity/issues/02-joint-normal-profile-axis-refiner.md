@@ -6,7 +6,9 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 01 resolved at `62ff33c`)
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-20)
+**Branch:** 02-joint-normal-profile-axis-refiner, in /c/PR/worktrees/sfs/02
 **Worker:** unassigned
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-02/accept.py` to be staged before dispatch
