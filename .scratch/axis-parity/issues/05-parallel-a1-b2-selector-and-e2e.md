@@ -7,8 +7,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 02 resolved at `46f064c` / `4246c74`)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-20)
+**Branch:** 05-parallel-a1-b2-selector-and-e2e, in /c/PR/worktrees/sfs/05
+**Worker:** dsh one-shot subagent w05-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-05/accept.py` to be staged before dispatch
 
