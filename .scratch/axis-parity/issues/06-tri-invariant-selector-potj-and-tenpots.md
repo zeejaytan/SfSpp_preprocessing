@@ -8,8 +8,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 05 resolved at `e1cf772` / `277a754`)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-21)
+**Branch:** 06-tri-invariant-selector-potj-and-tenpots, in /c/PR/worktrees/sfs/06
+**Worker:** dsh one-shot subagent w06-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-06/accept.py` to be staged before dispatch
 
