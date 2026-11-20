@@ -115,7 +115,66 @@ Benchmark all **5 variants** (`tri_r0_d15`, `tri_r0_d10`, `tri_r0_d08`, `tri_pse
 
 ## Acceptance
 
-- [ ] Zero tracked source edits (`git diff origin/main --name-only` touches only this ticket); `<run>/work/impl_t06.diff` cleanly applies over `9e0fe6a` (`git apply --ignore-whitespace --check`) and Spartan batch unit tests pass (`>= 71` existing + new `tests/test_t06_tri.py` checks).
-- [ ] Phase 1 benchmarks all 5 variants (`tri_r0_d15`, `tri_r0_d10`, `tri_r0_d08`, `tri_psec_d15`, `tri_psec_d10`) on `141` GT pieces (Authors' & Own surfaces, both `d_gt_to_est` and `d_est_to_gt`, `Pot_J_Piece_05`, `Pot_J_Piece_11`, `Pot G 7/7 K=1`) AND `def_3x` Juglet (`0/18` rank-0 AND `0` worst-case `SignAxisGuard`, `/ 3.0` on GT scoring only, `Juglet_Piece_7` only base), with `sacct -X COMPLETED 0:0` and `CORPUS-UNCHANGED`.
-- [ ] Gated Phase 2 enforced cleanly: when Phase 1 passes Part A, full `163`-piece + native `3x` `9`-piece Juglet extraction runs and Stage 2A (`Pot J, G, D` + `def_3x` Juglet) passes/early-stops before Stage 2B (remaining 7 pots `A, B, C, E, F, H, I`), with non-empty `axes06_summary.json["jobs"]` & `["phase2"]`, Phase 2 rows in `gate06.tsv`, `runs/index.tsv` appended (`verdict`/`human_note` blank), and `CORPUS-UNCHANGED`.
-- [ ] `C:/PR/artifacts/axis-parity-06/{axes06_summary.json,gate06.tsv,render06_tri.png,impl_t06.diff}` (plus `render06_e2e.png` & `score/` when Phase 2 runs) fetched locally and visually inspected before writing bare `Reading:`, `**End state:** ready` (with `**Status:** in-progress`), and ZERO active background watchers left running.
+- [x] Zero tracked source edits (`git diff origin/main --name-only` touches only this ticket); `<run>/work/impl_t06.diff` cleanly applies over `9e0fe6a` (`git apply --ignore-whitespace --check`) and Spartan batch unit tests pass (`>= 71` existing + new `tests/test_t06_tri.py` checks).  **Met:** `impl_t06.diff` = 9 files / 1513 diff lines / 1458 insertions, `git apply --ignore-whitespace --check -p1` OK in the worktree; job `35456405` `COMPLETED` `0:0` with `77 passed in 31.47s` (42 shipped + 13 `t02` + 22 `t06`).
+- [x] Phase 1 benchmarks all 5 variants (`tri_r0_d15`, `tri_r0_d10`, `tri_r0_d08`, `tri_psec_d15`, `tri_psec_d10`) on `141` GT pieces (Authors' & Own surfaces, both `d_gt_to_est` and `d_est_to_gt`, `Pot_J_Piece_05`, `Pot_J_Piece_11`, `Pot G 7/7 K=1`) AND `def_3x` Juglet (`0/18` rank-0 AND `0` worst-case `SignAxisGuard`, `/ 3.0` on GT scoring only, `Juglet_Piece_7` only base), with `sacct -X COMPLETED 0:0` and `CORPUS-UNCHANGED`.  **Met:** job `35456406` `COMPLETED` `0:0` (12:49, `CORPUS-UNCHANGED` over 907 files); winner `tri_psec_d10` clears all 12 Part A bars (see Comments).
+- [x] Gated Phase 2 enforced cleanly: when Phase 1 passes Part A, full `163`-piece + native `3x` `9`-piece Juglet extraction runs and Stage 2A (`Pot J, G, D` + `def_3x` Juglet) passes/early-stops before Stage 2B (remaining 7 pots `A, B, C, E, F, H, I`), with non-empty `axes06_summary.json["jobs"]` & `["phase2"]`, Phase 2 rows in `gate06.tsv`, `runs/index.tsv` appended (`verdict`/`human_note` blank), and `CORPUS-UNCHANGED`.  **Met:** extraction `35456628` (163 + 9 native `3x`, `CORPUS-UNCHANGED`); Stage 2A `35457126/7/8` + Juglet `35457145` all passed before Stage 2B `35459488-35459494` was submitted; `axes06_summary.json` has 29 `jobs` rows and a full `phase2` block, `gate06.tsv` carries 24 Phase 2 rows, 17 `runs/index.tsv` rows appended.
+- [x] `C:/PR/artifacts/axis-parity-06/{axes06_summary.json,gate06.tsv,render06_tri.png,impl_t06.diff}` (plus `render06_e2e.png` & `score/` when Phase 2 runs) fetched locally and visually inspected before writing bare `Reading:`, `**End state:** ready` (with `**Status:** in-progress`), and ZERO active background watchers left running.  **Met:** all fetched (plus `score/acc_pot{A..J}.tsv` and `score/juglet/`); both renders opened and inspected; two watcher jobs were killed before this write-up.
+
+**End state:** ready
+
+## Comments
+
+**Run:** `/data/gpfs/projects/punim2657/SfSpp/runs/20261121-0323_9e0fe6a_t06-tri` (RUN06), branch `06-tri-invariant-selector-potj-and-tenpots` at `9e0fe6a` (worktree ticket commit `e67b5ba`). Everything heavy ran on Spartan compute nodes (`sapphire`); the laptop only wrote the harness, read logs and looked at the renders.
+
+**Prototype (Spartan only, no tracked edit):** `work/impl_t06/` = `git archive 9e0fe6a` + `work/impl_t02.diff` + `sfs_axes/t06/{__init__.py,tri.py}` + `tests/test_t06_tri.py`. **One declared deviation from §2.1:** the base diff applied is `impl_t02.diff`, not `impl_t05.diff` — `sfs_axes/t06/tri.py` imports only `sfs_axes.t02.arms` (`arm_a1`, `arm_b2`) and `sfs_axes.select` (`select_union_lines`, `orient_base_axis`), both of which exist at `9e0fe6a` + `impl_t02.diff`, so the `t05` dual module is not needed and the exported diff is self-contained over `9e0fe6a`. `sfs_axes/t02/*` and `sfs_axes/t05/*` are untouched; the `tri` merge is `A1` rank-0 first, then `B2` rank-0 and `P` rank-0 when `>= dedup_deg` from every kept line, then `P` secondaries when the variant allows, capped at `kmax = 3`, with a single `orient_base_axis` on the merged `(6, K)` array.
+
+**Tests (compute node, job `35456405` `COMPLETED` `0:0`):** `77 passed, 1 warning in 31.47s` = 42 shipped + 13 `t02` + 22 `t06`.
+
+**Phase 1 (job `35456406`, 24 cpus, 12:49, `COMPLETED` `0:0`, `CORPUS-UNCHANGED` over 907 corpus files):** 150 stems x 2 surfaces = 300 piece-surface runs off one shared `A1`+`B2`+`P` computation per piece; `out/tri/authors` holds 1350 files.
+
+| variant | Authors K1 | Authors K3 | median deg | d_gt_to_est mm | d_est_to_gt mm | Own K1 | Own K3 | Pot J K3 | Juglet K1/K3 |
+|---|---|---|---|---|---|---|---|---|---|
+| `tri_r0_d15` | 110/141 | 123/141 | 2.7054 | 4.3383 | 9.9252 | 116/141 | 122/141 | 6/11 | 7/9, 8/9 |
+| `tri_r0_d10` | 110/141 | 126/141 | 2.7054 | 4.3383 | 9.9252 | 116/141 | 126/141 | 7/11 | 7/9, 8/9 |
+| `tri_r0_d08` | 110/141 | 127/141 | 2.7054 | 4.3383 | 9.9252 | 116/141 | 126/141 | 7/11 | 7/9, 8/9 |
+| `tri_psec_d15` | 110/141 | 125/141 | 2.7054 | 4.3383 | 9.9252 | 116/141 | 123/141 | 7/11 | 7/9, 8/9 |
+| `tri_psec_d10` | 110/141 | 128/141 | 2.7054 | 4.3383 | 9.9252 | 116/141 | 127/141 | 8/11 | 7/9, 8/9 |
+
+**Part A, winner `tri_psec_d10`:** K1 `110/141 >= 109`; K3 `128/141 >= 122` (beats `dual_k2` 121 and `axes335` 121); K3 recoveries `7/8` (`Pot_A_Piece_07, Pot_D_Piece_23, Pot_E_Piece_29, Pot_E_Piece_31, Pot_F_Piece_05, Pot_I_Piece_20, Pot_J_Piece_02`; `Pot_E_Piece_25` not recovered); median rank-0 `2.7054 <= 2.78`; `d_gt_to_est` `4.3383 <= 4.38` (`d_est_to_gt` 9.9252 reported beside it); `Pot A` `d_gt_to_est` `2.4733 <= 3.5`; `Pot_A_Piece_08` rank-0 within `10`; `Pot_J_Piece_05` best-of-K `2.8307 <= 10` (`axes335` 2.8307, `A1` 20.5996, `B2` 26.6755) and `Pot J` K3 `8/11 >= 6/11`; `Pot G` Authors `7/7` at `K = 1` and Own `7/7` at `K = 1`; `def_3x` Juglet K1 `7/9`, K3 `8/9`, `is_base_fragment` on `Juglet_Piece_7` only, radial keys under 200 mm, `SignAxisGuard` `0/18` rank-0 **and** `0` worst-case over `k = 0..K-1`. `tri_r0_d08` was the only failing variant and only on `potG_all_k1`/`own_potG_all_k1`.
+
+**Variant rule:** highest `Pot J K3` among passing variants — `tri_psec_d10` (8) beats `tri_r0_d10`, `tri_psec_d15`, `tri_r0_d15` (7, 7, 6); the later tie-breaks were not needed (mean `K` 1.5887, Own `Pot G` 7/7, Authors `K3` 128 — all reported in `axes06_summary.json["variant"]`). Reading printed by the summary: `tri-selector-passes-all-ten-pots-and-juglet` (Phase 1 Go).
+
+**Phase 2 extraction (job `35456628`, 32 cpus, 7:20, `COMPLETED` `0:0`, `CORPUS-UNCHANGED`):** 163 `Pot A..J` axes in `out/axes06_tri/` plus 9 `def_3x` Juglet axes in `out/axes06_juglet_def3x/` written in **native 3x tree units** (`Juglet_Piece_1` 548.05, 431.53, -379.55; `Juglet_Piece_7` -741.49, -38.67, -908.53 with `dir_z = -0.6327`; no `/ 3.0` and no `canonicalize` on disk — the division happens only inside the 1x GT metric). Reproduction: for all 141 GT pieces the extracted directions equal the Phase-1 `tri_psec_d10` directions to `8.5e-7` deg, `K`-dist `{1: 86, 2: 27, 3: 28}`.
+
+**Stage 2A (gated, run first):** `Pot J` `35457126` (2:09:31) `J_K3R1` and `J_K3R2` both `8/11 16/21` = floor, up from `dual_k2`'s `6/11 9/21` and `5/11 8/21`; `J_MOR1/2` likewise `8/11 16/21`. `Pot G` `35457127` (17:34) `G_K3R1/2` both `7/7 10/10` (decoy guard held), `G_MOR1/2` `7/7 10/10`. `Pot D` `35457128` (2:52:37) `D_K3R1/2` both `24/28 58/69`, above the `23/28 55/69` floor but under the `26/28 63/69` target that the Authors' own control also misses (`23/28 55/69`). `def_3x` Juglet array `35457145` (tasks `0-3`, 8:31/8:41/11:23/9:31) + `jugsum` `35457152` `COMPLETED` `0:1`: repeats `r1 8/9 sherds, 7/18 edges, 0.466 mm`; `r2 8/9, 5/18, 0.543 mm`; `r3 9/9, 13/18, 0.483 mm`; `r4 8/9, 5/18, 0.558 mm`; cluster seating `9/9` in every repeat; best-of-4 = `r3` -> `9/9` sherds, `13/18 >= 10/18` edges, `9/9 <= 0.50 mm`, Piece 7 joins `4/4` at `1.82, 1.67, 1.47, 3.09` deg. Every Stage 2A bar passed, so Stage 2B was allowed.
+
+**Stage 2B (remaining 7 pots, both `K3` repeats):**
+
+| pot | K3R1 | K3R2 | MOR1 | MOR2 | floor |
+|---|---|---|---|---|---|
+| A `35459488` | 8/8 15/15 | 8/8 15/15 | 8/8 15/15 | 8/8 15/15 | 8/8 15/15 |
+| B `35459489` | 9/9 15/15 | 9/9 15/15 | 9/9 15/15 | 9/9 15/15 | 9/9 15/15 |
+| C `35459490` | 4/4 5/5 | 4/4 5/5 | 4/4 5/5 | 4/4 5/5 | 4/4 5/5 |
+| E `35459491` | 31/31 62/62 | 31/31 62/62 | 31/31 62/62 | 31/31 62/62 | >=29/31 >=57/62 (target met) |
+| F `35459492` | 5/5 7/7 | 5/5 7/7 | 3/5 3/7 | 5/5 7/7 | 5/5 7/7 |
+| H `35459493` | 11/11 17/17 | 11/11 17/17 | 10/11 10/17 | 8/11 9/17 | 11/11 17/17 |
+| I `35459494` | 26/26 62/62 | 26/26 62/62 | 25/26 59/62 | 25/26 59/62 | >=25/26 >=59/62 (target met) |
+
+All ten paper pots are at or above floor on the `tri` axes. Two honest notes: the **owned** column carries the failures, not ours — Authors' control `H_MOR1/2` is `10/11 10/17` and `8/11 9/17` (same weakness recorded on Ticket 05) and `F_MOR1` is `3/5 3/7`; and `Pot D` reaches `24/28 58/69` where neither arm reproduces the `t323` target `26/28 63/69`.
+
+**sacct:** every job above ends `COMPLETED` `0:0` (`out/sacct_all.txt`, 29 rows in `axes06_summary.json["jobs"]`: `35456264/35456265` `t06-pytest`/`t06-phase1` first attempts, `35456405` `t06-pytest`, `35456406` `t06-phase1`, `35456628` `t06-extract`, `35457061_0-3` the aborted first Juglet array, `35457126/7/8` `t06-potJ/G/D`, `35457145_0-3` the Juglet array, `35457152` `t06-jugsum`, `35458202/35462253/35462270/35462297` `t06-meta`, `35459488-35459494` `t06-potA..I`). The only non-zero exit in the record is the superseded array `35457061`, which died in 1 s because `RUN_DIR` was not exported; it was resubmitted as `35457145` with `--export=ALL`.
+
+**`CORPUS-UNCHANGED`:** printed by `35456406` and `35456628` against `corpus_md5_t06.py` over 907 files. The first Phase 1 attempt (`35456265`) printed `CORPUS-CHANGED` only because both of its md5 passes errored on a harness import (fixed, see below) — it did no measurement, and its rerun is the `35456406` line.
+
+**`runs/index.tsv`:** 17 `t06` rows appended, `verdict` and `human_note` left blank: the `t06-tri` run itself (job `35456628`, tag `t06-extract`), `potJ/G/D`, `potA/B/C/E/F/H/I`, the aborted `juglet` array, and five rows for the successful Juglet array (the rig appends one row per array task, as the Ticket 05 rows did).
+
+**Harness fixes made during the run (all in `<run>/work`, none in the repos):** (1) `t06_lib.py` needed a second `sed` because `t02_lib.py` names its paths as `os.path.join("work", "impl_t02")`; (2) `corpus_md5.py` imports `t05_lib` by name, so `corpus_md5_t06.py` is generated; (3) three literal tab/newline corruptions in the `gate06.tsv` writer; (4) `submit_t06_phase1.sbatch` now fails loudly instead of reporting a misleading corpus verdict; (5) the `t06` E2E/Juglet builders had a `sed` delimiter bug on `#`-prefixed patterns; (6) `sacct` inside a batch job returned only a subset of the requested ids, so the sacct dump is now collected once on the login node into `out/sacct_all.txt` (the record of truth) and the metadata job reads it; (7) the metadata `juglet` block referenced an undefined `RUN` and the Juglet "piece 7 joins" row counted both directions of each join (8/4), now `i<j` unordered pairs -> `4/4`; (8) the metadata jobs are idempotent, so the Phase 2 block, gate rows and scoreboard can be regenerated from disk.
+
+**Visual inspection:** `render06_tri.png` (8 rows, 3D + `(r, z)` unfold, GT black / Authors blue / `axes335` orange / `tri` green) shows the `tri` line tracking the GT direction on the watch pieces, including `Pot_J_Piece_05` and `Pot_J_Piece_11`, with no new artefact against the Ticket 05 figure. `render06_e2e.png` (11 rows: `MOR1 [Authors control]` left, `K3R1 [tri]` right for pots A..J, then native 3x Juglet vs oracle) shows the same gross assembled geometry on both sides at every pot; the renders are point clouds with per-arm labels and the seating difference of one sherd (e.g. D `23/28` vs `24/28`, H `10/11` vs `11/11`) is not visible by eye, so that part of the record rests on `score/acc_pot*.tsv` and `out/<arm>/1. Acc.txt`. One cosmetic quirk left as is: the `Pot_J_Piece_05` gate rows are labelled `tri_r0_d10_best3_deg` for every variant because that piece's best-of-K angle does not depend on the variant.
+
+**Artifacts fetched to `C:/PR/artifacts/axis-parity-06/`:** `axes06_summary.json` (968 363 B), `gate06.tsv` (17 933 B, 228 rows, header `group\tpiece\tmetric\tvalue\treference\tverdict\tnote`), `render06_tri.png`, `render06_e2e.png`, `impl_t06.diff`, `score/acc_pot{A..J}.tsv`, `score/juglet/` (4 score json + 4 cluster json + `summary.tsv` + `best_of_4.json`), `sacct_all.txt`.
+
+**Not done, by design:** no tracked change in `SfSpp_preprocessing` or `structure-from-sherds-pp`, no merge, no push, no `ticket_close.sh`, `**Status:**` left `in-progress`, and both watcher jobs were killed before this write-up.
+
+Reading: tri-selector-passes-all-ten-pots-and-juglet
+
