@@ -6,10 +6,9 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 01 resolved at `62ff33c`)
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-20)
+**Status:** resolved
 **Branch:** 02-joint-normal-profile-axis-refiner, in /c/PR/worktrees/sfs/02
-**Worker:** unassigned
+**Worker:** DeepSeek -- dsh one-shot subagent w02-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-02/accept.py` to be staged before dispatch
 
@@ -296,4 +295,12 @@ Panels: `Pot_A_Piece_07` (57 mm), `Pot_A_Piece_06` (131 mm), `Pot_E_Piece_29` (6
 Reading: cost-landscape-ablation-partial-no-e2e
 
 **End state:** ready
+
+### Lead verification (2026-11-20)
+
+- `verified:` `python C:/PR/artifacts/dsh-handover/axis-parity-02/accept.py` -> `ACCEPTANCE PASSED (reading=cost-landscape-ablation-partial-no-e2e)`.
+- `verified:` `ssh spartan` `sacct -X` -> `35432092` (`00:03:43`), `35433021` (`00:16:27`), `35435516` (`01:20:56`), `35440806` (`00:00:14`), `35441467` (`00:00:11`) all `COMPLETED 0:0`; `CORPUS-UNCHANGED` logged in `35432092` and `35435516`; `runs/index.tsv` rows appended; `squeue -u zhuojiat` has zero `t02-*` jobs; no Phase 2 jobs submitted.
+- `verified:` `C:/PR/artifacts/axis-parity-02/axes02_summary.json` -> `arm_d_unified` failed Part A gate (`92/141 K1`, `94/141 K3`, median `3.995°`, `d_gt_to_est` `5.6613 mm`, `Pot_A_Piece_08 = 15.4651°`, `4/11` bars; Juglet `/ 3.0`: `7/9 K1/K3`, `pairs_gt_90 = 0/18`, `Juglet_Piece_7` only base); `arm_a1` alone hit `110/141 K1`, `113/141 K3`, `2.7054°`, `d_gt_to_est = 4.3383 mm`, `Pot A 2.4733 mm`, `Pot_A_Piece_08 = 4.741°`, `6/8` K3 losses recovered (`Pot_A_Piece_07`, `Pot_D_Piece_23`, `Pot_E_Piece_29`, `Pot_F_Piece_05`, `Pot_I_Piece_20`, `Pot_J_Piece_02`), and on Own surfaces `116/141 K1`, `117/141 K3`, `2.5631°`, `3.7781 mm`; lead complementarity check over `axes02_summary.json` `_rows` shows `min(A1_r0, B2_r0) <= 10°` reaches `126/141` (`89.4%`) on Authors' surfaces and `125/141` (`88.7%`) on Own surfaces with `7/8` K3 recoveries (`A07, D23, E29, E31, F05, I20, J02`) and `Pot G 7/7` at `K = 1` in both arms.
+- `verified:` visual inspection of `C:/PR/artifacts/axis-parity-02/render02_landscape.png` -> confirms Arm D (green) moves closer to GT only on `Pot_A_Piece_07` and tracks near `Pot_E_Piece_29`, while regressing in unfolded azimuth on `Pot_J_Piece_07` (`+340..+560 mm`), `Pot_G_Piece_03`, and `Pot_A_Piece_08` (`15.47°`).
+
 
