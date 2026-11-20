@@ -121,7 +121,138 @@ Ticket 02 (`20261120-1430_9e0fe6a_t02-cost-landscape`) proved:
 
 ## Acceptance
 
-- [ ] Zero tracked source edits (`git diff origin/main --name-only` touches only this ticket); `<run>/work/impl_t05.diff` cleanly applies over `9e0fe6a` (`git apply --ignore-whitespace --check`) and unit tests pass (`>= 42` existing + new `tests/test_t05_dual.py` checks).
-- [ ] Phase 1 benchmarks `dual_k2` and `dual_k3` on `141` GT pieces (Authors' & Own surfaces, both `d_gt_to_est` and `d_est_to_gt`, `Pot G 7/7 K=1` check) AND `def_3x` Juglet (`arm_a1`, `arm_b2`, `dual_k2`, `dual_k3`, `/ 3.0` on estimate only, `0/18 SignAxisGuard`, `Juglet_Piece_7` only base), with `sacct -X COMPLETED 0:0` and `CORPUS-UNCHANGED`.
-- [ ] Phase 1 Go/No-Go gate enforced cleanly: when Phase 1 passes EVERY Part A bar, Phase 2 full `163`-piece + `9`-piece Juglet extraction and `10`-pot (`Pot A..J`) + `def_3x` Juglet E2E assembly complete (`COMPLETED 0:0`, `CORPUS-UNCHANGED`, `runs/index.tsv` appended); otherwise Phase 1 early-stop is documented with zero Phase 2 spend.
-- [ ] `C:/PR/artifacts/axis-parity-05/{axes05_summary.json,gate05.tsv,render05_dual.png,impl_t05.diff}` (plus `render05_tenpots.png` & `score/acc_pot{A..J}.tsv` + `score/juglet/` when Phase 2 runs) fetched locally and visually inspected before writing bare `Reading:` and `**End state:** ready`.
+- [x] Zero tracked source edits (`git diff origin/main --name-only` touches only this ticket); `<run>/work/impl_t05.diff` cleanly applies over `9e0fe6a` (`git apply --ignore-whitespace --check`) and unit tests pass (`>= 42` existing + new `tests/test_t05_dual.py` checks).
+- [x] Phase 1 benchmarks `dual_k2` and `dual_k3` on `141` GT pieces (Authors' & Own surfaces, both `d_gt_to_est` and `d_est_to_gt`, `Pot G 7/7 K=1` check) AND `def_3x` Juglet (`arm_a1`, `arm_b2`, `dual_k2`, `dual_k3`, `/ 3.0` on estimate only, `0/18 SignAxisGuard`, `Juglet_Piece_7` only base), with `sacct -X COMPLETED 0:0` and `CORPUS-UNCHANGED`.
+- [x] Phase 1 Go/No-Go gate enforced cleanly: when Phase 1 passes EVERY Part A bar, Phase 2 full `163`-piece + `9`-piece Juglet extraction and `10`-pot (`Pot A..J`) + `def_3x` Juglet E2E assembly complete (`COMPLETED 0:0`, `CORPUS-UNCHANGED`, `runs/index.tsv` appended); otherwise Phase 1 early-stop is documented with zero Phase 2 spend.
+- [x] `C:/PR/artifacts/axis-parity-05/{axes05_summary.json,gate05.tsv,render05_dual.png,impl_t05.diff}` (plus `render05_tenpots.png` & `score/acc_pot{A..J}.tsv` + `score/juglet/` when Phase 2 runs) fetched locally and visually inspected before writing bare `Reading:` and `**End state:** ready`.
+---
+## Comments
+
+**Worker:** DeepSeek (`dsh` one-shot subagent `w05-axis-parity`), 2026-11-20 → 2026-11-21 (Australia/Sydney). Prototype only: no tracked file in `C:/PR/SfSpp_preprocessing` or `C:/PR/structure-from-sherds-pp` was edited; `git diff origin/main --name-only` in `C:/PR/worktrees/sfs/05` prints this ticket and nothing else. A first write-up of this ticket (commits `76fca55` / `8b2b1f9`) had two defects that this revision fixes: it inverted the two arm pairs, and it wrote the `def_3x` Juglet axes at `1/3` scale. Both are corrected below, with the jobs that prove it.
+
+### Runs
+
+| what | run dir | jobs | `sacct -X` |
+|---|---|---|---|
+| prototype, Phase 1, Phase 2 extraction, scoring/render, metadata | `/data/gpfs/projects/punim2657/SfSpp/runs/20261120-2135_9e0fe6a_t05-dual-a1-b2` | 35448549 (bench), 35449224 (extract), 35450477 (assemble), 35450478 (corpus), 35452288 `/` 35452309 `/` 35452353 `/` 35454485 (renders), 35452596 (pytest), 35453049 (Juglet re-extraction), 35454552 `/` 35454569 (metadata), 35454806 (fresh Juglet summary); aux: 35448730 (corpus md5), 35448991 `/` 35449129 `/` 35449425 `/` 35449559 (smoke `/` probe), 35448758 `/` 35449321-35449330 `/` 35449423 (cancelled before start), 35454794 (jugsum attempt, `$n_cluster` unbound-variable typo, superseded by 35454806) | all `COMPLETED 0:0` except the labelled cancellations and 35448991 / 35454794 `FAILED` |
+| ten pot E2E clones | `/data/gpfs/projects/punim2657/SfSpp/runs/20261120-2135_9e0fe6a_t05-pot{A..J}` | 35449734 A, 35449735 B, 35449736 C, 35450287 D, 35450288 E, 35449739 F, 35449740 G, 35449741 H, 35450471 I, 35449743 J | all `COMPLETED 0:0` |
+| `def_3x` Juglet E2E, 4 repeats | `/data/gpfs/projects/punim2657/SfSpp/runs/20261120-1106_9e0fe6a_t05-juglet` | 35449331 `_0.._3` (v1: `1/3`-scale axes), 35453073 `_0.._3` (native axes) | all `COMPLETED 0:0` |
+
+`sacct -X` (elapsed): potA 00:51:47, potB 00:59:24, potC 00:03:55, potD 01:47:50, potE 01:17:08, potF 00:05:58, potG 00:04:59, potH 01:56:15, potI 01:02:27, potJ 00:37:27; Juglet v1 00:03:00 / 00:03:04 / 00:02:46 / 00:02:57, native 00:08:28 / 00:12:44 / 00:08:45 / 00:09:27; Phase 1 00:07:53; extraction 00:03:41; assembler 00:00:49; corpus 00:00:25; Juglet re-extraction 00:01:09. The ten pots were first submitted at 48 cpus/160G/4h (35449321-35449330) and reported `PENDING Reason=Priority` with a 2026-11-21 09:15-22:00 start estimate on a saturated partition; they were cancelled before any arm started and resubmitted at 16 cpus/32G/8h. D, E and I were then cancelled again after 17-22 min (before any arm finished) and run at 32 cpus/64G because the 16-cpu rate was 3.6-7.1x the `t319` 48-cpu baseline and would have hit the wall limit.
+
+**Corpus proof, Phase 1.** Job 35448549's own md5 step did not run: `corpus_md5.py` still imported `t02_lib`, so `logs/phase1-35448549.log:7,19,20` read `MD5-BEFORE-FAILED` / `MD5-AFTER-FAILED` / `CORPUS-CHANGED` (an empty-vs-empty comparison, not a change on disk). The Phase 1 corpus proof is therefore the separate job **35448730**: `logs/md5-35448730.log:2` reads `CORPUS-UNCHANGED (matches t02 out/corpus_before.md5)` over 907 files. The import was then fixed to `import t05_lib as dl` and the Phase 2 job 35450478 re-ran the check end to end inside the job that mattered (`CORPUS-UNCHANGED`, `SAME-AS-PHASE1`), and 35453049 did the same after the Juglet re-extraction (`out/corpus_jugax.md5`, `CORPUS-UNCHANGED`).
+
+The test suite was re-run inside a batch job on 2026-11-21 (`35452596`, 1 cpu, `00:00:34`): `t05-pytest-35452596.log` carries `71 passed, 1 warning in 30.97s`, `PYTEST-EXIT=0`.
+
+Each run dir keeps `submit.sbatch.48cpu.bak` / `.16cpu.bak`; `run.json` carries the resubmit note; `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv` (904 lines) has one row per submit: 24 rows for this run (lines 873-899 and 904, the last being `35453049` `t05-jugax`) and four for the Juglet run (lines 900-903, `35453073`), `verdict` and `human_note` blank.
+
+### Phase 1 — Part A gate: every bar PASS, GO
+
+`dual_k2` on Authors' surfaces, 141 GT pieces (bar → measured):
+
+| bar | required | `dual_k2` | verdict |
+|---|---|---|---|
+| `K1 <= 10°` | `>= 109/141` | `110/141` | PASS |
+| `K3 <= 10°` | `>= 121/141` | `121/141` | PASS |
+| median rank-0 | `<= 2.78°` | `2.7054°` | PASS |
+| `d_gt_to_est` median | `<= 4.38 mm` | `4.3383 mm` | PASS |
+| `d_est_to_gt` median | (reported) | `9.9252 mm` | — |
+| Pot A `d_gt_to_est` | `<= 3.5 mm` | `2.4733 mm` | PASS |
+| `Pot_A_Piece_08` rank-0 | `<= 10°` | `4.741°` | PASS |
+| Pot G | `7/7` at `K = 1` | `7/7` (`K-dist {1: 7}`) | PASS |
+| K3 recoveries of the 8 Ticket 01 losses | `>= 4/8` | `7/8` (`A_Piece_07, D_Piece_23, E_Piece_29, E_Piece_31, F_Piece_05, I_Piece_20, J_Piece_02`; `E_Piece_25` missed) | PASS |
+| `def_3x` Juglet `K1` / `K3` | `>= 7/9` / `>= 8/9` | `7/9` / `8/9` | PASS |
+| Juglet base / `SignAxisGuard` | piece 7 only / `0/18` | piece 7 only / rank-0 `0/18`, worst over candidates `0` | PASS |
+
+Own surfaces are better, not worse: `K1 116/141`, `K3 122/141`, `2.5631°`, `3.7781 mm`, Pot A `2.6369 mm`, Pot G `7/7`. Standalone `arm_a1` is `110/113` (K1/K3) on Authors and `116/117` on Own; `arm_b2` is `112/116` and `112/116`, and on Own it fails Pot A (`6.1642 mm`) and Pot G (`6/7`). `dual_k3` gives the same Authors `K3 121/141` and Juglet `8/9` as `dual_k2` but fails Own Pot G (`6/7`) and its `SignAxisGuard` worst case is `2` (versus `0`). **Variant rule → `dual_k2`** (`k3_gain = 0`, `juglet_k3_gain = 0`, `hold_potG_meanK = True`). Mechanically, `dual_k2`'s rank-0 is always `arm_a1`'s rank-0 (its `K1` equals `a1` on every surface); the `+8` Authors `K3` and `+1` Juglet `K3` over `arm_a1` come only from appending `arm_b2`'s rank-0 whenever it sits `>= 15°` away. `gate05.tsv` now has 131 data rows under its header (`wc -l` = 132: 107 Phase 1 + 24 Phase 2). Every Phase 1 gate row (lines 1-107) is PASS for both variants; line 108 is the summary row `gate variant winner dual_k2`, which carries verdict `-` by construction rather than PASS.
+
+### Phase 2 — extraction reproduces Part A; nine of ten pots pass on our arms
+
+The fresh-pool extraction (job 35449224, `--seeds 10 --step 10`, Authors' `Surfaces/`, no `canonicalize()`) wrote 163 `out/axes05_dual/*.xyz` and, in `out/axes05_juglet_def3x/`, 18 `*.xyz` (9 native + 9 `Pot_JUGLET_` aliases) plus `metrics_juglet_native.json`, with 0 zero-byte files; 172/172 piece-surface runs ok. Recomputed from `out/axes05_extract_metrics.json`, `dual_k2` reproduces the Phase 1 bars exactly: `K1 110`, `K3 121`, median `2.705°`, `d_gt_to_est 4.3383 mm`, Pot A `2.4733 mm`, Pot G `7/7` at `K = 1`, K3 recoveries `7/8`, `Pot_A_Piece_08 4.741°`.
+
+**Arm mapping — the correction.** In each `<run>/submit.sbatch`, `stage_arm "${POT}_MO" "MO" "$AX_MO"` with `AX_MO=/data/gpfs/projects/punim2657/sfs_main/original_samples/SfS_pp/Axes` stages `<P>_MOR1/2` from the **authors' released axes** (the control), and `stage_arm "${POT}_K3" "MM" "$WORK/axes_k3"` stages `<P>_K3R1/2` from the **first three lines of `out/axes05_dual`**, i.e. our `dual_k2` top-3 candidates. The first write-up had these the wrong way round; the table below is scored on the corrected reading, with our arms in bold:
+
+| pot | floor | target | `_MOR1` (authors) | `_MOR2` (authors) | `_K3R1` (ours) | `_K3R2` (ours) | verdict on ours |
+|---|---|---|---|---|---|---|---|
+| A | `8/8 15/15` | same | `8/8 15/15` | `8/8 15/15` | **`8/8 15/15`** | **`8/8 15/15`** | floor met |
+| B | `9/9 15/15` | same | `9/9 15/15` | `9/9 15/15` | **`9/9 15/15`** | **`9/9 15/15`** | floor met |
+| C | `4/4 5/5` | same | `4/4 5/5` | `4/4 5/5` | **`4/4 5/5`** | **`4/4 5/5`** | floor met |
+| D | `>=23/28 55/69` | `26/28 63/69` | `23/28 55/69` | `22/28 53/69` | **`25/28 60/69`** | **`24/28 58/69`** | floor met, target not reached (authors' second repeat is under floor) |
+| E | `>=29/31 57/62` | `31/31 62/62` | `31/31 62/62` | `31/31 62/62` | **`31/31 62/62`** | **`31/31 62/62`** | target met |
+| F | `5/5 7/7` | same | `5/5 7/7` | `5/5 7/7` | **`5/5 7/7`** | **`5/5 7/7`** | floor met |
+| G | `7/7 10/10` | same | `7/7 10/10` | `7/7 10/10` | **`7/7 10/10`** | **`7/7 10/10`** | floor met |
+| H | `11/11 17/17` | same | `10/11 10/17` | `10/11 10/17` | **`11/11 17/17`** | **`11/11 17/17`** | floor met (authors' control is under on both repeats) |
+| I | `>=25/26 59/62` | `26/26 62/62` | `25/26 59/62` | `25/26 59/62` | **`26/26 62/62`** | **`26/26 62/62`** | target met, one sherd above the authors' control |
+| J | `>=8/11 16/21` | — | `8/11 16/21` | `8/11 16/21` | **`6/11 9/21`** | **`5/11 8/21`** | **UNDER floor**: two to three sherds and seven to eight edges lost |
+
+So the selector passes **9 of 10 pots**: A, B, C, D, E, F, G, H, I are at or above the `t323` floor on both of our repeats, with D and I above the authors' control and E and I at the target. **Pot J is the single regression** (`6/11 9/21` and `5/11 8/21` against `>=8/11 >=16/21`), while the authors' control holds the floor on J. The failures of the *control* (D repeat 2, both H repeats) are not ours and should not be read as ours — the earlier write-up made exactly that mistake.
+
+### `def_3x` Juglet — the `1/3`-scale write bug, and the native re-run
+
+The first Juglet result (`0/9` sherds, strict edges `0/36`, `cluster_len 4`, `0.375 mm`) was **a writing defect, not an axis result**. `work/t05_extract.py` `write_lines(path, lines, scale)` did `v[3:6] = v[3:6] / scale` and was called with `scale = dl.JUG_ROWS = 3.0` for Juglet stems, so `out/axes05_juglet_def3x/Juglet_Piece_1_Axis.xyz` held `182.68286090210461 143.84256528254906 -126.51694152319885 ...` (`1x`) while the `3x` bundle's oracle axis for the same piece is `551.711733859134 445.394427177426 -402.159848010588 ...`. Every Juglet axis sat 360-900 tree units off its sherd. The `/ 3.0` is correct **only inside the `1x` GT comparison**, never for the `.xyz` on disk.
+
+Fixed in `work/t05_extract_juglet.py`: `write_native(path, lines)` writes `[v[3:6], v[0:3]]` with no division, and the division by `dl.JUG_ROWS` happens only in the GT metric. Job **35453049** (`t05-jugax`, `COMPLETED 0:0`, `00:01:09`) wrote the 9 native axes plus the 9 `Pot_JUGLET_Piece_0N_Axis.xyz` aliases and printed `CORPUS-UNCHANGED`; `Juglet_Piece_1` position `548.049, 431.528, -379.551` matches the `t367` shipped-base reference `548.74, 432.95, -382.10`, and `Juglet_Piece_7` keeps its base upright: position `-741.489, -38.668, -908.529`, direction z component `-0.6327` (so `dir_z < 0`, not canonicalized), `is_base = True`.
+
+The staged bundle was renamed (never deleted) to `bundle_v1x_badaxes` and restaged, then array **35453073** ran the four repeats on the exact `t363` container and floor-10 shim (`0c216463ae27fe4571b200cc2292da99`, `XY_BREAK=1`, `XY_STATE=1`, `SFS_AXIS_SIGN=1`, `SFS_AXIS_LOCK_ICP` unset). All four `COMPLETED 0:0`:
+
+| repeat | engine sherds | engine edges | `cluster_len` / seated | max chamfer | members `<= 0.50 mm` | `score58` strict edges | P7 joins |
+|---|---|---|---|---|---|---|---|
+| `r1` | `9/9` | `11/18` | `9 / 9` | `0.477 mm` | `9/9` | `5/36` | `4/4` under `5°` |
+| `r2` | `9/9` | `13/18` | `9 / 9` | `0.465 mm` | `9/9` | `3/36` | `4/4` under `5°` |
+| `r3` | `9/9` | `11/18` | `9 / 9` | `0.477 mm` | `9/9` | `5/36` | `4/4` under `5°` |
+| `r4` | `9/9` | `11/18` | `9 / 9` | `0.477 mm` | `9/9` | `5/36` | `4/4` under `5°` |
+
+**Bar: met.** `9/9` sherds (best of 4, in fact all four), `>= 10/18` edges (`11-13`), `9/9` cluster members at `<= 0.50 mm` (`0.465-0.477 mm`), `4/4` Piece 7 joins (`3-7`, `6-7`, `7-8`, `7-9`). The four joins carry angles `1.79°` (`6-7`), `1.92°` (`7-8`), `2.76°` (`3-7`) and `3.05°` (`7-9`), all inside the `5°` strict angle; `score58` still flags them `strict=false` because its mm column reads the `3x` tree units with a long lever arm (`45-81` units), and it has no `--scale` option — that is a measurement limitation of the scorer, not a join failure, and it is the one thing the next ticket should add to `score58`. The oracle control (job 35449559, same container and shim) reaches `9/9` at `0.459 mm`, so our native axes are `0.018 mm` behind the oracle on this statistic; the earlier "axes are the limiter" conclusion was an artefact of the `1/3`-scale write.
+
+Local `score/juglet/` was refreshed after the native run: `score_juglet_own_xy_r{1..4}_cluster.json` now read `cluster_len 9` / `0.465-0.477 mm` and `summary.tsv` comes from `sum_t05_juglet.py` reading those native per-arm JSONs (job 35454806). The previous `1/3`-scale copies (cluster `4`, `0.375 mm`) are kept under `score/juglet/v1_1x_scale/` so the two cannot be confused.
+
+### Visual inspection
+
+`C:/PR/artifacts/axis-parity-05/render05_dual.png` (Phase 1, 8 panels, inspected 2026-11-20): green (`dual_k2`) tracks blue (Authors) because rank-0 *is* `arm_a1`'s line, and both follow GT; `Pot_E_Piece_31` and `Pot_J_Piece_02` show the two-line pairs where `arm_b2` disagrees with `arm_a1`.
+
+`C:/PR/artifacts/axis-parity-05/render05_tenpots.png` (Phase 2, 11 rows: Pot A-J with `MOR1` [Authors control] left vs `K3R1` [`dual_k2`] right, row 11 the Juglet ours vs oracle; md5 `5deb86fca3996656a081b78361afdb2a`, 947150 B, inspected 2026-11-21 02:19):
+
+- **A, B, F, G** assemble as recognisable open vessels in both columns; on A the small detached sherd below the body appears in both, and the engine still counts `8/8`, so it is seated on a join the vertex scatter cannot show.
+- **C, D, E, I** are dense multi-piece bodies; D and E read as closed cylinders with a rim ring, matching `25-31` seated pieces.
+- **H** is the clearest pair in the figure: the left (authors' control, `10/11`, `10/17`) shows rim pieces splayed off the dome, the right (ours, `11/11`, `17/17`) has them drawn in — the seven-edge gap seen from outside.
+- **J** is the reverse and the one real loss: the right (ours, `6/11`, `9/21`) is visibly looser at the rim than the left (authors' control, `8/11`, `16/21`).
+- **Juglet row**: both columns now show a compact seated sherd group — ours (`9/9` sherds, `cluster 9/9` at `0.477 mm`) with slightly more splay at the rim than the oracle (`9/9` at `0.459 mm`). The pieces are in the right places; the difference is sub-half-millimetre seating.
+
+### Verified
+
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:19 -> authors dual_k2_k3 = 121/141 (reference 121/141, PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:20 -> authors dual_k2_median_deg = 2.7054 (reference 2.78, PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:23 -> authors Pot_A dual_k2 = 2.4733 mm (reference 3.5, PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:24 -> authors Pot_G dual_k2_all_k1 = 7/7 (K-dist {1: 7})`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:75 -> juglet dual_k2_k3 = 8/9 (reference 8/9, PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:77 -> juglet dual_k2_pairs_gt_90 = 0/18 (worst over candidates 0)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:127 -> phase2_potJ J_K3R1 sherd = 6/11 (reference >=8/11, FAIL)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:128 -> phase2_potJ J_K3R1 edge = 9/21 (reference >=16/21, FAIL)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:129 -> phase2_juglet sherds = 9/9 (reference 9/9, PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:131 -> phase2_juglet cluster_members_le_0.50mm = 9/9 max 0.477 mm (PASS)`
+- `verified: C:/PR/artifacts/axis-parity-05/gate05.tsv:132 -> phase2_juglet piece7_joins_deg = 4/4 under 5 deg (1.79, 1.92, 2.76, 3.05)`
+- `verified: C:/PR/artifacts/axis-parity-05/score/acc_potH.tsv:4 -> H_MOR1 = 10/11 sherds, 10/17 edges (authors' control, under floor); :2 -> H_K3R1 = 11/11 17/17`
+- `verified: C:/PR/artifacts/axis-parity-05/score/acc_potD.tsv:5 -> D_MOR2 = 22/28 sherds, 53/69 edges (authors' control, under floor); :2 -> D_K3R1 = 25/28 60/69`
+- `verified: C:/PR/artifacts/axis-parity-05/score/acc_potI.tsv:2 -> I_K3R1 = 26/26 sherds, 62/62 edges (target met)`
+- `verified: C:/PR/artifacts/axis-parity-05/score/juglet/score_juglet_own_xy_r1_cluster.json:cluster_max_chamfer_mm -> 0.477 (cluster_len 9, cluster_seated 9)`
+- `verified: C:/PR/artifacts/axis-parity-05/score/juglet/score_juglet_own_xy_r2_cluster.json:cluster_max_chamfer_mm -> 0.465`
+- `verified: ssh spartan cat <juglet run>/logs/submit_juglet_own_xy_r1.log:74 -> "--- variant md5: 0c216463ae27fe4571b200cc2292da99"; :113-115 -> "axis lock icp: off" / "xy break normals: on" / "xy state normals: on"`
+- `verified: md5sum <juglet run>/tools/cluster366.py -> 81f347cc1f80b7b84a163337959ec073`
+- `verified: <dual run>/out/axes05_juglet_def3x/Juglet_Piece_7_Axis.xyz:1 -> "-741.48886353221042 -38.667975154179373 -908.52924608707417 0.7739... -0.6327..." (dir_z < 0 kept, base upright)`
+- `verified: C:/PR/artifacts/axis-parity-05/score/juglet/score_juglet_own_xy_r2.json:tables.per_edge -> piece-7 degs 1.79 / 1.92 / 2.76 / 3.05, all < 5; strict=false because mm 45-81 is in 3x tree units`
+- `verified: C:/PR/artifacts/axis-parity-05/logs/corpus2-35450478.out:1 -> "[md5] 907 files -> out/corpus_phase2.md5"`; `:3 -> CORPUS-UNCHANGED`; `:4 -> SAME-AS-PHASE1`
+- `verified: C:/PR/artifacts/axis-parity-05/logs/e2e_sacct.tsv -> all 10 pots + 4 Juglet tasks COMPLETED 0:0`
+- `verified: ssh spartan "grep 35453049 <runs>/index.tsv" -> "20261120-2135_9e0fe6a_t05-dual-a1-b2  35453049  9e0fe6a  t05-jugax" (verdict and human_note blank)`
+- `verified: git apply --ignore-whitespace --check -p1 C:/PR/artifacts/axis-parity-05/impl_t05.diff -> APPLY-CHECK-OK over 9e0fe6a`; the diff's `sfs_axes/t02/arms.py` has md5 `828f4a6f718c0fcb59a325451111e35f`, identical to the Ticket 02 run copy (`.../20261120-1430_9e0fe6a_t02-cost-landscape/work/impl_t02/sfs_axes/t02/arms.py`), so `arm_a1`/`arm_b2` were not forked (the file does not exist at `9e0fe6a`; the diff adds it)
+- `verified: Spartan pytest on impl_t05 -> "71 passed, 1 warning in 30.97s", exit 0 (job 35452596, COMPLETED 0:0, 00:00:34; log t05-pytest-35452596.log in the run root; 42 shipped + 13 t02 + 16 t05 tests)`
+
+### What the next ticket should carry
+
+1. **Pot J is the one pot our selector loses** (`6/11 9/21`, `5/11 8/21` vs floor `8/11 16/21`) while the authors' control holds it. The single-line path is at or above the paper on the other nine pots, so the work is the multi-candidate ranking on J, not the extractor bar.
+2. **The authors' control itself fails two pots** (D repeat 2 `22/28 53/69`, H both repeats `10/11 10/17`) — any future comparison must be arm-for-arm, and the earlier inversion of these two pairs is the reason this ticket was reopened.
+3. **`score58` needs a `--scale` option.** On the `3x` Juglet tree its mm column is three times too large, so its `seated` and `strict` flags read `0` even when `cluster366 --scale 3.0` puts all nine pieces inside `0.477 mm`. Until that is added, the Juglet bar must be read from `cluster366` plus the deg column of `score58`.
+4. **The `0.50 mm` cluster bar is reachable with our own axes** (`9/9` at `0.465-0.477 mm` against the oracle's `0.459`), so no assembly change is needed for the Juglet; the remaining gap is `0.02 mm` of axis precision at the rim.
+
+Reading: dual-selector-improves-axes-but-misses-e2e-bar
+
+**End state:** ready
