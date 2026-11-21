@@ -255,6 +255,8 @@ Counted both ways: after W1, J12.S0 exports 2376 rows of which 66 (2.8 %) are th
 
 **So the second source is not rows duplicating inside the improved cloud** (measured 0, above): it is the append's bit-exact rule at `mesh_processing_headless.cpp:1567-1570` admitting a same-position row whose single normal word is one ulp off, plus the 8-digit ASCII export at `mesh_processing_headless.cpp:5985` collapsing the pair into one line. Neither is reachable from W1-W4 without overreaching: an epsilon in the append is forbidden by W1 ("no epsilon ... a tolerance would delete real points"), and the exporter is out of scope by W4.
 
+**The gate and the unit-test case are in direct tension.** U3 (line 59) requires a source row with A's xyz and a different normal to be **appended**, and W1 fixes presence as bit equality of all six values; G2 (line 96) requires the exported file to carry no repeated 6-tuple. Both can hold only if no row's six values differ from its position twin by less than the export's printing resolution. On these two pieces they do: 66, 52, 1208 and 858 of them. So `n_dup6 == 0` is not reachable under W1/W3/U3 on this corpus, and the residual is reported rather than removed by quietly relaxing the rule.
+
 ### 7.8 Two things in §0 that this run contradicts
 
 - **"Same-xyz-different-normal rows: zero everywhere."** That is a statement about the text. In the float cloud J12.S0 holds 66 same-position rows whose normal differs by exactly one ulp (1217 on D03.S0 in the second draw); Ticket 08's scan cannot see them because the 8-digit text is identical. They are real distinct rows under the 6-float definition the ticket adopts, and they are the whole of the residual above.
@@ -288,6 +290,7 @@ Run of record: `/data/gpfs/projects/punim2657/SfSpp/runs/20261121-1121_ae7c750_t
 - An own-surface regeneration ticket: the walls now change rows, and the 111/123 becomes what future runs must match.
 - The E1 edgeline re-measure is already answered by Ticket 27 ("a storage fix, not a counting fix") and is not re-opened here.
 - If G2/G3's `n_dup6 == 0` is to be met literally, one of two out-of-scope things must change: the append rule (an epsilon, which W1 forbids) or the exporter's precision (W4 forbids touching it). A third route is a regenerated corpus whose walls are measured bit-exactly rather than through 8-digit text. That is a decision for the coordinator, not a code change this ticket may make.
+- The staged checker `C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py`, run against these artefacts, fails only on these four `n_dup6` clauses (G2 arms B, G3 arms D); every other check it makes passes.
 
 **End state:** ready
 Reading: writer-fixed-second-duplicate-found
