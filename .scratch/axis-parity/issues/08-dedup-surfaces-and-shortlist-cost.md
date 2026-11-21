@@ -142,3 +142,243 @@ Editing tracked files (the upstream generator fix is a follow-up code ticket, no
 - [ ] If Phase 3 ran: `PREREG08.md` written before the first fixed pass, `impl_t08.diff` applies cleanly over `325a0a8`, t08 unit tests pass on a Spartan compute node (record job id).
 - [ ] `sacct -X COMPLETED 0:0` for every counted job, `CORPUS-UNCHANGED`, `runs/index.tsv` rows appended.
 - [ ] Deliverables fetched, both renders inspected, no watcher left, `**End state:** ready` and one bare `Reading:`.
+
+---
+
+## Results (worker w08-axis-parity / DeepSeek, 2026-11-21)
+
+Run directory: `/data/gpfs/projects/punim2657/SfSpp/runs/20261121-2002_9884175_t08-dedup-shortlist`
+(worktree HEAD `9884175`, base `325a0a8` + `impl_t07.diff` as `work/impl_t08`; corpus never edited).
+Artifacts: `C:/PR/artifacts/axis-parity-08/`.
+
+| job | id | state | elapsed | what |
+|---|---|---|---|---|
+| t08-scan | 35471270 | COMPLETED 0:0 | 00:00:46 | phase 0 corpus scan, writer attribution, density |
+| t08-partsA | 35471377 | COMPLETED 0:0 | 00:37:47 | 600 pools + Part A passes base / dedup / fix1dedup + gate table |
+| t08-ctl | 35471521 | COMPLETED 0:0 | 00:00:07 | Authors' null control, scored on the 141 pot pieces |
+| t08-rank | 35471647 | COMPLETED 0:0 | 00:18:59 | phase 2 rank tables (raw + dedup) and renders |
+| t08-refcost | 35472535 | COMPLETED 0:0 | 00:14:10 | refined true seed vs refined rank-0 |
+| t08-gates2 | 35472793 | COMPLETED 0:0 | 00:09:29 | shortlist gate ablation + (r,z) collapse |
+| t08-render2 | 35472813 | COMPLETED 0:0 | 00:14:55 | re-render with the unsigned-angle x axis |
+| t08-screen | 35472977 | COMPLETED 0:0 | 00:24:20 | per-wall cost-combination screen |
+
+Four attempts failed and are kept in the ledger: 35472454 (sbatch options after the script path, so
+`/work/t08_render.py` not found), 35472490 (render, TIMEOUT at 10 min with a 1-cpu request),
+35472491 (6-vector into `direction_angle_deg`), 35472826 (`KeyError` in my screening print). None of
+them produced a number used below. `CORPUS-UNCHANGED` was re-proved on 907 files before/after every
+counted job; `sacct_all.txt` holds the twelve rows.
+
+### Answer 1 - the duplicate defect, where it is written, and the dedup delta
+
+Coverage: 596 walls = 296 own (148 pieces x 2) + 282 Authors' (141 x 2) + 18 Juglet (9 x 2).
+The ticket's "163" is the Authors' corpus tree (326 files = 163 pieces); our own `geom` directories
+hold 148 pieces, so the own scan is 148 x 2, and 141 of them carry GT axes.
+
+Reproduction first: **Pot_J_Piece_12 own S0 4279 rows / 2351 unique (45.06 %), S1 4842 / 2590
+(46.51 %)**, full-row duplicates equal xyz duplicates - exactly the lead's number.
+
+| set | walls | rows | unique 6-vectors | dup frac | same xyz, diff normal |
+|---|---|---|---|---|---|
+| own | 296 | 8 711 828 | 4 503 780 | 0.4830 | 0 |
+| Authors' | 282 | 2 511 886 | 2 511 886 | 0.0000 | 0 |
+| Juglet | 18 | 591 299 | 334 371 | 0.4345 | 0 |
+
+**Structure:** on 144 of the 148 own pieces (both surfaces) the duplicate block is one contiguous
+**suffix**: the file is a fully unique prefix followed by a second copy of rows already in it
+(`tail_start == n_unique_full6`, `tail_rows_not_in_head == 0`; e.g. Pot_A_Piece_01 own S0 66 763 rows,
+33 988 unique, 32 775 trailing rows all already present). Eight own walls deviate (8 of 296): 1-7 stray boundary
+rows on Pot_C_Piece_01.S1 (5), Pot_C_Piece_02.S0 (7), Pot_D_Piece_04.S0 (1), Pot_D_Piece_08.S1 (4),
+Pot_E_Piece_18.S0 (1), Pot_H_Piece_01.S1 (1), and two real exceptions where the second copy is not a
+pure suffix - Pot_D_Piece_03.S0 (103 177 rows / 53 134 unique, `tail_start` 51 434, 1 700 trailing
+rows not in the head) and Pot_J_Piece_01.S1 (79 624 / 42 128, `tail_start` 39 760, 2 368 not in the
+head). The Juglet geometry shows the same defect on 18 of 18 walls, with both Juglet_Piece_1 walls
+deviating the same way (S0 80 440 / 53 933, `tail_start` 30 483, 23 450 not in the head; S1 113 199 /
+72 648, 29 779 not in the head).
+
+**Writer:** the suffix second copy is `finishImprovedSurface`'s unconditional re-append of the whole
+`segmentedSurfacePointCloud` - `mesh_processing_headless.cpp:1568-1578`, the `push_back` at
+**`mesh_processing_headless.cpp:1577`** - fed by the per-mesh-point admission loop at
+`mesh_processing_headless.cpp:3237-3257` (`push_back` at :3245 for `angleDiff > 140`, at :3257 for
+`angleDiff < 40`). A point admitted at :3245 whose xyz equals its row in
+`segmentedSurfacePointCloud` is therefore written twice with the identical 6-vector. The existing
+TICKET 27 dedup block (`mesh_processing_headless.cpp:1584-1621`, logs `[DEDUPE-27]`) assigns its
+result only when `g_dedupeOn27` is set and **is off by default**, and it compares xyz only. Export
+path: `savePLYFile` at :6014-6015, copied to `<stem>_Surface_0/1.ply` and converted at :6788-6802.
+Removing the duplicate cannot change the surface - the row is bitwise identical. **Follow-up code
+ticket needed:** delete the re-append at :1577 (or make the admission loop skip points already in
+`segmentedSurfacePointCloud`) and turn the DEDUPE-27 comparison into the full 6-vector.
+
+**Residual density** (after dedup, `axes08_density.tsv`): own walls are still 1.23-1.83x the Authors'
+count (median count ratio A 1.79 B 1.79 C 1.75 D 1.57 E 1.79 F 1.23 G 1.83 H 1.81 I 1.68 J 1.52) with
+nn ratio 0.73-0.78 (own median nn 0.2626-0.3132 mm, Authors' 0.3524-0.4258). The mean cost still
+weights own walls ~1.5x per unit area after dedup - the mean is point-weighted - but this is residual
+sampling density, not the exact-row defect, and it was not normalised away (report, not silence).
+
+**Part A delta (dedup is a variable, not a fix).** Passes: base (raw walls/pools), dedup (dedup walls
+and rebuilt pools), fix1+dedup (Ticket 07 F1). Authors' is the null control.
+
+| pass | surface | K1 | K3 | median rank-0 | Pot A d med/max | Pot G K=1 | Pot J K1/K3 |
+|---|---|---|---|---|---|---|---|
+| base | Authors' | 110 | 128 | 2.7054 | 2.4733 / 14.8373 | 7/7 | 4/8 |
+| dedup | Authors' | 110 | 128 | 2.7054 | 2.4733 / 14.8373 | 7/7 | 4/8 |
+| fix1+dedup | Authors' | 110 | 128 | 2.7054 | 2.4733 / 14.8373 | 7/7 | 4/7 |
+| base | own | 116 | 127 | 2.5631 | - | - | 5/7 |
+| dedup | own | 111 | 123 | 2.7400 | - | - | 5/6 |
+| fix1+dedup | own | 111 | 123 | 2.7400 | - | - | 5/7 |
+
+Per pot (K1/K3 of n):
+
+| pot | A 8 | B 9 | C 4 | D 28 | E 31 | F 5 | G 7 | H 11 | I 27 | J 11 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Authors' base | 8/8 | 9/9 | 4/4 | 20/22 | 21/29 | 5/5 | 7/7 | 9/10 | 23/26 | 4/8 |
+| Authors' dedup | 8/8 | 9/9 | 4/4 | 20/22 | 21/29 | 5/5 | 7/7 | 9/10 | 23/26 | 4/8 |
+| Authors' fix1+dedup | 8/8 | 9/9 | 4/4 | 20/23 | 21/29 | 5/5 | 7/7 | 9/10 | 23/26 | 4/7 |
+| own base | 8/8 | 8/9 | 4/4 | 22/23 | 23/27 | 4/4 | 7/7 | 10/11 | 25/27 | 5/7 |
+| own dedup | 8/8 | 8/9 | 4/4 | 19/21 | 22/28 | 4/4 | 7/7 | 11/11 | 23/25 | 5/6 |
+| own fix1+dedup | 8/8 | 8/8 | 4/4 | 19/20 | 22/29 | 4/4 | 7/7 | 11/11 | 23/25 | 5/7 |
+
+Own pieces the dedup moved (rank-0 / best-of-3, before -> after):
+**newly failing rank-0 (6):** Pot_D_Piece_18 15.8/15.8, Pot_D_Piece_23 87.2/5.6,
+Pot_D_Piece_24 87.5/14.7, Pot_E_Piece_24 27.7/19.7, Pot_I_Piece_22 10.7/10.7,
+Pot_I_Piece_26 88.7/1.8; **recovered rank-0 (1):** Pot_H_Piece_04 15.0/1.6 -> pass.
+Newly failing best-of-3 (7): the same six plus Pot_D_Piece_25 60.5/11.1 and Pot_J_Piece_05
+23.5/23.5; recovered at best-of-3: Pot_D_Piece_21 38.7/15.0, Pot_E_Piece_26 82.3/12.5,
+Pot_E_Piece_28 11.3/11.3. So dedup is not neutral on our surfaces either: it costs 5 K1 / 4 K3.
+
+### Answer 2 - the Authors'-surface losses
+
+**(a) Yes, dedup left the Authors' surfaces exactly unchanged.** In memory the rule is exact bitwise
+equality on the full 6-vector: every one of the 141 Authors' walls is returned byte-identical
+(`pools08_control.json`), 141/141 draw pools are bitwise identical to the raw ones (15473 -> 15954
+basins on our own surfaces, +3.1 %, but 0 changed on theirs), and Part A equals base **piece by piece
+on every bar** - 110/141 K1, 128/141 K3, median 2.7054, Pot A 2.4733/14.8373, Pot G 7/7, per-pot
+table above, the 31 rank-0 and 13 best-of-3 failures identical file by file. (The first pools log line
+reads `NULL-CONTROL-FAILED` only because that script counted the 9 Juglet stems - whose walls come from
+our own `def_3x` geometry and do carry duplicates - into the Authors' numerator; `t08_control.py`
+scores the control on the 141 pot pieces only and logs `NULL-CONTROL-OK 141/141 walls byte-identical,
+141/141 pools bitwise identical`.)
+
+**(b) The own-vs-Authors' gap closed on none of the diagnosed pieces.** rank-0 / best-of-3, own vs
+Authors' on the same stem, base -> dedup -> fix1+dedup:
+
+| stem | own base | own dedup | own fix1+dedup | Authors' (all passes) |
+|---|---|---|---|---|
+| J01 | 82.81/82.81 | 89.02/41.33 | 89.02/84.45 | 89.14/24.30 |
+| J05 | 21.42/3.01 | 23.45/23.45 | 23.45/23.45 | 20.60/2.83 |
+| J06 | 53.42/5.69 | 51.58/5.89 | 51.58/5.89 | 47.92/5.31 |
+| J08 | 58.65/58.65 | 59.95/59.95 | 59.95/59.95 | 59.85/59.85 |
+| J12 | 81.43/68.07 | 81.59/66.60 | 81.59/68.63 | 28.28/28.28 |
+| D27 | 68.20/47.95 | 69.50/57.89 | 69.50/20.90 | 28.10/11.08 |
+| D29 | 78.01/78.01 | 77.84/62.73 | 77.84/68.75 | 76.73/42.60 |
+| E28 | 11.28/11.28 | 18.62/4.03 | 18.62/4.03 | 10.93/3.60 |
+| I26 | 9.03/9.03 | 88.75/1.76 | 88.75/1.76 | 87.55/4.03 |
+
+J12 is the clearest: 81.59 deg against the Authors' 28.28 on the same piece, so the defect is not the
+surface. On J01 and D29 the best-of-3 gap **widened** (24.30 -> 41.33, 42.60 -> 62.73) and it never
+narrowed to within 10 deg on any of the nine.
+
+**(c) The F1-induced Authors' Pot J regression is still there and is not removed by anything in this
+ticket.** With fix1+dedup the Authors' Pot J K3 goes 8 -> 7: Pot_J_Piece_07 authors 27.17/6.60 becomes
+a failure (6.60 deg pushed out) while Pot_D_Piece_21 authors 60.93/14.44 -> 60.93/8.41 recovers, so the
+global Authors' bars do not move (110/128/2.7054). No reworked selector was adopted (answer 3), so
+there is nothing that removes it; the mechanism below explains why a shortlist change could not.
+
+Authors' failure list before and after (identical in base and dedup, rank-0 / best-of-3):
+Pot_D_Piece_17 17.92/1.20, D20 11.50/11.50, D21 60.93/14.44, D24 53.03/8.41, D25 70.81/12.89,
+D26 89.50/70.44, D27 28.10/11.08, D29 76.73/42.60, E03 10.44/2.90, E09 21.94/3.68, E14 20.51/9.82,
+E23 14.30/3.24, E25 15.03/12.68, E26 36.00/9.18, E27 66.38/2.87, E28 10.93/3.60, E30 13.23/13.23,
+E31 62.40/5.35, H04 10.03/10.03, H11 28.67/2.04, I22 15.18/6.56, I25 80.17/22.08, I26 87.55/4.03,
+I27 63.46/3.42, J01 89.14/24.30, J05 20.60/2.83, J06 47.92/5.31, J07 27.17/6.60, J08 59.85/59.85,
+J11 10.96/3.40, J12 28.28/28.28 (with fix1+dedup J07 leaves this list at 27.17/19.23 and D21 joins it).
+
+### Answer 3 - the mechanism: C1, the cost objective, not the shortlist
+
+Rank table `axes08_rank.tsv` = 54 rows (9 stems x 2 surfaces x A1/B2/P), dedup pools, 18-column header
+as specified. Summary on the P arm (18 stem-surfaces):
+
+- the pool basin nearest GT is a genuine **2.22-9.88 deg** seed everywhere (J01 authors 2.74);
+- its **seed** cost ratio is 1.00-9.18 (16 of 18 at or below 5.62);
+- it is **outside the 60-most-drawn cut on 4 of 18**: J01 own 96th of 125 basins, J01 authors 85th of
+  131, J12 own 85th of 116, J12 authors 106th of 112;
+- a cheaper basin within 15 deg shadows it on **17 of 18** (shadow_ddeg 10.2-19.0, shadow_cost_ratio
+  0.23-0.997; D29 authors' nearest cheaper basin is 61.8 deg away);
+- it survives the 15 deg dedup into the refine-8 on only **3 of 18** (D27 own, D29 authors, I26 own)
+  and on those three its **refined cost ranks 3, 5, 3** - it still loses.
+
+**Refinement does not rescue it**: refining the nearest-GT seed is cheaper than refining the sold
+rank-0 line on 7 of 18 stem-surfaces but *more expensive* on 11 of 18 (ratio 0.44-2.83, median 1.09);
+where it wins it wins by less than the shortlist's own spread, and on I26 authors (12.0 deg @ 0.0412 vs
+sold 87.8 deg @ 0.0907) the selector does not even pick the cheaper refined line. Refinement walks
+away from truth on the hard pieces: J08 own 8.71 -> 65.66 deg @ 0.1421, J08 authors 4.62 -> 63.21
+@ 0.1173, J12 authors 2.11 -> 72.68, J06 own 7.33 -> 30.58, J01 own 8.64 -> 21.51.
+
+**Renders (both inspected).** `render08_cost.png`, two panels per stem: the true direction is a
+shallow *local* minimum of the profile cost (J12 own 0.075 mm near 4 deg; J01 own 0.33 mm near 6 deg;
+J12 authors 0.74 mm near 2 deg) but the shortlisted false lines are 2-7x cheaper (J12 own 0.057-0.10 mm
+at 42-85 deg; J01 own 0.24-0.34 mm at 20-90 deg; J12 authors 0.07-0.12 mm at 32-90 deg; J08 own
+0.13-0.19 mm at 28-90 deg against 0.62-0.66 mm at its own 8.7 deg seed); the refined panel shows the
+true seed's refinement sliding into the cheap false basin rather than descending to it.
+`render08_diag.png`: the GT axis lies on the piece while the sold rank-0 refinement is 60-90 deg away.
+
+**Gate ablation** (`gates08_dedup.tsv`; variant `full` reproduces the shipped P-arm top1 to worst
+|ddeg| 0.000048 over 18 rows, so the ablation is the shipped pipeline with one knob moved):
+
+| variant | rank-0 <= 30 deg | truth shortlisted | truth refined |
+|---|---|---|---|
+| full (60 basins, 15 deg, refine 8) | 9/18 | 14/18 | 4/18 |
+| allcand (C4 relaxed, all basins) | 8/18 | **18/18** | 2/18 |
+| nodedup (C3 relaxed, 0 deg) | 9/18 | 14/18 | 1/18 |
+| k30 (refine 30 distinct) | 8/18 | 14/18 | **8/18** |
+| both | 9/18 | **18/18** | 1/18 |
+
+The 60-cut is real (C4 excludes the truth on J01/J12) and the 15 deg shadow is real (C3 drops it on
+15 of 18), yet admitting the truth to the shortlist and even refining it never makes it rank first.
+
+**Cost-rework screen** (`screen08_dedup.json`, per-wall combination instead of the mean over walls):
+max(wall0, wall1) 9/18 - it fixes D27 authors 23.17 -> 5.58 deg but breaks J05 authors 2.83 -> 26.33
+and J06 authors 1.72 -> 5.14; mean + |wall0 - wall1| 7/18. No rule recovers J01, J08 or J12 at all.
+
+**Shape of the false solution** (`collapse08_dedup.tsv`): at the sold rank-0 line the walls' radii have
+std_r 4.37-11.91 mm about a mean_r 10.58-44.67 mm - a wide, nearly featureless band that a short
+meridian fits at 0.06-0.24 mm - while the GT direction itself costs 0.427-1.167 mm. The objective does
+what it says: it finds a surface of revolution, and a sherd patch admits many of them.
+
+**Bucket: C1.** The true direction is a local minimum, but its *refined* cost stays above the false
+lines' refined cost on 11 of 18 stem-surfaces on both surface sets, and the ablation shows that
+ranking better cannot fix it (18/18 admitted, no extra recovery).
+
+**What I did about it: no fix was pre-registered and no fixed pass was run.** Every Phase 3 candidate
+was screened before Part A and each failed on its own evidence: S1 (refine-then-rank) is already the
+shipped rule (the P arm refines the 8 cheapest and re-ranks on the refined cost; `k30` refines 8/18
+of the truths and still ranks a false line first); S2 (shadow-aware dedup) - removing the shadow
+altogether (`nodedup`) drops truth refinement to 1/18; S3 (coverage shortlist) - full coverage
+(`allcand`) admits 18/18 and recovers nothing; S4 (cost rework) - the per-wall combination screen
+moves recoveries around without adding any, and hitting the real cause needs a pottery-form prior or
+per-object curvature normalisation, both outside this ticket's "scale-free, no per-pot or object-size
+constant" rule. With the fix space empty, `PREREG08.md` was deliberately not written and
+`impl_t08.diff` does not exist: writing a pre-registration for a fix the evidence had already
+falsified would have been the Ticket 07 mistake in reverse.
+
+**Part A could not have passed anyway** (dedup + any fix must beat these): own K1 111/141 against
+>=116, own K3 123/141 against >=127, own Pot J K3 6/11 (fix1+dedup 7/11) against >=8/11, own
+Pot_J_Piece_12 best-of-3 66.60 deg (fix1+dedup 68.63) against <=30. Authors' has zero slack and dedup
+leaves it exactly at base. So Phase 4 E2E was not run - no stage A, no stage B, no assembler job, no
+`score/` directory, no `render08_e2e.png`.
+
+### Deliverables (fetched to `C:/PR/artifacts/axis-parity-08/`)
+
+`axes08_dedup.tsv` (596 walls, exact 11-column header), `axes08_rank.tsv` (54 rows, exact 18-column
+header), `axes08_summary.json` (12 sacct rows, phase0/phase1/phase2/partA, e2e null),
+`axes08_attr.tsv`, `axes08_density.tsv`, `axes08_scan.json`, `gate08.tsv` (270 rows, exact
+7-column tab header), `partA08.json`, `render08_cost.png`, `render08_diag.png`, `mechanism08.txt`,
+`sacct_all.txt`, `gates08_dedup.tsv`, `collapse08_dedup.tsv`, `screen08_dedup.json`,
+`refcost08_dedup.json`, `rows/rows_{base,dedup,fix1dedup}.json`, and `work/` (all scripts).
+No `PREREG08.md`, no `impl_t08.diff`, no `score/`: Phase 3 and Phase 4 did not run.
+
+No tracked file was edited anywhere: `git status` in the worktree shows this ticket only, and both
+render files and every artifact come from the run directory. `CORPUS-UNCHANGED` on 907 files for every
+counted job, `runs/index.tsv` has one row per job with blank `verdict`/`human_note`, no watcher or
+background process is left running.
+
+**End state:** ready
+Reading: shortlist-mechanism-not-fixed
