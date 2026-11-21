@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use frozen Ticket 03/10 inputs and Ticket 10 write-back at c031d97. No dependency on the Ticket 09 writer or fresh surfaces.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH axis-parity 11 (2026-11-22)
+**Branch:** 11-validate-join-poses-and-find-first-loss, in /c/PR/worktrees/sfs/11
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek. Independent acceptance held by lead.
 
