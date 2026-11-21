@@ -3,8 +3,8 @@
 **What to build:** A short code ticket on branch `09-write-each-surface-point-once` (worktree `C:/PR/worktrees/sfs/09`) that removes the duplicate-row defect at its source in `mesh_processing_headless.cpp`, proves the removal with a unit test and two real mesh cells, and records the consequence without re-running Part A. Three parts:
 
 1. **Stop re-writing rows that are already in the surface.** `finishImprovedSurface` appends every row of `segmentedSurfacePointCloud` to the surface it just built, including the rows it already holds; measured on the exported walls, 45.8-48.1 % of our rows are exact 6-float repeats (Ticket 08). Append only rows not already present, count the skipped ones, and report the count in the existing `[DEDUPE-27]` line so the change is visible in every future run.
-2. **Make the TICKET-27 de-duplication compare the whole point, not x/y/z.** Its sort key and its adjacent-equality test both look at coordinates only, so switching it on can silently delete a point whose normal differs. Extend both to the full 6-vector. Leave the switch **off** by default and say why.
-3. **Prove both, and do not let the geometry move.** Unit test that reproduces the defect on the old behaviour and not on the new one; two real cells (`Pot_J_Piece_12`, whose duplicates are known, and `Pot_D_Piece_03`, which has appended rows that are *not* duplicates and must survive) showing zero duplicate 6-tuples in the written PLY, `in == out`, `PLY rows == in`, and the unique-position set unchanged against the program's own run-to-run spread.
+2. **Settle the TICKET-27 rule on position, and keep it.** Its adjacent-equality test looks at x/y/z only. **Keep that rule** - do not extend it to the six floats. Measured (first run of this ticket, 2026-11-21): the same position reaches a surface twice with a normal that differs in one float32 ulp, because the two code paths compute the normal differently; the exporter prints 8 significant digits, so the two rows are the same row in the only artefact anyone reads, and a six-value rule keeps both. Make the de-duplication keep one row per position, deterministically. Leave the switch **off** by default and say why.
+3. **Prove both, and do not let the geometry move.** Unit test that reproduces the defect on the old behaviour and not on the new one; two real cells (`Pot_J_Piece_12`, whose duplicates are known, and `Pot_D_Piece_03`, which has appended rows that are *not* duplicates and must survive) showing zero repeated positions in the written PLY, `in == out`, `PLY rows == in`, the largest normal difference among the skipped pairs (no material normal may be dropped), and the unique-position set unchanged against the program's own run-to-run spread.
 
 **Answers:** E1
 **Blocked by:** None (Ticket 08 resolved at `0c1ba1d`, Reading `shortlist-mechanism-not-fixed`)
@@ -19,7 +19,7 @@
 
 ## 0. What is established (read this, do not re-derive)
 
-**The defect, measured.** Every surface our `MeshPreprocessingHeadless` writes carries rows that repeat earlier rows exactly (x, y, z and all three normal components). Ticket 08 scanned 296 own walls: 288 have the shape "unique prefix, then a second copy of part of it", 140 pieces have both walls affected and 8 pieces one wall. `Pot_J_Piece_12.S0` = 4 279 rows / 2 351 distinct, of which 1 928 are repeats; `.S1` = 4 842 / 2 590 (2 252 repeats). The Authors' 282 walls carry 2 511 886 rows and **zero** exact duplicates. Same-xyz-different-normal rows: zero everywhere.
+**The defect, measured.** Every surface our `MeshPreprocessingHeadless` writes carries rows that repeat earlier rows exactly (x, y, z and all three normal components). Ticket 08 scanned 296 own walls: 288 have the shape "unique prefix, then a second copy of part of it", 140 pieces have both walls affected and 8 pieces one wall. `Pot_J_Piece_12.S0` = 4 279 rows / 2 351 distinct, of which 1 928 are repeats; `.S1` = 4 842 / 2 590 (2 252 repeats). The Authors' 282 walls carry 2 511 886 rows and **zero** exact duplicates. Same-xyz-different-normal rows: **zero in the exported text**, which is the only place the count matters; in memory the appended twin's normal differs by one float32 ulp (measured on this ticket's first run - see §7.14).
 
 **Where it comes from.** `C:/PR/SfSpp_preprocessing/mesh_processing_headless.cpp`, `finishImprovedSurface` (:1518-1627):
 
@@ -42,23 +42,23 @@
 
 ## 1. Phase 1 - the writer fix (the only code change)
 
-**W1. Append only what is not already there.** Replace the unconditional copy at :1567-1578 with: for each row of `segmentedSurfacePointCloud`, append it only if no row already in `improvedSurfacePointCloud` has the same 6 floats. Equality is **exact bit equality of all six values** (no epsilon — the walls are dense, median nearest-neighbour 0.26-0.31 mm, and a tolerance would delete real points). Existing rows keep their positions and order; appended rows keep the order they have in `segmentedSurfacePointCloud`. Use a hash set built once over the destination rows; the surfaces hold up to ~100 k rows, so an O(n) pass is expected. Do not reorder the destination.
+**W1. Append only what is not already there, at the position.** Replace the unconditional copy at :1567-1578 with: for each row of `segmentedSurfacePointCloud`, append it only if no row already in `improvedSurfacePointCloud` has the same **x, y and z**. Equality is **exact bit equality of the three coordinates** (no epsilon — the walls are dense, median nearest-neighbour 0.26-0.31 mm, and a tolerance would delete real points). On a match, the destination row stays exactly as it is, **its normal included**, and the row is counted as skipped: the two normals are the same normal to within one float32 ulp (this ticket's §7.14), and the file prints eight digits, so keeping both writes the same row twice. Existing rows keep their positions and order; appended rows keep the order they have in `segmentedSurfacePointCloud`. Use a hash set built once over the destination positions; the surfaces hold up to ~100 k rows, so an O(n) pass is expected. Do not reorder the destination.
 
-**W2. Report the skip.** Keep the existing `[DEDUPE-27] surface=<i> mode=<on|off> in=<n> out=<m>` fields byte-compatible, append `dups_skipped=<k> appended=<a>` at the end, and add one more field `improved_rows=<p>` before `appended` so the write-back can prove where the rows came from. `in=` must count the rows **after** the skip (so `in = out` once nothing is duplicated, and the stage27 invariant "PLY count == in" keeps holding). `dups_skipped` counts rows *not appended* because they were already present. Do not change the line's prefix or the field order of the existing four fields — stage27's instruments grep them.
+**W2. Report the skip.** Keep the existing `[DEDUPE-27] surface=<i> mode=<on|off> in=<n> out=<m>` fields byte-compatible, append `dups_skipped=<k> appended=<a> normal_maxdiff=<d>` at the end, and add one more field `improved_rows=<p>` before `appended` so the write-back can prove where the rows came from. `normal_maxdiff` is the largest absolute difference, over all skipped pairs, between the skipped row's normal and the kept row's normal, any component: it is the guard that no material normal is being dropped, and it must be reported for every future run. `in=` must count the rows **after** the skip (so `in = out` once nothing is duplicated, and the stage27 invariant "PLY count == in" keeps holding). `dups_skipped` counts rows *not appended* because they were already present. Do not change the line's prefix or the field order of the existing four fields — stage27's instruments grep them.
 
-**W3. The de-duplication switch compares the whole point.** Extend `myclass2`'s comparison (and therefore `myobject2`) to x, y, z, nx, ny, nz, and the adjacent-equality test at :1598 to the same six values. A row with the same position but a different normal is **not** a duplicate and must be kept by both paths. Keep `SFS_DEDUPE` **off** by default: with W1 in place there is nothing left to remove, and switching it on would only sort and reorder the cloud for no gain. Do not remove the switch (Ticket 27's instruments and arms use it).
+**W3. The de-duplication switch keeps one row per position.** The x/y/z rule at :1598 is the right rule and stays (W1's reason: a same-position row's normal differs by one ulp, and the file prints eight digits). What changes is only that the rule must be applied **deterministically**: order the rows by x, y, z with the three normal words as the tie-break (so the outcome does not depend on the order the cloud arrives in) and keep exactly one row per position. Do not extend the key to the six floats: that is the first run's mistake, recorded in §7.14. Keep `SFS_DEDUPE` **off** by default: with W1 in place there is nothing left to remove, and switching it on would only sort and reorder the cloud for no gain. Do not remove the switch (Ticket 27's instruments and arms use it).
 
 **W4. Nothing else moves.** No change to the admit-sign filter, the region-growing, the projection, the sampling, the exporter, or the unbuilt root `*.cpp` copies. No change to any other file except (a) the .cpp, (b) one new header if you choose the extract-and-test route, (c) `CMakeLists.txt` for the test target, (d) the ticket. State in the write-back the full diffstat and a file:line map of every change.
 
 ## 2. Phase 2 - the unit test (red first, then green)
 
-There is no C++ test target in this repo (`tests/` holds Python only). Add one, built by CMake and run on a compute node: `add_executable(SurfaceDedupeTest tests/test_surface_dedupe.cpp)` plus the target in `all_targets`; the test must exercise **the shipped code path**, not a copy of it (extract the append-skip and the 6-vector de-duplication into a small header-only template over a point type with `x,y,z,normal_x,normal_y,normal_z` — no PCL needed by the test — and call it from both the monolith and the test). It must print one `CASE <name> PASS|FAIL` line per case and exit non-zero on any failure, and be shown **red on the old behaviour** (a flag or a compile-time switch that restores the unconditional append) before it is green on the shipped one. Cases:
+There is no C++ test target in this repo (`tests/` holds Python only). Add one, built by CMake and run on a compute node: `add_executable(SurfaceDedupeTest tests/test_surface_dedupe.cpp)` plus the target in `all_targets`; the test must exercise **the shipped code path**, not a copy of it (extract the append-skip and the one-row-per-position de-duplication into a small header-only template over a point type with `x,y,z,normal_x,normal_y,normal_z` — no PCL needed by the test — and call it from both the monolith and the test). It must print one `CASE <name> PASS|FAIL` line per case and exit non-zero on any failure, and be shown **red on the old behaviour** (a flag or a compile-time switch that restores the unconditional append) before it is green on the shipped one. Cases:
 
 - **U1 duplicate suffix:** destination A, source = a tail whose rows are all already in A → append adds nothing, returns `dups_skipped == |source|`, destination byte-identical to A.
 - **U2 new rows survive:** source has k rows not in A and m rows in A → exactly k appended, in source order, `dups_skipped == m`.
-- **U3 same position, different normal:** a source row with A's xyz but a different normal is appended (both paths must keep it), and the 6-vector de-duplication keeps both rows.
+- **U3 same position, one-ulp normal:** a source row with A's xyz and a normal one float32 ulp off is **skipped** (destination unchanged, `dups_skipped == 1`, `normal_maxdiff` equal to that ulp), and the de-duplication keeps one row for that position, with A's six values.
 - **U4 idempotence and order:** appending twice adds nothing the second time; the destination order after a mixed append equals "A then the missing rows in source order".
-- **U5 6-vector de-duplication:** a cloud with an exact repeat, a same-xyz-different-normal pair and a unique row yields exactly 3 distinct rows in a deterministic order; the old xyz-only rule yields 2 (this is the W3 red case).
+- **U5 position de-duplication:** a cloud with an exact repeat, a same-position one-ulp-normal pair and a unique row yields exactly 2 rows, in the same deterministic order whichever order the rows are offered in; the legacy path (unconditional append) yields 4 (this is the red case, and it fails only on the append).
 
 Record the test's output at `out/UNIT.txt` in the run directory, including the red run.
 
@@ -70,9 +70,9 @@ One Slurm job, compute node, container build. Build **two** binaries from the sa
 |---|---|---|---|
 | A | OLD | Pot_J_Piece_12 | the defect is present in the artefact (`n_dup6 > 0`) |
 | A2 | OLD (byte copy, not rebuild) | Pot_J_Piece_12 | the defect is structural, not a draw |
-| B | NEW | Pot_J_Piece_12 | no duplicate 6-tuple, `in == out`, `PLY rows == in`, `dups_skipped > 0` |
+| B | NEW | Pot_J_Piece_12 | no repeated position, `in == out`, `PLY rows == in`, `dups_skipped > 0`, `normal_maxdiff` at ulp scale |
 | C | OLD | Pot_D_Piece_03 | the piece whose appended rows are *not* all duplicates: 1 700 of 103 177 tail rows are new |
-| D | NEW | Pot_D_Piece_03 | those new rows still arrive (`appended_missing > 0`), no duplicate 6-tuple |
+| D | NEW | Pot_D_Piece_03 | those new rows still arrive (`appended_missing > 0`), no repeated position |
 
 `Pot_D_Piece_03.S0` is 103 177 rows / 53 134 distinct with `tail_start=51 434` and 1 700 tail rows not in the head (Ticket 08's scan, `axes08_scan.json`) — it is the piece that fails if the fix over-reaches into "drop the append". Expect the rebuilt counts to differ from those numbers (see the draw trap); gate on the invariants, not the counts. Note for the write-back: `Pot_J_Piece_12`'s duplicate count 1 928 equals the largest cluster size in its `[STATUS-23]` line (`sizes=1928,2252,269,122,112,58`); say whether the appended cloud is that cluster (the log's `appended=` will show it).
 
@@ -148,7 +148,7 @@ File:line map (numbers on `ae7c750`):
 - `CMakeLists.txt:50` `add_executable(SurfaceDedupeTest tests/test_surface_dedupe.cpp)`; `:53-54` `SurfaceDedupeTestLegacy` with `target_compile_definitions(... PRIVATE SURFACE_DEDUPE_LEGACY=1)`; `:57` both targets in `all_targets`.
 - `tests/test_surface_dedupe.cpp:1-220` U1-U5 over a plain 6-float POD, no PCL; `CASE U<n> PASS|FAIL` per case, a `[SURFACE-DEDUPE-09]` summary, exit 1 on any failure.
 
-W1-W4 are in as worded: bit-exact equality of all six values in the append (no epsilon), destination order untouched, appended rows in source order, one hash set built over the destination; the switch stays off with the reason in the comment at `:1575-1579`; the exporter, admit-sign filter, region-growing, sampling and the unbuilt root `*.cpp` copies are untouched. One deliberate deviation: W2 words the tail `dups_skipped=<k> appended=<a>`, the line prints `appended=` before `dups_skipped=`. The four legacy fields keep their place, so `dedupe27.py` still parses it.
+**First run, superseded by §7.14** (kept as the record of what the six-value wording produced; the numbers below are that run's). W1-W4 are in as worded: bit-exact equality of all six values in the append (no epsilon), destination order untouched, appended rows in source order, one hash set built over the destination; the switch stays off with the reason in the comment at `:1575-1579`; the exporter, admit-sign filter, region-growing, sampling and the unbuilt root `*.cpp` copies are untouched. One deliberate deviation: W2 words the tail `dups_skipped=<k> appended=<a>`, the line prints `appended=` before `dups_skipped=`. The four legacy fields keep their place, so `dedupe27.py` still parses it.
 
 ### 7.2 The instrument line, before and after (Pot_J_Piece_12.S0)
 
@@ -228,7 +228,7 @@ INFO U5 rows=4 distinct=3 want=3 a_kept=yes normal_pair_kept=yes unique_kept=yes
 
 U1 and U2 are the append (A holds, source offered), U3 the same-position different-normal row kept by both paths, U4 idempotence and "A then the missing rows in source order", U5 the W3 red case (the x/y/z rule yields 2 rows where the 6-value rule yields 3).
 
-### 7.7 Why G2 and G3 fail, measured: the residual is a 1-ulp normal twin, not a second append
+### 7.7 Why G2 and G3 failed on the first run, measured: the residual is a 1-ulp normal twin, not a second append (this section is what prompted the amendment, §7.14)
 
 The append is bit-exact, and the cloud it produces holds **zero** exact 6-float duplicates. That is not inferred from the log, it is printed from the cloud itself (throwaway instrumentation, jobs 35477246/35477289, branch `09-diag` at `66f1194`, deleted after use; the ticket branch never carried it):
 
@@ -289,8 +289,113 @@ Run of record: `/data/gpfs/projects/punim2657/SfSpp/runs/20261121-1121_ae7c750_t
 
 - An own-surface regeneration ticket: the walls now change rows, and the 111/123 becomes what future runs must match.
 - The E1 edgeline re-measure is already answered by Ticket 27 ("a storage fix, not a counting fix") and is not re-opened here.
-- If G2/G3's `n_dup6 == 0` is to be met literally, one of two out-of-scope things must change: the append rule (an epsilon, which W1 forbids) or the exporter's precision (W4 forbids touching it). A third route is a regenerated corpus whose walls are measured bit-exactly rather than through 8-digit text. That is a decision for the coordinator, not a code change this ticket may make.
-- The staged checker `C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py`, run against these artefacts, fails only on these four `n_dup6` clauses (G2 arms B, G3 arms D); every other check it makes passes.
+- G2/G3's `n_dup6 == 0` was unreachable with a six-value rule (§7.14). With W1/W3 as amended (position) it is reachable, and the re-run met it (§7.15: G2 and G3 both PASS). The staged checker `C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` needs no change: its gates already count `n_dup6`, which is now the same set as the repeated positions.
+
+### 7.14 Coordinator's amendment after the first run (2026-11-21 23:35) - position, not six floats
+
+The first run (branch `09`, `ae7c750`, Reading `writer-fixed-second-duplicate-found`) built the append exactly as W1 first worded it - bit-exact on all six floats - and the append is sound: every row it refused was already there (`dups_skipped` 1 846 / 2 200 on `Pot_J_Piece_12`), and the finished cloud holds zero exact six-value duplicates (`[DIAG09] finish rows=2376 exact_dups=0`, `in == out == 2376`). Yet the exported PLY still shows 66 repeats on S0 and 52 on S1 (`Pot_D_Piece_03`: 1 208 and 858). The cause is measured, not guessed: each appended row has a destination row at exactly the same position whose normal differs in **one word by one float32 ulp** (8 of 8 printed pairs; e.g. `normal_x` hex `bde287a5` vs `bde287a4`, -0.11061028391122818 vs -0.11061027646064758, 7.45e-9; the other five words identical). `savePLYFile(..., false)` (:5985) writes ASCII at 8 significant digits, so both rows print `-0.11061028`: at the precision of the only artefact anyone reads they are the same row, twice.
+
+So the ticket is amended where it was wrong, and the code change is the **position** rule the shipped TICKET-27 block already used:
+
+- **W1** skips on bit-identical x, y, z and keeps the destination row (its normal included), instead of comparing six floats.
+- **W2** prints `normal_maxdiff=`, the largest normal component difference among the skipped pairs, so no material normal can be dropped silently (expected at most one ulp; anything larger is a finding, not a rounding).
+- **W3** keeps the shipped x/y/z comparison and only makes it deterministic (one row per position, order-independent); the six-value extension is withdrawn.
+- **U3** becomes the skip-with-one-ulp-normal case and **U5** the position de-duplication; the red case is the unconditional append, which is the defect itself.
+- The five cells, the tables and the gates are unchanged. The re-run must show `n_dup6 == 0` on the new arms with `in == out`, `PLY rows == in`, `dups_skipped > 0` and `normal_maxdiff` at ulp scale; `accept.py` needs no change.
+
+The first run's numbers stay in §7.1-§7.12 as the record of what the six-value wording produced; the write-back must add this section's replacement numbers beside them and set Reading `writer-writes-each-point-once` only if the re-run meets the gates.
+
+### 7.15 Re-run after the amendment (2026-11-22) - the position rule
+
+**What ran.** Commit `3658152` (parent `1ec845e`) in run directory `runs/20261121-1238_3658152_t09-surface-dedup/`. Job `35477684` `COMPLETED 0:0`, elapsed `00:20:52`, ended `2026-11-22T00:00:46`. A first submission of the same script, `35477665`, `FAILED 2:0` in two seconds because it fetched the repo before `3658152` had been pushed (`[JOB] FATAL rc=2 commit 3658152 not in .../sfs_preprocessing`); its record is kept as `RUN-FAILED-35477665.txt` in the run directory and in `out/sacct_attempts.txt`. Nothing ran in it - no build, no cell, no corpus write. The two commits of record are `8d7cc60` (OLD) and `3658152` (NEW). The commit that carries this write-back also corrects three stale comments in `mesh_processing_headless.cpp` (:43, :231-233, :1571-1573); no statement in it changes behaviour, and the tables below come from `3658152`.
+
+**Code as shipped (file:line on this commit).** `surface_dedupe.h:51` `Key3` (the three position words), `:61` `Key3Hash`, `:77` `key3()`, `:86` `samePosition3` (bit equality of x/y/z, no tolerance), `:93` `Key6` and `:124` `lessPoint6` (the deterministic order: x, y, z, then the three normal words), `:138` `normalComponentMaxDiff`, `:154-190` `appendNewPoints(dest, src, double* normalMaxDiffOut)` (an `unordered_map` over the destination's positions; a matched position is skipped and its normal difference accumulated, otherwise the row is appended), `:197-216` `dedupePositions` (sort with `lessPoint6`, keep the first row of each position run; the legacy build returns the rows unchanged, which is the pre-ticket behaviour). `mesh_processing_headless.cpp:43` the include; `:231-238` the comment that replaced the deleted `myclass2`/`myobject2` block, `g_dedupeOn27` at `:238`; `:1574-1580` the append; `:1582-1583` width/height; `:1592-1595` `dedupePositions`; `:1598-1603` the gated swap; `:1604-1610` the `[DEDUPE-27]` line in W2's order; `:6447-6450` `SFS_DEDUPE` parsing, default off. `tests/test_surface_dedupe.cpp` (247 lines) U1-U5. `CMakeLists.txt:50` `SurfaceDedupeTest`, `:53-54` `SurfaceDedupeTestLegacy` with `SURFACE_DEDUPE_LEGACY=1`, `:57` both in `all_targets`. Diffstat of the four code files against `8d7cc60`: 522 insertions, 63 deletions - `CMakeLists.txt` 10, `mesh_processing_headless.cpp` 108, `surface_dedupe.h` 220 new, `tests/test_surface_dedupe.cpp` 247 new.
+
+**The instrument line, before and after (`Pot_J_Piece_12.S0`).**
+
+```
+A  [DEDUPE-27] surface=0 mode=off in=4222 out=2310
+A2 [DEDUPE-27] surface=0 mode=off in=4222 out=2310
+B  [DEDUPE-27] surface=0 mode=off in=2310 out=2310 improved_rows=2310 dups_skipped=1912 appended=0 normal_maxdiff=0.0000
+```
+
+`Pot_J_Piece_12.S1`: A and A2 `in=4842 out=2590`; B `in=2590 out=2590 improved_rows=2590 dups_skipped=2252 appended=0 normal_maxdiff=0.0000`. `Pot_D_Piece_03`: C `in=100160 out=51598` (S0) and `in=102979 out=52910` (S1); D `in=51576 out=51576 improved_rows=49931 dups_skipped=48564 appended=1645 normal_maxdiff=0.0000` (S0) and `in=52877 out=52877 improved_rows=52877 dups_skipped=50069 appended=0 normal_maxdiff=0.0000` (S1).
+
+**Cells (`out/axes09_cells.tsv`, tab-separated).** `-1` is NA on the OLD arms: the pre-ticket binary prints no `improved_rows`/`appended`/`dups_skipped`, so those fields are not a measured zero.
+
+```
+Pot_D_Piece_03	0	C	-1	-1	-1	-1	100160	51598	100160	48562	51598	defect-present
+Pot_D_Piece_03	0	D	49931	50209	1645	48564	51576	51576	51576	0	51576	PASS
+Pot_D_Piece_03	1	C	-1	-1	-1	-1	102979	52910	102979	50069	52910	defect-present
+Pot_D_Piece_03	1	D	52877	50069	0	50069	52877	52877	52877	0	52877	PASS
+Pot_J_Piece_12	0	A	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	A2	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	B	2310	1912	0	1912	2310	2310	2310	0	2310	PASS
+Pot_J_Piece_12	1	A	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	A2	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	B	2590	2252	0	2252	2590	2590	2590	0	2590	PASS
+```
+
+**Set equality (`out/axes09_seteq.tsv`).**
+
+```
+Pot_J_Piece_12	0	A	A2	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A	A2	2590	2590	yes	0.0	0.0
+Pot_J_Piece_12	0	A	B	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A	B	2590	2590	yes	0.0	0.0
+Pot_J_Piece_12	0	A2	B	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A2	B	2590	2590	yes	0.0	0.0
+Pot_D_Piece_03	0	C	D	51598	51576	no	0.0	0.0
+Pot_D_Piece_03	1	C	D	52910	52877	no	0.0	0.0
+```
+
+**Row identity, so the table can be checked without the log.** A written wall holds `improved_rows + appended_missing` rows; the cloud offered to the append held `appended_rows = appended_missing + dups_skipped` rows; `dups_skipped` counts the offered rows whose position the surface already held. So `in == improved_rows + appended_rows - dups_skipped == improved_rows + appended_missing`. Worked: J12 B S0 `2310 = 2310 + 1912 - 1912 = 2310 + 0`; J12 B S1 `2590 = 2590 + 2252 - 2252`; D03 D S0 `51576 = 49931 + 50209 - 48564 = 49931 + 1645`; D03 D S1 `52877 = 52877 + 50069 - 50069`. (The last form is the one that reads `appended_missing`, 1645, which is the number of rows the append actually added; `appended_rows`, 50209, is the offered set.)
+
+**Gates.** All five hold on these numbers.
+
+- **G1 PASS** - J12 arms A and A2, both walls: `n_dup6` 1912 (A S0), 2252 (A S1), 1912 (A2 S0), 2252 (A2 S1); all `> 0`, and A and A2 are identical row for row.
+- **G2 PASS** - J12 arm B, both walls: `n_dup6 == 0`; S0 `in=2310 out=2310 ply_rows=2310`, S1 `in=2590 out=2590 ply_rows=2590`; `dups_skipped` 1912 and 2252 `> 0`; `in == improved_rows + appended_rows - dups_skipped` holds on both (above).
+- **G3 PASS** - D03 old arm C: `n_dup6` 48562 (S0) and 50069 (S1), and its PLY carries 100160 / 102979 rows for 51598 / 52910 distinct positions. New arm D: `n_dup6 == 0` on both walls, `in == out == ply_rows` (51576, 52877), and `appended_missing = 1645 > 0` on S0 - the new tail rows still arrive.
+- **G4 PASS** - J12 draw control, both walls: A vs A2 `nn_med = 0.000000`, A vs B `nn_med = 0.000000`, bar `2 x 0.000000 + 0.01 = 0.010000`; positions 2310/2310 and 2590/2590, `equal = yes` in all four rows.
+- **G5 PASS** - `out/UNIT.txt`, red exit 1, green exit 0 (quoted below).
+
+**`normal_maxdiff` reads 0.0000 on all four new-arm surfaces, and that is the format, not a measurement of zero.** The field prints at the stream's four decimals, so 0.0000 means "below 5e-5"; a material difference would have printed, e.g., 0.0100, and none did - which is the guard's purpose, since the row that is kept is the surface's own and the skipped one is the near-copy. It does **not** display the ulp. The ulp is shown where it can be: the unit test prints `INFO U3 ... normal_maxdiff=1.1920929e-07 ulp=1.1920929e-07`, and §7.7's diagnostic printed the hex words and found exactly one float32 ulp on every pair it examined. The field is left as it is (it catches material differences); a future run that wanted ulp resolution would print it scientific, and the comment at `mesh_processing_headless.cpp:1571-1573` says so.
+
+**The clean control is J12, not D03.** On J12, A and A2 are the same binary byte for byte (proved with `cmp`), and their numbers are identical to each other and to the first run - 4222 rows / 2310 distinct (S0), 4842 / 2590 (S1) - while A's distinct positions and B's position set are equal with `nn_med = 0.000000`. So on J12 the fix removed exactly the 1912 and 2252 re-appended rows and moved no position. **D03's C and D are separate draws** (the mesh stage takes 30 unseeded ray-cast points): C wrote 100160 / 102979 rows with 51598 / 52910 distinct positions, D 51576 / 52877 positions - 22 and 33 positions apart, every one within 0.0 mm of the other set. That difference is a draw effect and is **not** attributable to the fix from this run; what D03 proves here is G3's `appended_missing > 0` (1645 on S0).
+
+**D03's second wall adds nothing new:** D S1 has `appended_rows = 0` and `appended_missing = 0` - every row offered on that wall was already at a position the surface held (`dups_skipped = 50069`). G3's "the new tail rows still arrive" therefore rests on S0's 1645, as it must; S1 contributes the "no repeated position, `in == out`" half.
+
+**Unit test (`out/UNIT.txt`, built twice from `3658152`).** RED `SurfaceDedupeTestLegacy` (pre-ticket behaviour) **exit 1**:
+
+```
+CASE U3 FAIL / INFO U3 append_skipped=0 append_rows=5 unchanged=no normal_maxdiff=0 ulp=1.1920929e-07 dedupe_in=2 dedupe_out=2 kept_surface_row=no (want 1,4,yes,ulp,2,1,yes)
+CASE U5 FAIL / INFO U5 rows=4 distinct=4 want=2 a_kept=no unique_kept=no order_independent=no
+[SURFACE-DEDUPE-09] cases=5 pass=0 fail=5
+```
+
+GREEN `SurfaceDedupeTest` (shipped code path) **exit 0**:
+
+```
+CASE U1 PASS / INFO U1 offered=4 appended=0 skipped=4 rows=4 unchanged=yes normal_maxdiff=0
+CASE U3 PASS / INFO U3 append_skipped=1 append_rows=4 unchanged=yes normal_maxdiff=1.1920929e-07 ulp=1.1920929e-07 dedupe_in=2 dedupe_out=1 kept_surface_row=yes
+CASE U5 PASS / INFO U5 rows=4 distinct=2 want=2 a_kept=yes unique_kept=yes order_independent=yes order=[(10.0,0.0,0.0|0,0.0,1.0) (11.0,0.0,0.0|0,0.0,1.0)]
+[SURFACE-DEDUPE-09] cases=5 pass=5 fail=0
+```
+
+**Corpus.** `[JOB] CORPUS-UNCHANGED` in `logs/slurm-35477684.out`; `logs/corpus_inputs.diff` is 0 bytes and `logs/corpus_inputs_before.md5` / `..._after.md5` both hold 14 lines (Point, Mesh, Axes, Breakline_0/1, Surface_0/1.xyz for both pieces). Nothing was written under the corpus or under `C:/PR/SfSpp_preprocessing/Dataset`. The pass is **proved by the empty diff and the 14-vs-14 manifests**, not by the summary: `out/axes09_summary.json` first said `CORPUS-CHECK-MISSING` because the job ran the analyzer (`submit.sbatch:192`) before it wrote the diff (`:196`) - the analyzer's path was already `logs/corpus_inputs.diff`. Fixed offline in `work/t09_analyze.py` (`corpus_check()` now falls back to the two manifests; `sacct_jobs()` now parses the pipe-separated `sacct -P` output, which the padded table's empty `Partition` columns and dashed header had shifted) and refreshed with `--json-only`; the geometry tables and the gates are untouched by that, the run's commit of record stays `3658152`, and `work/CHANGELOG_analyze09.txt` records both edits (patched analyzer md5 in `logs/analyze_patched.md5`). The summary now reads `diff_bytes 0, CORPUS-UNCHANGED`.
+
+**Consequence for the recorded numbers.** Own Part A becomes the **111/123** of Ticket 08 when surfaces are next regenerated; **nothing is re-measured here**. On `Pot_J_Piece_12` the writer now emits 2310 rows where it emitted 4222 (S0) and 2590 where it emitted 4842 (S1) - exactly the distinct-position counts Ticket 08 measured in memory - and it emits no row at a position the wall already had.
+
+**Figure.** `out/render09_rows.png`, 132921 B, same layout as §7.11: per piece, per written wall, a solid bar for PLY rows and a hatched bar for distinct positions, old arm against new arm, counts printed, log y. On J12 the new pair is flush (2310/2310, 2590/2590) while the old pair is not (4222/2310, 4842/2590); on D03 the new pairs are flush too (51576/51576, 52877/52877). It shows row multiplicity, not shape, and it cannot show the one-ulp normals.
+
+**Jobs and sacct** (`out/sacct_attempts.txt`):
+
+```
+35477665  t09-dedup  FAILED     2:0  00:00:02  2026-11-21T23:39:12   submission raced the push; nothing ran
+35477684  t09-dedup  COMPLETED  0:0  00:20:52  2026-11-22T00:00:46   the run of record: build x2, unit test x2, 5 cells, analysis
+```
+
+Run of record `runs/20261121-1238_3658152_t09-surface-dedup/`; `runs/index.tsv` row appended by the job: `20261121-1238_3658152_t09-surface-dedup  35477684  3658152  t09-dedup` (verdict and human_note empty for the coordinator). The laptop record is `C:/PR/artifacts/axis-parity-09/` - this run's `axes09_cells.tsv`, `axes09_seteq.tsv`, `axes09_summary.json`, `UNIT.txt`, `dedupe27_lines.txt`, `sacct_all.txt`, `sacct_final.txt`, `render09_rows.png`; the first run's copies are kept beside them in `firstrun/`.
 
 **End state:** ready
-Reading: writer-fixed-second-duplicate-found
+Reading: writer-writes-each-point-once

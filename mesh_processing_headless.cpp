@@ -40,7 +40,7 @@
 #include <thread>
 
 #include <pcl/point_types.h>
-#include "surface_dedupe.h" // TICKET 09: append-only-when-new + 6-float de-duplication (unit-testable)
+#include "surface_dedupe.h" // TICKET 09: append only rows at a new position, one row per position (unit-testable)
 // Removed all VTK smoothing headers for headless build
 // #include <pcl/io/vtk_io.h>
 // #include <pcl/surface/vtk_smoothing/vtk.h>
@@ -228,8 +228,9 @@ struct myclass {
 } myobject1;
 
 
-// TICKET 09: the de-duplication's ordering and equality live in surface_dedupe.h now, where the
-// unit test can call them. They compare all six values of a point, not x/y/z alone.
+// TICKET 09: the de-duplication's ordering and presence test live in surface_dedupe.h now, where
+// the unit test can call them. Presence is the position (x/y/z as bits, no tolerance); the six
+// values are only the tie-break that makes the surviving row and the order deterministic.
 
 // TICKET 27: SFS_DEDUPE=on writes each distinct position of a finished surface once. Unset, empty,
 // "off" or anything else keeps today's cloud, duplicates included. Declared here because
@@ -1567,7 +1568,9 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 	// improved_rows is what the surface held before this append, appended counts the rows whose
 	// position was new, dups_skipped the ones it already held, and normal_maxdiff the largest
 	// normal component difference over the skipped pairs -- the guard that no material normal is
-	// being dropped.
+	// being dropped. That field prints at the stream's four decimals, so 0.0000 means "below
+	// 5e-5", not "exactly zero": it catches a material difference, not the one-ulp twins the
+	// append is meant to collapse. A run that wanted ulp resolution would print it scientific.
 	const long improvedRows09 = static_cast<long>(improvedSurfacePointCloud->points.size());
 	decltype(improvedSurfacePointCloud->points) dest09 = improvedSurfacePointCloud->points;
 	double normalMaxDiff09 = 0.0;
