@@ -8,9 +8,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 07 resolved at `1a19c9a`, Reading `pot-j-own-surface-not-fixed-offline`; Ticket 03 unmerged at `325a0a8`)
-**Status:** ready-for-agent
-**Branch:** set by `ticket_start.sh`
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-21) (2026-11-21)
+**Branch:** 08-dedup-surfaces-and-shortlist-cost, in /c/PR/worktrees/sfs/08
+**Worker:** dsh one-shot subagent w08-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek - hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-08/accept.py` staged before dispatch
 
