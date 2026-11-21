@@ -8,8 +8,7 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 05 resolved at `e1cf772` / `277a754`)
-**Status:** in-progress
-**Working in:** chat on Thinkbook16 (2026-11-21)
+**Status:** resolved
 **Branch:** 06-tri-invariant-selector-potj-and-tenpots, in /c/PR/worktrees/sfs/06
 **Worker:** dsh one-shot subagent w06-axis-parity
 **Budget:** large 8
@@ -177,4 +176,14 @@ All ten paper pots are at or above floor on the `tri` axes. Two honest notes: th
 **Not done, by design:** no tracked change in `SfSpp_preprocessing` or `structure-from-sherds-pp`, no merge, no push, no `ticket_close.sh`, `**Status:**` left `in-progress`, and both watcher jobs were killed before this write-up.
 
 Reading: tri-selector-passes-all-ten-pots-and-juglet
+
+### Lead verification (2026-11-21)
+
+- `verified: python C:/PR/artifacts/dsh-handover/axis-parity-06/accept.py -> ACCEPTANCE PASSED (reading=tri-selector-passes-all-ten-pots-and-juglet)` (including `42 passed` worktree `pytest`, clean `git apply --ignore-whitespace --check` on `impl_t06.diff`, canonical repos clean, zero tracked edits).
+- `verified: ssh spartan sacct -X` -> all 19 active jobs (`35456405` `t06-pytest` `77 passed in 31.47s`, `35456406` `t06-phase1`, `35456628` `t06-extract`, `35457126` `t06-potJ`, `35457127` `t06-potG`, `35457128` `t06-potD`, `35457145_0..3` `t06-juglet`, `35457152` `t06-jugsum` [noting worker line 149's `0:1` typo — actual `sacct -X` is `COMPLETED 0:0`], `35459488..35459494` `t06-potA..I`, `35462297` `t06-meta`) ended `COMPLETED 0:0`; `squeue -u zhuojiat` has zero `t06-*` jobs; `runs/index.tsv` has 17 `t06` rows appended with blank `verdict`/`human_note`.
+- `verified: Spartan slurm-35456406.out:12 & slurm-35456628.out:22 -> CORPUS-UNCHANGED`; `163` `.xyz` in `out/axes06_tri/` and `18` `.xyz` in `out/axes06_juglet_def3x/`; native 3x `Juglet_Piece_1_Axis.xyz` `(548.049, 431.528, -379.551)` and `Juglet_Piece_7_Axis.xyz` (3 lines all upright `dir_z = -0.6327, -0.6261, -0.4991`, `-741.489, -38.668, -908.529`).
+- `verified: C:/PR/artifacts/axis-parity-06/axes06_summary.json` -> winner `tri_psec_d10` passes 12/12 Part A bars: Authors `110/141 K1`, `128/141 K3` (`90.8%`), median `2.7054 deg`, `d_gt_to_est = 4.3383 mm` (`d_est_to_gt = 9.9252 mm`), `Pot A = 2.4733 mm`, `Pot_A_Piece_08 = 4.741 deg`, `Pot G 7/7 K=1`, `7/8` K3 recoveries, `Pot J K3 = 8/11` (recovering `J05 = 2.8307 deg`, `J07 = 6.5988 deg`, `J11 = 3.4001 deg`); Own `116/141 K1`, `127/141 K3` (`90.1%`), median `2.5631 deg`, `d_gt_to_est = 3.7781 mm`, `Pot A = 2.6369 mm`, `Pot G 7/7 K=1`, `Pot J K3 = 7/11`; `def_3x` Juglet `7/9 K1`, `8/9 K3`, `is_base_fragment=True` on `Juglet_Piece_7` only, `SignAxisGuard = 0/18` rank-0 and `0` worst-case across all candidates (`k0: 0/18, k1: 0/2, k2: 0/1`).
+- `verified: C:/PR/artifacts/axis-parity-06/score/acc_pot{A..J}.tsv` -> 10/10 paper pots (`20/20` repeats) at/above floor (`A 8/8 15/15`, `B 9/9 15/15`, `C 4/4 5/5`, `D 24/28 58/69` twice vs Authors `23/28 55/69`, `E 31/31 62/62`, `F 5/5 7/7`, `G 7/7 10/10`, `H 11/11 17/17`, `I 26/26 62/62` 100%, `J 8/11 16/21` twice).
+- `verified: C:/PR/artifacts/axis-parity-06/score/juglet/best_of_4.json & summary.tsv` -> best-of-4 (`r3`, reached on `1/4` repeats): `9/9` sherds, `13/18` edges, `9/9` cluster `0.483 mm`, `4/4` Piece 7 joins `1.47–3.09 deg`. Repeat-spread caveat recorded explicitly: `r1/r2/r4` scored `8/9` sherds, `5–7/18` edges, `9/9` cluster `0.466/0.543/0.558 mm` (vs Ticket 05 `dual_k2`'s `4/4` repeats at `9/9, 11–13/18`, because `tri_psec_d10` emits `K=3` on `Juglet_Piece_7` vs `dual_k2`'s `K=1`).
+- `verified: visual inspection of render06_tri.png, render06_e2e.png, _crop_row10_J.png, _crop_row11_juglet.png` -> `Pot J` compact and matching Authors control (no longer splayed as in Ticket 05); `Pot H` tight rim; `Juglet` compact 9-piece cup matching oracle (noting cosmetic Row 11 right label quirk `cluster 0/1 @18.998 mm` on oracle title while plotted geometry is the compact 9-piece cup, oracle verified `9/9 @0.459 mm` in `t05-juglet`).
 
