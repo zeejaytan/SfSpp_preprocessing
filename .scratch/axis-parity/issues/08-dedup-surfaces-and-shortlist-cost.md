@@ -8,7 +8,7 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 07 resolved at `1a19c9a`, Reading `pot-j-own-surface-not-fixed-offline`; Ticket 03 unmerged at `325a0a8`)
-**Status:** in-progress
+**Status:** resolved
 **Working in:** chat on Thinkbook16 (2026-11-21) (2026-11-21)
 **Branch:** 08-dedup-surfaces-and-shortlist-cost, in /c/PR/worktrees/sfs/08
 **Worker:** dsh one-shot subagent w08-axis-parity
@@ -183,10 +183,11 @@ Reproduction first: **Pot_J_Piece_12 own S0 4279 rows / 2351 unique (45.06 %), S
 | Authors' | 282 | 2 511 886 | 2 511 886 | 0.0000 | 0 |
 | Juglet | 18 | 591 299 | 334 371 | 0.4345 | 0 |
 
-**Structure:** on 144 of the 148 own pieces (both surfaces) the duplicate block is one contiguous
-**suffix**: the file is a fully unique prefix followed by a second copy of rows already in it
-(`tail_start == n_unique_full6`, `tail_rows_not_in_head == 0`; e.g. Pot_A_Piece_01 own S0 66 763 rows,
-33 988 unique, 32 775 trailing rows all already present). Eight own walls deviate (8 of 296): 1-7 stray boundary
+**Structure:** on 288 of the 296 own walls (140 pieces with both walls pure, 8 pieces with one wall
+affected) the duplicate block is one contiguous **suffix**: the file is a fully unique prefix followed
+by a second copy of rows already in it (`tail_start == n_unique_full6`, `tail_rows_not_in_head == 0`;
+e.g. Pot_A_Piece_01 own S0 66 763 rows, 33 988 unique, 32 775 trailing rows all already present).
+Eight of the 296 own walls deviate (one wall on each of eight pieces): 1-7 stray boundary
 rows on Pot_C_Piece_01.S1 (5), Pot_C_Piece_02.S0 (7), Pot_D_Piece_04.S0 (1), Pot_D_Piece_08.S1 (4),
 Pot_E_Piece_18.S0 (1), Pot_H_Piece_01.S1 (1), and two real exceptions where the second copy is not a
 pure suffix - Pot_D_Piece_03.S0 (103 177 rows / 53 134 unique, `tail_start` 51 434, 1 700 trailing
@@ -241,9 +242,13 @@ Own pieces the dedup moved (rank-0 / best-of-3, before -> after):
 **newly failing rank-0 (6):** Pot_D_Piece_18 15.8/15.8, Pot_D_Piece_23 87.2/5.6,
 Pot_D_Piece_24 87.5/14.7, Pot_E_Piece_24 27.7/19.7, Pot_I_Piece_22 10.7/10.7,
 Pot_I_Piece_26 88.7/1.8; **recovered rank-0 (1):** Pot_H_Piece_04 15.0/1.6 -> pass.
-Newly failing best-of-3 (7): the same six plus Pot_D_Piece_25 60.5/11.1 and Pot_J_Piece_05
-23.5/23.5; recovered at best-of-3: Pot_D_Piece_21 38.7/15.0, Pot_E_Piece_26 82.3/12.5,
-Pot_E_Piece_28 11.3/11.3. So dedup is not neutral on our surfaces either: it costs 5 K1 / 4 K3.
+Newly failing best-of-3 (7): Pot_D_Piece_18 15.8/15.8, Pot_D_Piece_24 87.5/14.7,
+Pot_D_Piece_25 60.5/11.1, Pot_E_Piece_24 27.7/19.7, Pot_I_Piece_22 10.7/10.7, Pot_I_Piece_25 77.3/12.8,
+Pot_J_Piece_05 23.5/23.5. (Pot_D_Piece_23 and Pot_I_Piece_26 fail at rank 0 only; best-of-3 still rescues
+them at 5.6 and 1.8 deg, so they are not in this list. Corrected by the lead - the first write-up said
+"the same six", which included those two and omitted I25.) Recovered at best-of-3: Pot_D_Piece_21
+38.7/15.0, Pot_E_Piece_26 82.3/12.5, Pot_E_Piece_28 11.3/11.3. So dedup is not neutral on our surfaces
+either: it costs 5 K1 / 4 K3.
 
 ### Answer 2 - the Authors'-surface losses
 
@@ -379,6 +384,25 @@ No tracked file was edited anywhere: `git status` in the worktree shows this tic
 render files and every artifact come from the run directory. `CORPUS-UNCHANGED` on 907 files for every
 counted job, `runs/index.tsv` has one row per job with blank `verdict`/`human_note`, no watcher or
 background process is left running.
+
+## Lead verification (2026-11-21, before recording)
+
+Every claim below was re-read at the artefact it rests on by the coordinating session, not taken from the
+write-up above. Two statements in the write-up were corrected as a result (marked **[corrected]**).
+
+- verified: `C:/PR/artifacts/axis-parity-08/gate08.tsv` pot rows summed -> own `base` 116/127 K1/K3, own `dedup` 111/123, own `fix1+dedup` 111/123, Authors' 110/128 in all three passes; `partA08.json` bars a_k1 110, a_k3 128, a_med 2.7054, potA_d 2.4733, o_k1 116, o_k3 127, o_potJ_k3 8, j12_best 30.0.
+- verified: `rows/rows_base.json` vs `rows/rows_dedup.json` (291 rows each, per `(stem,surfaces)` JSON) -> **0 of 141** Authors' rows differ between `base` and `dedup`; their per-pot K1/K3 is identical in both (A 8/8 B 9/9 C 4/4 D 20/22 E 21/29 F 5/5 G 7/7 H 9/10 I 23/26 J 4/8). Own J12 dedup best-of-3 = 66.5978 deg.
+- verified: `ssh spartan` grep of `logs/t08-ctl-35471521.log` -> `[ctl] NULL-CONTROL-OK 141/141 walls byte-identical, 141/141 pools bitwise identical`. The `[pools] NULL-CONTROL-FAILED` line is the pool script counting 150 stems including the 9 Juglets (the differing "tools/pools" are `Juglet_Piece_1..9`), not a control failure; `t08_control.py` scores the 141 pot pieces only.
+- verified: `ssh spartan` python over the PLYs -> `Pot_J_Piece_12.S0` 4279 rows, head 2351 unique, tail 1928 rows and **all 1928** occur in the head (45.06 %); `Pot_J_Piece_01.S1` 79624 rows, head 39760, tail 39864 of which **2368 are not in the head** - exactly the exception reported.
+- verified: `axes08_scan.json` (596 wall records) -> own 296 walls / 148 pieces; **288** walls are a pure suffix (`tail_start == n_unique_full6`, `tail_rows_not_in_head == 0`); **140** pieces have both walls pure; 8 pieces have one deviating wall (C01.S1 +5, C02.S0 +7, D03.S0 tail_start 51434 of 53134 with 1700 not in head, D04.S0 +1, D08.S1 +4, E18.S0 +1, H01.S1 +1, J01.S1 tail_start 39760 of 42128 with 2368 not in head). **[corrected]** the write-up first said "144 of the 148 pieces (both surfaces)".
+- verified: `C:/PR/SfSpp_preprocessing/mesh_processing_headless.cpp:1567-1578` is the unconditional loop over `segmentedSurfacePointCloud` copying x/y/z/nx/ny/nz into `ptTmp` with `improvedSurfacePointCloud->points.push_back(ptTmp);` at `:1577`; `:3235-3245` admits the `angleDiff > 140` point into `improvedSurfacePointCloud` (`:3245`) and `:3247-3257` the other one into `improvedSurfacePointCloud_other` (`:3257`); `g_dedupeOn27` is default false at `:6465-6466` (`SFS_DEDUPE`). Writer attribution and line numbers are correct.
+- verified: `ssh spartan sed` of `<run>/work/impl_t08/sfs_axes/joint.py:102-125` -> `_select` = cost rank -> `_dedup` (15 deg) -> `[:ARM_REFINE_K]` (8) -> `_bounded` refine -> `rcost` -> lines -> `_dedup` again -> `keep_lines(tau=ARM_TAU,kmax=3)` -> `orient_base_axis`. So ranking already happens on refined cost; `S1` ("refine-then-rank") can only differ in *how many* seeds are refined - which is what the gate ablation measured.
+- verified: `collapse08_dedup.tsv` -> own J12 rank-0 line 0.059950 mm at 82.9158 deg (std_r 5.4069, mean_r 44.6658) against its true refined 0.074769 at 11.9256 (GT 0.426856); own J08 rank-0 0.107694 at 60.6464 vs true refined 0.142147 at 65.6601; own J01 rank-0 0.236001 at 85.3697 vs 0.308896 at 21.5129 (GT 1.167074); Authors' J12 0.070927 at 69.2691 vs 0.080751 at 72.6764. A near-flat patch bearing on the axis really is a cheaper surface of revolution than the true meridian.
+- verified: `gates08_dedup.tsv` (90 rows, 18 stem-surfaces x 5 variants) -> `full` 9/18 rank-0 <= 30 deg, 14/18 truth shortlisted, 4/18 truth refined; `allcand` 8/18 / 18/18 / 2/18; `nodedup` 9/18 / 14/18 / 1/18; `k30` 8/18 / 14/18 / 8/18; `both` 9/18 / 18/18 / 1/18. No knob recovers J01, J08 or J12.
+- verified: `sacct -X` on 35471270/35471377/35471521/35471647/35472535/35472793/35472813/35472977 -> all `COMPLETED` `0:0` (46 s, 37:47, 7 s, 18:59, 14:10, 9:29, 14:55, 24:20); `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv` has 12 rows for `20261121-2002_9884175_t08-dedup-shortlist` with blank `verdict`/`human_note`, including the four failed attempts (35472454, 35472490, 35472491, 35472826).
+- verified: both renders read by the lead. `render08_cost.png` (1265x1320) plots cost along a true->top-1 sweep per stem: the true direction is a shallow local minimum while false shortlisted lines are cheaper (J12 own 0.060 at 82.9 vs 0.0748 at 11.9; J08 own 0.108 at 60.6 vs 0.142 at 8.7; J01 own 0.236 at 85.4 vs 0.309 at 21.5), and the refined panels show the true seed sliding into the cheap false basin. `render08_diag.png` (1430x1496) shows the GT axis lying on each piece while the sold top-1 is 60-90 deg away.
+- verified: the hidden acceptance check `C:/PR/artifacts/dsh-handover/axis-parity-08/accept.py` prints `ACCEPTANCE PASSED (reading=shortlist-mechanism-not-fixed)` exit 0 after two corrections to the check itself (it wrongly demanded TAB headers where the ticket's header is comma-separated, and wrongly required `PREREG08.md`/`impl_t08.diff` for a no-fix reading; it now accepts either delimiter and requires the screen evidence instead, and recomputes the per-piece totals above itself).
+- **[corrected]** the newly-failing best-of-3 list is Pot_D_Piece_18, D24, D25, E24, I22, I25, J05; D23 (5.6 deg) and I26 (1.8 deg) fail at rank 0 only and best-of-3 still rescues them, so they are not on it.
 
 **End state:** ready
 Reading: shortlist-mechanism-not-fixed
