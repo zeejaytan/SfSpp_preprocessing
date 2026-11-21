@@ -1,4 +1,4 @@
-# 09: Write each surface point once, and make the de-duplication compare the whole point
+# 09: Write each surface point once (position rule, not six floats)
 
 **What to build:** A short code ticket on branch `09-write-each-surface-point-once` (worktree `C:/PR/worktrees/sfs/09`) that removes the duplicate-row defect at its source in `mesh_processing_headless.cpp`, proves the removal with a unit test and two real mesh cells, and records the consequence without re-running Part A. Three parts:
 
@@ -9,7 +9,6 @@
 **Answers:** E1
 **Blocked by:** None (Ticket 08 resolved at `0c1ba1d`, Reading `shortlist-mechanism-not-fixed`)
 **Status:** resolved
-**Working in:** chat on Thinkbook16 (2026-11-21) (2026-11-21)
 **Branch:** 09-write-each-surface-point-once, in /c/PR/worktrees/sfs/09
 **Worker:** dsh one-shot subagent w09-surface-dedup
 **Budget:** medium 5
