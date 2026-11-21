@@ -45,8 +45,16 @@ target_link_libraries(MeshPreprocessingHeadless ${PCL_LIBRARIES} ${CGAL_LIBRARIE
 target_link_libraries(EdgeLineExtractionHeadless ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
 target_link_libraries(EdgeLineExtractionLegacy ${PCL_LIBRARIES} ${CGAL_LIBRARIES} stdc++fs)
 
+# TICKET 09: unit test for the surface writer's append-skip and 6-float de-duplication.
+# Header-only (surface_dedupe.h), so it needs no PCL and builds in seconds.
+add_executable(SurfaceDedupeTest tests/test_surface_dedupe.cpp)
+# The same test compiled against the pre-ticket behaviour (append everything, compare x/y/z), so
+# the red run is reproducible: run() reports FAIL for every case there.
+add_executable(SurfaceDedupeTestLegacy tests/test_surface_dedupe.cpp)
+target_compile_definitions(SurfaceDedupeTestLegacy PRIVATE SURFACE_DEDUPE_LEGACY=1)
+
 # Build all targets
-add_custom_target(all_targets ALL DEPENDS EdgeLineExtraction MeshPreprocessingHeadless EdgeLineExtractionHeadless EdgeLineExtractionLegacy)
+add_custom_target(all_targets ALL DEPENDS EdgeLineExtraction MeshPreprocessingHeadless EdgeLineExtractionHeadless EdgeLineExtractionLegacy SurfaceDedupeTest SurfaceDedupeTestLegacy)
 
 # Lightweight OBJ -> PCD converter (header-only tinyobjloader, ASCII PCD output)
 add_executable(ObjToPcd tools/obj_to_pcd.cpp)

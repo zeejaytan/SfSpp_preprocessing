@@ -40,6 +40,7 @@
 #include <thread>
 
 #include <pcl/point_types.h>
+#include "surface_dedupe.h" // TICKET 09: append-only-when-new + 6-float de-duplication (unit-testable)
 // Removed all VTK smoothing headers for headless build
 // #include <pcl/io/vtk_io.h>
 // #include <pcl/surface/vtk_smoothing/vtk.h>
@@ -227,17 +228,8 @@ struct myclass {
 } myobject1;
 
 
-// TICKET 27: this orders the de-duplication's copy of a finished surface. It used to compare x
-// alone, which cannot put equal (x,y,z) positions next to each other, so the adjacent-equality
-// loop in finishImprovedSurface could not group them. No other code sorts with it.
-struct myclass2 {
-	bool operator() (pcl::PointNormal i, pcl::PointNormal j)
-	{
-		if (i.x != j.x) return (i.x < j.x);
-		if (i.y != j.y) return (i.y < j.y);
-		return (i.z < j.z);
-	}
-} myobject2;
+// TICKET 09: the de-duplication's ordering and equality live in surface_dedupe.h now, where the
+// unit test can call them. They compare all six values of a point, not x/y/z alone.
 
 // TICKET 27: SFS_DEDUPE=on writes each distinct position of a finished surface once. Unset, empty,
 // "off" or anything else keeps today's cloud, duplicates included. Declared here because
@@ -1564,66 +1556,45 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 			<< " dup_rows=" << dupDot65.size() << " dup_dot_med=" << dupMed65 << std::endl;
 	}
 
-	for (int i = 0; i < segmentedSurfacePointCloud->points.size(); i++)
-	{
-		pcl::PointNormal ptTmp;
-
-		ptTmp.x = segmentedSurfacePointCloud->points[i].x; // point[0];
-		ptTmp.y = segmentedSurfacePointCloud->points[i].y; // point[1];
-		ptTmp.z = segmentedSurfacePointCloud->points[i].z; // point[2];
-		ptTmp.normal_x = segmentedSurfacePointCloud->points[i].normal_x;
-		ptTmp.normal_y = segmentedSurfacePointCloud->points[i].normal_y;
-		ptTmp.normal_z = segmentedSurfacePointCloud->points[i].normal_z;
-		improvedSurfacePointCloud->points.push_back(ptTmp);
-	}
+	// TICKET 09: append only the rows this surface does not already hold. The rows of
+	// segmentedSurfacePointCloud are overwhelmingly copies of rows that are already here -- on 288
+	// of 296 own walls the exported surface was a unique prefix followed by a second copy of part of
+	// itself (Ticket 08) -- so the unconditional append this replaces wrote the same point twice.
+	// improved_rows is what the surface held before this append, appended the rows that were new,
+	// and dups_skipped the ones it already held.
+	const long improvedRows09 = static_cast<long>(improvedSurfacePointCloud->points.size());
+	decltype(improvedSurfacePointCloud->points) dest09 = improvedSurfacePointCloud->points;
+	const std::size_t dupsSkipped09 =
+		surface_dedupe::appendNewPoints(dest09, segmentedSurfacePointCloud->points);
+	const long appended09 = static_cast<long>(dest09.size()) - improvedRows09;
+	improvedSurfacePointCloud->points.swap(dest09);
 
 	improvedSurfacePointCloud->width = static_cast<int>(improvedSurfacePointCloud->points.size());
 	improvedSurfacePointCloud->height = 1;
 
 	//removing duplicate points
-	pcl::PointCloud<PointNormal>::Ptr improvedSurfacePointCloudNoDuplicates(new pcl::PointCloud<PointNormal>);
-	std::vector<PointNormal> vectorPointNormal;
-	for (size_t i = 0; i < improvedSurfacePointCloud->points.size(); i++)
+	// TICKET 09: the sort key and the adjacent-equality test both compare the whole point -- x, y,
+	// z, normal_x, normal_y, normal_z -- not x/y/z alone, so a row at the same position carrying a
+	// different normal is not a duplicate. SFS_DEDUPE stays OFF by default: after the append above
+	// there is nothing left to remove, and switching it on would only sort and reorder the cloud.
+	const long dedupeIn27 = static_cast<long>(improvedSurfacePointCloud->points.size());
+	decltype(improvedSurfacePointCloud->points) deduped09 =
+		surface_dedupe::dedupeExact6(improvedSurfacePointCloud->points);
+	const long dedupeOut27 = static_cast<long>(deduped09.size());
+	// TICKET 27: with the switch on, the de-duplicated cloud is what the callers export; with it
+	// unset nothing is assigned and the surface is the cloud this function built.
+	if (g_dedupeOn27)
 	{
-		vectorPointNormal.push_back(improvedSurfacePointCloud->points[i]);
-	}
-	std::sort(vectorPointNormal.begin(), vectorPointNormal.end(), myobject2);
-
-	const long dedupeIn27 = (long)vectorPointNormal.size();
-	long dedupeOut27 = 0;
-	if (vectorPointNormal.size() > 0)
-	{
-		for (size_t i = 0; i < vectorPointNormal.size() - 1; i++)
-		{
-			if ((vectorPointNormal[i].x == vectorPointNormal[i + 1].x) && (vectorPointNormal[i].y == vectorPointNormal[i + 1].y) && (vectorPointNormal[i].z == vectorPointNormal[i + 1].z))
-			{
-
-			}
-			else
-			{
-				improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[i]);
-			}
-		}
-		// TICKET 27: the last sorted element has no successor to differ from, so it is always kept.
-		// The loop stops at size()-1 and used to drop it.
-		improvedSurfacePointCloudNoDuplicates->points.push_back(vectorPointNormal[vectorPointNormal.size() - 1]);
-
-		improvedSurfacePointCloudNoDuplicates->width = improvedSurfacePointCloudNoDuplicates->points.size();
-		improvedSurfacePointCloudNoDuplicates->height = 1;
-		dedupeOut27 = (long)improvedSurfacePointCloudNoDuplicates->points.size();
-
-		// TICKET 27: with the switch on, the de-duplicated cloud is what the callers export; with it
-		// unset nothing is assigned and the surface is the cloud this function built.
-		if (g_dedupeOn27)
-		{
-			improvedSurfacePointCloud->points = improvedSurfacePointCloudNoDuplicates->points;
-			improvedSurfacePointCloud->width = improvedSurfacePointCloudNoDuplicates->width;
-			improvedSurfacePointCloud->height = improvedSurfacePointCloudNoDuplicates->height;
-		}
+		improvedSurfacePointCloud->points.swap(deduped09);
+		improvedSurfacePointCloud->width = static_cast<int>(improvedSurfacePointCloud->points.size());
+		improvedSurfacePointCloud->height = 1;
 	}
 	std::cout << "[DEDUPE-27] surface=" << surfaceIndex27
 		<< " mode=" << (g_dedupeOn27 ? "on" : "off")
-		<< " in=" << dedupeIn27 << " out=" << dedupeOut27 << std::endl;
+		<< " in=" << dedupeIn27 << " out=" << dedupeOut27
+		<< " improved_rows=" << improvedRows09
+		<< " appended=" << appended09
+		<< " dups_skipped=" << dupsSkipped09 << std::endl;
 }
 
 // TICKET 22: SFS_SPACING_POLICY=piece needs the piece's bounding-box diagonal and its
