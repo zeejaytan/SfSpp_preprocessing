@@ -4,9 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 03 executed at `325a0a8`, `Reading: tri-shipped-own-e2e-differs`, unmerged)
-**Status:** ready-for-agent
-**Branch:** set by `ticket_start.sh`
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-21)
+**Branch:** 07-pot-j-own-surface-axes, in /c/PR/worktrees/sfs/07
+**Worker:** dsh one-shot subagent w07-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check staged separately by lead
 
