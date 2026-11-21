@@ -3,11 +3,11 @@
 **What to build:** Promote Ticket 06's proven parallel tri-invariant `A1 + B2 + P` selector (`impl_t06.diff`, or fallback `t05`) into `SfSpp_preprocessing/sfs_axes/` as the default on the normalized profile-ranked union path (keeping Ticket 335's `orient_base_axis` ON, adding a clean env/CLI opt-out that restores exact `axes335` bytes), add unit tests with zero CRLF line endings, and run the **100%-own-code E2E verification gate** (`MeshPreprocessingHeadless` surfaces -> landed `sfs_axes` -> `EdgeLineExtraction` breaklines -> `structure-from-sherds-pp` assembler) across all 10 paper pots (`Pot A..J`) and `def_3x` Juglet.
 
 **Answers:** E1
-**Blocked by:** 06-tri-invariant-selector-potj-and-tenpots (with `Reading: tri-selector-passes-all-ten-pots-and-juglet`)
-**Status:** needs-triage — blocked by Ticket 06
+**Blocked by:** None (Ticket 06 resolved with tri-selector-passes-all-ten-pots-and-juglet)
+**Status:** needs-triage
 **Worker:** unassigned
 **Budget:** medium 5
-**Hand-over:** DeepSeek — hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-03/accept.py` to be staged before dispatch
+**Hand-over:** DeepSeek — hidden acceptance check staged separately by lead
 
 ---
 
