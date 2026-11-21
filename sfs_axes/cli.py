@@ -29,7 +29,7 @@ from .potsac import UNION_MAX, UNION_SEEDS, adaptive_step, run_potsac, run_potsa
 def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
                   step=10, adaptive=False, truncate=False, verbose=False,
                   paper_chain=True, union_seeds=None, max_candidates=None,
-                  line_rule=None, base_orient=None):
+                  line_rule=None, base_orient=None, tri_select=None):
     """Run the full chain for one piece; write its assembly-layout axis file.
 
     Default (tickets 306 + 307): both walls whole, and the paper's candidate
@@ -51,6 +51,11 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
     line_rule=False writes every ranked line (the axes322 set).
     base_orient=False leaves each union line's sign as ranked; None keeps the
     default (ticket 335: base fragments point base -> rim).
+    tri_select (ticket 03, default TRI_SELECT): the union path ranks and merges
+    three independent hypotheses in joint.py -- the calibrated-normal arm, the
+    normal-consistent thickness arm and the shipped selector -- at 10 deg, at most
+    three lines, and points the merged set base -> rim once. False runs the
+    shipped axes335 selector alone, byte-for-byte.
     """
     t0 = time.time()
     C0, C1 = read_surfaces(surfaces_dir, pot_id, frag_id,
@@ -67,7 +72,8 @@ def extract_piece(surfaces_dir, out_dir, pot_id="A", frag_id=1, seed=0,
     else:
         vt = run_potsac_union(C0, C1, seeds=union_seeds, step=step,
                               max_candidates=max_candidates, verbose=verbose,
-                              line_rule=line_rule, base_orient=base_orient)
+                              line_rule=line_rule, base_orient=base_orient,
+                              tri_select=tri_select)
         mode = "union"
         if vt.shape[1] < 1:
             raise RuntimeError("piece %02d: no axis found" % frag_id)
@@ -134,6 +140,12 @@ def main(argv=None):
                     help="--union only: leave each line's direction sign as ranked "
                          "instead of pointing base fragments base -> rim (ticket "
                          "335; same as SFS_AXES_BASE_ORIENT=0)")
+    ap.add_argument("--no-tri-select", action="store_true",
+                    help="--union only: rank and merge the candidates with the "
+                         "shipped axes335 selector alone instead of the joint "
+                         "normal/thickness/shipped selector (ticket 03; same as "
+                         "SFS_AXES_TRI_SELECT=0). The switch off reproduces "
+                         "axes335 byte-for-byte.")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
     if "-" in args.pieces:
@@ -153,7 +165,8 @@ def main(argv=None):
                       union_seeds=args.union_seeds,
                       max_candidates=args.max_candidates,
                       line_rule=False if args.no_line_rule else None,
-                      base_orient=False if args.no_base_orient else None)
+                      base_orient=False if args.no_base_orient else None,
+                      tri_select=False if args.no_tri_select else None)
 
 
 if __name__ == "__main__":

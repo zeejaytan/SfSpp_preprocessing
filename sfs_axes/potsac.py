@@ -418,7 +418,7 @@ def _cluster_union(V, cos=DEDUP_COS):
 # SFS_AXES_CONVERGE_BEFORE_RANK (default off) reorders 2 and 5; see the switch above.
 def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
                      verbose=False, normalized=None, line_rule=None,
-                     base_orient=None):
+                     base_orient=None, tri_select=None):
     """Deterministic union of the Pottmann basins over S seeds (ticket 306).
 
     C0, C1: (6, n) surface clouds; C1 optional (single cloud scored alone).
@@ -481,7 +481,8 @@ def run_potsac_union(C0, C1=None, seeds=None, step=None, max_candidates=None,
         if UNION_RANKER == "profile":
             vt, _ = select_union_lines(reps, sizes, C0, S1, C, max_candidates,
                                        line_rule=line_rule,
-                                       base_orient=base_orient, verbose=verbose)
+                                       base_orient=base_orient, verbose=verbose,
+                                       tri_select=tri_select)
             return vt
 
         # Precompute geometry features across all basin representatives

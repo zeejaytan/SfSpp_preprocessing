@@ -51,6 +51,13 @@ BASE_ORIENT_POLE_AX = 0.85
 BASE_ORIENT_WALL_AX = 0.50
 BASE_ORIENT_MIN_COUNT = 50
 
+# Ticket 03: the union path's default selector is the joint one (joint.py) -- the
+# calibrated-normal arm, the thickness arm and this selector's own ranking, merged
+# at 10 deg, at most three lines, oriented once. SFS_AXES_TRI_SELECT=0 (or
+# --no-tri-select) restores the axes335 selector byte-for-byte; run_potsac (the
+# paper chain) and the UNION_RANKER=="normal" path never come through here.
+TRI_SELECT = os.environ.get("SFS_AXES_TRI_SELECT", "1") not in ("", "0")
+
 
 def _distinct(items, key, tol_deg):
     """Keep each item unless its line is within tol_deg of one already kept (first wins)."""
@@ -176,7 +183,7 @@ def orient_base_axis(vt, C0, C1=None, max_points=BASE_ORIENT_MAX_POINTS,
 
 def select_union_lines(reps, sizes, C0, C1, C, max_candidates, line_rule=None,
                        tau=LINE_RULE_TAU, kmax=LINE_RULE_KMAX, base_orient=None,
-                       verbose=False):
+                       verbose=False, tri_select=None):
     """Ticket 324: from the union path's basins to the lines written for the piece.
 
     reps, sizes: basin representatives (6, m) and their draw counts (_cluster_union);
@@ -186,7 +193,20 @@ def select_union_lines(reps, sizes, C0, C1, C, max_candidates, line_rule=None,
     max_candidates, and, with line_rule (default LINE_RULE), reduced by keep_lines.
     base_orient (default BASE_ORIENT, ticket 335) then points each kept line base ->
     rim on the combined cloud C. Returns (vt (6, K), costs (K,)).
+    tri_select (default TRI_SELECT, ticket 03) hands the three hypotheses to
+    joint.select_joint_lines instead: this function's own ranking is then one of
+    the three, so the merge calls back here with tri_select=False. The switch off
+    runs the body below unchanged.
     """
+    if tri_select is None:
+        tri_select = TRI_SELECT
+    if tri_select:
+        from .joint import select_joint_lines
+
+        return select_joint_lines(
+            reps, sizes, C0, C1, C, max_candidates,
+            line_rule=LINE_RULE if line_rule is None else line_rule,
+            base_orient=BASE_ORIENT if base_orient is None else base_orient)
     if line_rule is None:
         line_rule = LINE_RULE
     if base_orient is None:

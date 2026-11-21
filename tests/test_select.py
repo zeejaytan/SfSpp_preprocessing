@@ -273,11 +273,13 @@ def test_select_union_lines_base_orient_on_an_inverted_base_disk():
         _line([1.0, 0.0, 0.1], [0.0, 0.0, 0.0]),
     ])
     sizes = np.array([50, 20])
+    # tri_select=False pins the shipped axes335 body: this test is about the
+    # base-orient step, not about which selector ranks the pool.
     v_off, _ = select_union_lines(reps, sizes, C0, C1, C, 2, line_rule=False,
-                                  base_orient=False)
+                                  base_orient=False, tri_select=False)
     assert np.all(v_off[2] >= 0.0)
     v_on, _ = select_union_lines(reps, sizes, C0, C1, C, 2, line_rule=False,
-                                 base_orient=True)
+                                 base_orient=True, tri_select=False)
     assert v_on.shape == v_off.shape
     for k in range(v_on.shape[1]):
         assert abs(float(v_on[0:3, k] @ v_off[0:3, k])) > 0.999
