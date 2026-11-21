@@ -8,8 +8,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 08 resolved at `0c1ba1d`, Reading `shortlist-mechanism-not-fixed`)
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-21) (2026-11-21)
+**Branch:** 09-write-each-surface-point-once, in /c/PR/worktrees/sfs/09
+**Worker:** dsh one-shot subagent w09-surface-dedup
 **Budget:** medium 5
 **Hand-over:** DeepSeek - hidden acceptance check at `C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` staged before dispatch
 
