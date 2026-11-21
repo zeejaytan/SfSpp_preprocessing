@@ -4,9 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 06 resolved at `ad0cc0f`, `Reading: tri-selector-passes-all-ten-pots-and-juglet`)
-**Status:** ready-for-agent
-**Branch:** set by `ticket_start.sh`
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-21)
+**Branch:** 03-ship-joint-axis-and-e2e-own-surfaces-gate, in /c/PR/worktrees/sfs/03
+**Worker:** dsh one-shot subagent w03-axis-parity
 **Budget:** large 8
 **Hand-over:** DeepSeek — hidden acceptance check staged separately by lead
 
