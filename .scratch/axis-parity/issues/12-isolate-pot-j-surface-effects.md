@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Frozen Ticket 03 inputs and the Ticket 08 surface audit are sufficient. Ticket 11 supplies trace context.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 12 (2026-11-22)
+**Branch:** 12-isolate-pot-j-surface-effects, in /c/PR/worktrees/sfs/12
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek. Independent acceptance held by lead.
 
