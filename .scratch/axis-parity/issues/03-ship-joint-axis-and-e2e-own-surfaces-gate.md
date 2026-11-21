@@ -3,8 +3,8 @@
 **What to build:** Land Ticket 06's winner `tri_psec_d10` (`A1` calibrated Huber `width=0.05` rank-0 + `B2` Hermite normal-consistent rank-0 + shipped position-only `select_union_lines` rank-0 and secondaries, `10°` dedup, `K <= 3`, one final `orient_base_axis`) into `SfSpp_preprocessing/sfs_axes/` as the default of the union path, behind one opt-out that restores `axes335` byte-for-byte. Add unit tests. Then run the **100%-own-code E2E gate**: our `MeshPreprocessingHeadless` surfaces -> landed `sfs_axes` -> our `EdgeLineExtraction` breaklines -> `structure-from-sherds-pp` assembler, on all 10 paper pots + native-3x `def_3x` Juglet.
 
 **Answers:** E1
-**Blocked by:** None (Ticket 06 resolved at `ad0cc0f`, `Reading: tri-selector-passes-all-ten-pots-and-juglet`)
-**Status:** ready-for-agent
+**Blocked by:** 07-pot-j-own-surface-axes (Ticket 03 executed on branch `03-ship-joint-axis-and-e2e-own-surfaces-gate` at `325a0a8`, `Reading: tri-shipped-own-e2e-differs`, unmerged; Pot J misses on own surfaces)
+**Status:** needs-triage
 **Branch:** set by `ticket_start.sh`
 **Worker:** unassigned
 **Budget:** large 8
