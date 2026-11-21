@@ -8,7 +8,7 @@
 
 **Answers:** E1
 **Blocked by:** None (Ticket 08 resolved at `0c1ba1d`, Reading `shortlist-mechanism-not-fixed`)
-**Status:** in-progress
+**Status:** resolved
 **Working in:** chat on Thinkbook16 (2026-11-21) (2026-11-21)
 **Branch:** 09-write-each-surface-point-once, in /c/PR/worktrees/sfs/09
 **Worker:** dsh one-shot subagent w09-surface-dedup
@@ -396,6 +396,23 @@ CASE U5 PASS / INFO U5 rows=4 distinct=2 want=2 a_kept=yes unique_kept=yes order
 ```
 
 Run of record `runs/20261121-1238_3658152_t09-surface-dedup/`; `runs/index.tsv` row appended by the job: `20261121-1238_3658152_t09-surface-dedup  35477684  3658152  t09-dedup` (verdict and human_note empty for the coordinator). The laptop record is `C:/PR/artifacts/axis-parity-09/` - this run's `axes09_cells.tsv`, `axes09_seteq.tsv`, `axes09_summary.json`, `UNIT.txt`, `dedupe27_lines.txt`, `sacct_all.txt`, `sacct_final.txt`, `render09_rows.png`; the first run's copies are kept beside them in `firstrun/`.
+
+## Lead verification (2026-11-22, before recording)
+
+Every number the write-back rests on was re-read by the coordinator at the source, not taken from the report:
+
+- verified: `python C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` -> `ACCEPTANCE PASSED (reading=writer-writes-each-point-once)`, exit 0.
+- verified: `C:/PR/artifacts/axis-parity-09/axes09_cells.tsv` recomputed row by row -> `in == improved_rows + appended_rows` on every new-arm row (J12 B S0 2310 = 2310 + 0; J12 B S1 2590 = 2590 + 0; D03 D S0 51576 = 49931 + 1645; D03 D S1 52877 = 52877 + 0), and `appended_rows + dups_skipped` = 1912 / 2252 / 50209 / 50069, which is what each wall offered.
+- verified: `ssh spartan` grep of the run's `out/dedupe27_lines.txt` -> B S0 `in=2310 out=2310 improved_rows=2310 dups_skipped=1912 appended=0 normal_maxdiff=0.0000`, B S1 `in=2590 out=2590 improved_rows=2590 dups_skipped=2252 appended=0`; A and A2 identical `in=4222 out=2310` / `in=4842 out=2590`.
+- verified: `C:/PR/artifacts/axis-parity-09/axes09_seteq.tsv` -> J12 A-A2, A-B and A2-B all `equal=yes`, `nn_med_mm=0.0`, positions 2310/2310 and 2590/2590: the fix changed no position on the piece whose draw reproduced.
+- verified: `ssh spartan sacct -j 35477684 -X` -> `COMPLETED 0:0`, elapsed `00:20:52`; `/data/gpfs/projects/punim2657/SfSpp/runs/index.tsv` -> row `20261121-1238_3658152_t09-surface-dedup  35477684  3658152  t09-dedup`, verdict and human_note empty.
+- verified: `ssh spartan` on the run's `logs/slurm-35477684.out:80` -> `[JOB] CORPUS-UNCHANGED`; `logs/corpus_inputs.diff` 0 bytes; `corpus_inputs_before.md5` and `..._after.md5` 14 lines each.
+- verified: `C:/PR/artifacts/axis-parity-09/UNIT.txt` -> red `exit=1` `cases=5 pass=0 fail=5`, green `exit=0` `cases=5 pass=5 fail=0`, with U3's `normal_maxdiff=1.1920929e-07 ulp=1.1920929e-07`.
+- verified: code at `3658152` -> `surface_dedupe.h:155-190` `appendNewPoints` skips on `key3` (position), keeps the destination row and accumulates `normalMaxDiffOut`; `surface_dedupe.h:198-216` `dedupePositions` sorts by the six words and keeps the first row of each position; `mesh_processing_headless.cpp:1575` is the call and `:1602-1607` the log line that prints `dups_skipped` and `normal_maxdiff`.
+- verified: `read` of `C:/PR/artifacts/axis-parity-09/render09_rows.png` (1890x896) -> J12 B and D03 D bar pairs flush at 2310/2310, 2590/2590, 51576/51576, 52877/52877; the old arms still gapped at 4222/2310, 4842/2590, 100160/51598, 102979/52910. The picture shows what the table says.
+- checked and corrected by the coordinator during verification: (a) the staged checker's G2 identity had the wrong sign (`in == improved + appended - skipped`); the run's numbers satisfy `in == improved + appended`, and the checker now says so. (b) The column `appended_rows` had silently changed meaning between the first run's table (rows written, 66) and the re-run's (rows offered, 1912); it is now rows written in both tables, `appended_missing` is retired, and the first-run table in §7.3 was regenerated from its own cells to the same column set.
+
+Not verified, and said so in the write-back: the D03 C-vs-D position difference (22 and 33 positions) has no same-draw control and is reported as a draw effect, not as evidence about the fix.
 
 **End state:** ready
 Reading: writer-writes-each-point-once
