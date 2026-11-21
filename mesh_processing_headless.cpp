@@ -1556,16 +1556,23 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 			<< " dup_rows=" << dupDot65.size() << " dup_dot_med=" << dupMed65 << std::endl;
 	}
 
-	// TICKET 09: append only the rows this surface does not already hold. The rows of
-	// segmentedSurfacePointCloud are overwhelmingly copies of rows that are already here -- on 288
-	// of 296 own walls the exported surface was a unique prefix followed by a second copy of part of
-	// itself (Ticket 08) -- so the unconditional append this replaces wrote the same point twice.
-	// improved_rows is what the surface held before this append, appended the rows that were new,
-	// and dups_skipped the ones it already held.
+	// TICKET 09: append only the rows whose POSITION this surface does not already hold. The rows
+	// of segmentedSurfacePointCloud are overwhelmingly copies of rows that are already here -- on
+	// 288 of 296 own walls the exported surface was a unique prefix followed by a second copy of
+	// part of itself (Ticket 08) -- so the unconditional append this replaces wrote the same point
+	// twice. Equality is bit equality of x/y/z, with no tolerance; on a match the surface's own row
+	// is kept (its normal included) and the offered row is counted as skipped. The measured
+	// near-copies differ in one normal word by one float32 ulp, and the exporter prints eight
+	// significant digits, so keeping both writes the same row twice (ticket 09 section 7.14).
+	// improved_rows is what the surface held before this append, appended counts the rows whose
+	// position was new, dups_skipped the ones it already held, and normal_maxdiff the largest
+	// normal component difference over the skipped pairs -- the guard that no material normal is
+	// being dropped.
 	const long improvedRows09 = static_cast<long>(improvedSurfacePointCloud->points.size());
 	decltype(improvedSurfacePointCloud->points) dest09 = improvedSurfacePointCloud->points;
+	double normalMaxDiff09 = 0.0;
 	const std::size_t dupsSkipped09 =
-		surface_dedupe::appendNewPoints(dest09, segmentedSurfacePointCloud->points);
+		surface_dedupe::appendNewPoints(dest09, segmentedSurfacePointCloud->points, &normalMaxDiff09);
 	const long appended09 = static_cast<long>(dest09.size()) - improvedRows09;
 	improvedSurfacePointCloud->points.swap(dest09);
 
@@ -1573,13 +1580,15 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 	improvedSurfacePointCloud->height = 1;
 
 	//removing duplicate points
-	// TICKET 09: the sort key and the adjacent-equality test both compare the whole point -- x, y,
-	// z, normal_x, normal_y, normal_z -- not x/y/z alone, so a row at the same position carrying a
-	// different normal is not a duplicate. SFS_DEDUPE stays OFF by default: after the append above
-	// there is nothing left to remove, and switching it on would only sort and reorder the cloud.
+	// TICKET 09: the rule is the position -- x/y/z compared as bits, one row per position -- not the
+	// six values: a row at the same position may carry a normal one ulp off (see the append above).
+	// The ordering is x, y, z with the three normal words as the tie-break, so both the row that
+	// survives and the order of the result are independent of the order the cloud arrives in.
+	// SFS_DEDUPE stays OFF by default: with the append above there is nothing left to remove, and
+	// switching it on would only sort and reorder the cloud for no gain.
 	const long dedupeIn27 = static_cast<long>(improvedSurfacePointCloud->points.size());
 	decltype(improvedSurfacePointCloud->points) deduped09 =
-		surface_dedupe::dedupeExact6(improvedSurfacePointCloud->points);
+		surface_dedupe::dedupePositions(improvedSurfacePointCloud->points);
 	const long dedupeOut27 = static_cast<long>(deduped09.size());
 	// TICKET 27: with the switch on, the de-duplicated cloud is what the callers export; with it
 	// unset nothing is assigned and the surface is the cloud this function built.
@@ -1593,8 +1602,9 @@ void finishImprovedSurface(pcl::PointCloud<PointNormal>::Ptr improvedSurfacePoin
 		<< " mode=" << (g_dedupeOn27 ? "on" : "off")
 		<< " in=" << dedupeIn27 << " out=" << dedupeOut27
 		<< " improved_rows=" << improvedRows09
+		<< " dups_skipped=" << dupsSkipped09
 		<< " appended=" << appended09
-		<< " dups_skipped=" << dupsSkipped09 << std::endl;
+		<< " normal_maxdiff=" << normalMaxDiff09 << std::endl;
 }
 
 // TICKET 22: SFS_SPACING_POLICY=piece needs the piece's bounding-box diagonal and its
