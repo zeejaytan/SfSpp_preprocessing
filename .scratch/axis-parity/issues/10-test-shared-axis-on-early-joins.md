@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use frozen Ticket 03 inputs. Ticket 09 owns the writer and its eventual regeneration is a separate experiment.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 10 (2026-11-21)
+**Branch:** 10-test-shared-axis-on-early-joins, in /c/PR/worktrees/sfs/10
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek. Lead holds the independent acceptance check.
 
