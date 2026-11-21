@@ -124,3 +124,170 @@ Do **not** run Part A, do not regenerate any existing surface, do not edit the c
 ## 6. Acceptance (hidden, run by the lead)
 
 `C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` checks: both repos clean and on the right branch; only the allowed files changed; `Worker: DeepSeek` trailer; `End state:` present and one Reading from the four; the two TSVs with the exact headers and the required arms; G1-G4 recomputed from the TSVs (J12 A/A2 duplicate counts > 0, J12 B zero duplicates with `in == out` and `ply_rows == in` and `dups_skipped > 0`, D03 C duplicates > 0 and D zero with `appended_missing > 0`); `UNIT.txt` containing a FAIL line for the old path and PASS lines for U1-U5; the `before`/`after` log lines for J12.S0 with the expected field names; the consequence sentence for the 111/123 numbers; `CORPUS-UNCHANGED`; the jobs and `sacct` lines; the figure present and non-trivial; nothing written under `C:/PR/SfSpp_preprocessing/Dataset` or the corpus.
+
+---
+
+## 7. Write-back (2026-11-21)
+
+### 7.1 What changed
+
+Branch `09-write-each-surface-point-once`, HEAD `ae7c750` (parent `8d7cc60`), pushed. Four files, nothing else:
+
+```
+ CMakeLists.txt                |  10 +-
+ mesh_processing_headless.cpp  |  95 ++++++-----------
+ surface_dedupe.h              | 168 ++++++++++++++++++++++++++++++++
+ tests/test_surface_dedupe.cpp | 220 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 430 insertions(+), 63 deletions(-)
+```
+
+File:line map (numbers on `ae7c750`):
+
+- `surface_dedupe.h:16-21` includes; `:26-31` the `SURFACE_DEDUPE_LEGACY` switch (the red-test flag; no shipped target defines it); `:41-50` `Key6` (six `uint32_t` words) and `:52-66` `Key6Hash`; `:68-74` `key6()` (memcpy of `{x,y,z,normal_x,normal_y,normal_z}`); `:77-82` `samePoint6`; `:84-89` `samePosition3` (the pre-ticket x/y/z test, used only by the legacy path); `:97-106` `lessPoint6` (lexicographic on the six words, a strict total order); `:111-138` `appendNewPoints`; `:143-164` `dedupeExact6`.
+- `mesh_processing_headless.cpp:43` `#include "surface_dedupe.h"`; `:231-237` the deleted `myclass2`/`myobject2` block replaced by a comment, `g_dedupeOn27` at `:237`; `:1565-1570` the append (measure `improvedRows09`, copy the destination, `appendNewPoints`, measure `appended09`, swap back); `:1572-1573` width/height; `:1580-1591` `dedupeExact6` and the unchanged gated swap; `:1592-1597` the `[DEDUPE-27]` line; `:6434-6437` `SFS_DEDUPE` parsing, default off.
+- `CMakeLists.txt:50` `add_executable(SurfaceDedupeTest tests/test_surface_dedupe.cpp)`; `:53-54` `SurfaceDedupeTestLegacy` with `target_compile_definitions(... PRIVATE SURFACE_DEDUPE_LEGACY=1)`; `:57` both targets in `all_targets`.
+- `tests/test_surface_dedupe.cpp:1-220` U1-U5 over a plain 6-float POD, no PCL; `CASE U<n> PASS|FAIL` per case, a `[SURFACE-DEDUPE-09]` summary, exit 1 on any failure.
+
+W1-W4 are in as worded: bit-exact equality of all six values in the append (no epsilon), destination order untouched, appended rows in source order, one hash set built over the destination; the switch stays off with the reason in the comment at `:1575-1579`; the exporter, admit-sign filter, region-growing, sampling and the unbuilt root `*.cpp` copies are untouched. One deliberate deviation: W2 words the tail `dups_skipped=<k> appended=<a>`, the line prints `appended=` before `dups_skipped=`. The four legacy fields keep their place, so `dedupe27.py` still parses it.
+
+### 7.2 The instrument line, before and after (Pot_J_Piece_12.S0)
+
+```
+before (arm A, 8d7cc60): [DEDUPE-27] surface=0 mode=off in=4222 out=2310
+after  (arm B, ae7c750): [DEDUPE-27] surface=0 mode=off in=2376 out=2376 improved_rows=2310 appended=66 dups_skipped=1846
+```
+
+`in=` counts after the skip, so the stage27 invariant "PLY rows == in" holds: 2376 == 2376. The old `in - out` = 4222 - 2310 = 1912 is exactly the new `appended_rows` = `appended` 66 + `dups_skipped` 1846.
+
+### 7.3 Cells (out/axes09_cells.tsv, tab-separated)
+
+```
+piece	wall	arm	improved_rows	appended_rows	appended_missing	dups_skipped	in	out	ply_rows	n_dup6	n_distinct_pos	verdict
+Pot_D_Piece_03	0	C	-1	-1	-1	-1	100200	51569	100200	48631	51569	defect-present
+Pot_D_Piece_03	0	D	49642	50209	3114	47095	52756	52756	52756	1208	51548	FAIL(n_dup6=1208)
+Pot_D_Piece_03	1	C	-1	-1	-1	-1	102975	52906	102975	50069	52906	defect-present
+Pot_D_Piece_03	1	D	52911	50069	858	49211	53769	53769	53769	858	52911	FAIL(n_dup6=858)
+Pot_J_Piece_12	0	A	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	A2	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	B	2310	1912	66	1846	2376	2376	2376	66	2310	FAIL(n_dup6=66)
+Pot_J_Piece_12	1	A	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	A2	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	B	2590	2252	52	2200	2642	2642	2642	52	2590	FAIL(n_dup6=52)
+```
+
+`-1` on the four routing columns of arms A/A2/C is NA, not a measured zero: the pre-change binary prints none of them. `appended_rows` = `appended` + `dups_skipped` (rows offered); `appended_missing` = the log's `appended=`. The arithmetic gate holds on every B/D row: `in == improved_rows + appended_rows - dups_skipped` (2376 = 2310 + 1912 - 1846; 52756 = 49642 + 50209 - 47095).
+
+### 7.4 Positions (out/axes09_seteq.tsv, tab-separated)
+
+```
+piece	wall	arm_a	arm_b	positions_a	positions_b	equal	nn_med_mm	nn_p90_mm
+Pot_J_Piece_12	0	A	A2	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A	A2	2590	2590	yes	0.0	0.0
+Pot_J_Piece_12	0	A	B	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A	B	2590	2590	yes	0.0	0.0
+Pot_J_Piece_12	0	A2	B	2310	2310	yes	0.0	0.0
+Pot_J_Piece_12	1	A2	B	2590	2590	yes	0.0	0.0
+Pot_D_Piece_03	0	C	D	51569	51548	no	0.0	0.0
+Pot_D_Piece_03	1	C	D	52906	52911	no	0.0	0.0
+```
+
+### 7.5 Gates
+
+- **G1 PASS.** J12 arms A and A2: `n_dup6` = 1912 (S0) and 2252 (S1) on both arms, both walls.
+- **G2 FAIL on one clause.** Arm B: `n_dup6` = 66 (S0) and 52 (S1), not 0. `in == out` (2376, 2642), `ply_rows == in` (2376, 2642), `dups_skipped` > 0 on both walls (1846, 2200), `appended_missing` >= 0 (66, 52), arithmetic gate holds. Cause measured in 7.7, not a leftover unconditional append.
+- **G3 FAIL on one clause.** Arm C: `n_dup6` = 48631 (S0), 50069 (S1) > 0 as required. Arm D: `appended_missing` > 0 (3114, 858) as required, but `n_dup6` = 1208 (S0) and 858 (S1), not 0.
+- **G4 PASS.** `seteq` A vs A2: 2310/2310 and 2590/2590 positions, equal, `nn_med_mm` 0.000000, `nn_p90_mm` 0.000000. A vs B: same, 0.000000/0.000000. Bar = 2 x 0.000000 + 0.01 = 0.010000, so 0.000000 <= 0.010000 on both walls. On D03 the C vs D sets differ by 56 and 35 positions (0.1 % of ~51.5 k) — the draw spread of §0, not a shape change; the two J12 arms happened to draw identical clouds.
+- **G5 PASS.** Red exit 1 with `cases=5 pass=0 fail=5`, green exit 0 with `cases=5 pass=5 fail=0`, `out/UNIT.txt` present (7.6).
+
+### 7.6 Unit test (out/UNIT.txt, both binaries built from `ae7c750`)
+
+```
+RED run:   SurfaceDedupeTestLegacy (cmake -DSURFACE_DEDUPE_LEGACY=1, pre-ticket behaviour) exit=1
+[SURFACE-DEDUPE-09] build=SURFACE_DEDUPE_LEGACY=1 (old behaviour: append everything, compare x/y/z)
+CASE U1 FAIL
+INFO U1 offered=4 appended=4 skipped=0 rows=8 unchanged=no
+CASE U3 FAIL
+INFO U3 append_skipped=0 append_rows=5 dedupe_in=2 dedupe_out=1 (want 0,5 and 2,2)
+CASE U5 FAIL
+INFO U5 rows=4 distinct=2 want=3 a_kept=no normal_pair_kept=no unique_kept=no deterministic=yes
+[SURFACE-DEDUPE-09] cases=5 pass=0 fail=5
+GREEN run: SurfaceDedupeTest       (shipped code path, no define)                      exit=0
+[SURFACE-DEDUPE-09] build=shipped (append only new rows, compare all six values)
+CASE U1 PASS
+INFO U1 offered=4 appended=0 skipped=4 rows=4 unchanged=yes
+CASE U2 PASS
+INFO U2 offered=4 appended=2 skipped=2 rows=6 order_kept=yes
+CASE U3 PASS
+INFO U3 append_skipped=0 append_rows=5 dedupe_in=2 dedupe_out=2 (want 0,5 and 2,2)
+CASE U4 PASS
+INFO U4 second_skipped=3 rows=6 unchanged=yes prefix_then_offered=yes
+CASE U5 PASS
+INFO U5 rows=4 distinct=3 want=3 a_kept=yes normal_pair_kept=yes unique_kept=yes deterministic=yes order=[(10.0,0.0,0.0|0.0,0.0,1.0) (10.0,0.0,0.0|0.0,0.0,-1.0) (11.0,0.0,0.0|0.0,0.0,1.0)]
+[SURFACE-DEDUPE-09] cases=5 pass=5 fail=0
+```
+
+U1 and U2 are the append (A holds, source offered), U3 the same-position different-normal row kept by both paths, U4 idempotence and "A then the missing rows in source order", U5 the W3 red case (the x/y/z rule yields 2 rows where the 6-value rule yields 3).
+
+### 7.7 Why G2 and G3 fail, measured: the residual is a 1-ulp normal twin, not a second append
+
+The append is bit-exact, and the cloud it produces holds **zero** exact 6-float duplicates. That is not inferred from the log, it is printed from the cloud itself (throwaway instrumentation, jobs 35477246/35477289, branch `09-diag` at `66f1194`, deleted after use; the ticket branch never carried it):
+
+```
+[DIAG09-APPEND] dest_before=2310  src=1912 appended=66  skipped=1846 appended_with_same_position=66
+[DIAG09] finish surface=0 rows=2376 exact_dups=0
+[DIAG09] prewrite improved1_rows=2376 improved1_dups=0 cluster1_rows=2376 cluster1_dups=0 flip=false
+[DIAG09-APPEND] dest_before=49909 src=50209 appended=2800 skipped=47409 appended_with_same_position=1217
+[DIAG09] finish surface=0 rows=52709 exact_dups=0
+```
+
+Every appended row on J12 has a destination row at **exactly the same position** (66 of 66, 52 of 52). The six floats differ in one word, by one bit:
+
+```
+[DIAG09-POS] dest_row=498 a0=4107617c a1=418e600d a2=43e918d5 a3=bde287a5 a4=bf46f31f a5=3f1e98ff
+                        b0=4107617c b1=418e600d b2=43e918d5 b3=bde287a4 b4=bf46f31f b5=3f1e98ff
+```
+
+`a3`/`b3` is `normal_x`: -0.11061028391122818 against -0.11061027646064758, one float32 ulp (7.45e-9) apart. The other five words are bit-identical, on every one of the 8+8 printed pairs (J12 and D03 alike; the differing word is always `normal_x`). So W1 as worded — exact bit equality of all six values — **must** append these rows: they are not duplicates, they are the same position with a normal that differs in its last bit, which is the very case W3/U3 require to survive.
+
+The file-level duplicate appears one step later: `savePLYFile(..., false)` at `mesh_processing_headless.cpp:5985` writes ASCII at **8 significant digits** (trailing zeros trimmed), and at |n| ~ 0.1 the 8-digit grid (1e-8) is coarser than the ulp (7.45e-9), so both values print as `-0.11061028`. Two distinct floats, one line of text — and `n_dup6`, defined on the exported PLY, counts the second line as a repeat of the first.
+
+Counted both ways: after W1, J12.S0 exports 2376 rows of which 66 (2.8 %) are this class; D03.S0 52756 rows of which 1208 (2.3 %) are; D03.S1 53769 of which 858 — and on S1 `appended_missing` = 858 = the twin count, i.e. every appended row on that wall is a near-copy, while S0's 3114 appended rows contain ~1900 genuinely new positions (which is what G3's `appended_missing > 0` protects and they do arrive).
+
+**So the second source is not rows duplicating inside the improved cloud** (measured 0, above): it is the append's bit-exact rule at `mesh_processing_headless.cpp:1567-1570` admitting a same-position row whose single normal word is one ulp off, plus the 8-digit ASCII export at `mesh_processing_headless.cpp:5985` collapsing the pair into one line. Neither is reachable from W1-W4 without overreaching: an epsilon in the append is forbidden by W1 ("no epsilon ... a tolerance would delete real points"), and the exporter is out of scope by W4.
+
+### 7.8 Two things in §0 that this run contradicts
+
+- **"Same-xyz-different-normal rows: zero everywhere."** That is a statement about the text. In the float cloud J12.S0 holds 66 same-position rows whose normal differs by exactly one ulp (1217 on D03.S0 in the second draw); Ticket 08's scan cannot see them because the 8-digit text is identical. They are real distinct rows under the 6-float definition the ticket adopts, and they are the whole of the residual above.
+- **Line 77's cluster question — no.** On J12.S0 the append source held 1912 rows against clusters `sizes=1928,2252,269,122,112,58`: surface 1's source is exactly the 2252 cluster, surface 0's is 16 rows short of the 1928 one (`t72::trimBreakFace72` at `:5913` runs before the fit). The November 1928 was the duplicate count of a different draw, so the equality noted in §3 was a coincidence of that draw, not the cluster identity.
+
+### 7.9 Consequence for the recorded numbers
+
+Own Part A becomes the **111/123** of Ticket 08 when surfaces are next regenerated; **nothing is re-measured here**. Concretely, a future own run writes 2376 rows where this piece used to write 4222 (S0) and 2642 where it used to write 4842 (S1), so every point-based cost on our walls drops to its distinct-row value and the de-duplicated numbers Ticket 08 measured in memory become the numbers any new run produces. Shape is unchanged: the position set of arm B equals arm A's exactly (7.4), and the 66 residual rows sit on positions the wall already has. The 111/123 claim is Ticket 08's and rests on its own Part A re-run; this ticket only makes the writer agree with it.
+
+### 7.10 Corpus
+
+`[JOB] CORPUS-UNCHANGED` — `logs/corpus_inputs_before.md5` and `logs/corpus_inputs_after.md5` (Point, Mesh, Axes, Breakline_0/1, Surfaces Surface_0/1.xyz for both pieces) diff clean (`logs/corpus_inputs.diff` empty). Nothing was written under the corpus or under `C:/PR/SfSpp_preprocessing/Dataset`; all staging is symlink-in, deleted per cell by `run_cell27.sh`.
+
+### 7.11 Figure
+
+`out/render09_rows.png`, 135160 B, two panels (Pot_J_Piece_12, Pot_D_Piece_03), per written wall a bar pair "PLY rows / distinct positions" for the old and the new arm with the counts printed, log y. It shows row multiplicity, not geometry: no render of the surface is in it, and it does not show the 1-ulp normals of 7.7 (the file cannot).
+
+### 7.12 Jobs, sacct, run directory, index
+
+```
+35475379  t09-dedup  sapphire  FAILED     1:0  00:00:03  2026-11-21T22:27:31   script bug (local var expanded under set -u), nothing ran
+35475519  t09-dedup  sapphire  FAILED     1:0  00:23:42  2026-11-21T22:54:56   the job itself: build x2, unit test x2, 5 cells, analysis; exit 1 because the analyzer exits 1 on a failing gate
+35477246  t09diag    sapphire  COMPLETED  0:0  00:01:24  2026-11-21T23:12:26   diagnostic: build 66f1194 + J12 cell (7.7)
+35477289  t09diag2   sapphire  COMPLETED  0:0  00:07:56  2026-11-21T23:22:45   diagnostic: D03 cell with the same binary
+```
+
+Run of record: `/data/gpfs/projects/punim2657/SfSpp/runs/20261121-1121_ae7c750_t09-surface-dedup/` (`logs/ work/ out/ cells/ pins/ build/ instrsrc/`), `out/sacct_final.txt` holds the final states — `out/sacct_all.txt` was written while 35475519 was still RUNNING, so it shows RUNNING. Diagnostic run: `runs/20261121-1210_66f1194_t09-diag/`. `runs/index.tsv` row appended by the job: `20261121-1121_ae7c750_t09-surface-dedup  35475519  ae7c750  t09-dedup` (verdict and human_note left empty for the coordinator).
+
+### 7.13 What is still owed
+
+- An own-surface regeneration ticket: the walls now change rows, and the 111/123 becomes what future runs must match.
+- The E1 edgeline re-measure is already answered by Ticket 27 ("a storage fix, not a counting fix") and is not re-opened here.
+- If G2/G3's `n_dup6 == 0` is to be met literally, one of two out-of-scope things must change: the append rule (an epsilon, which W1 forbids) or the exporter's precision (W4 forbids touching it). A third route is a regenerated corpus whose walls are measured bit-exactly rather than through 8-digit text. That is a decision for the coordinator, not a code change this ticket may make.
+
+**End state:** ready
+Reading: writer-fixed-second-duplicate-found
