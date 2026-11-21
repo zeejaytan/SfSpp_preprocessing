@@ -72,14 +72,14 @@ One Slurm job, compute node, container build. Build **two** binaries from the sa
 | A2 | OLD (byte copy, not rebuild) | Pot_J_Piece_12 | the defect is structural, not a draw |
 | B | NEW | Pot_J_Piece_12 | no repeated position, `in == out`, `PLY rows == in`, `dups_skipped > 0`, `normal_maxdiff` at ulp scale |
 | C | OLD | Pot_D_Piece_03 | the piece whose appended rows are *not* all duplicates: 1 700 of 103 177 tail rows are new |
-| D | NEW | Pot_D_Piece_03 | those new rows still arrive (`appended_missing > 0`), no repeated position |
+| D | NEW | Pot_D_Piece_03 | those new rows still arrive (`appended_rows > 0`), no repeated position |
 
 `Pot_D_Piece_03.S0` is 103 177 rows / 53 134 distinct with `tail_start=51 434` and 1 700 tail rows not in the head (Ticket 08's scan, `axes08_scan.json`) — it is the piece that fails if the fix over-reaches into "drop the append". Expect the rebuilt counts to differ from those numbers (see the draw trap); gate on the invariants, not the counts. Note for the write-back: `Pot_J_Piece_12`'s duplicate count 1 928 equals the largest cluster size in its `[STATUS-23]` line (`sizes=1928,2252,269,122,112,58`); say whether the appended cloud is that cluster (the log's `appended=` will show it).
 
 Report `axes09_cells.tsv` with header exactly:
 
 ```
-piece	wall	arm	improved_rows	appended_rows	appended_missing	dups_skipped	in	out	ply_rows	n_dup6	n_distinct_pos	verdict
+piece	wall	arm	improved_rows	appended_rows	dups_skipped	in	out	ply_rows	n_dup6	n_distinct_pos	verdict
 ```
 
 (tab-separated) and `axes09_seteq.tsv` with header exactly
@@ -93,8 +93,8 @@ piece	wall	arm_a	arm_b	positions_a	positions_b	equal	nn_med_mm	nn_p90_mm
 **Gates (all must hold, or the Reading changes):**
 
 - **G1** J12 arms A and A2: `n_dup6 > 0` on both written walls of both arms.
-- **G2** J12 arm B: `n_dup6 == 0`, `in == out`, `ply_rows == in`, `dups_skipped > 0` (at least one wall), `appended_missing >= 0`.
-- **G3** D03 arms C/D: arm C `n_dup6 > 0`; arm D `n_dup6 == 0`, `appended_missing > 0` (the new tail rows still arrive).
+- **G2** J12 arm B: `n_dup6 == 0`, `in == out`, `ply_rows == in`, `dups_skipped > 0` (at least one wall), `appended_rows >= 0`, `in == improved_rows + appended_rows`.
+- **G3** D03 arms C/D: arm C `n_dup6 > 0`; arm D `n_dup6 == 0`, `appended_rows > 0` (the new tail rows still arrive).
 - **G4** draw control: `seteq` A vs A2 and A vs B per wall; A vs B `nn_med_mm` must be no more than 2x A vs A2's (if it is more, say so and investigate — do not delete the row).
 - **G5** unit test red on old behaviour and green on shipped code, `out/UNIT.txt` present.
 
@@ -123,7 +123,7 @@ Do **not** run Part A, do not regenerate any existing surface, do not edit the c
 
 ## 6. Acceptance (hidden, run by the lead)
 
-`C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` checks: both repos clean and on the right branch; only the allowed files changed; `Worker: DeepSeek` trailer; `End state:` present and one Reading from the four; the two TSVs with the exact headers and the required arms; G1-G4 recomputed from the TSVs (J12 A/A2 duplicate counts > 0, J12 B zero duplicates with `in == out` and `ply_rows == in` and `dups_skipped > 0`, D03 C duplicates > 0 and D zero with `appended_missing > 0`); `UNIT.txt` containing a FAIL line for the old path and PASS lines for U1-U5; the `before`/`after` log lines for J12.S0 with the expected field names; the consequence sentence for the 111/123 numbers; `CORPUS-UNCHANGED`; the jobs and `sacct` lines; the figure present and non-trivial; nothing written under `C:/PR/SfSpp_preprocessing/Dataset` or the corpus.
+`C:/PR/artifacts/dsh-handover/axis-parity-09/accept.py` checks: both repos clean and on the right branch; only the allowed files changed; `Worker: DeepSeek` trailer; `End state:` present and one Reading from the four; the two TSVs with the exact headers and the required arms; G1-G4 recomputed from the TSVs (J12 A/A2 duplicate counts > 0, J12 B zero duplicates with `in == out` and `ply_rows == in` and `dups_skipped > 0`, D03 C duplicates > 0 and D zero with `appended_rows > 0`); `UNIT.txt` containing a FAIL line for the old path and PASS lines for U1-U5; the `before`/`after` log lines for J12.S0 with the expected field names; the consequence sentence for the 111/123 numbers; `CORPUS-UNCHANGED`; the jobs and `sacct` lines; the figure present and non-trivial; nothing written under `C:/PR/SfSpp_preprocessing/Dataset` or the corpus.
 
 ---
 
@@ -157,25 +157,25 @@ before (arm A, 8d7cc60): [DEDUPE-27] surface=0 mode=off in=4222 out=2310
 after  (arm B, ae7c750): [DEDUPE-27] surface=0 mode=off in=2376 out=2376 improved_rows=2310 appended=66 dups_skipped=1846
 ```
 
-`in=` counts after the skip, so the stage27 invariant "PLY rows == in" holds: 2376 == 2376. The old `in - out` = 4222 - 2310 = 1912 is exactly the new `appended_rows` = `appended` 66 + `dups_skipped` 1846.
+`in=` counts after the skip, so the stage27 invariant "PLY rows == in" holds: 2376 == 2376. The old `in - out` = 4222 - 2310 = 1912 is exactly what the append was offered: `appended_rows` 66 + `dups_skipped` 1846 = 1912.
 
 ### 7.3 Cells (out/axes09_cells.tsv, tab-separated)
 
 ```
-piece	wall	arm	improved_rows	appended_rows	appended_missing	dups_skipped	in	out	ply_rows	n_dup6	n_distinct_pos	verdict
-Pot_D_Piece_03	0	C	-1	-1	-1	-1	100200	51569	100200	48631	51569	defect-present
-Pot_D_Piece_03	0	D	49642	50209	3114	47095	52756	52756	52756	1208	51548	FAIL(n_dup6=1208)
-Pot_D_Piece_03	1	C	-1	-1	-1	-1	102975	52906	102975	50069	52906	defect-present
-Pot_D_Piece_03	1	D	52911	50069	858	49211	53769	53769	53769	858	52911	FAIL(n_dup6=858)
-Pot_J_Piece_12	0	A	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
-Pot_J_Piece_12	0	A2	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
-Pot_J_Piece_12	0	B	2310	1912	66	1846	2376	2376	2376	66	2310	FAIL(n_dup6=66)
-Pot_J_Piece_12	1	A	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
-Pot_J_Piece_12	1	A2	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
-Pot_J_Piece_12	1	B	2590	2252	52	2200	2642	2642	2642	52	2590	FAIL(n_dup6=52)
+piece	wall	arm	improved_rows	appended_rows	dups_skipped	in	out	ply_rows	n_dup6	n_distinct_pos	verdict
+Pot_D_Piece_03	0	C	-1	-1	-1	100200	51569	100200	48631	51569	defect-present
+Pot_D_Piece_03	0	D	49642	3114	47095	52756	52756	52756	1208	51548	FAIL(n_dup6=1208)
+Pot_D_Piece_03	1	C	-1	-1	-1	102975	52906	102975	50069	52906	defect-present
+Pot_D_Piece_03	1	D	52911	858	49211	53769	53769	53769	858	52911	FAIL(n_dup6=858)
+Pot_J_Piece_12	0	A	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	A2	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	B	2310	66	1846	2376	2376	2376	66	2310	FAIL(n_dup6=66)
+Pot_J_Piece_12	1	A	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	A2	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	B	2590	52	2200	2642	2642	2642	52	2590	FAIL(n_dup6=52)
 ```
 
-`-1` on the four routing columns of arms A/A2/C is NA, not a measured zero: the pre-change binary prints none of them. `appended_rows` = `appended` + `dups_skipped` (rows offered); `appended_missing` = the log's `appended=`. The arithmetic gate holds on every B/D row: `in == improved_rows + appended_rows - dups_skipped` (2376 = 2310 + 1912 - 1846; 52756 = 49642 + 50209 - 47095).
+`-1` on the three routing columns of arms A/A2/C is NA, not a measured zero: the pre-change binary prints none of them. **`appended_rows` is the log's `appended=` and nothing else: rows the append actually wrote.** `dups_skipped` is what it refused, so `appended_rows + dups_skipped` is what the segmented cloud offered (J12.S0 1912, J12.S1 2252, D03.S0 50209, D03.S1 50069). The arithmetic gate holds on every B/D row: `in == improved_rows + appended_rows` (2376 = 2310 + 66; 52756 = 49642 + 3114). (This table was regenerated on 2026-11-22 with the unified column; the earlier revision of this section had `appended_rows` = offered and a second `appended_missing` column holding the appended count - one count under two names, which is what the fix below removes. The PLY row counts, `n_dup6` and the verdicts are unchanged.)
 
 ### 7.4 Positions (out/axes09_seteq.tsv, tab-separated)
 
@@ -194,8 +194,8 @@ Pot_D_Piece_03	1	C	D	52906	52911	no	0.0	0.0
 ### 7.5 Gates
 
 - **G1 PASS.** J12 arms A and A2: `n_dup6` = 1912 (S0) and 2252 (S1) on both arms, both walls.
-- **G2 FAIL on one clause.** Arm B: `n_dup6` = 66 (S0) and 52 (S1), not 0. `in == out` (2376, 2642), `ply_rows == in` (2376, 2642), `dups_skipped` > 0 on both walls (1846, 2200), `appended_missing` >= 0 (66, 52), arithmetic gate holds. Cause measured in 7.7, not a leftover unconditional append.
-- **G3 FAIL on one clause.** Arm C: `n_dup6` = 48631 (S0), 50069 (S1) > 0 as required. Arm D: `appended_missing` > 0 (3114, 858) as required, but `n_dup6` = 1208 (S0) and 858 (S1), not 0.
+- **G2 FAIL on one clause.** Arm B: `n_dup6` = 66 (S0) and 52 (S1), not 0. `in == out` (2376, 2642), `ply_rows == in` (2376, 2642), `dups_skipped` > 0 on both walls (1846, 2200), `appended_rows` 66 and 52 (>= 0), arithmetic gate holds (`2376 = 2310 + 66`, `2642 = 2590 + 52`). Cause measured in 7.7, not a leftover unconditional append.
+- **G3 FAIL on one clause.** Arm C: `n_dup6` = 48631 (S0), 50069 (S1) > 0 as required. Arm D: `appended_rows` > 0 (3114, 858) as required, but `n_dup6` = 1208 (S0) and 858 (S1), not 0.
 - **G4 PASS.** `seteq` A vs A2: 2310/2310 and 2590/2590 positions, equal, `nn_med_mm` 0.000000, `nn_p90_mm` 0.000000. A vs B: same, 0.000000/0.000000. Bar = 2 x 0.000000 + 0.01 = 0.010000, so 0.000000 <= 0.010000 on both walls. On D03 the C vs D sets differ by 56 and 35 positions (0.1 % of ~51.5 k) — the draw spread of §0, not a shape change; the two J12 arms happened to draw identical clouds.
 - **G5 PASS.** Red exit 1 with `cases=5 pass=0 fail=5`, green exit 0 with `cases=5 pass=5 fail=0`, `out/UNIT.txt` present (7.6).
 
@@ -251,7 +251,7 @@ Every appended row on J12 has a destination row at **exactly the same position**
 
 The file-level duplicate appears one step later: `savePLYFile(..., false)` at `mesh_processing_headless.cpp:5985` writes ASCII at **8 significant digits** (trailing zeros trimmed), and at |n| ~ 0.1 the 8-digit grid (1e-8) is coarser than the ulp (7.45e-9), so both values print as `-0.11061028`. Two distinct floats, one line of text — and `n_dup6`, defined on the exported PLY, counts the second line as a repeat of the first.
 
-Counted both ways: after W1, J12.S0 exports 2376 rows of which 66 (2.8 %) are this class; D03.S0 52756 rows of which 1208 (2.3 %) are; D03.S1 53769 of which 858 — and on S1 `appended_missing` = 858 = the twin count, i.e. every appended row on that wall is a near-copy, while S0's 3114 appended rows contain ~1900 genuinely new positions (which is what G3's `appended_missing > 0` protects and they do arrive).
+Counted both ways: after W1, J12.S0 exports 2376 rows of which 66 (2.8 %) are this class; D03.S0 52756 rows of which 1208 (2.3 %) are; D03.S1 53769 of which 858 — and on S1 `appended_rows` = 858 = the twin count, i.e. every appended row on that wall is a near-copy, while S0's 3114 appended rows contain ~1900 genuinely new positions (which is what G3's `appended_rows > 0` protects and they do arrive).
 
 **So the second source is not rows duplicating inside the improved cloud** (measured 0, above): it is the append's bit-exact rule at `mesh_processing_headless.cpp:1567-1570` admitting a same-position row whose single normal word is one ulp off, plus the 8-digit ASCII export at `mesh_processing_headless.cpp:5985` collapsing the pair into one line. Neither is reachable from W1-W4 without overreaching: an epsilon in the append is forbidden by W1 ("no epsilon ... a tolerance would delete real points"), and the exporter is out of scope by W4.
 
@@ -307,7 +307,7 @@ The first run's numbers stay in §7.1-§7.12 as the record of what the six-value
 
 ### 7.15 Re-run after the amendment (2026-11-22) - the position rule
 
-**What ran.** Commit `3658152` (parent `1ec845e`) in run directory `runs/20261121-1238_3658152_t09-surface-dedup/`. Job `35477684` `COMPLETED 0:0`, elapsed `00:20:52`, ended `2026-11-22T00:00:46`. A first submission of the same script, `35477665`, `FAILED 2:0` in two seconds because it fetched the repo before `3658152` had been pushed (`[JOB] FATAL rc=2 commit 3658152 not in .../sfs_preprocessing`); its record is kept as `RUN-FAILED-35477665.txt` in the run directory and in `out/sacct_attempts.txt`. Nothing ran in it - no build, no cell, no corpus write. The two commits of record are `8d7cc60` (OLD) and `3658152` (NEW). The commit that carries this write-back also corrects three stale comments in `mesh_processing_headless.cpp` (:43, :231-233, :1571-1573); no statement in it changes behaviour, and the tables below come from `3658152`.
+**What ran.** Commit `3658152` (parent `1ec845e`) in run directory `runs/20261121-1238_3658152_t09-surface-dedup/`. Job `35477684` `COMPLETED 0:0`, elapsed `00:20:52`, ended `2026-11-22T00:00:46`. A first submission of the same script, `35477665`, `FAILED 2:0` in two seconds because it fetched the repo before `3658152` had been pushed (`[JOB] FATAL rc=2 commit 3658152 not in .../sfs_preprocessing`); its record is kept as `RUN-FAILED-35477665.txt` in the run directory and in `out/sacct_attempts.txt`. Nothing ran in it - no build, no cell, no corpus write. The two commits of record are `8d7cc60` (OLD) and `3658152` (NEW). The analyzer was then corrected to one meaning per column - `appended_rows` is the log's `appended=`, the rows actually written, and the identity is `in == improved_rows + appended_rows`, with `appended_rows + dups_skipped` the offered set - and re-run offline against the same cells for both runs (`work/t09_analyze_v3.py`, md5 `289452fe909c86f43b1366ca186b35ec`). No geometry, PLY row count, `n_dup6` or gate changes: the tables lost the duplicate `appended_missing` column, and the first run's `out/` was regenerated the same way (its table keeps its 66 and 52 appended rows on J12 and 3114 and 858 on D03). The commit that carries this write-back also corrects three stale comments in `mesh_processing_headless.cpp` (:43, :231-233, :1571-1573); no statement in it changes behaviour, and the tables below come from `3658152`.
 
 **Code as shipped (file:line on this commit).** `surface_dedupe.h:51` `Key3` (the three position words), `:61` `Key3Hash`, `:77` `key3()`, `:86` `samePosition3` (bit equality of x/y/z, no tolerance), `:93` `Key6` and `:124` `lessPoint6` (the deterministic order: x, y, z, then the three normal words), `:138` `normalComponentMaxDiff`, `:154-190` `appendNewPoints(dest, src, double* normalMaxDiffOut)` (an `unordered_map` over the destination's positions; a matched position is skipped and its normal difference accumulated, otherwise the row is appended), `:197-216` `dedupePositions` (sort with `lessPoint6`, keep the first row of each position run; the legacy build returns the rows unchanged, which is the pre-ticket behaviour). `mesh_processing_headless.cpp:43` the include; `:231-238` the comment that replaced the deleted `myclass2`/`myobject2` block, `g_dedupeOn27` at `:238`; `:1574-1580` the append; `:1582-1583` width/height; `:1592-1595` `dedupePositions`; `:1598-1603` the gated swap; `:1604-1610` the `[DEDUPE-27]` line in W2's order; `:6447-6450` `SFS_DEDUPE` parsing, default off. `tests/test_surface_dedupe.cpp` (247 lines) U1-U5. `CMakeLists.txt:50` `SurfaceDedupeTest`, `:53-54` `SurfaceDedupeTestLegacy` with `SURFACE_DEDUPE_LEGACY=1`, `:57` both in `all_targets`. Diffstat of the four code files against `8d7cc60`: 522 insertions, 63 deletions - `CMakeLists.txt` 10, `mesh_processing_headless.cpp` 108, `surface_dedupe.h` 220 new, `tests/test_surface_dedupe.cpp` 247 new.
 
@@ -324,16 +324,16 @@ B  [DEDUPE-27] surface=0 mode=off in=2310 out=2310 improved_rows=2310 dups_skipp
 **Cells (`out/axes09_cells.tsv`, tab-separated).** `-1` is NA on the OLD arms: the pre-ticket binary prints no `improved_rows`/`appended`/`dups_skipped`, so those fields are not a measured zero.
 
 ```
-Pot_D_Piece_03	0	C	-1	-1	-1	-1	100160	51598	100160	48562	51598	defect-present
-Pot_D_Piece_03	0	D	49931	50209	1645	48564	51576	51576	51576	0	51576	PASS
-Pot_D_Piece_03	1	C	-1	-1	-1	-1	102979	52910	102979	50069	52910	defect-present
-Pot_D_Piece_03	1	D	52877	50069	0	50069	52877	52877	52877	0	52877	PASS
-Pot_J_Piece_12	0	A	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
-Pot_J_Piece_12	0	A2	-1	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
-Pot_J_Piece_12	0	B	2310	1912	0	1912	2310	2310	2310	0	2310	PASS
-Pot_J_Piece_12	1	A	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
-Pot_J_Piece_12	1	A2	-1	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
-Pot_J_Piece_12	1	B	2590	2252	0	2252	2590	2590	2590	0	2590	PASS
+Pot_D_Piece_03	0	C	-1	-1	-1	100160	51598	100160	48562	51598	defect-present
+Pot_D_Piece_03	0	D	49931	1645	48564	51576	51576	51576	0	51576	PASS
+Pot_D_Piece_03	1	C	-1	-1	-1	102979	52910	102979	50069	52910	defect-present
+Pot_D_Piece_03	1	D	52877	0	50069	52877	52877	52877	0	52877	PASS
+Pot_J_Piece_12	0	A	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	A2	-1	-1	-1	4222	2310	4222	1912	2310	defect-present
+Pot_J_Piece_12	0	B	2310	0	1912	2310	2310	2310	0	2310	PASS
+Pot_J_Piece_12	1	A	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	A2	-1	-1	-1	4842	2590	4842	2252	2590	defect-present
+Pot_J_Piece_12	1	B	2590	0	2252	2590	2590	2590	0	2590	PASS
 ```
 
 **Set equality (`out/axes09_seteq.tsv`).**
@@ -349,21 +349,21 @@ Pot_D_Piece_03	0	C	D	51598	51576	no	0.0	0.0
 Pot_D_Piece_03	1	C	D	52910	52877	no	0.0	0.0
 ```
 
-**Row identity, so the table can be checked without the log.** A written wall holds `improved_rows + appended_missing` rows; the cloud offered to the append held `appended_rows = appended_missing + dups_skipped` rows; `dups_skipped` counts the offered rows whose position the surface already held. So `in == improved_rows + appended_rows - dups_skipped == improved_rows + appended_missing`. Worked: J12 B S0 `2310 = 2310 + 1912 - 1912 = 2310 + 0`; J12 B S1 `2590 = 2590 + 2252 - 2252`; D03 D S0 `51576 = 49931 + 50209 - 48564 = 49931 + 1645`; D03 D S1 `52877 = 52877 + 50069 - 50069`. (The last form is the one that reads `appended_missing`, 1645, which is the number of rows the append actually added; `appended_rows`, 50209, is the offered set.)
+**Row identity, so the table can be checked without the log.** A written wall holds `improved_rows + appended_rows` rows: the fit's rows plus the rows the append actually wrote. The append refused `dups_skipped` rows at positions the surface already held, so the cloud offered `appended_rows + dups_skipped` rows in all. Worked: J12 B S0 `2310 = 2310 + 0` with 0 written and 1912 refused; J12 B S1 `2590 = 2590 + 0`, 2252 refused; D03 D S0 `51576 = 49931 + 1645`, 48564 refused; D03 D S1 `52877 = 52877 + 0`, 50069 refused. On J12 the offered count is independently measurable because the draw is deterministic: the old arm's `in - improved_rows` = 4222 - 2310 = 1912 and 4842 - 2590 = 2252, exactly `appended_rows + dups_skipped`, and the analyzer checks that on every J12 wall. D03's two arms are separate draws, so the offered-set identity is not exact there and is not gated on.
 
 **Gates.** All five hold on these numbers.
 
 - **G1 PASS** - J12 arms A and A2, both walls: `n_dup6` 1912 (A S0), 2252 (A S1), 1912 (A2 S0), 2252 (A2 S1); all `> 0`, and A and A2 are identical row for row.
-- **G2 PASS** - J12 arm B, both walls: `n_dup6 == 0`; S0 `in=2310 out=2310 ply_rows=2310`, S1 `in=2590 out=2590 ply_rows=2590`; `dups_skipped` 1912 and 2252 `> 0`; `in == improved_rows + appended_rows - dups_skipped` holds on both (above).
-- **G3 PASS** - D03 old arm C: `n_dup6` 48562 (S0) and 50069 (S1), and its PLY carries 100160 / 102979 rows for 51598 / 52910 distinct positions. New arm D: `n_dup6 == 0` on both walls, `in == out == ply_rows` (51576, 52877), and `appended_missing = 1645 > 0` on S0 - the new tail rows still arrive.
+- **G2 PASS** - J12 arm B, both walls: `n_dup6 == 0`; S0 `in=2310 out=2310 ply_rows=2310`, S1 `in=2590 out=2590 ply_rows=2590`; `dups_skipped` 1912 and 2252 `> 0`; `appended_rows` 0 and 0 (the fix wrote nothing, because every offered row was already there); `in == improved_rows + appended_rows` holds on both (2310 = 2310 + 0, 2590 = 2590 + 0) and `appended_rows + dups_skipped` = 1912 and 2252 is exactly what the old arm's `in - improved_rows` says was offered.
+- **G3 PASS** - D03 old arm C: `n_dup6` 48562 (S0) and 50069 (S1), and its PLY carries 100160 / 102979 rows for 51598 / 52910 distinct positions. New arm D: `n_dup6 == 0` on both walls, `in == out == ply_rows` (51576, 52877), and `appended_rows = 1645 > 0` on S0 - the new tail rows still arrive.
 - **G4 PASS** - J12 draw control, both walls: A vs A2 `nn_med = 0.000000`, A vs B `nn_med = 0.000000`, bar `2 x 0.000000 + 0.01 = 0.010000`; positions 2310/2310 and 2590/2590, `equal = yes` in all four rows.
 - **G5 PASS** - `out/UNIT.txt`, red exit 1, green exit 0 (quoted below).
 
 **`normal_maxdiff` reads 0.0000 on all four new-arm surfaces, and that is the format, not a measurement of zero.** The field prints at the stream's four decimals, so 0.0000 means "below 5e-5"; a material difference would have printed, e.g., 0.0100, and none did - which is the guard's purpose, since the row that is kept is the surface's own and the skipped one is the near-copy. It does **not** display the ulp. The ulp is shown where it can be: the unit test prints `INFO U3 ... normal_maxdiff=1.1920929e-07 ulp=1.1920929e-07`, and §7.7's diagnostic printed the hex words and found exactly one float32 ulp on every pair it examined. The field is left as it is (it catches material differences); a future run that wanted ulp resolution would print it scientific, and the comment at `mesh_processing_headless.cpp:1571-1573` says so.
 
-**The clean control is J12, not D03.** On J12, A and A2 are the same binary byte for byte (proved with `cmp`), and their numbers are identical to each other and to the first run - 4222 rows / 2310 distinct (S0), 4842 / 2590 (S1) - while A's distinct positions and B's position set are equal with `nn_med = 0.000000`. So on J12 the fix removed exactly the 1912 and 2252 re-appended rows and moved no position. **D03's C and D are separate draws** (the mesh stage takes 30 unseeded ray-cast points): C wrote 100160 / 102979 rows with 51598 / 52910 distinct positions, D 51576 / 52877 positions - 22 and 33 positions apart, every one within 0.0 mm of the other set. That difference is a draw effect and is **not** attributable to the fix from this run; what D03 proves here is G3's `appended_missing > 0` (1645 on S0).
+**The clean control is J12, not D03.** On J12, A and A2 are the same binary byte for byte (proved with `cmp`), and their numbers are identical to each other and to the first run - 4222 rows / 2310 distinct (S0), 4842 / 2590 (S1) - while A's distinct positions and B's position set are equal with `nn_med = 0.000000`. So on J12 the fix removed exactly the 1912 and 2252 re-appended rows and moved no position. **D03's C and D are separate draws** (the mesh stage takes 30 unseeded ray-cast points): C wrote 100160 / 102979 rows with 51598 / 52910 distinct positions, D 51576 / 52877 positions - 22 and 33 positions apart, every one within 0.0 mm of the other set. That difference is a draw effect and is **not** attributable to the fix from this run; what D03 proves here is G3's `appended_rows > 0` (1645 on S0).
 
-**D03's second wall adds nothing new:** D S1 has `appended_rows = 0` and `appended_missing = 0` - every row offered on that wall was already at a position the surface held (`dups_skipped = 50069`). G3's "the new tail rows still arrive" therefore rests on S0's 1645, as it must; S1 contributes the "no repeated position, `in == out`" half.
+**D03's second wall adds nothing new:** D S1 has `appended_rows = 0` - every one of the 50069 rows offered on that wall was already at a position the surface held (`dups_skipped = 50069`). G3's "the new tail rows still arrive" therefore rests on S0's 1645, as it must; S1 contributes the "no repeated position, `in == out`" half.
 
 **Unit test (`out/UNIT.txt`, built twice from `3658152`).** RED `SurfaceDedupeTestLegacy` (pre-ticket behaviour) **exit 1**:
 
