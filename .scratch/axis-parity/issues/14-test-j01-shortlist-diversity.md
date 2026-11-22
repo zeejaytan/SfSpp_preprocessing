@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use Ticket 13's saved J01 trace and Ticket 03's frozen surface and assembly inputs.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 14 (2026-11-22)
+**Branch:** 14-test-j01-shortlist-diversity, in /c/PR/worktrees/sfs/14
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek, one-shot Spartan diagnostic.
 
