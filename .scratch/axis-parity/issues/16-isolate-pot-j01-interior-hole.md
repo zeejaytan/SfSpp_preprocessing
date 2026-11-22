@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use Ticket 15's frozen own-stock evidence and the defect note in pota-repro ticket 285. A hole that cannot be identified unambiguously blocks the intervention.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 16 (2026-11-23)
+**Branch:** 16-isolate-pot-j01-interior-hole, in /c/PR/worktrees/sfs/16
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek, one-shot diagnostic. Return both self-compliance and a separate read-only review.
 
