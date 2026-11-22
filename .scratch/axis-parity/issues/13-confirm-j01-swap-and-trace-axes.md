@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use frozen Ticket 12 arm inputs, recorded at `04cb4a6` and Spartan run `20261121-2359_2e951d9_t12-ctl`.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 13 (2026-11-22)
+**Branch:** 13-confirm-j01-swap-and-trace-axes, in /c/PR/worktrees/sfs/13
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek, one-shot diagnostic.
 
