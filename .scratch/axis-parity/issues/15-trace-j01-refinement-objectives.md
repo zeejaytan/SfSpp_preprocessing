@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use the frozen Ticket 13/14 wall provenance and J01 traces.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 15 (2026-11-22)
+**Branch:** 15-trace-j01-refinement-objectives, in /c/PR/worktrees/sfs/15
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek, one-shot diagnostic. Return self-compliance as well as the Baton independent review.
 
