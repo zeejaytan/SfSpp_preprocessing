@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use saved Ticket 03 inputs.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 17 (2026-11-23)
+**Branch:** 17-confirm-e28-reciprocal-axis-swap, in /c/PR/worktrees/sfs/17
+**Worker:** DeepSeek
 **Budget:** medium 5
 **Hand-over:** DeepSeek, one-shot diagnostic. Return worker self-compliance and a separate read-only review.
 
