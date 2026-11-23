@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Ticket 18 closed with direct-matching evidence and an unresolved search decision.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 19 (2026-11-24) (2026-11-24)
+**Branch:** 19-trace-e28-search-decisions, in /c/PR/worktrees/sfs/19
+**Worker:** DeepSeek
 **Budget:** large 8
 **Hand-over:** DeepSeek V4.1 Flash via DSH Baton. The lead retains the private acceptance check.
 
