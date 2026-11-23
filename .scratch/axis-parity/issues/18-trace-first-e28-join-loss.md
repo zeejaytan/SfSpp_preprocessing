@@ -4,8 +4,10 @@
 
 **Answers:** E1
 **Blocked by:** None. Use the closed Ticket 17's frozen inputs and Ticket 11's calibration requirements.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** DSH: SfS++ axis-parity Ticket 18 (2026-11-23) (2026-11-23)
+**Branch:** 18-trace-first-e28-join-loss, in /c/PR/worktrees/sfs/18
+**Worker:** DeepSeek
 **Budget:** large 8
 **Hand-over:** DeepSeek V4.1 Flash via DSH Baton. The lead retains the private acceptance check.
 
