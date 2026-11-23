@@ -4,8 +4,8 @@
 
 **Answers:** E1
 **Blocked by:** None. Use the closed Ticket 17's frozen inputs and Ticket 11's calibration requirements.
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** wontfix
+**Worker:** DeepSeek
 **Budget:** large 8
 **Hand-over:** DeepSeek V4.1 Flash via DSH Baton. The lead retains the private acceptance check.
 
@@ -104,3 +104,15 @@ Hash the executed file on host before and after each launch and verify the conta
 ## Comments
 
 One diagnostic. SfS++ §IV-C and §IV-D describe axis-based matching and the repeated search stages. Ticket 17 established the reciprocal test but found that the reverse swap still seated all three, and the original own-axis 59/62 baseline did not reproduce. Ticket 18 adjudicates the first divergence before any repair.
+
+### Lead close-out — 2026-11-24
+
+Closed as a partial diagnostic. Keep the unmerged `origin/18-trace-first-e28-join-loss` branch at `710554e` as the record of the worker write-back and both compliance reviews. The worker returned `ready`. The lead verified the direct-matching evidence and closed the incomplete search-trace work without accepting the full handover.
+
+- With one executable, the released Pot E sample and the released axes on fixed geometry each scored 62/62 twice. Our axis set scored 59/62 once in two attempts and 57/62 in the other. Both missed 13–28, 27–28, and 28–31. At 13–28, 39 direct fits were rejected in each repeat, with the first failing the approximately 25° axis-angle check. At 28–31, all 63 and 94 direct fits failed that angle check.
+- At 27–28, neither axis set produced an initial interval on the fixed geometry. Later matching against partial assemblies produced 19 and 27 intervals with the released axes and zero with our axes. The reverse swap seated 27–28 once without any direct interval, so an assembly path through other sherds can recover it. The single-file E28 swap did not give a repeat-stable rescue.
+- In reverse repeat 2 at 28–31, the lead recovered seven matched before-and-after observations from the saved `after_init`, `after_icp`, and `axis_adjust/group` records. The raw hooks bracket `GraphAxisRefinement` at `work/t18/src/class/ranking_system.cpp:1139-1141`. All seven placements were already outside tolerance when first recorded, and the relative pose did not change across group-axis refinement. The same-frame render shows sherd 31 visibly away from the join. The missing per-state pruning details prevent attributing any unobserved path to the search.
+- Run `20261123-1541_bff8db5_t18-first-loss`, matrix job `35556695` `COMPLETED 0:0`, indexed on Spartan at line 1013. The lead evidence archive is `keep/t18-lead-verified.tar.gz` within that run, SHA-256 `d0c7a679ef17f0f328028da8e5cab69637896858450ee921355abbcfd22ca853`. It contains the corrected calibration, verified saved-pose renders, seam and shared-event tables, and the two recovery tables. It excludes geometry. The worker's source is preserved under the run and in the laptop evidence area.
+- Verified private acceptance exited `1`: seam-scoped priority and beam evidence missing in six cases each, deduplication evidence missing in all 36 cases. The saved counts do not identify a removed placement or its competitor. The contract was kept as written. Both DSH handovers lacked those observations. The stronger-model read-only pivot timed out at send, so the lead verified the saved artifacts directly. No assembly was rerun for this close-out.
+
+**DSH cost:** Two Flash sends on Opencode Go, flat-rate. Session log recorded 54,814,927 tokens including cache reads (413,859 output).
