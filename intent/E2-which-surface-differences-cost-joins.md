@@ -1,6 +1,6 @@
 # E2 — Which differences in our extracted surfaces cost SfS++ joins?
 
-**Status:** open · **Blocked by:** none · **Effort:** one Pot E diagnostic, then a controlled surface test if it isolates a sherd
+**Status:** open · **Blocked by:** none · **Effort:** controlled Pot E surface tests following the axis-input diagnostics
 
 ## Where it stands
 
@@ -8,7 +8,7 @@ On Pot E, sherds 27 and 28 seat together with the authors’ axis set even when 
 
 Weight: One pot, four axis sets, two attempted repeats each in Surface Parity 01. Seven outputs are complete. A reciprocal run with three missing sherd poses is excluded. Axis-parity Ticket 19 separately shows that swapping only sherd 28 into the authors’ set also passes twice.
 
-Next: Swap the axis files for sherds 27 and 28 together in each direction. Check whether the pair forms a direct match and seats in the full 31-sherd assembly before changing surface extraction.
+Next: Compare the archived wall samples with the axis estimator fixed. Separate effects of coverage, spacing or point multiplicity, and normal direction using controlled surface inputs. Test a surface change in assembly only after it reliably changes the axis candidates. The two-file swap is available if the surface results need localisation.
 
 Picture: SfSpp_preprocessing/artifacts/surface-parity-01/evidence/renders/AUTHOR_E27_OWN_1_27-28.png | Pot E sherds 27 and 28 with our sherd 27 axis in the authors’ axis set.
 
@@ -24,7 +24,7 @@ We need a surface extraction recipe for our own scans that can match the authors
 
 ## Gate / stop condition
 
-Start with 27–28. If the archived full-set contrast cannot be reproduced, stop attributing the loss to individual sherds. If E27 alone does not isolate the join, retain the surface measurements and use the trace to choose a bounded pair or assembly context before changing the extraction recipe. A surface difference earns a repair trial only when a controlled change carries through to a scored join.
+Start with 27–28. If the archived full-set contrast cannot be reproduced, stop attributing the loss to individual sherds. Keep localisation separate from surface diagnosis. If a controlled change affects the axes but its effect in the full assembly remains ambiguous, use the matching trace to choose a bounded sherd comparison. A surface difference earns a repair trial only when a controlled change carries through to a scored join.
 
 ## Source
 

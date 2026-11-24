@@ -6,7 +6,7 @@
 
 **Blocked by:** None. Surface Parity 01 and axis-parity 19 single-file comparisons are recorded on main.
 
-**Status:** ready-for-agent
+**Status:** needs-triage — defer while testing surface inputs
 
 **Worker:** unassigned
 
@@ -32,3 +32,9 @@ Keep the two complete full-set controls contemporaneous. Interpret the reciproca
 - [ ] Each attempt has recorded terminal Slurm state and exit code, before and after input hashes, scoring eligibility, and provenance for both raw traces. An incomplete attempt is visibly unusable and contributes no scored rows.
 - [ ] Report the 62 unique join outcomes per usable cell, with relative rotation, translation component and scorer verdict. Also report a physical displacement on the sherd using the same frozen points transformed into the reference frame. Keep the absolute sherd-score issue separate from the joins. Include the three direct matching traces and locked 27–28 render for every attempt, including missing or off-frame cases.
 - [ ] Report whether the control separated and whether either reciprocal result agreed in both usable repeats. One-direction, mixed, incomplete and no-change results remain visible. Keep a per-requirement worker table, separate read-only review, budget and one end state. Leave research interpretation and commits to the lead.
+
+## Comments
+
+### Direction agreed in the 24 November review
+
+Defer this assembly comparison. The same estimator already separates the two surface sources on fixed Pot E inputs. This ticket could localise the effect to a pair of axis files. The immediate E2 question is which property of the surface samples changes the result. Revisit this comparison if the surface controls give a candidate effect and the sherds carrying it still need to be localised.
