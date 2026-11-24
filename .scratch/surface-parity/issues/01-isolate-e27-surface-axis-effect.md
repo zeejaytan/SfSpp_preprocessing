@@ -6,9 +6,11 @@
 
 **Blocked by:** none. Uses the saved axis-parity Ticket 19 assembly inputs and Ticket 03 surface and axis evidence.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** DSH Surface Parity 01 (2026-11-24)
+**Branch:** 01-isolate-e27-surface-axis-effect, in /c/PR/worktrees/sfs/01
+**Worker:** dsh-surface-parity-01
 
-**Worker:** unassigned
 
 **Budget:** medium 5
 
