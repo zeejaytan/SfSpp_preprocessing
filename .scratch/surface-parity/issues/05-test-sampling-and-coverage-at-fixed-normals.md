@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 04 is resolved on main and showed wall normals alone shift axis angles/positions while candidate count `k` stays tied to point coordinates.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** DSH Surface Parity 05 (2026-11-24) (2026-11-24)
+**Branch:** 05-test-sampling-and-coverage-at-fixed-normals, in /c/PR/worktrees/sfs/05
+**Worker:** dsh-surface-parity-05
 
-**Worker:** unassigned
 
 **Budget:** medium 5
 
