@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 01 verified that the corresponding walls are in the same scan frame. The two-file assembly swap in Ticket 02 is deferred. Ticket number 04 keeps the existing axis-parity worktree in slot 03 intact.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** DSH Surface Parity 04 (2026-11-24) (2026-11-24)
+**Branch:** 04-test-wall-normals-at-fixed-points, in /c/PR/worktrees/sfs/04
+**Worker:** dsh-surface-parity-04
 
-**Worker:** unassigned
 
 **Budget:** medium 5
 
