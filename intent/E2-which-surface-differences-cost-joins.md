@@ -4,11 +4,13 @@
 
 ## Where it stands
 
-On Pot E, the same axis estimator and assembler seat all 62 reference joins when the axes are estimated from the authors’ surfaces. With axes estimated from our surfaces, 59 joins seat and 13–28, 27–28 and 28–31 are lost. The breaklines and other assembly geometry are fixed. This identifies sensitivity to the surface input. The responsible feature of that input is unknown.
+On Pot E, sherds 27 and 28 seat together with the authors’ axis set even when it uses our axis file for sherd 27. With our axis set they miss their join. The authors’ file for sherd 27 alone did not restore it. The best complete author-background swap seats 62 of 62 joins, with sherd 28 turned 4.34° from its reference orientation relative to sherd 27. The usable reciprocal swap puts it nearly half a turn out. Both wall samples largely cover the same surfaces in the native scan frame, with at least 99.3% of samples within 1 mm of the corresponding wall. The source of the join loss remains open.
 
-Weight: One pot, two repeats per condition in axis-parity Ticket 19. Our E28 file can seat all 62 joins in the author-surface axis set.
+Weight: One pot, four axis sets, two attempted repeats each in Surface Parity 01. Seven outputs are complete. A reciprocal run with three missing sherd poses is excluded. Axis-parity Ticket 19 separately shows that swapping only sherd 28 into the authors’ set also passes twice.
 
-Next: [Surface parity 01](../.scratch/surface-parity/issues/01-isolate-e27-surface-axis-effect.md) compares both walls on E27 and E28 and tests whether a single E27 axis-file swap changes 27–28.
+Next: Swap the axis files for sherds 27 and 28 together in each direction. Check whether the pair forms a direct match and seats in the full 31-sherd assembly before changing surface extraction.
+
+Picture: SfSpp_preprocessing/artifacts/surface-parity-01/evidence/renders/AUTHOR_E27_OWN_1_27-28.png | Pot E sherds 27 and 28 with our sherd 27 axis in the authors’ axis set.
 
 ## Why it matters
 
