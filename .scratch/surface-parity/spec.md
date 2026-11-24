@@ -12,7 +12,7 @@ Our estimator can match the authors’ Pot E sample-input result with axes estim
 
 1. Use 27–28 as the first test. Compare both saved estimation walls on E27 and E28 in their existing scan frame. Confirm the inner and outer correspondence and record where the clouds agree, where one lacks coverage, how far apart points are, and how much the normals differ on matched patches.
 2. Reproduce the full axis-set contrast and swap only E27’s saved axis file in each direction. Use the existing fracture matching hook and the saved-pose scorer. This test identifies which input to vary in a subsequent surface experiment. It also permits the result that the join depends on multiple sherds or the assembly context.
-3. On a sherd supported by that result, change one property at a time. Test coverage with defined regions and common spatial sampling, density within shared coverage, then normals with identical point coordinates and order. Report any coupling explicitly. Neighbourhood size affects estimated normals, so keep the physical support fixed when recomputing them. [PCL normal estimation guide](https://pointclouds.org/documentation/tutorials/normal_estimation.html#selecting-the-right-scale)
+3. Change one wall property at a time. Start with normals on identical point coordinates and order. Test coverage with defined regions and common spatial sampling, and density within shared coverage, in separate comparisons. Report any coupling explicitly. Neighbourhood size affects estimated normals, so keep the physical support fixed when recomputing them. [PCL normal estimation guide](https://pointclouds.org/documentation/tutorials/normal_estimation.html#selecting-the-right-scale)
 4. Carry a useful change from surface samples through ranked axes, fracture stretches, and final scored joins. Keep the authors’ released files and the files estimated from their surfaces as separate controls. Confirm the effect in repeated runs before proposing an extraction change.
 
 ## Verification
@@ -23,4 +23,4 @@ Our estimator can match the authors’ Pot E sample-input result with axes estim
 
 ## Scope
 
-First slice: [01 — Isolate E27’s surface-to-axis effect at join 27–28](issues/01-isolate-e27-surface-axis-effect.md). Intermediate surface perturbations and extractor changes follow only after localisation. Changes to the axis estimator, shortlist, assembler, scorer or reference corpus are outside this effort’s initial experiments.
+First slice: [01 — Isolate E27’s surface-to-axis effect at join 27–28](issues/01-isolate-e27-surface-axis-effect.md). The [next slice](issues/04-test-wall-normals-at-fixed-points.md) tests wall normals directly. Localise the assembly effect further if needed. Changes to the axis estimator, shortlist, assembler, scorer or reference corpus are outside this effort’s initial experiments.

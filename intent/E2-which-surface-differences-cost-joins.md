@@ -8,7 +8,7 @@ On Pot E, sherds 27 and 28 seat together with the authors’ axis set even when 
 
 Weight: One pot, four axis sets, two attempted repeats each in Surface Parity 01. Seven outputs are complete. A reciprocal run with three missing sherd poses is excluded. Axis-parity Ticket 19 separately shows that swapping only sherd 28 into the authors’ set also passes twice.
 
-Next: Compare the archived wall samples with the axis estimator fixed. Separate effects of coverage, spacing or point multiplicity, and normal direction using controlled surface inputs. Test a surface change in assembly only after it reliably changes the axis candidates. The two-file swap is available if the surface results need localisation.
+Next: [Surface Parity 04](../.scratch/surface-parity/issues/04-test-wall-normals-at-fixed-points.md) swaps wall normals while holding sample positions and order fixed. Coverage and sampling remain separate tests. Carry a useful change in axis candidates to assembly for confirmation.
 
 Picture: SfSpp_preprocessing/artifacts/surface-parity-01/evidence/renders/AUTHOR_E27_OWN_1_27-28.png | Pot E sherds 27 and 28 with our sherd 27 axis in the authors’ axis set.
 
