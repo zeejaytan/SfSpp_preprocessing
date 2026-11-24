@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 05 is resolved on `main` and showed removing ~47% exact duplicate XYZ rows alone restores E28 `k=1 -> 2` and improves E27/E28 axes toward `AUTHOR`, and Ticket 09 (`ee6345c`) already landed the duplicate fix in `MeshPreprocessingHeadless` on `main` after the Nov 5 Pot E walls were generated.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** DSH Surface Parity 06 (2026-11-25) (2026-11-25)
+**Branch:** 06-test-dedup-and-t09-surfaces-in-pot-e-assembly, in /c/PR/worktrees/sfs/06
+**Worker:** dsh-surface-parity-06
 
-**Worker:** unassigned
 
 **Budget:** medium 5
 
