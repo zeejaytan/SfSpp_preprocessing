@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 06 verified that deduplicating Nov 5 Pot E walls alone (`OWN_NOV5_DEDUP`) recovers 62/62 Pot E joins in 2/2 repeats. Ticket number `08` keeps the existing `axis-parity` worktree in `C:/PR/worktrees/sfs/07` intact.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/08 (2026-11-25)
+**Branch:** 08-validate-dedup-own-surfaces-across-all-pots, in /c/PR/worktrees/sfs/08
+**Worker:** DeepSeek V4.1 Flash (DSH Baton)
 
-**Worker:** unassigned
 
 **Budget:** large 8
 
