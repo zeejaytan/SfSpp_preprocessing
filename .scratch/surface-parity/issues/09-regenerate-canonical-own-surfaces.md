@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 08 validated deduplicating own surfaces across all 10 pots and the `def_3x` Juglet with zero assembly regressions (`31/31 62/62` on Pot E, `+5` edges on Pot J, `9/9 <= 0.465 mm` on Juglet), and Axis-parity Ticket 09 (`ee6345c`) already fixed duplicate point emission in `mesh_processing_headless.cpp`. Ticket number `09` uses free worktree `C:/PR/worktrees/sfs/09`.
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/09 (2026-11-26)
+**Branch:** 09-regenerate-canonical-own-surfaces, in /c/PR/worktrees/sfs/09
+**Worker:** DeepSeek V4.1 Flash (DSH Baton)
 
-**Worker:** unassigned
 
 **Budget:** large 8
 
