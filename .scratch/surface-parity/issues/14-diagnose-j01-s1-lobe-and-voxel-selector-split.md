@@ -1,8 +1,9 @@
 # 14 — Diagnose J01 face-1 3D lobe and selector voxel split
 
 **Answers:** E2
-**Status:** ready-for-agent
-**Working in:** worktrees/sfs/14
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-27)
+**Branch:** 14-diagnose-j01-s1-lobe-and-voxel-selector-split, in /c/PR/worktrees/sfs/14
 **Worker:** DeepSeek
 
 ## Context
