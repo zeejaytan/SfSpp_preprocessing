@@ -1,0 +1,74 @@
+{
+  "run_id": "20261125-1340_a50f8cc_t09-own-surfaces",
+  "run_root": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces",
+  "preprocessing_commit": "a50f8cc0ebe17621e2ce32424808c7414c2d7bbf",
+  "binaries_sha256": {
+    "MeshPreprocessingHeadless": "e80f8d0d41daec9925dcbe9c504e7bb1a004ef44997498597034a159ae3f0658",
+    "EdgeLineExtractionHeadless": "0e973ba493b35eba633c784544acf6168160549222828f315191b59b4282767a"
+  },
+  "sfs_dedupe": "off",
+  "sfs_wall_pair_filter": "default_on",
+  "total_pieces": 157,
+  "total_walls": 314,
+  "duplicate_xyz": 0,
+  "vessels": {
+    "A": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_A/geom",
+      "pieces": 8,
+      "units_per_mm": 1
+    },
+    "B": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_B/geom",
+      "pieces": 9,
+      "units_per_mm": 1
+    },
+    "C": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_C/geom",
+      "pieces": 4,
+      "units_per_mm": 1
+    },
+    "D": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_D/geom",
+      "pieces": 29,
+      "units_per_mm": 1
+    },
+    "E": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_E/geom",
+      "pieces": 31,
+      "units_per_mm": 1
+    },
+    "F": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_F/geom",
+      "pieces": 7,
+      "units_per_mm": 1
+    },
+    "G": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_G/geom",
+      "pieces": 7,
+      "units_per_mm": 1
+    },
+    "H": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_H/geom",
+      "pieces": 11,
+      "units_per_mm": 1
+    },
+    "I": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_I/geom",
+      "pieces": 30,
+      "units_per_mm": 1
+    },
+    "J": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Pot_J/geom",
+      "pieces": 12,
+      "units_per_mm": 1
+    },
+    "JUGLET_DEF3X": {
+      "geom_dir": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/Juglet_def3x/geom",
+      "pieces": 9,
+      "units_per_mm": 3
+    }
+  },
+  "axes_own_regen": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/axes09_own_regen",
+  "axes_juglet_def3x_regen": "/data/gpfs/projects/punim2657/SfSpp/runs/20261125-1340_a50f8cc_t09-own-surfaces/out/axes09_juglet_def3x_regen",
+  "note": "148 pot own-surface pieces (A..J) + 9 def_3x Juglet pieces, walls and breaklines regenerated at a50f8cc with SFS_DEDUPE unset and SFS_WALL_PAIR_FILTER at its Ticket 80 default (on); axes are the frozen Ticket 03 SHIP extraction on those walls, written natively (Juglet in 3x tree units, no /3 and no canonicalize)."
+}
