@@ -11,6 +11,7 @@ Follow the workspace root **`../AGENTS.md`** (laptop ↔ GitHub ↔ Spartan) for
 | Spartan checkout (`REMOTE_ROOT`) | `/data/gpfs/projects/punim2657/sfs_preprocessing` |
 | SSH | `Host spartan`, user `zhuojiat` |
 | Remote helpers | `scripts/remote/pull_and_sbatch.sh`, `job_status.sh`, `fetch_artifacts.sh` |
+| Canonical own-surface corpus | [sfs_axes/own_surfaces.json](sfs_axes/own_surfaces.json) (`20261125-1340_a50f8cc_t09-own-surfaces`: 148 `Pot A..J` + 9 `Juglet_def3x`, 314 walls / 0 dup XYZ) |
 
 This is the **preprocessing** stage (axis extraction, breaklines, NURBS surfaces) feeding the SFS++ **assembly** repo (`zeejaytan/structure-from-sherds-pp`, at Spartan path `sfs_main/sfspreproc-docker` — misleading name, see that repo's AGENTS.md).
 
