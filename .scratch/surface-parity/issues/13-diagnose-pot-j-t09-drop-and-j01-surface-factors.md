@@ -6,9 +6,11 @@
 
 **Blocked by:** None. Surface Parity 09 regenerated the canonical own surfaces (`20261125-1340_a50f8cc_t09-own-surfaces`); read-only inspection ruled out `SFS_WALL_PAIR_FILTER` on `J01..J08, J10` (`add_refused=0`) and showed `J06` detached from `{2, 4}` while `J05` missed `2-5` at `50.69 mm`; Axis-parity 13–16 already proved `J01` slot 2 unlocks `17/21` and ruled out the 4 mm interior hole rim. Ticket number `13` uses free worktree `C:/PR/worktrees/sfs/13` (skipping occupied `sfs/10..12`).
 
-**Status:** ready-for-agent
+**Status:** in-progress
+**Working in:** C:/PR/worktrees/sfs/13 (2026-11-26)
+**Branch:** 13-diagnose-pot-j-t09-drop-and-j01-surface-factors, in /c/PR/worktrees/sfs/13
+**Worker:** DeepSeek V4.1 Flash (DSH Baton)
 
-**Worker:** unassigned
 
 **Budget:** large 8
 
