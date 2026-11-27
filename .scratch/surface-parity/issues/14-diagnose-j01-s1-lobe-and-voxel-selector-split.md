@@ -1,9 +1,7 @@
 # 14 — Diagnose J01 face-1 3D lobe and selector voxel split
 
 **Answers:** E2
-**Status:** ready-for-review
-**Working in:** chat on Thinkbook16 (2026-11-27)
-**Branch:** 14-diagnose-j01-s1-lobe-and-voxel-selector-split, in /c/PR/worktrees/sfs/14
+**Status:** resolved
 **Worker:** DeepSeek
 
 ## Context
@@ -166,3 +164,10 @@ Neither positions alone nor normals alone decide it: both walls sit inside the s
 4. The lobe figure's light grey mesh is largely buried under the denser walls and is visible only as speckle inside the orange band; the counts in the title carry the mesh coverage exactly.
 
 **End state:** ready — Part A: of 286 faces, 9 exceed 10 % beyond 5 mm, but `J01` face 1 is the only one where a wall that seats on the Authors' surface (57.8 % within 1 mm) adds a coherent extra sheet 24–49 mm outside it (17,795 points, 1,000 mesh vertices) — the other eight are whole small walls displaced as a unit (I25 7.4 mm, J08 12–16 mm, D28 6.5 mm), the known wrong-reference caveat (C03 f1), or the one small partial analogue (D27 f1, 18.2 %). Part B: the split is the 60-basin draw cut, then `keep_lines(tau=1.2)` as the second lock — `OWN_VOXEL_1MM` has a 2.82 deg basin in its pool but not in its 60 largest (floor 9.84 deg), so its best refined donor-like candidate is 37.90 deg at `cost/c0 = 1.2695 > 1.2` and it ships `k = 1` at 77.92 deg / 337.23 mm, while `AUTHOR_VOXEL_1MM` refines a 6.69 deg basin to 3.73 deg at `1.1525 <= 1.2` and ships `k = 3` (final 3.73 deg / 5.39 mm); the xyz/normal cross-swaps move the outcome between 6.63 deg and 25.62 deg, so the selector is unstable at the sub-millimetre wall difference rather than at one bad arm. Nothing merged, `main` untouched, worktree open.
+
+### Lead verification (2026-11-27)
+
+- `verified: sacct -j 35842705,35842878 --format=JobID,JobName%20,Partition,AllocCPUS,State,ExitCode,Elapsed -> 35842878 COMPLETED 0:0 (00:02:33, sapphire, 8 CPUs)`
+- `verified: git diff --stat origin/main..HEAD -> 4 files under .scratch/surface-parity/{t14,issues/14-...}`
+- `verified: eye-check renders/J01_mesh_and_s1_lobe_3d.png -> o1_off (17,795 pts, 42.2%) is an attached handle stub curving up to 48.5 mm off the outer body wall; Authors' a1 stops at the body wall`
+- `verified: eye-check renders/J01_selector_trace.png + evidence/j01_arm_trace.tsv -> 2x2 voxel cross-swap isolates normal differences (VOXEL_OWN_XYZ_AUTH_N 6.63 deg / 1.37 mm k=3 vs VOXEL_AUTH_XYZ_OWN_N 25.62 deg / 38.20 mm k=2); thickness_arm also finds 8.68 deg (1.1675x) on OWN_VOXEL_1MM and 6.60 deg (1.1729x) on OWN_SHARED_1MM, which select_joint_lines drops because it only takes thickness_arm rank-0`
