@@ -1,9 +1,7 @@
 # 16 — Test J01 handle-deleted surfaces in Pot J end-to-end assembly
 
 **Answers:** E2
-**Status:** ready-for-review
-**Working in:** chat on Thinkbook16 (2026-11-27)
-**Branch:** 16-test-j01-handle-deleted-in-pot-j-assembly, in /c/PR/worktrees/sfs/16
+**Status:** resolved
 **Worker:** DeepSeek
 
 ## Context
@@ -175,3 +173,10 @@ Lead review rejected the first picture: all five panels looked identical, includ
 - `sherds_ok` in `potj_assembly16.tsv` is the `acc305` sherd-accuracy numerator (`8/11`, `9/11`, ...; the project convention used by Tickets 09 and 13). `score305`'s own piece block reads `FAIL` on all 11 pieces even for the positive control (piece angles 176-179 deg), so it is not used for that column; both `score` and `acc` files stay in `out/score/`.
 - `Pot J 09` is unscored and off; `Pot J 12` is paper-excluded but inside the 11-piece denominator; `Pot J 01`'s interior breakline measures the input, per `SfSpp_preprocessing/AGENTS.md`.
 - `renders.tsv` lost its commas as a `.tsv` hygiene fix in job `35859454`; job `35861740` rewrote it together with the corrected picture.
+
+### Lead verification (2026-11-27)
+
+- `verified: sacct -j 35855468,35855867,35861740 -X -> prep + 10/10 array cells (35855867_0.._9) + render (35861740) COMPLETED 0:0`
+- `verified: git diff --stat origin/main..HEAD -> 7 files under .scratch/surface-parity/{t16,issues/16-...}`
+- `verified: out/OWN_NO_HANDLE_SHIP_1/1. Acc.txt -> 9/11 sherds (81.8%), 17/21 joins (81.0%); out/OWN_S0_ONLY_SHIP_1/1. Acc.txt -> 6/11 sherds, 6/21 (5/21 strict score305)`
+- `verified: eye-check renders/Pot_J_handle_deleted_comparison.png (job 35861740) -> posed teapot Pot J shows Piece 01 (red) is the spout sherd (handle lug is on the opposite side of the body); panels 1-4 seat J01 flush on all 5 seams (within 0.32 mm of CTL) while Piece 11 sits in place in panels 2-4 (17/21) vs misplaced at bottom of panel 1 (16/21); panel 5 (OWN_S0_ONLY_SHIP, 5/21) collapses J01 56.46 mm inside the pot body`
