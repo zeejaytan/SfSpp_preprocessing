@@ -1,8 +1,9 @@
 # 16 — Test J01 handle-deleted surfaces in Pot J end-to-end assembly
 
 **Answers:** E2
-**Status:** ready-for-agent
-**Working in:** worktrees/sfs/16
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-27)
+**Branch:** 16-test-j01-handle-deleted-in-pot-j-assembly, in /c/PR/worktrees/sfs/16
 **Worker:** DeepSeek
 
 ## Context
