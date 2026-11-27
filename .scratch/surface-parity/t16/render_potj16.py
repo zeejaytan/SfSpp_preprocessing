@@ -214,7 +214,7 @@ def main():
         fh.write(TAB.join([
             "Pot_J_handle_deleted_comparison.png",
             "renders/Pot_J_handle_deleted_comparison.png",
-            "five Best-of-2 Pot J assemblies, locked camera, J01 red, 20 mm bar"]) + NL)
+            "five Best-of-2 Pot J assemblies; locked camera; J01 red; 20 mm scale bar"]) + NL)
     with open(os.path.join(run, "logs", "render16_status.json"), "w") as fh:
         json.dump({"png": png, "dpi": a.dpi, "max_faces": a.max_faces,
                    "limits": {"x": xlim, "y": ylim, "z": zlim},

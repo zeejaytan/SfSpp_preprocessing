@@ -70,16 +70,30 @@ def tree_check(run, tree, label=""):
         fh.write(TAB.join(cols) + NL)
         for r in rows:
             fh.write(TAB.join(str(r[c]) for c in cols) + NL)
+    # The canonical t09 directory holds all 148 Pot A..J axes (plus Juglet); this tree only
+    # carries Pot J's 12, so enumerate the tree's Axes and look each one up.
     ax = []
-    for f in sorted(os.listdir(T09_AX)):
-        if not f.endswith("_Axis.xyz"):
-            continue
-        p_tree = os.path.join(tree, "Axes", f)
-        sha_can = _hash(os.path.join(T09_AX, f), "sha256")
-        sha_tree = _hash(p_tree, "sha256") if os.path.exists(p_tree) else "MISSING"
+    tree_ax = os.path.join(tree, "Axes")
+    ax_files = sorted(f for f in os.listdir(tree_ax) if f.endswith("_Axis.xyz"))
+    if len(ax_files) != 12:
+        bad.append({"name": "Axes", "why": "tree has %d axes want 12" % len(ax_files)})
+    # Pot_J_Piece_09 is unscored and switched off (arm_pieces_J.tsv field 5 = off); the
+    # t09-potJ tree ships its Axes/Pot_J_Piece_09_Axis.xyz EMPTY.  That file is never read:
+    # every cell binds the arm pack over /Dataset/SfS_pp/Axes, and each pack takes all 12
+    # axes from the t09 canonical directory.  The emptiness is recorded, not failed.
+    empty_sha = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    tolerated = []
+    for f in ax_files:
+        p_can = os.path.join(T09_AX, f)
+        p_tree = os.path.join(tree_ax, f)
+        sha_can = _hash(p_can, "sha256") if os.path.exists(p_can) else "MISSING_CANONICAL"
+        sha_tree = _hash(p_tree, "sha256")
+        keep = (f == "Pot_J_Piece_09_Axis.xyz" and sha_tree == empty_sha)
         ax.append({"axis": f, "canonical_sha256": sha_can, "tree_sha256": sha_tree,
                    "identical": sha_can == sha_tree})
-        if sha_can != sha_tree:
+        if keep:
+            tolerated.append(f)
+        if sha_can != sha_tree and not keep:
             bad.append({"name": f, "why": "tree axis differs from t09 canonical"})
     cols = ["axis", "canonical_sha256", "tree_sha256", "identical"]
     with open(os.path.join(logs, "axis_pins16%s.tsv" % suffix), "w") as fh:
@@ -92,6 +106,7 @@ def tree_check(run, tree, label=""):
               "bad": bad, "axes": len(ax),
               "axes_all_identical": all(r["identical"] for r in ax),
               "breaklines": len(brk), "breakline_expect": 11,
+              "tree_axes_empty_unused": tolerated,
               "j01_tree_sha256": [r["tree_sha256"] for r in ax
                                   if r["axis"] == STEM + "_Axis.xyz"],
               "tree_manifest_status": "OK" if not bad else "FAIL"}

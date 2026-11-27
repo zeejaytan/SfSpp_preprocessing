@@ -55,11 +55,13 @@ ARM=$(printf '%s' "$ROW" | cut -f2)
 REP=$(printf '%s' "$ROW" | cut -f3)
 AXIS_DIR=$(printf '%s' "$ROW" | cut -f4)
 TAG="$ARM"_"$REP"
+# Inside an array task SLURM_JOB_ID is the array id; sacct reports the per-task id.
+JOBID="${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}"
 RESULT=$RUN/out/$TAG
 SCORE=$RUN/score/$TAG.tsv
 ACCROW=$RUN/score/$TAG.acc.tsv
 mkdir -p "$RESULT"
-say "cell-start $(utc) job=$SLURM_JOB_ID idx=$IDX arm=$ARM rep=$REP"
+say "cell-start $(utc) job=$JOBID idx=$IDX arm=$ARM rep=$REP"
 
 # ---- inputs: the arm's J01 axis, everything else Ticket 13 T09_ALL ----------------
 J01_SHA=$(awk -F'\t' -v a="$ARM" 'NR>1 && $1==a{print $6}' "$RUN/evidence/j01_axes16.tsv")
@@ -146,7 +148,7 @@ mkdir -p "$RUN/logs/panelrows"
 ROWTSV=$RUN/logs/panelrows/$TAG.tsv
 printf 'arm\trep\tjobid\tsherds_ok\tsherds_total\tjoins_ok\tjoins_total\tj01_joins_ok\tj01_joins_total\tnon_j01_joins_ok\tnon_j01_joins_total\tusable\tscore\n' > "$ROWTSV"
 printf '%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\n' \
-  "$ARM" "$REP" "$SLURM_JOB_ID" "$SHERD_P" "$SHERD_N" "$JOINS_OK" "$JOINS_DEN" \
+  "$ARM" "$REP" "$JOBID" "$SHERD_P" "$SHERD_N" "$JOINS_OK" "$JOINS_DEN" \
   "$J01_OK" "$J01_DEN" "$NON_OK" "$NON_DEN" "$USABLE" "$SCORE" >> "$ROWTSV"
 say "cell-done $(utc) $TAG usable=$USABLE"
 if [ $USABLE -eq 1 ]; then exit 0; else exit 20; fi

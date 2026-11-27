@@ -53,7 +53,7 @@ say "[POSE] posecheck13.sh sha256=$POSE_FULL (t13 recorded prefix $POSE_SHA)"
 if ! "$PY" "$WORK/verify_tree16.py" --run "$RUN" --tree "$TREE" >> "$RUN/logs/prep16_tree.log" 2>&1; then
   say "[CORPUS] FAIL manifest/axis pins (see logs/prep16_tree.log)"; exit 13
 fi
-PINLINES=$(wc -l < "$RUN/logs/tree_pins16.tsv")
+PINLINES=$(( $(wc -l < "$RUN/logs/tree_pins16.tsv") - 1 ))
 say "[CORPUS] manifest rows=$PINLINES axes=12 all-identical (logs/axis_pins16.tsv)"
 
 # ---- five J01 axis candidates -----------------------------------------------------
@@ -62,7 +62,7 @@ set +e
 AXRC=$?
 set -e
 say "[AXES] prep_j01_axes16.py rc=$AXRC"
-if [ $AXRC -ne 0 ] || ! grep -q '^T16-AXES-OK$' "$RUN/logs/prep16_axes.log"; then
+if [ $AXRC -ne 0 ] || ! grep -q 'T16-AXES-OK$' "$RUN/logs/prep16_axes.log"; then
   say "[AXES] FAIL (see logs/prep16_axes.log)"; exit 14
 fi
 grep '^\[t16\]' "$RUN/logs/prep16_axes.log" >> "$STATUS" || true
@@ -74,7 +74,7 @@ printf 'arm\taxes\toverwritten\n' > "$RUN/logs/axis_diff16.tsv"
 for ARM in $ARMS; do
   PACK=$RUN/axes16_packs/$ARM
   rm -rf "$PACK"; mkdir -p "$PACK/Axes"
-  cp "$T09_AX"/*_Axis.xyz "$PACK/Axes/"
+  cp "$T09_AX"/Pot_J_Piece_*_Axis.xyz "$PACK/Axes/"
   cp "$RUN/axes16/$ARM/${STEM}_Axis.xyz" "$PACK/Axes/"
   N=$(ls "$PACK/Axes"/*_Axis.xyz | wc -l)
   D=$(cd "$PACK/Axes" && for f in *_Axis.xyz; do

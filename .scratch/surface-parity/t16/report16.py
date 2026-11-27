@@ -7,7 +7,7 @@ then writes:
 
   evidence/j01_axes16.tsv     (already written by prep_j01_axes16.py; checked here)
   evidence/potj_assembly16.tsv  arm rep sherds_ok/11 joins_ok/21 j01_joins_ok/5 non_j01/16
-                                jobid state exit_code
+                                jobid (<array>_<idx>) state exit_code
   evidence/jobs16.tsv         raw JobID State ExitCode per cell
   evidence/best16.tsv         best of the 2 repeats per arm
   evidence/renders.tsv        written by render_potj16.py (checked here)
@@ -67,6 +67,20 @@ def sacct(jobid):
     raise SystemExit("sacct -j %s returned no row" % jobid)
 
 
+def acc_sherds(score_path):
+    """Sherds seated, from acc305's own sherd-accuracy numerator (e.g. 8/11).
+
+    Customary in this project: Ticket 09 and Ticket 13 read the same field.  score305's
+    piece block uses a strict GT-axis verdict that reads 0/11 on every arm including the
+    positive control, so it is not the seated-sherd count; both files stay on disk.
+    """
+    acc = score_path[:-4] + ".acc.tsv" if score_path.endswith(".tsv") else score_path + ".acc.tsv"
+    with open(acc) as fh:
+        v = fh.readline().rstrip(NL).split(TAB)
+    num, den = v[2].strip().split("/")
+    return int(num), int(den)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True)
@@ -113,22 +127,46 @@ def main():
         fail.append("panel16.tsv rows=%d want 10" % len(panel))
     bad_usable = [r["arm"] + "_" + r["rep"] for r in panel if r.get("usable") != "1"]
 
+    # The array job id plus the cell index is the id sacct reports for a task.
+    array_job = ""
+    apath = os.path.join(logs, "array_job.txt")
+    if os.path.exists(apath):
+        array_job = open(apath).read().strip()
+    _mc, map_rows = read_tsv(os.path.join(logs, "array_map.tsv"))
+    idx_of = {(m["arm"], m["rep"]): m["idx"] for m in map_rows}
+
     sac_lines, rows, jobs = [], [], []
     for r in panel:
-        ln, state, exitcode = sacct(r["jobid"])
+        idx = idx_of.get((r["arm"], r["rep"]))
+        if idx is None or not array_job:
+            fail.append("no array index for %s_%s" % (r["arm"], r["rep"]))
+            continue
+        task = "%s_%s" % (array_job, idx)
+        ln, state, exitcode = sacct(task)
         sac_lines.append(ln)
-        jobs.append({"arm": r["arm"], "rep": r["rep"], "jobid": r["jobid"],
+        s_ok, s_tot = acc_sherds(r["score"])
+        if s_tot != 11:
+            fail.append("sherd denominator %s_%s = %d" % (r["arm"], r["rep"], s_tot))
+        jobs.append({"arm": r["arm"], "rep": r["rep"], "jobid": task,
                      "state": state, "exit_code": exitcode})
         if not state.startswith("COMPLETED") or exitcode != "0:0":
             fail.append("cell %s_%s %s %s" % (r["arm"], r["rep"], state, exitcode))
         rows.append({"arm": r["arm"], "rep": r["rep"],
-                     "sherds_ok": int(r["sherds_ok"]), "sherds_total": int(r["sherds_total"]),
+                     "sherds_ok": s_ok, "sherds_total": s_tot,
                      "joins_ok": int(r["joins_ok"]), "joins_total": int(r["joins_total"]),
                      "j01_joins_ok": int(r["j01_joins_ok"]),
                      "j01_joins_total": int(r["j01_joins_total"]),
                      "non_j01_joins_ok": int(r["non_j01_joins_ok"]),
                      "non_j01_joins_total": int(r["non_j01_joins_total"]),
-                     "jobid": r["jobid"], "state": state, "exit_code": exitcode})
+                     "jobid": task, "state": state, "exit_code": exitcode})
+    agg = []
+    if array_job:
+        out = subprocess.run(["sacct", "-j", array_job, "-n", "-P",
+                              "--format=JobID,State,ExitCode"],
+                             capture_output=True, text=True)
+        agg = [x for x in out.stdout.splitlines()
+               if x.strip() and "_" not in x.split("|")[0]]
+    sac_lines = ["#array " + x for x in agg] + sac_lines
     log("sacct rows=%d all_completed=%s" % (len(jobs), not any("COMPLETED" not in j["state"]
                                                               for j in jobs)))
 
