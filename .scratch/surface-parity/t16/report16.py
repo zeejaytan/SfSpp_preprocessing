@@ -227,6 +227,7 @@ def main():
     if not os.path.exists(os.path.join(ev, "renders.tsv")):
         fail.append("evidence/renders.tsv missing")
 
+
     status = {"run": run, "rows": len(rows), "fail": fail,
               "all_usable": not bad_usable, "bad_usable": bad_usable,
               "best": {arm: {"joins_ok": best[arm]["joins_ok"],

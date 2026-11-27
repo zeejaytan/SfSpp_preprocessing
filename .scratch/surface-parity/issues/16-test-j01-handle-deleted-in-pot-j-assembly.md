@@ -108,7 +108,8 @@ The single join that separates 17/21 from 16/21 is `6-11`: it fails in the contr
 - Run dir: `/data/gpfs/projects/punim2657/SfSpp/runs/20261127-0300_af7974a_t16-j01-handle-deleted` (`run.json`, `submit.sbatch` = `prep16.sbatch`, scripts in `work/t16/`).
 - Prep `35855468`: `COMPLETED`, `ExitCode 0:0`, elapsed `00:03:50`; it verified the tree pins, built the five axes, staged the five axis packs and submitted the array plus the report.
 - Array `35855867` (10 cells, `--array=0-9%3`): `35855867_0`..`_9` all `COMPLETED` `0:0`, elapsed `00:08:15`-`00:13:57`.
-- Report `35859454`: `COMPLETED`, `0:0`, elapsed `00:00:15` (an earlier identical run `35859139` is superseded only by a text fix in `renders.tsv`, see below).
+- Report `35859454`: `COMPLETED`, `0:0`, elapsed `00:00:15` (superseded by the render fix below).
+- Render fix `35861684` and final report `35861740`: both `COMPLETED`, `0:0`, elapsed `00:00:12` and `00:00:09`; `35861740` is the run that wrote the delivered PNG.
 - Verbose `sacct` for the prep, the array and the report is appended verbatim to `logs/run_status.txt`; the per-cell block is in `logs/sacct16.txt`.
 
 Exact commands (laptop, from `C:/PR/worktrees/sfs/16/.scratch/surface-parity/t16`):
@@ -136,7 +137,16 @@ scp spartan:<RUN>/logs/run_status.txt artifacts/surface-parity-16/logs/
 - `verified: evidence/renders.tsv -> 3 tab-separated fields; path field exactly renders/Pot_J_handle_deleted_comparison.png; no commas`.
 - `verified: CTL axis sha256 = t13 axes/T09_WITH_AUTHOR_J01/Pot_J_Piece_01_Axis.xyz (byte copy)`; the two `SHIP` arms matched the frozen selector call (`np.array_equal` True) and the merge helper equals `joint.merge_lines` when the thickness secondaries are withheld (`np.array_equal` True), both logged in `logs/j01_axes16_detail.json`.
 - `verified: walls pinned 8/8` to `t13/evidence/j01_walls.tsv` (`xyz_sha256`) before any axis was built.
-- Looked at the render: `renders/Pot_J_handle_deleted_comparison.png`, five panels, locked camera, 20 mm bar each. All five read as the same vessel; the red `J01` faces interpenetrate the grey sherds, so the overlay is not diagnostic at this scale and the join table is what separates the arms.
+- Looked at the render, and it forced a fix (see below): `renders/Pot_J_handle_deleted_comparison.png` now shows five posed vessels at a locked camera with a 20 mm bar each. `J01` (red) sits flush on the body with its handle sticking out in panels 1-4 and is visibly displaced into the vessel in panel 5 (`OWN_S0_ONLY_SHIP`, 5/21, J01 0/5). Measured: the red sherd centroid in panels 1-4 agrees with the control within `0.32 mm`, and in panel 5 it is `56.46 mm` away; `J01` median distance to the other sherds is `13.9-16.0 mm` because the joint surfaces overlap rather than touch, so the seam table stays the quantitative evidence.
+
+### Render bug found in review, and the fix
+
+Lead review rejected the first picture: all five panels looked identical, including the `5/21` arm, and the red `J01` faces interpenetrated the grey sherds.
+
+- **Cause:** `Hierarchy-T13` writes `*_OBJ_<p>.obj` in **raw scan coordinates** (`z` near `440 mm`) and records the placement separately in `T_<p-1>to_<p-1>.txt`. The first `render_potj16.py` drew those OBJ files directly (its docstring wrongly claimed they were already in the assembly frame), so the panels were raw scans, all at the same coordinates.
+- **Fix** (`render_potj16.py`, job `35861740`): load the decimated corpus meshes `sfs_main/original_samples/SfS_pp/Mesh/Pot_J_Piece_NN_Mesh_DS.obj`, apply each piece pose `V_asm = V_raw @ T[:3,:3].T + T[:3,3]`, anchor every panel to the control panel through the seated body sherd Piece 3 (`M = T_ctl(p3) @ inv(T_panel(p3))`, panel shifts `12.93 / 31.43 / 4.71 / 41.16 mm` for SHIP / THICKSEC / VOXEL / S0), then draw dense point clouds with `J01` in `#d62728` over muted greys and the same camera and 20 mm bar everywhere.
+- **Guard:** the script now hard-fails unless panel 5 (`OWN_S0_ONLY_SHIP`) moves its posed `J01` centroid by more than `10.0 mm` against panel 1, and unless `max_panel_diff > 10.0`; the run measured `56.46 mm`, while panels 1-4 agree with the control within `0.32 mm`. Untransformed meshes give `0.0 mm` and can no longer pass.
+- **Reading the picture:** the red object is the corpus sherd 1, which still carries its handle in every panel, placed by each arm's pose; the arm difference lives in the axis walls, not in the assembled mesh. So the picture argues about seating, not about the handle removal itself.
 
 ### Requirement compliance
 
@@ -153,7 +163,7 @@ scp spartan:<RUN>/logs/run_status.txt artifacts/surface-parity-16/logs/
 | 9 | `Hierarchy-T13` run cleanly, Ticket 13 `score305` / seam scorer | per-cell logs, `out/score/*.tsv` + `acc_*.tsv` | met |
 | 10 | every job polled with `scripts/slurm_poll.sh`, verbatim `sacct` in `logs/run_status.txt` | see Run and jobs | met |
 | 11 | `evidence/potj_assembly16.tsv` tab-delimited, exact header, 10 rows, `sherds_total=11`, `joins_total=21`, `state=COMPLETED`, `exit_code=0:0` | validated | met |
-| 12 | `render_potj16.py` on a compute node: 180+ dpi, 1x5 locked-camera layout, 20 mm bar every panel, `Pot_J_Piece_01` highlighted, `X/21` and J01 seams per panel | report job `35859454`, `renders/Pot_J_handle_deleted_comparison.png` (`4860x1152`, 1507324 bytes) | met |
+| 12 | `render_potj16.py` on a compute node: 180+ dpi, 1x5 locked-camera layout, 20 mm bar every panel, `Pot_J_Piece_01` highlighted, `X/21` and J01 seams per panel | report job `35861740`, `renders/Pot_J_handle_deleted_comparison.png` (`4860x1188`, 2317190 bytes); meshes posed by `T_<p-1>to_<p-1>.txt`, panels anchored on Piece 3, assertion `max_panel_diff_mm = 56.46 > 10.0` | met |
 | 13 | `evidence/renders.tsv` tab-delimited with the relative path | validated | met |
 | 14 | staged into `artifacts/surface-parity-16/` | `evidence/` (5 tsv), `renders/` (png), `logs/run_status.txt` | met |
 | 15 | no change to `sfs_axes/`, `mesh_processing_headless.cpp`, `Data/`, `intent/`, `scripts/`, other tickets/scripts | `git status` / `git diff --stat` on the branch | met |
@@ -164,4 +174,4 @@ scp spartan:<RUN>/logs/run_status.txt artifacts/surface-parity-16/logs/
 - One pot, one corpus, 21 joins: the `17/21` ceiling is Pot J-specific and the 16-vs-17 difference is one join (`6-11`), so treat the gap between the control and the handle-deleted arms as one seam, not a general advantage.
 - `sherds_ok` in `potj_assembly16.tsv` is the `acc305` sherd-accuracy numerator (`8/11`, `9/11`, ...; the project convention used by Tickets 09 and 13). `score305`'s own piece block reads `FAIL` on all 11 pieces even for the positive control (piece angles 176-179 deg), so it is not used for that column; both `score` and `acc` files stay in `out/score/`.
 - `Pot J 09` is unscored and off; `Pot J 12` is paper-excluded but inside the 11-piece denominator; `Pot J 01`'s interior breakline measures the input, per `SfSpp_preprocessing/AGENTS.md`.
-- `renders.tsv` was rewritten by report job `35859454` after the description lost its commas (a `.tsv` hygiene fix); the picture is byte-identical to job `35859139`'s.
+- `renders.tsv` lost its commas as a `.tsv` hygiene fix in job `35859454`; job `35861740` rewrote it together with the corrected picture.
