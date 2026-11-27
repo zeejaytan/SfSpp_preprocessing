@@ -1,6 +1,6 @@
 # E2 — Which differences in our extracted surfaces cost SfS++ joins?
 
-**Status:** open · **Blocked by:** none · **Effort:** controlled Pot E surface tests following the axis-input diagnostics
+**Status:** answered 2026-11-27 (conservator decision) · **Blocked by:** none · **Effort:** controlled Pot E and Pot J surface tests following the axis-input diagnostics
 
 ## Where it stands
 
@@ -24,7 +24,7 @@ Testing appendage-deleted `J01` surfaces directly in pinned `Hierarchy-T13` Pot 
 
 Weight: One pot; four axis sets with two attempted repeats each in Surface Parity 01 (seven complete, one excluded for missing poses; Axis-parity Ticket 19 also passed twice swapping only sherd 28 into the authors’ set); two sherds across 12 arms in Surface Parity 04 (99.3–100% of target normals transferred, 4/4 archive & sham byte-identical); two sherds across 10 arms each (20 runs) in Surface Parity 05 (4/4 archive byte-identical, 8/8 fixtures PASS, job `35624709`); one pot (31 sherds, 62 joins) across 4 arms × 2 repeats = 8/8 usable assemblies in Surface Parity 06 (6/6 Ticket 19/05 pins, 4/4 fixtures PASS, job `35632139` + 8 cell jobs); all 10 comparison pots + `def_3x` Juglet (157 pieces, 314 walls, 40 pot E2E arms + 4 Juglet arms, 26 terminal Slurm jobs, 56/56 `check08` checks) in Surface Parity 08; full post-Ticket-09 regeneration + E2E validation (`157` pieces, `314` walls + `314` breaklines, 40 pot E2E arms + 4 Juglet arms, 44 terminal `sacct` rows, 36/36 `check09` checks, 12/12 manifest unit tests) in Surface Parity 09 (`20261125-1340_a50f8cc_t09-own-surfaces`); Pot J diagnosis (`22/22` `Hierarchy-T13` cells, `462` seams, 9-arm `J01` surface-factor study, 7/7 fixtures PASS, 21/21 `check13` checks) in Surface Parity 13 (`20261126-1500_cf88609_t13-diagnose`); 143-piece / 286-face corpus wall scan + 8-arm selector trace (`maxdiff = 0`, job `35842878`) in Surface Parity 14 (`20261127-1052_78a40f5_t14-j01-lobe-trace`); and 10-cell handle/spout-deleted Pot J assembly (`5` arms × `2` repeats, `35855867_0.._9` `COMPLETED 0:0`, posed teapot render eye-checked `35861740`) in Surface Parity 16 (`20261127-0300_af7974a_t16-j01-handle-deleted`).
 
-Next: Both surface parity mechanisms costing joins are now explained and proved end-to-end (exact duplicate wall rows on Pot E fixed and canonicalized in `t09`; `Pot_J_Piece_01` spout segmentation fixed in Ticket 16 reaching `17/21`, beating Authors' `16/21`). Open choice: close `E2` as answered, open a surface-segmentation fix ticket to stop growing across the `J01` body-to-spout crease, or inspect the three small shifted walls (`Pot_I_Piece_25`, `Pot_J_Piece_08`, `Pot_D_Piece_28`).
+Next: Closed (answered 2026-11-27, conservator decision). Canonical duplicate-free own surfaces are pinned in `sfs_axes/own_surfaces.json` (`20261125-1340_a50f8cc_t09-own-surfaces`; `9/10` pots + `def_3x` Juglet at parity, Pot E `62/62` in `2/2`). Pot J's remaining shortfall is fully attributed to `Pot_J_Piece_01` `Surface_1` growing across the body-to-spout crease (deleting the spout recovers `17/21` in Ticket 16, beating Authors' `16/21` with the unchanged selector); any future spout-crease segmentation change or inspection of the three small shifted walls (`I25`, `J08`, `D28`) can open a separate ticket if needed.
 
 Picture: SfSpp_preprocessing/artifacts/surface-parity-09/evidence/renders/Pot_A_to_J_and_Juglet_t09_regen.png | Regenerated canonical own surfaces (a50f8cc0): all 10 pots (Authors’ control MOR1 left vs regenerated own K3R1 right) and def_3x Juglet vs oracle (20 mm bar in every panel).
 
@@ -36,7 +36,7 @@ We need a surface extraction recipe for our own scans that can match the authors
 
 - [x] Localise a repeatable Pot E join loss to an identified sherd or bounded combination of sherds using reciprocal axis-file controls and the unchanged assembler.
 - [x] Establish whether changing retained surface area, sampling density, or normals individually changes the relevant axis and recovers the join. Report signed axis direction in degrees, the distance to a named point in millimetres, the candidate fracture stretches, and the number of joins recovered out of 62. A null or mixed result must show which hypotheses were tested and where they remain coupled.
-- [ ] Show the changed surface on two locked views with a 20 mm scale bar and the resulting placement against the reference. Validate any proposed extraction change against the released Pot E sample and existing comparison pots before making it the default.
+- [x] Show the changed surface on two locked views with a 20 mm scale bar and the resulting placement against the reference. Validate any proposed extraction change against the released Pot E sample and existing comparison pots before making it the default.
 
 ## Gate / stop condition
 
