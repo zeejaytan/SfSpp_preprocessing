@@ -38,7 +38,10 @@ def load_t03(path):
 
 def solve(dl, C0, C1):
     C = np.hstack([C0, C1]) if C1.shape[1] else C0.copy()
-    reps, sizes, V, st, nd = dl.draw_pool(C, seeds=10, step=10)
+    out = dl.draw_pool(C, seeds=10, step=10)
+    reps, sizes, V = out[0], out[1], out[2]
+    if V.shape[1] == 0:
+        raise RuntimeError("draw_pool drew no candidate axes")
     su = getattr(dl, "select_union_lines", None)
     if su is None:
         from sfs_axes.select import select_union_lines as su
@@ -63,12 +66,18 @@ def main():
     a = ap.parse_args()
     dl = load_t03(a.t03)
 
-    s0 = tc.read_wall(os.path.join(tc.geom_dir(STEM), STEM + ".S0"), with_normals=False)[0:3]
-    s1 = tc.read_wall(os.path.join(tc.geom_dir(STEM), STEM + ".S1"), with_normals=False)[0:3]
-    C0, C1 = np.ascontiguousarray(s0, dtype=float), np.ascontiguousarray(s1, dtype=float)
+    # 6xN walls (x,y,z,nx,ny,nz): potsac's draw_pool and select_union_lines take
+    # the point-plus-normal matrix, and only the 4 mm partition uses positions.
+    C0 = np.ascontiguousarray(tc.read_wall(os.path.join(tc.geom_dir(STEM), STEM + ".S0"),
+                                           with_normals=True), dtype=float)
+    C1 = np.ascontiguousarray(tc.read_wall(os.path.join(tc.geom_dir(STEM), STEM + ".S1"),
+                                           with_normals=True), dtype=float)
+    if C0.shape[0] < 6 or C1.shape[0] < 6:
+        raise RuntimeError("juglet walls must carry normals: C0=%s C1=%s" % (C0.shape, C1.shape))
+    P0, P1 = C0[0:3], C1[0:3]
     n0, n1 = int(C0.shape[1]), int(C1.shape[1])
 
-    d = cKDTree((C0 / tc.JUG_ROWS).T).query((C1 / tc.JUG_ROWS).T, k=1)[0]
+    d = cKDTree((P0 / tc.JUG_ROWS).T).query((P1 / tc.JUG_ROWS).T, k=1)[0]
     near = d <= NEAR_MM
     near6 = d <= NEAR6_MM
     n_far = int((~near).sum())
@@ -77,7 +86,7 @@ def main():
 
     gt = tc.gt_axis(STEM)
     assert gt is not None, "no Juglet_Piece_1 GT axis"
-    wrap = tc.wrap_deg((s0 / tc.JUG_ROWS).T, gt)
+    wrap = tc.wrap_deg((P0 / tc.JUG_ROWS).T, gt)
     print("S0 wrap_deg about GT axis = %.2f" % wrap, flush=True)
 
     contrast = None
