@@ -174,7 +174,8 @@ def fig1(outdir, rows):
     stem = "Juglet_Piece_1"
     s0 = tc.read_wall(os.path.join(tc.geom_dir(stem), stem + ".S0"), with_normals=False)[0:3] / tc.JUG_ROWS
     s1 = tc.read_wall(os.path.join(tc.geom_dir(stem), stem + ".S1"), with_normals=False)[0:3] / tc.JUG_ROWS
-    mesh = tc.read_obj_vertices(tc.mesh_obj(stem))
+    # the Juglet mesh is native 3x, like its walls, so it is divided with them
+    mesh = tc.read_obj_vertices(tc.mesh_obj(stem)) / tc.JUG_ROWS
     d = cKDTree(s0.T).query(s1.T, k=1)[0]
     near = d <= NEAR_MM
     dmesh = cKDTree(np.hstack([s0, s1]).T).query(mesh, k=1)[0]
@@ -192,8 +193,8 @@ def fig1(outdir, rows):
         {"pts": mesh, "c": C_MESH, "s": 0.6, "s3": 0.5, "a": 0.55, "z": 1},
         {"pts": unc, "c": C_UNCOV, "s": 1.2, "s3": 0.9, "a": 0.9, "z": 2},
         {"pts": s0.T, "c": C_S0, "s": 0.7, "s3": 0.6, "a": 0.65, "z": 3},
-        {"pts": s1[near].T, "c": C_NEAR, "s": 0.7, "s3": 0.6, "a": 0.55, "z": 4},
-        {"pts": s1[~near].T, "c": C_FAR, "s": 1.0, "s3": 0.9, "a": 0.85, "z": 5},
+        {"pts": s1.T[near], "c": C_NEAR, "s": 0.7, "s3": 0.6, "a": 0.55, "z": 4},
+        {"pts": s1.T[~near], "c": C_FAR, "s": 1.0, "s3": 0.9, "a": 0.85, "z": 5},
     ]
     fig = plt.figure(figsize=(13.0, 12.2))
     panels(fig, groups, B, ["XY (mm)", "XZ (mm)", "YZ (mm)"])
@@ -271,6 +272,7 @@ def fig3(outdir, rows):
         if tc.is_jug(stem):
             s0 = s0 / tc.JUG_ROWS
             s1 = s1 / tc.JUG_ROWS
+            mesh = mesh / tc.JUG_ROWS
             d = cKDTree(s0.T).query(s1.T, k=1)[0]
             far = d > NEAR_MM
             note = "S1 far >%.0f mm from S0" % NEAR_MM
@@ -286,8 +288,8 @@ def fig3(outdir, rows):
             {"pts": mesh, "c": C_MESH, "s": 0.5, "s3": 0.4, "a": 0.45, "z": 1},
             {"pts": unc, "c": C_UNCOV, "s": 0.7, "s3": 0.5, "a": 0.8, "z": 2},
             {"pts": s0.T, "c": C_S0, "s": 0.7, "s3": 0.6, "a": 0.65, "z": 3},
-            {"pts": s1[~far].T, "c": C_NEAR, "s": 0.7, "s3": 0.6, "a": 0.55, "z": 4},
-            {"pts": s1[far].T, "c": C_FAR, "s": 0.9, "s3": 0.7, "a": 0.85, "z": 5},
+            {"pts": s1.T[~far], "c": C_NEAR, "s": 0.7, "s3": 0.6, "a": 0.55, "z": 4},
+            {"pts": s1.T[far], "c": C_FAR, "s": 0.9, "s3": 0.7, "a": 0.85, "z": 5},
         ]
         Q = np.vstack([project(g["pts"], B) for g in groups])
         for g, Qg in zip(groups, [project(g["pts"], B) for g in groups]):
