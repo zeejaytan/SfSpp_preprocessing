@@ -15,7 +15,7 @@ Which sherds among the `148` processed `Pot A..J` pieces and `9` `Juglet` pieces
 
 ## Related tickets
 
-- Unblocks [Separate crease bridging from body support on surviving sherds](20-separate-crease-bridging-from-body-support-on-surviving-sherds.md) and [Decide appendage guard location and scope](21-decide-appendage-guard-location-and-scope.md).
+- Unblocks [Separate crease bridging from body support on surviving sherds](04-separate-crease-bridging-from-body-support-on-surviving-sherds.md) and [Decide appendage guard location and scope](05-decide-appendage-guard-location-and-scope.md).
 
 ## Exact Inputs & Environment (Spartan compute node only)
 

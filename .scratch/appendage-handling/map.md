@@ -23,7 +23,7 @@ Explain why `Pot_J_Piece_01` failed surface and axis extraction while `Juglet_Pi
 
 - Guard mechanism and home (if census proves a guard is warranted): C++ `MeshPreprocessingHeadless` crease-splitting vs Python `sfs_axes` non-axisymmetric outlier rejection.
 - Pipeline policy when fed standalone special parts (broken-off handles, noses, ornaments with negligible body wall).
-- Full `10`-pot + `def_3x` Juglet validation spec (`to-spec` / implementation tickets) once the guard design is chosen in [Decide appendage guard location and scope](issues/21-decide-appendage-guard-location-and-scope.md).
+- Full `10`-pot + `def_3x` Juglet validation spec (`to-spec` / implementation tickets) once the guard design is chosen in [Decide appendage guard location and scope](issues/05-decide-appendage-guard-location-and-scope.md).
 
 ## Out of scope
 
