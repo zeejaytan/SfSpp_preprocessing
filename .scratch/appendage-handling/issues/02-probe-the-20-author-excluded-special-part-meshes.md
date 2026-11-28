@@ -3,8 +3,10 @@
 **Answers:** E3
 **Type:** task
 **Blocked by:** None
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-29)
+**Branch:** 02-probe-the-20-author-excluded-special-part-meshes, in /c/PR/worktrees/sfs/02
+**Worker:** DeepSeek
 **Hand-over:** DeepSeek (DSH Baton in worktree `C:/PR/worktrees/sfs/02`)
 
 ## Question
