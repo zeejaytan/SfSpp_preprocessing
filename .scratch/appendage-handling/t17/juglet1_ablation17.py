@@ -39,7 +39,10 @@ def load_t03(path):
 def solve(dl, C0, C1):
     C = np.hstack([C0, C1]) if C1.shape[1] else C0.copy()
     reps, sizes, V, st, nd = dl.draw_pool(C, seeds=10, step=10)
-    vt, costs = dl.select_union_lines(reps, sizes, C0, C1, C, 6, tri_select=None)
+    su = getattr(dl, "select_union_lines", None)
+    if su is None:
+        from sfs_axes.select import select_union_lines as su
+    vt, costs = su(reps, sizes, C0, C1, C, 6, tri_select=None)
     return C, vt, costs
 
 
@@ -74,7 +77,7 @@ def main():
 
     gt = tc.gt_axis(STEM)
     assert gt is not None, "no Juglet_Piece_1 GT axis"
-    wrap = tc.wrap_deg(s0 / tc.JUG_ROWS, gt)
+    wrap = tc.wrap_deg((s0 / tc.JUG_ROWS).T, gt)
     print("S0 wrap_deg about GT axis = %.2f" % wrap, flush=True)
 
     contrast = None

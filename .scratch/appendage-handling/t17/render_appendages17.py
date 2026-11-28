@@ -197,9 +197,11 @@ def fig1(outdir, rows):
     ]
     fig = plt.figure(figsize=(13.0, 12.2))
     panels(fig, groups, B, ["XY (mm)", "XZ (mm)", "YZ (mm)"])
-    add_3d(fig, groups, axis_lines=[
-        (axis_segment(ax09_1x[:, 0], allp), C_AX09, "--", 1.6),
-        (axis_segment(gt, allp), C_GT, "-", 2.0)])
+    axis_lines = []
+    if ax09.shape[1]:
+        axis_lines.append((axis_segment(ax09_1x[:, 0], allp), C_AX09, "--", 1.6))
+    axis_lines.append((axis_segment(gt, allp), C_GT, "-", 2.0))
+    add_3d(fig, groups, axis_lines=axis_lines)
     fig.suptitle("Juglet_Piece_1: S0=%d pts, S1=%d pts, %d S1 pts >%.0f mm from S0 (handle), "
                  "S0 wrap %.1f deg, t09-vs-GT %.2f deg\norange-red = handle/far S1;  purple = mesh >%.0f mm from S0|S1;  "
                  "green dashed = t09 axis, black = GT axis;  all panels 1x mm, equal aspect, 20 mm bar"
