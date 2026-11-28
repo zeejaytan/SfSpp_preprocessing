@@ -96,17 +96,20 @@ def main():
         contrast = tc.wrap_deg(ps.T, pgt)
         print("contrast %s S0 wrap_deg = %.2f" % (CONTRAST, contrast), flush=True)
 
+    # each arm carries the mask it keeps, so its own "far from S0" count is exact
     arms = [
-        ("JUGLET1_FULL_T09", C1),
-        ("JUGLET1_NO_HANDLE", C1[:, near]),
-        ("JUGLET1_NO_HANDLE_6MM", C1[:, near6]),
+        ("JUGLET1_FULL_T09", np.ones(n1, dtype=bool)),
+        ("JUGLET1_NO_HANDLE", near),
+        ("JUGLET1_NO_HANDLE_6MM", near6),
     ]
     rows, log = [], []
     shipped = tc.read_axis_lines(tc.axis09_path(STEM))
-    for name, c1arm in arms:
-        C, vt, costs = solve(dl, C0, np.ascontiguousarray(c1arm))
+    for name, keep in arms:
+        c1arm = np.ascontiguousarray(C1[:, keep])
+        far_arm = int((keep & ~near).sum())
+        C, vt, costs = solve(dl, C0, c1arm)
         rank0, best, dmm, p_est = score(dl, vt, gt)
-        row = [name, n0, int(c1arm.shape[1]), n_far if name != "JUGLET1_NO_HANDLE_6MM" else n_far6,
+        row = [name, n0, int(c1arm.shape[1]), far_arm,
                "%.2f" % wrap, int(vt.shape[1]), "%.4f" % rank0, "%.4f" % best, "%.4f" % dmm]
         rows.append(row)
         rep = tc.line_angle_deg(vt[0:3, 0], shipped[0:3]) if shipped.shape[1] else -1.0
