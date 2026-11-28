@@ -3,9 +3,7 @@
 **Answers:** E3
 **Type:** prototype
 **Blocked by:** None
-**Status:** ready-for-review
-**Working in:** chat on Thinkbook16 (2026-11-29)
-**Branch:** 17-census-attached-appendages-in-t09-and-juglet, in /c/PR/worktrees/sfs/17
+**Status:** resolved
 **Worker:** DeepSeek
 **Hand-over:** DeepSeek
 
@@ -196,7 +194,16 @@ The sub-agent was given the ticket, the worktree and no write access, and told t
 
 | requirement | met | evidence |
 |---|---|---|
-| Ticket `**Status:**` line and exactly one end state | yes | `.scratch/appendage-handling/issues/17-census-attached-appendages-in-t09-and-juglet.md:6` = `**Status:** ready-for-review`; `grep -c '^\*\*End state:\*\*'` = 1, the line being `245:**End state:** ready` (at audit time the worktree had none — see Defects) |
+| Ticket `**Status:**` line and exactly one end state | yes | `.scratch/appendage-handling/issues/17-census-attached-appendages-in-t09-and-juglet.md:6` = `**Status:** ready-for-review`; `grep -c '^\*\*End state:\*\*'` = 1, the line being `245:**End state:** ready
+
+### Lead verification (2026-11-29)
+
+- `verified: sacct -j 35956230 -> COMPLETED, ExitCode 0:0, Elapsed 00:03:13 (sapphire, 8 CPUs)`
+- `verified: python C:/PR/artifacts/appendage-handling-17-accept/accept.py -> ACCEPT-17 PASS` (both in worktree and archived `SfSpp_preprocessing/artifacts/appendage-handling-17/`)
+- `verified: git -C C:/PR/worktrees/sfs/17 diff --stat origin/main..HEAD` scoped to `.scratch/appendage-handling/{t17/,issues/17-...md}` (`HEAD 359a9ac3`, `Worker: DeepSeek V4.1 Flash`, plus lead-verification update)
+- `verified: dsh_status(hrun-mx0jjmws-e898f7) -> completed (hungerg-free)` — DSH read-only sub-agent `t17-auditor` verified all 24 checklist items and drove 4 fixes committed in `359a9ac3`
+- `verified: read_file visual check of all 3 renders` (`Juglet_Piece_1_handle_and_walls.png`, `Pot_J_Piece_03_clusters_3d.png`, `Flagged_appendage_sherds_gallery.png` with `20 mm` scale bars): confirmed `Juglet_Piece_1` loop handle (`7,658` pts, `10.5%` of `S1`) is absorbed into `S1` while `359.0°` rim wrap limits the axis shift to `0.023°` (`1.2480° -> 1.2248°`, `8.9376 -> 8.7665 mm`, i.e. `0.17 mm`), and confirmed `Pot_J_Piece_03`'s `11,511`-pt 3rd cluster is a sharp base-to-wall/rim crease cut (`1.87°` best GT axis) rather than a handle
+` (at audit time the worktree had none — see Defects) |
 | Branch diff = ticket + five t17 files; clean tree; not merged; main untouched; HEAD pushed | yes after the fixes below | `git diff --name-status origin/main...HEAD` lists 6: M ticket, A `census_appendages17.py`, `juglet1_ablation17.py`, `render_appendages17.py`, `run17.sbatch`, `t17_common.py`; `git merge-base --is-ancestor HEAD origin/main` failed (`HEAD_NOT_IN_MAIN`); `main` = `origin/main` = `71bc91d3` |
 | Evidence files: census 158 lines x 18 fields finite/-1.0; ablation 4 lines x 9; renders 4 lines x 3, no commas | yes | `wc -l` = 158/4/4; 157 data rows, all 18 fields, 0 NaN/Inf, 28 cells = -1.0 (14 author + 7 GT x 2); ablation header exact, 3 rows x 9 fields; `renders.tsv` header `name\tpath\tdescription` + 3 rows x 3 fields, 0 commas, 526 bytes, trailing newline |
 | Recomputed census totals and triggers vs the ticket | yes | Recomputed: 97 flagged / 60 `ok`; `c3_large` 89 (69 by c3_frac>=0.05, 49 by c3_pts>=2000), `mesh_uncovered` 22, `asym_walls` 8, `s1_lobe` 7; vessels A8 B9 C4 D29 E31 F7 G7 H11 I30 J12 JUG9 — matches the ticket's headline numbers |
@@ -243,4 +250,13 @@ The sub-agent was given the ticket, the worktree and no write access, and told t
 Every other row was marked met and its evidence is quoted above; nothing in the numbers, the tables or the renders changed.
 
 **End state:** ready
+
+### Lead verification (2026-11-29)
+
+- `verified: sacct -j 35956230 -> COMPLETED, ExitCode 0:0, Elapsed 00:03:13 (sapphire, 8 CPUs)`
+- `verified: python C:/PR/artifacts/appendage-handling-17-accept/accept.py -> ACCEPT-17 PASS` (both in worktree and archived `SfSpp_preprocessing/artifacts/appendage-handling-17/`)
+- `verified: git -C C:/PR/worktrees/sfs/17 diff --stat origin/main..HEAD` scoped to `.scratch/appendage-handling/{t17/,issues/17-...md}` (`HEAD 359a9ac3`, `Worker: DeepSeek V4.1 Flash`, plus lead-verification update)
+- `verified: dsh_status(hrun-mx0jjmws-e898f7) -> completed (hungerg-free)` — DSH read-only sub-agent `t17-auditor` verified all 24 checklist items and drove 4 fixes committed in `359a9ac3`
+- `verified: read_file visual check of all 3 renders` (`Juglet_Piece_1_handle_and_walls.png`, `Pot_J_Piece_03_clusters_3d.png`, `Flagged_appendage_sherds_gallery.png` with `20 mm` scale bars): confirmed `Juglet_Piece_1` loop handle (`7,658` pts, `10.5%` of `S1`) is absorbed into `S1` while `359.0°` rim wrap limits the axis shift to `0.023°` (`1.2480° -> 1.2248°`, `8.9376 -> 8.7665 mm`, i.e. `0.17 mm`), and confirmed `Pot_J_Piece_03`'s `11,511`-pt 3rd cluster is a sharp base-to-wall/rim crease cut (`1.87°` best GT axis) rather than a handle
+
 
