@@ -51,6 +51,12 @@ def parse_clusters(stem):
     return int(npts), int(nclust), sizes
 
 
+# the five stems the paper keeps out of its set: their Author walls exist but are
+# not the released answer, so the ticket asks for the -1.0 sentinel there
+AUTHOR_EXCLUDED = {"Pot_F_Piece_07", "Pot_I_Piece_28", "Pot_I_Piece_29",
+                   "Pot_I_Piece_30", "Pot_J_Piece_12"}
+
+
 def pct(frac, total):
     return float(100.0 * frac / total) if total else float("nan")
 
@@ -81,7 +87,7 @@ def gather(stem):
     cov_pct = pct(float(covered.sum()), verts.shape[0])
     uncov = int((~covered).sum()) if verts.shape[0] else 0
 
-    if tc.is_jug(stem):
+    if tc.is_jug(stem) or stem in AUTHOR_EXCLUDED:
         author_pct = -1.0
     else:
         aw = tc.author_wall(stem)
