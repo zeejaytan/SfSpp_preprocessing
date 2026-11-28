@@ -61,12 +61,6 @@ def gallery_score(r):
     return au / 5.0 + c3 / 0.05 + max(0.0, 82.0 - cov) / 18.0
 
 
-def best_basis(P):
-    c = P.mean(axis=0)
-    _, _, vt = np.linalg.svd(P - c, full_matrices=False)
-    return vt
-
-
 def project(P, B):
     return P @ B.T
 
@@ -174,8 +168,8 @@ def fig1(outdir, rows):
     stem = "Juglet_Piece_1"
     s0 = tc.read_wall(os.path.join(tc.geom_dir(stem), stem + ".S0"), with_normals=False)[0:3] / tc.JUG_ROWS
     s1 = tc.read_wall(os.path.join(tc.geom_dir(stem), stem + ".S1"), with_normals=False)[0:3] / tc.JUG_ROWS
-    # the Juglet mesh is native 3x, like its walls, so it is divided with them
-    mesh = tc.read_obj_vertices(tc.mesh_obj(stem)) / tc.JUG_ROWS
+    # the Juglet mesh is already 1x mm; only its 3x walls are divided
+    mesh = tc.read_obj_vertices(tc.mesh_obj(stem))
     d = cKDTree(s0.T).query(s1.T, k=1)[0]
     near = d <= NEAR_MM
     dmesh = cKDTree(np.hstack([s0, s1]).T).query(mesh, k=1)[0]
@@ -188,7 +182,7 @@ def fig1(outdir, rows):
     gt_deg = tc.line_angle_deg(ax09_1x[0:3, 0], gt[0:3]) if ax09.shape[1] else float("nan")
 
     allp = np.vstack([mesh, s0.T, s1.T])
-    B = best_basis(allp)
+    B = np.eye(3)  # world axes: the panel labels say XY/XZ/YZ
     groups = [
         {"pts": mesh, "c": C_MESH, "s": 0.6, "s3": 0.5, "a": 0.55, "z": 1},
         {"pts": unc, "c": C_UNCOV, "s": 1.2, "s3": 0.9, "a": 0.9, "z": 2},
@@ -222,7 +216,7 @@ def fig2(outdir):
     mesh = tc.read_obj_vertices(tc.mesh_obj(stem))
     dmesh = cKDTree(np.hstack([s0, s1]).T).query(mesh, k=1)[0]
     unc = mesh[dmesh > COVER_MM]
-    B = best_basis(np.vstack([mesh, s0.T, s1.T]))
+    B = np.eye(3)  # world axes: the panel labels say XY/XZ/YZ
     groups = [
         {"pts": mesh, "c": C_MESH, "s": 0.7, "s3": 0.6, "a": 0.5, "z": 1},
         {"pts": unc, "c": C_FAR, "s": 1.4, "s3": 1.0, "a": 0.9, "z": 2},
@@ -272,7 +266,6 @@ def fig3(outdir, rows):
         if tc.is_jug(stem):
             s0 = s0 / tc.JUG_ROWS
             s1 = s1 / tc.JUG_ROWS
-            mesh = mesh / tc.JUG_ROWS
             d = cKDTree(s0.T).query(s1.T, k=1)[0]
             far = d > NEAR_MM
             note = "S1 far >%.0f mm from S0" % NEAR_MM
@@ -283,7 +276,7 @@ def fig3(outdir, rows):
             note = "S1 far >%.0f mm from author" % AUTHOR_MM
         dmesh = cKDTree(np.hstack([s0, s1]).T).query(mesh, k=1)[0]
         unc = mesh[dmesh > COVER_MM]
-        B = best_basis(np.vstack([mesh, s0.T, s1.T]))
+        B = np.eye(3)  # world axes: the panel labels say XY/XZ/YZ
         groups = [
             {"pts": mesh, "c": C_MESH, "s": 0.5, "s3": 0.4, "a": 0.45, "z": 1},
             {"pts": unc, "c": C_UNCOV, "s": 0.7, "s3": 0.5, "a": 0.8, "z": 2},

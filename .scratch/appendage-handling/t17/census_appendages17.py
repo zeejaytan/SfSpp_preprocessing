@@ -68,9 +68,9 @@ def gather(stem):
     c = (sizes + [0, 0, 0])[0:3]
     c3_frac = c[2] / float(max(npts, 1))
 
+    # the Juglet mesh in Dataset/Mesh/Juglet is already in 1x mm, like the pots;
+    # only the 3x walls above need dividing, or coverage comes out 0% for every juglet
     verts = tc.read_obj_vertices(tc.mesh_obj(stem))
-    if tc.is_jug(stem):
-        verts = verts / tc.JUG_ROWS
     tree = cKDTree(np.hstack([s0, s1]).T) if (n0 + n1) else None
     if tree is not None and verts.shape[0]:
         dmin = tree.query(verts, k=1)[0]
