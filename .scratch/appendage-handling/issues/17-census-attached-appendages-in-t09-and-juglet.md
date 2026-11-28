@@ -77,6 +77,7 @@ Create all scripts under `.scratch/appendage-handling/t17/` in `worktrees/sfs/17
 - Do NOT modify `sfs_axes/`, `mesh_processing_headless.cpp`, `Data/`, `intent/`, `scripts/`, `map.md`, or any file outside `.scratch/appendage-handling/t17/`, `.scratch/appendage-handling/issues/17-census-attached-appendages-in-t09-and-juglet.md`, and worktree `artifacts/appendage-handling-17/`.
 - All `.tsv` files MUST use literal `\t` tabs (never commas) and finite numbers (`-1.0` sentinel if GT/Author absent); `renders.tsv` MUST use the three relative paths under `renders/`.
 - All heavy compute MUST run on a Spartan compute node via `sbatch`, never on the laptop or Spartan login node.
+
 ## Result (2026-11-29)
 
 **Run:** `20261129-0137_4effe9d_t17-appendage-census`, branch tip `4effe9de`. One Slurm job `35956230` on `sapphire` (8 CPUs, 32G): `COMPLETED 0:0`, elapsed `00:03:13`. All three scripts ran inside that one job; verbatim `sacct` is at `worktrees/sfs/17/artifacts/appendage-handling-17/logs/run_status.txt`.
