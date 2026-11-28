@@ -3,8 +3,10 @@
 **Answers:** E3
 **Type:** research
 **Blocked by:** 17
-**Status:** ready-for-agent
-**Worker:** unassigned
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-29)
+**Branch:** 04-separate-crease-bridging-from-body-support-on-surviving-sherds, in /c/PR/worktrees/sfs/04
+**Worker:** DeepSeek
 **Hand-over:** DeepSeek (DSH Baton in worktree `C:/PR/worktrees/sfs/04`)
 
 ## Question
