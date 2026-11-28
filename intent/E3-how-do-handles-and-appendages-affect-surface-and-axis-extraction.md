@@ -8,7 +8,7 @@
 
 The open puzzle raised by the conservator on 2026-11-28 is why only `Pot_J_Piece_01` broke end-to-end when Pot J is not the only vessel with appendages (several pots in `Pot A..J` and the `Juglet` neck sherd `Juglet_Piece_1` also carry handles, lugs, or spouts). Initial read-only inspection of `t09` segmentation logs suggests three untested hypotheses:
 
-1. **Benchmark exclusions hide most handle sherds:** The SfS++ authors excluded 20 separate special parts ("handle, nose, or ornament" across Pots C, D, E, F, I, and J; see `SfSpp_preprocessing/AGENTS.md`), leaving only body sherds that retain an attached appendage.
+1. **Authors' benchmark exclusions vs our pipeline:** The SfS++ authors manually excluded 20 separate special parts ("handle, nose, or ornament" across Pots C, D, E, F, I, and J; see `SfSpp_preprocessing/AGENTS.md`) from their released `Point/` benchmark input. **Our own surface pipeline did NOT drop those 20 pieces** — it simply never saw them because `t09` ran on the `143` released + `5` derived clouds (`148` pieces). On real pottery or on the full mesh set, our pipeline receives every handle, spout, nose, and ornament sherd without pre-filtering.
 2. **Crease separation vs crease bridging:** Some attached appendages appear to split off as a discarded third cluster (for example `Pot_J_Piece_03` logged an `11,511`-point third cluster alongside `21,003` and `13,893` wall clusters in `t09`), whereas `Pot_J_Piece_01` (`sizes = 21,981, 39,864, 159`) bridged the crease and absorbed the spout into `Surface_1`.
 3. **Body-wall support vs appendage share (`Juglet_Piece_1`):** In `t09`, `Juglet_Piece_1` logged `S0 = 54,917` vs `S1 = 73,020` (`~18k` more points on `S1`, with two clusters holding `81.8%` of the cloud), suggesting `S1` may also absorb part of the Juglet handle — yet the `def_3x` Juglet still seated `9/9` (`0.456 mm`), possibly because `Juglet_Piece_1` is a full 360° neck/shoulder collar whose axisymmetric body outweighs the handle, unlike `Pot_J_Piece_01`'s smaller side-wall patch (`42.2%` spout).
 
@@ -18,11 +18,11 @@ Next: Census every appendage-bearing sherd across `Pot A..J` (including the 20 e
 
 ## Why it matters
 
-Real archaeological pottery — including the Juglet and future CSC/Rabati vessels — frequently carries handles, lugs, and spouts attached to body sherds. If our preprocessing only survived `Pot A..I` and `Juglet` because benchmark handles were pre-excluded or sat on a 360° neck collar, side-wall sherds with attached appendages will silently fail axis estimation and break reassembly unless segmentation stops at the crease or axis estimation ignores non-axisymmetric protrusions.
+Real archaeological pottery — including the Juglet and future CSC/Rabati vessels — frequently carries handles, lugs, and spouts on body sherds as well as separate handle/ornament pieces. We cannot rely on the authors' manual input exclusion because our own pipeline never drops those 20 special parts; side-wall or appended sherds will silently fail axis estimation and break reassembly unless segmentation stops at the crease or axis estimation ignores non-axisymmetric protrusions.
 
 ## Done when
 
-- [ ] Inventory and visually render (with 20 mm scale bars) every handle-, lug-, or spout-bearing sherd in `Pot A..J` and `Juglet`, classifying for each whether `MeshPreprocessingHeadless` dropped the appendage as a separate cluster or absorbed it into `Surface_0`/`Surface_1`, and measuring its share of wall points and resulting axis error (degrees and mm).
+- [ ] Inventory and visually render (with 20 mm scale bars) every handle-, lug-, or spout-bearing sherd in `Pot A..J` (both the `148` processed clouds and the `20` author-excluded special-part meshes where present) and `Juglet`, classifying for each whether `MeshPreprocessingHeadless` dropped the appendage as a separate cluster or absorbed it into `Surface_0`/`Surface_1`, and measuring its share of wall points and resulting axis error (degrees and mm).
 - [ ] Establish why `Juglet_Piece_1` (and any other appendage-bearing sherd in `Pot A..J`) did or did not fail axis estimation and assembly compared with `Pot_J_Piece_01` (separating crease-splitting, appendage-to-body fraction, and circumferential wrap).
 - [ ] Decide — based on the census — whether a general segmentation or axis-estimation guard is needed for appendage-bearing sherds, and if built, validate it across all 10 pots + `def_3x` Juglet with zero regressions and `Pot J >= 16/21` on canonical own surfaces without manual trimming.
 
