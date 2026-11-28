@@ -3,8 +3,9 @@
 **Answers:** E3
 **Type:** prototype
 **Blocked by:** None
-**Status:** ready-for-agent
-**Working in:** worktrees/sfs/17
+**Status:** in-progress
+**Working in:** chat on Thinkbook16 (2026-11-29)
+**Branch:** 17-census-attached-appendages-in-t09-and-juglet, in /c/PR/worktrees/sfs/17
 **Worker:** DeepSeek
 **Hand-over:** DeepSeek
 
