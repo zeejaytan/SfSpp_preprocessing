@@ -71,7 +71,7 @@ def gather(stem):
     verts = tc.read_obj_vertices(tc.mesh_obj(stem))
     if tc.is_jug(stem):
         verts = verts / tc.JUG_ROWS
-    tree = cKDTree(np.vstack([s0, s1]).T) if (n0 + n1) else None
+    tree = cKDTree(np.hstack([s0, s1]).T) if (n0 + n1) else None
     if tree is not None and verts.shape[0]:
         dmin = tree.query(verts, k=1)[0]
         covered = dmin <= COVER_MM
