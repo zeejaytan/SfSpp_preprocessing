@@ -296,8 +296,8 @@ def fig3(outdir, rows):
                 % (r["flag_reason"], int(r["s0_pts"]), int(r["s1_pts"]), int(far.sum()),
                    100.0 * far.mean() if far.size else 0.0, float(r["c3_frac"]),
                    float(r["mesh_covered_2mm_pct"]), float(r["gt_rank0_deg"])),
-                transform=ax.transAxes, fontsize=6.2, va="top", ha="left", zorder=30,
-                bbox=dict(fc="white", ec="none", alpha=0.75, pad=1.0))
+                transform=ax.transAxes, fontsize=6.6, va="top", ha="left", zorder=30,
+                bbox=dict(fc="white", ec="none", alpha=0.92, pad=1.2))
     fig.suptitle("Flagged appendage sherds: %s + top 9 remaining by score\nblue S0, teal S1 near, "
                  "orange S1 far (%s), purple mesh >%.0f mm from S0|S1; 1x mm, equal aspect, 20 mm bar"
                  % (", ".join(FORCED), "author wall or S0", COVER_MM), fontsize=10)
