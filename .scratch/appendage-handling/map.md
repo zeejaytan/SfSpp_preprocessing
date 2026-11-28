@@ -17,6 +17,7 @@ Explain why `Pot_J_Piece_01` failed surface and axis extraction while `Juglet_Pi
 ## Decisions so far
 
 <!-- One line per resolved ticket: - [Ticket Title](issues/NN-slug.md): one-line gist of the answer -->
+- [Census attached appendages in t09 and Juglet](issues/17-census-attached-appendages-in-t09-and-juglet.md): Across `157` processed pieces (`148` `Pot A..J` + `9` `Juglet`), `Juglet_Piece_1` *did* absorb its loop handle into `Surface_1` (`7,658` pts, `10.5%`) yet shifted the axis only `0.023°` (`0.17 mm`) thanks to `359.0°` rim support (vs `Pot_J_Piece_01` `135.0°` wrap + `36.8%–42.2%` spout, `69.97°` best GT error); meanwhile `Pot_J_Piece_03`'s `11,511`-pt 3rd cluster is a sharp flat-base crease cut (`1.87°` best GT), not a handle (`89/157` pieces carry substantial 3rd clusters).
 
 ## Not yet specified
 

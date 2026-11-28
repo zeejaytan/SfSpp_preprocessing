@@ -3,7 +3,7 @@
 **Answers:** E3
 **Type:** research
 **Blocked by:** 17
-**Status:** needs-info
+**Status:** ready-for-agent
 **Worker:** unassigned
 
 ## Question
