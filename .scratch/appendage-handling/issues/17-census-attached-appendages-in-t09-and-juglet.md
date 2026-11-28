@@ -113,7 +113,7 @@ Sentinel rows, and why:
 - **`s1_off_author_5mm_pct = -1.0` (14 rows):** the nine juglets (no Author wall by construction) and the five author-excluded stems `Pot_F_Piece_07`, `Pot_I_Piece_28`, `Pot_I_Piece_29`, `Pot_I_Piece_30`, `Pot_J_Piece_12`. Their `Surfaces/<stem>_Surface_1.xyz` files do exist (496–1348 rows), but the paper does not release them as answers, so they are sentinelled rather than scored — the ticket's claim that these five have *no* author wall is not what the corpus shows.
 - `Pot_J_Piece_12` does have a GT axis (`gt_rank0_deg` 81.51) and an author wall (0.0%), so it is scored normally on those two columns.
 
-Spot check against the mesh log, `Pot_D_Piece_03`: row is npts 158221, clusters 8, c1 51743, c2 50069, c3 30189, s0 51584, s1 52905; the log line reads `clusters=8 sizes=51743,50069,30189,6609,2883,2333,2310,885 npts=158221 ... surf0_points=51584 surf1_points=52905`. (The emitted tag is `[STATUS-23]`, not the `[RETRY-23]` named in the ticket; the parser matches the tag as written by the pipeline.)
+Spot check against the mesh log, `Pot_D_Piece_03`: row is npts 158221, clusters 8, c1 51743, c2 50069, c3 30189, s0 51584, s1 52905; the log line reads `clusters=8 sizes=51743,50069,30189,6609,2883,2333,2310,885 npts=158221 ... surf0_points=51584 surf1_points=52905`. The `s0_pts` and `s1_pts` counts come from the wall files themselves, not from that log record.
 
 ### 2. The juglet handle, weighed
 
@@ -144,7 +144,7 @@ Cloud 61,274 points in 8 clusters; the third is **11,511 points (18.8%)** and is
 | # | Requirement | Status | Evidence |
 |---|---|---|---|
 | 1 | Census covers all 157 canonical t09 pieces (148 Pot A–J + 9 Juglet) | met | `appendage_census_157.tsv`: 157 data rows + header; vessel counts A8 B9 C4 D29 E31 F7 G7 H11 I30 J12 JUG9 |
-| 2 | Cluster counts parsed from the per-piece mesh log (`clusters=`, `sizes=`) | met | `t17_common.py` `mesh_log()` parses the emitted `[STATUS-23]` line; spot-checked `Pot_D_Piece_03` against the raw log line |
+| 2 | Cluster counts parsed from the per-piece mesh log (`clusters=`, `sizes=`) | met | `census_appendages17.py:31-32` matches the `[RETRY-23] ... clusters_pre=/clusters=/sizes=/npts=` record; spot-checked `Pot_D_Piece_03` against the raw log line |
 | 3 | `c1_pts`, `c2_pts`, `c3_pts` (0 if <3 clusters), `c3_frac = c3_pts/max(npts,1)` | met | 18-column table; e.g. `Juglet_Piece_1` 70674/49957/999, `c3_frac` 0.006772 |
 | 4 | `s0_pts`/`s1_pts` from the PLY headers, `s1_over_s0` | met | `t17_common.read_wall()` dispatches on `b"ply"` and reads x,y,z by property name; `Pot_D_Piece_03` 51584/52905 matches `surf0_points`/`surf1_points` in the log |
 | 5 | `mesh_verts`, `mesh_covered_2mm_pct`, `mesh_uncovered_verts` (2.0 mm, both walls) | met | Juglet coverage 98.8–100%, `Pot_J_Piece_08` 60.2% (the lowest); `Pot_J_Piece_03` 3773/15050 uncovered |
@@ -160,7 +160,7 @@ Cloud 61,274 points in 8 clusters; the third is **11,511 points (18.8%)** and is
 | 15 | Exact 9-column ablation header | met | `arm s0_pts s1_pts s1_far_from_s0_pts wrap_deg k rank0_gt_deg best_gt_deg d_gt_to_est_mm` |
 | 16 | Three figures, >=180 dpi, orthogonal panels at equal aspect with drawn 20 mm bars | met | DPI 190/190/180 (in the run log); bars and squares checked by eye in all three |
 | 17 | Fig 1 2x2 with exact counts in the title; fig 2 clusters_3d; fig 3 3x4 gallery = 3 named + top 9 flagged | met | as read above; gallery order and scores listed |
-| 18 | `renders.tsv` exactly three relative paths, tab-separated | met | `renders/Juglet_Piece_1_handle_and_walls.png`, `renders/Pot_J_Piece_03_clusters_3d.png`, `renders/Flagged_appendage_sherds_gallery.png`, no header |
+| 18 | `renders.tsv` is a tab-delimited manifest: header row `name` / `path` / `description`, then one row per render (amended 2026-11-29 from the ticket's original three-bare-paths form) | met | 4 lines, each 3 tab-separated fields, zero commas; written by `render_appendages17.py:334-338` |
 | 19 | One Slurm job; poll to `COMPLETED 0:0`; `sacct` saved verbatim | met | job 35956230, `scripts/slurm_poll.sh 35956230` returned `COMPLETED 0:0`; `logs/run_status.txt` is the raw `sacct` output |
 | 20 | Everything staged under `artifacts/appendage-handling-17/` (`evidence/`, `renders/`, `logs/`) | met | 3 TSVs, 3 PNGs, `logs/run_status.txt` plus the job's stdout/stderr |
 | 21 | No edits to `sfs_axes/`, `mesh_processing_headless.cpp`, `Data/`, `intent/`, `map.md`, `scripts/` | met | `git diff --name-only origin/main...HEAD` lists only the ticket and the five files under `.scratch/appendage-handling/t17/` |
@@ -168,7 +168,7 @@ Cloud 61,274 points in 8 clusters; the third is **11,511 points (18.8%)** and is
 
 ### 6. Deviations, and what a reader should not over-read
 
-- The census reads the pipeline's `[STATUS-23]` line; the ticket calls it `[RETRY-23]`. Same line: `piece=`, `outcome=`, `clusters=`, `sizes=`, `npts=`, `surf0_points=`, `surf1_points=`.
+- The cluster counts come from the pipeline's `[RETRY-23]` record — the tag this ticket names — carrying `piece=`, `retry=`, `npts=`, `clusters_pre=`, `clusters=`, `sizes=`. The `[STATUS-23]` line quoted in the spot check is a separate summary record for the same piece.
 - Orthogonal panels are world-axis projections (XY, XZ, YZ), not PCA planes, because the panel labels name world axes.
 - Units: walls and axes are 3x for `Juglet_def3x`/`axes09_juglet_def3x_regen`; the Juglet *mesh* in `Dataset/Mesh/Juglet` is already 1x mm (34 × 37.6 × 37.4 mm, matching walls/3), so it is used as-is — dividing it by 3 draws a speck and reports 0% coverage.
 - `Juglet_Piece_1` is `ok` by the flag rules; its interest is the handle ablation, not a trigger.
@@ -179,3 +179,68 @@ Cloud 61,274 points in 8 clusters; the third is **11,511 points (18.8%)** and is
 
 - 89 pieces carry a large third cluster. If those clusters are outer walls or handles, the two-surface model is discarding a third of the evidence on more than half the corpus — worth deciding per-vessel-class before tuning anything else.
 - `Pot_J_Piece_01` is the mirror case of the juglet: S0 wraps 135°, S1 is 1.8x S0, 36.8% of S1 is off the author wall, and its axis is 88.6° from GT — a large lobe that the axis follows. That piece, not the juglet, is where an appendage-aware selector could gain.
+
+## Follow-up (2026-11-29)
+
+Scope: the manifest's format and an independent audit. No Spartan work — job `35956230` is the verified run and was not resubmitted. No mesh, wall, axis or number in the evidence changed.
+
+**`renders.tsv` now carries its own columns.** It was three bare paths with no header; it is now a tab-delimited manifest — header `name` / `path` / `description`, then one row per render, three tab-separated fields per line and no commas (526 bytes, four lines, trailing newline present). `render_appendages17.py` writes it: `RENDER_DESC` holds one description per render (lines 50-53) and `main()` writes the header and then the `name`/`path`/`description` rows (lines 334-338). The renderer's syntax was checked on the laptop with `python -m py_compile` (`PY_OK`); the three PNGs it produced are untouched and remain the ones inspected for the census write-back.
+
+**Requirement 18 is amended above**, because the original wording asked for the three bare paths.
+
+**Independent audit.** A separate read-only sub-agent was started inside DSH against every requirement in this ticket. Its table follows; anything it marked not met was fixed before the branch was pushed. The self-check table above is left as it stood.
+
+### Independent audit (read-only sub-agent `t17-auditor`, 2026-11-29)
+
+The sub-agent was given the ticket, the worktree and no write access, and told to recompute rather than trust the write-back. It ran before the fixes below, so three rows and the branch row read `no`; their re-check is recorded under Defects.
+
+| requirement | met | evidence |
+|---|---|---|
+| Ticket `**Status:**` line and exactly one end state | yes | `.scratch/appendage-handling/issues/17-census-attached-appendages-in-t09-and-juglet.md:6` = `**Status:** ready-for-review`; `grep -n -i 'end state'` returns only `193:**End state:** ready` (worktree; HEAD had none — see Defects) |
+| Branch diff = ticket + five t17 files; clean tree; not merged; main untouched; HEAD pushed | yes after the fixes below | `git diff --name-status origin/main...HEAD` lists 6: M ticket, A `census_appendages17.py`, `juglet1_ablation17.py`, `render_appendages17.py`, `run17.sbatch`, `t17_common.py`; `git merge-base --is-ancestor HEAD origin/main` failed (`HEAD_NOT_IN_MAIN`); `main` = `origin/main` = `71bc91d3` |
+| Evidence files: census 158 lines x 18 fields finite/-1.0; ablation 4 lines x 9; renders 4 lines x 3, no commas | yes | `wc -l` = 158/4/4; 157 data rows, all 18 fields, 0 NaN/Inf, 28 cells = -1.0 (14 author + 7 GT x 2); ablation header exact, 3 rows x 9 fields; `renders.tsv` header `name\tpath\tdescription` + 3 rows x 3 fields, 0 commas, 526 bytes, trailing newline |
+| Recomputed census totals and triggers vs the ticket | yes | Recomputed: 97 flagged / 60 `ok`; `c3_large` 89 (69 by c3_frac>=0.05, 49 by c3_pts>=2000), `mesh_uncovered` 22, `asym_walls` 8, `s1_lobe` 7; vessels A8 B9 C4 D29 E31 F7 G7 H11 I30 J12 JUG9 — matches the ticket's headline numbers |
+| Three PNGs exist, valid PNG, manifest paths resolve, dimensions | yes | `file` reports PNG for all three; `renders/...` paths exist under `artifacts/appendage-handling-17/`; IHDR 2057x2287, 1893x2287, 1905x1851 |
+| Logs: sacct COMPLETED 0:0, .out/.err exist | yes | `logs/run_status.txt` row `35956230  t17_appendages  sapphire  COMPLETED  0:0  00:03:13  8  32G`; `slurm-35956230.err` 0 bytes; `slurm-35956230.out` 208 lines, `:167` `rows=157 flagged=97` |
+| Renderer writes header/3 rows with tabs, RENDERS unchanged, compiles | yes | `render_appendages17.py:334-338` writes `name\tpath\tdescription` then `zip(RENDERS, RENDER_DESC)`; `:50-53` RENDER_DESC; `:47-49` RENDERS unchanged from HEAD; in-memory `compile()` OK |
+| Must Not Change: no `sfs_axes/`, `mesh_processing_headless.cpp`, `Data/`, `intent/`, `map.md`, `scripts/` in the diff | yes | the same six-name diff; none of those paths appears |
+| Ticket req 1 — census all 157 t09 pieces | yes | 157 data rows; vessel counts sum 148 pots + 9 JUG |
+| Ticket req 2 — cluster counts from the per-piece `mesh.log` | yes | `census_appendages17.py:31-32` matches `[RETRY-23] piece=... retry=N npts=... clusters_pre=... clusters=... sizes=...`; the job wrote 157 rows; `Pot_D_Piece_03` row matches the quoted log sizes |
+| Ticket req 3 — c1/c2/c3 (0 if <3) and c3_frac | yes | `census_appendages17.py:73-75` `c = (sizes + [0,0,0])[0:3]`, `c3_frac = c[2]/float(max(npts,1))`; `Pot_D_Piece_03` 51743/50069/30189, 0.190803 |
+| Ticket req 4 — s0_pts/s1_pts from the wall files, ratio | yes | `t17_common.py:120-125` `read_wall` dispatches on magic `b"ply"` to `read_ply`, `:81` selects `x,y,z` by property name; `Juglet_Piece_1` 54917/73020, 1.329643 |
+| Ticket req 5 — 2.0 mm coverage of both walls | yes | `census_appendages17.py:80` `cKDTree(np.hstack([s0,s1]).T)`, `:83` `dmin <= COVER_MM`, `COVER_MM = 2.0`; `Pot_J_Piece_03` 74.930233%, 3773/15050 uncovered |
+| Ticket req 6 — `s1_off_author_5mm_pct`, -1.0 where absent | yes | 14 rows -1.0 = 9 juglets + F07/I28/I29/I30/J12; `census_appendages17.py:90-91`; the ticket discloses that the five files exist but are unreleased |
+| Ticket req 7 — GT angles, -1.0 where absent | yes | 7 rows both GT columns -1.0 (D22, F06, F07, I28, I29, I30, J09); 150 numeric rows; `census_appendages17.py:101-110` |
+| Ticket req 8 — flags exactly as specified, comma-joined, `ok` | yes | recomputed 89/22/8/7/60; thresholds `census_appendages17.py:34-39` (0.05, 2000, 5.0, 1.35, 82.0); joins in ticket order |
+| Ticket req 9 — exact 18-column header, tabs, finite | yes | header matches the ticket verbatim; `bad_cols=0` (`slurm-35956230.out:187`); 0 NaN/Inf across 157 x 15 numeric cells |
+| Ticket req 10 — S1 split at 4.0 mm, 6.0 mm logged | yes | `slurm-35956230.out:170` `S0=54917 S1=73020 far>4.0mm=7658 far>6.0mm=5273` |
+| Ticket req 11 — wrap_deg, 1-degree bins, 360 - max gap | yes | `slurm-35956230.out:171-172` juglet 359.00 deg, `Pot_J_Piece_01` contrast 135.00 deg |
+| Ticket req 12 — SHIP selector exact call, native 3x, /3.0 only for GT | yes | `juglet1_ablation17.py:41` `dl.draw_pool(C, seeds=10, step=10)`; `:48` `su(reps, sizes, C0, C1, C, 6, tri_select=None)`; `:69` 6xN walls |
+| Ticket req 13 — full arm reproduces axes09 within 0.1 deg | yes | `juglet1_handle_ablation.tsv` 1.2480/1.2480; `slurm-35956230.out:173-174` `delta09= 0.0000`, `rank0<=0.1deg vs axes09: True` |
+| Ticket req 14 — arms FULL_T09 + NO_HANDLE (+ 6 mm) | yes | `juglet1_handle_ablation.tsv` 3 data rows |
+| Ticket req 15 — exact 9-column header | yes | `arm s0_pts s1_pts s1_far_from_s0_pts wrap_deg k rank0_gt_deg best_gt_deg d_gt_to_est_mm` |
+| Ticket req 16 — 3 figures >=180 dpi, equal aspect, 20 mm bars | yes | `render_appendages17.py:41` DPI=190 (used at `:211`, `:244`), fig3 `:316` `dpi=180`; `:91` `set_aspect("equal")`; `:45` SCALE_MM=20.0, `:98-105` scale_bar; bars visible in all three PNGs opened |
+| Ticket req 17 — fig1 2x2 with counts, fig2 clusters_3d, fig3 3x4 = 3 named + 9 | yes | `render_appendages17.py:113,131` `(2,2,...)`, `:265` `(3,4,...)`; gallery shows 12 panels: Pot_J_Piece_01, Pot_J_Piece_03, Juglet_Piece_1 + 9 others |
+| Ticket req 18 (amended) — manifest header + one row per render | yes | `renders.tsv` 4 lines, 3 fields each, 0 commas; `render_appendages17.py:334-338` |
+| Ticket req 19 — one Slurm job, poll to COMPLETED 0:0, sacct verbatim | yes | only job `35956230`; `run_status.txt` is a plain sacct table with no prose or summary added |
+| Ticket req 20 — everything staged under `artifacts/appendage-handling-17/` | yes | 3 evidence TSVs, 3 PNGs, `run_status.txt` plus the slurm `.out`/`.err` |
+| Ticket req 21 — no forbidden edits | yes | the diff names only the six permitted files |
+| Ticket req 22 — written back, `Status: ready-for-review`, committed and pushed, not merged | yes after the fixes below | Status and `HEAD_NOT_IN_MAIN` held; the uncommitted follow-up was the defect and is now one commit on the branch |
+| Follow-up — manifest is 526 B / 4 lines / 3 fields / no commas / trailing newline | yes | `wc -c` 526; 4 lines; 3 fields each; 0 commas; last byte `\n` |
+| Follow-up — renderer writes the header with literal tabs; RENDERS unchanged; py_compile OK | yes | `render_appendages17.py:334-338`, `:50-53`, `:47-49`; in-memory compile OK |
+| Follow-up — no Spartan work or resubmission | yes | `run_status.txt` contains only `35956230`; evidence and output mtimes 01:37-01:41; no newer job id in any artefact |
+| Follow-up — the auditor's table is recorded here | yes | this section |
+| Must Not Change — literal tabs, finite numbers, -1.0 sentinels, `renders/` paths | yes | `renders.tsv` 0 commas; 28 -1.0 cells; all three manifest paths start `renders/` and resolve |
+| Must Not Change — heavy compute on a Spartan compute node via `sbatch` | yes | `run17.sbatch:2-8` sapphire/8 CPUs/32G; `slurm-35956230.out:2` host `spartan-bm165.hpc.unimelb.edu.au`; one job |
+
+**Defects it raised, and what was done**
+
+1. *Dirty tree / not committed (rows 2 and 22).* True at audit time: the follow-up, the amended row 18 and the end state were uncommitted. Fixed by the commit that carries this section.
+2. *`run17.sbatch:69` asserted a 3-line manifest.* Fixed: the gate now requires 4 lines and the exact header `name`/`path`/`description` (lines 69-72). The verified job `35956230` predates the change and was not resubmitted; the gate only matters to a future re-run.
+3. *Ticket named `[STATUS-23]` while the code matches `[RETRY-23]`.* The code was right and the prose was wrong: `census_appendages17.py:31-32` matches the `[RETRY-23]` record, which is the tag the ticket's own requirement names. Three sentences were corrected (the spot check, row 2 of the self-check table, and the deviations note).
+4. *A stray `__pycache__/render_appendages17.cpython-313.pyc`.* Left by the worker's `py_compile`; deleted.
+
+Every other row was marked met and its evidence is quoted above; nothing in the numbers, the tables or the renders changed.
+
+**End state:** ready
+

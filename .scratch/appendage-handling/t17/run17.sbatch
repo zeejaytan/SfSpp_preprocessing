@@ -66,8 +66,10 @@ test "$(awk 'END{print NR}' evidence/appendage_census_157.tsv)" -eq 158 \
     || { echo "FAIL: census must have 158 lines (header + 157)"; exit 1; }
 test "$(awk 'END{print NR}' evidence/juglet1_handle_ablation.tsv)" -ge 3 \
     || { echo "FAIL: ablation must have header + at least 2 arms"; exit 1; }
-test "$(awk 'END{print NR}' evidence/renders.tsv)" -eq 3 \
-    || { echo "FAIL: renders.tsv must list exactly 3 paths"; exit 1; }
+test "$(awk 'END{print NR}' evidence/renders.tsv)" -eq 4 \
+    || { echo "FAIL: renders.tsv must be header + 3 rows"; exit 1; }
+test "$(head -1 evidence/renders.tsv)" = "$(printf 'name\tpath\tdescription')" \
+    || { echo "FAIL: renders.tsv header must be name/path/description"; exit 1; }
 test -s renders/Juglet_Piece_1_handle_and_walls.png
 test -s renders/Pot_J_Piece_03_clusters_3d.png
 test -s renders/Flagged_appendage_sherds_gallery.png

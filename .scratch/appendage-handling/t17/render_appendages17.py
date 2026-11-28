@@ -47,6 +47,10 @@ FORCED = ["Pot_J_Piece_01", "Pot_J_Piece_03", "Juglet_Piece_1"]
 RENDERS = ["renders/Juglet_Piece_1_handle_and_walls.png",
            "renders/Pot_J_Piece_03_clusters_3d.png",
            "renders/Flagged_appendage_sherds_gallery.png"]
+# one description per render; kept free of tabs and commas so the TSV stays 3 fields
+RENDER_DESC = ["Juglet_Piece_1 walls at 1x with the handle population beyond 4 mm and the uncovered mesh",
+               "Pot_J_Piece_03 against the dropped 11511-point third cluster and the mesh uncovered beyond 2 mm",
+               "12-panel gallery: Pot_J_Piece_01 + Pot_J_Piece_03 + Juglet_Piece_1 and the nine top-scoring sherds"]
 
 
 def read_census(path):
@@ -327,9 +331,11 @@ def main():
     print("wrote %s" % p2, flush=True)
     p3 = fig3(a.outdir, rows)
     print("wrote %s" % p3, flush=True)
-    with open(os.path.join(a.outdir, "evidence", "renders.tsv"), "w") as fh:
-        for r in RENDERS:
-            fh.write(r + "\n")
+    with open(os.path.join(a.outdir, "evidence", "renders.tsv"), "w", newline="") as fh:
+        fh.write("name\tpath\tdescription\n")
+        for path, desc in zip(RENDERS, RENDER_DESC):
+            name = os.path.splitext(os.path.basename(path))[0]
+            fh.write("%s\t%s\t%s\n" % (name, path, desc))
 
 
 if __name__ == "__main__":
