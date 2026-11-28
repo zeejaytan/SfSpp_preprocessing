@@ -1,4 +1,4 @@
-# 02 — Probe the 20 author-excluded special-part meshes
+# 19 — Probe the 20 author-excluded special-part meshes
 
 **Answers:** E3
 **Type:** task
@@ -13,4 +13,4 @@ What are the `20` special-part meshes excluded from the authors' released `Point
 
 ## Related tickets
 
-- Independent of [Census attached appendages in t09 and Juglet](issues/01-census-attached-appendages-in-t09-and-juglet.md); unblocks [Decide appendage guard location and scope](issues/04-decide-appendage-guard-location-and-scope.md).
+- Independent of [Census attached appendages in t09 and Juglet](17-census-attached-appendages-in-t09-and-juglet.md); unblocks [Decide appendage guard location and scope](21-decide-appendage-guard-location-and-scope.md).

@@ -14,7 +14,7 @@ The open puzzle raised by the conservator on 2026-11-28 is why only `Pot_J_Piece
 
 Weight: Zero dedicated `E3` runs yet; hypothesis-generating observations come from [E2](E2-which-surface-differences-cost-joins.md) (`Pot_J_Piece_01`, `1` piece proved end-to-end) and read-only `t09` log counts on `Juglet_Piece_1` and `Pot_J_Piece_03` (not yet rendered in 3D).
 
-Next: Charted under [Appendage handling map](../.scratch/appendage-handling/map.md) (`Stage 2 /wayfinder`). Unblocked frontier tickets ready to run: [Census attached appendages in t09 and Juglet](../.scratch/appendage-handling/issues/01-census-attached-appendages-in-t09-and-juglet.md) and [Probe the 20 author-excluded special-part meshes](../.scratch/appendage-handling/issues/02-probe-the-20-author-excluded-special-part-meshes.md).
+Next: Charted under [Appendage handling map](../.scratch/appendage-handling/map.md) (`Stage 2 /wayfinder`). Unblocked frontier tickets: [Census attached appendages in t09 and Juglet](../.scratch/appendage-handling/issues/17-census-attached-appendages-in-t09-and-juglet.md) (`ready-for-agent`, dispatched to DeepSeek in `worktrees/sfs/17`) and [Probe the 20 author-excluded special-part meshes](../.scratch/appendage-handling/issues/19-probe-the-20-author-excluded-special-part-meshes.md) (`ready-for-agent`).
 
 ## Why it matters
 
